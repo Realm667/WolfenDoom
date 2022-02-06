@@ -773,6 +773,7 @@ class TextPaper : InteractiveItem
 		//$Arg2Enum { 1 = "Set Type (Book print)"; 2 = "Worn Typewriter"; 3 = "'Classic'"; 4 = "Handwriting 1 (Messy)"; 5 = "Handwriting 2 (Neat)"; 6 = "Handwriting 3 (Neat, small)"; 7 = "Console Font"; 8 = "Anka/Coder 16pt"; }
 		//$Arg2Default 2
 
+		Height 8;
 		-InteractiveItem.ALLOWPICKUP
 	}
 

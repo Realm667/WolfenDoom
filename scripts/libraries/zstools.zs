@@ -422,6 +422,7 @@ class ZScriptTools
 		STR_MIDDLE = 16,
 		STR_FIXED = 32, // Print directly on screen, not in hud coordinate space
 		STR_MENU = 64, // Print in menu coordinate space (only implemented for key buttons)
+		STR_NOSCALE = 128, // Don't recalculate coordinates
 	};
 
 	static ui void TypeString(Font fnt, BrokenString lines, int msgwidth, Vector2 textpos, int texttic, double textscale = 1.0, double alpha = 1.0, Vector2 screensize = (640, 400), int flags = STR_CENTERED | STR_MIDDLE)

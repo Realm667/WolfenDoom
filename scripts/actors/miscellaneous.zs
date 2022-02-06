@@ -470,6 +470,9 @@ class Appendage : Actor
 class ScreenLabel : SimpleActor
 {
 	String user_text, user_icon;
+	int user_type;
+
+	ScreenLabelItem label;
 
 	Default
 	{
@@ -480,6 +483,7 @@ class ScreenLabel : SimpleActor
 		+NOINTERACTION
 		Height 0;
 		Radius 0;
+		Alpha 0.8;
 	}
 
 	States
@@ -496,6 +500,9 @@ class ScreenLabel : SimpleActor
 		ScreenLabelHandler handler = ScreenLabelHandler(EventHandler.Find("ScreenLabelHandler"));
 		if (!handler) { return; }
 
-		handler.AddItem("ScreenLabelItem", self, user_icon, user_text, 0xFFFFFF, 0.8);
+		int index = handler.FindItem(self);
+
+		if (index == handler.ScreenLabelItems.Size()) { label = handler.AddItem("ScreenLabelItem", self, user_icon, user_text, 0xFFFFFF, alpha, user_type); }
+		else { label = handler.ScreenLabelItems[index]; }
 	}
 }
