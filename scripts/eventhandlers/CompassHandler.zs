@@ -126,6 +126,11 @@ class CompassHandler : EventHandler
 			CompassItems.ShrinkToFit();
 		}		
 	}
+
+	override void WorldThingSpawned(WorldEvent e)
+	{
+		if (e.thing is "PlayerPawn") { BoACompass.Add(e.thing, "GOAL1"); }
+	}
 }
 
 class CompassWidget : Widget
@@ -257,11 +262,38 @@ class CompassWidget : Widget
 			// Fade the icon the farther away the thing is
 			double alpha = handler.CompassItems[i].alpha * compassalpha * clamp(2048 / max(player.mo.Distance3D(mo), 0.1), 0.25, 0.95);
 
-			// Dark outline/shadow effect behind the icon
-			DrawToHUD.DrawTexture(icon, (iconX, iconY), alpha, scale * 1.25 * compassScale, 0x050505);
+			if (
+				(PlayerFollower(mo) || PlayerPawn(mo)) &&
+				(mo.IsFriend(players[consoleplayer].mo) || mo.IsTeammate(players[consoleplayer].mo))
+			)
+			{
+				if (mo.health > 0 && mo != players[consoleplayer].mo)
+				{
+					// Dark outline/shadow effect behind the icon
+					DrawToHUD.DrawTexture(icon, (iconX, iconY), alpha, scale * compassScale, 0x050505);
 
-			// Draw the icon
-			DrawToHUD.DrawTexture(icon, (iconX, iconY), alpha, scale * compassScale);
+					// Draw the icon in the player color
+					int clr = 0x0000C8;
+					if (mo.player) { clr = mo.player.GetColor(); }
+
+					DrawToHUD.DrawTexture(icon, (iconX, iconY), alpha, scale * compassScale, clr);
+
+					// Draw the directional arrow
+					TextureID tex = TexMan.CheckForTexture("Arrow", TexMan.Type_Any);
+					if (tex)
+					{
+						DrawToHUD.DrawTransformedTexture(tex, (iconX, iconY), alpha / 2, player.camera.angle - mo.angle, scale * compassScale);
+					}
+				}
+			}
+			else
+			{
+				// Dark outline/shadow effect behind the icon
+				DrawToHUD.DrawTexture(icon, (iconX, iconY), alpha, scale * 1.25 * compassScale, 0x050505);
+
+				// Draw the icon
+				DrawToHUD.DrawTexture(icon, (iconX, iconY), alpha, scale * compassScale);
+			}
 
 			// If the actor has a forced health bar (e.g., the Nebelwerfer in C1M5), overlay the health color of the actor
 			if (Base(mo) && Base(mo).user_drawhealthbar)
@@ -273,16 +305,6 @@ class CompassWidget : Widget
 
 				DrawToHUD.DrawTexture(icon, (iconX, iconY), alpha, scale * compassScale, color(r, g, 0));
 			}
-			else if (PlayerFollower(mo) && mo.bFriendly)
-			{
-				DrawToHUD.DrawTexture(icon, (iconX, iconY), alpha, scale * compassScale, color(0, 0, 200));
-				TextureID tex = TexMan.CheckForTexture("Arrow", TexMan.Type_Any);
-				if (tex)
-				{
-					DrawToHUD.DrawTransformedTexture(tex, (iconX, iconY), alpha / 2, player.camera.angle - mo.angle, scale * compassScale);
-				}
-			}
-
 		}
 
 		double flashduration = 35;
