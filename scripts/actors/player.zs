@@ -81,6 +81,7 @@ class BoAPlayer : PlayerPawn
 	int flinchfactor;
 	bool dodragging; // Set true to enable dragging of corpses and pushable actors (crouch and use)
 	AchievementTracker tracker;
+	BoAFindHitPointTracer hittracer;
 
 	Default
 	{
@@ -251,6 +252,7 @@ class BoAPlayer : PlayerPawn
 		Thing_ChangeTID(0, playerID);
 
 		tracker = AchievementTracker(StaticEventHandler.Find("AchievementTracker"));
+		hittracer = new("BoAFindHitPointTracer");
 
 		Super.PostBeginPlay();
 	}
@@ -974,11 +976,12 @@ class BoAPlayer : PlayerPawn
 	{
 		FLineTraceData trace;
 
-		LineTrace(angle, UseRange * 3, pitch, TRF_THRUACTORS, player.viewheight, 0.0, 0.0, trace);
-		CrosshairLine = trace.HitLine;
+		hittracer.DoTrace(self, angle, UseRange * 3, pitch, 0, player.viewheight, hittracer);
+		CrosshairLine = hittracer.Results.HitLine;
 
 		LineTrace(angle, UseRange, pitch, TRF_THRUACTORS, player.viewheight, 0.0, 0.0, trace);
 		Line AimLine = trace.HitLine;
+
 		TextureID AimTexture = trace.HitTexture;
 
 		FLineTraceData actortrace;

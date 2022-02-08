@@ -108,7 +108,6 @@ class FlattenableProp : GrassBase // Tall grass/rye, etc. that can be trampled d
 		+NOTAUTOAIMED
 		+SHOOTABLE
 		+SOLID
-		+SPECIAL
 	}
 
 	override void PostBeginPlay()
@@ -123,6 +122,16 @@ class FlattenableProp : GrassBase // Tall grass/rye, etc. that can be trampled d
 		Touch(inflictor);
 
 		return 0; // No actual damage to the actor
+	}
+
+	override bool CanCollideWith(Actor other, bool passive)
+	{
+		if (PlayerPawn(other))
+		{
+			Touch(other);
+		}
+
+		return false;
 	}
 
 	override void Touch(Actor toucher)
@@ -343,6 +352,14 @@ class SimpleActor : Actor
 {
 	Vector2 floorxy;
 	Vector3 oldpos;
+	double z;
+
+	override void PostBeginPlay()
+	{
+		A_SetSize(-1, pos.z - floorz);
+		SetXYZ((pos.xy, floorz));
+		Super.PostBeginPlay();
+	}
 
 	override void Tick()
 	{
@@ -481,6 +498,7 @@ class ScreenLabel : SimpleActor
 		//$Arg0 Use user_text and user_icon
 		+INVISIBLE
 		+NOINTERACTION
+		+MOVEWITHSECTOR
 		Height 0;
 		Radius 0;
 		Alpha 0.8;
