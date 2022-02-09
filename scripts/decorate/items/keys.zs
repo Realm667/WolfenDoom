@@ -202,12 +202,13 @@ class Key_RE : CompassItem // C3M0_A
 		//$Category Keys (BoA)
 		//$Title Heart Key from C3M0_A
 		//$Color 4
-		Scale 0.17;
+		Height 8;
+		Scale 0.15;
 		Inventory.MaxAmount 1;
 		Inventory.Icon "SKLKH0";
 		Inventory.PickupSound "key/skullkey";
-		PuzzleItem.FailMessage "";
-		Inventory.PickupMessage "";
+		PuzzleItem.FailMessage "$SKULLF";
+		Inventory.PickupMessage "$HEARTP";
 		-FLOATBOB
 		-NOGRAVITY
 	}

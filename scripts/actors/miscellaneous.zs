@@ -352,14 +352,6 @@ class SimpleActor : Actor
 {
 	Vector2 floorxy;
 	Vector3 oldpos;
-	double z;
-
-	override void PostBeginPlay()
-	{
-		A_SetSize(-1, pos.z - floorz);
-		SetXYZ((pos.xy, floorz));
-		Super.PostBeginPlay();
-	}
 
 	override void Tick()
 	{
@@ -488,6 +480,7 @@ class ScreenLabel : SimpleActor
 {
 	String user_text, user_icon;
 	int user_type;
+	double z;
 
 	ScreenLabelItem label;
 
@@ -513,6 +506,9 @@ class ScreenLabel : SimpleActor
 
 	override void PostBeginPlay()
 	{
+		A_SetSize(-1, pos.z - floorz);
+		SetXYZ((pos.xy, floorz));
+
 		Super.PostBeginPlay();
 
 		ScreenLabelHandler handler = ScreenLabelHandler(EventHandler.Find("ScreenLabelHandler"));

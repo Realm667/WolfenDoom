@@ -574,6 +574,7 @@ class Gem : CompassItem
 	{
 		//$Category Props (BoA)/Interactive Items
 		Alpha 0.95;
+		Height 8;
 		RenderStyle "Add";
 		Scale 0.5;
 		Inventory.Icon "GEMAA0";

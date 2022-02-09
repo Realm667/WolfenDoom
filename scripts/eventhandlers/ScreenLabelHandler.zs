@@ -32,6 +32,7 @@ class ScreenLabelItem : Thinker
 	color clr;
 	int type, fade[MAXPLAYERS];
 	bool draw[MAXPLAYERS];
+	int animationinterval;
 
 	EffectsManager manager;
 
@@ -51,6 +52,43 @@ class ScreenLabelItem : Thinker
 		}
 
 		Super.Tick();
+
+		if (type == ScreenLabelHandler.LBL_Glint)
+		{
+			if (!mo) { Destroy(); }
+			else
+			{
+				if (!animationinterval) { animationinterval = Random(1, 8); } //  Wait between 1 and 8 seconds before glinting
+				int frame = (level.time % (35 * animationinterval)) / 3;
+				switch (frame)
+				{
+					case 1:
+					case 3:
+					case 4:
+					case 6:
+						alpha = 0.5;
+						icon = "GLINTA0";
+						break;
+					case 2:
+						alpha = 0.75;
+						icon = "GLINTB0";
+						break;
+					case 5:
+						alpha = 1.0;
+						icon = "GLINTB0";
+					case 7:
+						alpha = 0.25;
+						icon = "GLINTA0";
+						break;
+					case 8:
+						animationinterval = 0; // Reset wait time to another random duration
+					default:
+						alpha = 0.0;
+						icon = "";
+					break;
+				}
+			}
+		}
 
 		if (type == ScreenLabelHandler.LBL_Item)
 		{
@@ -97,6 +135,7 @@ class ScreenLabelHandler : EventHandler
 		LBL_ColorMarker,
 		LBL_Discrete,
 		LBL_Item,
+		LBL_Glint,
 	};
 
 	Array<ScreenLabelItem> ScreenLabelItems;
@@ -241,30 +280,37 @@ class ScreenLabelHandler : EventHandler
 
 		if (e.thing is "PlayerPawn") { AddItem("ScreenLabelItem", e.thing, "MP_MARK", "", 0x0, 0.8, LBL_ColorMarker); }
 
-		if (revar && !revar.GetBool()) { return; } // Add additional markers only if special mode is engaged via CVar
+		if (revar && revar.GetBool()) // Add additional markers only if special mode is engaged via CVar
+		{
+			bool destroyable = e.thing.bShootable && e.thing.health > 0 && !e.thing.bNoDamage && !e.Thing.bInvulnerable && e.thing.bSolid;
 
-		bool destroyable = e.thing.bShootable && e.thing.health > 0 && !e.thing.bNoDamage && !e.Thing.bInvulnerable && e.thing.bSolid;
+			if (
+				e.thing is "InteractiveItem" ||
+				e.thing is "UniformStand" ||
+				e.thing is "Safe" || 
+				e.thing is "TurretStand" ||
+				e.thing is "BoASupplyChest" ||
+				e.thing is "CoffeeMachine" ||
+				e.thing is "Nazi" && !Nazi(e.thing).wasused && !e.thing.special && e.thing.bFriendly && !Nazi(e.thing).user_sneakable && e.thing.Default.Species == "Nazi" && (!e.thing.target || !e.thing.target.bShootable) && Nazi(e.thing).activationcount < 2 && e.thing.health > 0
+			) { AddItem("ScreenLabelItem", e.thing, "ITEMMARK", StringTable.Localize("$CNTRLMNU_USE") .. "\n[[+use:1]]", 0x0, 1.0, LBL_Item); }
+			else if (
+				e.thing is "AlarmPanel" ||
+				(e.thing is "BarrelSpawner" && (BarrelSpawner(e.thing).user_spawntype || e.thing.special)) ||
+				(e.thing is "DestructionSpawner" && (DestructionSpawner(e.thing).user_spawntype || e.thing.special)) ||
+				(destroyable && e.thing.special && !e.thing.bIsMonster && !(e.Thing is "PlayerPawn"))
+			) { AddItem("ScreenLabelItem", e.thing, "ITEMMARK", StringTable.Localize("$CNTRLMNU_ATTACK") .. "\n[[+attack:1]]", 0x0, 1.0, LBL_Item); }
+			else if (
+				e.thing.bPushable ||
+				e.thing is "StatueBreakable"
+			) { AddItem("ScreenLabelItem", e.thing, "ITEMMARK", StringTable.Localize("$CNTRLMNU_FORWARD") .. "\n[[+forward:1]]", 0x0, 1.0, LBL_Item); }
+			else if (e.thing.bSpecial && !e.thing.bInvisible && e.thing.alpha > 0) { AddItem("ScreenLabelItem", e.thing, "ITEMMARK", "", 0x0, 1.0, LBL_Item); }
+		}
 
-		if (
-			e.thing is "InteractiveItem" ||
-			e.thing is "UniformStand" ||
-			e.thing is "Safe" || 
-			e.thing is "TurretStand" ||
-			e.thing is "BoASupplyChest" ||
-			e.thing is "CoffeeMachine" ||
-			e.thing is "Nazi" && !Nazi(e.thing).wasused && !e.thing.special && e.thing.bFriendly && !Nazi(e.thing).user_sneakable && e.thing.Default.Species == "Nazi" && (!e.thing.target || !e.thing.target.bShootable) && Nazi(e.thing).activationcount < 2 && e.thing.health > 0
-		) { AddItem("ScreenLabelItem", e.thing, "ITEMMARK", StringTable.Localize("$CNTRLMNU_USE") .. "\n[[+use:1]]", 0x0, 1.0, LBL_Item); }
-		else if (
-			e.thing is "AlarmPanel" ||
-			(e.thing is "BarrelSpawner" && (BarrelSpawner(e.thing).user_spawntype || e.thing.special)) ||
-			(e.thing is "DestructionSpawner" && (DestructionSpawner(e.thing).user_spawntype || e.thing.special)) ||
-			(destroyable && e.thing.special && !e.thing.bIsMonster && !(e.Thing is "PlayerPawn"))
-		) { AddItem("ScreenLabelItem", e.thing, "ITEMMARK", StringTable.Localize("$CNTRLMNU_ATTACK") .. "\n[[+attack:1]]", 0x0, 1.0, LBL_Item); }
-		else if (
-			e.thing.bPushable ||
-			e.thing is "StatueBreakable"
-		) { AddItem("ScreenLabelItem", e.thing, "ITEMMARK", StringTable.Localize("$CNTRLMNU_FORWARD") .. "\n[[+forward:1]]", 0x0, 1.0, LBL_Item); }
-		else if (e.thing.bSpecial && !e.thing.bInvisible && e.thing.alpha > 0) { AddItem("ScreenLabelItem", e.thing, "ITEMMARK", "", 0x0, 1.0, LBL_Item); }
+		if (!e.thing.bNoInteraction)
+		{
+			if (e.thing is "Key_RE") { AddItem("ScreenLabelItem", e.thing, "", "", 0x0, 1.0, LBL_Glint); }
+			else if (e.thing is "Gem") { AddItem("ScreenLabelItem", e.thing, "", "", 0xc7ecb9, 1.0, LBL_Glint); }
+		}
 	}
 
 	override void WorldTick()
@@ -277,6 +323,16 @@ class ScreenLabelHandler : EventHandler
 
 				ScreenLabelItems[i].draw[p] = !!(players[p].mo && ScreenLabelItems[i].mo && ScreenLabelItems[i].mo.CheckSight(players[p].mo, SF_IGNOREVISIBILITY && SF_IGNOREWATERBOUNDARY));
 				if (ScreenLabelItems[i].mo is "CoffeeMachine" && players[p].health >= 25) { ScreenLabelItems[i].draw[p] = false; }
+				if (ScreenLabelItems[i].type == LBL_Glint)
+				{
+					let smo = ScreenLabelItems[i].mo;
+
+					// Only do this for labels that need more strict line-of-sight checking
+					FLineTraceData LOF;
+					Vector3 spos = LevelLocals.SphericalCoords(smo.pos, players[p].mo.pos);
+					bool hit = smo.LineTrace(-spos.x, 512, -spos.y, 0, smo.height / 2, 16, 0, LOF);
+					if (hit && (!LOF.HitActor || LOF.HitActor != players[p].mo)) { ScreenLabelItems[i].draw[p] = false; }
+				}
 
 				let pp = BoAPlayer(players[p].mo);
 				if (!pp) { continue; }
@@ -560,12 +616,17 @@ class ScreenLabelHandler : EventHandler
 					Vector2 size = TexMan.GetScaledSize(spritetex);
 					Vector2 offset = TexMan.GetScaledOffset(spritetex);
 
-					top = offset.y * mo.scale.y + 4;
+					top = offset.y * mo.scale.y;
 				}
 			}
 
 			Vector3 offset = (0, 0, mo.GetBobOffset());
-			if (ScreenLabelItems[i].type == LBL_Item) { offset.z += top; }
+			if (ScreenLabelItems[i].type == LBL_Item) { offset.z += top + 4; }
+			else if (ScreenLabelItems[i].type == LBL_Glint)
+			{
+				offset.xy = Actor.RotateVector((top * sin(mo.pitch), 0), mo.angle) / 2;
+				offset.z += top * cos(mo.pitch) / 2;
+			}
 			else { offset.z += top + 16; }
 
 			Vector3 worldpos = e.viewpos + level.Vec3Diff(e.viewpos, mo.pos + offset); // World position of object, offset from viewpoint
@@ -735,6 +796,20 @@ class ScreenLabelHandler : EventHandler
 							}
 						}
 					}
+					break;
+				case LBL_Glint:
+						if (dist > 512) { continue; }
+						else if (dist > 384) { alpha = 1.0 - (dist - 384) / 128; }
+
+						if (ScreenLabelItems[i].icon && ScreenLabelItems[i].alpha)
+						{
+							TextureID glint = TexMan.CheckForTexture(ScreenLabelItems[i].icon, TexMan.Type_Any);
+							if (glint.IsValid())
+							{
+								double glintscale = max(1.0, 3.0 * dist / 512) * vid_scalefactor / (fovscale * dist / 512);
+								DrawToHUD.DrawTexture(glint, drawpos, ScreenLabelItems[i].alpha * alpha, glintscale, ScreenLabelItems[i].clr ? ScreenLabelItems[i].clr : -1, (-1, -1), DrawToHud.TEX_CENTERED | DrawToHUD.TEX_NOSCALE | (ScreenLabelItems[i].clr ? DrawtoHUD.TEX_COLOROVERLAY : 0));
+							}
+						}
 					break;
 				case LBL_Default:
 				default:
