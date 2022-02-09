@@ -43,6 +43,7 @@ class BloodSkull : Base
 	+FLOAT
 	+NEVERRESPAWN
 	+NOGRAVITY
+	+NOINFIGHTING
 	Obituary "$BLOSKULL";
 	SeeSound "BSkull/See";
 	PainSound "BSkull/Pain";
@@ -225,6 +226,7 @@ class HitlerGhost : Nazi
 	+FLOAT
 	+NOBLOOD
 	+NOGRAVITY
+	+NOINFIGHTING
 	Obituary "$SSGHOST";
 	DeathSound "hitlerghost/die";
 	SeeSound "hitlerghost/see";
@@ -297,6 +299,7 @@ class Geist : Nazi
 	+LOOKALLAROUND
 	+NOBLOOD
 	+NOGRAVITY
+	+NOINFIGHTING
 	Obituary "$GEIST";
 	PainChance 255;
 	PainSound "geist/pain";
@@ -492,6 +495,7 @@ class UndeadMonk : HitlerGhost
 	DamageFactor "Rocket", 1.0;
 	-BOSS
 	+LOOKALLAROUND
+	+NOINFIGHTING
 	Obituary "$UNDEADM";
 	DeathSound "monk/death";
 	PainSound "monk/pain";
