@@ -696,7 +696,7 @@ class ScreenLabelHandler : EventHandler
 						String temp; BrokenString lines;
 						[temp, lines] = BrokenString.BreakString(text, int(48 * fnt.StringWidth(" ")), fnt:fnt);
 
-						double textscale = 2 * vid_scalefactor / (fovscale * dist / 256);
+						double textscale = 1.0 * vid_scalefactor / (fovscale * dist / 256);
 						double imagescale = 0.5 * textscale;
 						double lineheight = int(fnt.GetHeight() * textscale);
 						double buttonheight = int(Button.GetHeight(null, textscale));

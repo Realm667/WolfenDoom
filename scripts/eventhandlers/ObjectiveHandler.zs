@@ -289,18 +289,27 @@ class ObjectiveHandler : EventHandler
 		screen.DrawText(SmallFont, Font.CR_UNTRANSLATED, posx, posy, primary, DTA_VirtualWidthF, destsize.x, DTA_VirtualHeightF, destsize.y, DTA_Alpha, alpha);
 		posy += lineheight;
 
-		int o;
+		int o = FindNext(false);
+		String unknown = StringTable.Localize("$Unknown");
 		
-		//  Draw the objectives, in order
-		o = FindNext(false);
-		while (o != objectives.Size())
+		if (o != objectives.Size())
 		{
-			if (objectives[o].text.length())
+			//  Draw the objectives, in order
+			while (o != objectives.Size())
 			{
-				objectives[o].DrawObjective(fnt, int(posx), int(posy), destsize.x, destsize.y, alpha); // Call each objective's internal drawing function
-				posy += lineheight;
+				if (objectives[o].text.length())
+				{
+					objectives[o].DrawObjective(fnt, int(posx), int(posy), destsize.x, destsize.y, alpha); // Call each objective's internal drawing function
+					posy += lineheight;
+				}
+				o = FindNext(false, o);
 			}
-			o = FindNext(false, o);
+		}
+		else
+		{
+			// Draw 'Unknown' string
+			screen.DrawText(SmallFont, Font.CR_DARKGRAY, posx, posy, unknown, DTA_VirtualWidthF, destsize.x, DTA_VirtualHeightF, destsize.y, DTA_Alpha, alpha);
+			posy += lineheight;
 		}
 
 		// Draw secondary objectives
@@ -310,14 +319,23 @@ class ObjectiveHandler : EventHandler
 
 		//  Draw the objectives, in order
 		o = FindNext(true);
-		while (o != objectives.Size())
+
+		if (o != objectives.Size())
 		{
-			if (objectives[o].text.length())
+			while (o != objectives.Size())
 			{
-				objectives[o].DrawObjective(fnt, posx, posy, destsize.x, destsize.y, alpha); // Call each objective's internal drawing function
-				posy += lineheight;
+				if (objectives[o].text.length())
+				{
+					objectives[o].DrawObjective(fnt, posx, posy, destsize.x, destsize.y, alpha); // Call each objective's internal drawing function
+					posy += lineheight;
+				}
+				o = FindNext(true, o);
 			}
-			o = FindNext(true, o);
+		}
+		else
+		{
+			// Draw 'Unknown' string
+			screen.DrawText(SmallFont, Font.CR_DARKGRAY, posx, posy, unknown, DTA_VirtualWidthF, destsize.x, DTA_VirtualHeightF, destsize.y, DTA_Alpha, alpha);
 		}
 	}
 }
