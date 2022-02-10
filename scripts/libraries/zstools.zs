@@ -459,11 +459,31 @@ class ZScriptTools
 			int nextchar = 0, i = 0;
 			while (i < len)
 			{
+				let currentline = lines.StringAt(l);
 				int c;
-				[c, nextchar] = lines.StringAt(l).GetNextCodePoint(nextchar);
-				line = String.Format("%s%c", line, c);
-
+				[c, nextchar] = currentline.GetNextCodePoint(nextchar);
+				line.AppendCharacter(c);
 				i++;
+
+				if (c == 0x5B) // [
+				{
+					[c, nextchar] = currentline.GetNextCodePoint(nextchar);
+					line.AppendCharacter(c);
+					i++;
+
+					if (c == 0x5B) // [ (double brackets surround inline key binds)
+					{
+						while (c && c != 0x5D) // ]
+						{
+							[c, nextchar] = currentline.GetNextCodePoint(nextchar);
+							line.AppendCharacter(c);
+							i++;
+						}
+						[c, nextchar] = currentline.GetNextCodePoint(nextchar);
+						line.AppendCharacter(c);
+						i++;
+					}
+				}
 			}
 
 			if (flags & STR_FIXED) { screen.DrawText(fnt, Font.CR_UNTRANSLATED, textpos.x / textscale, textpos.y / textscale + l * lineheight / textscale, line, DTA_VirtualWidth, int(w * textscale), DTA_VirtualHeight, int(h * textscale), DTA_Alpha, alpha); }
