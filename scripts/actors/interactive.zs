@@ -609,6 +609,13 @@ class StatueKey : CompassItem
 			MDLA A -1 NoDelay A_AttachLight("Glow", DynamicLight.PulseLight, 0x194b4b, int(radius * 1.5), int(radius * 2), DYNAMICLIGHT.LF_ATTENUATE, (sin(pitch) * height / 2, 0, cos(pitch) * height / 2), 2.0);
 			Stop;
 	}
+
+	override void Tick()
+	{
+		Super.Tick();
+
+		if (owner) { A_RemoveLight("Glow"); }
+	}
 }
 
 class InteractiveItem : PuzzleItem

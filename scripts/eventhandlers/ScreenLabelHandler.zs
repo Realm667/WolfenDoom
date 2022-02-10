@@ -161,12 +161,21 @@ class ScreenLabelHandler : EventHandler
 		}
 	}
 
-	uint FindItem(Actor mo) // Helper function to find a thing in a child class since the mo is nested in an object
+	uint FindItem(Actor mo, in out Array<uint> items = null) // Helper function to find a thing in a child class since the mo is nested in an object
 	{
+		if (items) { items.Clear(); }
+
 		for (int i = 0; i < ScreenLabelItems.Size(); i++)
 		{
-			if (ScreenLabelItems[i] && ScreenLabelItems[i].mo == mo) { return i; }
+			if (ScreenLabelItems[i] && ScreenLabelItems[i].mo == mo)
+			{
+				if (!items) { return i; }
+				else { items.Push(i); }
+			}
 		}
+
+		if (items && items.Size()) { return items[0]; }
+
 		return ScreenLabelItems.Size();
 	}
 
@@ -212,11 +221,12 @@ class ScreenLabelHandler : EventHandler
 		return ret, output;
 	}
 
-	ScreenLabelItem AddItem(class<ScreenLabelItem> cls, Actor thing, String iconName = "", String text = "", color clr = 0x0, double alpha = 1.0, int type = LBL_Default)
+	ScreenLabelItem AddItem(class<ScreenLabelItem> cls, Actor thing, String iconName = "", String text = "", color clr = 0x0, double alpha = 1.0, int type = LBL_Default, bool update = true)
 	{
 		if (!thing) { return null; }
 
-		int i = FindItem(thing);
+		int i = ScreenLabelItems.Size();
+		if (update) { i = FindItem(thing); }
 
 		ScreenLabelItem item;
 		if (i == ScreenLabelItems.Size())
@@ -308,8 +318,9 @@ class ScreenLabelHandler : EventHandler
 
 		if (!e.thing.bNoInteraction)
 		{
-			if (e.thing is "Key_RE") { AddItem("ScreenLabelItem", e.thing, "", "", 0x0, 1.0, LBL_Glint); }
-			else if (e.thing is "Gem") { AddItem("ScreenLabelItem", e.thing, "", "", 0xc7ecb9, 1.0, LBL_Glint); }
+			if (e.thing is "Key_RE") { AddItem("ScreenLabelItem", e.thing, "", "", 0x0, 1.0, LBL_Glint, false); }
+			else if (e.thing is "Gem") { AddItem("ScreenLabelItem", e.thing, "", "", 0xc7ecb9, 1.0, LBL_Glint, false); }
+			else if (e.thing is "StatueKey") { AddItem("ScreenLabelItem", e.thing, "", "", 0x194b4b, 1.0, LBL_Glint, false); }
 		}
 	}
 
@@ -806,7 +817,7 @@ class ScreenLabelHandler : EventHandler
 							TextureID glint = TexMan.CheckForTexture(ScreenLabelItems[i].icon, TexMan.Type_Any);
 							if (glint.IsValid())
 							{
-								double glintscale = max(1.0, 3.0 * dist / 512) * vid_scalefactor / (fovscale * dist / 512);
+								double glintscale = max(1.0, 4.0 * dist / 512) * vid_scalefactor / (fovscale * dist / 512);
 								DrawToHUD.DrawTexture(glint, drawpos, ScreenLabelItems[i].alpha * alpha, glintscale, ScreenLabelItems[i].clr ? ScreenLabelItems[i].clr : -1, (-1, -1), DrawToHud.TEX_CENTERED | DrawToHUD.TEX_NOSCALE | (ScreenLabelItems[i].clr ? DrawtoHUD.TEX_COLOROVERLAY : 0));
 							}
 						}

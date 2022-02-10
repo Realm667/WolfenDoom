@@ -152,9 +152,8 @@ class SkullKey : CompassItem
 	States
 	{
 		Spawn:
-			SKLK A 10;
-			"####" A 10 LIGHT("BOARKEY");
-			Loop;
+			SKLK A -1 LIGHT("BOARKEY");
+			Stop;
 	}
 }
 
@@ -171,9 +170,8 @@ class SurrenderingSoldierKey : SkullKey //was SpyToken, pickup msg not needed
     States
 	{
 		Spawn:
-			SKLK E 10;
-			"####" E 10 LIGHT("BOACKEY");
-			Loop;
+			SKLK E -1 LIGHT("BoAGenericKey");
+			Stop;
 	}
 }
 
@@ -191,9 +189,8 @@ class SkullKeyForSale : SkullKey //C3M6_A
 	States
 	{
 		Spawn:
-			SKLK C 10;
-			"####" C 10 LIGHT("BOACKEY");
-			Loop;
+			SKLK C -1 LIGHT("BoAGenericKey");
+			Stop;
 	}
 }
 
@@ -219,8 +216,7 @@ class Key_RE : CompassItem // C3M0_A
 	States
 	{
 		Spawn:
-			SKLK G 10;
-			"####" G 10 LIGHT("BOACKEY");
+			SKLK G -1 LIGHT("BoAGenericKey");
 			Loop;
 	}
 }
