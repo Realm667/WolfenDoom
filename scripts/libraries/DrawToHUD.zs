@@ -380,6 +380,12 @@ class DrawToHUD
 		int cellwidth = int(size.x);
 		int cellheight = int(size.y);
 
+		if (cellwidth % 2) { cellwidth++; }
+		if (cellheight % 2) { cellheight++; }
+
+		w = int(w);
+		h = int(h);
+
 		if (flags & TEX_MENU)
 		{
 			cellwidth = int(cellwidth * CleanXfac_1);
@@ -388,7 +394,7 @@ class DrawToHUD
 
 		if (fillalpha == -1) { fillalpha = alpha; }
 
-		DrawToHUD.Dim(fillclr, fillalpha, x + cellwidth / 2.0, y + cellheight / 2.0, w - cellwidth, h - cellheight, destsize, flags);
+		DrawToHUD.Dim(fillclr, fillalpha, x + cellwidth / 2, y + cellheight / 2, w - cellwidth, h - cellheight, destsize, flags);
 
 		int texflags =  TEX_CENTERED | (fullscreen ? 0 : TEX_FIXED) | (flags & TEX_MENU ? TEX_MENU : 0) | (flags & TEX_NOSCALE ? TEX_NOSCALE : 0);
 
