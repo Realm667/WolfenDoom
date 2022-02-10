@@ -665,7 +665,7 @@ class HintMessage : MessageBase
 
 			if (player.mo.FindInventory("CutsceneEnabled"))
 			{
-				pos.y -= texth / 2 - 8;
+				pos.y -= texth / 2;
 			}
 			else
 			{

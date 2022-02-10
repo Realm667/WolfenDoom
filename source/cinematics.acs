@@ -17,7 +17,7 @@ script "CinematicEnd" (void)
 
 	FadeToBlack(140, 70, 70);
 
-	Delay(2 * 35);
+	Delay(3 * 35);
 
 	ClearMessage();
 	Overlay("MOVIEHUD", false); // Disable the two commonly used overlays automatically
@@ -29,7 +29,7 @@ script "CinematicEnd" (void)
 
 	ACS_NamedExecute("CUTSCENE_STOP", 0); // Run map-specific cinematic end code
 
-	Delay(2 * 35);
+	Delay(3 * 35);
 	Autosave();
 }
 
