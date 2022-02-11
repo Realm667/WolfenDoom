@@ -3065,66 +3065,96 @@ class Nazi : Base
 
 		if (amountToDrop <= 0) { return; }
 
+		DropItemAmount(recipient, item, amountToDrop);
+	}
+
+	static void DropItemAmount(Actor recipient, Class<Actor> item, int amountToDrop)
+	{
 		int delta;
 
 		if (item is "CoinItem")
 		{ // CoinItem is invisible, so drop something that's visible instead
 			delta = DropDelta(recipient, "TreasureChest2", amountToDrop);
-			delta = DropDelta(recipient, "TreasureChest", amountToDrop);
-			delta = DropDelta(recipient, "GoldBar", amountToDrop);
+			delta = DropDelta(recipient, "TreasureChest", delta);
+			delta = DropDelta(recipient, "GoldBar", delta);
 			delta = DropDelta(recipient, "BagOfCoins", delta);
 			DropDelta(recipient, "SingleCoin", delta);
 		}
 		else if (item is "Ammo9mm")
 		{
 			delta = DropDelta(recipient, "AmmoBox9mm", amountToDrop);
-			DropDelta(recipient, "Ammo9mm", delta);
+			DropDelta(recipient, "Ammo9mm", delta, true);
 		}
 		else if (item is "Ammo12Gauge")
 		{
 			delta = DropDelta(recipient, "AmmoBox12Gauge", amountToDrop);
-			DropDelta(recipient, "Ammo12Gauge", delta);
+			DropDelta(recipient, "Ammo12Gauge", delta, true);
+		}
+		else if (item is "MauserAmmo")
+		{
+			delta = DropDelta(recipient, "MauserAmmoBox", amountToDrop);
+			DropDelta(recipient, "MauserAmmo", delta, true);
+		}
+		else if (item is "TeslaCell")
+		{
+			delta = DropDelta(recipient, "TeslaCellBox", amountToDrop);
+			DropDelta(recipient, "TeslaCell", delta, true);
 		}
 		else if (item is "NebAmmo")
 		{
 			delta = DropDelta(recipient, "NebAmmoBox", amountToDrop);
-			DropDelta(recipient, "NebAmmo", delta);
+			DropDelta(recipient, "NebAmmo", delta, true);
+		}
+		else if (item is "Health")
+		{
+			delta = DropDelta(recipient, "Medikit_Large", amountToDrop);
+			delta = DropDelta(recipient, "Medikit_Medium", delta);
+			delta = DropDelta(recipient, "Medikit_Small", delta);
+			delta = DropDelta(recipient, "Meal", delta);
+			DropDelta(recipient, "DogFood", delta, true);
 		}
 		else
 		{
-			amountToDrop /= GetDefaultByType(item).Amount;
+			amountToDrop /= item is "Inventory" ? Inventory(GetDefaultByType(item)).Amount : 1;
 			DropItems(recipient, item, amountToDrop);
 		}
 	}
 
 	// Drops the maximum number of the specified item to meet a target amount, and returns
 	// the amount of the base inventory class that still needs to be dropped
-	static int DropDelta(Actor target, Class<Inventory> item, int delta)
+	static int DropDelta(Actor target, Class<Inventory> item, int delta, bool force = false)
 	{
 		int amt = GetDefaultByType(item).Amount; // How many does this item give?
 		int dropamt = delta / amt; // How many of this item should be spawned?
 		delta %= amt; // What's left of the original requested amount after spawning these?
+
+  		// Ensure we always spawn at least one pickup so that we make sure the player can get to 100%
+		if (force) { dropamt = max(1, dropamt); }
 
 		DropItems(target, item, dropamt);
 
 		return delta;
 	}
 
-	static void DropItems(Actor target, Class<Inventory> item, int amt)
+	static Actor DropItems(Actor target, Class<Actor> item, int amt)
 	{
-		if (!amt) { return; }
+		if (!amt) { return null; }
+
+		Actor drop;
 
 		for (int i = 0; i < amt; i++)
 		{
 			double r = GetDefaultByType(item).radius + target.radius;
 			Vector3 spawnpos = target.pos + (FRandom(-r, r), FRandom(-r, r), 0);
-			Actor drop = Spawn(item, spawnpos, ALLOW_REPLACE);
+			drop = Spawn(item, spawnpos, ALLOW_REPLACE);
 			if (drop)
 			{
 				drop.Vel3DFromAngle(Random(1, 4), Random(0, 359), Random(-75, -90)); // Don't stack items on top of each other
 				drop.ClearCounters();
 			}
 		}
+
+		return drop;
 	}
 
 	override bool Used(Actor user)
