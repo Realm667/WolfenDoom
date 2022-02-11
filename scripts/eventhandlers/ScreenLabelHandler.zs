@@ -305,8 +305,8 @@ class ScreenLabelHandler : EventHandler
 			) { AddItem("ScreenLabelItem", e.thing, "ITEMMARK", StringTable.Localize("$CNTRLMNU_USE") .. "\n[[+use:1]]", 0x0, 1.0, LBL_Item); }
 			else if (
 				e.thing is "AlarmPanel" ||
-				(e.thing is "BarrelSpawner" && (BarrelSpawner(e.thing).user_spawntype || e.thing.special)) ||
-				(e.thing is "DestructionSpawner" && (DestructionSpawner(e.thing).user_spawntype || e.thing.special)) ||
+				(e.thing is "BarrelSpawner" && (BarrelSpawner(e.thing).user_spawntype || e.thing.special || e.thing.args[0])) ||
+				(e.thing is "DestructionSpawner" && (DestructionSpawner(e.thing).user_spawntype || e.thing.special || e.thing.args[0])) ||
 				(destroyable && e.thing.special && !e.thing.bIsMonster && !(e.Thing is "PlayerPawn"))
 			) { AddItem("ScreenLabelItem", e.thing, "ITEMMARK", StringTable.Localize("$CNTRLMNU_ATTACK") .. "\n[[+attack:1]]", 0x0, 1.0, LBL_Item); }
 			else if (
@@ -424,7 +424,7 @@ class ScreenLabelHandler : EventHandler
 				(
 					(ln.activation & SPAC_Use || ln.activation & SPAC_Push || ln.activation & SPAC_Impact) &&
 					( // Don't show activation hints for polyobject rotate lines or door activation lines that are actually on the door
-						(ln.special < 7) ||
+						(ln.special > 0 && ln.special < 7) ||
 						(ln.special > 8 && ln.special < 15 && ln.args[0]) ||
 						(ln.special > 14 && ln.special < 90) ||
 						(ln.special > 91 && ln.special < 105) ||
