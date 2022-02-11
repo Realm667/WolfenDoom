@@ -82,6 +82,7 @@ class BoAPlayer : PlayerPawn
 	bool dodragging; // Set true to enable dragging of corpses and pushable actors (crouch and use)
 	AchievementTracker tracker;
 	BoAFindHitPointTracer hittracer;
+	static const int flyspeed[] = { 1 * 256, 3 * 256 };
 
 	Default
 	{
@@ -800,6 +801,16 @@ class BoAPlayer : PlayerPawn
 			player.mo.CheckDegeneration();
 			player.mo.CheckAirSupply();
 		}
+	}
+
+	override void CheckCrouch(bool totallyfrozen)
+	{
+		let player = self.player;
+		UserCmd cmd = player.cmd;
+
+		if (cmd.buttons & BT_CROUCH) { cmd.upmove -= flyspeed[!!(cmd.buttons & BT_SPEED ^ cl_run)]; }
+
+		Super.CheckCrouch(totallyfrozen);
 	}
 
 	override void CheckJump()
