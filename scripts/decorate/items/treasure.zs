@@ -385,3 +385,32 @@ class ChestKey : CompassItem
 		Stop;
 	}
 }
+
+class Ribbon : CompassItem
+{
+	Default
+	{
+		//$Title Typerwiter Ribbon
+		//$Category Props (BoA)/Interactive Items
+		Radius 8;
+		Height 4;
+		Inventory.Icon "RIBBA0";
+		Inventory.MaxAmount 10;
+		Inventory.PickupSound "misc/i_pkup";
+		Inventory.PickupMessage "$PURIBBON";
+		+NOGRAVITY
+	}
+
+	States
+	{
+		Spawn:
+			MDLA A -1;
+			Stop;
+	}
+
+	override void PostBeginPlay()
+	{
+		Super.PostBeginPlay();
+		angle = Random(0, 359);
+	}
+}

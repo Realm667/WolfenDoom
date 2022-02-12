@@ -586,6 +586,28 @@ class ZScriptTools
 	}
 }
 
+// Separate class for this because it has to be a thinker, unfortunately.
+class LineTools : Thinker
+{
+	static void SetLineFlag(int lineid, int flag, bool set = true)
+	{
+		if (!lineid) { return; }
+
+		LineIdIterator lines = LineIdIterator.Create(lineid);
+
+		int l = lines.Next();
+
+		while (l > -1)
+		{
+			// See the Line struct for all of the flags as they are named internally (https://github.com/coelckers/gzdoom/blob/master/wadsrc/static/zscript/mapdata.zs)
+			if (set) { level.lines[l].flags |= flag; }
+			else { level.lines[l].flags &= ~flag; }
+			
+			l = lines.Next();
+		}
+	}
+}
+
 // Functions to identify the current IWAD and read info from the matching IWADINFO block
 // Uses the FileReader class and ParsedValue functions to parse IWADINFO data
 class WADInfo

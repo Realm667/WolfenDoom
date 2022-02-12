@@ -584,7 +584,7 @@ class BarrelSpawner : ExplosiveBarrel
 		{
 			if (user_spawntype && !dropped)
 			{
-				Nazi.DropItemAmount(self, user_spawntype, user_spawnamount);
+				Nazi.DropItemAmount(self, user_spawntype.GetClassName(), user_spawnamount);
 				dropped = true;
 			}
 			else

@@ -3065,12 +3065,14 @@ class Nazi : Base
 
 		if (amountToDrop <= 0) { return; }
 
-		DropItemAmount(recipient, item, amountToDrop);
+		DropItemAmount(recipient, itemname, amountToDrop);
 	}
 
-	static void DropItemAmount(Actor recipient, Class<Actor> item, int amountToDrop)
+	static void DropItemAmount(Actor recipient, String itemtype, int amountToDrop)
 	{
 		int delta;
+
+		Class<Actor> item = itemtype;
 
 		if (item is "CoinItem")
 		{ // CoinItem is invisible, so drop something that's visible instead
@@ -3113,10 +3115,14 @@ class Nazi : Base
 			delta = DropDelta(recipient, "Meal", delta);
 			DropDelta(recipient, "DogFood", delta, true);
 		}
-		else
+		else if (item)
 		{
 			amountToDrop /= item is "Inventory" ? Inventory(GetDefaultByType(item)).Amount : 1;
 			DropItems(recipient, item, amountToDrop);
+		}
+		else
+		{
+			// Item type/name does not exist
 		}
 	}
 
