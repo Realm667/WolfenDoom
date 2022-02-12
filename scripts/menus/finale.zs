@@ -129,23 +129,6 @@ class TextScroll : BoAMenu
 		return true;
 	}
 
-	override bool OnUIEvent(UIEvent ev)
-	{
-		// Intercept key presses to see if we're pressing the strafe controls or use, 
-		// and redirect those to call the correct left/right/open movement menu event code.
-
-		if (ev.Type == UIEvent.Type_KeyDown)
-		{
-			CheckControl(ev, "+moveleft", MKEY_Left);
-			CheckControl(ev, "+moveright", MKEY_Right);
-			CheckControl(ev, "+use", MKEY_Enter);
-			CheckControl(ev, "+forward", MKEY_Up);
-			CheckControl(ev, "+back", MKEY_Down);
-		}
-
-		return Super.OnUIEvent(ev);
-	}
-
 	static bool Ready()
 	{
 		Menu current = Menu.GetCurrentMenu();
@@ -475,23 +458,6 @@ class Finale : BoAMenu
 		}
 
 		return false;
-	}
-
-	override bool OnUIEvent(UIEvent ev)
-	{
-		// Intercept key presses to see if we're pressing the strafe controls or use, 
-		// and redirect those to call the correct left/right/open movement menu event code.
-
-		if (ev.Type == UIEvent.Type_KeyDown)
-		{
-			CheckControl(ev, "+moveleft", MKEY_Left);
-			CheckControl(ev, "+moveright", MKEY_Right);
-			CheckControl(ev, "+use", MKEY_Enter);
-			CheckControl(ev, "+forward", MKEY_Up);
-			CheckControl(ev, "+back", MKEY_Down);
-		}
-
-		return Super.OnUIEvent(ev);
 	}
 
 	LevelData GetTotals() // Pull the total stats from the map stats event handler

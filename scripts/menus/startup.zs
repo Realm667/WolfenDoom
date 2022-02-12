@@ -2,29 +2,6 @@ class NoticeMenu : BoAMenu
 {
 	bool finished;
 
-	override bool MouseEvent(int type, int x, int y)
-	{
-		if (type == MOUSE_Click)
-		{
-			return MenuEvent(MKEY_Enter, true);
-		}
-		return false;
-	}
-
-	override bool OnUIEvent(UIEvent ev)
-	{
-		if (ev.Type == UIEvent.Type_KeyDown)
-		{
-			CheckControl(ev, "+moveleft", MKEY_Left);
-			CheckControl(ev, "+moveright", MKEY_Right);
-			CheckControl(ev, "+use", MKEY_Enter);
-			CheckControl(ev, "+forward", MKEY_Up);
-			CheckControl(ev, "+back", MKEY_Down);
-		}
-
-		return Super.OnUIEvent(ev);
-	}
-
 	static bool Ready()
 	{
 		Menu current = Menu.GetCurrentMenu();

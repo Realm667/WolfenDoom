@@ -29,32 +29,111 @@ class BoAMenu : GenericMenu
 		Menu.SetMenu(mnu, param);
 	}
 
-	bool CheckControl(UIEvent ev, String control, int type)
+	static bool CheckControls(Menu thismenu, UIEvent ev)
 	{
-		int c1, c2;
-		[c1, c2] = Bindings.GetKeysForCommand(control);
+		return 
+		CheckControl(thismenu, ev, "+moveleft", MKEY_Left) ||
+		CheckControl(thismenu, ev, "+moveright", MKEY_Right) ||
+		CheckControl(thismenu, ev, "+left", MKEY_Left) ||
+		CheckControl(thismenu, ev, "+right", MKEY_Right) ||
+		CheckControl(thismenu, ev, "+use", MKEY_Enter) ||
+		CheckControl(thismenu, ev, "+forward", MKEY_Up) ||
+		CheckControl(thismenu, ev, "+back", MKEY_Down);
+	}
 
-		String keynames = Bindings.NameKeys(c1, c2);
+	static bool CheckControl(Menu thismenu, UIEvent ev, String control, int type)
+	{
+		if (ev.type < UIEvent.Type_FirstMouseEvent && !ev.keychar) { return false; }
+
+		Array<int> keycodes;
+		bool ret = true;
+
+		// Look up key binds for the passed-in command
+		Bindings.GetAllKeysForCommand(keycodes, control);
+
+		if (!keycodes.Size()) { return false; }
+
+		// Get the key names for each bound key, and parse them into a lookup array
+		String keynames = Bindings.NameAllKeys(keycodes);
 		keynames = ZScriptTools.StripColorCodes(keynames);
 
 		Array<String> keys;
 		keynames.Split(keys, ", ");
 
-		String keychar = String.Format("%c", ev.KeyChar);
+		String keychar = String.Format("%c", ev.keychar);
 		keychar = keychar.MakeUpper();
+
+		bool pressed = false;
 
 		for (int i = 0; i < keys.Size(); i++)
 		{
-			if (keys[i].Length() > 1) { continue; } // Skip named keys (Alt, Shift, Ctrl, etc.)
-
-			if (keys[i].ByteAt(0) == keychar.ByteAt(0))
+			if (keys[i].Length() > 1)
 			{
-				MenuEvent(type, false);
+				if (
+					(ev.type == UIEvent.Type_LButtonDown && keys[i] == "Mouse1") ||
+					(ev.type == UIEvent.Type_RButtonDown && keys[i] == "Mouse2") ||
+					(ev.type == UIEvent.Type_MButtonDown && keys[i] == "Mouse3") ||
+					(ev.type == UIEvent.Type_WheelUp && keys[i] == "MWheelUp") || 
+					(ev.type == UIEvent.Type_WheelDown && keys[i] == "MWheelDown") || 
+					(ev.type == UIEvent.Type_WheelLeft && keys[i] == "MWheelLeft") || 
+					(ev.type == UIEvent.Type_WheelRight && keys[i] == "MWheelRight") ||
+					(ev.keychar == UIEvent.Key_PgDn && keys[i] == "PgDn") ||
+					(ev.keychar == UIEvent.Key_PgUp && keys[i] == "PgUp") ||
+					(ev.keychar == UIEvent.Key_Home && keys[i] == "Home") ||
+					(ev.keychar == UIEvent.Key_End && keys[i] == "End") ||
+					(ev.keychar == UIEvent.Key_Left && keys[i] == "LeftArrow") ||
+					(ev.keychar == UIEvent.Key_Right && keys[i] == "RightArrow") ||
+					(ev.keychar == UIEvent.Key_Backspace && keys[i] == "Backspace") ||
+					(ev.keychar == UIEvent.Key_Tab && keys[i] == "Tab") ||
+					(ev.keychar == UIEvent.Key_Down && keys[i] == "DownArrow") ||
+					(ev.keychar == UIEvent.Key_Up && keys[i] == "UpArrow") ||
+					(ev.keychar == UIEvent.Key_Return && keys[i] == "Enter") ||
+					(ev.keychar == UIEvent.Key_F1 && keys[i] == "F1") ||
+					(ev.keychar == UIEvent.Key_F2 && keys[i] == "F2") ||
+					(ev.keychar == UIEvent.Key_F3 && keys[i] == "F3") ||
+					(ev.keychar == UIEvent.Key_F4 && keys[i] == "F4") ||
+					(ev.keychar == UIEvent.Key_F5 && keys[i] == "F5") ||
+					(ev.keychar == UIEvent.Key_F6 && keys[i] == "F6") ||
+					(ev.keychar == UIEvent.Key_F7 && keys[i] == "F7") ||
+					(ev.keychar == UIEvent.Key_F8 && keys[i] == "F8") ||
+					(ev.keychar == UIEvent.Key_F9 && keys[i] == "F9") ||
+					(ev.keychar == UIEvent.Key_F10 && keys[i] == "F10") ||
+					(ev.keychar == UIEvent.Key_F11 && keys[i] == "F11") ||
+					(ev.keychar == UIEvent.Key_F12 && keys[i] == "F12") ||
+					(ev.keychar == UIEvent.Key_Del && keys[i] == "Del") ||
+					(ev.keychar == UIEvent.Key_Escape && keys[i] == "Escape")
+				)
+				{ pressed = true; }
+			}
+			else if (keys[i].ByteAt(0) == keychar.ByteAt(0)) { pressed = true; }
+
+			if (pressed)
+			{
+				thismenu.MenuEvent(type, false);
 				return true;
 			}
 		}
 
 		return false;
+	}
+
+	override bool MouseEvent(int type, int x, int y)
+	{
+		if (type == MOUSE_Click)
+		{
+			return MenuEvent(MKEY_Enter, true);
+		}
+		return false;
+	}
+
+	override bool OnUIEvent(UIEvent ev)
+	{
+		// Intercept key presses to see if we're pressing the strafe controls or use, 
+		// and redirect those to call the correct left/right/open movement menu event code.
+		// This is a separate static function so that it can be called from other code.
+		BoAMenu.CheckControls(self, ev);
+
+		return Super.OnUIEvent(ev);
 	}
 }
 
@@ -366,23 +445,6 @@ class CombinationSafe : BoAMenu
 
 	override bool MouseEvent(int type, int x, int y)
 	{
-		return false;
-	}
-
-	override bool OnUIEvent(UIEvent ev)
-	{
-		// Intercept key presses to see if we're pressing the strafe controls or use, 
-		// and redirect those to call the correct left/right/open movement menu event code.
-
-		if (ev.Type == UIEvent.Type_KeyDown || ev.Type == UIEVent.Type_Char)
-		{
-			CheckControl(ev, "+moveleft", MKEY_Left);
-			CheckControl(ev, "+moveright", MKEY_Right);
-			CheckControl(ev, "+use", MKEY_Enter);
-			CheckControl(ev, "+forward", MKEY_Up);
-			CheckControl(ev, "+back", MKEY_Down);
-		}
-
 		return false;
 	}
 

@@ -439,16 +439,7 @@ class ClassicMessageBox : MessageBoxMenu
 
 		if (players[consoleplayer].cmd.buttons & cmds || showtics > 0) { return false; }
 
-		if (ev.Type == UIEvent.Type_KeyDown)
-		{
-			if (
-				CheckControl(ev, "+moveleft", MKEY_Left) ||
-				CheckControl(ev, "+moveright", MKEY_Right) ||
-				CheckControl(ev, "+use", MKEY_Enter) ||
-				CheckControl(ev, "+forward", MKEY_Up) ||
-				CheckControl(ev, "+back", MKEY_Down)
-			) { return false; }
-		}
+		if (BoAMenu.CheckControls(self, ev)) { return false; }
 
 		if (ev.type == UIEvent.Type_KeyDown)
 		{
@@ -518,34 +509,6 @@ class ClassicMessageBox : MessageBoxMenu
 		}
 
 		return true;
-	}
-
-	bool CheckControl(UIEvent ev, String control, int type)
-	{
-		int c1, c2;
-		[c1, c2] = Bindings.GetKeysForCommand(control);
-
-		String keynames = Bindings.NameKeys(c1, c2);
-		keynames = ZScriptTools.StripColorCodes(keynames);
-
-		Array<String> keys;
-		keynames.Split(keys, ", ");
-
-		String keychar = String.Format("%c", ev.KeyChar);
-		keychar = keychar.MakeUpper();
-
-		for (int i = 0; i < keys.Size(); i++)
-		{
-			if (keys[i].Length() > 1) { continue; } // Skip named keys (Alt, Shift, Ctrl, etc.)
-
-			if (keys[i].ByteAt(0) == keychar.ByteAt(0))
-			{
-				MenuEvent(type, false);
-				return true;
-			}
-		}
-
-		return false;
 	}
 
 	override void HandleResult(bool res)
