@@ -106,6 +106,35 @@ class DebugEventHandler : StaticEventHandler
 		Console.Printf("SpecialItemPickups: %s", SpecialItemPickups);
 	}
 
+	protected String GetArmorInfo() {
+		PlayerPawn p = players[consoleplayer].mo;
+		Inventory inv = p.Inv;
+		String info;
+		while (inv) {
+			if (inv is "Armor") {
+				Armor armor = Armor(inv);
+				info.AppendFormat("Armor: %s (Icon %s, %d, max %d)\n",
+					armor.GetClassName(),
+					TexMan.GetName(armor.Icon),
+					armor.Amount,
+					armor.MaxAmount);
+				if (armor is "BasicArmor") {
+					BasicArmor barmor = BasicArmor(armor);
+					info.AppendFormat("===== BasicArmor =====\n\tAbsorbCount %d\n\tSavePercent %.3f\n\tMaxAbsorb %d\n\tMaxFullAbsorb %d\n\tBonusCount %d\n\tArmorType %s\n\tActualSaveAmount %d\n",
+						barmor.AbsorbCount,
+						barmor.SavePercent,
+						barmor.MaxAbsorb,
+						barmor.MaxFullAbsorb,
+						barmor.BonusCount,
+						"" .. barmor.ArmorType,
+						barmor.ActualSaveAmount);
+				}
+			}
+			inv = inv.Inv;
+		}
+		return info;
+	}
+
 	override void NetworkProcess(ConsoleEvent e)
 	{
 		// netevent showliveenemies
@@ -132,6 +161,10 @@ class DebugEventHandler : StaticEventHandler
 		else if (e.name ~== "showstats")
 		{
 			ShowStatsText();
+		}
+		else if (e.name ~== "showarmor")
+		{
+			Console.Printf(GetArmorInfo());
 		}
 	}
 
