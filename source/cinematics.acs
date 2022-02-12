@@ -16,10 +16,10 @@ script "CinematicEnd" (void)
 	ACS_NamedTerminate("CinematicSkipCheck", 0);		
 
 	FadeToBlack(140, 70, 70);
+	ClearMessage();
 
 	Delay(3 * 35);
 
-	ClearMessage();
 	Overlay("MOVIEHUD", false); // Disable the two commonly used overlays automatically
 	Overlay("MOVIEHD5", false);
 	HideMap(false);
