@@ -305,6 +305,7 @@ class ScreenLabelHandler : EventHandler
 			) { AddItem("ScreenLabelItem", e.thing, "ITEMMARK", StringTable.Localize("$CNTRLMNU_USE") .. "\n[[+use:1]]", 0x0, 1.0, LBL_Item); }
 			else if (
 				e.thing is "AlarmPanel" ||
+				e.thing is "GoodieBarrel1" ||
 				(e.thing is "BarrelSpawner" && (BarrelSpawner(e.thing).user_spawntype || e.thing.special || e.thing.args[0])) ||
 				(e.thing is "DestructionSpawner" && (DestructionSpawner(e.thing).user_spawntype || e.thing.special || e.thing.args[0])) ||
 				(destroyable && e.thing.special && !e.thing.bIsMonster && !(e.Thing is "PlayerPawn"))
@@ -604,6 +605,7 @@ class ScreenLabelHandler : EventHandler
 			if (
 				(
 					ScreenLabelItems[i].type == LBL_Default ||
+					ScreenLabelItems[i].type == LBL_Glint ||
 					ScreenLabelItems[i].mo.bSpecial
 				) && 
 				ScreenLabelItems[i].mo.bDormant // Only turn labels off on dormant items that can normally be picked up.
@@ -616,6 +618,7 @@ class ScreenLabelHandler : EventHandler
 			double fovscale = p.fov / 90;
 
 			double top = mo.height;
+			double side = mo.radius;
 
 			// Get the sprite height and use that as top draw height if possible
 			TextureID spritetex = mo.SpawnState.GetSpriteTexture(0);
@@ -628,6 +631,7 @@ class ScreenLabelHandler : EventHandler
 					Vector2 offset = TexMan.GetScaledOffset(spritetex);
 
 					top = offset.y * mo.scale.y;
+					side = abs(offset.x * mo.scale.y);
 				}
 			}
 
@@ -635,10 +639,16 @@ class ScreenLabelHandler : EventHandler
 			if (ScreenLabelItems[i].type == LBL_Item) { offset.z += top + 4; }
 			else if (ScreenLabelItems[i].type == LBL_Glint)
 			{
-				offset.xy = Actor.RotateVector((top * sin(mo.pitch), 0), mo.angle) / 2;
-				offset.z += top * cos(mo.pitch) / 2;
+				offset.z += top / 2;
+				side = 0;
 			}
 			else { offset.z += top + 16; }
+
+			side = min(side, offset.z);
+
+			// Account for actor pitch
+			offset.xy = Actor.RotateVector((offset.z * sin(mo.pitch) / (side ? 2 : 1), 0), mo.angle);
+			offset.z = max(side, offset.z * cos(mo.pitch));
 
 			Vector3 worldpos = e.viewpos + level.Vec3Diff(e.viewpos, mo.pos + offset); // World position of object, offset from viewpoint
 			gl_proj.ProjectWorldPos(worldpos); // Translate that to the screen, using the viewpoint's info
@@ -811,6 +821,8 @@ class ScreenLabelHandler : EventHandler
 				case LBL_Glint:
 						if (dist > 512) { continue; }
 						else if (dist > 384) { alpha = 1.0 - (dist - 384) / 128; }
+
+						alpha *= 2.0;
 
 						if (ScreenLabelItems[i].icon && ScreenLabelItems[i].alpha)
 						{

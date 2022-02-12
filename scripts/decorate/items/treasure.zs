@@ -370,7 +370,7 @@ class ChestKey : CompassItem
 		//$Category Pickups (BoA)/Treasures
 		//$Title Treasure Chest Key
 		//$Color 17
-		Scale 0.5;
+		Scale 0.25;
 		Tag "$TAGCHEST";
 		Inventory.Icon "I_SPBKEY";
 		Inventory.PickupMessage "$CHESTKEY";
