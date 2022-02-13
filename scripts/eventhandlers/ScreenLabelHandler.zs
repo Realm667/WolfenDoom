@@ -32,9 +32,18 @@ class ScreenLabelItem : Thinker
 	color clr;
 	int type, fade[MAXPLAYERS];
 	bool draw[MAXPLAYERS];
+	int interval;
 	int animationinterval;
 
 	EffectsManager manager;
+
+	override void PostBeginPlay()
+	{
+		animationinterval = Random(1, 8);
+		interval = Random(1, 105);
+
+		Super.PostBeginPlay();
+	}
 
 	override void Tick()
 	{
@@ -59,7 +68,7 @@ class ScreenLabelItem : Thinker
 			else
 			{
 				if (!animationinterval) { animationinterval = Random(1, 8); } //  Wait between 1 and 8 seconds before glinting
-				int frame = (level.time % (35 * animationinterval)) / 3;
+				int frame = ((mo.GetAge() + interval) % (35 * animationinterval)) / 3;
 				switch (frame)
 				{
 					case 1:
@@ -165,7 +174,8 @@ class ScreenLabelHandler : EventHandler
 	{
 		if (items) { items.Clear(); }
 
-		for (int i = 0; i < ScreenLabelItems.Size(); i++)
+		// Return the list of items from last to first
+		for (int i = ScreenLabelItems.Size() - 1; i > -1; i--)
 		{
 			if (ScreenLabelItems[i] && ScreenLabelItems[i].mo == mo)
 			{
@@ -179,12 +189,22 @@ class ScreenLabelHandler : EventHandler
 		return ScreenLabelItems.Size();
 	}
 
-	uint FindLine(Line ln) // Helper function to find a thing in a child class since the mo is nested in an object
+	uint FindLine(Line ln, in out Array<uint> items = null)
 	{
-		for (int i = 0; i < ScreenLabelItems.Size(); i++)
+		if (items) { items.Clear(); }
+
+		// Return the list of items from last to first
+		for (int i = ScreenLabelItems.Size() - 1; i > -1; i--)
 		{
-			if (ScreenLabelItems[i] && ScreenLabelItems[i].ln == ln) { return i; }
+			if (ScreenLabelItems[i] && ScreenLabelItems[i].ln == ln)
+			{
+				if (!items) { return i; }
+				else { items.Push(i); }
+			}
 		}
+
+		if (items && items.Size()) { return items[0]; }
+
 		return ScreenLabelItems.Size();
 	}
 
@@ -250,7 +270,7 @@ class ScreenLabelHandler : EventHandler
 	}
 
 	// Static call for adding via ACS by actor TID
-	static void Add(int actorTID = 0, String text = "", String iconName = "", color clr = 0xFFFFFF, double alpha = 0.8, int type = LBL_Default)
+	static void Add(int actorTID = 0, String text = "", String iconName = "", color clr = 0xFFFFFF, double alpha = 0.8, int type = LBL_Default, bool update = false)
 	{
 		ScreenLabelHandler handler = ScreenLabelHandler(EventHandler.Find("ScreenLabelHandler"));
 		if (!handler) { return; } // If no handler was found (somehow), silently fail
@@ -262,7 +282,7 @@ class ScreenLabelHandler : EventHandler
 
 			while (mo = Actor(it.Next()))
 			{
-				handler.AddItem("ScreenLabelItem", mo, iconName, text, clr, alpha, type, false);
+				handler.AddItem("ScreenLabelItem", mo, iconName, text, clr, alpha, type, update);
 			}
 		} 
 	}
@@ -274,12 +294,17 @@ class ScreenLabelHandler : EventHandler
 		ScreenLabelHandler handler = ScreenLabelHandler(EventHandler.Find("ScreenLabelHandler"));
 		if (!handler) { return; }
 
-		int i = handler.FindItem(thing);
+		Array<uint> labels;
+		int i = handler.FindItem(thing, labels);
 
 		if (i < handler.ScreenLabelItems.Size())
 		{
-			handler.ScreenLabelItems[i].Destroy();
-			handler.ScreenLabelItems.Delete(i, 1);
+			for (int j = 0; j < labels.Size(); j++)
+			{
+				handler.ScreenLabelItems[labels[j]].Destroy();
+				handler.ScreenLabelItems.Delete(labels[j], 1);
+			}
+
 			handler.ScreenLabelItems.ShrinkToFit();
 		}
 	}
@@ -311,7 +336,7 @@ class ScreenLabelHandler : EventHandler
 				(destroyable && e.thing.special && !e.thing.bIsMonster && !(e.Thing is "PlayerPawn"))
 			) { AddItem("ScreenLabelItem", e.thing, "ITEMMARK", StringTable.Localize("$CNTRLMNU_ATTACK") .. "\n[[+attack:1]]", 0x0, 1.0, LBL_Item); }
 			else if (
-				e.thing.bPushable || // We really don't care about most of these...
+				e.thing.bPushable || // We really don't care about most of these, but there's not a good way to filter them out...
 				e.thing is "StatueBreakable"
 			) { AddItem("ScreenLabelItem", e.thing, "ITEMMARK", StringTable.Localize("$CNTRLMNU_FORWARD") .. "\n[[+forward:1]]", 0x0, 1.0, LBL_Item); }
 			else if (e.thing.bSpecial && !e.thing.bInvisible && e.thing.alpha > 0) { AddItem("ScreenLabelItem", e.thing, "ITEMMARK", "", 0x0, 1.0, LBL_Item); }
@@ -319,7 +344,7 @@ class ScreenLabelHandler : EventHandler
 
 		if (e.thing is "Key_RE") { AddItem("ScreenLabelItem", e.thing, "", "", 0x0, 1.0, LBL_Glint, false); }
 		else if (e.thing is "Gem") { AddItem("ScreenLabelItem", e.thing, "", "", 0xc7ecb9, 1.0, LBL_Glint, false); }
-		else if (e.thing is "StatueKey") { AddItem("ScreenLabelItem", e.thing, "", "", 0x194b4b, 1.0, LBL_Glint, false); }
+		else if (e.thing is "StatueKey") { AddItem("ScreenLabelItem", e.thing, "", "", 0x3eedc1, 1.0, LBL_Glint, false); }
 	}
 
 	override void WorldTick()
@@ -328,18 +353,20 @@ class ScreenLabelHandler : EventHandler
 		{
 			for (int p = 0; p < MAXPLAYERS; p++)
 			{
-				if (!playeringame[p]) { continue; }
+				if (!playeringame[p] || !ScreenLabelItems[i]) { continue; }
+
+				Vector3 pos = ScreenLabelItems[i].mo.pos;
+				if (ScreenLabelItems[i].ln) { pos.xy = (ScreenLabelItems[i].ln.v1.p + ScreenLabelItems[i].ln.v2.p) / 2; }
+				if (pos != ScreenLabelItems[i].mo.pos) { ScreenLabelItems[i].mo.SetXYZ(pos); }
 
 				ScreenLabelItems[i].draw[p] = !!(players[p].mo && ScreenLabelItems[i].mo && ScreenLabelItems[i].mo.CheckSight(players[p].mo, SF_IGNOREVISIBILITY && SF_IGNOREWATERBOUNDARY));
 				if (ScreenLabelItems[i].mo is "CoffeeMachine" && players[p].health >= 25) { ScreenLabelItems[i].draw[p] = false; }
 				if (ScreenLabelItems[i].type == LBL_Glint)
 				{
-					let smo = ScreenLabelItems[i].mo;
-
 					// Only do this for labels that need more strict line-of-sight checking
 					FLineTraceData LOF;
-					Vector3 spos = LevelLocals.SphericalCoords(smo.pos, players[p].mo.pos);
-					bool hit = smo.LineTrace(-spos.x, 512, -spos.y, 0, smo.height / 2, 16, 0, LOF);
+					Vector3 spos = LevelLocals.SphericalCoords(pos, players[p].mo.pos);
+					bool hit = ScreenLabelItems[i].mo.LineTrace(-spos.x, 512, -spos.y, 0, ScreenLabelItems[i].mo.height / 2, 16, 0, LOF);
 					if (hit && (!LOF.HitActor || LOF.HitActor != players[p].mo)) { ScreenLabelItems[i].draw[p] = false; }
 				}
 
@@ -621,8 +648,12 @@ class ScreenLabelHandler : EventHandler
 			) { continue; }
 
 			Actor mo = ScreenLabelItems[i].mo;
+			Line ln = ScreenLabelItems[i].ln;
 
-			double dist = Level.Vec3Diff(e.viewpos, mo.pos).Length();
+			Vector3 pos = mo.pos;
+			if (ln) { pos.xy = (ln.v1.p + ln.v2.p) / 2; }
+
+			double dist = Level.Vec3Diff(e.viewpos, pos).Length();
 			double alpha = ScreenLabelItems[i].alpha;
 			double fovscale = p.fov / 90;
 
@@ -659,7 +690,7 @@ class ScreenLabelHandler : EventHandler
 			offset.xy = Actor.RotateVector((offset.z * sin(mo.pitch) / (side ? 2 : 1), 0), mo.angle);
 			offset.z = max(side, offset.z * cos(mo.pitch));
 
-			Vector3 worldpos = e.viewpos + level.Vec3Diff(e.viewpos, mo.pos + offset); // World position of object, offset from viewpoint
+			Vector3 worldpos = e.viewpos + level.Vec3Diff(e.viewpos, pos + offset); // World position of object, offset from viewpoint
 			gl_proj.ProjectWorldPos(worldpos); // Translate that to the screen, using the viewpoint's info
 
 			if (!gl_proj.IsInScreen()) { continue; } // If the coordinates are off the screen, then skip drawing this item
