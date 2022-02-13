@@ -262,7 +262,7 @@ class ScreenLabelHandler : EventHandler
 
 			while (mo = Actor(it.Next()))
 			{
-				handler.AddItem("ScreenLabelItem", mo, iconName, text, clr, alpha, type);
+				handler.AddItem("ScreenLabelItem", mo, iconName, text, clr, alpha, type, false);
 			}
 		} 
 	}
@@ -311,18 +311,15 @@ class ScreenLabelHandler : EventHandler
 				(destroyable && e.thing.special && !e.thing.bIsMonster && !(e.Thing is "PlayerPawn"))
 			) { AddItem("ScreenLabelItem", e.thing, "ITEMMARK", StringTable.Localize("$CNTRLMNU_ATTACK") .. "\n[[+attack:1]]", 0x0, 1.0, LBL_Item); }
 			else if (
-				e.thing.bPushable ||
+				e.thing.bPushable || // We really don't care about most of these...
 				e.thing is "StatueBreakable"
 			) { AddItem("ScreenLabelItem", e.thing, "ITEMMARK", StringTable.Localize("$CNTRLMNU_FORWARD") .. "\n[[+forward:1]]", 0x0, 1.0, LBL_Item); }
 			else if (e.thing.bSpecial && !e.thing.bInvisible && e.thing.alpha > 0) { AddItem("ScreenLabelItem", e.thing, "ITEMMARK", "", 0x0, 1.0, LBL_Item); }
 		}
 
-		if (!e.thing.bNoInteraction)
-		{
-			if (e.thing is "Key_RE") { AddItem("ScreenLabelItem", e.thing, "", "", 0x0, 1.0, LBL_Glint, false); }
-			else if (e.thing is "Gem") { AddItem("ScreenLabelItem", e.thing, "", "", 0xc7ecb9, 1.0, LBL_Glint, false); }
-			else if (e.thing is "StatueKey") { AddItem("ScreenLabelItem", e.thing, "", "", 0x194b4b, 1.0, LBL_Glint, false); }
-		}
+		if (e.thing is "Key_RE") { AddItem("ScreenLabelItem", e.thing, "", "", 0x0, 1.0, LBL_Glint, false); }
+		else if (e.thing is "Gem") { AddItem("ScreenLabelItem", e.thing, "", "", 0xc7ecb9, 1.0, LBL_Glint, false); }
+		else if (e.thing is "StatueKey") { AddItem("ScreenLabelItem", e.thing, "", "", 0x194b4b, 1.0, LBL_Glint, false); }
 	}
 
 	override void WorldTick()
@@ -419,11 +416,13 @@ class ScreenLabelHandler : EventHandler
 		{
 			line ln = level.lines[l];
 
+			// Add to textures that are made generically interactive via ZScript
 			bool usable = CheckLineTexture(ln, "CABN_T02");
 
 			if (
 				(
-					(ln.activation & SPAC_Use || ln.activation & SPAC_Push || ln.activation & SPAC_Impact) &&
+					(!(ln.flags & Line.ML_DONTDRAW)) && // Don't add to hidden lines
+					(ln.activation & SPAC_Use || ln.activation & SPAC_Push || ln.activation & SPAC_Impact) && // Only add to player interaction lines
 					( // Don't show activation hints for polyobject rotate lines or door activation lines that are actually on the door
 						(ln.special > 0 && ln.special < 7) ||
 						(ln.special > 8 && ln.special < 15 && ln.args[0]) ||
@@ -433,9 +432,16 @@ class ScreenLabelHandler : EventHandler
 						(ln.special > 106)
 					)
 				) ||
-				usable
+				usable // ZScript-driven texture activation
 			)
 			{
+				// Skip adding to breakable mirrors and routinely usable (non plot-advancing) surfaces
+				if (
+					CheckLineTexture(ln, "MIRR_W01") || 
+					CheckLineTexture(ln, "MIRR_W02") ||
+					CheckLineTexture(ln, "BATH_DE2")
+				) { continue; }
+
 				ScreenLabel label;
 
 				// Collapse indicators for nearby lines with the same special and args
@@ -492,6 +498,7 @@ class ScreenLabelHandler : EventHandler
 
 					TextureID tex;
 					Vector2 texsize;
+
 					if (!ln.backsector || (floordiff == 0 && ceildiff == 0))
 					{
 						scale = frontside.GetTextureYScale(Side.mid);
@@ -555,6 +562,8 @@ class ScreenLabelHandler : EventHandler
 
 						z = max(z, ceilingz - ceildiff / 4);
 					}
+
+					if (usable) { z = min(z, floorz + 64); } // Default the position of the label to eye height for usable textures
 
 					label = ScreenLabel(Actor.Spawn("ScreenLabel", (pos, z)));
 					if (label)
