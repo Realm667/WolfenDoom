@@ -50,7 +50,10 @@ class AshSpawner : EffectSpawner
 
 		class<Actor> ashclass = ashclasses[Random(0, 3)];
 
-		A_SpawnItemEx(ashclass, Random(-Args[0],Args[0]), Random(-Args[0],Args[0]), Args[1], frandom(0.0, 0.2), 0, 0, random(0.0, 1.0), 128, Args[4]);
+		double zoffset = 0;
+		if (manager) { zoffset = min(manager.particlez - pos.z, 0); }
+
+		A_SpawnItemEx(ashclass, Random(-Args[0],Args[0]), Random(-Args[0],Args[0]), min(Args[1], zoffset), frandom(0.0, 0.2), 0, 0, random(0.0, 1.0), 128, Args[4]);
 	}
 }
 

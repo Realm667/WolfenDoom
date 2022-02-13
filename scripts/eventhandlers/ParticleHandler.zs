@@ -34,6 +34,7 @@ class ParticleManager : EventHandler
 	int tickdelay;
 	double particlescaling;
 	EffectsManager effectmanager;
+	int particlez;
 	
 	override void OnRegister()
 	{
@@ -178,5 +179,20 @@ class ParticleManager : EventHandler
 		}
 
 		return tickdelay;
+	}
+
+	override void WorldTick()
+	{
+		if (level.time % 35 == 0)
+		{
+			particlez = -0x7FFFFFFF;
+
+			for (int p = 0; p < MAXPLAYERS; p++)
+			{
+				if (!playeringame[p]) { continue; }
+
+				particlez = int(max(particlez, players[p].camera.pos.z + max(192, boa_maxparticleactors)));
+			}
+		}
 	}
 }

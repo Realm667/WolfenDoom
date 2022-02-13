@@ -69,7 +69,10 @@ class RainSpawner : EffectSpawner
 	{
 		Super.SpawnEffect();
 
-		A_SpawnItemEx(raindrop, Random(-Args[0], Args[0]), Random(-Args[0], Args[0]), -2, Args[4], 0, -(args[3] ? 20 : 40) + (Args[4] / 2), 0, SXF_TRANSFERPITCH | SXF_CLIENTSIDE, Args[1]);
+		double zoffset = 0;
+		if (manager) { zoffset = min(manager.particlez - pos.z, 0); }
+
+		A_SpawnItemEx(raindrop, Random(-Args[0], Args[0]), Random(-Args[0], Args[0]), -2 + zoffset, Args[4], 0, -(args[3] ? 20 : 40) + (Args[4] / 2), 0, SXF_TRANSFERPITCH | SXF_CLIENTSIDE, Args[1]);
 	}
 }
 
