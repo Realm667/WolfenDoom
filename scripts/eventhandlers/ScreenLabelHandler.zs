@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021 AFADoomer
+ * Copyright (c) 2021-2022 AFADoomer
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -451,7 +451,7 @@ class ScreenLabelHandler : EventHandler
 					(!(ln.flags & Line.ML_DONTDRAW)) && // Don't add to hidden lines
 					(ln.activation & SPAC_Use || ln.activation & SPAC_Push || ln.activation & SPAC_Impact) && // Only add to player interaction lines
 					( // Don't show activation hints for polyobject rotate lines or door activation lines that are actually on the door
-						(ln.special > 0 && ln.special < 7) ||
+						(ln.special > 3 && ln.special < 7) ||
 						(ln.special > 8 && ln.special < 15 && ln.args[0]) ||
 						(ln.special > 14 && ln.special < 90) ||
 						(ln.special > 91 && ln.special < 105) ||
@@ -818,7 +818,7 @@ class ScreenLabelHandler : EventHandler
 						String temp; BrokenString lines;
 						[temp, lines] = BrokenString.BreakString(text, int(48 * fnt.StringWidth(" ")), fnt:fnt);
 
-						double textscale = 1.0 * vid_scalefactor / (fovscale * dist / 256);
+						double textscale = 1.5 * vid_scalefactor / (fovscale * dist / 256);
 						double imagescale = 0.5 * textscale;
 						double lineheight = int(fnt.GetHeight() * textscale);
 						double buttonheight = int(Button.GetHeight(null, textscale));
