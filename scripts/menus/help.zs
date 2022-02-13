@@ -109,7 +109,8 @@ class BoAInfo : BoAMenu
 	{
 		if (mkey == MKEY_Back)
 		{
-			Close();	
+			Close();
+			MenuSound("menu/backup");
 			return true;
 		}
 		else if (mkey == MKEY_Right || mkey == MKEY_Down || mkey == MKEY_Enter)
