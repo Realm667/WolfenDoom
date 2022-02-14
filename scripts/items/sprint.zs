@@ -30,6 +30,7 @@ class BoASprinting : Inventory
 	int exhaustionthreshold;
 	String gaspsound;
 	int flags;
+	Inventory stamina;
 
 	Property ExhaustionStamina:exhaustionthreshold;
 	Property GaspSound:gaspsound;
@@ -46,26 +47,37 @@ class BoASprinting : Inventory
 		+BoASprinting.RequireForward
 	}
 
-	override void Tick()
+	override void DoEffect()
 	{
-		Super.Tick();
-
 		if (!PlayerPawn(owner)) { Destroy(); return; }
 		if (owner && owner.health <= 0) { return; }
 
+		// Set to full stamina on spawn or multiplayer respawn
+		if (!stamina || owner.spawntime == level.maptime) { FullStamina(); }
+
 		DoSprintCheck();
 		DoExhaustionCheck();
+	}
+
+	void FullStamina()
+	{
+		stamina = owner.FindInventory("Stamina");
+		if (!stamina) { stamina = owner.GiveInventoryType("Stamina"); }
+
+		cooldown = 0;
+		staminarecoverytimeout = 0;
+		staminasoundtimeout = 0;
+		stamina.amount = stamina.maxamount;	
 	}
 
 	virtual void DoSprintCheck()
 	{
 		if (BoAPlayer(owner) && BoAPlayer(owner).DragTarget) { return; }
 
+		if (!stamina) { return; }
+
 		UserCmd cmd = owner.player.cmd;
 		double speed = 1.0;
-
-		let stamina = owner.FindInventory("Stamina");
-		if (!stamina) { stamina = owner.GiveInventoryType("Stamina"); }
 
 		// Reset both walking and running speed to default walking speed
 		PlayerPawn(owner).forwardmove1 = PlayerPawn(owner).Default.forwardmove1;
@@ -79,10 +91,7 @@ class BoASprinting : Inventory
 		{
 			PlayerPawn(owner).forwardmove1 = PlayerPawn(owner).forwardmove2 = 2.5;
 			PlayerPawn(owner).sidemove1 = PlayerPawn(owner).sidemove2 = 2.5;
-			cooldown = 0;
-			staminarecoverytimeout = 0;
-
-			stamina.amount = stamina.maxamount;
+			FullStamina();
 		}
 
 		bool run = cmd.buttons & BT_SPEED & ~cl_run;
@@ -140,8 +149,6 @@ class BoASprinting : Inventory
 	{
 		if (owner.waterlevel > 2 || gamestate != GS_LEVEL) { return; }
 
-		let stamina = owner.FindInventory("Stamina");
-
 		if (stamina && stamina.amount < exhaustionthreshold && staminasoundtimeout < level.time)
 		{
 			owner.A_StartSound(gaspsound, CHAN_VOICE, CHANF_DEFAULT, 1.0);
@@ -152,13 +159,7 @@ class BoASprinting : Inventory
 	override void Travelled()
 	{
 		// Called after level transition
-		staminarecoverytimeout = 0;
-		cooldown = 0;
-		staminasoundtimeout = 0;
-		Inventory stamina = owner.FindInventory("Stamina");
-		if (stamina) {
-			stamina.Amount = stamina.MaxAmount;
-		}
+		FullStamina();
 	}
 }
 

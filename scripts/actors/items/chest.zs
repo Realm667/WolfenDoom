@@ -24,7 +24,8 @@ class BoASupplyChest : Actor
 {
 	bool open;
 	Class<Actor> spawnclass;
-	Class<Inventory> keyclass;
+	String keyclass;
+	String user_keyclass;
 	sound failsound, opensound;
 
 	Property Key:keyclass;
@@ -72,6 +73,8 @@ class BoASupplyChest : Actor
 	{
 		BoACompass.Add(self, "CHESTICO");
 
+		if (user_keyclass != "") { keyclass = user_keyclass; }
+
 		if (args[0] < 0) // If a string value was passed in, use that as the spawn class
 		{
 			spawnclass = GetSpawnableType(args[0]);
@@ -109,6 +112,17 @@ class BoASupplyChest : Actor
 		// Take the key and play the opening sound
 		A_StartSound(opensound, CHAN_AUTO, 0, 1.0); 
 		if (keyclass) { user.TakeInventory(keyclass, 1); }
+
+		if (keyclass != "ChestKey")
+		{
+			Actor key = Spawn(keyclass, pos + (RotateVector((14, 0), angle), 10));
+			if (key)
+			{
+				key.angle = angle;
+				key.bNoInteraction = true;
+				key.bDormant = true;
+			}
+		}
 
 		// Tell the chest to open
 		open = true;
@@ -247,4 +261,13 @@ class BoASupplyChest : Actor
 class BoASupplyChest_DSA1 : BoASupplyChest 
 {
 	//$Title Treasure Chest (DSA, easteregge)
+}
+
+class BoASupplyChest_RE : BoASupplyChest
+{
+	//$Title Treasure Chest (Green Gem Key)
+	Default
+	{
+		BoASupplyChest.Key "Gem";
+	}
 }

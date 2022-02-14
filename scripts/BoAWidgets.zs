@@ -44,7 +44,7 @@ class Widget ui
 	int flags, anchor, priority, zindex;
 	int margin[4]; // top, right, bottom, left
 	bool visible;
-	double alpha;
+	double alpha, fade;
 	private int screenblocksval;
 
 	Font BigFont, HUDFont;
@@ -88,6 +88,8 @@ class Widget ui
 		w.setpos = (7, 7);
 		w.zindex = zindex;
 
+		w.fade = -1;
+
 		return w;
 	}
 
@@ -124,7 +126,7 @@ class Widget ui
 		for (int a = 0; a < BoAStatusBar(StatusBar).widgets.Size(); a++)
 		{
 			let w = BoAStatusBar(StatusBar).widgets[a];
-			if (w && w.anchor == anchor && w.priority == priority && w.visible) { return w; }
+			if (w && w.anchor == anchor && w.priority == priority && (w.visible || w.alpha > 0.0 || w.fade > -1)) { return w; }
 		}
 
 		return null;
@@ -140,7 +142,7 @@ class Widget ui
 		for (int a = start; a >= 0; a--)
 		{
 			let w = BoAStatusBar(StatusBar).widgets[a];
-			if (w && w != s && w.visible && w.anchor == anchor)
+			if (w && w != s && (w.visible || w.alpha > 0.0 || w.fade > -1) && w.anchor == anchor)
 			{
 				if (peer)
 				{
@@ -230,7 +232,7 @@ class Widget ui
 		else { pos.x = relpos.x; }
 	}
 
-	virtual bool SetVisibility()
+	virtual bool IsVisible()
 	{
 		if (
 				BoAStatusBar(StatusBar) && 
@@ -245,8 +247,7 @@ class Widget ui
 
 	virtual void DoTick(int index = 0)
 	{
-		visible = SetVisibility();
-		if (!visible) { alpha = 0.0; }
+		visible = IsVisible();
 
 		SetMargins();
 		CalcRelPos(pos, index, !size.length());
@@ -254,7 +255,8 @@ class Widget ui
 		Vector2 hudscale = StatusBar.GetHudScale();
 
 		if (anchor & WDG_BOTTOM) { pos.y = -(pos.y + offset.y + size.y); }
-		else if (anchor & WDG_MIDDLE) { pos.y += Screen.GetHeight() / hudscale.y / 2; }
+		else if (anchor & WDG_MIDDLE) { pos.y += Screen.GetHeight() / hudscale.y / 2 + offset.y; }
+		else { pos.y += offset.y; }
 
 		if (anchor & WDG_RIGHT) { pos.x = -(pos.x + offset.x + size.x); }
 		else if (anchor & WDG_CENTER)
@@ -262,8 +264,9 @@ class Widget ui
 			int widthoffset = 0;
 			if (BoAStatusbar(StatusBar)) { widthoffset = BoAStatusbar(StatusBar).widthoffset; }
 
-			pos.x += (Screen.GetWidth() / hudscale.x) / 2 - widthoffset;
+			pos.x += (Screen.GetWidth() / hudscale.x) / 2 - widthoffset + offset.x;
 		}
+		else { pos.x += offset.x; }
 
 		ticker++;
 	}
@@ -286,14 +289,29 @@ class Widget ui
 
 	virtual Vector2 Draw()
 	{
-		visible = SetVisibility();
+		double low = clamp(fade, 0.0, 1.0);
+		if (!IsVisible()) { low = 0.0; }
 
-		if (
-			!visible ||
-			(screenblocksval > screenblocks && screenblocks > 9) ||
-			(screenblocksval < screenblocks && screenblocks > 10)
-		) { alpha = 0.0; }
-		if (alpha < 1.0) { alpha = min(1.0, alpha + 1.0 / 18); }
+		if (visible)
+		{
+			if (alpha < 1.0) { alpha = min(1.0, alpha + 1.0 / 18); }
+			alpha = clamp(alpha, low, 1.0);
+		}
+		else
+		{
+			if (
+				(screenblocksval > screenblocks && screenblocks > 9) ||
+				(screenblocksval < screenblocks && screenblocks > 10)
+			)
+			{
+				alpha = 0.0;
+			}
+			else
+			{
+				if (alpha > low) { alpha = max(low, alpha - 1.0 / 18); }
+				alpha = clamp(alpha, low, 1.0);
+			}
+		}
 
 		if (flags & WDG_DRAWFRAME)
 		{
@@ -339,7 +357,7 @@ class Widget ui
 			for (int w = 0; w < BoAStatusBar(Statusbar).widgets.Size(); w++)
 			{
 				let wdg = BoAStatusBar(Statusbar).widgets[w];
-				if (wdg && wdg.visible && wdg.zindex == zindex) { wdg.Draw(); }
+				if (wdg && (wdg.visible || wdg.alpha > 0.0 || wdg.fade > -1) && wdg.zindex == zindex) { wdg.Draw(); }
 			}
 
 			zindex++;
@@ -434,7 +452,7 @@ class HealthWidget : Widget
 		let armor = player.mo.FindInventory("BasicArmor");
 		if (armor != null && armor.Amount > 0)
 		{
-			DrawToHud.DrawTexture(armor.icon, (pos.x + 44, pos.y + 25), alpha, destsize:(12, 12));
+			DrawToHud.DrawTexture(armor.icon, (pos.x + 44, pos.y + 25), alpha, desttexsize:(12, 12));
 			DrawToHud.DrawText(String.Format("%3i", StatusBar.GetArmorAmount()), (pos.x + 87, pos.y + 19), BigFont, alpha, shade:Font.CR_GRAY, flags:ZScriptTools.STR_TOP | ZScriptTools.STR_RIGHT);
 			DrawToHud.DrawText("%", (pos.x + 100, pos.y + 19), BigFont, alpha, shade:Font.CR_GRAY, flags:ZScriptTools.STR_TOP | ZScriptTools.STR_RIGHT);
 		}
@@ -463,6 +481,8 @@ class HealthWidget : Widget
 class CountWidget : Widget
 {
 	TextureID bagtex;
+	transient CVar showpartimesvar;
+	int showpartimes;
 
 	static void Init(String widgetname, int anchor = 0, int priority = 0, Vector2 pos = (0, 0), int zindex = 0)
 	{
@@ -474,7 +494,7 @@ class CountWidget : Widget
 		}
 	}
 
-	override bool SetVisibility()
+	override bool IsVisible()
 	{
 		if (
 				BoAStatusBar(StatusBar) && 
@@ -487,19 +507,32 @@ class CountWidget : Widget
 		return false;
 	}
 
+	override void DoTick()
+	{
+		Super.DoTick();
+
+		if (!showpartimesvar) { showpartimesvar = CVar.FindCVar("boa_hudshowpartime"); }
+
+		if (showpartimesvar && level.partime > 0) { showpartimes = showpartimesvar.GetInt(); }
+		else { showpartimes = 0; }
+	}
+
 	override Vector2 Draw()
 	{
 		int timey = 13;
+		int rowheight = HUDFont.GetHeight() + 3;
 
 		if (player.mo is "TankPlayer")
 		{
-			size = (64, HUDFont.GetHeight() + 3);
+			size = (64, rowheight);
+			if (showpartimes == 1) { size.y += rowheight; }
 			timey = 0;
 			Super.Draw();
 		}
 		else
 		{
 			size = (64, 21);
+			if (showpartimes == 1) { size.y += rowheight; }
 			Super.Draw();
 
 			//Money
@@ -512,17 +545,72 @@ class CountWidget : Widget
 		}
 
 		//Time
-		String time = level.TimeFormatted();
+		String time = CountWidget.TimeFormatted(level.totaltime);
 
 		if (BoAStatusBar(StatusBar).hour || BoAStatusBar(StatusBar).minute || BoAStatusBar(StatusBar).second)
 		{
 			time = String.Format("%02i", BoAStatusBar(StatusBar).hour) .. ":" .. String.Format("%02i", BoAStatusBar(StatusBar).minute) .. ":" .. String.Format("%02i", BoAStatusBar(StatusBar).second);
 		}
 
-		DrawToHud.Dim(0x0, 0.2 * alpha, int(pos.x - (margin[3] - 3)), int(pos.y + timey), int(size.x + (margin[3] + margin[1]) - 6), HUDFont.GetHeight() + 3);
+		if (showpartimes)
+		{ 
+			DrawToHud.Dim(0x0, 0.2 * alpha, int(pos.x - (margin[3] - 3)), int(pos.y + timey), int(size.x + (margin[3] + margin[1]) - 6), rowheight);
+
+			int segments;
+			String partime;
+			[partime, segments] = CountWidget.TimeFormatted(level.partime, true, 3); // Format both times to the same segment width
+
+			StatusBar.DrawString(BoAStatusBar(StatusBar).mHUDFont, CountWidget.TimeFormatted(level.maptime, false, segments), (pos.x + size.x / 2 - 2, pos.y + timey + 1), StatusBar.DI_TEXT_ALIGN_RIGHT, alpha:alpha);
+			StatusBar.DrawString(BoAStatusBar(StatusBar).mHUDFont, String.Format("\c[Dark Gray]%s", "/"), (pos.x + size.x / 2, pos.y + timey + 1), StatusBar.DI_TEXT_ALIGN_CENTER, alpha:alpha);
+			StatusBar.DrawString(BoAStatusBar(StatusBar).mHUDFont, partime, (pos.x + size.x / 2 + 2, pos.y + timey + 1), 0, alpha:alpha);
+
+			if (showpartimes == 2) { return size; }
+
+			timey += rowheight;
+		}
+
+		DrawToHud.Dim(0x0, 0.2 * alpha, int(pos.x - (margin[3] - 3)), int(pos.y + timey), int(size.x + (margin[3] + margin[1]) - 6), rowheight);
 		StatusBar.DrawString(BoAStatusBar(StatusBar).mHUDFont, time, (pos.x + 17, pos.y + timey + 1), alpha:alpha);
 
 		return size;
+	}
+
+	static String, int TimeFormatted(int input, bool secs = false, int minsegments = -1)
+	{
+		int segments;
+		int sec = input;
+		if (!secs) { sec = Thinker.Tics2Seconds(input); }
+
+		String output = "";
+
+		// Shorten the return value to the desired minimum length
+		// by passing in the corresponding minsegments value:
+		//   0 = just seconds (1, 2, 3)
+		//   1 = full block of seconds (01, 02, 03)
+		//   2 = just minutes (0:01, 0:02, 0:03)
+		//   3 = full block of minutes (00:01, 00:02, 00:03)
+		//   4 = allow just hours (0:00:01, 0:00:02, 0:00:03)
+		if (minsegments > -1 && minsegments < 5)
+		{
+			int h = sec / 3600;
+			if (h > 9) { output.AppendFormat("%02d:", h); segments += 2; }
+			else if (h > 0 || minsegments > 3) { output = String.Format("%i:", h);  segments++; }
+
+			int m = (sec % 3600) / 60;
+			if (output.length() || m > 9 || minsegments > 2) { output.AppendFormat("%02d:", m); segments += 2; }
+			else if (m > 0 || minsegments > 1) { output = String.Format("%i:", m);  segments++; }
+
+			int s = sec % 60;
+			if (output.length() || minsegments > 0) { output.AppendFormat("%02d", s); segments++; }
+			else { output = String.Format("%i", s); }
+		}
+		else // Otherwise, use the standard full-width return (00:00:01, 00:00:02, 00:00:03)
+		{
+			output = String.Format("%02d:%02d:%02d", sec / 3600, (sec % 3600) / 60, sec % 60);
+			segments = 5;
+		}
+
+		return output, segments;
 	}
 }
 
@@ -569,6 +657,11 @@ class KeyWidget : Widget
 
 		return size;
 	}
+
+	override bool IsVisible()
+	{
+		return !player.mo.FindInventory("HQ_Checker") && Super.IsVisible();
+	}
 }
 
 class CurrentAmmoWidget : Widget
@@ -602,14 +695,14 @@ class CurrentAmmoWidget : Widget
 		if (ammo1)
 		{
 			texscale = ZScriptTools.ScaleTextureTo(ammo1.icon, iconsize);
-			DrawToHud.DrawTexture(ammo1.icon, (pos.x + 40, pos.y + 18), alpha, destsize:texscale * iconsize, flags:DrawToHUD.TEX_DEFAULT);
+			DrawToHud.DrawTexture(ammo1.icon, (pos.x + 40, pos.y + 18), alpha, desttexsize:texscale * iconsize, flags:DrawToHUD.TEX_DEFAULT);
 			DrawToHud.DrawText(String.Format("%3i", ammocount1), (pos.x + 91, pos.y + 19), BigFont, alpha, shade:Font.CR_GRAY, flags:ZScriptTools.STR_TOP | ZScriptTools.STR_RIGHT);
 		}
 
 		if (ammo2 && ammo2 != ammo1)
 		{
 			texscale = ZScriptTools.ScaleTextureTo(ammo2.icon, iconsize);
-			DrawToHud.DrawTexture(ammo2.icon, (pos.x + 40, pos.y + 2), alpha, destsize:texscale * iconsize, flags:DrawToHUD.TEX_DEFAULT);
+			DrawToHud.DrawTexture(ammo2.icon, (pos.x + 40, pos.y + 2), alpha, desttexsize:texscale * iconsize, flags:DrawToHUD.TEX_DEFAULT);
 			DrawToHud.DrawText(String.Format("%3i", ammocount2), (pos.x + 91, pos.y + 3), BigFont, alpha, shade:Font.CR_GRAY, flags:ZScriptTools.STR_TOP | ZScriptTools.STR_RIGHT);
 		}
 
@@ -624,6 +717,11 @@ class CurrentAmmoWidget : Widget
 		}
 
 		return size;
+	}
+
+	override bool IsVisible()
+	{
+		return !player.mo.FindInventory("HQ_Checker") && Super.IsVisible();
 	}
 }
 
@@ -644,16 +742,33 @@ class WeaponWidget : Widget
 
 		return size;
 	}
+
+	override bool IsVisible()
+	{
+		return !player.mo.FindInventory("HQ_Checker") && Super.IsVisible();
+	}
 }
 
 class InventoryWidget : Widget
 {
-	static void Init(String widgetname, int anchor = 0, int priority = 0, Vector2 pos = (0, 0), int zindex = 0)
+	Array<Inventory> items;
+	Inventory lastselection;
+	int movetick, selectortick;
+	int movedir;
+	int movespeed;
+	int numitems;
+
+	static void Init(String widgetname, int anchor = 0, int priority = 0, Vector2 pos = (0, 0), int zindex = 0, int numitems = 3)
 	{
 		InventoryWidget wdg = InventoryWidget(Widget.Init("InventoryWidget", widgetname, anchor, 0, priority, pos, zindex));
+		if (wdg)
+		{
+			wdg.movespeed = 5;
+			wdg.numitems = 2 + int(numitems / 2) * 2 + 1; // Always an odd number so that selected item is in center
+		}
 	}
 
-	override bool SetVisibility()
+	override bool IsVisible()
 	{
 		if (
 				BoAStatusBar(StatusBar) && 
@@ -670,13 +785,165 @@ class InventoryWidget : Widget
 	{
 		if (level.NoInventoryBar) { return (0, 0); }
 
-		size = (33, 33);
+		int iconsize = 32;
+		int spacing = 24;
+		double smallscale = 0.65;
+		double smallalpha = 0.4;
+
+		size = (max(33, spacing * (numitems - 3) + iconsize * smallscale + 1), 33);
 
 		Super.Draw();
 
-		if (player.mo.InvSel) { BoAStatusBar(StatusBar).DrawIcon(player.mo.InvSel, int(pos.x + 16), int(pos.y + 16), 32, alpha:alpha); }
+		if (player.mo.InvSel)
+		{
+			double mod = movetick / 35.0;
+			double dirmod = 0;
+
+			double leftoffset = iconsize * smallscale / 2;
+			double midoffset = leftoffset + spacing;
+			double rightoffset = midoffset + spacing * (numitems - 4);
+
+			double leftscale = smallscale;
+			double rightscale = smallscale;
+
+			switch(movedir)
+			{
+				case -1:
+					if (items[numitems - 1]) { BoAStatusBar(StatusBar).DrawIcon(items[numitems - 1], int(pos.x + rightoffset), int(pos.y + iconsize / 2), int(iconsize * smallscale * (1.0 - mod)), StatusBar.DI_ITEM_CENTER, alpha * smallalpha * (1.0 - mod), false); }
+
+					rightoffset += -spacing + spacing * mod;
+					midoffset += -spacing + spacing * mod;
+					leftscale = smallscale * mod;
+					rightscale = smallscale + smallscale * (1.0 - mod);
+					dirmod = 1.0 - mod;
+				break;
+				case 1:
+					if (items[0]) { BoAStatusBar(StatusBar).DrawIcon(items[0], int(pos.x + leftoffset), int(pos.y + iconsize / 2), int(iconsize * smallscale * (1.0 - mod)), StatusBar.DI_ITEM_CENTER, alpha * smallalpha * (1.0 - mod), false); }
+
+					leftoffset += spacing - spacing * mod;
+					midoffset += spacing - spacing * mod;
+					leftscale = smallscale + smallscale * (1.0 - mod);
+					rightscale = smallscale * mod;
+				break;
+			}
+
+			double midscale = smallscale + (1.0 - smallscale) * (1.0 - dirmod);
+
+			// Left
+			if (items[1]) { BoAStatusBar(StatusBar).DrawIcon(items[1], int(pos.x + leftoffset), int(pos.y + iconsize / 2), int(iconsize * leftscale), StatusBar.DI_ITEM_CENTER, alpha * (smallalpha + (1.0 - smallalpha) * dirmod), false); }
+
+			// Right
+			if (items[numitems - 2]) { BoAStatusBar(StatusBar).DrawIcon(items[numitems - 2], int(pos.x + rightoffset), int(pos.y + iconsize / 2), int(iconsize * rightscale), StatusBar.DI_ITEM_CENTER, alpha * (smallalpha + (1.0 - smallalpha) * dirmod), false); }
+
+			for (int i = 2; i < numitems - 2; i++)
+			{
+				if (items[i])
+				{
+					double posx = pos.x + midoffset + spacing * (i - 2);
+					double boxalpha = 0.25 + sin(180.0 * selectortick / 70) * 0.75;
+
+					if (items[i] == player.mo.InvSel)
+					{
+						TextureID box = TexMan.CheckForTexture("INVBKG");
+						if (box.IsValid() && selectortick)
+						{
+							StatusBar.DrawTexture(box, (int(posx), int(pos.y + iconsize / 2)), StatusBar.DI_ITEM_CENTER, alpha * boxalpha, (-1, -1), (0.5, 0.5) * midscale);
+						}
+
+						BoAStatusBar(StatusBar).DrawIcon(items[i], int(posx + 1), int(pos.y + iconsize / 2 + 2), int(iconsize * midscale * 1.0), StatusBar.DI_ITEM_CENTER, alpha * (smallalpha + (1.0 - smallalpha) * mod), false, STYLE_Shadow);
+					}
+
+					BoAStatusBar(StatusBar).DrawIcon(items[i], int(posx), int(pos.y + iconsize / 2), int(iconsize * midscale), StatusBar.DI_ITEM_CENTER, alpha * (smallalpha + (1.0 - smallalpha) * mod), items[i] == player.mo.InvSel);
+
+					if (items[i] == player.mo.InvSel && selectortick)
+					{
+						BoAStatusBar(StatusBar).DrawIcon(items[i], int(posx), int(pos.y + iconsize / 2), int(iconsize * midscale * 1.0), StatusBar.DI_ITEM_CENTER, alpha * boxalpha * 0.5, false, STYLE_Add);
+					}
+				}
+			}
+		}
 
 		return size;
+	}
+
+	override void DoTick(int index)
+	{
+		int invindex = PopulateList(items, numitems);
+
+		if (player.mo.InvSel && player.mo.InvSel != lastselection)
+		{
+			if (lastselection)
+			{
+				if (lastselection == items[invindex - 1]) { movedir = 1; }
+				else if (lastselection == items[invindex + 1]) { movedir = -1; }
+			}
+
+			lastselection = player.mo.InvSel;
+			movetick = 0;
+			selectortick = 70;
+		}
+		else { movetick = min(35, movetick + movespeed); }
+
+		if (movetick == 35) { movedir = 0; }
+
+		selectortick = max(0, selectortick - 2);
+
+		Super.DoTick(index);
+	}
+
+	int PopulateList(in out Array<Inventory> items, int count)
+	{
+		items.Clear();
+		items.Resize(count);
+
+		int start = count / 2;
+		items[start] = player.mo.InvSel;
+
+		int index;
+		for (index = 0; index <= start; index++)
+		{
+			let prev = GetPrev(items[start + index]);
+			if (!prev) { continue; }
+			else if (items.Find(prev) == items.Size()) { items[start + index - 1] = prev; }
+
+			let next = GetNext(items[start - index]);
+			if (!next) { continue; }
+			else if (items.Find(next) == items.Size()) { items[start + index + 1] = next; }
+		}
+
+		return start;
+	}
+
+	Inventory GetNext(Inventory current)
+	{
+		if (!current) { return null; }
+
+		Inventory next = current.NextInv();
+		if (!next)
+		{
+			next = player.mo.Inv;
+			if (next && !next.bInvBar) { next = next.NextInv(); }
+		}
+
+		if (next == current) { next = null; }
+
+		return next;
+	}
+
+	Inventory GetPrev(Inventory current)
+	{
+		if (!current) { return null; }
+
+		Inventory prev = current.PrevInv();
+		if (!prev)
+		{
+			prev = player.mo.InvSel;
+			while (prev.NextInv()) { prev = prev.NextInv(); } // Iterate to find the last inventory item
+		}
+
+		if (prev == current) { prev = null; }
+
+		return prev;
 	}
 }
 
@@ -694,7 +961,7 @@ class PuzzleItemWidget : Widget
 		}
 	}
 
-	override bool SetVisibility()
+	override bool IsVisible()
 	{
 		if (
 			level.NoInventoryBar ||
@@ -745,9 +1012,9 @@ class StealthWidget : Widget
 		if (wdg && wdg.flags & WDG_DRAWFRAME) { wdg.flags |= WDG_DRAWFRAME_CENTERED; }
 	}
 
-	override bool SetVisibility()
+	override bool IsVisible()
 	{
-		if (Super.SetVisibility()) { return !!BoAStatusBar(StatusBar).LivingSneakableActors(); }
+		if (!player.mo.FindInventory("HQ_Checker") && Super.IsVisible()) { return !!BoAStatusBar(StatusBar).LivingSneakableActors(); }
 		return false;
 	}
 
@@ -773,7 +1040,11 @@ class PowerWidget : Widget
 	{
 		PowerWidget wdg = PowerWidget(Widget.Init("PowerWidget", widgetname, anchor, 0, priority, pos, zindex));
 
-		if (wdg && wdg.flags & WDG_DRAWFRAME) { wdg.flags |= WDG_DRAWFRAME_CENTERED; }
+		if (wdg)
+		{
+			wdg.fade = 1.0;
+			if (wdg.flags & WDG_DRAWFRAME) { wdg.flags |= WDG_DRAWFRAME_CENTERED; }
+		}
 	}
 
 	override Vector2 Draw()
@@ -792,14 +1063,34 @@ class PowerWidget : Widget
 
 class AirSupplyWidget : Widget
 {
+	transient CVar show;
+
 	static void Init(String widgetname, int anchor = 0, int priority = 0, Vector2 pos = (0, 0), int zindex = 0)
 	{
 		AirSupplyWidget wdg = AirSupplyWidget(Widget.Init("AirSupplyWidget", widgetname, anchor, 0, priority, pos, zindex));
+	}
+	
+	override void DoTick(int index)
+	{
+		show = CVar.FindCVar("boa_hudmeterfade");
+		if (show) { fade = clamp(show.GetFloat(), 0.0, 1.0); }
+
+		Super.DoTick();
 	}
 
 	override Vector2 Draw()
 	{
 		if (!BoAStatusBar(StatusBar)) { return (0, 0); }
+
+		if (fade > -1 && fade < 1.0)
+		{
+			if (
+				players[consoleplayer].mo.waterlevel < 2 ||
+				players[consoleplayer].mo.FindInventory("PowerScuba") ||
+				players[consoleplayer].cheats & CF_GODMODE ||
+				players[consoleplayer].cheats & CF_GODMODE2
+			 ) { visible = false; }
+		}
 
 		size = (8, 97);
 
@@ -813,20 +1104,41 @@ class AirSupplyWidget : Widget
 
 class StaminaWidget : Widget
 {
+	transient CVar show;
+
 	static void Init(String widgetname, int anchor = 0, int priority = 0, Vector2 pos = (0, 0), int zindex = 0)
 	{
 		StaminaWidget wdg = StaminaWidget(Widget.Init("StaminaWidget", widgetname, anchor, 0, priority, pos, zindex));
+	}
+
+	override void DoTick(int index)
+	{
+		show = CVar.FindCVar("boa_hudmeterfade");
+		if (show) { fade = clamp(show.GetFloat(), 0.0, 1.0); }
+
+		Super.DoTick();
 	}
 
 	override Vector2 Draw()
 	{
 		if (!BoAStatusBar(StatusBar)) { return (0, 0); }
 
+		int val = BoAStatusBar(StatusBar).mStaminaInterpolator.GetValue();
+
+		if (fade > -1 && fade < 1.0)
+		{
+			if (
+				val >= 100 ||
+				players[consoleplayer].cheats & CF_NOCLIP ||
+				players[consoleplayer].cheats & CF_NOCLIP2
+			) { visible = false; }
+		}
+
 		size = (8, 97);
 
 		Super.Draw();
 
-		StatusBar.DrawBar("VERTSTMF", "VERTSTME", BoAStatusBar(StatusBar).mStaminaInterpolator.GetValue(), 100, (pos.x, pos.y), 0, StatusBar.SHADER_VERT | StatusBar.SHADER_REVERSE, StatusBar.DI_ITEM_OFFSETS, alpha);
+		StatusBar.DrawBar("VERTSTMF", "VERTSTME", val, 100, (pos.x, pos.y), 0, StatusBar.SHADER_VERT | StatusBar.SHADER_REVERSE, StatusBar.DI_ITEM_OFFSETS, alpha);
 
 		return size;
 	}
@@ -861,12 +1173,12 @@ class AmmoWidget : Widget
 		}
 	}
 
-	override bool SetVisibility()
+	override bool IsVisible()
 	{
 		show = CVar.FindCVar("boa_hudammostats");
 		if (show && !show.GetBool()) { return false; }
 
-		return Super.SetVisibility();
+		return (!player.mo.FindInventory("HQ_Checker") && Super.IsVisible());
 	}
 
 	override Vector2 Draw()
@@ -943,7 +1255,7 @@ class AmmoWidget : Widget
 				Vector2 iconsize = TexMan.GetScaledSize(ammotypes[t].icon);
 				double ratio = iconsize.y / iconsize.x;
 
-				DrawToHud.DrawTexture(ammotypes[t].icon, (drawpos.x + 3, drawpos.y + 3), alpha, destsize:(6 / ratio, 6));
+				DrawToHud.DrawTexture(ammotypes[t].icon, (drawpos.x + 3, drawpos.y + 3), alpha, desttexsize:(6 / ratio, 6));
 				DrawToHud.DrawText(String.Format("%i", ammotypes[t].GetAmount()), (drawpos.x + typewidth, drawpos.y), HUDFont, alpha, shade:Font.CR_WHITE, flags:ZScriptTools.STR_TOP | ZScriptTools.STR_RIGHT);
 			}
 		}
@@ -1001,7 +1313,7 @@ class PositionWidget : Widget
 		PositionWidget wdg = PositionWidget(Widget.Init("PositionWidget", widgetname, anchor, 0, priority, pos, zindex));
 	}
 
-	override bool SetVisibility()
+	override bool IsVisible()
 	{
 		return !!idmypos;
 	}
@@ -1089,10 +1401,10 @@ class Log ui
 		REPLACELINE
 	}
 
-	void Print(double x, double y, double logalpha = 1.0, Font printfnt = null)
+	void Print(double x, double y, double logalpha = 1.0, Font printfnt = null, int flags = ZScriptTools.STR_TOP | ZScriptTools.STR_LEFT)
 	{
 		if (!printfnt) { printfnt = fnt; }
-		DrawToHud.DrawText(text, (x, y), printfnt, alpha * logalpha, shade:Font.CR_GRAY, flags:ZScriptTools.STR_TOP | ZScriptTools.STR_LEFT);	
+		DrawToHud.DrawText(text, (x, y), printfnt, alpha * logalpha, shade:Font.CR_GRAY, flags:flags);	
 	}
 
 	static void Clear(String logname = "Notifications")
@@ -1173,13 +1485,24 @@ class Log ui
 				if (l == lines.Count() - 1 && !temp.length()) { continue; }
 
 				Log m;
-				
-				if (w.addtype == NEWLINE || !w.messages.Size())
+
+				if (
+					w.addtype == NEWLINE ||
+					!w.messages.Size() ||
+					(
+						w.collapseduplicates &&
+						!(ZScriptTools.StripColorCodes(w.messages[w.messages.Size() - 1].text) == temp)
+					)
+				)
 				{
 					m = New("Log");
 					w.messages.Push(m);
 				}
-				else { m = w.messages[w.messages.Size() - 1]; }
+				else
+				{
+					m = w.messages[w.messages.Size() - 1];
+					m.ticker = 6;
+				}
 
 				if (m)
 				{
@@ -1194,8 +1517,8 @@ class Log ui
 
 			switch (text.ByteAt(text.length() - 1))
 			{
-				case 0x09:	w.addtype = REPLACELINE;	break;
-				case 0x0A:	w.addtype = NEWLINE;		break;
+				case 0x0D:	w.addtype = REPLACELINE;	break; // \r
+				case 0x0A:	w.addtype = NEWLINE;		break; // \n
 				default:	w.addtype = APPENDLINE;		break;
 			}
 		}
@@ -1207,13 +1530,15 @@ class Log ui
 class LogWidget : Widget
 {
 	Array<Log> messages;
-	int addtype;
+	int addtype, inputmaxlines, maxlines;
 	Font fnt, promptfnt;
 	String prompt;
+	bool collapseduplicates;
+	int textflags;
 
 	int lasttick;
 
-	static void Init(String widgetname, int anchor = 0, int priority = 0, Vector2 pos = (0, 0), int zindex = 0)
+	static void Init(String widgetname, int anchor = 0, int priority = 0, Vector2 pos = (0, 0), int zindex = 0, int maxlines = 0, bool collapseduplicates = true, int textflags = ZScriptTools.STR_TOP | ZScriptTools.STR_LEFT)
 	{
 		LogWidget wdg = LogWidget(Widget.Init("LogWidget", widgetname, anchor, 0, priority, pos, zindex));
 
@@ -1221,6 +1546,9 @@ class LogWidget : Widget
 		{
 			wdg.margin[0] = 4;
 			wdg.margin[1] = 8;
+			wdg.inputmaxlines = maxlines;
+			wdg.collapseduplicates = collapseduplicates;
+			wdg.textflags = textflags;
 		}
 	}
 
@@ -1229,7 +1557,7 @@ class LogWidget : Widget
 		fnt = SmallFont;
 	}
 
-	override bool SetVisibility()
+	override bool IsVisible()
 	{
 		return true;
 	}
@@ -1237,11 +1565,16 @@ class LogWidget : Widget
 	override void DoTick(int index)
 	{
 		SetFont();
+		if (inputmaxlines < 1) { maxlines = con_notifylines; }
+		else { maxlines = inputmaxlines; }
 
-		int delta = max(0, messages.Size() - con_notifylines);
-		for (int d = 0; d < delta; d++) { messages.Delete(d); } // Delete oldest notifications off the top of the stack if we've hit the limit for number shown
+		if (messages.Size() > maxlines)
+		{
+			int delta = max(0, messages.Size() - maxlines);
+			for (int d = 0; d < delta; d++) { messages.Delete(0); } // Delete oldest notifications off the top of the stack if we've hit the limit for number shown
+		}
 
-		for (int i = 0; i < min(con_notifylines, messages.Size()); i++)
+		for (int i = 0; i < min(maxlines, messages.Size()); i++)
 		{
 			let m = messages[i];
 
@@ -1287,7 +1620,7 @@ class LogWidget : Widget
 
 		double height = 0;
 
-		if (anchor & WDG_BOTTOM) { height = con_notifylines * lineheight; }
+		if (anchor & WDG_BOTTOM) { height = maxlines * lineheight + 1; }
 		else
 		{
 			for (int i = 0; i < messages.Size(); i++)
@@ -1299,8 +1632,6 @@ class LogWidget : Widget
 			}
 		}
 
-		if (prompt) { height += lineheight; }
-
 		Vector2 hudscale = StatusBar.GetHudScale();
 		size = (Screen.GetWidth() / hudscale.x - pos.x - rightoffset, height);
 		Super.Draw();
@@ -1310,13 +1641,12 @@ class LogWidget : Widget
 		if (anchor & WDG_BOTTOM)
 		{
 			yoffset = -lineheight * 2;
-			for (int i = messages.Size() - 1; i >= 0; i--)
+			for (int i = min(maxlines, messages.Size() - 1); i >= 0; i--)
 			{
-				if (i > con_notifylines) { continue; }
 				if (messages[i].player != players[consoleplayer]) { continue; }
 				if (!ZScriptTools.StripColorCodes(ZScriptTools.Trim(messages[i].text)).length()) { continue ; }
 
-				messages[i].Print(pos.x, pos.y + height + yoffset, alpha);
+				messages[i].Print(pos.x, pos.y + height + yoffset, alpha, null, textflags);
 
 				yoffset -= lineheight;
 			}
@@ -1326,29 +1656,26 @@ class LogWidget : Widget
 			if (prompt.length())
 			{
 				DrawToHud.Dim(0x0, 0.2 * alpha, int(pos.x - (margin[3] - 3)), int(pos.y + yoffset - 1), int(size.x + (margin[3] + margin[1]) - 6), promptfnt.GetHeight() + 2);
-				DrawToHud.DrawText(prompt, (pos.x, pos.y + yoffset), promptfnt, alpha, shade:Font.CR_GRAY, flags:ZScriptTools.STR_TOP | ZScriptTools.STR_LEFT);
+				DrawToHud.DrawText(prompt, (pos.x, pos.y + yoffset), promptfnt, alpha, shade:Font.CR_GRAY, flags:textflags);
 				prompt = "";
 			}
 		}
 		else
 		{
-			for (int i = 0; i < messages.Size(); i++)
+			for (int i = 0; i < min(maxlines + 1, messages.Size()); i++)
 			{
-				if (i < con_notifylines)
-				{
-					if (messages[i].player != players[consoleplayer]) { continue; }
-					if (!ZScriptTools.StripColorCodes(ZScriptTools.Trim(messages[i].text)).length()) { continue ; }
+				if (messages[i].player != players[consoleplayer]) { continue; }
+				if (!ZScriptTools.StripColorCodes(ZScriptTools.Trim(messages[i].text)).length()) { continue ; }
 
-					messages[i].Print(pos.x, pos.y + yoffset, alpha);
+				messages[i].Print(pos.x, pos.y + yoffset, alpha, null, textflags);
 
-					yoffset += messages[i].height;
-				}
+				yoffset += messages[i].height;
 			}
 
 			if (prompt.length())
 			{
 				DrawToHud.Dim(0x0, 0.2 * alpha, int(pos.x - (margin[3] - 3)), int(pos.y + height - lineheight - 1), int(size.x + (margin[3] + margin[1]) - 6), promptfnt.GetHeight() + 2);
-				DrawToHud.DrawText(prompt, (pos.x, pos.y + yoffset), promptfnt, alpha, shade:Font.CR_GRAY, flags:ZScriptTools.STR_TOP | ZScriptTools.STR_LEFT);
+				DrawToHud.DrawText(prompt, (pos.x, pos.y + yoffset), promptfnt, alpha, shade:Font.CR_GRAY, flags:textflags);
 				prompt = "";
 			}
 		}
@@ -1371,7 +1698,7 @@ class ActiveEffectWidget : Widget
 		}
 	}
 
-	override bool SetVisibility()
+	override bool IsVisible()
 	{
 		if (
 				automapactive ||
@@ -1536,7 +1863,7 @@ class DamageWidget : Widget
 		DamageWidget wdg = DamageWidget(Widget.Init("DamageWidget", widgetname, anchor, 0, priority, pos, zindex));
 	}
 
-	override bool SetVisibility()
+	override bool IsVisible()
 	{
 		if (
 				automapactive ||
@@ -1605,7 +1932,7 @@ class GrenadeWidget : Widget
 		}
 	}
 
-	override bool SetVisibility()
+	override bool IsVisible()
 	{
 		if (
 				automapactive ||
@@ -1696,7 +2023,7 @@ class GrenadeWidget : Widget
 
 class KeenWidget : Widget
 {
-	override bool SetVisibility()
+	override bool IsVisible()
 	{
 		if (
 				BoAStatusBar(StatusBar) &&
@@ -1827,7 +2154,7 @@ class TankHealthWidget : Widget
 		}
 	}
 
-	override bool SetVisibility()
+	override bool IsVisible()
 	{
 		if (
 				!automapactive &&
@@ -1878,7 +2205,7 @@ class AutomapWidget : Widget
 		}
 	}
 
-	override bool SetVisibility()
+	override bool IsVisible()
 	{
 		if (
 				automapactive

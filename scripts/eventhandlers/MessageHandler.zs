@@ -41,7 +41,9 @@ class MessageBase : Thinker
 		MSG_FULLSCREEN = 4,
 		MSG_ALLOWREPLACE = 8,
 		MSG_ALLOWMULTIPLE = 16,
-		MSG_PERSIST = 32
+		MSG_PERSIST = 32,
+		MSG_ALLPLAYERS = 64,
+		MSG_NOLOG = 128
 	}
 
 	MessageHandler handler;
@@ -113,7 +115,7 @@ class MessageBase : Thinker
 		msg.flags = flags;
 
 		PlayerInfo player;
-		if (mo && mo.player) { player = mo.player; }
+		if (mo && mo.player && (deathmatch || !multiplayer) && !(flags & MSG_ALLPLAYERS)) { player = mo.player; }
 		else { player = players[consoleplayer]; }
 		msg.player = player;
 
@@ -121,10 +123,42 @@ class MessageBase : Thinker
 		if (handler.types.Find(type) == handler.types.Size()) { handler.types.Push(type); }
 
 		// Log the message to the console, emulating built-in message printing
-		if (player && text.length())
+		if (player && text.length() && !(flags & MSG_NOLOG))
 		{
+			String logmessage = StringTable.Localize("$" .. text);
+
+			if (logmessage.IndexOf("[[") > -1 && logmessage.IndexOf("]]") > -1)
+			{
+				String line = logmessage;
+				int totalwidth = 0;
+
+				while (line.length())
+				{
+					int buttonstart = line.IndexOf("[[");
+					int buttonend = line.IndexOf("]]", buttonstart);
+
+					if (buttonend > -1 && buttonstart > -1)
+					{
+						String cmd = line.Mid(buttonstart + 2, buttonend - buttonstart - 2);
+
+						bool valid;
+						String keystring;
+						[keystring, valid] = ACSTools.GetKeyPressString(cmd, true);
+
+						logmessage.Replace("[[" .. cmd .. "]]", keystring);
+
+						line = line.mid(buttonend + 2);
+					}
+					else
+					{
+						line = "";
+					}
+				}
+			}
+
+			// Emulating the engine's built-in ugly line...  Why isn't console_bar externalized?
 			player.SetLogText("\cL----------------------------------------");
-			player.SetLogText("$" .. text);
+			player.SetLogText("\cL" .. logmessage);
 			player.SetLogText("\cL----------------------------------------");
 		}
 
@@ -200,7 +234,7 @@ class Message : MessageBase
 
 	static int Init(Actor mo, String icon, String text, int intime = 35, int outtime = 35)
 	{
-		Message msg = Message(MessageBase.Init(mo, icon, text, intime, outtime, "Message", 1));
+		Message msg = Message(MessageBase.Init(mo, icon, text, intime, outtime, "Message", 1, (multiplayer && !deathmatch) ? MSG_ALLPLAYERS : 0));
 		if (msg)
 		{
 			msg.icon = icon;
@@ -289,6 +323,7 @@ class Message : MessageBase
 
 			width = msgwidth;
 		}
+
 		if (flags & MSG_FULLSCREEN)
 		{
 			int lineheight = int(SmallFont.GetHeight());
@@ -380,7 +415,7 @@ class BriefingMessage : Message
 
 	static int Init(Actor mo, String icon, String text, int intime = 35, int outtime = 35)
 	{
-		BriefingMessage msg = BriefingMessage(MessageBase.Init(mo, icon, text, intime, outtime, "BriefingMessage"));
+		BriefingMessage msg = BriefingMessage(MessageBase.Init(mo, icon, text, intime, outtime, "BriefingMessage", 0, MSG_ALLPLAYERS));
 		if (msg)
 		{
 			msg.icon = icon;
@@ -480,7 +515,7 @@ class FadeIconMessage : Message
 
 	static int Init(Actor mo, String icon, String icon2, String text, int intime = 35, int outtime = 35)
 	{
-		FadeIconMessage msg = FadeIconMessage(MessageBase.Init(mo, icon, text, intime, outtime, "FadeIconMessage"));
+		FadeIconMessage msg = FadeIconMessage(MessageBase.Init(mo, icon, text, intime, outtime, "FadeIconMessage", 0, (multiplayer && !deathmatch) ? MSG_ALLPLAYERS : 0));
 		if (msg)
 		{
 			msg.icon = icon;
@@ -543,16 +578,18 @@ class FadeIconMessage : Message
 class HintMessage : MessageBase
 {
 	ui int msgwidth;
-	String key;
-	ui double textw;
-	ui double texth;
+	String command;
+	ui double texth, textw;
+	ui bool drawkey;
+	ui int lineheight;
+	ui int lastblocks;
 
-	static int Init(Actor mo, String text, String key)
+	static int Init(Actor mo, String text, String command, int priority = 0)
 	{
-		HintMessage msg = HintMessage(MessageBase.Init(mo, text, text, 20, 20, "HintMessage"));
+		HintMessage msg = HintMessage(MessageBase.Init(mo, text, text, 20, 20, "HintMessage", priority, (multiplayer && !deathmatch) ? MSG_ALLPLAYERS : 0));
 		if (msg)
 		{
-			msg.key = key;
+			msg.command = command;
 
 			return msg.GetTime();
 		}
@@ -567,18 +604,46 @@ class HintMessage : MessageBase
 
 	override double DrawMessage()
 	{
-		int msgwidth = 300;
-		int lineheight = int(SmallFont.GetHeight());
+		bool fullscreen = !!(flags & MSG_FULLSCREEN && screenblocks > 10);
 
-		if (width != msgwidth)
+		Vector2 scale;
+		if (fullscreen) { scale = StatusBar.GetHUDScale(); }
+		else { scale = (1.0, 1.0) * BoAStatusBar.GetUIScale(st_scale); }
+
+		int msgwidth;
+		
+		if (player.mo.FindInventory("CutsceneEnabled")) { msgwidth = int(Screen.GetWidth() / scale.x); }
+		else { msgwidth = int(max(300, Screen.GetWidth() / scale.x / 2)); }
+		if (!lineheight) { lineheight = int(SmallFont.GetHeight()); }
+
+		Vector2 destsize = (Screen.GetWidth() / scale.x, Screen.GetHeight() / scale.y);
+		Vector2 pos = (destsize.x / 2, 0);
+
+		if (screenblocks != lastblocks)
 		{
+			lastblocks = screenblocks;
+			
+			int buttonheight = Button.GetHeight();
+
 			[brokentext, lines] = BrokenString.BreakString(StringTable.Localize(text, false), msgwidth, true, "C");
 
-			if (key && key.length())
+			// Increase line height if there are inline buttons.
+			if ((brokentext.IndexOf("[[") > -1 && brokentext.IndexOf("]]") > -1))
 			{
-				String keystring = ACSTools.GetKeyPressString(key, true, "Dark Gray", "Gray");
+				lineheight = max(buttonheight, lineheight);
+			}
+			else if (command && command.length()) // Don't draw key below if there are in-line prompts
+			{
+				String keystring;
+				[keystring, drawkey] = ACSTools.GetKeyPressString(command, true, "Dark Gray", "Gray");
+
 				lines.lines.Push(keystring);
 				brokentext = brokentext .. "\n" .. keystring;
+
+				if (drawkey)
+				{
+					texth += buttonheight;
+				}
 			}
 
 			for (int lw = 0; lw < lines.Count(); lw++)
@@ -592,60 +657,44 @@ class HintMessage : MessageBase
 			width = msgwidth;
 		}
 
-		Vector2 destsize = (640, 480);
-		double posx, posy;
-		
-		if (flags & MSG_FULLSCREEN && screenblocks > 10)
-		{
-			Vector2 hudscale = StatusBar.GetHUDScale();
+		pos.y -= texth;
 
-			posx = Screen.GetWidth() / hudscale.x / 2;
-			posy = Screen.GetHeight() / hudscale.y - handler.bottomoffset * Screen.GetHeight() / hudscale.y;
+		if (fullscreen)
+		{
+			pos.y -= destsize.y * handler.bottomoffset + 12;
 
 			if (player.mo.FindInventory("CutsceneEnabled"))
 			{
-				posy -= 20 * Screen.GetHeight() / hudscale.y / destsize.y;
-				posy -= texth / 2;
+				pos.y -= texth / 2;
 			}
-			else		
+			else
 			{
-				posy -= 8 * Screen.GetHeight() / hudscale.y / destsize.y;
-
 				ThinkerIterator it = ThinkerIterator.Create("StealthBase", Thinker.STAT_DEFAULT - 2);
-				if (StealthBase(it.Next())) { posy -= 32.0; }
-
-				posy -= texth;
-			}
-
-			protrusion = -(1.0 - posy * hudscale.y / Screen.GetHeight());
-
-			for (int l = 0; l < lines.Count(); l++)
-			{
-				DrawToHUD.DrawText(lines.StringAt(l), (posx, posy), SmallFont, alpha, 1.0, destsize, Font.CR_GRAY, ZScriptTools.STR_TOP | ZScriptTools.STR_CENTERED);
-				posy += lineheight;
+				if (StealthBase(it.Next())) { pos.y -= 52; }
 			}
 		}
 		else
 		{
-			double uiscale = BoAStatusBar.GetUIScale(st_scale);
-			posx = destsize.x / 2;
-			posy = destsize.y * StatusBar.GetTopOfStatusBar() / Screen.GetHeight() - 8.0 * uiscale - handler.bottomoffset *destsize.y;
-		
+			pos.y += destsize.y * StatusBar.GetTopOfStatusBar() / Screen.GetHeight() - 12;
+
 			if (!player.mo.FindInventory("CutsceneEnabled"))
 			{
 				ThinkerIterator it = ThinkerIterator.Create("StealthBase", Thinker.STAT_DEFAULT - 2);
-				if (StealthBase(it.Next())) { posy -= 8.0 * uiscale; }
+				if (StealthBase(it.Next())) { pos.y -= 12; }
 			}
+		}
 
-			posy -= texth;
-
-			protrusion = -(1.0 - posy / destsize.y);
-
-			for (int l = 0; l < lines.Count(); l++)
+		for (int l = 0; l < lines.Count(); l++)
+		{
+			if (drawkey && l == lines.Count() - 1)
 			{
-				screen.DrawText(SmallFont, Font.CR_GRAY, posx - lines.StringWidth(l) / 2, posy, lines.StringAt(l), DTA_VirtualWidth, int(destsize.x), DTA_VirtualHeight, int(destsize.y), DTA_Alpha, alpha);
-				posy += lineheight;
+				DrawToHUD.DrawCommandButtons((pos.x, pos.y + SmallFont.GetHeight() * 3 / 2), command, alpha, destsize, 1.0, Button.BTN_CENTERED | Button.BTN_MIDDLE | (fullscreen ? 0 : Button.BTN_FIXED));
 			}
+			else
+			{
+				DrawToHUD.DrawText(lines.StringAt(l), pos, SmallFont, alpha, 1.0, destsize, Font.CR_GRAY, ZScriptTools.STR_TOP | ZScriptTools.STR_CENTERED | (fullscreen ? 0 : ZScriptTools.STR_FIXED));
+			}
+			pos.y += lineheight;
 		}
 
 		return protrusion;
@@ -655,9 +704,10 @@ class HintMessage : MessageBase
 class ObjectiveMessage : MessageBase
 {
 	String image, snd;
-	double posx, posy;
+	Vector2 pos;
 	Vector2 destsize;
 	int objflags;
+	String command;
 
 	enum MessageFlags
 	{
@@ -665,16 +715,17 @@ class ObjectiveMessage : MessageBase
 		OBJ_HIDETEXT = 1
 	}
 
-	static int Init(Actor mo, String text, String image = "", String snd = "", int time = 0, int objflags = 0, double posx = 400, double posy = 135, Vector2 destsize = (800, 600))
+	static int Init(Actor mo, String text, String image = "", String snd = "", String command = "", int time = 0, int objflags = 0, double posx = 400, double posy = 135, Vector2 destsize = (800, 600))
 	{
 		ObjectiveMessage msg = ObjectiveMessage(MessageBase.Init(mo, text, text, 18, 18, "ObjectiveMessage", 0, MSG_ALLOWREPLACE));
 		if (msg)
 		{
 			msg.image = image;
 			msg.snd = snd;
-			msg.posx = posx;
-			msg.posy = posy;
+			msg.pos.x = posx;
+			msg.pos.y = posy;
 			msg.destsize = destsize;
+			msg.command = command;
 
 			if (objflags & OBJ_HIDETEXT) { msg.text = ""; }
 
@@ -700,17 +751,22 @@ class ObjectiveMessage : MessageBase
 		String msgstr = StringTable.Localize(text, false);
 
 		Vector2 hudscale = StatusBar.GetHUDScale();
-		double x = posx / destsize.x * Screen.GetWidth() / hudscale.x;
-		double y = posy / destsize.y * Screen.GetHeight() / hudscale.y;
+		double x = pos.x / destsize.x * Screen.GetWidth() / hudscale.x;
+		double y = pos.y / destsize.y * Screen.GetHeight() / hudscale.y;
 
 		if (tex.IsValid())
 		{
-			screen.DrawTexture(tex, true, posx, posy, DTA_VirtualWidthF, destsize.x, DTA_VirtualHeightF, destsize.y, DTA_CenterOffset, true, DTA_Alpha, alpha);
+			DrawToHUD.DrawTexture(tex, (x, y), alpha);
 		}
 
 		if (msgstr.length())
 		{
-			screen.DrawText(SmallFont, Font.CR_GRAY, posx - SmallFont.StringWidth(msgstr) / 2, posy - SmallFont.GetHeight() / 2, msgstr, DTA_VirtualWidthF, destsize.x, DTA_VirtualHeightF, destsize.y, DTA_Alpha, alpha);
+			DrawToHUD.DrawText(msgstr, (x, y), SmallFont, alpha, 1.0, destsize, Font.CR_GRAY, ZScriptTools.STR_MIDDLE | ZScriptTools.STR_CENTERED);
+		}
+
+		if (command.length())
+		{
+			DrawToHUD.DrawCommandButtons((x, y + SmallFont.GetHeight() * 3 / 2), command, alpha, destsize, 1.0, Button.BTN_CENTERED | Button.BTN_MIDDLE);
 		}
 
 		return 0;
@@ -846,7 +902,7 @@ class CountdownMessage : MessageBase
 	static int Init(Actor mo, String text = "", int clr = Font.CR_GRAY, int holdtime = 210, int intime = 35, int outtime = 35, String bkg = "HELTHBAR", String msgname = "")
 	{
 		if (!msgname.length()) { msgname = bkg; }
-		CountdownMessage msg = CountdownMessage(MessageBase.Init(mo, msgname, text, intime, outtime, "CountdownMessage", 2, MSG_ALLOWREPLACE | MSG_ALLOWMULTIPLE));
+		CountdownMessage msg = CountdownMessage(MessageBase.Init(mo, msgname, text, intime, outtime, "CountdownMessage", 2, MSG_ALLOWREPLACE | MSG_ALLOWMULTIPLE | MSG_ALLPLAYERS | MSG_NOLOG));
 		if (msg)
 		{
 			msg.time = holdtime + intime + outtime;
@@ -861,17 +917,21 @@ class CountdownMessage : MessageBase
 	override double DrawMessage()
 	{
 		Vector2 destsize = (640, 480);
-		Vector2 pos = (320.0, handler.topoffset * destsize.y + 32.0);
+		Vector2 pos = (320, handler.topoffset * destsize.y + 32.0);
+
+		Vector2 hudscale = StatusBar.GetHUDScale();
+		double x = (Screen.GetWidth() / hudscale.x) / 2;
+		double y = pos.y / destsize.y * Screen.GetHeight() / hudscale.y;
 
 		TextureID bgtex = TexMan.CheckForTexture(bkg);
 		Vector2 size = (0, 0);
 		if (bgtex.IsValid())
 		{
 			size = TexMan.GetScaledSize(bgtex);
-			screen.DrawTexture(bgtex, true, pos.x, pos.y, DTA_VirtualWidthF, destsize.x, DTA_VirtualHeightF, destsize.y, DTA_CenterOffset, true, DTA_Alpha, alpha); 
+			DrawToHUD.DrawTexture(bgtex, (x, y), alpha);
 		}
 
-		screen.DrawText(BigFont, Font.CR_GRAY, pos.x - BigFont.StringWidth(text) / 2, pos.y - BigFont.GetHeight() / 2, text, DTA_VirtualWidthF, destsize.x, DTA_VirtualHeightF, destsize.y, DTA_Alpha, alpha); 
+		DrawToHUD.DrawText(text, (x, y), BigFont, alpha, 1.0, destsize, Font.CR_GRAY, ZScriptTools.STR_MIDDLE | ZScriptTools.STR_CENTERED);
 
 		protrusion = handler.topoffset + size.y / destsize.y;
 
@@ -883,7 +943,6 @@ class CountdownMessage : MessageBase
 class AchievementMessage : MessageBase
 {
 	String image, snd, bkg;
-	double posx, posy;
 	Vector2 destsize;
 	Color clr;
 	String fontname;
@@ -1021,7 +1080,11 @@ class MessageHandler : EventHandler
 
 					while(n)
 					{
+						if (fullscreen) { n.flags |= MessageBase.MSG_FULLSCREEN; }
+						else { n.flags &= ~MessageBase.MSG_FULLSCREEN; }
+
 						TickMessage(n);
+
 						[n, current] = NextMessage(types[t], current + 1);
 					}
 				}

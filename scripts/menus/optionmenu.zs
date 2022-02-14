@@ -419,6 +419,19 @@ class BoAOptionMenuItemControl : OptionMenuItemControl
 
 		Menu.StartMessage(msg, 0);
 	}
+
+	override int Draw(OptionMenuDescriptor desc, int y, int indent, bool selected)
+	{
+		drawLabel(indent, y, mWaiting ? OptionMenuSettings.mFontColorHighlight :
+			(selected ? OptionMenuSettings.mFontColorSelection : OptionMenuSettings.mFontColor));
+
+		if (!DrawToHUD.DrawCommandButtons((indent + 12 * CleanXfac_1, y + (OptionMenu.OptionHeight() * CleanYfac_1 / 2)), mAction, 1.0, (CleanWidth_1, CleanHeight_1), 1.0, Button.BTN_MIDDLE | Button.BTN_MENU))
+		{
+			drawValue(indent, y, Font.CR_BLACK, "---");
+		}
+
+		return indent;
+	}
 }
 
 class BoAOptionMenuItemMapControl : OptionMenuItemMapControl
@@ -472,6 +485,19 @@ class BoAOptionMenuItemMapControl : OptionMenuItemMapControl
 
 		Menu.StartMessage(msg, 0);
 	}
+
+	override int Draw(OptionMenuDescriptor desc, int y, int indent, bool selected)
+	{
+		drawLabel(indent, y, mWaiting ? OptionMenuSettings.mFontColorHighlight :
+			(selected ? OptionMenuSettings.mFontColorSelection : OptionMenuSettings.mFontColor));
+
+		if (!DrawToHUD.DrawCommandButtons((indent + 12 * CleanXfac_1, y + (OptionMenu.OptionHeight() * CleanYfac_1/ 2)), mAction, 1.0, (CleanWidth_1, CleanHeight_1), 1.0, Button.BTN_MIDDLE | Button.BTN_MENU, AutomapBindings))
+		{
+			drawValue(indent, y, Font.CR_BLACK, "---");
+		}
+
+		return indent;
+	}
 }
 
 // Option Menu shim that opens just long enough for the GetMenu function above to copy the contents of the descriptor
@@ -496,5 +522,54 @@ class MenuShim : OptionMenu
 	override void Ticker()
 	{
 		Close();
+	}
+}
+
+// Option menu slider that displays a float value as a percentage (e.g., 0.5 as 50% if min is 0 and max is 1.0)
+// Also accepts optional text values that display in place of 0% and 100%
+// Modified from OptionMenuItemScaleSlider class
+class OptionMenuItemPercentSlider : OptionMenuItemSlider
+{
+	String Label0;
+	String Label100;
+	int mClickVal;
+	
+	OptionMenuItemPercentSlider Init(String label, Name command, double min, double max, double step, String zero = "", String full = "")
+	{
+		Super.Init(label, command, min, max, step, 0);
+		mCVar = CVar.FindCVar(command);
+		Label0 = zero;
+		Label100 = full;
+		mClickVal = -10;
+		return self;
+	}
+
+	//=============================================================================
+	override int Draw(OptionMenuDescriptor desc, int y, int indent, bool selected)
+	{
+		drawLabel(indent, y, selected? OptionMenuSettings.mFontColorSelection : OptionMenuSettings.mFontColor);
+
+		double val = GetSliderValue();
+		String text = String.Format("%i", round(val * 100 / (mMax - mMin))) .. "%";
+
+		if (((Label0.length() && val == mMin) || (Label100.length() && val == mMax)) && mClickVal <= 0)
+		{
+			text = val == mMin ? Label0 : val == mMax ? Label100  : "";
+			drawValue(indent, y, OptionMenuSettings.mFontColorValue, text);
+		}
+		else
+		{
+			mDrawX = indent + CursorSpace();
+			DrawSlider (mDrawX, y, mMin, mMax, GetSliderValue(), -1, indent);
+
+			int right = mDrawX + (12*16 + 4) * CleanXfac_1;
+			int maxlen = Menu.OptionWidth("100%") * CleanXfac_1;
+
+			if (right + maxlen <= screen.GetWidth())
+			{
+				drawText(right, y, Font.CR_DARKGRAY, text, 0);
+			}
+		}
+		return indent;
 	}
 }

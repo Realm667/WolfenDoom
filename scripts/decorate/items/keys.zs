@@ -40,10 +40,10 @@ class BoABlueKey : KeyBase
 	}
 	States
 	{
-	Spawn:
-		BKEY A 10;
-		"####" A 10 LIGHT("BOABKEY2");
-		Loop;
+		Spawn:
+			BKEY A 10;
+			"####" A 10 LIGHT("BOABKEY2");
+			Loop;
 	}
 }
 
@@ -57,10 +57,10 @@ class BoAYellowKey : KeyBase
 	}
 	States
 	{
-	Spawn:
-		YKEY A 10;
-		"####" A 10 LIGHT("BOAYKEY");
-		Loop;
+		Spawn:
+			YKEY A 10;
+			"####" A 10 LIGHT("BOAYKEY");
+			Loop;
 	}
 }
 
@@ -74,10 +74,10 @@ class BoARedKey : KeyBase
 	}
 	States
 	{
-	Spawn:
-		RKEY A 10;
-		"####" A 10 LIGHT("BOARKEY");
-		Loop;
+		Spawn:
+			RKEY A 10;
+			"####" A 10 LIGHT("BOARKEY");
+			Loop;
 	}
 }
 
@@ -91,10 +91,10 @@ class BoAGreenKey : KeyBase
 	}
 	States
 	{
-	Spawn:
-		GSKU A 10;
-		"####" A 10 LIGHT("BOAGKEY");
-		Loop;
+		Spawn:
+			GSKU A 10;
+			"####" A 10 LIGHT("BOAGKEY");
+			Loop;
 	}
 }
 
@@ -108,10 +108,10 @@ class BoAPurpleKey : KeyBase
 	}
 	States
 	{
-	Spawn:
-		PSKU A 10;
-		"####" A 10 LIGHT("BOAPKEY");
-		Loop;
+		Spawn:
+			PSKU A 10;
+			"####" A 10 LIGHT("BOAPKEY");
+			Loop;
 	}
 }
 
@@ -125,10 +125,10 @@ class BoACyanKey : KeyBase
 	}
 	States
 	{
-	Spawn:
-		CSKU A 10;
-		"####" A 10 LIGHT("BOACKEY");
-		Loop;
+		Spawn:
+			CSKU A 10;
+			"####" A 10 LIGHT("BOACKEY");
+			Loop;
 	}
 }
 
@@ -151,14 +151,14 @@ class SkullKey : CompassItem
 	}
 	States
 	{
-	Spawn:
-		SKLK A -1;
-		Stop;
+		Spawn:
+			SKLK A -1 LIGHT("BOARKEY");
+			Stop;
 	}
 }
 
 //Special items - no DeNums
-class SurrenderingSoldierKey: SkullKey //was SpyToken, pickup msg not needed
+class SurrenderingSoldierKey : SkullKey //was SpyToken, pickup msg not needed
 {
 	Default
 	{
@@ -169,9 +169,9 @@ class SurrenderingSoldierKey: SkullKey //was SpyToken, pickup msg not needed
 	}
     States
 	{
-	Spawn:
-		SKLK E -1;
-		Stop;
+		Spawn:
+			SKLK E -1 LIGHT("BoAGenericKey");
+			Stop;
 	}
 }
 
@@ -188,8 +188,35 @@ class SkullKeyForSale : SkullKey //C3M6_A
 	}
 	States
 	{
-	Spawn:
-		SKLK C -1;
-		Stop;
+		Spawn:
+			SKLK C -1 LIGHT("BoAGenericKey");
+			Stop;
+	}
+}
+
+
+class Key_RE : CompassItem // C3M0_A
+{
+	Default
+	{
+		//$Category Keys (BoA)
+		//$Title Heart Key from C3M0_A
+		//$Color 4
+		Height 8;
+		Scale 0.15;
+		Inventory.MaxAmount 1;
+		Inventory.Icon "SKLKH0";
+		Inventory.PickupSound "key/skullkey";
+		PuzzleItem.FailMessage "$SKULLF";
+		Inventory.PickupMessage "$HEARTP";
+		-FLOATBOB
+		-NOGRAVITY
+	}
+
+	States
+	{
+		Spawn:
+			SKLK G -1 LIGHT("BoAGenericKey");
+			Loop;
 	}
 }

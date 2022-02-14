@@ -549,8 +549,9 @@ class WaveSpawner : ActorSpawner
 // Base barrel actor that allows you to specify an item as args[0] in-editor that will always be dropped when the barrel/object is destroyed.
 class BarrelSpawner : ExplosiveBarrel
 {
-	Class<Actor> user_spawntype; 
-	Actor drop;
+	Class<Actor> user_spawntype;
+	int user_spawnamount;
+	bool dropped;
 
 	Default
 	{
@@ -570,6 +571,8 @@ class BarrelSpawner : ExplosiveBarrel
 			user_spawntype = GetSpawnableType(args[0]);
 		}
 
+		if (!user_spawnamount) { user_spawnamount = 1; }
+
 		Super.PostBeginPlay();
 	}
 
@@ -579,20 +582,10 @@ class BarrelSpawner : ExplosiveBarrel
 
 		if (health <= 0)
 		{
-			if (user_spawntype && !drop)
+			if (user_spawntype && !dropped)
 			{
-				drop = Spawn(user_spawntype, pos);
-
-				if (drop)
-				{
-					drop.SetOrigin(pos + (0, 0, 10), false);
-					drop.angle = angle;
-					drop.VelFromAngle(5, inflictor.AngleTo(self));
-					drop.vel.z = 1;
-					drop.vel += vel;
-					drop.bNoGravity = false;
-					drop.ClearCounters();
-				}
+				Nazi.DropItemAmount(self, user_spawntype.GetClassName(), user_spawnamount);
+				dropped = true;
 			}
 			else
 			{

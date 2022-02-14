@@ -63,6 +63,8 @@ class Handrail : ModelBase
 
 class CeilingFan : Obstacle3d
 {
+	Actor blades;
+
 	Default
 	{
 		//$Category Models (BoA)/Scenery
@@ -76,11 +78,39 @@ class CeilingFan : Obstacle3d
 		+SPAWNCEILING
 		Scale 0.85;
 	}
+	
 	States
 	{
-	Spawn:
-		MDLA A -1 NODELAY A_SpawnItemEx("WoodenBlades", 0, 0, 0, 0, 0, 0, 0, MODELS_FLAGS2);
-		Stop;
+		Spawn:
+			MDLA A -1;
+			Stop;
+	}
+
+	override void PostBeginPlay()
+	{
+		if (!bWasCulled) { bDormant = !!(SpawnFlags & MTF_DORMANT); }
+
+		blades = Spawn("WoodenBlades", pos);
+		if (blades)
+		{
+			blades.master = self;
+			blades.pitch = pitch;
+			blades.roll = roll;
+			blades.scale = scale;
+			blades.angle = Random(0, 359);
+		}
+
+		Super.PostBeginPlay();
+	}
+
+	override void Tick()
+	{
+		Super.Tick();
+
+		if (!IsFrozen() && !bDormant && blades)
+		{
+			blades.angle -= 8;
+		}
 	}
 }
 
@@ -94,6 +124,7 @@ class WoodenBlades : ModelBase
 		+NOBLOCKMAP
 		+SPAWNCEILING
 		Scale 0.85;
+		+CullActorBase.DONTCULL // Don't cull these on their own, since they are spawned as a child of the base CeilingFan actor
 	}
 }
 
@@ -1395,6 +1426,16 @@ class CODPipe4 : MuseumBase
 	Default
 	{
 	//$Title Decorative Pipe 4
+	RenderRadius 256.0;
+	}
+}
+
+class CODPipe4b : MuseumBase
+{
+	Default
+	{
+	//$Title Decorative Pipe 4 (Variant)
+	RenderRadius 256.0;
 	}
 }
 

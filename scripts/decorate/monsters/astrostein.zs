@@ -115,31 +115,34 @@ class AstroRobotDropper : RandomSpawner { Default { DropItem "Destroyed_AstroRob
 ////////////////
 
 class BaseLine : ParticleBase
-{	Default
+{
+	Default
 	{
-	+BRIGHT
-	+MISSILE
-	+NOBLOCKMAP
-	+NOGRAVITY
-	+NOINTERACTION
-	Radius 0;
-	Height 0;
-	RenderStyle "Add";
-	Alpha 0.01;
+		+BRIGHT
+		+MISSILE
+		+NOBLOCKMAP
+		+NOGRAVITY
+		+NOINTERACTION
+		Radius 0;
+		Height 0;
+		RenderStyle "Add";
+		Alpha 0.01;
 	}
+
 	States
 	{
-	Spawn:
-		SPFX AAAAA 1 LIGHT("AstrosteinDeathLight") A_FadeIn(0.2);
-		"####" A 1 LIGHT("AstrosteinDeathLight") A_FadeOut(0.06);
-		Wait;
+		Spawn:
+			SPFX AAAAA 1 LIGHT("AstrosteinDeathLight") A_FadeIn(0.2);
+			"####" A 1 LIGHT("AstrosteinDeathLight") A_FadeOut(0.06);
+			Wait;
 	}
 }
 
 class BaseLineXL : BaseLine
-{	Default
+{
+	Default
 	{
-	Scale 5.0;
+		Scale 5.0;
 	}
 }
 
@@ -790,111 +793,85 @@ class AstroRobot : AstroCyborg1
 }
 
 class AstroUrsel : AstroCyborg1
-{	Default
+{
+	int loopcount;
+
+	Default
 	{
-	//$Title Ursel Metzger (Boss)
-	Base.BossIcon "BOSSICON";
-	Tag "$TAGURSEL";
-	Speed 5;
-	Scale 0.70;
-	Health 1500;
-	Painchance 16;
-	+AVOIDMELEE
-	+LOOKALLAROUND
-	-NOBLOOD
-	Obituary "$AURSEL";
-	SeeSound "BossGirl/Sighted";
-	PainSound "BossGirl/Pain";
-	DeathSound "BossGirl/Death";
-	ActiveSound "";
-	DropItem "AstroRocketAmmo", 160;
+		//$Title Ursel Metzger (Boss)
+		Base.BossIcon "BOSSICON";
+		Tag "$TAGURSEL";
+		Speed 5;
+		Scale 0.70;
+		Health 1500;
+		Painchance 16;
+		Obituary "$AURSEL";
+		SeeSound "BossGirl/Sighted";
+		PainSound "BossGirl/Pain";
+		DeathSound "BossGirl/Death";
+		ActiveSound "";
+		DropItem "AstroRocketAmmo", 160;
+		+AVOIDMELEE
+		+LOOKALLAROUND
+		-NOBLOOD
 	}
+
 	States
 	{
-	Spawn:
-		URSE A 0;
-		Goto Look;
-	See:
-		URSE "#" 0 {
-			user_incombat = True;
-			if (bStandStill) { SetStateLabel("See.Stand"); }
-		}
-		"####" A 1 A_NaziChase;
-		"####" AAA 1 A_NaziChase(null, null);
-		"####" A 1 A_NaziChase;
-		"####" AAA 1 A_NaziChase(null, null);
-		"####" B 1 A_NaziChase;
-		"####" # 0 A_PlayStepSound(Base.Mech, 1.0, 0.15);
-		"####" BBB 1 A_NaziChase(null, null);
-		"####" B 1 A_NaziChase;
-		"####" BBB 1 A_NaziChase(null, null);
-		"####" C 1 A_NaziChase;
-		"####" CCC 1 A_NaziChase(null, null);
-		"####" C 1 A_NaziChase;
-		"####" CCC 1 A_NaziChase(null, null);
-		"####" D 1 A_NaziChase;
-		"####" # 0 A_PlayStepSound(Base.Mech, 1.0, 0.15);
-		"####" DDD 1 A_NaziChase(null, null);
-		"####" D 1 A_NaziChase;
-		"####" DDD 1 A_NaziChase(null, null);
-		"####" A 0 { return ResolveState("See"); }
-	Missile:
-	Missile.Aimed:
-		URSE E 5 A_FaceTarget;
-		"####" E 0 A_Jump(128, "Missile3");
-		"####" E 0 A_Jump(128, 2);
-		"####" E 0 A_Jump(128, "Missile2");
-		"####" F 0 A_StartSound("astrochaingun/fire");
-		"####" F 4 LIGHT("ASTROFIRE") A_SpawnProjectile("EnemyAstroTracer",40,10,random(2,-2));
-		"####" G 4 LIGHT("ASTROFIRE") A_SpawnProjectile("EnemyAstroTracer",40,4,random(2,-2));
-		"####" E 5 A_Jump(256,"See");
-		Stop;
-	Missile2: //3
-		URSE F 0 A_StartSound("astrochaingun/fire");
-		"####" F 4 LIGHT("ASTROFIRE") A_SpawnProjectile("EnemyAstroTracer",40,10,random(2,-2));
-		"####" G 4 LIGHT("ASTROFIRE") A_SpawnProjectile("EnemyAstroTracer",40,4,random(2,-2));
-		"####" E 5 A_FaceTarget;
-		"####" F 0 A_StartSound("astrochaingun/fire");
-		"####" F 4 LIGHT("ASTROFIRE") A_SpawnProjectile("EnemyAstroTracer",40,10,random(2,-2));
-		"####" G 4 LIGHT("ASTROFIRE") A_SpawnProjectile("EnemyAstroTracer",40,4,random(2,-2));
-		"####" E 5 A_FaceTarget;
-		"####" F 0 A_StartSound("astrochaingun/fire");
-		"####" F 4 LIGHT("ASTROFIRE") A_SpawnProjectile("EnemyAstroTracer",40,10,random(2,-2));
-		"####" G 4 LIGHT("ASTROFIRE") A_SpawnProjectile("EnemyAstroTracer",40,4,random(2,-2));
-		"####" E 5 A_Jump(256,"See");
-		Stop;
-	Missile3: //5
-		URSE F 0 A_StartSound("astrochaingun/fire");
-		"####" F 4 LIGHT("ASTROFIRE") A_SpawnProjectile("EnemyAstroTracer",40,10,random(2,-2));
-		"####" G 4 LIGHT("ASTROFIRE") A_SpawnProjectile("EnemyAstroTracer",40,4,random(2,-2));
-		"####" E 5 A_FaceTarget;
-		"####" F 0 A_StartSound("astrochaingun/fire");
-		"####" F 4 LIGHT("ASTROFIRE") A_SpawnProjectile("EnemyAstroTracer",40,10,random(2,-2));
-		"####" G 4 LIGHT("ASTROFIRE") A_SpawnProjectile("EnemyAstroTracer",40,4,random(2,-2));
-		"####" E 5 A_FaceTarget;
-		"####" F 0 A_StartSound("astrochaingun/fire");
-		"####" F 4 LIGHT("ASTROFIRE") A_SpawnProjectile("EnemyAstroTracer",40,10,random(2,-2));
-		"####" G 4 LIGHT("ASTROFIRE") A_SpawnProjectile("EnemyAstroTracer",40,4,random(2,-2));
-		"####" F 0 A_StartSound("astrochaingun/fire");
-		"####" F 4 LIGHT("ASTROFIRE") A_SpawnProjectile("EnemyAstroTracer",40,10,random(2,-2));
-		"####" G 4 LIGHT("ASTROFIRE") A_SpawnProjectile("EnemyAstroTracer",40,4,random(2,-2));
-		"####" E 5 A_FaceTarget;
-		"####" F 0 A_StartSound("astrochaingun/fire");
-		"####" F 4 LIGHT("ASTROFIRE") A_SpawnProjectile("EnemyAstroTracer",40,10,random(2,-2));
-		"####" G 4 LIGHT("ASTROFIRE") A_SpawnProjectile("EnemyAstroTracer",40,4,random(2,-2));
-		"####" E 5 A_Jump(256,"See");
-		Stop;
-	Pain:
-	Pain.Dagger:
-		URSE H 3;
-		"####" H 9 A_Pain;
-		Goto See;
-	Death:
-		URSE H 8 A_Scream;
-		"####" H 0 A_NoBlocking;
-		"####" "#" 0 A_SpawnItemEx("BaseLine", random(32, -32), random(32, -32), random(0, 24), 0, 0, random(1,3), 0, 129, 0);
-		"####" "#" 1 A_FadeOut(0.05);
-		Goto Death+2;
+		Spawn:
+			URSE A 0;
+			Goto Look;
+		See:
+			URSE A 0 {
+				if (bStandStill) { SetStateLabel("See.Stand"); }
+			}
+			URSE A 1 A_NaziChase;
+			URSE AAA 1 A_NaziChase(null, null);
+			URSE A 1 A_NaziChase;
+			URSE AAA 1 A_NaziChase(null, null);
+			URSE B 1 A_NaziChase;
+			URSE B 0 A_PlayStepSound(Base.Mech, 1.0, 0.15);
+			URSE BBB 1 A_NaziChase(null, null);
+			URSE B 1 A_NaziChase;
+			URSE BBB 1 A_NaziChase(null, null);
+			URSE C 1 A_NaziChase;
+			URSE CCC 1 A_NaziChase(null, null);
+			URSE C 1 A_NaziChase;
+			URSE CCC 1 A_NaziChase(null, null);
+			URSE D 1 A_NaziChase;
+			URSE D 0 A_PlayStepSound(Base.Mech, 1.0, 0.15);
+			URSE DDD 1 A_NaziChase(null, null);
+			URSE D 1 A_NaziChase;
+			URSE DDD 1 A_NaziChase(null, null);
+			Goto See;
+		Missile:
+		Missile.Aimed:
+			URSE E 0 { loopcount = RandomPick(5, 5, 5, 5, 1, 1, 3, 1); } // Replicates distribution of original Jump logic
+		Missile.FireLoop:
+			URSE E 5 {
+				if (loopcount != 4) { A_FaceTarget(); } // Original code didn't face target on 4th shot of 5-shot bursts
+				A_StartSound("astrochaingun/fire");
+			}
+			URSE F 4 LIGHT("ASTROFIRE") A_SpawnProjectile("EnemyAstroTracer",40,10,random(2,-2));
+			URSE G 4 LIGHT("ASTROFIRE") A_SpawnProjectile("EnemyAstroTracer",40,4,random(2,-2));
+			URSE E 0 { if (loopcount-- <= 0) { SetStateLabel("See"); }; } // If we've fired the desired number of times, go back to See
+			Goto Missile.FireLoop; // Otherwise, fire again
+		Pain:
+		Pain.Dagger:
+			URSE H 3;
+			URSE H 9 A_Pain;
+			Goto See;
+		Death:
+			URSE H 8 {
+				A_Scream();
+				A_NoBlocking();
+			}
+		DeathFade:
+			URSE H 1 {
+				A_SpawnItemEx("BaseLine", random(32, -32), random(32, -32), random(0, 24), 0, 0, random(1,3), 0, 129, 0);
+				A_FadeOut(0.05);
+			}
+			Loop;
 	}
 }
 

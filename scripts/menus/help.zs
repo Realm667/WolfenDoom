@@ -109,7 +109,8 @@ class BoAInfo : BoAMenu
 	{
 		if (mkey == MKEY_Back)
 		{
-			Close();	
+			Close();
+			MenuSound("menu/backup");
 			return true;
 		}
 		else if (mkey == MKEY_Right || mkey == MKEY_Down || mkey == MKEY_Enter)
@@ -149,23 +150,6 @@ class BoAInfo : BoAMenu
 		}
 
 		return false;
-	}
-
-	override bool OnUIEvent(UIEvent ev)
-	{
-		// Intercept key presses to see if we're pressing the strafe controls or use, 
-		// and redirect those to call the correct left/right/open movement menu event code.
-
-		if (ev.Type == UIEvent.Type_KeyDown)
-		{
-			CheckControl(ev, "+moveleft", MKEY_Left);
-			CheckControl(ev, "+moveright", MKEY_Right);
-			CheckControl(ev, "+use", MKEY_Enter);
-			CheckControl(ev, "+forward", MKEY_Up);
-			CheckControl(ev, "+back", MKEY_Down);
-		}
-
-		return Super.OnUIEvent(ev);
 	}
 
 	void DrawBlocks(ParsedValue data, int pagenum, double alpha, int tic, double scale)
@@ -414,12 +398,19 @@ class BoAInfo : BoAMenu
 					{
 						double textwidth = lines.StringWidth(t) * textscale;
 
+						String nextline;
+						if (t < lines.Count() - 1)
+						{
+							nextline = lines.StringAt(t + 1);
+							nextline = ZScriptTools.StripColorCodes(nextline);
+						}
+
 						if ( // Don't full justify if a line is the end of a paragraph and it's less than 80% of the block width
 							!(
 								screenscale < 1.0 ||
 								(
 									t == lines.Count() - 1 ||
-									lines.StringAt(t + 1) == ""
+									nextline.length() == 0
 								) &&
 								textwidth < (bw - margin * 2) * 0.8
 							)

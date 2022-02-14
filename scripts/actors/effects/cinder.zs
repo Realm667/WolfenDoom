@@ -77,8 +77,11 @@ class CinderSpawnerSky : SnowSpawner
 	{
 		EffectSpawner.SpawnEffect();
 
-		if (args[2]) { A_SpawnItemEx("FloatingCinder", random(-Args[0], Args[0]), 0, 0, frandom(-1.0, 1.0), frandom(-1.0, 1.0),frandom(-1.0, -3.0), random(0, 359), 0, Args[1]); }
-		else { A_SpawnItemEx("FloatingCinder", random(-Args[0], Args[0]), random(-Args[0], Args[0]), 0, frandom(-1.0, 1.0), frandom(-1.0, 1.0), frandom(-1.0, -3.0), 0, 0, Args[1]); }
+		double zoffset = 0;
+		if (manager) { zoffset = min(manager.particlez - pos.z, 0); }
+
+		if (args[2]) { A_SpawnItemEx("FloatingCinder", random(-Args[0], Args[0]), 0, zoffset, frandom(-1.0, 1.0), frandom(-1.0, 1.0),frandom(-1.0, -3.0), random(0, 359), 0, Args[1]); }
+		else { A_SpawnItemEx("FloatingCinder", random(-Args[0], Args[0]), random(-Args[0], Args[0]), zoffset, frandom(-1.0, 1.0), frandom(-1.0, 1.0), frandom(-1.0, -3.0), 0, 0, Args[1]); }
 	}
 }
 

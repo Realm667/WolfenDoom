@@ -514,6 +514,8 @@ class KeenPlayer : PlayerPawn
 
 	Inventory pogo;
 
+	static const int flyspeed[] = { 1 * 256, 3 * 256 };
+
 	Property AirControl:aircontrol;
 
 	Default
@@ -893,6 +895,16 @@ class KeenPlayer : PlayerPawn
 		if (mo.player) { mo.player.Resurrect(); }
 		Level.ExitLevel(position, false);
 	}
+
+   override void CheckCrouch(bool totallyfrozen)
+   {
+      let player = self.player;
+      UserCmd cmd = player.cmd;
+
+      if (cmd.buttons & BT_CROUCH) { cmd.upmove -= flyspeed[!!(cmd.buttons & BT_SPEED ^ cl_run)]; }
+
+      Super.CheckCrouch(totallyfrozen);
+   }
 }
 
 class Billy : PowerMorph

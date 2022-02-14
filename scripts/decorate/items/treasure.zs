@@ -370,7 +370,7 @@ class ChestKey : CompassItem
 		//$Category Pickups (BoA)/Treasures
 		//$Title Treasure Chest Key
 		//$Color 17
-		Scale 0.5;
+		Scale 0.25;
 		Tag "$TAGCHEST";
 		Inventory.Icon "I_SPBKEY";
 		Inventory.PickupMessage "$CHESTKEY";
@@ -383,5 +383,34 @@ class ChestKey : CompassItem
 	Spawn:
 		SBKY A -1 LIGHT("TRESLITE");
 		Stop;
+	}
+}
+
+class Ribbon : CompassItem
+{
+	Default
+	{
+		//$Title Typerwiter Ribbon
+		//$Category Props (BoA)/Interactive Items
+		Radius 8;
+		Height 4;
+		Inventory.Icon "RIBBA0";
+		Inventory.MaxAmount 10;
+		Inventory.PickupSound "misc/i_pkup";
+		Inventory.PickupMessage "$PURIBBON";
+		+NOGRAVITY
+	}
+
+	States
+	{
+		Spawn:
+			MDLA A -1;
+			Stop;
+	}
+
+	override void PostBeginPlay()
+	{
+		Super.PostBeginPlay();
+		angle = Random(0, 359);
 	}
 }

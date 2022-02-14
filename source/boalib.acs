@@ -33,6 +33,7 @@ bool bridgestatus[BRIDGECOUNT];
 
 #include "zcommon.acs"
 #include "functions.acs"
+#include "cinematics.acs"
 #include "colorgrade.acs"
 #include "compass.acs"
 #include "droplets.acs"
@@ -122,7 +123,7 @@ function str GetKeyMessage(str message, str key, bool inline)
 
 function void StartMessage(void)
 {
-	ACS_NamedExecute("HintMessage", 0, "INTROTEXGEN01", "+use");
+	ACS_NamedExecute("HintMessage", 0, "INTROTEXGEN01", "");
 }
 
 function void ClearMessage(void)
@@ -156,25 +157,4 @@ function void Overlay(str graphic, bool onoff)
 {
 	if (onoff) { ScriptCall("Overlay", "ACSInit", graphic, 0, 0, 0, 1.0); }
 	else { ScriptCall("Overlay", "ACSInit", graphic, 1, 0, 0, 1.0); }
-}
-
-// Standard script to set up a standard start-of-level cutscene
-script "CinematicStart" (void)
-{
-	GiveInventory("CutsceneEnabled", 1);
-	FadeToBlack(0, 0, 70);
-	HideMap(true);
-	SetPlayerProperty(1, 1, PROP_FROZEN);
-}
-
-// Standard script to restore normal play after a cutscene
-script "CinematicEnd" (void)
-{
-	FadeToBlack(140, 70, 70);
-	Delay(2 * 35);
-	Overlay("MOVIEHUD", false); // Disable the two commonly used overlays automatically
-	Overlay("MOVIEHD5", false);
-	HideMap(false);
-	SetPlayerProperty(1, 0, PROP_FROZEN);
-	TakeInventory("CutsceneEnabled", 1);
 }

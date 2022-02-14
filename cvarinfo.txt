@@ -83,6 +83,8 @@ user bool boa_huddamageindicators = true; // Draws directional damage indicator 
 user bool boa_hudgrenadeindicators = true; // Draws directional grenade indicator overlay on the screen
 user float boa_hudcompassscale = 1.0; // Scale of the compass when drawn on the hud
 user bool boa_altmessagestyle = false; // Force fullscreen-style messages, even with the traditional HUD
+user float boa_hudmeterfade = 0.0; // Hide the stamina and air meters when they are full
+user int boa_hudshowpartime = 0; // Show the current map time and par time on the hud (1 shows map and par time and keeps the total time, 2 shows just map and par time in place of total time)
 
 // Render distance (user)
 user int boa_drop1_dist = 1536; //Large blood drops
@@ -128,6 +130,7 @@ server bool boa_debugtankintercepts = false; 		// Shows a sprite at tank aim/int
 server bool boa_debugculling = false;			// Shows culling max actor limit information
 server bool boa_debugscreenblends = false;		// Shows color blend information for damage screen
 server bool boa_debugbarrelspawns = false;		// Shows position and orientation information for barrels which were automatically fixed
+server bool boa_debugcoopcheckpoints = false;		// Shows silhouettes of new co-op player positions
 
 // Achievements
 user string boa_achievementrecord0 = "";
@@ -137,3 +140,4 @@ user string boa_achievementrecord3 = "";
 
 // Miscellaneous
 user bool boa_firstrun = true;
+user bool boa_remode = false;

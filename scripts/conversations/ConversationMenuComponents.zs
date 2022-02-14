@@ -842,7 +842,7 @@ class DialogueResponses : DialogueComponent
 
 			screen.DrawText(SetFont, fontcolor, int(x), int(y), ResponseLines[i], DTA_VirtualWidth, int(dialogue.targetscreenx / scale), DTA_VirtualHeight, int(dialogue.targetscreeny / scale), DTA_Alpha, alpha * dialogue.alpha);
 
-			if (i == Responses[response])
+			if (response < Responses.Size() && i == Responses[response])
 			{
 				String tbuf;
 

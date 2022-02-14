@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015-2021 Tormentor667, Ed the Bat, Ozymandias81, Talon1024,
+ * Copyright (c) 2015-2022 Tormentor667, Ed the Bat, Ozymandias81, Talon1024,
  *                         AFADoomer
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -152,6 +152,8 @@ class ExclamationHintpaper : ExclamationTouchable
 
 class InteractionIcon: Actor
 {
+	transient CVar REMode;
+
 	Default
 	{
 		Height 8;
@@ -166,15 +168,31 @@ class InteractionIcon: Actor
 		+NOBLOCKMAP
 		+NOGRAVITY
 	}
+
 	States
 	{
-	Spawn:
-		TNT1 A 0 NODELAY A_CheckRange(128.0, "FadeAway", TRUE);
-		ICNI A 1 BRIGHT;
-		Loop;
-	FadeAway:
-		"####" A 10;
-		Goto Spawn;
+		Spawn:
+			TNT1 A 0 NODELAY A_CheckRange(128.0, "FadeAway", TRUE);
+			ICNI A 1 BRIGHT;
+			Loop;
+		FadeAway:
+			"####" A 10;
+			Goto Spawn;
+	}
+
+	override void PostBeginPlay()
+	{
+		REMode = CVar.FindCVar("boa_remode");
+		Super.PostBeginPlay();
+	}
+
+	override void Tick()
+	{
+		Super.Tick();
+
+		// Don't show default interaction indicators if RE mode indicators are turned on
+		if (REMode && REMode.GetBool()) { bInvisible = true; }
+		else if (bInvisible != Default.bInvisible) { bInvisible = Default.bInvisible; }
 	}
 }
 

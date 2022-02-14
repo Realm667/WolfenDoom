@@ -88,6 +88,7 @@ class BoAStatusBar : BaseStatusBar
 		KeenStatsWidget.Init("Keen HUD", Widget.WDG_TOP | Widget.WDG_LEFT, 0);
 		CountWidget.Init("Money and Time", Widget.WDG_TOP | Widget.WDG_LEFT, 0);
 		LogWidget.Init("Notifications", Widget.WDG_TOP | Widget.WDG_LEFT, 0, zindex:100);
+		LogWidget.Init("MidPrint", Widget.WDG_MIDDLE | Widget.WDG_CENTER, 0, (-3, -82), 99, 1, true, ZScriptTools.STR_CENTERED);
 		CompassWidget.Init("Compass", Widget.WDG_TOP | Widget.WDG_LEFT, 1);
 
 		ObjectivesWidget.Init("Objectives", Widget.WDG_RIGHT, 0);
@@ -147,7 +148,23 @@ class BoAStatusBar : BaseStatusBar
 		{
 			Font fnt = (CPlayer.mo is "KeenPlayer") ? ClassicFont : SmallFont;
 
-			if (printlevel <= PRINT_HIGH) { Log.Add(CPlayer, outline, "Notifications", printlevel, fnt); }
+			if (printlevel <= PRINT_HIGH)
+			{
+				if (printlevel == PRINT_HIGH) // Default level if no printlevel specified in printf call
+				{
+					// HACK: Intercept map marker messages and increment the marker number by 1
+					// so that the numbers in the message range from 1-10 instead of from 0-9
+					// Note that this only affects on-screen messages, not console buffer or log files
+					String mapmarker = StringTable.Localize("$AMSTR_MARKEDSPOT");
+					if (!outline.indexof(mapmarker)) // If message string begins with marked spot string...
+					{
+						int num = outline.mid(mapmarker.length()).ToInt();
+						outline = String.Format("%s %i\n", mapmarker, num + 1);
+					}
+				}
+
+				Log.Add(CPlayer, outline, "Notifications", printlevel, fnt);
+			}
 			else { Log.Add(CPlayer, outline, "Chat", printlevel, fnt); }
 
 			processed = true; 
@@ -190,8 +207,16 @@ class BoAStatusBar : BaseStatusBar
 			}
 		}
 
-		// This gets rid of needing to double-press useinv to immediately use a newly selected inventory item.
-		CPlayer.inventorytics = 0;
+		if (CheckInventory("HQ_Checker"))
+		{
+			// Don't allow inventory use in the INTERMAP
+			CPlayer.inventorytics = 1;
+		}
+		else
+		{
+			// This gets rid of needing to double-press useinv to immediately use a newly selected inventory item.
+			CPlayer.inventorytics = 0;
+		}
 
 		Widget.TickWidgets();
 	}
@@ -278,7 +303,8 @@ class BoAStatusBar : BaseStatusBar
 				if (savetimer > (savetimertime - 15)) { savealpha = (savetimertime - savetimer) / 15.0; }
 				else if (savetimer <= 15) { savealpha = savetimer / 15.0; }
 
-				screen.DrawTexture(save, true, 620, 20, DTA_CenterOffset, true, DTA_KeepRatio, true, DTA_VirtualWidth, 640, DTA_VirtualHeight, 400, DTA_Alpha, savealpha);
+				int width = int(400 * Screen.GetAspectRatio());
+				screen.DrawTexture(save, true, width - 20, 20, DTA_CenterOffset, true, DTA_KeepRatio, true, DTA_VirtualWidth, width, DTA_VirtualHeight, 400, DTA_Alpha, savealpha);
 			}
 		}
 	}
@@ -807,7 +833,7 @@ class BoAStatusBar : BaseStatusBar
 				// Fix for un-alerted sneakable enemies showing less than full health on lower skill settings because they are "friendly".
 				if (nmo.bFriendly && nmo.user_sneakable)
 				{
-					LastMaxHealth = mo.Default.Health * G_SkillPropertyFloat(SKILLP_MonsterHealth);
+					LastMaxHealth = int(mo.Default.Health * G_SkillPropertyFloat(SKILLP_MonsterHealth));
 				}
 			}
 			else { LastIcon = ""; }
@@ -861,13 +887,14 @@ class BoAStatusBar : BaseStatusBar
 		int crosshair = 0;
 		String crosshairstring;
 		Actor crosshairtarget;
+		int crosshairstatus;
 		color clr = 0x000000;
 		TextureID CrosshairImage;
 		double chscale = max(0.35, crosshairscale); // Scale with crosshair, down to a certain point
 		double size = (vid_scalefactor > 0 ? vid_scalefactor : 1.0) * clamp(Screen.GetWidth() / 1920.0, 0.25, 1.0) * 3.5 * chscale; // Smaller screen widths get smaller overlays
 		Vector2 dimensions;
 		double w, h;
-		double maxwidth = chscale * max(64.0, int(screen.GetWidth() / 20));
+		double maxwidth = chscale * 64.0 / min(1.0, vid_scalefactor);
 
 		if (BoAPlayer(CPlayer.mo))
 		{
@@ -875,6 +902,7 @@ class BoAStatusBar : BaseStatusBar
 			crosshair = BoAPlayer(CPlayer.mo).crosshair;
 			crosshairstring = BoAPlayer(CPlayer.mo).crosshairstring;
 			crosshairtarget = BoAPlayer(CPlayer.mo).crosshairtarget;
+			crosshairstatus = BoAPlayer(CPlayer.mo).crosshairstatus;
 		}
 
 		// Don't continue if there's no crosshair, we're in titlemap, or the player is dead
@@ -998,9 +1026,24 @@ class BoAStatusBar : BaseStatusBar
 			// Handle the scaling size multiplier here
 			dimensions *= size;
 
-			// Draw centered on screen, with offsets forced to center of the icon
-			if (clr > 0) { screen.DrawTexture (CrosshairImage, false, screen.GetWidth() / 2, screen.GetHeight() / 2, DTA_DestWidthF, dimensions.x, DTA_DestHeightF, dimensions.y, DTA_AlphaChannel, true, DTA_FillColor, clr & 0xFFFFFF, DTA_CenterOffset, true); }
-			else { screen.DrawTexture (CrosshairImage, false, screen.GetWidth() / 2, screen.GetHeight() / 2, DTA_DestWidthF, dimensions.x, DTA_DestHeightF, dimensions.y, DTA_CenterOffset, true); }
+			if (crosshair >= 80 && crosshair <= 90)
+			{
+				int y = int(screen.GetHeight() / 2 + dimensions.y / 5);
+
+				int angle;
+				if (crosshairstatus == 0x7FFFFFFF) { angle = 180 - (crosshair - 80) * 18; }
+				else { angle = 180 - crosshairstatus * 180 / 65536; }
+
+				TextureID fill = TexMan.CheckForTexture("COMPFILL");
+				if (fill) { screen.DrawTexture (fill, false, screen.GetWidth() / 2, y, DTA_DestWidthF, dimensions.x, DTA_DestHeightF, dimensions.y, DTA_AlphaChannel, clr != 0x0, DTA_FillColor, clr & 0xFFFFFF, DTA_CenterOffset, true, DTA_Rotate, angle, DTA_ClipBottom, y); }
+
+				TextureID border = TexMan.CheckForTexture("COMPBORD");
+				if (border) { screen.DrawTexture (border, false, screen.GetWidth() / 2, y, DTA_DestWidthF, dimensions.x, DTA_DestHeightF, dimensions.y, DTA_AlphaChannel, clr != 0x0, DTA_FillColor, clr & 0xFFFFFF, DTA_CenterOffset, true); }
+			}
+			else
+			{
+				screen.DrawTexture (CrosshairImage, false, screen.GetWidth() / 2, screen.GetHeight() / 2, DTA_DestWidthF, dimensions.x, DTA_DestHeightF, dimensions.y, DTA_AlphaChannel, clr != 0x0, DTA_FillColor, clr & 0xFFFFFF, DTA_CenterOffset, true);
+			}
 		}
 
 		if (crosshairtarget && crosshairtarget != CPlayer.mo && CPlayer.ReadyWeapon && CPlayer.ReadyWeapon != Weapon(CPlayer.mo.FindInventory("NullWeapon")))
@@ -1361,11 +1404,163 @@ class BoAStatusBar : BaseStatusBar
 		if (CPlayer.mo is "KeenPlayer")
 		{
 			ClassicMessageBox.PrintMessage("\c[TrueBlack]" .. ZScriptTools.StripColorCodes(msg), 2, "", 0, 70, 13, 6);
-
-			return true;
+		}
+		else
+		{
+			Log.Add(CPlayer, msg .. "\r", "MidPrint", PRINT_BOLD, fnt);
 		}
 
-		// Normal message for regular BoA play...
-		return false;
+		return true;
+	}
+
+	override bool DrawPaused(int player)
+	{
+		/*
+		// ZScript version of the built-in pause screen
+		TextureID pause = TexMan.CheckForTexture("PAUSED"); // gameinfo.PauseSign is not exposed to ZScript
+		Vector2 size = TexMan.GetScaledSize(pause);
+		Vector2 offsets = TexMan.GetScaledOffset(pause);
+
+		double x = (Screen.GetWidth() - size.x * CleanXfac) / 2 + offsets.x * CleanXfac;
+
+		Screen.DrawTexture(pause, true, x, 4, DTA_CleanNoMove, true);
+
+		if (paused && multiplayer)
+		{
+			String pstring = StringTable.Localize("$TXT_BY");
+			pstring.Substitute("%s", players[paused - 1].GetUserName());
+			Screen.DrawText(SmallFont, Font.CR_RED, ((Screen.GetWidth() - SmallFont.StringWidth(pstring)) * CleanXfac) / 2, Screen.GetHeight() * CleanYfac + 4, pstring, DTA_CleanNoMove, true);
+		}
+		*/
+
+		Font fnt = BigFont;
+		Font fnt2 = SmallFont;
+		Font fnt3 = Font.GetFont("THREEFIV");
+
+		String text = StringTable.Localize("$PAUSED");
+		String monsters = StringTable.Localize("AM_MONSTERS", false);
+		String secrets = StringTable.Localize("AM_SECRETS", false);
+		String items = StringTable.Localize("AM_ITEMS", false);
+
+		int clr = Font.CR_GRAY;
+		int titleclr = Font.FindFontColor("LightGray");
+
+		Vector2 hudscale = StatusBar.GetHudScale();
+		double scale = 2.0;
+		double textscale = 0.5 * scale;
+		double texscale = 0.125 * scale;
+
+		Vector2 texsize = (0, 0);
+		TextureID pause = TexMan.CheckForTexture("PAUSEBG");
+		if (pause) { texsize = TexMan.GetScaledSize(pause) * texscale; }
+
+		int x = int(Screen.GetWidth() / hudscale.x / 2);
+		int y = int(Screen.GetHeight() / hudscale.y / 3);
+
+		int marginleft = int(4 * scale);
+		int margintop = int(4 * scale);
+
+		String levelname = level.LevelName;
+		if (idmypos) { levelname = levelname .. " - " .. level.mapname.MakeUpper(); }
+
+		int titleheight = int(fnt.GetHeight() * textscale);
+		int lineheight = int(fnt2.GetHeight() * textscale);
+		int subtitleheight = int(fnt3.GetHeight() * textscale);
+
+		int width = int(max(96 * scale, texsize.x)); // Original graphic was 96 pixels wide
+		width = max(width, int(fnt.StringWidth(text) * scale + marginleft * 2));
+		width = max(width, int(fnt.StringWidth(levelname) * textscale + marginleft * 2));
+		int innerwidth = width - marginleft * 2;
+
+		int height = int(margintop * 2 + subtitleheight + titleheight + int(8 * textscale));
+
+		if (pause) { height += int(max(fnt.GetHeight() * scale, texsize.y)); }
+		else { height += int(fnt.GetHeight() * scale); }
+
+		height += lineheight;
+
+		int detailheight = 0;
+		if (!deathmatch)
+		{
+			if (level.total_items > 0) { detailheight += lineheight; }
+			if (level.total_secrets > 0) { detailheight += lineheight; }
+			if (level.total_monsters > 0) { detailheight += lineheight; }
+		}
+
+		if (detailheight) { height += detailheight + lineheight / 2; }
+
+		y -= height / 2;
+
+		Vector2 startpos = (x, y);
+		Vector2 size = (width, height);
+
+		DrawToHUD.DrawFrame("FRAME_", x - width / 2, y - margintop, width, height, 0x1b1b1b, alpha, 0.53 * alpha);
+		if (pause) { DrawToHUD.DrawTexture(pause, (x, y + texsize.y / 2), alpha, texscale); }
+		DrawToHUD.DrawText(text, (x, y + texsize.y / 2), fnt, alpha, scale, (-1, -1), Font.FindFontColor("RedandWhite"), ZScriptTools.STR_CENTERED);
+
+		x -= width / 2 - marginleft;
+		y += int(max(fnt.GetHeight() * scale, texsize.y));
+
+		int segments;
+		String time, partime;
+		[partime, segments] = CountWidget.TimeFormatted(level.partime, true, 3);
+		time = CountWidget.TimeFormatted(level.maptime, false, segments);
+
+		if (level.partime) { time = time ..  String.Format(" \c[Dark Gray]%s \c[Gold]", "/") .. partime; }
+
+		if (multiplayer)
+		{
+			String pstring = StringTable.Localize("$TXT_BY");
+			pstring.ToLower();
+			pstring.Substitute("%s", players[paused - 1].GetUserName());
+
+			DrawToHUD.DrawText(pstring, (x + innerwidth, y), fnt3, alpha, textscale, (-1, -1), clr, ZScriptTools.STR_RIGHT);
+		}
+
+		y += subtitleheight + int(4 * textscale);
+
+		DrawToHud.DrawText(levelname, (x, y), fnt, alpha, textscale, shade:titleclr);
+		y += titleheight + int(4 * textscale);
+
+		DrawToHUD.Dim(0x0, 0.2, x - 3 * scale, y - 2 * scale, innerwidth + 6 * scale, height - margintop * 2 - (y - startpos.y) + 4 * scale);
+
+		DrawToHUD.DrawText(time, (x + innerwidth, y), fnt2, alpha, textscale, (-1, -1), clr, ZScriptTools.STR_RIGHT);
+		y += lineheight * 3 / 2;
+
+		if (!deathmatch)
+		{
+			String value;
+
+			if (level.total_monsters > 0)
+			{
+				DrawToHud.DrawText(monsters, (x, y), fnt2, alpha, textscale, shade:clr);
+
+				value = value.Format("%d/%d", level.killed_monsters, level.total_monsters);
+				DrawToHud.DrawText(value, (x + innerwidth, y), fnt2, alpha, textscale, shade:Font.CR_RED, flags: ZScriptTools.STR_RIGHT);
+
+				y += lineheight;
+			}
+
+			if (level.total_secrets > 0)
+			{
+				DrawToHud.DrawText(secrets, (x, y), fnt2, alpha, textscale, shade:clr);
+
+				value = value.Format("%d/%d", level.found_secrets, level.total_secrets);
+				DrawToHud.DrawText(value, (x + innerwidth, y), fnt2, alpha, textscale, shade:Font.CR_GOLD, flags: ZScriptTools.STR_RIGHT);
+
+				y += lineheight;
+			}
+
+			// Draw item count
+			if (level.total_items > 0)
+			{
+				DrawToHud.DrawText(items, (x, y), fnt2, alpha, textscale, shade:clr);
+
+				value = value.Format("%d/%d", level.found_items, level.total_items);
+				DrawToHud.DrawText(value, (x + innerwidth, y), fnt2, alpha, textscale, shade:Font.CR_YELLOW, flags: ZScriptTools.STR_RIGHT);
+			}
+		}
+
+		return true;
 	}
 }

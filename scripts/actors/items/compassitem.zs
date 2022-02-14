@@ -23,7 +23,7 @@
 class CompassItem : PuzzleItem
 {
 	String iconName;
-	int specialclue;
+	int specialclue, savetime;
 	class<Inventory> alternate0, alternate1;
 
 	Property SpecialClue:specialclue;
@@ -63,19 +63,22 @@ class CompassItem : PuzzleItem
 
 	override bool TryPickup(in out Actor toucher)
 	{
-		// Handling so that conversation-given items properly check the max amount before giving items to the player and taking money
-		if (bDropped && maxamount > 0) // If given/dropped by another actor, and there is a max amount set...
+		let current = toucher.FindInventory(GetClass()); // Check if it's already in player inventory...
+
+		// Handling so that items properly check the max amount before giving items to the player
+		// and taking money or items - but always pick up specialclue items or script-running items.
+		if (specialclue || special) { bAlwaysPickup = true; }
+		else if (current)
 		{
-			let current = toucher.FindInventory(GetClass()); // and it's already in player inventory...
-			if (current && current.Amount + Amount > maxamount) // don't pick it up if you already have max amount
+			// Don't force pickup in excess of MaxAmount
+			if (maxamount <= 1 || (maxamount > 0 && current.Amount + Amount > maxamount))
 			{
-				bAlwaysPickup = false;	// Don't force pickup in excess of MaxAmount if the item was spawned by another actor after map load
-							// This flag is checked in the internal Inventory pickup logic, regardless of the return value here.
+				bAlwaysPickup = false; // This flag is checked in the internal Inventory pickup logic, regardless of the return value here.
 				return false;
 			}
 		}
 
-		bool pickup = Super.TryPickup(toucher);
+		bool pickup = PickupChecks(toucher);
 
 		if (pickup && specialclue == 3)
 		{
@@ -83,7 +86,27 @@ class CompassItem : PuzzleItem
 			String texName = TexMan.GetName(tex);
 
 			// If it belongs to this chapter and gets added, autosave on pickup so we don't have to deal with clearing the entries if we die.
-			if (MapStatsHandler.AddSpecialPickup(texName, specialclue)) { level.MakeAutoSave(); }
+			if (MapStatsHandler.AddSpecialPickup(texName, specialclue)) { savetime = level.maptime + 1; }
+		}
+
+		return pickup;
+	}
+
+	bool PickupChecks(in out Actor toucher)
+	{
+		Actor p =  players[consoleplayer].mo;
+		bool pickup = false;
+
+		if (toucher.player && multiplayer && !deathmatch && toucher != p)
+		{
+			bAutoActivate = false;
+			pickup = Inventory.TryPickup(p);
+			String msg = "\034+" .. toucher.player.GetUserName() .. ":\034L " .. StringTable.Localize(PickupMessage());
+			PrintPickupMessage(p.CheckLocalView(), msg);
+		}
+		else
+		{
+			pickup = Inventory.TryPickup(toucher);
 		}
 
 		return pickup;
@@ -94,6 +117,7 @@ class CompassItem : PuzzleItem
 		Super.Tick();
 
 		if (owner) { RemoveAlternates(); }
+		if (savetime > 0 && savetime == level.maptime) { level.MakeAutoSave(); }
 	}
 
 	void RemoveAlternates()
@@ -108,5 +132,10 @@ class CompassItem : PuzzleItem
 			item = owner.FindInventory(alternate1);
 			if (item) { item.Destroy(); }
 		}
+	}
+
+	override bool ShouldStay ()
+	{
+		return false;
 	}
 }

@@ -208,9 +208,26 @@ OptionMenu "BoAOptionsMiddle" // Added in the middle of the default Options menu
 	class "MenuShim"
 }
 
-OptionMenu "BoAHudOptionsInsert"
+OptionMenu "BoAHudScaleOptionsInsert"
 {
 	Option "$OPT_HUDRATIO",				"boa_hudratio", "ForceRatios"
+
+	class "MenuShim"
+}
+
+OptionValue "HUDParTime"
+{
+	0, "$TXT_NO"
+	1, "$TXT_YES"
+	2, "$OPTVAL_HUD_REPLACETIME"
+}
+
+OptionMenu "BoAHudOptionsInsert"
+{
+	StaticText " "
+	PercentSlider "$OPT_HUDMETERFADE",		"boa_hudmeterfade", 0.0, 1.0, 0.05, "$OPT_HUDMETERFADE_HIDE", "$OPT_HUDMETERFADE_SHOW"
+	Option "$OPT_HUDPARTIME", 			"boa_hudshowpartime", "HUDParTime"
+	StaticText " "
 
 	class "MenuShim"
 }
@@ -230,6 +247,7 @@ OptionMenu "BoACustomizeControls"
 	Submenu    "$CNTRLMNU_INVENTORY"   , "BoAInventoryControlsMenu"
 	Submenu    "$MAPCNTRLMNU_CONTROLS" , "MapControlsMenu"
 	Submenu    "$CNTRLMNU_OTHER"       , "OtherControlsMenu"
+	Submenu    "$MNU_MULTIPLAYER"        , "ChatControlsMenu"
 }
 
 OptionMenu "BoAActionControlsMenu"

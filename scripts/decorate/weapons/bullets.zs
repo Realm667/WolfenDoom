@@ -285,14 +285,8 @@ class MutantTracer : BulletTracer
 {
 	Default
 	{
-	DamageType "MutantPoison";
-	BulletTracer.Trail "MutantTrail";
-	}
-	States
-	{
-	Spawn:
-		TNT1 A 1 BRIGHT A_JumpIfTracerCloser(96,"Whiz");
-		Loop;
+		DamageType "MutantPoison";
+		BulletTracer.Trail "MutantTrail";
 	}
 }
 
@@ -307,44 +301,57 @@ class AstroTracer : BulletTracer
 {
 	Default
 	{
-	+BLOODLESSIMPACT
-	DamageType "AstroPoison";
-	DeathType "Disintegrate";
-	BulletTracer.Trail "AstroTrail";
-	+BULLETTRACER.NOINERTIA
-	+NOGRAVITY
+		+BLOODLESSIMPACT
+		+BULLETTRACER.NOINERTIA
+		+NOGRAVITY
+		DamageType "AstroPoison";
+		DeathType "Disintegrate";
+		BulletTracer.Trail "AstroTrail";
+		BulletTracer.Whiz "AstroWhizzer";
+		Decal "ScorchSmall";
 	}
+
 	States
 	{
-	Spawn:
-		TNT1 A 1 BRIGHT A_JumpIfTracerCloser(96,"Whiz");
-		Loop;
-	Whiz:
-		TNT1 A -1 BRIGHT A_SpawnItemEx("AstroWhizzer");
-		Stop;
-	Death:
-	Crash:
-		TNT1 AAAAA 0 A_SpawnItemEx("SparkG", 0, 0, 0, random(1,2), random(1,2), random(1,2), random(1,360), SXF_CLIENTSIDE);
-		TNT1 A 0 { A_SpawnItemEx("SparkFlareG"); A_SpawnItemEx("ZBulletChip"); }
-		TNT1 A 8 A_StartSound("astroricochet");
-		Stop;
-	XDeath:
-		TNT1 AAAAA 0 A_SpawnItemEx("SparkG", 0, 0, 0, random(1,2), random(1,2), random(1,2), random(1,360), SXF_CLIENTSIDE);
-		TNT1 A 0 A_SpawnItemEx("SparkFlareG");
-		TNT1 A 1 A_StartSound("astrohitflesh");
-		Stop;
+		Death:
+		Crash:
+			TNT1 AAAAA 0 {
+				A_SpawnItemEx("SparkG", 0, 0, 0, random(-2,2), random(-2,2), random(-2,2), random(0,359), SXF_CLIENTSIDE); //T667 improvements
+			}
+			TNT1 A 8 {
+				// If a non-bleeding actor was hit, count the shot as successful
+				if (BoAPlayer(target) && BoAPlayer(target).tracker && tracer && tracer.bIsMonster && tracer.bNoBlood) { BoAPlayer(target).tracker.shots[target.PlayerNumber()][0]++; }
+
+				if (trailactor) { trailactor.Destroy(); }
+				A_SpawnItemEx("SparkFlareG");
+				A_SpawnItemEx("ZScorchSmall");
+				bWindThrust = false;
+				if (!bNoRicochet) { A_StartSound("astroricochet"); }
+			}
+			Stop;
+		XDeath:
+			TNT1 AAAAA 0 {
+				A_SpawnItemEx("SparkG", 0, 0, 0, random(-2,2), random(-2,2), random(-2,2), random(0,359), SXF_CLIENTSIDE); //T667 improvements
+			}
+			TNT1 A 1 {
+				// If a bleeding actor was hit, count the shot as successful
+				if (BoAPlayer(target) && BoAPlayer(target).tracker) { BoAPlayer(target).tracker.shots[target.PlayerNumber()][0]++; }
+				
+				A_SpawnItemEx("SparkFlareG");
+				bWindThrust = false;
+				A_StartSound("astrohitflesh");
+			}
+			Stop;
 	}
 }
 
 class EnemyAstroTracer : AstroTracer { Default { DamageFunction (random(2,4)); } }
 
-class AstroWhizzer : Actor
+class AstroWhizzer : Whizzer
 {
-	States
+	Default
 	{
-	Spawn:
-		TNT1 A 1 A_StartSound("astrowhiz");
-		Stop;
+		Whizzer.Sound "astrowhiz";
 	}
 }
 
@@ -355,9 +362,9 @@ class AstroTracerPlayer : AstroTracer
 {
 	Default
 	{
-	ProjectileKickback 60;
-	DamageFunction (random(3,17));
-	Speed 100;
+		ProjectileKickback 60;
+		DamageFunction (random(3,17));
+		Speed 100;
 	}
 }
 
@@ -366,30 +373,45 @@ class ProtoTracer : BulletTracer
 {
 	Default
 	{
-	+BLOODLESSIMPACT
-	DamageType "AstroPoison";
-	DeathType "Disintegrate";
-	BulletTracer.Trail "ProtoTrail";
+		+BLOODLESSIMPACT
+		DamageType "AstroPoison";
+		DeathType "Disintegrate";
+		BulletTracer.Trail "ProtoTrail";
+		BulletTracer.Whiz "AstroWhizzer";
+		Decal "ScorchSmall";
 	}
+
 	States
 	{
-	Spawn:
-		TNT1 A 1 BRIGHT A_JumpIfTracerCloser(96,"Whiz");
-		Loop;
-	Whiz:
-		TNT1 A -1 BRIGHT A_SpawnItemEx("AstroWhizzer");
-		Stop;
-	Death:
-	Crash:
-		TNT1 AAAAA 0 A_SpawnItemEx("SparkR", 0, 0, 0, random(1,2), random(1,2), random(1,2), random(1,360), SXF_CLIENTSIDE);
-		TNT1 A 0 { A_SpawnItemEx("SparkFlareR"); A_SpawnItemEx("ZBulletChip"); }
-		TNT1 A 8 A_StartSound("astroricochet");
-		Stop;
-	XDeath:
-		TNT1 AAAAA 0 A_SpawnItemEx("SparkR", 0, 0, 0, random(1,2), random(1,2), random(1,2), random(1,360), SXF_CLIENTSIDE);
-		TNT1 A 0 A_SpawnItemEx("SparkFlareR");
-		TNT1 A 1 A_StartSound("astrohitflesh");
-		Stop;
+		Death:
+		Crash:
+			TNT1 AAAAA 0 {
+				A_SpawnItemEx("SparkR", 0, 0, 0, random(-2,2), random(-2,2), random(-2,2), random(0,359), SXF_CLIENTSIDE); //T667 improvements
+			}
+			TNT1 A 8 {
+				// If a non-bleeding actor was hit, count the shot as successful
+				if (BoAPlayer(target) && BoAPlayer(target).tracker && tracer && tracer.bIsMonster && tracer.bNoBlood) { BoAPlayer(target).tracker.shots[target.PlayerNumber()][0]++; }
+
+				if (trailactor) { trailactor.Destroy(); }
+				A_SpawnItemEx("SparkFlareR");
+				A_SpawnItemEx("ZScorchSmall");
+				bWindThrust = false;
+				if (!bNoRicochet) { A_StartSound("astroricochet"); }
+			}
+			Stop;
+		XDeath:
+			TNT1 AAAAA 0 {
+				A_SpawnItemEx("SparkR", 0, 0, 0, random(-2,2), random(-2,2), random(-2,2), random(0,359), SXF_CLIENTSIDE); //T667 improvements
+			}
+			TNT1 A 1 {
+				// If a bleeding actor was hit, count the shot as successful
+				if (BoAPlayer(target) && BoAPlayer(target).tracker) { BoAPlayer(target).tracker.shots[target.PlayerNumber()][0]++; }
+				
+				A_SpawnItemEx("SparkFlareR");
+				bWindThrust = false;
+				A_StartSound("astrohitflesh");
+			}
+			Stop;
 	}
 }
 

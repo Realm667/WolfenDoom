@@ -574,6 +574,7 @@ class Gem : CompassItem
 	{
 		//$Category Props (BoA)/Interactive Items
 		Alpha 0.95;
+		Height 8;
 		RenderStyle "Add";
 		Scale 0.5;
 		Inventory.Icon "GEMAA0";
@@ -586,6 +587,34 @@ class Gem : CompassItem
 		Spawn:
 			MDLA A -1 Light("MineralLite");
 			Stop;
+	}
+}
+
+class StatueKey : CompassItem
+{
+	Default
+	{
+		//$Category Props (BoA)/Interactive Items
+		Radius 12;
+		Height 20;
+		Inventory.Icon "STATA0";
+		Inventory.PickupSound "misc/i_pkup";
+		Inventory.PickupMessage "$PUSTAT";
+		+NOGRAVITY
+	}
+
+	States
+	{
+		Spawn:
+			MDLA A -1 NoDelay A_AttachLight("Glow", DynamicLight.PulseLight, 0x194b4b, int(radius), int(radius * 2), DYNAMICLIGHT.LF_ATTENUATE, (sin(pitch) * height / 2 + 4, 0, cos(pitch) * height / 2), 2.0);
+			Stop;
+	}
+
+	override void Tick()
+	{
+		Super.Tick();
+
+		if (owner) { A_RemoveLight("Glow"); }
 	}
 }
 
@@ -675,9 +704,22 @@ class InteractiveItem : PuzzleItem
 	{
 		if (bAllowPickup)
 		{
-			Inventory.TryPickup(user);
-			PrintPickupMessage(user.CheckLocalView(), PickupMessage());
-			if (!bAutoActivate) { S_StartSound(PickupSound, CHAN_ITEM, CHANF_UI | CHANF_NOSTOP, 1.0); }
+			Actor p =  players[consoleplayer].mo;
+
+			if (multiplayer && !deathmatch && user != p)
+			{
+				bAutoActivate = false;
+				Inventory.TryPickup(p);
+				String msg = "\034+" .. user.player.GetUserName() .. ":\034L " .. StringTable.Localize(PickupMessage());
+				PrintPickupMessage(p.CheckLocalView(), msg);
+				S_StartSound(PickupSound, CHAN_ITEM, CHANF_UI | CHANF_NOSTOP, 0.5);
+			}
+			else
+			{
+				Inventory.TryPickup(user);
+				PrintPickupMessage(user.CheckLocalView(), PickupMessage());
+				if (!bAutoActivate) { S_StartSound(PickupSound, CHAN_ITEM, CHANF_UI | CHANF_NOSTOP, 1.0); }
+			}
 		}
 		else
 		{
@@ -712,6 +754,11 @@ class InteractiveItem : PuzzleItem
 		}
 
 	}
+
+	override bool ShouldStay ()
+	{
+		return false;
+	}
 }
 
 class TextPaper : InteractiveItem
@@ -734,6 +781,7 @@ class TextPaper : InteractiveItem
 		//$Arg2Enum { 1 = "Set Type (Book print)"; 2 = "Worn Typewriter"; 3 = "'Classic'"; 4 = "Handwriting 1 (Messy)"; 5 = "Handwriting 2 (Neat)"; 6 = "Handwriting 3 (Neat, small)"; 7 = "Console Font"; 8 = "Anka/Coder 16pt"; }
 		//$Arg2Default 2
 
+		Height 8;
 		-InteractiveItem.ALLOWPICKUP
 	}
 
@@ -1124,6 +1172,7 @@ mixin class GiveBuoyancy
 			else
 			{
 				SetOrigin((pos.xy, max(waterheight - waterclip, floorz)), true);
+				vel.z = 0;
 			}
 		}
 		else if (inwater)

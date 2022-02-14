@@ -22,6 +22,7 @@
 class BulletTracer : FastProjectile
 {
 	Class<TracerTrail> trail;
+	Class<Whizzer> whiz;
 	Actor trailactor;
 	int offset;
 	int zoffset;
@@ -33,6 +34,7 @@ class BulletTracer : FastProjectile
 	flagdef PortalAware: flags, 2;
 
 	Property Trail:trail;
+	Property Whiz:whiz;
 
 	Default
 	{
@@ -49,6 +51,7 @@ class BulletTracer : FastProjectile
 		FastSpeed 85;
 		Decal "BulletChip";
 		BulletTracer.Trail "TracerTrail";
+		BulletTracer.Whiz "Whizzer";
 		DamageType "Bullet";
 	}
 
@@ -60,18 +63,16 @@ class BulletTracer : FastProjectile
 		Death:
 		Crash:
 			TNT1 AAA 0 {
-				if (trailactor) { trailactor.Destroy(); }
 				A_SpawnItemEx("TracerSpark", 0, 0, 0, random(-2,2), random(-2,2), random(-2,2), random(0,359)); //T667 improvements
-				bWindThrust = false;
 			}
 			PUFF B 3 BRIGHT LIGHT("BPUFF1") {
 				// If a non-bleeding actor was hit, count the shot as successful
 				if (BoAPlayer(target) && BoAPlayer(target).tracker && tracer && tracer.bIsMonster && tracer.bNoBlood) { BoAPlayer(target).tracker.shots[target.PlayerNumber()][0]++; }
-				if (!bNoRicochet)
-				{
-					A_StartSound("ricochet");
-				}
+
+				if (trailactor) { trailactor.Destroy(); }
 				A_SpawnItemEx("ZBulletChip");
+				bWindThrust = false;
+				if (!bNoRicochet) { A_StartSound("ricochet"); }
 			}
 			PUFF CD 3 BRIGHT LIGHT("BPUFF1");
 			Stop;
@@ -162,7 +163,8 @@ class BulletTracer : FastProjectile
 	{
 		if ((level.time + offset) % 30 == 0)
 		{
-			if ((target && target.player) || (manager && manager.InRange(pos, 0))) { DoWhizChecks(); }
+			if (target && target.player) { DoWhizChecks(); } // Always do checks for player-spawned tracers
+			else if (manager && manager.InRange(pos, 1)) { DoWhizChecks(); } // Use particle manager range to avoid overhead
 		}
 
 		ClearInterpolation();
@@ -336,7 +338,7 @@ class BulletTracer : FastProjectile
 
 					if (target && (target.IsHostile(it.thing) || (Nazi(it.thing) && Nazi(it.thing).user_sneakable)) && target.species != it.thing.species) // Only 'whizz' at hostiles
 					{
-						Actor mo = Spawn("Whizzer", pos);
+						Actor mo = Spawn(whiz, pos);
 						if (mo) { mo.master = it.thing; }
 
 						it.thing.SoundAlert(target, false, 64); // Emit alert sound
@@ -455,6 +457,14 @@ class ZScorch : ZBulletChip
 	}
 }
 
+class ZScorchSmall : ZScorch
+{
+	Default
+	{
+		Scale 0.25;
+	}
+}
+
 class ZScorchLower : ZBulletChip
 {
 	Default
@@ -569,11 +579,16 @@ class ZPlasma : ZBulletChip
 
 class Whizzer : GrenadeBase
 {
+	String whizsound;
+
+	Property Sound:whizsound;
+
 	Default
 	{
 		+NOGRAVITY
 		+NOINTERACTION
 		GrenadeBase.FearDistance 32;
+		Whizzer.Sound "whiz";
 	}
 
 	States
@@ -587,7 +602,7 @@ class Whizzer : GrenadeBase
 	{
 		Super.PostBeginPlay();
 
-		if (master && PlayerPawn(master)) { A_StartSound("whiz"); } // Only play whiz sound if near a player that's not the originator
+		if (master && PlayerPawn(master)) { A_StartSound(whizsound); } // Only play whiz sound if near a player that's not the originator
 	}
 }
 

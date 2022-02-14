@@ -189,6 +189,8 @@ class NaziWeapon : Weapon
 
 	override bool TryPickup (in out Actor toucher)
 	{
+		if (special) { bAlwaysPickup = true; }
+
 		bool ret = Super.TryPickup(toucher);
 
 		if (ret && toucher && toucher.player)

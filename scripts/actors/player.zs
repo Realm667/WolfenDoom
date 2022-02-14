@@ -68,18 +68,21 @@ class BoAPlayer : PlayerPawn
 {
 	double leveltilt, oldtilt, leveltiltangle;
 	Actor CrosshairTarget;
+	Line CrosshairLine;
 	Actor ForcedHealthBar;
 	Actor DragTarget;
 	SpriteID baseSprite;
 	Weapon LastWeapon;
 	Line UseTarget;
-	int crosshair;
+	int crosshair, crosshairstatus;
 	String crosshairstring;
 	Actor climbing;
 	int interactiontimeout;
 	int flinchfactor;
 	bool dodragging; // Set true to enable dragging of corpses and pushable actors (crouch and use)
 	AchievementTracker tracker;
+	BoAFindHitPointTracer hittracer;
+	static const int flyspeed[] = { 1 * 256, 3 * 256 };
 
 	Default
 	{
@@ -132,6 +135,8 @@ class BoAPlayer : PlayerPawn
 		DamageFactor "Creepy", 0.0;
 		DamageFactor "FriendlyFrag", 0.5;
 		Scale 0.65;
+		TeleFogSourceType "Nothing";
+		TeleFogDestType "Nothing";
 	}
 
 	States
@@ -248,6 +253,7 @@ class BoAPlayer : PlayerPawn
 		Thing_ChangeTID(0, playerID);
 
 		tracker = AchievementTracker(StaticEventHandler.Find("AchievementTracker"));
+		hittracer = new("BoAFindHitPointTracer");
 
 		Super.PostBeginPlay();
 	}
@@ -483,7 +489,10 @@ class BoAPlayer : PlayerPawn
 			{
 				player.health = health = GetMaxHealth(true);
 			}
+		}
 
+		if (giveall || name ~== "health" || name ~== "stamina")
+		{
 			let def = GetDefaultByType("Stamina");
 			GiveInventory("Stamina", def.MaxAmount);
 		}
@@ -680,15 +689,18 @@ class BoAPlayer : PlayerPawn
 		
 		if (name ~== "astrostein")
 		{
-			GiveInventory("AstrosteinMelee", 1);
-			GiveInventory("AstroLuger", 1);
-			GiveInventory("AstroClipAmmo", GetDefaultByType("AstroClipAmmo").MaxAmount);
-			GiveInventory("AstroShotgun", 1);
-			GiveInventory("AstroShotgunShell", GetDefaultByType("AstroShotgunShell").MaxAmount);
-			GiveInventory("AstroChaingun", 1);
-			GiveInventory("AstroRocketLauncher", 1);
-			GiveInventory("AstroRocketAmmo", GetDefaultByType("AstroRocketAmmo").MaxAmount);
-			GiveInventory("AstroGrenadePickup", GetDefaultByType("GrenadePickup").MaxAmount);
+			GiveInventory("AstrosteinMelee", 1, true);
+			GiveInventory("AstroLuger", 1, true);
+			GiveInventory("AstroClipAmmo", GetDefaultByType("AstroClipAmmo").MaxAmount, true);
+			GiveInventory("AstroShotgun", 1, true);
+			GiveInventory("AstroShotgunShell", GetDefaultByType("AstroShotgunShell").MaxAmount, true);
+			GiveInventory("AstroChaingun", 1, true);
+			GiveInventory("AstroRocketLauncher", 1, true);
+			GiveInventory("AstroRocketAmmo", GetDefaultByType("AstroRocketAmmo").MaxAmount, true);
+			GiveInventory("AstroGrenadePickup", GetDefaultByType("GrenadePickup").MaxAmount, true);
+			GiveInventory("AstroRedKey", 1, true);
+			GiveInventory("AstroYellowKey", 1, true);
+			GiveInventory("AstroBlueKey", 1, true);
 
 			return;
 		}
@@ -789,6 +801,16 @@ class BoAPlayer : PlayerPawn
 			player.mo.CheckDegeneration();
 			player.mo.CheckAirSupply();
 		}
+	}
+
+	override void CheckCrouch(bool totallyfrozen)
+	{
+		let player = self.player;
+		UserCmd cmd = player.cmd;
+
+		if (cmd.buttons & BT_CROUCH) { cmd.upmove -= flyspeed[!!(cmd.buttons & BT_SPEED ^ cl_run)]; }
+
+		Super.CheckCrouch(totallyfrozen);
 	}
 
 	override void CheckJump()
@@ -964,8 +986,13 @@ class BoAPlayer : PlayerPawn
 	virtual void DoInteractions()
 	{
 		FLineTraceData trace;
+
+		hittracer.DoTrace(self, angle, UseRange * 3, pitch, 0, player.viewheight, hittracer);
+		CrosshairLine = hittracer.Results.HitLine;
+
 		LineTrace(angle, UseRange, pitch, TRF_THRUACTORS, player.viewheight, 0.0, 0.0, trace);
 		Line AimLine = trace.HitLine;
+
 		TextureID AimTexture = trace.HitTexture;
 
 		FLineTraceData actortrace;
@@ -1025,26 +1052,37 @@ class BoAPlayer : PlayerPawn
 			}
 		}
 
-		if (AimLine && !crosshair)
+		if (!crosshair)
 		{
-			// Only show custom crosshair if the line is running a script, is a locked door or puzzle item use line, or has a UDMF lock number
-			//  Otherwise - Why?  It's not an activation line, so what's the point of showing a hint?
-			if ( 	
-				AimLine.special == 13 || // Door_LockedRaise
-				AimLine.special == 80 || // ACS_Execute 
-				(AimLine.special >= 83 && AimLine.special <= 85) || // ACS_LockedExecute, ACS_ExecuteWithResult, ACS_LockedExecuteDoor
-				Aimline.special == 129 || // UsePuzzleItem
-				AimLine.special == 226 || // ACS_ExecuteAlways
-				Aimline.locknumber
-			)
+			if (AimLine)
 			{
-				crosshair = AimLine.GetUDMFInt("user_crosshair"); // Use the line's user_crosshair property if it has a value
-				crosshairstring = AimLine.GetUDMFString("user_crosshair"); // Or try looking for a class name as a string value
+				// Only show custom crosshair if the line is running a script, is a locked door or puzzle item use line, or has a UDMF lock number
+				//  Otherwise - Why?  It's not an activation line, so what's the point of showing a hint?
+				if ( 	
+					AimLine.special == 13 || // Door_LockedRaise
+					AimLine.special == 80 || // ACS_Execute 
+					(AimLine.special >= 83 && AimLine.special <= 85) || // ACS_LockedExecute, ACS_ExecuteWithResult, ACS_LockedExecuteDoor
+					Aimline.special == 129 || // UsePuzzleItem
+					AimLine.special == 226 || // ACS_ExecuteAlways
+					Aimline.locknumber
+				)
+				{
+					crosshair = AimLine.GetUDMFInt("user_crosshair"); // Use the line's user_crosshair property if it has a value
+					crosshairstring = AimLine.GetUDMFString("user_crosshair"); // Or try looking for a class name as a string value
+				}
+				else
+				{
+					crosshair = 0;
+					crosshairstring = "";
+				}
 			}
-			else
+
+			if (AimActor && !crosshair && !crosshairstring.length())
 			{
-				crosshair = 0;
-				crosshairstring = "";
+				if (AimActor is "BoASupplyChest" && !BoASupplyChest(AimActor).open && Distance3d(AimActor) <= UseRange)
+				{
+					crosshairstring = BoASupplyChest(AimActor).keyclass;
+				}
 			}
 		}
 
@@ -1157,7 +1195,7 @@ class BoAPlayer : PlayerPawn
 				}
 			}
 		}
-		else
+		else if (!AimLine && !AimActor)
 		{
 			if (LastWeapon)
 			{
@@ -1190,7 +1228,7 @@ class BoAPlayer : PlayerPawn
 		}
 
 		// Blank out the actual crosshair if a custom one is being used - 0 reverts to the player or weapon's default
-		if (player.ReadyWeapon) { player.ReadyWeapon.Crosshair = (crosshair > 0 || crosshairstring || player.mo.FindInventory("CutsceneEnabled")) ? 99 : 0; }
+		if (player.ReadyWeapon) { player.ReadyWeapon.Crosshair = (crosshair > 0 || crosshairstring || player.mo.FindInventory("CutsceneEnabled") || level.maptime < 5) ? 99 : 0; }
 	}
 
 	bool IsCorpse(Actor mo)

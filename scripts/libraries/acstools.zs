@@ -284,18 +284,33 @@ class ACSTools
 		return false;
 	}
 
-	static String, String GetKeyPressString(String bind, bool required = false, String keycolor = "Gold", String textcolor = "Untranslated", String errorcolor = "Dark Red")
+	static String, bool GetKeyPressString(String bind, bool required = false, String keycolor = "Gold", String textcolor = "Untranslated", String errorcolor = "Dark Red")
 	{
 		keycolor = "\c[" .. keycolor .. "]";
 		textcolor = "\c[" .. textcolor .. "]";
 		errorcolor = "\c[" .. errorcolor .. "]";
 
-		int c1, c2;
-		[c1, c2] = Bindings.GetKeysForCommand(bind);
+		Array<int> keycodes;
+		bool ret = true;
 
-		String keynames = Bindings.NameKeys(c1, c2);
-		keynames = ZScriptTools.StripColorCodes(keynames);
-		keynames.Replace(", ", ">" .. textcolor .. " " .. StringTable.Localize("$WORD_OR") .. " " .. keycolor .. "<");
+		// Look up key binds for the passed-in command
+		Bindings.GetAllKeysForCommand(keycodes, bind);
+
+		String keynames = "";
+		if (keycodes.Size())
+		{
+			// Get the key names for each bound key, and parse them into a lookup array
+			keynames = Bindings.NameAllKeys(keycodes);
+			keynames = ZScriptTools.StripColorCodes(keynames);
+
+			int index = keynames.RightIndexOf(", ");
+			if (index > -1)
+			{
+				keynames = keynames.left(index) .. " " .. textcolor .. StringTable.Localize("$WORD_OR") .. " " .. keycolor .. keynames.mid(index + 2);
+				keynames.Replace(", ", textcolor .. ", " .. keycolor);
+			}
+
+		}
 
 		// If the bind is an inventory use command, append '<activate item>' to the string
 		String suffix = "";
@@ -309,14 +324,14 @@ class ACSTools
 		{
 			String actionname = ACSTools.GetActionName(bind);
 
-			return errorcolor .. "<" .. StringTable.Localize("$BINDKEY") .. " " .. actionname .. ">" .. textcolor .. suffix, actionname;
+			return errorcolor .. "<" .. StringTable.Localize("$BINDKEY") .. " " .. textcolor .. actionname .. errorcolor .. ">" .. textcolor .. suffix, false;
 		}
 		else
 		{
-			if (keynames.length()) { keynames = keycolor .. "<" .. keynames .. ">" .. textcolor .. suffix; }
+			if (keynames.length()) { keynames = keycolor .. keynames .. textcolor .. suffix; }
 		}
 
-		return keynames, keynames;
+		return keynames, true;
 	}
 
 	static String GetActionName(String actionname, String prefix = "$CNTRLMNU_")
@@ -379,7 +394,7 @@ class ACSTools
 		output = StringTable.Localize(output);
 
 		// Fall back to displaying the bind information if no string was found.
-		if (output.left(9) ~== prefix) { output = rawactionname; }
+		if (output.left(prefix.length() - 1) ~== prefix.Mid(1)) { output = rawactionname; }
 
 		return output;
 	}

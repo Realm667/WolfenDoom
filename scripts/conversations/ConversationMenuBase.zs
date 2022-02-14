@@ -294,7 +294,7 @@ class ExtendedConversationMenuBase : ConversationMenu
 			ReplyLines.Destroy();
 		}
 
-		let goodbyestr = mCurNode.Goodbye;
+		String goodbyestr = mCurNode.Goodbye;
 		if (!(goodbyestr ~== "None"))
 		{
 			if (goodbyestr.Length() == 0)
@@ -308,8 +308,15 @@ class ExtendedConversationMenuBase : ConversationMenu
 			goodbyestr = Stringtable.Localize(goodbyestr);
 			if (goodbyestr.Length() == 0 || goodbyestr.CharAt(0) == "$") goodbyestr = "Bye.";
 
+			String temp; BrokenString ReplyLines;
+			[temp, ReplyLines] = BrokenString.BreakString(goodbyestr, w, fnt:thisfont);
+
 			mResponses.Push(mResponseLines.Size());
-			mResponseLines.Push(goodbyestr);
+			for (int j = 0; j < ReplyLines.Count(); ++j)
+			{
+				mResponseLines.Push(ReplyLines.StringAt(j));
+			}
+			ReplyLines.Destroy();
 		}
 
 		return mResponseLines.Size();

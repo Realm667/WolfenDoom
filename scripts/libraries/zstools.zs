@@ -420,8 +420,10 @@ class ZScriptTools
 		STR_TOP = 4,
 		STR_BOTTOM = 8,
 		STR_MIDDLE = 16,
-		STR_FIXED = 32 // Print directly on screen, not in hud coordinate space
-	}
+		STR_FIXED = 32, // Print directly on screen, not in hud coordinate space
+		STR_MENU = 64, // Print in menu coordinate space (only implemented for key buttons)
+		STR_NOSCALE = 128, // Don't recalculate coordinates
+	};
 
 	static ui void TypeString(Font fnt, BrokenString lines, int msgwidth, Vector2 textpos, int texttic, double textscale = 1.0, double alpha = 1.0, Vector2 screensize = (640, 400), int flags = STR_CENTERED | STR_MIDDLE)
 	{
@@ -457,11 +459,31 @@ class ZScriptTools
 			int nextchar = 0, i = 0;
 			while (i < len)
 			{
+				let currentline = lines.StringAt(l);
 				int c;
-				[c, nextchar] = lines.StringAt(l).GetNextCodePoint(nextchar);
-				line = String.Format("%s%c", line, c);
-
+				[c, nextchar] = currentline.GetNextCodePoint(nextchar);
+				line.AppendCharacter(c);
 				i++;
+
+				if (c == 0x5B) // [
+				{
+					[c, nextchar] = currentline.GetNextCodePoint(nextchar);
+					line.AppendCharacter(c);
+					i++;
+
+					if (c == 0x5B) // [ (double brackets surround inline key binds)
+					{
+						while (c && c != 0x5D) // ]
+						{
+							[c, nextchar] = currentline.GetNextCodePoint(nextchar);
+							line.AppendCharacter(c);
+							i++;
+						}
+						[c, nextchar] = currentline.GetNextCodePoint(nextchar);
+						line.AppendCharacter(c);
+						i++;
+					}
+				}
 			}
 
 			if (flags & STR_FIXED) { screen.DrawText(fnt, Font.CR_UNTRANSLATED, textpos.x / textscale, textpos.y / textscale + l * lineheight / textscale, line, DTA_VirtualWidth, int(w * textscale), DTA_VirtualHeight, int(h * textscale), DTA_Alpha, alpha); }
@@ -561,6 +583,28 @@ class ZScriptTools
 	static void CloseAutomap()
 	{
 		level.StartIntermission('Automap_Hack', FSTATE_InLevel);
+	}
+}
+
+// Separate class for this because it has to be a thinker, unfortunately.
+class LineTools : Thinker
+{
+	static void SetLineFlag(int lineid, int flag, bool set = true)
+	{
+		if (!lineid) { return; }
+
+		LineIdIterator lines = LineIdIterator.Create(lineid);
+
+		int l = lines.Next();
+
+		while (l > -1)
+		{
+			// See the Line struct for all of the flags as they are named internally (https://github.com/coelckers/gzdoom/blob/master/wadsrc/static/zscript/mapdata.zs)
+			if (set) { level.lines[l].flags |= flag; }
+			else { level.lines[l].flags &= ~flag; }
+			
+			l = lines.Next();
+		}
 	}
 }
 

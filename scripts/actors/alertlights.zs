@@ -89,7 +89,7 @@ class AlertPointLight : PointLight replaces PointLight
   actor.  This is used in-game by the Volumetric Light actor.
 
 */
-class AlertLight : Actor
+class AlertLight : CullActorBase
 {
 	double checkRadius;
 	double oldVisibility;
@@ -114,17 +114,23 @@ class AlertLight : Actor
 
 	override void PostBeginPlay()
 	{
-		if (master) {
+		if (master)
+		{
 			if (master.bDormant) { Destroy(); return; }
 
 			hasmaster = true;
 			checkRadius = master.args[3]; // If spawned and master is set, use parent's arg[3] as check radius
-		} else {
+		}
+		else
+		{
 			checkRadius = args[0]; // Otherwise, use the actor's arg[0]
 		}
+
 		if (!checkRadius) { checkRadius = 64; } // If nothing was set, use 64 map unit radius
 
-		if (!wasculled) { EffectsManager.Add(self, checkRadius * 2, true); } // Spawn the actor back in at twice its radius
+		Super.PostBeginPlay();
+
+		if (!bWasCulled) { EffectsManager.Add(self, checkRadius * 2, EffectsManager.FORCE_TID); } // Spawn the actor back in at twice its radius
 	}
 
 	void A_AddVisibility(Actor lighttarget = null, int minlight = 0)

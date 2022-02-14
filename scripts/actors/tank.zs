@@ -617,6 +617,7 @@ Class BoAFindHitPointTracer : LineTracer
 
 			return TRACE_Skip;
 		}
+		else if (Results.HitTexture) { return TRACE_Stop; }
 		else if (Results.HitType == TRACE_HitFloor || Results.HitType == TRACE_HitCeiling)
 		{
 			return TRACE_Stop;
@@ -636,6 +637,16 @@ Class BoAFindHitPointTracer : LineTracer
 		}
 
 		return TRACE_Stop;
+	}
+
+	static void DoTrace(Actor origin, double angle, double dist, double pitch, int flags, double zoffset, BoAFindHitPointTracer thistracer)
+	{
+		if (!origin) { return; }
+
+		thistracer.skipspecies = origin.species;
+		thistracer.skipactor = origin;
+		Vector3 tracedir = ZScriptTools.GetTraceDirection(angle, pitch);
+		thistracer.Trace(origin.pos + (0, 0, zoffset), origin.CurSector, tracedir, dist, 0);
 	}
 }
 

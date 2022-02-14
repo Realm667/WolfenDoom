@@ -8,7 +8,8 @@ from sys import platform
 parser = argparse.ArgumentParser(
     description="Check for cells in a CSV file which end in a newline"
 )
-parser.add_argument("csv_file", type=str)
+parser.add_argument("csv_file")
+parser.add_argument("--escaped", action='store_true')
 args = parser.parse_args()
 
 with open(args.csv_file) as csvdata:
@@ -19,6 +20,8 @@ with open(args.csv_file) as csvdata:
         rowid = "{} {}".format(lineno + 2, row["Identifier"])
         for lang in row:
             content = row[lang]
+            if args.escaped:
+                content = content.replace("\\n", "\n")
             if content.endswith("\n") or content.endswith("\r"):
                 preview = content[:15] + "..." \
                     if len(content) > 15 \

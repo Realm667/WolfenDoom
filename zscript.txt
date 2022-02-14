@@ -44,6 +44,7 @@ version "3.7.2"
 #include "scripts/eventhandlers/ObjectiveHandler.zs"
 #include "scripts/eventhandlers/Tracker.zs"
 #include "scripts/eventhandlers/PickupSpecialFix.zs"
+#include "scripts/eventhandlers/checkpoints.zs"			// Co-op checkpoints
 
 // Status Bar
 #include "scripts/BoAStatusBar.zs"
@@ -56,6 +57,7 @@ version "3.7.2"
 #include "scripts/actors/enemies/attacks.zs"			// Enemy projectiles
 #include "scripts/actors/enemies/tanks.zs"			// Tanks
 #include "scripts/actors/enemies/drone.zs"			// Proto-Drone
+#include "scripts/actors/enemies/animals.zs"			// Rat/Bat/Shark enemies
 #include "scripts/actors/tracers.zs"				// Tracers base classes
 #include "scripts/actors/enemies/stealth.zs"			// Stealth enabling actors
 #include "scripts/actors/alertlights.zs"			// Base class for light objects that should affect "sneaking" light level
@@ -217,7 +219,6 @@ version "3.7.2"
 //Monsters
 #include "scripts/decorate/monsters/shared.zs"		//Place this always as first
 #include "scripts/decorate/monsters/nazis.zs"		//and this as second - ozy81
-#include "scripts/decorate/monsters/animals.zs"
 #include "scripts/decorate/monsters/bosses.zs"
 #include "scripts/decorate/monsters/mechas.zs"
 #include "scripts/decorate/monsters/mutants.zs"

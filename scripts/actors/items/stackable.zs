@@ -59,7 +59,7 @@ class StackableInventory : PuzzleItem
 
 		if (stack && stack.GetParentInventoryClass() == GetClass())
 		{
-			if (Amount < MaxAmount || (sv_unlimited_pickup && !item.ShouldStay()))
+			if (Amount < MaxAmount || (sv_unlimited_pickup && !item.ShouldStay()) || special)
 			{
 				if (Amount > 0 && Amount + item.Amount < 0)
 				{
