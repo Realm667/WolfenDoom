@@ -2571,7 +2571,7 @@ class Totengraber_Healthy : RocketMan
 	Obituary "$TOTENS";
 	ActiveSound "toten/active";
 	SeeSound "toten/sight";
-	DeathSound "hitlerghost/die"; //laughs
+	DeathSound "hitlerghost/die2"; //laughs
 	}
 	States
 	{
@@ -2725,7 +2725,7 @@ class Mengele_Healthy : RocketMan
 	ActiveSound "mengele/active";
 	SeeSound "mengele/sight";
 	PainSound "mengele/pain";
-	DeathSound "hitlerghost/die";
+	DeathSound "hitlerghost/die2";
 	}
 	States
 	{
