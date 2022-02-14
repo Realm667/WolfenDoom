@@ -112,6 +112,11 @@ class CompassItem : PuzzleItem
 		return pickup;
 	}
 
+	override bool HandlePickup(Inventory item)
+	{
+		return Inventory.HandlePickup(item);
+	}
+
 	override void Tick()
 	{
 		Super.Tick();
