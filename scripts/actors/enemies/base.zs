@@ -895,7 +895,7 @@ class Base : Actor
 			A_SoundVolume(CHAN_6, volume);
 		}
 		Laser.DoTrace(self, angle, 2048, pitch, 0, zoffset, hitpointtracer);
-		[beam, flare] = Laser.DrawLaser(self, beam, flare, hitpointtracer.Results, "LaserBeam", "LaserPuff", damage, zoffset, drawdecal, alpha);
+		[beam, flare] = Laser.DrawLaser(self, beam, flare, hitpointtracer.Results, "LaserBeam", "LaserPuff", damage, zoffset, drawdecal, alpha, "LaserFlare", pmanager);
 	}
 
 	void A_StopLaser()

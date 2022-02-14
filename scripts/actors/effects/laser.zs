@@ -77,8 +77,6 @@ class LaserShooter : EffectSpawner
 	{
 		if (args[1]) { angle += args[1] * 0.25; }
 
-		if (CheckRange(boa_sfxlod, true)) { return; }
-
 		if (snd != "")
 		{
 			A_StartSound(snd, CHAN_6, CHANF_NOSTOP, 1.0);
@@ -86,7 +84,7 @@ class LaserShooter : EffectSpawner
 		}
 
 		Laser.DoTrace(self, angle, beamdistance, pitch, 0, zoffset, hitpointtracer);
-		[beam, flare] = Laser.DrawLaser(self, beam, flare, hitpointtracer.Results, beamclass, puffclass, damage, zoffset, drawdecal, alpha, flareclass);
+		[beam, flare] = Laser.DrawLaser(self, beam, flare, hitpointtracer.Results, beamclass, puffclass, damage, zoffset, drawdecal, alpha, flareclass, manager);
 
 		// Spawn line attacks above/below the main beam to keep the player from crouching underneath or jumping over
 		// Match the actual beam's distance, pitch, angle, and damage
@@ -242,7 +240,7 @@ class ZapShooter : LaserShooter
 		}
 
 		Laser.DoTrace(self, shootAngle, shootDist, shootPitch, 0, zoffset, hitpointtracer);
-		[beam, flare] = Laser.DrawLaser(self, beam, flare, hitpointtracer.Results, beamclass, puffclass, damage, zoffset, drawdecal, alpha, flareclass);
+		[beam, flare] = Laser.DrawLaser(self, beam, flare, hitpointtracer.Results, beamclass, puffclass, damage, zoffset, drawdecal, alpha, flareclass, manager);
 	}
 }
 
@@ -265,11 +263,8 @@ class Laser : Actor
 		}
 	}
 
-	static LaserBeam, Actor DrawLaser(Actor origin, LaserBeam beam, Actor flare, TraceResults traceresults, Class<Actor> spawnclass = "LaserBeam", Class<Actor> puffclass = "LaserPuff", int damage = 0, double zoffset = 0, bool drawdecal = true, double alpha = 1.0, Class<Actor> flareclass = "LaserFlare")
+ 	static LaserBeam, Actor DrawLaser(Actor origin, LaserBeam beam, Actor flare, TraceResults traceresults, Class<Actor> spawnclass = "LaserBeam", Class<Actor> puffclass = "LaserPuff", int damage = 0, double zoffset = 0, bool drawdecal = true, double alpha = 1.0, Class<Actor> flareclass = "LaserFlare", ParticleManager manager = null)
 	{
-		ParticleManager manager;
-		manager = ParticleManager.GetManager();
-
 		if (!traceresults) { return beam, flare; }
 		if (!origin) { return beam, flare; }
 
