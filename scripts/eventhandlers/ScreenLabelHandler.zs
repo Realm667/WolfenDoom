@@ -439,6 +439,8 @@ class ScreenLabelHandler : EventHandler
 
 	override void WorldLoaded (WorldEvent e)
 	{
+		if (!revar || !revar.GetBool()) { return; }
+		
 		for (int l = 0; l < level.lines.Size(); l++)
 		{
 			line ln = level.lines[l];
