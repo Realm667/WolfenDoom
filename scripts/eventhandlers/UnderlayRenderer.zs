@@ -110,14 +110,16 @@ class UnderlayRenderer : EventHandler
 
 		TextureID image = TexMan.CheckForTexture(o.image, TexMan.Type_Any);
 
+		bool alphachannel = !!(o.clr > -1);
+
 		if (o.flags & Overlay.Fit) // scale to fit the screen at the narrowest dimension, maintaining aspect ratio
 		{
-			screen.DrawTexture(image, true, o.offsets.x, o.offsets.y, DTA_FullScreenEx, FSMode_ScaleToFill, DTA_Alpha, drawalpha, DTA_Rotate, o.angle);
+			screen.DrawTexture(image, true, o.offsets.x, o.offsets.y, DTA_FullScreenEx, FSMode_ScaleToFill, DTA_Alpha, drawalpha, DTA_Rotate, o.angle, DTA_AlphaChannel, alphachannel, DTA_FillColor, o.clr);
 
 			// Darken the mask graphic in dark sectors by drawing it again as a black silhouette.
 			if (blackalpha && o.flags & Overlay.LightEffects) { screen.DrawTexture(image, true, o.offsets.x, o.offsets.y, DTA_FullScreenEx, FSMode_ScaleToFill, DTA_Alpha, blackalpha, DTA_Rotate, o.angle, DTA_FillColor, 0); }
 		}
-		if (o.flags & Overlay.Force320x200) // This is basically the old gas mask and space suit drawing code by Talon1024
+		else if (o.flags & Overlay.Force320x200) // This is basically the old gas mask and space suit drawing code by Talon1024
 		{
 			int vWidth = int(200 * Screen.GetAspectRatio());
 			int vXOffset = 320 - vWidth / 2;
@@ -135,7 +137,9 @@ class UnderlayRenderer : EventHandler
 				DTA_VirtualWidth, vWidth,
 				DTA_KeepRatio, true, 
 				DTA_Alpha, drawalpha, 
-				DTA_Rotate, o.angle);
+				DTA_Rotate, o.angle,
+				DTA_AlphaChannel, alphachannel,
+				DTA_FillColor, o.clr);
 
 			// Darken the mask graphic in dark sectors by drawing it again as a black silhouette.
 			if (blackalpha && o.flags & Overlay.LightEffects)
@@ -155,14 +159,14 @@ class UnderlayRenderer : EventHandler
 			int height = int(Screen.GetHeight());
 			int width = int(Screen.GetWidth());
 
-			screen.DrawTexture(image, true, o.offsets.x, o.offsets.y, DTA_DestWidth, width, DTA_DestHeight, height, DTA_Alpha, drawalpha, DTA_Rotate, o.angle);
+			screen.DrawTexture(image, true, o.offsets.x, o.offsets.y, DTA_DestWidth, width, DTA_DestHeight, height, DTA_Alpha, drawalpha, DTA_Rotate, o.angle, DTA_AlphaChannel, alphachannel, DTA_FillColor, o.clr);
 			
 			// Darken the mask graphic in dark sectors by drawing it again as a black silhouette.
 			if (blackalpha && o.flags & Overlay.LightEffects) { screen.DrawTexture(image, true, o.offsets.x, o.offsets.y, DTA_DestWidth, width, DTA_DestHeight, height, DTA_Alpha, blackalpha, DTA_Rotate, o.angle, DTA_FillColor, 0); }
 		}
 	}
 
-	overlay AddOverlay(PlayerInfo player, String image, int holdtime, int intime, int outtime, double alpha = 1.0, uint index = 0, int flags = Overlay.Default, double angle = 0, Vector2 offsets = (0, 0))
+	overlay AddOverlay(PlayerInfo player, String image, int holdtime, int intime, int outtime, double alpha = 1.0, uint index = 0, int flags = Overlay.Default, double angle = 0, Vector2 offsets = (0, 0), color clr = -1)
 	{
 		bool newoverlay = false;
 		overlay o = FindOverlay(player, image, index);
@@ -195,6 +199,7 @@ class UnderlayRenderer : EventHandler
 			o.alpha = alpha;
 			o.angle = angle;
 			o.offsets = offsets;
+			o.clr = clr;
 
 			return o;
 		}
@@ -233,21 +238,22 @@ class Overlay : Thinker
 	int intime, holdtime, outtime, start, flags, index;
 	double alpha, angle;
 	Vector2 offsets;
+	Color clr;
 
-	static overlay Init(PlayerInfo player, String image, int holdtime, int intime, int outtime, double alpha = 1.0, uint index = 0, int flags = Overlay.Default, double angle = 0, Vector2 offsets = (0, 0))
+	static overlay Init(PlayerInfo player, String image, int holdtime, int intime, int outtime, double alpha = 1.0, uint index = 0, int flags = Overlay.Default, double angle = 0, Vector2 offsets = (0, 0), color clr = -1)
 	{
 		if (!player) { return null; }
 
 		let handler = UnderlayRenderer(EventHandler.Find("UnderlayRenderer"));
 		if (!handler) { return null; }
 
-		return handler.AddOverlay(player, image, holdtime, intime, outtime, alpha, index, flags, angle, offsets);
+		return handler.AddOverlay(player, image, holdtime, intime, outtime, alpha, index, flags, angle, offsets, clr);
 	}
 
 	// Wrapper for setting an overlay from ACS
 	// Used in C3M5_A subway crash sequence script and cutscenes
 	//  ScriptCall("Overlay", "ACSInit", "M_INJ", 0, 0, 175, 2.0);
-	static overlay ACSInit(Actor mo, String image, int holdtime, int intime, int outtime, double alpha = 1.0, int index = 0, int flags = Overlay.Default, double angle = 0, Vector2 offsets = (0, 0))
+	static overlay ACSInit(Actor mo, String image, int holdtime, int intime, int outtime, double alpha = 1.0, int index = 0, int flags = Overlay.Default, double angle = 0, Vector2 offsets = (0, 0), color clr = -1)
 	{
 		PlayerInfo p;
 		if (mo && mo.player) { p = mo.player; } // Use the activating player
@@ -256,7 +262,7 @@ class Overlay : Thinker
 		let handler = UnderlayRenderer(EventHandler.Find("UnderlayRenderer"));
 		if (!handler) { return null; }
 
-		return handler.AddOverlay(p, image, holdtime, intime, outtime, alpha, index, flags, angle, offsets);
+		return handler.AddOverlay(p, image, holdtime, intime, outtime, alpha, index, flags, angle, offsets, clr);
 
 	}
 }

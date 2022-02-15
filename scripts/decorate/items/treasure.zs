@@ -396,7 +396,7 @@ class Ribbon : CompassItem
 		Height 4;
 		Inventory.Icon "RIBBA0";
 		Inventory.MaxAmount 10;
-		Inventory.PickupSound "misc/i_pkup";
+		Inventory.PickupSound "pickup/generic";
 		Inventory.PickupMessage "$PURIBBON";
 		+NOGRAVITY
 	}

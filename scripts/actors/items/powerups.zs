@@ -1262,7 +1262,6 @@ class RepairKit : CompassItem
 		Tag "$TAGREKIT";
 		Inventory.Icon "EKPKA0";
 		Inventory.PickupMessage "$ELECPAK";
-		Inventory.PickupSound "misc/gadget_pickup";
 		Inventory.MaxAmount 3;
 		RepairKit.RepairTime 500;
 	}
@@ -1393,7 +1392,8 @@ class ZyklonResistance : PowerupGiver
 		Scale 0.3;
 		Inventory.Icon "BEAKD0";
 		Inventory.MaxAmount 1;
-		Inventory.PickupSound "misc/k_pkup";
+		Inventory.PickupSound "misc/health_pkup";
+		Inventory.UseSound "misc/drink";
 		Inventory.PickupMessage "$ZRESIST";
 		Powerup.Duration 0x7FFFFFFF;
 		Powerup.Type "PowerZyklonResistance";
@@ -1410,6 +1410,9 @@ class ZyklonResistance : PowerupGiver
 
 class PowerZyklonResistance : PowerProtection
 {
+	int nauseatime;
+	int nauseaticker;
+
 	Default
 	{
 		Inventory.Icon "ICO_ZYKR";
@@ -1422,6 +1425,51 @@ class PowerZyklonResistance : PowerProtection
 	// that it can be given back if it is "held". Also, Powerup.Tick()
 	// does not call Super.Tick().
 	override void Tick() {}
+
+	override void InitEffect()
+	{
+		nauseaticker = 350;
+		nauseatime = level.time + 35;
+
+		Super.InitEffect();
+	}
+
+	override void DoEffect()
+	{
+		if (owner && owner.player && nauseaticker > 0 && nauseatime <= level.time)
+		{
+			if (nauseaticker == 350)
+			{
+				owner.A_StartSound("p2-5", CHAN_7, CHANF_LOCAL, 1.0);
+				owner.A_StartSound("ambzomb1", CHAN_5, CHANF_LOCAL, 0.0625, ATTN_NORM, 1.5);
+				Overlay.Init(owner.player, "CONVBACK", 50, 100, 200, 1.0, clr:0x00edae);
+			}
+
+			let nausea = owner.FindInventory("NauseaShaderControl");
+			let blur = owner.FindInventory("BlurShaderControl");
+			let heat = owner.FindInventory("HeatShaderControl");
+
+			double scale = nauseaticker / 350.0;
+			int maxvalue = 100;
+			
+			double value1 = round(maxvalue * (0.5 + sin(nauseaticker * 180 / 350) / 2));
+			double value2 = round(maxvalue * (0.5 + cos(nauseaticker * 2880 / 350) / 2));
+
+			if (nausea) { nausea.Amount = int(value1); }
+			if (heat) { heat.Amount = int(value1); }
+			if (blur) { blur.Amount = int(value2 * scale); }
+
+			if (value2 == maxvalue)
+			{
+				owner.ACS_ScriptCall("PlayerFlinch", int(255 * scale));
+				owner.A_StartSound("HBEAT", CHAN_6, CHANF_LOCAL | CHANF_NOSTOP, 2.0 * scale);
+			}
+
+			if (nauseaticker <= 70 && nauseaticker % 35 == 0) { owner.A_StartSound("player/breathing", CHAN_6, CHANF_LOCAL | CHANF_NOSTOP, 2.0 * scale); }
+
+			nauseaticker--;
+		}
+	}
 }
 
 class SavingHealth : CustomInvBase

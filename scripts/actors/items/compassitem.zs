@@ -38,7 +38,7 @@ class CompassItem : PuzzleItem
 		+INVENTORY.UNDROPPABLE
 		-INVENTORY.INVBAR
 		Inventory.MaxAmount 1;
-		Inventory.PickupSound "pickup/papers"; // Default to sounding like paper pickup
+		Inventory.PickupSound "misc/gadget_pickup"; // Default to sounding like a generic item pickup
 		Scale 0.5;
 	}
 

@@ -29,6 +29,7 @@ class Akten : CompassItem
 		CompassItem.SpecialClue 3; // This folder gets re-used as a zombie clue in C3, so needs that special handling.  The number acts as a chapter filter for the special stats board drawing effects.
 		Inventory.Icon "AKTTA0";
 		Inventory.PickupMessage "$AKTEN";
+		Inventory.PickupSound "pickup/papers";
 	}
 	States
 	{
@@ -47,6 +48,7 @@ class AktenEisenmann : CompassItem
 		CompassItem.SpecialClue 1;
 		Inventory.Icon "AKTEA0";
 		Inventory.PickupMessage "$EISEN";
+		Inventory.PickupSound "pickup/papers";
 		Inventory.MaxAmount 5;
 	}
 	States
@@ -65,6 +67,7 @@ class AktenV2 : CompassItem
 		Tag "$TAGTHORS";
 		Inventory.Icon "AKT2A0";
 		Inventory.PickupMessage "$THORS";
+		Inventory.PickupSound "pickup/papers";
 	}
 	States
 	{
@@ -82,6 +85,7 @@ class AktenDream : CompassItem
 		Tag "$TAGZOMB";
 		Inventory.Icon "AKT3A0";
 		Inventory.PickupMessage "$DREAM";
+		Inventory.PickupSound "pickup/papers";
 		-INVENTORY.INVBAR
 	}
 	States
@@ -104,6 +108,7 @@ class AktenDreamClue : CompassItem
 		CompassItem.SpecialClue 3;
 		Inventory.Icon "AKT3A0";
 		Inventory.PickupMessage "$ZOMBF";
+		Inventory.PickupSound "pickup/papers";
 		Inventory.MaxAmount 2;
 	}
 	States
@@ -312,7 +317,6 @@ class Crank : CompassItem
 		Tag "$TAGCRANK";
 		Inventory.Icon "KURBA0";
 		Inventory.PickupMessage "$PUCRANK";
-		Inventory.PickupSound "misc/gadget_pickup";
 	}
 	States
 	{
@@ -349,6 +353,7 @@ class Kennkarte : CompassItem
 		Tag "$TAGKARTE";
 		Inventory.Icon "KENKA0";
 		Inventory.PickupMessage "$KENK";
+		Inventory.PickupSound "pickup/papers";
 	}
 	States
 	{
@@ -366,7 +371,6 @@ class GrapplingHook : CompassItem
 		Scale 0.4;
 		Tag "$TAGHOOK";
 		Inventory.PickupMessage "$HOOKM";
-		Inventory.PickupSound "gadget_pickup";
 		Inventory.Icon "ROPEB0";
 	}
 	States
