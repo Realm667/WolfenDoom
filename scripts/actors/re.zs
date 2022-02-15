@@ -166,7 +166,7 @@ class REChair : REBase
 	{
 		//$Title Chair
 		Height 21;
-		Radius 32;
+		Radius 16;
 	}
 
 	States

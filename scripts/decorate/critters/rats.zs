@@ -31,14 +31,12 @@ class PestSpawner : Actor
 		//$Category Fauna (BoA)
 		//$Color 0
 		//$Arg0 "Amount"
-		//$Arg0Tooltip "Amount to spawn (default 5)"
-		//$Arg0Default 5
+		//$Arg0Tooltip "Amount to spawn"
 		//$Arg1 "Radius"
-		//$Arg1Tooltip "Radius in map units (default 8)"
-		//$Arg1Default 8
+		//$Arg1Tooltip "Radius in map units"
 
-		Radius 2;
-		Height 2;
+		Radius 8;
+		Height 0;
 		+NOINTERACTION
 	}
 
@@ -111,6 +109,10 @@ class RatSpawner: PestSpawner
 	{
 		//$Title Rats
 		//$Sprite MOUSA1
+		//$Arg0Tooltip "Amount to spawn (default 5)"
+		//$Arg0Default 5
+		//$Arg1Tooltip "Radius in map units (default 8)"
+		//$Arg1Default 8
 		PestSpawner.SpawnActor "ScurryRat";
 	}
 }
@@ -155,16 +157,19 @@ class RoachSpawner : PestSpawner
 	Default
 	{
 		//$Title Roaches
+		//$Arg0Tooltip "Amount to spawn (default 30)"
 		//$Arg0Default 30
-		//$Arg1Default 64
+		//$Arg1Tooltip "Radius in map units (default 48)"
+		//$Arg1Default 48
 		//$Sprite BUGSA0
+		Radius 48;
 		PestSpawner.SpawnActor "Roach";
 	}
 
 	override void PostBeginPlay()
 	{
 		if (!args[0]) { args[0] = 30; }
-		if (!args[1]) { args[1] = 64; }
+		if (!args[1]) { args[1] = 48; }
 
 		Super.PostBeginPlay();
 	}
