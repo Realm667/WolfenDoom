@@ -96,45 +96,54 @@ class InteractionHandler : EventHandler
 
 	// Check the switch texture against entries in the data\switches.txt file, and
 	// swap the textures and play sounds as appropriate
-	int DoSwitchTexture(Side sidedef, int which = side.mid)
+	static int DoSwitchTexture(Side sidedef, int which = side.mid, Actor thing = null)
 	{
 		TextureID tex = sidedef.GetTexture(which);
-		if (!switches.Size() || !tex.IsValid()) { return -1; }
+		if (!tex.IsValid()) { return -1; }
+
+		InteractionHandler handler = InteractionHandler(EventHandler.Find("InteractionHandler"));
+		if (!handler) { return -1; }
 
 		String texname = TexMan.GetName(tex).MakeUpper();
 		String switchsound;
 		int delay = -1;
 		bool found = false;
 
-		for (int s = 0; s < switches.Size() && !found; s++)
+		for (int s = 0; s < handler.switches.Size() && !found; s++)
 		{
-			int i = switches[s].On.Find(texname);
-			if (i == switches[s].On.Size())
+			let sw = handler.switches[s];
+
+			int i = sw.On.Find(texname);
+			if (i == sw.On.Size())
 			{
-				i = switches[s].Off.Find(texname);
-				if (i == switches[s].Off.Size()) { continue; }
+				i = sw.Off.Find(texname);
+				if (i == sw.Off.Size()) { continue; }
 				else
 				{
-					while (i >= switches[s].On.Size()) { i--; }
-					texname = switches[s].On[i];
-					switchsound = switches[s].ActivateSound;
-					delay = switches[s].delay;
+					while (i >= sw.On.Size()) { i--; }
+					texname = sw.On[i];
+					switchsound = sw.ActivateSound;
+					delay = sw.delay;
 					found = true;
 				}
 			}
 			else
 			{
-				while (i >= switches[s].Off.Size()) { i--; }
-				texname = switches[s].Off[i];
-				switchsound = switches[s].DeactivateSound;
-				delay = switches[s].delay;
+				while (i >= sw.Off.Size()) { i--; }
+				texname = sw.Off[i];
+				switchsound = sw.DeactivateSound;
+				delay = sw.delay;
 				found = true;
 			}
 		}
 
 		if (found)
 		{
-			if (switchsound != "") { S_StartSound(switchsound, CHAN_VOICE, CHANF_LISTENERZ, 1.0); }
+			if (switchsound != "")
+			{
+				if (thing && thing.player) { thing.A_StopSound(CHAN_VOICE); } // Squelch the usefail sound
+				S_StartSound(switchsound, CHAN_VOICE, CHANF_LISTENERZ, 1.0);
+			}
 
 			tex = TexMan.CheckForTexture(texname);
 			if (tex.IsValid()) { sidedef.SetTexture(which, tex); }
@@ -177,7 +186,7 @@ class InteractionHandler : EventHandler
 		let ln = e.ActivatedLine;
 
 		if (
-			ln && 
+			ln &&
 			ln.special && 
 			ln.flags & Line.ML_REPEAT_SPECIAL &&
 			e.Thing is "PlayerPawn" && 
@@ -188,7 +197,7 @@ class InteractionHandler : EventHandler
 
 			for (int w = 0; w < 3 && delay < 0; w++)
 			{
-				delay = DoSwitchTexture(ln.sidedef[0], w);
+				delay = DoSwitchTexture(ln.sidedef[0], w, e.thing);
 			}
 
 			if (delay > -1)

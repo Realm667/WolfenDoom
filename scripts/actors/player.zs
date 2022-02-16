@@ -1034,19 +1034,37 @@ class BoAPlayer : PlayerPawn
 				{
 					if (trace.HitType == FLineTraceData.TRACE_HitWall)
 					{
+						A_StopSound(CHAN_VOICE); // Squelch the usefail sound
 						AimLine.Activate(self, trace.LineSide, SPAC_Impact); // Pretend it was shot
 					}
 				}
 				else if (AimActor)
 				{
-					A_StopSound(CHAN_VOICE);
+					A_StopSound(CHAN_VOICE); // Squelch the usefail sound
 				}
 				else if (!AimLine || !(AimLine.activation & SPAC_Use) || (Aimline.locknumber && !CheckKeys(Aimline.locknumber, false, true)))
 				{
-					String snd = InteractionHandler.GetSound(texname);
-					if (snd.length())
+					int tier = 0;
+					int delay = -1;
+
+					if (hittracer.Results.HitLine && !hittracer.Results.HitLine.special)
 					{
-						A_StartSound(snd, CHAN_VOICE, 0, 0.25);
+						tier = hittracer.Results.tier;
+						if (tier == TIER_Middle) { tier = Side.mid; }
+						else if (tier == TIER_Upper) { tier = Side.top; }
+						else if (tier == TIER_Lower) { tier = Side.bottom; }
+
+						delay = InteractionHandler.DoSwitchTexture(hittracer.Results.HitLine.sidedef[hittracer.Results.side], tier, self);
+					}
+
+					if (delay == -1)
+					{
+						String snd = InteractionHandler.GetSound(texname);
+
+						if (snd.length())
+						{
+							A_StartSound(snd, CHAN_VOICE, 0, 0.25);
+						}
 					}
 				}
 			}
