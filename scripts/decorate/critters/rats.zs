@@ -177,6 +177,8 @@ class RoachSpawner : PestSpawner
 
 class Roach : Pest
 {
+	Vector3 lastpos;
+
 	Default
 	{
 		Radius 1;
@@ -184,6 +186,7 @@ class Roach : Pest
 		Mass 1;
 		Speed 3;
 		Scale 0.25;
+		RenderStyle "Translucent"; // Required for 3d model to draw skin with proper translucency
 		ActiveSound "spider1/walk";
 		SeeSound "";
 		DeathSound "shark/death";
@@ -204,9 +207,9 @@ class Roach : Pest
 				if (ActiveSound) { A_StartSound(ActiveSound, CHAN_VOICE, CHANF_DEFAULT, 0.5 * scale.x, ATTN_NORM, 1.0 / scale.x); }
 				if (
 					(BlockingMobj && BlockingMobj.bSolid) ||
-					(BlockingLine && !(BlockingLine.flags & Line.ML_TWOSIDED))
+					(BlockingLine && !(BlockingLine.flags & Line.ML_TWOSIDED)) ||
+					CheckIfSeen()
 				) { Destroy(); }
-				return A_CheckSight("Vanish");
 			}
 			Loop;
 		Death:
@@ -214,6 +217,9 @@ class Roach : Pest
 				if (DeathSound) { A_StartSound(DeathSound, CHAN_VOICE, CHANF_DEFAULT, 0.5 * scale.x, ATTN_NORM, 1.0 / scale.x); }
 				scale.x *= RandomPick(-1, 1);
 			}
+			Stop;
+		Death.Fire:
+			"####" F -1;
 			Stop;
 	}
 
@@ -230,8 +236,23 @@ class Roach : Pest
 	{
 		Super.Tick();
 
-		if (IsFrozen() || globalfreeze || health <= 0) { return; }
+		// Align the actor to current slope if moved since the last tick
+		if (pos != lastpos)
+		{
+			VehicleBase.SetPitchRoll(self, 4, 8, 180, true);
+			lastpos = pos;
+		}
+
+		if (IsFrozen() || health <= 0) { return; }
 
 		if (level.time % 5 == 0) { frame = (frame + 1) % 4; }
+	}
+
+	override int DamageMobj(Actor inflictor, Actor source, int damage, Name mod, int flags, double angle)
+	{
+		// Counteract hard-coded behavior that kills falling TOUCHY actors instantly
+		if (mod == "Crush" && flags & DMG_FORCED && vel.z < -5) { damage = 0; }
+
+		return Super.DamageMobj(inflictor, source, damage, mod, flags, angle);
 	}
 }

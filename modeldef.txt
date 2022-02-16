@@ -11974,3 +11974,34 @@ Model Ribbon
 
 	FrameIndex MDLA A 0 0
 }
+
+Model Roach
+{
+	Path "Models/"
+	Model 0 "roach.md3"
+	Scale 10.0 10.0 10.0
+	Offset 16.0 0.0 0.0
+	USEACTORPITCH
+
+	Path "sprites/monsters/critters"
+
+	Skin 0 "BUGSA0.png"
+	FrameIndex BUGS A 0 0
+
+	Skin 0 "BUGSB0.png"
+	FrameIndex BUGS B 0 0
+
+	Skin 0 "BUGSC0.png"
+	FrameIndex BUGS C 0 0
+
+	Skin 0 "BUGSD0.png"
+	FrameIndex BUGS D 0 0
+
+	// Flip the last frame upside-down
+	RollOffset 180
+	Offset 16.0 0.0 4.0
+	DONTCULLBACKFACES
+
+	Skin 0 "BUGSF0.png"
+	FrameIndex BUGS F 0 0
+}
