@@ -83,12 +83,13 @@ class BoAStatusBar : BaseStatusBar
 		mVisibilityInterpolator = DynamicValueInterpolator.Create(0, 0.25, 1, 8);
 
 		savetimertime = 70;
+		Vector2 hudscale = Statusbar.GetHudScale();
 
 		AutomapWidget.Init("Automap Info", Widget.WDG_TOP | Widget.WDG_LEFT, 0);
 		KeenStatsWidget.Init("Keen HUD", Widget.WDG_TOP | Widget.WDG_LEFT, 0);
 		CountWidget.Init("Money and Time", Widget.WDG_TOP | Widget.WDG_LEFT, 0);
 		LogWidget.Init("Notifications", Widget.WDG_TOP | Widget.WDG_LEFT, 0, zindex:100);
-		LogWidget.Init("MidPrint", Widget.WDG_MIDDLE | Widget.WDG_CENTER, 0, (-3, -82), 99, 1, true, ZScriptTools.STR_CENTERED);
+		SingleLogWidget.Init("MidPrint", Widget.WDG_MIDDLE | Widget.WDG_CENTER, 0, (0, -0.125 * Screen.GetHeight() / hudscale.y), 99);
 		CompassWidget.Init("Compass", Widget.WDG_TOP | Widget.WDG_LEFT, 1);
 
 		ObjectivesWidget.Init("Objectives", Widget.WDG_RIGHT, 0);

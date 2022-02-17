@@ -100,7 +100,7 @@ class DrawToHUD
 
 		scale *= textscale;
 
-		double textw = fnt.StringWidth(text);
+		double textw = fnt.StringWidth(ZScriptTools.StripColorCodes(ZScriptTools.Trim(text)));
 		double texth = fnt.GetHeight();
 
 		if (text.IndexOf("[[") > -1 && text.IndexOf("]]") > -1)
@@ -396,7 +396,7 @@ class DrawToHUD
 
 		DrawToHUD.Dim(fillclr, fillalpha, x + cellwidth / 2, y + cellheight / 2, w - cellwidth, h - cellheight, destsize, flags);
 
-		int texflags =  TEX_CENTERED | (fullscreen ? 0 : TEX_FIXED) | (flags & TEX_MENU ? TEX_MENU : 0) | (flags & TEX_NOSCALE ? TEX_NOSCALE : 0);
+		int texflags = TEX_CENTERED | (fullscreen ? 0 : TEX_FIXED) | (flags & TEX_MENU ? TEX_MENU : 0) | (flags & TEX_NOSCALE ? TEX_NOSCALE : 0);
 
 		DrawToHUD.DrawTexture(top, (x + w / 2, y), alpha, 1.0, -1, (w - cellwidth, cellheight), texflags, destsize);
 		DrawToHUD.DrawTexture(bottom, (x + w / 2, y + h), alpha, 1.0, -1, (w - cellwidth, cellheight), texflags, destsize);

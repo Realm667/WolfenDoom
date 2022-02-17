@@ -255,17 +255,11 @@ class Widget ui
 		Vector2 hudscale = StatusBar.GetHudScale();
 
 		if (anchor & WDG_BOTTOM) { pos.y = -(pos.y + offset.y + size.y); }
-		else if (anchor & WDG_MIDDLE) { pos.y += Screen.GetHeight() / hudscale.y / 2 + offset.y; }
+		else if (anchor & WDG_MIDDLE) { pos.y += (Screen.GetHeight() / hudscale.y) / 2 + offset.y; }
 		else { pos.y += offset.y; }
 
 		if (anchor & WDG_RIGHT) { pos.x = -(pos.x + offset.x + size.x); }
-		else if (anchor & WDG_CENTER)
-		{
-			int widthoffset = 0;
-			if (BoAStatusbar(StatusBar)) { widthoffset = BoAStatusbar(StatusBar).widthoffset; }
-
-			pos.x += (Screen.GetWidth() / hudscale.x) / 2 - widthoffset + offset.x;
-		}
+		else if (anchor & WDG_CENTER) { pos.x += (Screen.GetWidth() / hudscale.x) / 2 + offset.x; }
 		else { pos.x += offset.x; }
 
 		ticker++;
@@ -315,7 +309,7 @@ class Widget ui
 
 		if (flags & WDG_DRAWFRAME)
 		{
-			Vector2 framepos = pos + offset;
+			Vector2 framepos = pos;
 			if (flags & WDG_DRAWFRAME_CENTERED)
 			{
 				framepos.x -= size.x / 2;
@@ -1389,8 +1383,9 @@ class PositionWidget : Widget
 class Log ui
 {
 	PlayerInfo player;
+	BrokenString lines;
 	String text;
-	double alpha, height;
+	double alpha, height, width;
 	int ticker, printlevel;
 	Font fnt;
 
@@ -1404,7 +1399,20 @@ class Log ui
 	void Print(double x, double y, double logalpha = 1.0, Font printfnt = null, int flags = ZScriptTools.STR_TOP | ZScriptTools.STR_LEFT)
 	{
 		if (!printfnt) { printfnt = fnt; }
-		DrawToHud.DrawText(text, (x, y), printfnt, alpha * logalpha, shade:Font.CR_GRAY, flags:flags);	
+		if (!printfnt) { printfnt = SmallFont; }
+
+		if (lines && lines.Count())
+		{
+			for (int l = 0; l < lines.Count(); l++)
+			{
+				DrawToHud.DrawText(lines.StringAt(l), (x, y), printfnt, alpha * logalpha, shade:Font.CR_GRAY, flags:flags);
+				y += printfnt.GetHeight();
+			}
+		}
+		else
+		{
+			DrawToHud.DrawText(text, (x, y), printfnt, alpha * logalpha, shade:Font.CR_GRAY, flags:flags);
+		}
 	}
 
 	static void Clear(String logname = "Notifications")
@@ -1461,29 +1469,30 @@ class Log ui
 					break;
 			}
 
-			String temp;
+			String fulltext;
 			BrokenString lines;
 			if (!fnt) { fnt = w.fnt; }
 
 			if (w.addtype == APPENDLINE && w.messages.Size() && w.messages[w.messages.Size() - 1].printlevel == printlevel)
 			{
-				[temp, lines] = BrokenString.BreakString(w.messages[w.messages.Size() - 1].text .. text, int(w.size.x), false, String.Format("%c", clr), fnt);
+				[fulltext, lines] = BrokenString.BreakString(w.messages[w.messages.Size() - 1].text .. text, int(w.size.x), false, String.Format("%c", clr), fnt);
 			}
 			else
 			{
-				[temp, lines] = BrokenString.BreakString(text, int(w.size.x), false, String.Format("%c", clr), fnt);
+				[fulltext, lines] = BrokenString.BreakString(text, int(w.size.x), false, String.Format("%c", clr), fnt);
 				if (w.addtype == APPENDLINE) { w.addtype = NEWLINE; }
 			}
 
 			if (lines.Count() == 0) { return w.visible; }
 
-			for (int l = 0; l < lines.Count(); l++)
+			double width = 0;
+			for (int w = 0; w < lines.Count(); w++)
 			{
-				String line = lines.StringAt(l);
-				String temp = ZScriptTools.StripColorCodes(line);
+				width = max(width, lines.StringWidth(w));
+			}
 
-				if (l == lines.Count() - 1 && !temp.length()) { continue; }
-
+			if (w.blocks)
+			{
 				Log m;
 
 				if (
@@ -1491,7 +1500,7 @@ class Log ui
 					!w.messages.Size() ||
 					(
 						w.collapseduplicates &&
-						!(ZScriptTools.StripColorCodes(w.messages[w.messages.Size() - 1].text) == temp)
+						!(ZScriptTools.StripColorCodes(ZScriptTools.Trim(w.messages[w.messages.Size() - 1].text)) == ZScriptTools.StripColorCodes(ZScriptTools.Trim(fulltext)))
 					)
 				)
 				{
@@ -1509,10 +1518,53 @@ class Log ui
 					m.fnt = fnt;
 					m.player = player;
 					m.printlevel = printlevel;
-					m.text = line;
+					m.text = fulltext;
+					m.lines = lines;
+					m.width = width;
 				}
 
 				w.addtype = NEWLINE;
+			}
+			else
+			{
+				for (int l = 0; l < lines.Count(); l++)
+				{
+					String line = lines.StringAt(l);
+					String temp = ZScriptTools.StripColorCodes(ZScriptTools.Trim(line));
+
+					if (l == lines.Count() - 1 && !temp.length()) { continue; }
+
+					Log m;
+
+					if (
+						w.addtype == NEWLINE ||
+						!w.messages.Size() ||
+						(
+							w.collapseduplicates &&
+							!(ZScriptTools.StripColorCodes(ZScriptTools.Trim(w.messages[w.messages.Size() - 1].text)) == temp)
+						)
+					)
+					{
+						m = New("Log");
+						w.messages.Push(m);
+					}
+					else
+					{
+						m = w.messages[w.messages.Size() - 1];
+						m.ticker = 6;
+					}
+
+					if (m)
+					{
+						m.fnt = fnt;
+						m.player = player;
+						m.printlevel = printlevel;
+						m.text = line;
+						m.width = width;
+					}
+
+					w.addtype = NEWLINE;
+				}
 			}
 
 			switch (text.ByteAt(text.length() - 1))
@@ -1533,7 +1585,7 @@ class LogWidget : Widget
 	int addtype, inputmaxlines, maxlines;
 	Font fnt, promptfnt;
 	String prompt;
-	bool collapseduplicates;
+	bool collapseduplicates, blocks;
 	int textflags;
 
 	int lasttick;
@@ -1609,7 +1661,7 @@ class LogWidget : Widget
 		int lineheight = fnt.GetHeight();
 
 		double rightoffset = 0;
-		if (!(flags & WDG_RIGHT))
+		if (!(flags & WDG_RIGHT) && !(flags & WDG_CENTER))
 		{
 			int checkflags = WDG_RIGHT;
 			if (anchor & WDG_BOTTOM) { checkflags |= WDG_BOTTOM; }
@@ -1633,7 +1685,8 @@ class LogWidget : Widget
 		}
 
 		Vector2 hudscale = StatusBar.GetHudScale();
-		size = (Screen.GetWidth() / hudscale.x - pos.x - rightoffset, height);
+		size = (Screen.GetWidth() / hudscale.x, height);
+		if (!(textflags & ZScriptTools.STR_CENTERED)) { size.x -= pos.x + rightoffset; }
 		Super.Draw();
 
 		double yoffset = 0;
@@ -1678,6 +1731,100 @@ class LogWidget : Widget
 				DrawToHud.DrawText(prompt, (pos.x, pos.y + yoffset), promptfnt, alpha, shade:Font.CR_GRAY, flags:textflags);
 				prompt = "";
 			}
+		}
+
+		return size;
+	}
+}
+
+class SingleLogWidget : LogWidget
+{
+	static void Init(String widgetname, int anchor = 0, int priority = 0, Vector2 pos = (0, 0), int zindex = 0)
+	{
+		SingleLogWidget wdg = SingleLogWidget(Widget.Init("SingleLogWidget", widgetname, anchor, 0, priority, pos, zindex));
+
+		if (wdg)
+		{
+			wdg.margin[0] = 4;
+			wdg.margin[1] = 8;
+			wdg.maxlines = 1;
+			wdg.collapseduplicates = true;
+			wdg.blocks = true;
+
+			if (wdg.flags & WDG_DRAWFRAME) { wdg.flags |= WDG_DRAWFRAME_CENTERED; }
+		}
+	}
+
+	override void DoTick(int index)
+	{
+		SetFont();
+	
+		if (messages.Size() > maxlines)
+		{
+			int delta = max(0, messages.Size() - maxlines);
+			for (int d = 0; d < delta; d++) { messages.Delete(0); } // Delete oldest notifications off the top of the stack if we've hit the limit for number shown
+		}
+
+		for (int i = 0; i < min(maxlines, messages.Size()); i++)
+		{
+			let m = messages[i];
+
+			if (m)
+			{
+				if (!ZScriptTools.StripColorCodes(ZScriptTools.Trim(m.text)).length()) { messages.Delete(i); continue; }
+
+				double holdtime = 35 * con_notifytime;
+				double intime = 6.0;
+				double outtime = 6.0;
+
+				m.ticker++;
+				if (m.ticker <= intime) { m.alpha = m.ticker / intime; }
+				else if (m.ticker > holdtime - outtime) { m.alpha = clamp(1.0 - (m.ticker - holdtime - outtime) / outtime, 0.0, 1.0); }
+
+				if (m.alpha == 0.0)
+				{
+					m.height = max(0, m.height - 1);
+					if (m.height == 0) { messages.Delete(i); continue; }
+				}
+				else { m.height = fnt.GetHeight() * (m.lines ? m.lines.Count() : 1); }
+			}
+		}
+
+		Widget.DoTick(index);
+	}
+
+	override Vector2 Draw()
+	{
+		if (!messages.Size()) { return (0, 0); }
+
+		double width = 0;
+		double height = 0;
+
+		for (int i = 0; i < messages.Size(); i++)
+		{
+			if (messages[i].player != players[consoleplayer]) { continue; }
+			if (!ZScriptTools.StripColorCodes(ZScriptTools.Trim(messages[i].text)).length()) { continue ; }
+
+			height += messages[i].height;
+			width = max(width, messages[i].width);
+		}
+
+		Vector2 hudscale = StatusBar.GetHudScale();
+		pos.x = (Screen.GetWidth() / hudscale.x) / 2 + offset.x; // Center on the screen, disregarding other widgets
+		size = (width, height);
+		if (width && height) { Widget.Draw(); }
+		size.x = Screen.GetWidth() / hudscale.x;
+
+		double yoffset = 0;
+
+		for (int i = 0; i < min(maxlines + 1, messages.Size()); i++)
+		{
+			if (messages[i].player != players[consoleplayer]) { continue; }
+			if (!ZScriptTools.StripColorCodes(ZScriptTools.Trim(messages[i].text)).length()) { continue ; }
+
+			messages[i].Print(pos.x, pos.y + yoffset - messages[i].height / 2, alpha, null, ZScriptTools.STR_CENTERED);
+
+			yoffset += messages[i].height;
 		}
 
 		return size;
