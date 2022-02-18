@@ -381,6 +381,27 @@ class ZScriptTools
 		}
 	}
 
+	static String StripControlCodes(String input)
+	{
+		String output = "";
+		input = ZScriptTools.StripColorCodes(input); // Special handling to also remove the color index or string name
+
+		int i = 0;
+		int c = -1;
+
+		while (c != 0)
+		{
+			[c, i] = input.GetNextCodePoint(i);
+			if (
+				(c > 0x001F && c < 0x007F) || // Skip C0 characters (ASCII Control Codes)
+				(c > 0x007F && c < 0x0080) || // Skip Delete (ASCII Delete)
+				c > 0x009F // Skip C1 characters (UNICODE-specific control codes)
+			) { output.AppendCharacter(c); }
+		}
+
+		return output;
+	}
+
 	static String Trim(String input)
 	{
 		if (input.Length() < 1) { return ""; }

@@ -100,7 +100,7 @@ class DrawToHUD
 
 		scale *= textscale;
 
-		double textw = fnt.StringWidth(ZScriptTools.StripColorCodes(ZScriptTools.Trim(text)));
+		double textw = fnt.StringWidth(ZScriptTools.StripControlCodes(text));
 		double texth = fnt.GetHeight();
 
 		if (text.IndexOf("[[") > -1 && text.IndexOf("]]") > -1)

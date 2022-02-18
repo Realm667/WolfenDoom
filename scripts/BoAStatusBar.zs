@@ -89,7 +89,7 @@ class BoAStatusBar : BaseStatusBar
 		KeenStatsWidget.Init("Keen HUD", Widget.WDG_TOP | Widget.WDG_LEFT, 0);
 		CountWidget.Init("Money and Time", Widget.WDG_TOP | Widget.WDG_LEFT, 0);
 		LogWidget.Init("Notifications", Widget.WDG_TOP | Widget.WDG_LEFT, 0, zindex:100);
-		SingleLogWidget.Init("MidPrint", Widget.WDG_MIDDLE | Widget.WDG_CENTER, 0, (0, -0.125 * Screen.GetHeight() / hudscale.y), 99);
+		SingleLogWidget.Init("MidPrint", Widget.WDG_MIDDLE | Widget.WDG_CENTER, -1, (0, -0.125 * Screen.GetHeight() / hudscale.y), 99);
 		CompassWidget.Init("Compass", Widget.WDG_TOP | Widget.WDG_LEFT, 1);
 
 		ObjectivesWidget.Init("Objectives", Widget.WDG_RIGHT, 0);

@@ -85,7 +85,9 @@ class Widget ui
 		w.margin[0] = 4;
 		for (int i = 1; i < 4; i++) { w.margin[i] = -1; }
 
-		w.setpos = (7, 7);
+		w.pos = (0, 0);
+		w.setpos = (0, 0);
+		w.size = (0, 0);
 		w.zindex = zindex;
 
 		w.fade = -1;
@@ -164,43 +166,46 @@ class Widget ui
 
 		Vector2 relpos = (0, 0);
 
-		if (index > -1 && !simple)
+		if (priority > -1)
 		{
-			int spacing = 0;
-
-			let w = FindPrev(anchor, index, priority); // Find the next item down in the 'stack' for this anchor point
-			if (w)
+			if (index > -1 && !simple)
 			{
-				if (anchor & WDG_BOTTOM)
-				{
-					spacing = w.margin[0] + margin[2] - 2;
-					relpos.y = -w.pos.y + spacing;
-				}
-				else
-				{
-					spacing = w.margin[2] + margin[0] - 2;
-					relpos.y = w.pos.y + w.size.y + spacing;
-				}
-			}
+				int spacing = 0;
 
-			let p = FindPrev(anchor, index, priority, true); // Find the next item over at the same priority level for this anchor point
-			if (p)
-			{
-				if (anchor & WDG_RIGHT)
+				let w = FindPrev(anchor, index, priority); // Find the next item down in the 'stack' for this anchor point
+				if (w)
 				{
-					spacing = p.margin[1] + margin[3] - 2;
-					relpos.x = -p.pos.x + spacing;
+					if (anchor & WDG_BOTTOM)
+					{
+						spacing = w.margin[0] + margin[2] - 2;
+						relpos.y = -w.pos.y + spacing;
+					}
+					else
+					{
+						spacing = w.margin[2] + margin[0] - 2;
+						relpos.y = w.pos.y + w.size.y + spacing;
+					}
 				}
-				else
+
+				let p = FindPrev(anchor, index, priority, true); // Find the next item over at the same priority level for this anchor point
+				if (p)
 				{
-					spacing = p.margin[3] + margin[1] - 2;
-					relpos.x = p.pos.x + p.size.x + spacing;
+					if (anchor & WDG_RIGHT)
+					{
+						spacing = p.margin[1] + margin[3] - 2;
+						relpos.x = -p.pos.x + spacing;
+					}
+					else
+					{
+						spacing = p.margin[3] + margin[1] - 2;
+						relpos.x = p.pos.x + p.size.x + spacing;
+					}
 				}
 			}
 		}
 
-		setpos.y = 3 + margin[0];
-		setpos.x = 3 + margin[3];
+		if (!(anchor & WDG_MIDDLE)) { setpos.y = 3 + margin[0]; }
+		if (!(anchor & WDG_CENTER)) { setpos.x = 3 + margin[3]; }
 
 		// If this wasn't offset at all, assume it's the first in the stack, and apply edge-of-screen offsets as necessary
 		if (relpos.y == 0)
@@ -225,7 +230,7 @@ class Widget ui
 		{
 			// Handle offsets if HUD is set up to use forced aspect ratio
 			int widthoffset = 0;
-			if (BoAStatusbar(StatusBar)) { widthoffset = BoAStatusbar(StatusBar).widthoffset; }
+			if (BoAStatusbar(StatusBar) && !(anchor & WDG_CENTER)) { widthoffset = BoAStatusbar(StatusBar).widthoffset; }
 
 			pos.x = setpos.x + widthoffset;
 		}
@@ -248,6 +253,8 @@ class Widget ui
 	virtual void DoTick(int index = 0)
 	{
 		visible = IsVisible();
+
+		pos = (0, 0);
 
 		SetMargins();
 		CalcRelPos(pos, index, !size.length());
@@ -1386,7 +1393,7 @@ class Log ui
 	BrokenString lines;
 	String text;
 	double alpha, height, width;
-	int ticker, printlevel;
+	int ticker, printlevel, linecount, tickertimeout;
 	Font fnt;
 
 	enum AddTypes
@@ -1405,8 +1412,13 @@ class Log ui
 		{
 			for (int l = 0; l < lines.Count(); l++)
 			{
-				DrawToHud.DrawText(lines.StringAt(l), (x, y), printfnt, alpha * logalpha, shade:Font.CR_GRAY, flags:flags);
-				y += printfnt.GetHeight();
+				String text = lines.StringAt(l);
+
+				if (ZScriptTools.StripControlCodes(text).length())
+				{
+					DrawToHud.DrawText(text, (x, y), printfnt, alpha * logalpha, shade:Font.CR_GRAY, flags:flags);
+					y += printfnt.GetHeight();
+				}
 			}
 		}
 		else
@@ -1472,6 +1484,7 @@ class Log ui
 			String fulltext;
 			BrokenString lines;
 			if (!fnt) { fnt = w.fnt; }
+			if (!fnt) { fnt = SmallFont; }
 
 			if (w.addtype == APPENDLINE && w.messages.Size() && w.messages[w.messages.Size() - 1].printlevel == printlevel)
 			{
@@ -1486,10 +1499,26 @@ class Log ui
 			if (lines.Count() == 0) { return w.visible; }
 
 			double width = 0;
+			double height = 0;
+			int linecount = 0;
 			for (int w = 0; w < lines.Count(); w++)
 			{
 				width = max(width, lines.StringWidth(w));
+				if (width) // Only add height for lines starting with the first non-zero-width line
+				{
+					linecount++;
+				}
 			}
+
+			// Go back and subtract height for lines at the end that are blank
+			for (int v = lines.Count() - 1; v > -1; v--)
+			{
+				if (lines.StringWidth(v)) { break; }
+
+				linecount--;
+			}
+
+			height = fnt.GetHeight() * linecount;
 
 			if (w.blocks)
 			{
@@ -1500,17 +1529,22 @@ class Log ui
 					!w.messages.Size() ||
 					(
 						w.collapseduplicates &&
-						!(ZScriptTools.StripColorCodes(ZScriptTools.Trim(w.messages[w.messages.Size() - 1].text)) == ZScriptTools.StripColorCodes(ZScriptTools.Trim(fulltext)))
+						!(ZScriptTools.StripControlCodes(w.messages[w.messages.Size() - 1].text) == ZScriptTools.StripControlCodes(fulltext))
 					)
 				)
 				{
 					m = New("Log");
 					w.messages.Push(m);
+					m.tickertimeout = 35;
 				}
 				else
 				{
 					m = w.messages[w.messages.Size() - 1];
-					m.ticker = 6;
+					if (!m.tickertimeout)
+					{
+						m.ticker = 6;
+						m.tickertimeout = 35;
+					}
 				}
 
 				if (m)
@@ -1520,7 +1554,9 @@ class Log ui
 					m.printlevel = printlevel;
 					m.text = fulltext;
 					m.lines = lines;
+					m.linecount = linecount;
 					m.width = width;
+					m.height = height;
 				}
 
 				w.addtype = NEWLINE;
@@ -1530,7 +1566,7 @@ class Log ui
 				for (int l = 0; l < lines.Count(); l++)
 				{
 					String line = lines.StringAt(l);
-					String temp = ZScriptTools.StripColorCodes(ZScriptTools.Trim(line));
+					String temp = ZScriptTools.StripControlCodes(line);
 
 					if (l == lines.Count() - 1 && !temp.length()) { continue; }
 
@@ -1541,17 +1577,22 @@ class Log ui
 						!w.messages.Size() ||
 						(
 							w.collapseduplicates &&
-							!(ZScriptTools.StripColorCodes(ZScriptTools.Trim(w.messages[w.messages.Size() - 1].text)) == temp)
+							!(ZScriptTools.StripControlCodes(w.messages[w.messages.Size() - 1].text) == temp)
 						)
 					)
 					{
 						m = New("Log");
 						w.messages.Push(m);
+						m.tickertimeout = 35;
 					}
 					else
 					{
 						m = w.messages[w.messages.Size() - 1];
-						m.ticker = 6;
+						if (!m.tickertimeout)
+						{
+							m.ticker = 6;
+							m.tickertimeout = 35;
+						}
 					}
 
 					if (m)
@@ -1560,7 +1601,9 @@ class Log ui
 						m.player = player;
 						m.printlevel = printlevel;
 						m.text = line;
+						m.linecount = linecount;
 						m.width = width;
+						m.height = height;
 					}
 
 					w.addtype = NEWLINE;
@@ -1632,7 +1675,7 @@ class LogWidget : Widget
 
 			if (m)
 			{
-				if (!ZScriptTools.StripColorCodes(ZScriptTools.Trim(m.text)).length()) { messages.Delete(i); continue; }
+				if (!ZScriptTools.StripControlCodes(m.text).length()) { messages.Delete(i); continue; }
 
 				double holdtime = 35 * con_notifytime;
 				double intime = 6.0;
@@ -1647,7 +1690,7 @@ class LogWidget : Widget
 					m.height = max(0, m.height - 1);
 					if (m.height == 0) { messages.Delete(i); continue; }
 				}
-				else { m.height = fnt.GetHeight(); }
+				else { m.height = m.fnt.GetHeight(); }
 			}
 		}
 
@@ -1678,7 +1721,7 @@ class LogWidget : Widget
 			for (int i = 0; i < messages.Size(); i++)
 			{
 				if (messages[i].player != players[consoleplayer]) { continue; }
-				if (!ZScriptTools.StripColorCodes(ZScriptTools.Trim(messages[i].text)).length()) { continue ; }
+				if (!ZScriptTools.StripControlCodes(messages[i].text).length()) { continue ; }
 
 				height += messages[i].height;
 			}
@@ -1697,7 +1740,7 @@ class LogWidget : Widget
 			for (int i = min(maxlines, messages.Size() - 1); i >= 0; i--)
 			{
 				if (messages[i].player != players[consoleplayer]) { continue; }
-				if (!ZScriptTools.StripColorCodes(ZScriptTools.Trim(messages[i].text)).length()) { continue ; }
+				if (!ZScriptTools.StripControlCodes(messages[i].text).length()) { continue ; }
 
 				messages[i].Print(pos.x, pos.y + height + yoffset, alpha, null, textflags);
 
@@ -1718,7 +1761,7 @@ class LogWidget : Widget
 			for (int i = 0; i < min(maxlines + 1, messages.Size()); i++)
 			{
 				if (messages[i].player != players[consoleplayer]) { continue; }
-				if (!ZScriptTools.StripColorCodes(ZScriptTools.Trim(messages[i].text)).length()) { continue ; }
+				if (!ZScriptTools.StripControlCodes(messages[i].text).length()) { continue ; }
 
 				messages[i].Print(pos.x, pos.y + yoffset, alpha, null, textflags);
 
@@ -1771,7 +1814,7 @@ class SingleLogWidget : LogWidget
 
 			if (m)
 			{
-				if (!ZScriptTools.StripColorCodes(ZScriptTools.Trim(m.text)).length()) { messages.Delete(i); continue; }
+				if (!ZScriptTools.StripControlCodes(m.text).length()) { messages.Delete(i); continue; }
 
 				double holdtime = 35 * con_notifytime;
 				double intime = 6.0;
@@ -1786,7 +1829,9 @@ class SingleLogWidget : LogWidget
 					m.height = max(0, m.height - 1);
 					if (m.height == 0) { messages.Delete(i); continue; }
 				}
-				else { m.height = fnt.GetHeight() * (m.lines ? m.lines.Count() : 1); }
+				else { m.height = m.fnt.GetHeight() * m.linecount; }
+
+				m.tickertimeout = max(0, m.tickertimeout - 1);
 			}
 		}
 
@@ -1803,16 +1848,16 @@ class SingleLogWidget : LogWidget
 		for (int i = 0; i < messages.Size(); i++)
 		{
 			if (messages[i].player != players[consoleplayer]) { continue; }
-			if (!ZScriptTools.StripColorCodes(ZScriptTools.Trim(messages[i].text)).length()) { continue ; }
+			if (!ZScriptTools.StripControlCodes(messages[i].text).length()) { continue ; }
 
 			height += messages[i].height;
 			width = max(width, messages[i].width);
 		}
 
-		Vector2 hudscale = StatusBar.GetHudScale();
-		pos.x = (Screen.GetWidth() / hudscale.x) / 2 + offset.x; // Center on the screen, disregarding other widgets
 		size = (width, height);
 		if (width && height) { Widget.Draw(); }
+
+		Vector2 hudscale = StatusBar.GetHudScale();
 		size.x = Screen.GetWidth() / hudscale.x;
 
 		double yoffset = 0;
@@ -1820,9 +1865,9 @@ class SingleLogWidget : LogWidget
 		for (int i = 0; i < min(maxlines + 1, messages.Size()); i++)
 		{
 			if (messages[i].player != players[consoleplayer]) { continue; }
-			if (!ZScriptTools.StripColorCodes(ZScriptTools.Trim(messages[i].text)).length()) { continue ; }
+			if (!ZScriptTools.StripControlCodes(messages[i].text).length()) { continue ; }
 
-			messages[i].Print(pos.x, pos.y + yoffset - messages[i].height / 2, alpha, null, ZScriptTools.STR_CENTERED);
+			messages[i].Print(pos.x, pos.y + yoffset - messages[i].fnt.GetHeight() / 2, alpha, null, ZScriptTools.STR_CENTERED);
 
 			yoffset += messages[i].height;
 		}
