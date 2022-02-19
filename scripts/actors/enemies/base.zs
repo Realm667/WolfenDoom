@@ -706,9 +706,10 @@ class Base : Actor
 		return range;
 	}
 
-	Actor ReplaceWith(Class<Actor> cls, statelabel label = "Spawn")
+	Actor ReplaceWith(Class<Actor> cls, statelabel label = "Spawn", Vector3 spawnpos = (0, 0, 0))
 	{
-		Actor newmobj = Spawn(cls, pos);
+		if (!spawnpos.length()) { spawnpos = pos; }
+		Actor newmobj = Spawn(cls, spawnpos);
 
 		if (newmobj)
 		{

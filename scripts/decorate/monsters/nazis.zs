@@ -697,199 +697,277 @@ class WMP40GuardSleep : WMP40Guard
 	}
 }
 
-class WToilet : WGuard
+class ToiletNazi : BasicGuard
 {
+	Class<Actor> replacement;
+	SpriteID spawnsprite;
+	String spawnspritename;
+	Actor toilet;
+
+	Property Replacement:replacement;
+	Property SpawnSprite:spawnspritename;
+
 	Default
 	{
-	//$Category Monsters (BoA)/Toilet Soldiers
-	//$Title Toilet Wehrmacht Guard (Pistol)
-	+CANPASS
-	+FIXMAPTHINGPOS
-	Nazi.CrouchChance 0;
-	Nazi.FrightMultiplier 0.0;
-	Nazi.ZombieVariant "";
+		//$Category Monsters (BoA)/Toilet Soldiers
+		//$Color 4
+		Nazi.CrouchChance 0;
+		ToiletNazi.Replacement "WGuard"; // Replacement to spawn when "leaving WC"
+		ToiletNazi.SpawnSprite "GRDTA0"; // Base sprite to use.  Make sure to include the sprite in the Sprites state below
+		Speed 0;
+		+CANPASS
+		+DONTTHRUST
 	}
+
 	States
 	{
-	Spawn:
-		GRDT A 1;
-		"####" A 0 A_Jump(256,"Look.WC");
-		Goto Look.WC;
-	Look.Fart:
-		"####" A 0 A_StartSound("nazi/farts", CHAN_AUTO, 0, frandom(0.1,1.0));
-		"####" A 0 A_Jump(256,"Look.WC");
-		Stop;
-	Look.WC:
-		"####" A 1 { A_Look(); A_SetTics(random(40,100)); }
-		"####" B 1 { A_Look(); A_SetTics(random(100,400)); }
-		"####" A 0 A_Jump(16,"Look.Fart");
-		Loop;
-	See: //doesn't roll - ozy81
-		"####" A 0 { user_incombat = True; } //mxd
-		"####" A 0 A_Jump(256,"See.Shot");
-		Stop;
-	See.Shot:
-		"####" A 16;
-		"####" A 8;
-		"####" A 0 A_Jump(256, "Missile");
-		Stop;
-	Missile:
-		"####" A 10 A_FaceTarget;
-	Missile.Aimed:
-		"####" C 10 A_FaceTarget;
-		"####" D 0 { A_StartSound("nazi/pistol", CHAN_WEAPON); A_AlertMonsters(512); }
-		"####" D 8 LIGHT("NAZIFIRE") A_SpawnProjectile("EnemyPistolTracer",32,1,random(-8,8));
-		"####" C 8 A_SpawnItemEx("Casing9mm", 1, 0, 32, random(1,2), random(-1,1), random(1,2), random(-55,-80), SXF_NOCHECKPOSITION);
-		"####" C 0 {user_count++; if(user_count > 7) {user_count = 0; return ResolveState("Reload");} return ResolveState(null);}
-		"####" C 0 A_Jump(64, "LeaveWC");
-		"####" C 0 A_Jump(256, "See");
-		Stop;
-	Reload:
-		"####" C 0 {bNoPain = TRUE;}
-		"####" C 30 A_StartSound("luger/reload", CHAN_ITEM, 0, frandom (0.3,0.6), ATTN_NORM);
-		"####" C 0 A_SpawnItemEx("Casing9mm", 1, 0, 32, random(3,4), random(-1,1), random(2,4), random(-55,-80),SXF_NOCHECKPOSITION);
-		"####" C 0 {bNoPain = FALSE;}
-		"####" C 0 A_Jump(64, "LeaveWC");
-		"####" C 0 A_Jump(256, "See");
-		Stop;
-	LeaveWC:
-		"####" A 9 ReplaceWith("WGuard", "See");
-		Stop;
-	Pain:
-		"####" E 6 A_NaziPain(0, True, -4);
-		"####" E 0 A_Jump(192, "LeaveWC");
-		"####" E 0 A_Jump(256, "See+1");
-		Stop;
-	Death:
-		"####" F 0 {bCanPass = FALSE;}
-		"####" F 0 {bNoGravity = TRUE;}
-		"####" F 5;
-		"####" G 5 A_Scream;
-		"####" H 5 A_UnblockAndDrop;
-		"####" I 5;
-		"####" I 0 A_StartSound("nazi/farts", CHAN_AUTO, 0, frandom(0.5,1.0));
-		"####" J 5 A_CheckAltDeath;
-		"####" J -1;
-		Stop;
-	Death.Alt1:
-		"####" J -1 A_SpawnItemEx("Shit", random(-16,16), 0, 0, SXF_NOCHECKPOSITION);
-		Stop;
+		Spawn:
+			TNT1 A 1;
+			"####" # 0
+			{
+				sprite = GetSpriteIndex(spawnspritename);
+				SetStateLabel("Look");
+			}
+		Look:
+			"####" A 1 {
+				A_Look();
+				tics = Random(40, 100);
+			}
+			"####" B 1 {
+				A_Look();
+				tics = Random(100, 400);
+			}
+			"####" A 0 {
+				if (Random() < 16) { A_StartSound("nazi/farts", CHAN_AUTO, 0, FRandom(0.1, 1.0)); }
+			}
+			Loop;
+		See:
+			"####" A 24 { user_incombat = true; }
+			"####" A 0 { SetStateLabel("Missile"); }
+		Missile:
+			"####" A 10 A_FaceTarget();
+			"####" A 0 { SetStateLabel("Missile.Aimed"); }
+		Missile.Aimed:
+			"####" C 10 A_FaceTarget();
+			"####" D 8 LIGHT("NAZIFIRE") {
+				A_StartSound("nazi/pistol", CHAN_WEAPON); A_AlertMonsters(512);
+				A_SpawnProjectile("EnemyPistolTracer", 32, 1, Random(-8, 8));
+			}
+			"####" C 8 A_SpawnItemEx("Casing9mm", 1, 0, 32, Random(1, 2), Random(-1, 1), Random(1, 2), Random(-55, -80), SXF_NOCHECKPOSITION);
+			"####" C 0 {
+				CheckReload(7);
+				CheckSpawnReplacement(replacement);
+			}
+			Stop;
+		Reload:
+			"####" C 30 {
+				bNoPain = TRUE;
+				A_StartSound("luger/reload", CHAN_ITEM, 0, FRandom (0.3, 0.6), ATTN_NORM);
+			}
+			"####" C 0 {
+				A_SpawnItemEx("Casing9mm", 1, 0, 32, Random(3, 4), Random(-1, 1), Random(2, 4), Random(-55, -80), SXF_NOCHECKPOSITION);
+				bNoPain = FALSE;
+				CheckSpawnReplacement(replacement);
+			}
+			Stop;
+		Pain:
+			"####" E 6 A_NaziPain(0, True, -4);
+			"####" E 0 CheckSpawnReplacement(replacement, "Missile");
+			Stop;
+		Death:
+			"####" F 5 {
+				bCanPass = FALSE;
+				bNoGravity = TRUE;
+			}
+			"####" G 5 A_Scream();
+			"####" H 5 A_UnblockAndDrop();
+			"####" I 5;
+			"####" J 5 {
+				A_StartSound("nazi/farts", CHAN_AUTO, 0, FRandom(0.5, 1.0));
+				return A_CheckAltDeath();
+			}
+			"####" J -1;
+			Stop;
+		Death.Alt1:
+			"####" J -1 A_SpawnItemEx("Shit", random(-16,16), 0, 0, SXF_NOCHECKPOSITION);
+			Stop;
+		Sprites:
+			GRDT A 0;
+			GRDP A 0;
+			SSOT A 0;
+			SSOP A 0;
+	}
+
+	override void PostBeginPlay()
+	{
+		// Find the toilet that this actor should be sitting on
+		BlockThingsIterator it = BlockThingsIterator.Create(self, 1);
+
+		while (it.Next())
+		{
+			if (Distance2D(it.thing) < radius + it.thing.radius && it.thing is "ToiletShootable")
+			{
+				toilet = it.thing;
+			}
+		}
+
+		if (toilet)
+		{
+			bNoGravity = true;
+
+			// Position 22 units forward of toilet actor center and 20 units off of the ground
+			Vector3 newpos = toilet.pos + (RotateVector((22, 0), toilet.angle), 20);
+			SetOrigin(newpos, false);
+		}
+	}
+
+	void CheckReload(int rounds = 7)
+	{
+		if (user_count++ > rounds)
+		{
+			user_count = 0;
+			SetStateLabel("Reload");
+		}
+	}
+
+	// Random chance to position and spawn the replacement actor; can be forced with third parameter
+	void CheckSpawnReplacement(Class<Actor> replacement = "WGuard", StateLabel jumpstate = "See", bool force = false)
+	{
+		if (force || Random() < 64)
+		{
+			Vector3 newpos = pos;
+			if (toilet)
+			{
+				// Spawn the new actor in front of the toilet far enough that its radius does not overlap with the toilet's radius
+				// Adjusts the distance based on the angle of the toilet (square actors mean larger distance at 45 degree angles)
+				double dist = (toilet.radius + GetDefaultByType(replacement).radius) * (1.0 + 0.5 * abs(sin(toilet.angle * 2)));
+				newpos = toilet.pos + (RotateVector((dist, 0), toilet.angle), toilet.pos.z);
+			}
+
+			ReplaceWith(replacement, "See", newpos);
+		}
+		else { SetStateLabel("jumpstate"); }
+	}
+
+	override bool CanCollideWith(Actor other, bool passive)
+	{
+		if (other is "ToiletShootable") { return false; }
+
+		return true;
 	}
 }
 
-class WToilet2 : WToilet
+class UrinalNazi : ToiletNazi
 {
 	Default
 	{
-	//$Title Peeing Wehrmacht Guard (Pistol)
+		ToiletNazi.SpawnSprite "GRDPA0";
 	}
+
 	States
 	{
-	Spawn:
-		GRDP A 1;
-		Goto Look;
-	Look:
-		GRDP A 0 A_StartSound("nazi/peeing", CHAN_VOICE, 0, frandom(0.5,0.8), ATTN_STATIC);
-		"####" ACBDEFDGIHBC 1 { A_Look(); A_SetTics(random(20,40)); }
-		Loop;
-	See: //doesn't roll - ozy81
-		GRDP A 0 A_StopSound(CHAN_VOICE);
-		"####" A 0 { user_incombat = True; } //mxd
-		"####" J 35;
-	LeaveWC:
-		GRDP A 2 ReplaceWith("WGuard", "See");
-		Stop;
-	Pain:
-		"####" K 6 A_NaziPain(0, True);
-		"####" K 0 A_Jump(256, "LeaveWC");
-		Stop;
-	Death:
-		GRD2 I 5;
-		"####" J 5 A_Scream;
-		"####" K 5 A_UnblockAndDrop;
-		"####" L 5;
-		"####" M -1;
-		Stop;
+		Look:
+			"####" ABCDEFDGIHBC 1
+			{
+				A_StartSound("nazi/peeing", CHAN_VOICE, CHANF_NOSTOP, frandom(0.5,0.8), ATTN_STATIC);
+				bLookAllAround = !!(frame > 2) && !Random(0, 16); // Random chance to be able to spot the player if we are looking to the side
+				A_Look();
+				tics = Random(20, 40);
+			}
+			Loop;
+		See:
+			"####" J 35 A_StopSound(CHAN_VOICE);
+			"####" A 2 CheckSpawnReplacement(replacement, force:true);
+		Pain:
+			"####" K 6 {
+ 				A_NaziPain(0, True);
+				CheckSpawnReplacement(replacement, force:true);
+			}
+		Death:
+			"####" I 5;
+			"####" J 5 A_Scream;
+			"####" K 5 A_UnblockAndDrop;
+			"####" L 5;
+			"####" M -1;
+			Stop;
+	}
+
+	override void PostBeginPlay()
+	{
+		// Skip the toilet-finding logic fromt he parent class
+		Actor.PostBeginPlay();
 	}
 }
 
-class SSToilet : WToilet
+class WToilet : ToiletNazi
 {
 	Default
 	{
-	//$Title Toilet SS Officer (Pistol)
-	Nazi.ZombieVariant "";
-	}
-	States
-	{
-	Spawn:
-		SSOT A 1;
-		Goto Look.WC;
-	See: //doesn't roll - ozy81
-		"####" A 0 { user_incombat = True; } //mxd
-		"####" A 0 A_Jump(256,"See.Shot");
-		Stop;
-	Missile.Aimed:
-		"####" C 6 A_FaceTarget;
-		"####" D 0 { A_StartSound("nazi/pistol", CHAN_WEAPON); A_AlertMonsters(512); }
-		"####" D 6 LIGHT("NAZIFIRE") A_SpawnProjectile("EnemyPistolTracer",32,1,random(-8,8));
-		"####" C 6 A_SpawnItemEx("Casing9mm", 1, 0, 32, random(1,2), random(-1,1), random(1,2), random(-55,-80), SXF_NOCHECKPOSITION);
-		"####" C 0 {user_count++; if(user_count > 7) {user_count = 0; return ResolveState("Reload");} return ResolveState(null);}
-		"####" C 0 A_Jump(64, "LeaveWC");
-		"####" C 0 A_Jump(256, "See+1");
-		Stop;
-	Reload:
-		"####" C 0 {bNoPain = TRUE;}
-		"####" C 20 A_StartSound("luger/reload", CHAN_ITEM, 0, frandom (0.3,0.6), ATTN_NORM);
-		"####" C 0 A_SpawnItemEx("Casing9mm", 1, 0, 32, random(3,4), random(-1,1), random(2,4), random(-55,-80),SXF_NOCHECKPOSITION);
-		"####" C 0 {bNoPain = FALSE;}
-		"####" C 0 A_Jump(64, "LeaveWC");
-		"####" C 0 A_Jump(256, "See+1");
-	LeaveWC:
-		"####" A 9 ReplaceWith("SSOfficer", "See");
-		Stop;
-	Death:
-		SSOT F 0 {bCanPass = FALSE;}
-		Goto Super::Death+1;
-	Death.Alt1:
-		SSOT J -1 A_SpawnItemEx("Shit", random(-16,16), 0, 0, SXF_NOCHECKPOSITION);
-		Stop;
+		//$Title Toilet Wehrmacht Guard (Pistol)
+		//$Sprite "GRDTA0"
+		ToiletNazi.Replacement "WGuard";
+		ToiletNazi.SpawnSprite "GRDTA0";
 	}
 }
 
-class SSToilet2 : WToilet
+class WToilet2 : UrinalNazi
 {
 	Default
 	{
-	//$Title Peeing SS Officer (Pistol)
+		//$Title Peeing Wehrmacht Guard (Pistol)
+		//$Sprite "GRDPA0"
+		ToiletNazi.Replacement "WGuard";
+		ToiletNazi.SpawnSprite "GRDPA0";
 	}
+}
+
+class SSToilet : ToiletNazi
+{
+	Default
+	{
+		//$Title Toilet SS Officer (Pistol)
+		//$Sprite "SSOTA0"
+		ToiletNazi.Replacement "SSOfficer";
+		ToiletNazi.SpawnSprite "SSOTA0";
+	}
+
 	States
 	{
-	Spawn:
-		SSOP A 1;
-		Goto Look;
-	Look:
-		SSOP A 0 A_StartSound("nazi/peeing", CHAN_VOICE, 0, frandom(0.5,0.8), ATTN_STATIC);
-		"####" ACBDEFDGIHBC 1 { A_Look(); A_SetTics(random(20,40)); }
-		Loop;
-	See: //doesn't roll - ozy81
-		"####" A 0 { user_incombat = True; } //mxd
-		SSOP A 0 A_StopSound(CHAN_VOICE);
-		"####" J 35;
-	LeaveWC:
-		"####" A 9 ReplaceWith("SSOfficer", "See");
-		Stop;
-	Pain:
-		SSOP K 6 A_NaziPain(0, True);
-		"####" K 0 A_Jump(256, "LeaveWC");
-		Stop;
-	Death:
-		SSOF I 5;
-		"####" J 5 A_Scream;
-		"####" K 5 A_UnblockAndDrop;
-		"####" L 5;
-		"####" M -1;
-		Stop;
+		// States are only redefined here because of different state durations than the base definition
+		Missile.Aimed:
+			"####" C 6 A_FaceTarget();
+			"####" D 6 LIGHT("NAZIFIRE") {
+				A_StartSound("nazi/pistol", CHAN_WEAPON); A_AlertMonsters(512);
+				A_SpawnProjectile("EnemyPistolTracer", 32, 1, Random(-8, 8));
+			}
+			"####" C 6 A_SpawnItemEx("Casing9mm", 1, 0, 32, Random(1, 2), Random(-1, 1), Random(1, 2), Random(-55, -80), SXF_NOCHECKPOSITION);
+			"####" C 0 {
+				CheckReload(7);
+				CheckSpawnReplacement(replacement);
+			}
+			Stop;
+		Reload:
+			"####" C 20 {
+				bNoPain = TRUE;
+				A_StartSound("luger/reload", CHAN_ITEM, 0, FRandom (0.3, 0.6), ATTN_NORM);
+			}
+			"####" C 0 {
+				A_SpawnItemEx("Casing9mm", 1, 0, 32, Random(3, 4), Random(-1, 1), Random(2, 4), Random(-55, -80), SXF_NOCHECKPOSITION);
+				bNoPain = FALSE;
+				CheckSpawnReplacement(replacement);
+			}
+			Stop;
+	}
+}
+
+class SSToilet2 : UrinalNazi
+{
+	Default
+	{
+		//$Title Peeing SS Officer (Pistol)
+		//$Sprite "SSOPA0"
+		ToiletNazi.Replacement "SSOfficer";
+		ToiletNazi.SpawnSprite "SSOPA0";
 	}
 }
 
