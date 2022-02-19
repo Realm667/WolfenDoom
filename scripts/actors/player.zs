@@ -1019,7 +1019,7 @@ class BoAPlayer : PlayerPawn
 				}
 
 				// Convert to all upper-case for comparison
-				texname.ToUpper();
+				texname = texname.MakeUpper();
 
 				if (texname == "CABN_T02" && !interactiontimeout) // If it's the storage shelf with medkits...
 				{

@@ -400,7 +400,7 @@ class RopeSegment : LadderBase
 
 	override void Tick()
 	{
-		if (globalfreeze || level.Frozen) { return; }
+		if (IsFrozen()) { return; }
 
 		if (shotdist) { Super.Tick(); }
 	}

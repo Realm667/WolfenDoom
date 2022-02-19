@@ -97,7 +97,7 @@ class Pest : Base
 	{
 		Super.Tick();
 
-		if (IsFrozen() || globalfreeze || health <= 0 || !target) { return;}
+		if (IsFrozen() || health <= 0 || !target) { return;}
 
 		if (GetAge() % interval == 0) { movedir = (movedir + Random(-1, 1)) % 8; }
 	}

@@ -967,7 +967,7 @@ class Base : Actor
 			statnumchanged = true; // Only do this once!
 		}
 
-		if (!globalfreeze && !level.Frozen)
+		if (!IsFrozen())
 		{
 			if (dodgetimeout > 0) { dodgetimeout--; }
 			if (crouchtimeout == 70) { crouchtimer++; }
@@ -2205,7 +2205,7 @@ class Nazi : Base
 		if (trace.HitType == TRACE_HitWall && trace.HitLine && !(trace.HitLine.flags & line.ML_BLOCKING))
 		{
 			// And only duck if the other side of the blocking wall (or a good enough approximation) is inside the map...
-			if (level.IsPointInMap(pos + (RotateVector((range + 32.0, 0), angle), height))) { return true; }
+			if (level.IsPointInLevel(pos + (RotateVector((range + 32.0, 0), angle), height))) { return true; }
 		}
 
 		LineTrace(angle, range, pitch, TRF_SOLIDACTORS | TRF_THRUHITSCAN, height, 0.0, 0.0, trace);
@@ -2879,7 +2879,7 @@ class Nazi : Base
 		}
 		else { manager = EffectsManager.GetManager(); }
 
-		if (globalfreeze || level.Frozen || !interval) { return; }
+		if (IsFrozen() || !interval) { return; }
 
 		if (wasused)
 		{

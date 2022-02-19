@@ -179,7 +179,7 @@ class FountainSoul0 : SimpleActor
 
 	override void Tick()
 	{
-		if (globalfreeze || level.frozen) { return; }
+		if (IsFrozen()) { return; }
 
 		vel.z = Default.Speed;
 

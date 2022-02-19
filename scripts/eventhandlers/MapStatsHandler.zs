@@ -177,13 +177,13 @@ class MapStatsHandler : StaticEventHandler
 
 					// Filter to only show results from maps named in the CxMy format.
 					String mapname = m.mapname;
-					mapname.ToUpper();
+					mapname = mapname.MakeUpper();
 
 					if (mapname.Mid(0, 1) != "C" || mapname.Mid(2, 1) != "M") { continue; }
 
 					if (persistent.Levels[i])
 					{
-						chapter = Levels[i].mapname.CharCodeAt(1) - 48;
+						chapter = Levels[i].mapname.ByteAt(1) - 48;
 						break;
 					}
 				}
@@ -222,12 +222,12 @@ class MapStatsHandler : StaticEventHandler
 
 				// Filter to only show results from maps named in the CxMy format.
 				String mapname = m.mapname;
-				mapname.ToUpper();
+				mapname = mapname.MakeUpper();
 
 				if (mapname.Mid(0, 1) != "C" || mapname.Mid(2, 1) != "M") { continue; }
 
-				int mapnum = mapname.CharCodeAt(3) - 48;
-				int chapnum = mapname.CharCodeAt(1) - 48;
+				int mapnum = mapname.ByteAt(3) - 48;
+				int chapnum = mapname.ByteAt(1) - 48;
 
 				if (chapnum != chapter) { continue; }
 

@@ -231,7 +231,7 @@ class CreepyRaiseFlat : CreepyRaise
 	{
 		Super.Tick();
 
-		if (globalfreeze || level.Frozen) { return; }
+		if (IsFrozen()) { return; }
 
 		if (level.time % int(2 / max(0.001, scale.x))  == 0)
 		{

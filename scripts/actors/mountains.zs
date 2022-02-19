@@ -52,7 +52,7 @@ class Mountains : Actor
 
 		if (args[0] != 0)
 		{
-			ActorIterator it = ActorIterator.Create(args[0], "Actor");
+			ActorIterator it = Level.CreateActorIterator(args[0], "Actor");
 			centerpoint = it.Next();
 		}
 
@@ -66,7 +66,7 @@ class Mountains : Actor
 	{
 		Super.Tick();
 
-		if (globalfreeze || level.Frozen) { return; }
+		if (IsFrozen()) { return; }
 
 		for (int i = 0; i < MAXPLAYERS; i++)
 		{

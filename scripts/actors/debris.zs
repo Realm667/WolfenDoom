@@ -313,7 +313,7 @@ class DebrisMound : SceneryBase
 		double c = cos(angle);
 		pointpos = Vec2Offset(pointpos.x * c + pointpos.y * s, pointpos.x * s - pointpos.y * c);
 
-		if (!level.IsPointInMap((pointpos, floorz))) { return range; }
+		if (!level.IsPointInLevel((pointpos, floorz))) { return range; }
 
 		bool blocked;
 

@@ -614,7 +614,7 @@ class LineTools : Thinker
 	{
 		if (!lineid) { return; }
 
-		LineIdIterator lines = LineIdIterator.Create(lineid);
+		LineIdIterator lines = Level.CreateLineIdIterator(lineid);
 
 		int l = lines.Next();
 

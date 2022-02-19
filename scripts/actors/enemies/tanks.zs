@@ -406,7 +406,7 @@ class TankBase : VehicleBase
 	{
 		Actor.Tick();
 
-		if (globalfreeze || level.Frozen || user_static) { return; }
+		if (IsFrozen() || user_static) { return; }
 
 		if (missiletimeout > 0) { missiletimeout--; }
 		if (bullettimeout > 0) { bullettimeout--; }
@@ -1148,7 +1148,7 @@ class PairedTire : Actor
 	{
 		Super.Tick();
 
-		if (globalfreeze || level.Frozen) { return; }
+		if (IsFrozen()) { return; }
 
 		scale.x = default.scale.x / level.pixelstretch; // Forceably correct skewed models introduced by pixel ratio settings
 

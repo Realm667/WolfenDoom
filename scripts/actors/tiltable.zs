@@ -44,7 +44,7 @@ class Tiltable : Actor
 	{
 		Super.Tick();
 
-		if (globalfreeze || level.Frozen) { return; }
+		if (IsFrozen()) { return; }
 
 		for (int i = 0; i < MAXPLAYERS; i++)
 		{

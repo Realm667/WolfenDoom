@@ -241,7 +241,7 @@ class ActorSpawner : SwitchableDecoration
 
 		int total = 0;
 
-		ActorIterator it = ActorIterator.Create(tid, "ActorSpawner");
+		ActorIterator it = Level.CreateActorIterator(tid, "ActorSpawner");
 		Actor spot;
 
 		while (spot = it.Next())
@@ -286,7 +286,7 @@ class ActorSpawner : SwitchableDecoration
 						spawned.ChangeTID(user_tid);
 						if (user_goal > 0)
 						{
-							let it = ActorIterator.Create(user_goal, "PatrolPoint");
+							let it = Level.CreateActorIterator(user_goal, "PatrolPoint");
 							Actor goal;
 							if (it) { goal = it.Next(); }
 							if (goal) { spawned.goal = goal; }
@@ -392,7 +392,7 @@ class WaveSpawner : ActorSpawner
 	{
 		if (tid)
 		{
-			ActorIterator it = ActorIterator.Create(tid, "WaveSpawner");
+			ActorIterator it = Level.CreateActorIterator(tid, "WaveSpawner");
 			WaveSpawner mo;
 
 			while (mo = WaveSpawner(it.Next()))
@@ -503,7 +503,7 @@ class WaveSpawner : ActorSpawner
 
 					if (user_goal > 0)
 					{
-						let it = ActorIterator.Create(user_goal, "PatrolPoint");
+						let it = Level.CreateActorIterator(user_goal, "PatrolPoint");
 						Actor goal;
 						if (it) { goal = it.Next(); }
 						if (goal) { spawned.goal = goal; }

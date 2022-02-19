@@ -98,7 +98,7 @@ class Soul : StackableInventory
 
 	override void Tick()
 	{
-		if (globalfreeze || level.frozen) { return; }
+		if (IsFrozen()) { return; }
 
 		Super.Tick();
 
@@ -373,7 +373,7 @@ class SoulTrail : ParticleBase
 
 	override void Tick()
 	{
-		if (globalfreeze || level.frozen) { return; }
+		if (IsFrozen()) { return; }
 
 		alpha -= Default.alpha / steps;
 

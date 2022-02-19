@@ -148,7 +148,7 @@ class GateKeeper : Actor
 
 	override void Tick()
 	{
-		if (globalfreeze || level.Frozen) { return; }
+		if (IsFrozen()) { return; }
 
 		Super.Tick();
 
@@ -211,7 +211,7 @@ class GateKeeper : Actor
 
 			if (tid)
 			{ // If there's a TID, affect all Gatekeepers with that TID
-				let it = ActorIterator.Create(tid, "Gatekeeper");
+				let it = Level.CreateActorIterator(tid, "Gatekeeper");
 				Actor mo;
 
 				while (mo = Actor(it.Next()))
@@ -279,7 +279,7 @@ Class CreepyEffect : Actor
 	{
 		Super.Tick();
 
-		if (globalfreeze || level.Frozen) { return; }
+		if (IsFrozen()) { return; }
 	
 		if (master)
 		{
@@ -315,7 +315,7 @@ class GateLight : DynamicLight
 
 	override void Tick()
 	{
-		if (globalfreeze || level.Frozen || CheckSightOrRange(512)) { return; }
+		if (IsFrozen() || CheckSightOrRange(512)) { return; }
 
 		scale.x = max(scale.x, 1.0);
 
@@ -488,7 +488,7 @@ class GhostGate : GateKeeper
 	{
 		if (tid)
 		{
-			let it = ActorIterator.Create(tid, GetClassName());
+			let it = Level.CreateActorIterator(tid, GetClassName());
 			Actor mo;
 
 			while (mo = Actor(it.Next()))
@@ -575,7 +575,7 @@ class GhostGate : GateKeeper
 
 	override void Tick()
 	{
-		if (globalfreeze || level.Frozen) { return; }
+		if (IsFrozen()) { return; }
 
 		Super.Tick();
 
@@ -831,7 +831,7 @@ class GhostGateHelper : GhostGate
 	{
 		if (tid)
 		{
-			let it = ActorIterator.Create(tid, "Gatekeeper");
+			let it = Level.CreateActorIterator(tid, "Gatekeeper");
 			Actor mo;
 
 			while (mo = Actor(it.Next()))
@@ -885,7 +885,7 @@ class FlatNumber : Actor
 
 	override void Tick()
 	{
-		if (globalfreeze || level.Frozen) { return; }
+		if (IsFrozen()) { return; }
 
 		frame = value;
 
@@ -1029,7 +1029,7 @@ class DoorHandler : Actor
 
 		if (tid && !master)
 		{ // If there's a TID, find the actor with that TID to also move
-			let it = ActorIterator.Create(tid, "Actor");
+			let it = Level.CreateActorIterator(tid, "Actor");
 			Actor mo;			
 
 			while (mo = Actor(it.Next()))

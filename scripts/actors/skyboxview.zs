@@ -53,7 +53,7 @@ class SkyViewPointStatic : SkyViewPoint
 	{
 		if (!tid) { return; }
 
-		ActorIterator it = ActorIterator.Create(tid, "SkyViewPointStatic");
+		ActorIterator it = Level.CreateActorIterator(tid, "SkyViewPointStatic");
 		SkyViewPointStatic mo = SkyViewPointStatic(it.Next());
 
 		if (!mo)
@@ -66,7 +66,7 @@ class SkyViewPointStatic : SkyViewPoint
 
 		if (anchorid > 0)
 		{
-			it = ActorIterator.Create(anchorid, "Actor");
+			it = Level.CreateActorIterator(anchorid, "Actor");
 			mo.anchor = it.Next();
 			
 			mo.anchoroffset = (0, 0);
@@ -96,7 +96,7 @@ class SkyViewPointStatic : SkyViewPoint
 		// Save the spawn location vector for later
 		SpawnPoint = pos;
 
-		if (!tid) { ChangeTID(FindUniqueTID()); }
+		if (!tid) { ChangeTID(level.FindUniqueTID()); }
 
 		SetAnchor(tid);
 	}

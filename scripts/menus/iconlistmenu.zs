@@ -127,7 +127,8 @@ class ExtendedListMenu : ListMenu
 		GetPlaceholders();
 
 		// Allow generic lookups - strip "menu" off of the menu name, and use that stub as the lookup base (e.g., SKILL, EPISODE, etc.)
-		String MenuName = ToUpper(mDesc.mMenuName);
+		String MenuName = mDesc.mMenuName;
+		MenuName = MenuName.MakeUpper();
 		MenuName.Replace("MENU", "");
 
 		lookupBase = MenuName;
@@ -297,22 +298,6 @@ class ExtendedListMenu : ListMenu
 				ListMenuItemTextItem(mDesc.mItems[placeholders[p]]).mText = "[Unreleased]" .. ListMenuItemTextItem(mDesc.mItems[placeholders[p]]).mText;
 			}
 		}
-	}
-
-	String ToUpper(String input)
-	{
-		String output;
-
-		for (int i = 0; i < input.length(); i++)
-		{
-			int c = input.CharCodeAt(i);
-
-			if (c >= 97 && c <= 122) { c -= 32; }
-
-			output.AppendFormat("%c", c);
-		}
-
-		return output;
 	}
 }
 

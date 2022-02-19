@@ -1512,7 +1512,7 @@ class BoAStatusBar : BaseStatusBar
 		if (multiplayer)
 		{
 			String pstring = StringTable.Localize("$TXT_BY");
-			pstring.ToLower();
+			pstring = pstring.MakeLower();
 			pstring.Substitute("%s", players[paused - 1].GetUserName());
 
 			DrawToHUD.DrawText(pstring, (x + innerwidth, y), fnt3, alpha, textscale, (-1, -1), clr, ZScriptTools.STR_RIGHT);

@@ -716,7 +716,7 @@ Class MovingTrailBeam : Actor
 	{
 		Super.Tick();
 
-		if (globalfreeze || level.Frozen) { return; }
+		if (IsFrozen()) { return; }
 
 		if (master && master is "PlayerPawn")
 		{ 

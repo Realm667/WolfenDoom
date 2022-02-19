@@ -269,7 +269,7 @@ class SpotlightMount : Actor
 
 	override void Tick()
 	{
-		if (globalfreeze || level.Frozen) { return; }
+		if (IsFrozen()) { return; }
 
 		if (health && bShootable)
 		{
@@ -338,7 +338,7 @@ class SpotlightBeam : Actor
 
 	override void Tick()
 	{
-		if (globalfreeze || level.Frozen) { return; }
+		if (IsFrozen()) { return; }
 
 		if (!light)
 		{
@@ -621,7 +621,7 @@ class StrobeEmitter : Actor
 	{
 		Super.Tick();
 
-		if (globalfreeze || level.Frozen || bDormant) { return; }
+		if (IsFrozen() || bDormant) { return; }
 
 		if (manager)
 		{

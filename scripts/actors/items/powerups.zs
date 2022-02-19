@@ -52,7 +52,8 @@ class PowerupToggler : PowerupGiver
 
 	override void DoEffect()
 	{
-		if (globalfreeze || level.Frozen) { return; }
+		if (IsFrozen()) { return; }
+		
 		if (powerinv)
 		{
 			EffectTics = powerinv.EffectTics;
@@ -205,7 +206,7 @@ class ZyklonMask : PowerupToggler
 
 	override void DoEffect()
 	{
-		if (globalfreeze || level.Frozen) { return; }
+		if (IsFrozen()) { return; }
 
 		// Zyklon mask cannot be used underwater
 		if (powerinv && owner.waterlevel >= 3)
@@ -309,7 +310,7 @@ class PoweredInventory : Inventory
 
 	override void Tick()
 	{
-		if (globalfreeze || level.Frozen) { return; }
+		if (IsFrozen()) { return; }
 
 		if (owner && active)
 		{
@@ -419,7 +420,7 @@ class LanternPickup : PoweredInventory
 			}
 		}
 
-		if (globalfreeze || level.Frozen) { return; }
+		if (IsFrozen()) { return; }
 
 		Super.Tick();
 	}
@@ -461,7 +462,7 @@ class MineSweeper : PoweredInventory
 
 	override void Tick()
 	{
-		if (globalfreeze || level.Frozen) { return; }
+		if (IsFrozen()) { return; }
 
 		Super.Tick();
 
@@ -513,7 +514,7 @@ class BoACompass : CustomInventory
 		{
 			if (actorTID)
 			{
-				let it = ActorIterator.Create(actorTID, "Actor");
+				let it = Level.CreateActorIterator(actorTID, "Actor");
 				Actor mo;
 
 				while (mo = Actor(it.Next()))

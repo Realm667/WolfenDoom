@@ -321,7 +321,7 @@ class AlarmPanel : SwitchableDecoration
 		A_StartSound("switches/normbutn", CHAN_AUTO);
 		if (tid)
 		{ // If there's a TID, affect all actors with that TID
-			let it = ActorIterator.Create(tid, "Actor");
+			let it = Level.CreateActorIterator(tid, "Actor");
 			Actor mo;
 
 			while (mo = Actor(it.Next()))
@@ -427,7 +427,7 @@ class AlarmSpawner : ActorSpawner
 				guard.ChangeTID(user_tid);
 				if (user_goal > 0)
 				{
-					let it = ActorIterator.Create(user_goal, "PatrolPoint");
+					let it = Level.CreateActorIterator(user_goal, "PatrolPoint");
 					Actor goal;
 					if (it) { goal = it.Next(); }
 					if (goal) { guard.goal = goal; }
