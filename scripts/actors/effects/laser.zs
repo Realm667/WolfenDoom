@@ -11,7 +11,8 @@ class LaserShooter : EffectSpawner
 	LaserBeam beam;
 	Actor flare;
 	Class<Actor> beamclass, puffclass, flareclass;
-	int beamdistance;
+	int beamdistance, interval;
+	bool unseen;
 
 	Property BeamClass:beamclass;
 	Property PuffClass:puffclass;
@@ -69,6 +70,8 @@ class LaserShooter : EffectSpawner
 
 		range = max(range, beamdistance + 512);
 
+		interval = Random(0, 35);
+
 		if (bDormant || SpawnFlags & MTF_DORMANT) { Deactivate(null); }
 		else { Activate(null); }
 	}
@@ -76,6 +79,9 @@ class LaserShooter : EffectSpawner
 	virtual void A_FireLaser(int damage, sound snd = "", double zoffset = 0, bool drawdecal = false, double alpha = 1.0, double volume = 1.0)
 	{
 		if (args[1]) { angle += args[1] * 0.25; }
+
+		if ((level.time + interval) % 35 == 0) { unseen = CheckSightOrRange(boa_sfxlod, true); }
+		if (unseen) { return; }
 
 		if (snd != "")
 		{
