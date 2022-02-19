@@ -820,7 +820,12 @@ class ScreenLabelHandler : EventHandler
 						String temp; BrokenString lines;
 						[temp, lines] = BrokenString.BreakString(text, int(48 * fnt.StringWidth(" ")), fnt:fnt);
 
-						double textscale = 1.5 * vid_scalefactor / (fovscale * dist / 256);
+						double scaleamt = 20.0;
+						CVar scalecvar = CVar.FindCVar("boa_itemlabelscale");
+						if (scalecvar) { scaleamt /= max(0.01, scalecvar.GetFloat()); }
+						double scaleval = (Screen.GetHeight() / scaleamt) / imagedimensions.y;
+
+						double textscale = scaleval / (fovscale * dist / 256);
 						double imagescale = 0.5 * textscale;
 						double lineheight = int(fnt.GetHeight() * textscale);
 						double buttonheight = int(Button.GetHeight(null, textscale));
@@ -871,7 +876,14 @@ class ScreenLabelHandler : EventHandler
 							TextureID glint = TexMan.CheckForTexture(ScreenLabelItems[i].icon, TexMan.Type_Any);
 							if (glint.IsValid())
 							{
-								double glintscale = max(1.0, 4.0 * dist / 512) * vid_scalefactor / (fovscale * dist / 512);
+								Vector2 imagedimensions = TexMan.GetScaledSize(glint);
+
+								double scaleamt = 40.0;
+								CVar scalecvar = CVar.FindCVar("boa_itemlabelscale");
+								if (scalecvar) { scaleamt /= max(0.01, scalecvar.GetFloat()); }
+								double scaleval = (Screen.GetHeight() / scaleamt) / imagedimensions.y;
+
+								double glintscale = scaleval / (fovscale * dist / 512);
 								DrawToHUD.DrawTexture(glint, drawpos, ScreenLabelItems[i].alpha * alpha, glintscale, ScreenLabelItems[i].clr ? ScreenLabelItems[i].clr : -1, (-1, -1), DrawToHud.TEX_CENTERED | DrawToHUD.TEX_NOSCALE | (ScreenLabelItems[i].clr ? DrawtoHUD.TEX_COLOROVERLAY : 0));
 							}
 						}
