@@ -723,22 +723,16 @@ class ToiletNazi : BasicGuard
 	{
 		Spawn:
 			TNT1 A 1;
-			"####" # 0
-			{
+			"####" # 0 {
 				sprite = GetSpriteIndex(spawnspritename);
 				SetStateLabel("Look");
 			}
 		Look:
-			"####" A 1 {
+			"####" # 1 {
 				A_Look();
-				tics = Random(40, 100);
-			}
-			"####" B 1 {
-				A_Look();
-				tics = Random(100, 400);
-			}
-			"####" A 0 {
-				if (Random() < 16) { A_StartSound("nazi/farts", CHAN_AUTO, 0, FRandom(0.1, 1.0)); }
+				frame = (frame + 1) % 2;
+				tics = frame ? Random(100, 400) : Random(40, 100);
+				if (!frame && Random() < 16) { A_StartSound("nazi/farts", CHAN_AUTO, 0, FRandom(0.1, 1.0)); }
 			}
 			Loop;
 		See:
@@ -755,8 +749,7 @@ class ToiletNazi : BasicGuard
 			}
 			"####" C 8 A_SpawnItemEx("Casing9mm", 1, 0, 32, Random(1, 2), Random(-1, 1), Random(1, 2), Random(-55, -80), SXF_NOCHECKPOSITION);
 			"####" C 0 {
-				CheckReload(7);
-				CheckSpawnReplacement(replacement);
+				if (!CheckReload(8)) { CheckSpawnReplacement(replacement); }
 			}
 			Stop;
 		Reload:
@@ -791,7 +784,7 @@ class ToiletNazi : BasicGuard
 		Death.Alt1:
 			"####" J -1 A_SpawnItemEx("Shit", random(-16,16), 0, 0, SXF_NOCHECKPOSITION);
 			Stop;
-		Sprites:
+		Sprites: // Sprites that can be set using the ToiletNazi.SpawnSprite property
 			GRDT A 0;
 			GRDP A 0;
 			SSOT A 0;
@@ -811,6 +804,13 @@ class ToiletNazi : BasicGuard
 			}
 		}
 
+		// Spawn a toilet at this actor's location if none was found
+		if (!toilet)
+		{
+			toilet = Spawn("ToiletShootable", (pos.xy, floorz));
+			toilet.angle = angle;
+		}
+
 		if (toilet)
 		{
 			bNoGravity = true;
@@ -821,19 +821,25 @@ class ToiletNazi : BasicGuard
 		}
 	}
 
-	void CheckReload(int rounds = 7)
+	bool CheckReload(int rounds = 8, StateLabel jumpstate = "Reload")
 	{
-		if (user_count++ > rounds)
+		user_count++;
+
+		if (user_count >= rounds)
 		{
 			user_count = 0;
-			SetStateLabel("Reload");
+			SetStateLabel(jumpstate);
+
+			return true;
 		}
+
+		return false;
 	}
 
-	// Random chance to position and spawn the replacement actor; can be forced with third parameter
-	void CheckSpawnReplacement(Class<Actor> replacement = "WGuard", StateLabel jumpstate = "See", bool force = false)
+	// Random chance to position and spawn the replacement actor; can be forced with a third parameter of 255
+	void CheckSpawnReplacement(Class<Actor> replacement = "WGuard", StateLabel jumpstate = "See", int chance = 64)
 	{
-		if (force || Random() < 64)
+		if (chance >= 255 || Random() < chance)
 		{
 			Vector3 newpos = pos;
 			if (toilet)
@@ -846,7 +852,7 @@ class ToiletNazi : BasicGuard
 
 			ReplaceWith(replacement, "See", newpos);
 		}
-		else { SetStateLabel("jumpstate"); }
+		else { SetStateLabel(jumpstate); }
 	}
 
 	override bool CanCollideWith(Actor other, bool passive)
@@ -867,9 +873,8 @@ class UrinalNazi : ToiletNazi
 	States
 	{
 		Look:
-			"####" ABCDEFDGIHBC 1
-			{
-				A_StartSound("nazi/peeing", CHAN_VOICE, CHANF_NOSTOP, frandom(0.5,0.8), ATTN_STATIC);
+			"####" ABCDEFDGIHBC 1 {
+				A_StartSound("nazi/peeing", CHAN_VOICE, CHANF_NOSTOP, FRandom(0.5, 0.8), ATTN_STATIC);
 				bLookAllAround = !!(frame > 2) && !Random(0, 16); // Random chance to be able to spot the player if we are looking to the side
 				A_Look();
 				tics = Random(20, 40);
@@ -877,12 +882,10 @@ class UrinalNazi : ToiletNazi
 			Loop;
 		See:
 			"####" J 35 A_StopSound(CHAN_VOICE);
-			"####" A 2 CheckSpawnReplacement(replacement, force:true);
+			"####" A 2 CheckSpawnReplacement(replacement, null, 255);
 		Pain:
-			"####" K 6 {
- 				A_NaziPain(0, True);
-				CheckSpawnReplacement(replacement, force:true);
-			}
+			"####" K 6 A_NaziPain(0, True);
+			"####" A 0 CheckSpawnReplacement(replacement, null, 255);
 		Death:
 			"####" I 5;
 			"####" J 5 A_Scream;
@@ -894,7 +897,7 @@ class UrinalNazi : ToiletNazi
 
 	override void PostBeginPlay()
 	{
-		// Skip the toilet-finding logic fromt he parent class
+		// Skip the toilet-finding logic from the parent class
 		Actor.PostBeginPlay();
 	}
 }
@@ -905,6 +908,7 @@ class WToilet : ToiletNazi
 	{
 		//$Title Toilet Wehrmacht Guard (Pistol)
 		//$Sprite "GRDTA0"
+		Obituary "$WGUARD";
 		ToiletNazi.Replacement "WGuard";
 		ToiletNazi.SpawnSprite "GRDTA0";
 	}
@@ -927,6 +931,7 @@ class SSToilet : ToiletNazi
 	{
 		//$Title Toilet SS Officer (Pistol)
 		//$Sprite "SSOTA0"
+		Obituary "$SSGUARD";
 		ToiletNazi.Replacement "SSOfficer";
 		ToiletNazi.SpawnSprite "SSOTA0";
 	}
@@ -942,8 +947,7 @@ class SSToilet : ToiletNazi
 			}
 			"####" C 6 A_SpawnItemEx("Casing9mm", 1, 0, 32, Random(1, 2), Random(-1, 1), Random(1, 2), Random(-55, -80), SXF_NOCHECKPOSITION);
 			"####" C 0 {
-				CheckReload(7);
-				CheckSpawnReplacement(replacement);
+				if (!CheckReload(7)) { CheckSpawnReplacement(replacement); }
 			}
 			Stop;
 		Reload:
