@@ -29,6 +29,10 @@ const NASHGORE_BLOODFLAGS3 = SXF_TRANSFERTRANSLATION | SXF_ABSOLUTEPOSITION | SX
 // Base blood
 class NashGore_BloodBase : BloodBase
 {
+	int maxlife;
+
+	Property MaxLife:maxlife;
+
 	Default
 	{
 		-SOLID
@@ -39,6 +43,21 @@ class NashGore_BloodBase : BloodBase
 		+NOBLOCKMAP
 		+NOBLOCKMONST
 		+NOTELEPORT
+		NashGore_BloodBase.MaxLife -1; // Maximum life of the actor, in tics.  -1 means keep until otherwise destroyed
+	}
+
+	override void Tick()
+	{
+		if (!IsFrozen())
+		{
+			if (maxlife > -1)
+			{
+				maxlife--;
+				if (maxlife == 0) { Destroy(); }
+			}
+		}
+
+		Super.Tick();
 	}
 }
 
@@ -96,34 +115,47 @@ class NashGore_BloodSplatter : NashGore_Blood replaces BloodSplatter
 // Blood actor that flies outwards and leaves trails behind
 class NashGore_FlyingBlood : NashGore_BloodBase
 {
+	int steps;
+
 	Default
 	{
 		Radius 8;
 		Height 2;
 		Gravity 0.25;
+		NashGore_BloodBase.MaxLife 35;
 	}
+
 	States
 	{
-	Spawn:
-	FlyingNormal:
-		TNT1 A 2 A_SpawnItem("NashGore_FlyingBloodTrail", 0, 0, 0, 1);
-		TNT1 A 0 A_Jump(12, "RandomlyDestroy");
-		TNT1 A 0 A_Jump(27, "FlyingDecel");
-		Loop;
-	FlyingDecel:
-		TNT1 A 2 A_SpawnItem("NashGore_FlyingBloodTrail", 0, 0, 0, 1);
-		TNT1 A 0 A_ChangeVelocity(Vel.X * 0.8, Vel.Y * 0.8, Vel.Z, CVF_REPLACE);
-		Loop;
-	RandomlyDestroy:
-		TNT1 A 0;
-		Stop;
-	Crash:
-		TNT1 A 0 A_StartSound("bloodsplat");
-		TNT1 A 0 A_SpawnItem("NashGore_BloodSplash", 0, 0, 0, 1);
-	BloodSplasher:
-		TNT1 A 0 A_SpawnItemEx("NashGore_BloodSpot", 0, 0, 0, 0, 0, 0, frandom(0, 360), 7, 128);
-		TNT1 AAAAA 1 A_SpawnItemEx("NashGore_BloodSplasher", 0, 0, 0, frandom(-2.0, 2.0), frandom(-2.0, 2.0), frandom(1.0, 2.0), random(0, 360), NASHGORE_BLOODFLAGS1, 150);
-		Stop;
+		Spawn:
+		FlyingNormal:
+			TNT1 A 2 SpawnBloodTrail("NashGore_FlyingBloodTrail");
+			TNT1 A 0 A_Jump(12, "RandomlyDestroy");
+			TNT1 A 0 A_Jump(27, "FlyingDecel");
+			Loop;
+		FlyingDecel:
+			TNT1 A 2 SpawnBloodTrail("NashGore_FlyingBloodTrail");
+			TNT1 A 0 A_ChangeVelocity(Vel.X * 0.8, Vel.Y * 0.8, Vel.Z, CVF_REPLACE);
+			Loop;
+		RandomlyDestroy:
+			TNT1 A 0;
+			Stop;
+		Crash:
+			TNT1 A 0 A_StartSound("bloodsplat");
+			TNT1 A 0 A_SpawnItem("NashGore_BloodSplash", 0, 0, 0, 1);
+		BloodSplasher:
+			TNT1 A 0 A_SpawnItemEx("NashGore_BloodSpot", 0, 0, 0, 0, 0, 0, frandom(0, 360), 7, 128);
+			TNT1 AAAAA 1 A_SpawnItemEx("NashGore_BloodSplasher", 0, 0, 0, frandom(-2.0, 2.0), frandom(-2.0, 2.0), frandom(1.0, 2.0), random(0, 360), NASHGORE_BLOODFLAGS1, 150);
+			Stop;
+	}
+
+	virtual void SpawnBloodTrail(Class<Actor> trail = "NashGore_FlyingBloodTrail")
+	{
+		A_SpawnItem(trail, 0, 0, 0, 1);
+
+		// Spawn trail actors farther apart the further this actor moves
+		tics += steps;
+		steps++;
 	}
 }
 
@@ -136,6 +168,7 @@ class NashGore_FlyingBloodTrail : NashGore_BloodBase
 		Height 1;
 		Gravity 0.15;
 		Scale 0.55;
+		NashGore_BloodBase.MaxLife 35;
 	}
 	States
 	{
@@ -322,28 +355,29 @@ class Zombie_FlyingBlood : NashGore_FlyingBlood
 	{
 		Decal "ZBloodSmear";
 	}
+
 	States
 	{
-	Spawn:
-	FlyingNormal:
-		TNT1 A 2 A_SpawnItem("Zombie_FlyingBloodTrail", 0, 0, 0, 1);
-		TNT1 A 0 A_Jump(12, "RandomlyDestroy");
-		TNT1 A 0 A_Jump(27, "FlyingDecel");
-		Loop;
-	FlyingDecel:
-		TNT1 A 2 A_SpawnItem("Zombie_FlyingBloodTrail", 0, 0, 0, 1);
-		TNT1 A 0 A_ChangeVelocity(Vel.X * 0.8, Vel.Y * 0.8, Vel.Z, CVF_REPLACE);
-		Loop;
-	RandomlyDestroy:
-		TNT1 A 0;
-		Stop;
-	Crash:
-		TNT1 A 0 A_StartSound("bloodsplat");
-		TNT1 A 0 A_SpawnItem("Zombie_BloodSplash", 0, 0, 0, 1);
-	BloodSplasher:
-		TNT1 A 0 A_SpawnItemEx("Zombie_BloodSpot", 0, 0, 0, 0, 0, 0, frandom(0, 360), 7, 128);
-		TNT1 AAAAA 1 A_SpawnItemEx("Zombie_BloodSplasher", 0, 0, 0, frandom(-2.0, 2.0), frandom(-2.0, 2.0), frandom(1.0, 2.0), random(0, 360), NASHGORE_BLOODFLAGS1, 150);
-		Stop;
+		Spawn:
+		FlyingNormal:
+			TNT1 A 2 SpawnBloodTrail("Zombie_FlyingBloodTrail");
+			TNT1 A 0 A_Jump(12, "RandomlyDestroy");
+			TNT1 A 0 A_Jump(27, "FlyingDecel");
+			Loop;
+		FlyingDecel:
+			TNT1 A 2 SpawnBloodTrail("Zombie_FlyingBloodTrail");
+			TNT1 A 0 A_ChangeVelocity(Vel.X * 0.8, Vel.Y * 0.8, Vel.Z, CVF_REPLACE);
+			Loop;
+		RandomlyDestroy:
+			TNT1 A 0;
+			Stop;
+		Crash:
+			TNT1 A 0 A_StartSound("bloodsplat");
+			TNT1 A 0 A_SpawnItem("Zombie_BloodSplash", 0, 0, 0, 1);
+		BloodSplasher:
+			TNT1 A 0 A_SpawnItemEx("Zombie_BloodSpot", 0, 0, 0, 0, 0, 0, frandom(0, 360), 7, 128);
+			TNT1 AAAAA 1 A_SpawnItemEx("Zombie_BloodSplasher", 0, 0, 0, frandom(-2.0, 2.0), frandom(-2.0, 2.0), frandom(1.0, 2.0), random(0, 360), NASHGORE_BLOODFLAGS1, 150);
+			Stop;
 	}
 }
 
