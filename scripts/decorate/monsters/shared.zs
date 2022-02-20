@@ -2289,21 +2289,24 @@ class MonsterHole : Appendage
 {
 	Default
 	{
-	+NOCLIP
-	+NOGRAVITY
-	+SHOOTABLE
-	+THRUSPECIES
-	RenderStyle "Translucent";
-	Alpha 0.3;
-	Scale .75;
-	Species "Smoke";
+		+NOBLOOD
+		+NOBLOODDECALS
+		+NOCLIP
+		+NOGRAVITY
+		+SHOOTABLE
+		+THRUSPECIES
+		RenderStyle "Translucent";
+		Alpha 0.3;
+		Scale .75;
+		Species "Smoke";
 	}
+
 	States
 	{
-	Spawn:
-		TNT1 A 2;
-		SMMO ABCDEFGHIJKLMNOPQ 2;
-		Stop;
+		Spawn:
+			TNT1 A 2;
+			SMMO ABCDEFGHIJKLMNOPQ 2;
+			Stop;
 	}
 }
 
@@ -2311,31 +2314,32 @@ class MonsterHole2 : MonsterHole
 {
 	Default
 	{
-	Scale 1.0;
-	+RANDOMIZE
-	Species "Zombie";
+		Scale 1.0;
+		+RANDOMIZE
+		Species "Zombie";
 	}
+
 	States
 	{
-	Spawn:
-		TNT1 A 2 A_Jump(64,"SpawnAlt"); //prevent doing huge amount of damage - ozy81
-		TNT1 A 0 {
-			if (!CheckRange(boa_sfxlod, true))
-			{
-				A_SpawnItemEx("ZyklonZCloud4",0,0,8,random(-1,1),random(-1,1),random(-1,1),random(1,360),128);
+		Spawn:
+			TNT1 A 2 A_Jump(64,"SpawnAlt"); //prevent doing huge amount of damage - ozy81
+			TNT1 A 0 {
+				if (!CheckRange(boa_sfxlod, true))
+				{
+					A_SpawnItemEx("ZyklonZCloud4",0,0,8,random(-1,1),random(-1,1),random(-1,1),random(1,360),128);
+				}
 			}
-		}
-		ZMMO ABCDEFGHIJKLMNOPQ 2;
-		Stop;
-	Spawn.Alt:
-		TNT1 A 0 {
-			if (!CheckRange(boa_sfxlod, true))
-			{
-				A_SpawnItemEx("ZyklonZCloud5",0,0,8,random(-1,1),random(-1,1),random(-1,1),random(1,360),128);
+			ZMMO ABCDEFGHIJKLMNOPQ 2;
+			Stop;
+		Spawn.Alt:
+			TNT1 A 0 {
+				if (!CheckRange(boa_sfxlod, true))
+				{
+					A_SpawnItemEx("ZyklonZCloud5",0,0,8,random(-1,1),random(-1,1),random(-1,1),random(1,360),128);
+				}
 			}
-		}
-		ZMMO ABCDEFGHIJKLMNOPQ 2;
-		Stop;
+			ZMMO ABCDEFGHIJKLMNOPQ 2;
+			Stop;
 	}
 }
 
