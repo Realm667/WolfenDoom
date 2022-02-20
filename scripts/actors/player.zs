@@ -1044,6 +1044,14 @@ class BoAPlayer : PlayerPawn
 				}
 				else if (!AimLine || !(AimLine.activation & SPAC_Use) || (Aimline.locknumber && !CheckKeys(Aimline.locknumber, false, true)))
 				{
+					String snd = InteractionHandler.GetSound(texname);
+					if (snd.length())
+					{
+						A_StartSound(snd, CHAN_VOICE, 0, 0.25);
+					}
+					// Handling to always toggle switches if they're in teh config file.
+					// Disabled because secondary effect is that single-use switches can be re-activated.
+					/*
 					int tier = 0;
 					int delay = -1;
 
@@ -1066,6 +1074,7 @@ class BoAPlayer : PlayerPawn
 							A_StartSound(snd, CHAN_VOICE, 0, 0.25);
 						}
 					}
+					*/
 				}
 			}
 		}
