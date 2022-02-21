@@ -837,7 +837,7 @@ class ToiletNazi : BasicGuard
 	}
 
 	// Random chance to position and spawn the replacement actor; can be forced with a third parameter of 255
-	void CheckSpawnReplacement(Class<Actor> replacement = "WGuard", StateLabel jumpstate = "See", int chance = 64)
+	Actor CheckSpawnReplacement(Class<Actor> replacement = "WGuard", StateLabel jumpstate = "See", int chance = 64)
 	{
 		if (chance >= 255 || Random() < chance)
 		{
@@ -850,10 +850,14 @@ class ToiletNazi : BasicGuard
 				newpos = toilet.pos + (RotateVector((dist, 0), toilet.angle), 0);
 			}
 
-			Actor mo = ReplaceWith(replacement, "See", newpos);
+			Actor mo = ReplaceWith(replacement, jumpstate, newpos);
 			if (mo && Nazi(mo)) { mo.sprite = mo.SpawnState.sprite; }
+
+			return mo;
 		}
 		else { SetStateLabel(jumpstate); }
+
+		return null;
 	}
 
 	override bool CanCollideWith(Actor other, bool passive)
@@ -883,17 +887,20 @@ class UrinalNazi : ToiletNazi
 			Loop;
 		See:
 			"####" J 35 A_StopSound(CHAN_VOICE);
-			"####" A 2 CheckSpawnReplacement(replacement, null, 255);
+			"####" A 2 CheckSpawnReplacement(replacement, "See", 255);
 		Pain:
 			"####" K 6 A_NaziPain(0, True);
-			"####" A 0 CheckSpawnReplacement(replacement, null, 255);
+			"####" A 0 CheckSpawnReplacement(replacement, "See", 255);
 		Death:
-			"####" I 5;
-			"####" J 5 A_Scream;
-			"####" K 5 A_UnblockAndDrop;
-			"####" L 5;
-			"####" M -1;
-			Stop;
+			"####" A 0 {
+				Actor mo = CheckSpawnReplacement(replacement, "Death", 255);
+				if (mo)
+				{
+					mo.health = 0;
+					mo.bShootable = false;
+					mo.bIsMonster = false;
+				}
+			}
 	}
 
 	override void PostBeginPlay()
