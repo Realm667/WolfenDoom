@@ -847,10 +847,11 @@ class ToiletNazi : BasicGuard
 				// Spawn the new actor in front of the toilet far enough that its radius does not overlap with the toilet's radius
 				// Adjusts the distance based on the angle of the toilet (square actors mean larger distance at 45 degree angles)
 				double dist = (toilet.radius + GetDefaultByType(replacement).radius) * (1.0 + 0.5 * abs(sin(toilet.angle * 2)));
-				newpos = toilet.pos + (RotateVector((dist, 0), toilet.angle), toilet.pos.z);
+				newpos = toilet.pos + (RotateVector((dist, 0), toilet.angle), 0);
 			}
 
-			ReplaceWith(replacement, "See", newpos);
+			Actor mo = ReplaceWith(replacement, "See", newpos);
+			if (mo && Nazi(mo)) { mo.sprite = mo.SpawnState.sprite; }
 		}
 		else { SetStateLabel(jumpstate); }
 	}
