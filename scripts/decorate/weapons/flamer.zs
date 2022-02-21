@@ -45,7 +45,10 @@ class Pyrolight : NaziWeapon
 		Ready:
 			FFTR A 1 {
 				int readyflags = 0;
-				if (invoker.CheckInventory("FlameAmmo", 1)) { readyflags |= WRF_ALLOWRELOAD; }
+				if (
+					invoker.CheckInventory(invoker.AmmoType2, 1) && 
+					!invoker.CheckInventory(invoker.AmmoType1, GetDefaultByType(invoker.AmmoType1).MaxAmount)
+				) { readyflags |= WRF_ALLOWRELOAD; }
 				if (waterlevel >= 2) { readyflags |= WRF_NOFIRE | WRF_NOBOB; }
 
 				A_WeaponReady(readyflags);
@@ -59,7 +62,7 @@ class Pyrolight : NaziWeapon
 			Loop;
 		Fire:
 			FFTR A 0 A_JumpIf(waterlevel >= 2, "Ready");
-			FFTR A 0 A_JumpIfInventory("PyrolightLoaded", 1, "Fire.Loaded");
+			FFTR A 0 A_JumpIfInventory(invoker.AmmoType1, 1, "Fire.Loaded");
 			Goto Dryfire;
 		Fire.Loaded:
 			FFTF A 1 Offset(0,35) {
@@ -80,12 +83,12 @@ class Pyrolight : NaziWeapon
 			Stop;
 		AltFire:
 			FFTR A 0 A_JumpIf(waterlevel >= 2, "Ready");
-			FFTR A 0 A_JumpIfInventory("PyrolightLoaded", 1, "AltFire.Loaded");
+			FFTR A 0 A_JumpIfInventory(invoker.AmmoType1, 1, "AltFire.Loaded");
 			Goto DryFire;
 		AltFire.Loaded:
 			FFTF A 1 {
-				int amt = min((invoker.FindInventory("PyrolightLoaded")).amount, 10);
-				A_TakeInventory("PyrolightLoaded", amt, TIF_NOTAKEINFINITE);
+				int amt = min((invoker.FindInventory(invoker.AmmoType1)).amount, 10);
+				A_TakeInventory(invoker.AmmoType1, amt, TIF_NOTAKEINFINITE);
 				A_StartSound("flamer/napalm", CHAN_WEAPON, 0, amt / 10.0);
 				A_AlertMonsters();
 				Actor p = A_FireProjectile("Flameball", 0, 0);
@@ -130,10 +133,10 @@ class Pyrolight : NaziWeapon
 			FFTR F 1 Offset(-3,55);
 			FFTR F 1 Offset(-3,56) A_SpawnItemEx("PyroCasing",-12,8,32,8,random(-2,2),random(0,4),random(55,80),SXF_NOCHECKPOSITION);
 		ReloadLoop:
-			FFTR B 0 A_TakeInventory("FlameAmmo",1,TIF_NOTAKEINFINITE);
-			FFTR B 0 A_GiveInventory("PyrolightLoaded");
-			FFTR B 0 A_JumpIfInventory("PyrolightLoaded",0,"ReloadFinish");
-			FFTR B 0 A_JumpIfInventory("FlameAmmo",1,"ReloadLoop");
+			FFTR B 0 A_TakeInventory(invoker.AmmoType2,1,TIF_NOTAKEINFINITE);
+			FFTR B 0 A_GiveInventory(invoker.AmmoType1);
+			FFTR B 0 A_JumpIfInventory(invoker.AmmoType1,0,"ReloadFinish");
+			FFTR B 0 A_JumpIfInventory(invoker.AmmoType2,1,"ReloadLoop");
 		ReloadFinish:
 			FFTR F 1 Offset(-3,57);
 			FFTR F 1 Offset(-3,59);
