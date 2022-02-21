@@ -289,16 +289,6 @@ class BoAStatusBar : BaseStatusBar
 		Widget.DrawWidgets();
 
 		DrawSaveIcon();
-
-		// Precache camera texture for Karabiner zoom
-		// Camera textures only update when they are visible; having this drawn here
-		// prevents the camera from displaying an old image for one-tick when activated
-		let kar = Weapon(CPlayer.mo.FindInventory("Kar98k"));
-		if (kar && CPlayer.ReadyWeapon == kar)
-		{
-			TextureID tex = TexMan.CheckForTexture("SCOPE" .. CPlayer.mo.PlayerNumber());
-			DrawToHUD.DrawTexture(tex, (0, 0), 0.0);
-		}
 	}
 
 	virtual void DrawSaveIcon()
