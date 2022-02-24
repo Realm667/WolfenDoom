@@ -135,6 +135,34 @@ class DebugEventHandler : StaticEventHandler
 		return info;
 	}
 
+	void FindUndefinedTerrain()
+	{
+		Array<String> textures;
+		Array<String> info;
+
+		for (int s = 0; s < level.sectors.Size(); s++)
+		{
+			Sector sec = level.sectors[s];
+
+			if (!sec.GetTerrain(Sector.floor)) // Terrain type of "Solid" - the engine default
+			{
+				TextureID tex = sec.GetTexture(Sector.floor);
+				String texname = TexMan.GetName(tex);
+
+				if (textures.Find(texname) == textures.Size())
+				{
+					textures.Push(texname);
+					info.Push(String.Format("floor %s rock // Used in %s (Sector %i)", texname, level.mapname, sec.Index()));
+				}
+			}
+		}
+
+		for (int i = 0; i < info.Size(); i++)
+		{
+			console.printf(info[i]);
+		}
+	}
+
 	override void NetworkProcess(ConsoleEvent e)
 	{
 		// netevent showliveenemies
@@ -165,6 +193,10 @@ class DebugEventHandler : StaticEventHandler
 		else if (e.name ~== "showarmor")
 		{
 			Console.Printf(GetArmorInfo());
+		}
+		else if (e.name ~== "showundefinedterrain")
+		{
+			FindUndefinedTerrain();
 		}
 	}
 

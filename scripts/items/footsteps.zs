@@ -128,6 +128,22 @@ class BoAFootsteps : Inventory
 
 		if (!stepsound) { stepsound = "floor/dirt"; } // Fall back to the dirt sound if nothing was found.
 
+		if (boa_debugterrainsounds && origin && origin == players[consoleplayer].mo)
+		{
+			String texname = " \cU (\cC" .. TexMan.GetName(origin.floorpic) .. "\cU): ";
+
+			if (ground && boa_debugterrainsounds > 1)
+			{
+				texname = "\cU" .. ground.TerrainName .. texname;
+				console.printf(texname .. "\cC" .. stepsound);
+			}
+			else if (!ground)
+			{
+				texname = "\cRNo terrain definition" .. texname;
+				console.printf(texname .. "\cJ" .. stepsound);
+			}
+		}
+
 		return stepsound;
 	}
 }

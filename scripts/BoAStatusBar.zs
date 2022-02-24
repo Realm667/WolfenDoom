@@ -145,6 +145,8 @@ class BoAStatusBar : BaseStatusBar
 			processed = true;
 		}
 
+		if (boa_defaultprint) { return false; }
+
 		if (!processed && printlevel & PRINT_TYPES <= PRINT_TEAMCHAT)
 		{
 			Font fnt = (CPlayer.mo is "KeenPlayer") ? ClassicFont : SmallFont;
