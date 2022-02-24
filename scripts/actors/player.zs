@@ -1049,7 +1049,7 @@ class BoAPlayer : PlayerPawn
 					{
 						A_StartSound(snd, CHAN_VOICE, 0, 0.25);
 					}
-					// Handling to always toggle switches if they're in teh config file.
+					// Handling to always toggle switches if they're in the config file.
 					// Disabled because secondary effect is that single-use switches can be re-activated.
 					/*
 					int tier = 0;

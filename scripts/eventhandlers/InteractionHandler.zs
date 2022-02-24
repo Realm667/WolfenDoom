@@ -197,7 +197,7 @@ class InteractionHandler : EventHandler
 
 			for (int w = 0; w < 3 && delay < 0; w++)
 			{
-				delay = DoSwitchTexture(ln.sidedef[0], w, e.thing);
+				delay = max(delay, DoSwitchTexture(ln.sidedef[0], w, e.thing));
 			}
 
 			if (delay > -1)
