@@ -803,14 +803,14 @@ class ToiletNazi : BasicGuard
 				toilet = it.thing;
 			}
 		}
-
+/* Can't do this, unfortunately; the actor can't be used in non-toilet locations if a toilet gets spawned.
 		// Spawn a toilet at this actor's location if none was found
 		if (!toilet)
 		{
 			toilet = Spawn("ToiletShootable", (pos.xy, floorz));
 			toilet.angle = angle;
 		}
-
+*/
 		if (toilet)
 		{
 			bNoGravity = true;
