@@ -28,24 +28,29 @@ class Soul : StackableInventory
 	int user_amount;
 	double destscale;
 
+	Property FloorClip:floorclip;
+
 	Default
 	{
 		//$Category Powerups (BoA)
 		//$Title Souls (+1)
 		//$Color 6
 		//$Sprite AMM3A0
-		+FLOATBOB
-		+FORCEXYBILLBOARD
 		+DONTSPLASH // Don't make footstep sounds
+		+FLOATBOB
+		+FLOORCLIP
+		+FORCEXYBILLBOARD
+		+SPECIALFLOORCLIP
 		Inventory.Amount 1;
 		Inventory.MaxAmount 9999;
 		Inventory.Icon "SOUL01";
 		Inventory.PickupMessage "$SOUL_SM";
 		Inventory.PickupSound "DSSLPU";
-		Gravity 0.5;
-		Speed 7;
-		Renderstyle "Translucent";
+		Soul.FloorClip -35;
 		Alpha 0.8;
+		Gravity 0.5;
+		Renderstyle "Translucent";
+		Speed 7;
 	}
 
 	States
@@ -108,7 +113,11 @@ class Soul : StackableInventory
 
 			if (CurState && tics == CurState.tics) // Run this logic at the beginning of every new frame
 			{
-				if (large) { frame += 4; } // Offset the frames once you hit 3 souls in order to use the larger soul sprite and match the SoulBig pickup
+				if (large)
+				{
+					frame += 4; // Offset the frames once you hit 3 souls in order to use the larger soul sprite and match the SoulBig pickup
+					floorclip = -45; // Offset the sprite slightly higher to keep the center in the same location
+				}
 			}
 
 			if (Amount > oldamount)
@@ -120,7 +129,6 @@ class Soul : StackableInventory
 			if (destscale && destscale > scale.x) // Smooth scaling to increase size over time.
 			{
 				scale = min(destscale, scale.x * 1.01) * (1, 1);
-				floorclip = -16 * (1.0 - (scale.x / Default.scale.x));
 			}
 
 			if (bDropped)
@@ -274,7 +282,6 @@ class Soul : StackableInventory
 		else if (Amount >= 25) // At maximum size, match appearance and message of the SoulSuperBig powerup
 		{
 			destscale = Default.scale.x;
-			floorclip = Default.floorclip;
 		}
 		else // Scale up to full size in steps, based on how many souls have been added
 		{
@@ -290,52 +297,32 @@ class SoulBig : Soul
 {
 	Default
 	{
-		//$Category Powerups (BoA)
 		//$Title Souls (+3)
-		//$Color 6
 		//$Sprite AMM3E0
-
-		Scale 0.5;
 		Inventory.Amount 3;
 		Inventory.PickupMessage "$SOUL_BG";
+		Soul.FloorClip -45;
+		Scale 0.5;
 	}
 
 	States
 	{
 		Spawn:
-			AMM3 EFGH 4 Bright;
+			AMM3 EFGH 4 Bright; // No seeking behavior
 			Loop;
-	}
-
-	override void PostBeginPlay()
-	{
-		Super.PostBeginPlay();
-
-		floorclip = -16.0; // Adjust apparent height of sprite off of ground after scaling down
 	}
 }
 
-class SoulSuperBig : Soul
+class SoulSuperBig : SoulBig
 {
 	Default
 	{
-		//$Category Powerups (BoA)
 		//$Title Souls (+25)
-		//$Color 6
-		//$Sprite AMM3E0
-
 		Inventory.Amount 25;
 		Inventory.PickupMessage "$SOUL_XBG";
-	}
-
-	States
-	{
-		Spawn:
-			AMM3 EFGH 4 Bright;
-			Loop;
+		Scale 1.0;
 	}
 }
-
 
 class SoulTrail : ParticleBase
 {

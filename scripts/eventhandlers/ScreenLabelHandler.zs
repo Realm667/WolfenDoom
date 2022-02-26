@@ -663,21 +663,20 @@ class ScreenLabelHandler : EventHandler
 			double side = mo.radius;
 
 			// Get the sprite height and use that as top draw height if possible
-			TextureID spritetex = mo.SpawnState.GetSpriteTexture(0);
+			TextureID spritetex = mo.CurState.GetSpriteTexture(0);
 			if (spritetex)
 			{
 				String sname = TexMan.GetName(spritetex);
 				if (!(sname == "MDLAA0" || sname == "MDLSA0" || sname == "TNT1A0" || sname == "UNKNA0" || sname == "AMRKA0"))
 				{
-					Vector2 size = TexMan.GetScaledSize(spritetex);
 					Vector2 offset = TexMan.GetScaledOffset(spritetex);
 
 					top = offset.y * mo.scale.y;
-					side = abs(offset.x * mo.scale.y);
+					side = abs(offset.x * mo.scale.x);
 				}
 			}
 
-			Vector3 offset = (0, 0, mo.GetBobOffset());
+			Vector3 offset = (0, 0, mo.GetBobOffset() - mo.floorclip);
 			if (ScreenLabelItems[i].type == LBL_Item) { offset.z += top + 4; }
 			else if (ScreenLabelItems[i].type == LBL_Glint)
 			{
