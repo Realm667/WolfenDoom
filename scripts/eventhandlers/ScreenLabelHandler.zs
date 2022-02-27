@@ -353,15 +353,63 @@ class ScreenLabelHandler : EventHandler
 		{
 			for (int p = 0; p < MAXPLAYERS; p++)
 			{
-				if (!playeringame[p] || !ScreenLabelItems[i]) { continue; }
+				if (!playeringame[p] || !ScreenLabelItems[i] || !ScreenLabelItems[i].mo) { continue; }
 
 				Vector3 pos = ScreenLabelItems[i].mo.pos;
 				if (ScreenLabelItems[i].ln) { pos.xy = (ScreenLabelItems[i].ln.v1.p + ScreenLabelItems[i].ln.v2.p) / 2; }
 				if (pos != ScreenLabelItems[i].mo.pos) { ScreenLabelItems[i].mo.SetXYZ(pos); }
 
 				ScreenLabelItems[i].draw[p] = !!(players[p].mo && ScreenLabelItems[i].mo && ScreenLabelItems[i].mo.CheckSight(players[p].mo, SF_IGNOREVISIBILITY && SF_IGNOREWATERBOUNDARY));
-				if (ScreenLabelItems[i].mo is "CoffeeMachine" && players[p].health >= 25) { ScreenLabelItems[i].draw[p] = false; }
-				if (ScreenLabelItems[i].type == LBL_Glint)
+
+				if (ScreenLabelItems[i].type == LBL_Item && ScreenLabelItems[i].draw[p])
+				{
+					if (ScreenLabelItems[i].mo is "CoffeeMachine" && players[p].health >= 25) { ScreenLabelItems[i].draw[p] = false; }
+					else if (ScreenLabelItems[i].mo is "Health" && players[p].health >= players[p].mo.GetMaxHealth(true)) { ScreenLabelItems[i].draw[p] = false; }
+					else if (ScreenLabelItems[i].mo is "Weapon")
+					{
+						Weapon w = Weapon(players[p].mo.FindInventory(ScreenLabelItems[i].mo.GetClassName()));
+						if (w)
+						{
+							bool drawn = false; // Don't try to pick up a weapon twice...
+
+							// ...unless you need the ammo
+							Ammo a;
+							if (w.ammogive1 > 0)
+							{
+								a = Ammo(players[p].mo.FindInventory(w.ammotype1));
+								if (a && (a.Amount < a.MaxAmount)) { drawn = true; }
+							}
+
+							if (w.ammogive2 > 0 && !drawn)
+							{
+								a = Ammo(players[p].mo.FindInventory(w.ammotype2));
+								if (a && (a.Amount < a.MaxAmount)) { drawn = true; }
+							}
+
+							ScreenLabelItems[i].draw[p] = drawn;
+						}
+					}
+					else if (ScreenLabelItems[i].mo is "StackableInventory")
+					{
+						// Check the inventory amounts against the "root" item type (e.g., CoinItem versus TreasureChest)
+						let itemclass = StackableInventory(ScreenLabelItems[i].mo).GetParentInventoryClass();
+						Inventory s = players[p].mo.FindInventory(itemclass.GetClassName());
+						if (s && (s.Amount == s.MaxAmount)) { ScreenLabelItems[i].draw[p] = false; }
+					}
+					else if (ScreenLabelItems[i].mo is "Ammo")
+					{
+						// Check the inventory amounts against the "root" ammo type (e.g., Ammo9mm versus Ammo9mmBox)
+						let itemclass = Ammo(ScreenLabelItems[i].mo).GetParentAmmo();
+						Inventory s = players[p].mo.FindInventory(itemclass.GetClassName());
+						if (s && (s.Amount == s.MaxAmount)) { ScreenLabelItems[i].draw[p] = false; }
+					}
+					else if (ScreenLabelItems[i].mo is "Inventory")
+					{
+						Inventory c = players[p].mo.FindInventory(ScreenLabelItems[i].mo.GetClassName());
+						if (c && (c.Amount == c.MaxAmount)) { ScreenLabelItems[i].draw[p] = false; }
+					}
+				}
+				else if (ScreenLabelItems[i].type == LBL_Glint && ScreenLabelItems[i].draw[p])
 				{
 					// Only do this for labels that need more strict line-of-sight checking
 					FLineTraceData LOF;
