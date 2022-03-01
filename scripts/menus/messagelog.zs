@@ -64,6 +64,7 @@ class MessageLogMenu : GenericMenu
 	bool dragging; // User is dragging the scroll bar?
 	double scaleX;
 	double scaleY;
+	bool allowClose;
 
 	override void Init(Menu parent)
 	{
@@ -323,6 +324,27 @@ class MessageLogMenu : GenericMenu
 
 	override bool OnUIEvent(UIEvent e)
 	{
+		// Allow player to close the message log by pressing the message log
+		// key again
+		Array<int> closeKeys;
+		Bindings.GetAllKeysForCommand(closeKeys, "openmenu MessageLogMenu");
+		String closeKeyNames = KeyBindings.NameAllKeys(closeKeys);
+		// See https://github.com/coelckers/gzdoom/blob/254da4b7699cc4d3abd964c9f4f0e2bf31f8bb20/src/common/console/c_bind.cpp#L310
+		Array<String> closeKeysNames;
+		closeKeyNames.Split(closeKeysNames, ", ", TOK_SKIPEMPTY);
+		for (int i = 0; i < closeKeysNames.Size(); i++) {
+			if (e.KeyString ~== closeKeysNames[i]) {
+				if (allowClose) {
+					Close();
+					return true;
+				} else {
+					// This will always be set since the first UI event received
+					// is the key used to open the menu.
+					allowClose = true;
+				}
+			}
+		}
+
 		// Handle mouse wheel
 		switch(e.type)
 		{
