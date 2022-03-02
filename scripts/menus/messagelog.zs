@@ -331,7 +331,7 @@ class MessageLogMenu : GenericMenu
 		String closeKeyNames = KeyBindings.NameAllKeys(closeKeys);
 		// See https://github.com/coelckers/gzdoom/blob/254da4b7699cc4d3abd964c9f4f0e2bf31f8bb20/src/common/console/c_bind.cpp#L310
 		Array<String> closeKeysNames;
-		closeKeyNames.Split(closeKeysNames, ", ", TOK_SKIPEMPTY);
+		closeKeyNames.Split(closeKeysNames, "\034M, ", TOK_SKIPEMPTY);
 		for (int i = 0; i < closeKeysNames.Size(); i++) {
 			if (e.KeyString ~== closeKeysNames[i]) {
 				if (allowClose) {
