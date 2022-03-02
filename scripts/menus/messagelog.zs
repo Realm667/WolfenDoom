@@ -325,6 +325,10 @@ class MessageLogMenu : GenericMenu
 		// Allow player to close the message log by pressing the message log
 		// key again
 		if (e.Type == UiEvent.Type_KeyDown) {
+			if (e.KeyChar == 0) {
+				Close();
+				return true;
+			}
 			Array<int> closeKeys;
 			Bindings.GetAllKeysForCommand(closeKeys, "openmenu MessageLogMenu");
 			String closeKeyNames = KeyBindings.NameAllKeys(closeKeys);
@@ -332,7 +336,7 @@ class MessageLogMenu : GenericMenu
 			Array<String> closeKeysNames;
 			closeKeyNames.Split(closeKeysNames, "\034M, ", TOK_SKIPEMPTY);
 			for (int i = 0; i < closeKeysNames.Size(); i++) {
-				if (e.KeyString ~== closeKeysNames[i] || e.KeyChar == 0) {
+				if (e.KeyString ~== closeKeysNames[i]) {
 					Close();
 					return true;
 				}
