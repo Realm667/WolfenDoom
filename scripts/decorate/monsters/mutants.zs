@@ -195,10 +195,10 @@ class BigMutant1 : Mutant
 		"####" A 0 A_SetSpeed(5);
 		Goto See.MutantFaster;
 	Melee:
-		MTB1 F 4 A_FaceTarget;
-		MTB1 G 5 A_CustomMeleeAttack(8*random(1,5));
-		MTB1 F 4 A_FaceTarget;
-		MTB1 H 5 A_CustomMeleeAttack(8*random(1,5));
+		MTB1 E 4 A_FaceTarget;
+		MTB1 P 5 A_CustomMeleeAttack(8*random(1,5),"Cleaver/Crash","DSPFWOOD");
+		MTB1 E 4 A_FaceTarget;
+		MTB1 Q 5 A_CustomMeleeAttack(8*random(1,5),"Cleaver/Crash","DSPFWOOD");
 		Goto See;
 	Missile:
 		MTB1 E 0 A_Jump(128,"Missile2");
@@ -308,9 +308,9 @@ class BigMutant2 : BigMutant1
 		Goto Look;
 	Melee:
 		MTB2 E 4 A_FaceTarget;
-		MTB2 F 5 A_CustomMeleeAttack(8*random(1,5));
+		MTB2 P 5 A_CustomMeleeAttack(8*random(1,5),"Cleaver/Crash","DSPFWOOD");
 		MTB2 E 4 A_FaceTarget;
-		MTB2 G 5 A_CustomMeleeAttack(8*random(1,5));
+		MTB2 Q 5 A_CustomMeleeAttack(8*random(1,5),"Cleaver/Crash","DSPFWOOD");
 		Goto See;
 	Missile:
 		MTB2 E 20 A_FaceTarget;
