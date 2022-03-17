@@ -2633,8 +2633,7 @@ class WGuard_Wounded : Nazi //ozy81
 	States
 	{
 		Spawn:
-			GRD2 O 0;
-			"####" "#" 0 A_RemoveMaster;
+			GRD2 O 0 NoDelay A_RemoveMaster;
 			Goto Spawn.Loop;
 		Spawn.Loop:
 			"####" O 150 { A_Look(); user_count4 = 0; }
@@ -2717,8 +2716,7 @@ class Guard_Wounded : WGuard_Wounded
 	States
 	{
 	Spawn:
-		GARD O 0;
-		"####" "#" 0 A_RemoveMaster;
+		GARD O 0 NoDelay A_RemoveMaster;
 		Goto Spawn.Loop;
 	}
 }
@@ -2775,8 +2773,7 @@ class Officer_Wounded : WGuard_Wounded
 	States
 	{
 	Spawn:
-		OFFI O 0;
-		"####" "#" 0 A_RemoveMaster;
+		OFFI O 0 NoDelay A_RemoveMaster;
 		Goto Spawn.Loop;
 	}
 }
@@ -2804,8 +2801,7 @@ class SSOfficer_Wounded : WGuard_Wounded
 	States
 	{
 	Spawn:
-		SSOF O 0;
-		"####" "#" 0 A_RemoveMaster;
+		SSOF O 0 NoDelay A_RemoveMaster;
 		Goto Spawn.Loop;
 	}
 }
@@ -2833,8 +2829,7 @@ class WOfficer_Wounded : WGuard_Wounded
 	States
 	{
 	Spawn:
-		OFR2 O 0;
-		"####" "#" 0 A_RemoveMaster;
+		OFR2 O 0 NoDelay A_RemoveMaster;
 		Goto Spawn.Loop;
 	}
 }
