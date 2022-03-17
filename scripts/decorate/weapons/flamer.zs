@@ -46,8 +46,8 @@ class Pyrolight : NaziWeapon
 			FFTR A 1 {
 				int readyflags = 0;
 				if (
-					invoker.CheckInventory(invoker.AmmoType2, 1) && 
-					!invoker.CheckInventory(invoker.AmmoType1, GetDefaultByType(invoker.AmmoType1).MaxAmount)
+					invoker.Owner.CheckInventory(invoker.AmmoType2, 1) && 
+					!invoker.Owner.CheckInventory(invoker.AmmoType1, GetDefaultByType(invoker.AmmoType1).MaxAmount)
 				) { readyflags |= WRF_ALLOWRELOAD; }
 				if (waterlevel >= 2) { readyflags |= WRF_NOFIRE | WRF_NOBOB; }
 
