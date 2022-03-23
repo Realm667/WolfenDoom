@@ -2672,13 +2672,13 @@ class WGuard_Wounded : Nazi //ozy81
 			"####" R 0 {bNoPain = FALSE;}
 			"####" "#" 0 A_Jump(256, "SeeLoop");
 		Death:
-			"####" U 7;
+			"####" U 7 A_RemoveMaster;
 			"####" V 5 A_UnblockAndDrop;
 			"####" W 5;
 			"####" M -1 {A_DropItem("Ammo9mm",0,192); A_DropItem("Luger9mm",0,64);} //assign dropped items here in order to make possible to avoid it on NoCount variants
 			Stop;
 		Death_NoCount:
-			"####" U 7;
+			"####" U 7 A_RemoveMaster;
 			"####" V 5 A_UnblockAndDrop;
 			"####" W 5;
 			"####" M -1;
