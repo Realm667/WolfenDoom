@@ -210,7 +210,7 @@ class BoAStatusBar : BaseStatusBar
 			}
 		}
 
-		if (CheckInventory("HQ_Checker"))
+		if (CheckInventory("HQ_Checker") && CPlayer.mo.InvSel && CPlayer.mo.InvSel.GetClass() != "BoACompass")
 		{
 			// Don't allow inventory use in the INTERMAP
 			CPlayer.inventorytics = 1;
