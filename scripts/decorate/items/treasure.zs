@@ -313,7 +313,7 @@ class Keenaward : Award
 {
 	Default
 	{
-		//$Title Treasure (Easteregg, Keenaward, 10pts)
+		//$Title Treasure (Easteregg, Keenaward 2021, 10pts)
 		Inventory.PickupMessage "$KEENAWARD";
 		Award.Number 0;
 	}
@@ -322,6 +322,23 @@ class Keenaward : Award
 	{
 		Spawn:
 			CKWR A -1 LIGHT("TRESLITE");
+			Stop;
+	}
+}
+
+class Keenaward2 : Award
+{
+	Default
+	{
+		//$Title Treasure (Easteregg, Keenaward 2022, 10pts)
+		Inventory.PickupMessage "$KEENAWARD";
+		Award.Number 0;
+	}
+
+	States
+	{
+		Spawn:
+			CKWR B -1 LIGHT("TRESLITE");
 			Stop;
 	}
 }
