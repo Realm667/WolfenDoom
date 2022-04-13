@@ -20,7 +20,7 @@
  * SOFTWARE.
 **/
 
-class SpotFinderTracer : LineTracer
+class BoANemesisSpotFinderTracer : LineTracer
 {
 	// Set by the callback
 	bool hitWall;
@@ -408,7 +408,7 @@ class RENemesis : NaziBoss
 	{
 		double suitableDistance = -1;
 		// Find closest wall
-		SpotFinderTracer finder = new("SpotFinderTracer");
+		BoANemesisSpotFinderTracer finder = new("BoANemesisSpotFinderTracer");
 		Vector3 traceDirection = (AngleToVector(angle), 0);
 		Vector3 traceOrigin = target.Pos;
 		traceOrigin.Z += target.MaxStepHeight;

@@ -20,6 +20,43 @@
  * SOFTWARE.
 **/
 
+
+class BoAPlayerDistanceFinderTracer : LineTracer
+{
+	// Set by the callback
+	bool hitWall;
+
+	override ETraceStatus TraceCallback()
+	{
+		if (Results.HitType == TRACE_HitWall)
+		{
+			// Walls need further examination
+			if (Results.Tier == TIER_Middle)
+			{
+				if (!(Results.HitLine.flags & Line.ML_TWOSIDED))
+				{
+					// Not a two-sided wall
+					hitWall = true;
+					return TRACE_Stop;
+				}
+				else
+				{
+					// Two-sided wall
+					if (Results.HitLine.flags & Line.ML_BLOCKING ||
+						Results.HitLine.flags & Line.ML_BLOCKMONSTERS ||
+						Results.HitLine.flags & Line.ML_BLOCK_PLAYERS ||
+						Results.HitLine.flags & Line.ML_BLOCKEVERYTHING)
+					{
+						hitWall = true;
+						return TRACE_Stop;
+					}
+				}
+			}
+		}
+		return TRACE_Skip;
+	}
+}
+
 class PlayerCheckpointManager : StaticEventHandler {
 	Vector3 averageStart;
 	double averageAngle;
@@ -73,6 +110,13 @@ class PlayerCheckpointManager : StaticEventHandler {
 		posDiff.xy = Actor.RotateVector(posDiff.xy, angleDiff);
 		double posDist = posDiff.xy.Length();
 		posDiff = posDiff.Unit();
+		// Try to find any player-blocking lines in the way
+		BoAPlayerDistanceFinderTracer distFinder = new("BoAPlayerDistanceFinderTracer");
+		Vector3 traceDir = (posDiff.xy, 0);
+		distFinder.Trace(checkpoint.Pos, checkpoint.CurSector, traceDir, posDist, 0);
+		if (distFinder.hitWall) {
+			posDist = distFinder.Results.Distance - GetDefaultByType(PlayerClasses[0].Type).Radius;
+		}
 		Vector3 newPos = checkpoint.Pos + posDiff * posDist;
 		double newAngle = Actor.Normalize180(checkpoint.Angle + angleDiff);
 		// Ensure newPos is "good": Not below the ground or above the ceiling,
@@ -199,6 +243,7 @@ class BoACoopCheckpointDebug : Actor {
 	Default {
 		RenderStyle "Stencil";
 		StencilColor "961f1f";
+		Scale .125;
 		+NOINTERACTION
 		+INVISIBLE
 	}
