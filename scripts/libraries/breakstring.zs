@@ -29,6 +29,7 @@ class BrokenString : Object
 
 	int Count()
 	{
+		if (!lines) { return 0; }
 		return lines.Size();
 	}
 
