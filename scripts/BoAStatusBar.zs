@@ -240,11 +240,6 @@ class BoAStatusBar : BaseStatusBar
 					UpdateScreenGeometry();
 					BeginStatusBar(true);
 				}
-				else
-				{
-					BeginStatusBar();
-					DrawImage("AMBAR", (-54, 152), DI_ITEM_OFFSETS);
-				}
 			}
 
 			if (!automapactive && CPlayer.morphtics)
