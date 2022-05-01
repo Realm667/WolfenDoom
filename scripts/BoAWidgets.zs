@@ -240,12 +240,12 @@ class Widget ui
 	virtual bool IsVisible()
 	{
 		if (
-				BoAStatusBar(StatusBar) && 
-				BoAStatusBar(StatusBar).barstate == StatusBar.HUD_Fullscreen && 
-				!automapactive && 
-				!player.mo.FindInventory("CutsceneEnabled") &&
-				!(player.mo is "TankPlayer" || player.mo is "KeenPlayer")
-			) { return true; }
+			BoAStatusBar(StatusBar) && 
+			BoAStatusBar(StatusBar).barstate == StatusBar.HUD_Fullscreen && 
+			!automapactive && 
+			!player.mo.FindInventory("CutsceneEnabled") &&
+			!(player.mo is "TankPlayer" || player.mo is "KeenPlayer")
+		) { return true; }
 		
 		return false;
 	}
@@ -291,7 +291,7 @@ class Widget ui
 	virtual Vector2 Draw()
 	{
 		double low = clamp(fade, 0.0, 1.0);
-		if (!IsVisible()) { low = 0.0; }
+		if (!visible) { low = 0.0; }
 
 		if (visible)
 		{
@@ -498,12 +498,12 @@ class CountWidget : Widget
 	override bool IsVisible()
 	{
 		if (
-				BoAStatusBar(StatusBar) && 
-				BoAStatusBar(StatusBar).barstate == StatusBar.HUD_Fullscreen && 
-				!automapactive && 
-				!player.mo.FindInventory("CutsceneEnabled") &&
-				!(player.mo is "KeenPlayer")
-			) { return true; }
+			BoAStatusBar(StatusBar) && 
+			BoAStatusBar(StatusBar).barstate == StatusBar.HUD_Fullscreen && 
+			!automapactive && 
+			!player.mo.FindInventory("CutsceneEnabled") &&
+			!(player.mo is "KeenPlayer")
+		) { return true; }
 		
 		return false;
 	}
@@ -772,12 +772,12 @@ class InventoryWidget : Widget
 	override bool IsVisible()
 	{
 		if (
-				BoAStatusBar(StatusBar) && 
-				BoAStatusBar(StatusBar).barstate == StatusBar.HUD_Fullscreen && 
-				!automapactive && 
-				!player.mo.FindInventory("CutsceneEnabled") &&
-				!(player.mo is "KeenPlayer")
-			) { return true; }
+			BoAStatusBar(StatusBar) && 
+			BoAStatusBar(StatusBar).barstate == StatusBar.HUD_Fullscreen && 
+			!automapactive && 
+			!player.mo.FindInventory("CutsceneEnabled") &&
+			!(player.mo is "KeenPlayer")
+		) { return true; }
 		
 		return false;
 	}
@@ -1893,10 +1893,10 @@ class ActiveEffectWidget : Widget
 	override bool IsVisible()
 	{
 		if (
-				automapactive ||
-				screenblocks > 11 ||
-				player.mo.FindInventory("CutsceneEnabled") ||
-				player.morphtics
+			automapactive ||
+			screenblocks > 11 ||
+			player.mo.FindInventory("CutsceneEnabled") ||
+			player.morphtics
 		)
 		{
 			return false;
@@ -2058,11 +2058,11 @@ class DamageWidget : Widget
 	override bool IsVisible()
 	{
 		if (
-				automapactive ||
-				screenblocks > 11 ||
-				player.mo.FindInventory("CutsceneEnabled") ||
-				player.morphtics ||
-				(enabled && !enabled.GetBool())
+			automapactive ||
+			screenblocks > 11 ||
+			player.mo.FindInventory("CutsceneEnabled") ||
+			player.morphtics ||
+			(enabled && !enabled.GetBool())
 		)
 		{
 			return false;
@@ -2127,11 +2127,11 @@ class GrenadeWidget : Widget
 	override bool IsVisible()
 	{
 		if (
-				automapactive ||
-				screenblocks > 11 ||
-				player.mo.FindInventory("CutsceneEnabled") ||
-				player.morphtics ||
-				(enabled && !enabled.GetBool())
+			automapactive ||
+			screenblocks > 11 ||
+			player.mo.FindInventory("CutsceneEnabled") ||
+			player.morphtics ||
+			(enabled && !enabled.GetBool())
 		)
 		{
 			return false;
@@ -2218,12 +2218,12 @@ class KeenWidget : Widget
 	override bool IsVisible()
 	{
 		if (
-				BoAStatusBar(StatusBar) &&
-				!automapactive &&
-				screenblocks < 12 &&
-				!player.mo.FindInventory("CutsceneEnabled") &&
-				player.mo is "KeenPlayer"
-			) { return true; }
+			BoAStatusBar(StatusBar) &&
+			!automapactive &&
+			screenblocks < 12 &&
+			!player.mo.FindInventory("CutsceneEnabled") &&
+			player.mo is "KeenPlayer"
+		) { return true; }
 		
 		return false;
 	}
@@ -2255,8 +2255,6 @@ class KeenStatsWidget : KeenWidget
 		size = (172, 64);
 		if (player.mo.FindInventory("CKPuzzleItem", true)) { size.x = 202; }
 		Super.Draw();
-
-		alpha = 1.0;
 
 		DrawToHud.DrawTexture(bkg, pos, alpha, scale, flags:DrawToHUD.TEX_DEFAULT);
 
@@ -2400,8 +2398,8 @@ class AutomapWidget : Widget
 	override bool IsVisible()
 	{
 		if (
-				automapactive
-			) { return true; }
+			automapactive
+		) { return true; }
 		
 		return false;
 	}
