@@ -582,7 +582,7 @@ class HintMessage : MessageBase
 	ui double texth, textw;
 	ui bool drawkey;
 	ui int lineheight;
-	ui int lastblocks;
+	transient ui int lastblocks;
 
 	static int Init(Actor mo, String text, String command, int priority = 0)
 	{
