@@ -383,8 +383,8 @@ class Widget ui
 		// block scales that result in something larger than the current screen.
 		int vmax = screen.GetHeight() / 400;
 		int hmax = screen.GetWidth() / 640;
-		int max = MAX(vmax, hmax);
-		return MAX(1, MIN(scaleval, max));
+		int mmax = max(vmax, hmax);
+		return max(1, min(scaleval, mmax));
 	}
 
 	static int GetHealthColor(Actor mo, double shade = 1.0)
