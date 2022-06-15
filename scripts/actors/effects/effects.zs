@@ -208,6 +208,9 @@ class EffectsManager : Thinker
 
 	override void Tick()
 	{
+		// Force disable of culling during multiplayer games
+		if (!boa_culling || multiplayer) { return; }
+
 		if (level.maptime == 2)
 		{
 			CullAllEffects(); // Cull everything at map start
@@ -262,7 +265,7 @@ class EffectsManager : Thinker
 
 	int, bool Culled(Vector2 pos)
 	{
-		if (!boa_culling) { return 0, false; }
+		if (!boa_culling || multiplayer) { return 0, false; }
 
 		int x, y;
 		[x, y] = EffectBlock.GetBlock(pos.x, pos.y);
