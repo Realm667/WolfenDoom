@@ -142,7 +142,8 @@ class GoodieBarrel1 : TNTBarrel1
 	{
 		if (!user_spawntype)
 		{
-			let p = PlayerPawn(source);
+			PlayerPawn p = PlayerPawn(source);
+
 			if (p)
 			{
 				// Calculate weighted values for each item type based off of player's inventory amounts
@@ -224,6 +225,16 @@ class GoodieBarrel1 : TNTBarrel1
 					if (ammoitems[maxindex] == "Health")
 					{
 						user_spawnamount = min(user_spawnamount, p.GetMaxHealth(true) - p.health);
+
+						if (p is "TankPlayer") // Allow spawning a repair kit if needed for a tank
+						{
+							Inventory kit = p.FindInventory("RepairKit");
+							if (!kit || kit.amount < kit.MaxAmount)
+							{
+								user_spawntype = "RepairKit";
+								user_spawnamount = 1;
+							}
+						}
 					}
 					else
 					{

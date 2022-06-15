@@ -65,6 +65,7 @@ class TankPlayer : PlayerPawn
 		MaxStepHeight 48;
 		MaxDropoffHeight 48;
 		Species "Tank";
+		Player.MaxHealth 10000;
 		Player.UseRange 0;
 		Renderstyle 'None'; // Ensure that the actual player actor stays invisible, just in case it reverts to PLAYA0 sprites
 		+NOBLOOD
