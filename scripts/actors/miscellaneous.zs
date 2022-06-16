@@ -136,7 +136,7 @@ class FlattenableProp : GrassBase // Tall grass/rye, etc. that can be trampled d
 
 	override void Touch(Actor toucher)
 	{
-		if (!toucher) { return; }
+		if (!toucher || !(toucher.player || toucher.bIsMonster || toucher.bMissile)) { return; }
 
 		touchtime++;
 		bFlatSprite = true;
