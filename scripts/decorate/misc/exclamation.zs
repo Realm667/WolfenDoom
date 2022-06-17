@@ -33,7 +33,7 @@ class Exclamation : ExclamationBase
 		Radius 8;
 		Height 64;
 		Scale 1.35;
-		RenderStyle "Translucent";
+		RenderStyle "None";
 		Alpha 1.0;
 		+CLIENTSIDEONLY
 		+NOGRAVITY
@@ -120,6 +120,13 @@ class ExclamationTextpaper : ExclamationTouchable
 		EXCL G -1;
 		Stop;
 	}
+
+	override void PostBeginPlay()
+	{
+		if (!master) { Destroy(); }
+
+		Super.PostBeginPlay();
+	}
 }
 
 class ExclamationHintpaper : ExclamationTouchable
@@ -148,6 +155,13 @@ class ExclamationHintpaper : ExclamationTouchable
 		EXCL I -1;
 		Stop;
 	}
+
+	override void PostBeginPlay()
+	{
+		if (!master) { Destroy(); }
+
+		Super.PostBeginPlay();
+	}
 }
 
 class InteractionIcon: Actor
@@ -159,7 +173,7 @@ class InteractionIcon: Actor
 		Height 8;
 		Radius 64;
 		Scale 1.0;
-		RenderStyle "Translucent";
+		RenderStyle "None";
 		Alpha 1.0;
 		-SOLID
 		+CLIENTSIDEONLY

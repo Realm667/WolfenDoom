@@ -623,10 +623,13 @@ class InteractiveItem : PuzzleItem
 	String user_displaystring, user_displayimage;
 	double user_displayscale;
 	private int itemflags;
+	Actor marker;
+	String markertype;
 
 	Property DisplayString:user_displaystring;
 	Property DisplayImage:user_displayimage;
 	Property DisplayScale:user_displayscale;
+	Property Marker:markertype;
 
 	Flagdef AllowPickup:itemflags, 0; // Allow the item to be added to player inventory
 	Flagdef SetSprite:itemflags, 1; // Use args[1] input to set the sprite and inventory icon
@@ -662,6 +665,12 @@ class InteractiveItem : PuzzleItem
 
 			String ico = String.Format("%s%c%i", "TEXT", 65 + args[1], 0);
 			icon = TexMan.CheckForTexture(ico, TexMan.Type_Any);
+		}
+
+		if (markertype.length() && G_SkillPropertyInt(SKILLP_ACSReturn) < 2)
+		{
+			marker = Spawn(markertype, pos);
+			marker.master = self;
 		}
 
 		Super.PostBeginPlay();
@@ -752,7 +761,6 @@ class InteractiveItem : PuzzleItem
 			if (viewer.player == players[consoleplayer]) { Menu.SetMenu("ViewItem"); }
 			viewer.player.ConversationNPC = null;
 		}
-
 	}
 
 	override bool ShouldStay ()
@@ -781,8 +789,9 @@ class TextPaper : InteractiveItem
 		//$Arg2Enum { 1 = "Set Type (Book print)"; 2 = "Worn Typewriter"; 3 = "'Classic'"; 4 = "Handwriting 1 (Messy)"; 5 = "Handwriting 2 (Neat)"; 6 = "Handwriting 3 (Neat, small)"; 7 = "Console Font"; 8 = "Anka/Coder 16pt"; }
 		//$Arg2Default 2
 
-		Height 8;
 		-InteractiveItem.ALLOWPICKUP
+		Height 8;
+		InteractiveItem.Marker "ExclamationTextPaper";
 	}
 
 	override void PostBeginPlay()
@@ -826,6 +835,13 @@ class TextPaperCollectible : TextPaper
 			TEXT G -1;
 			Stop;
 	}
+
+	override bool Used(Actor user)
+	{
+		if (marker) { marker.Destroy(); }
+
+		return Super.Used(user);
+	}
 }
 
 class TextPaperSecretHint : TextPaperCollectible 
@@ -840,6 +856,7 @@ class TextPaperSecretHint : TextPaperCollectible
 		Tag "$TAGSECRETHINT";
 		Inventory.Icon "TEXTF0";
 		Inventory.PickupMessage "$SECRETHINTPAPER";
+		InteractiveItem.Marker "ExclamationHintPaper";
 	}
 
 	States

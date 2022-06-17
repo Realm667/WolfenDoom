@@ -28,7 +28,7 @@ class ScreenLabelItem : Thinker
 	Array<uint> lines;
 	String icon;
 	String text;
-	double alpha;
+	double alpha, drawalpha[MAXPLAYERS];
 	color clr;
 	int type, fade[MAXPLAYERS];
 	bool draw[MAXPLAYERS];
@@ -44,6 +44,8 @@ class ScreenLabelItem : Thinker
 
 		Super.PostBeginPlay();
 	}
+
+
 
 	override void Tick()
 	{
@@ -145,6 +147,7 @@ class ScreenLabelHandler : EventHandler
 		LBL_Discrete,
 		LBL_Item,
 		LBL_Glint,
+		LBL_Sprite,
 	};
 
 	Array<ScreenLabelItem> ScreenLabelItems;
@@ -336,7 +339,10 @@ class ScreenLabelHandler : EventHandler
 				(destroyable && e.thing.special && !e.thing.bIsMonster && !(e.Thing is "PlayerPawn"))
 			) { AddItem("ScreenLabelItem", e.thing, "ITEMMARK", StringTable.Localize("$CNTRLMNU_ATTACK") .. "\n[[+attack:1]]", 0x0, 1.0, LBL_Item); }
 			else if (
-				e.thing.bPushable || // We really don't care about most of these, but there's not a good way to filter them out...
+				(
+					e.thing.bPushable && // We really don't care about most of these, but there's not a good way to filter them out...
+					!e.thing.bIsMonster
+				) ||
 				e.thing is "StatueBreakable"
 			) { AddItem("ScreenLabelItem", e.thing, "ITEMMARK", StringTable.Localize("$CNTRLMNU_FORWARD") .. "\n[[+forward:1]]", 0x0, 1.0, LBL_Item); }
 			else if (e.thing.bSpecial && !e.thing.bInvisible && e.thing.alpha > 0) { AddItem("ScreenLabelItem", e.thing, "ITEMMARK", "", 0x0, 1.0, LBL_Item); }
@@ -345,21 +351,24 @@ class ScreenLabelHandler : EventHandler
 		if (e.thing is "Key_RE") { AddItem("ScreenLabelItem", e.thing, "", "", 0x0, 1.0, LBL_Glint, false); }
 		else if (e.thing is "Gem") { AddItem("ScreenLabelItem", e.thing, "", "", 0xc7ecb9, 1.0, LBL_Glint, false); }
 		else if (e.thing is "StatueKey") { AddItem("ScreenLabelItem", e.thing, "", "", 0x3eedc1, 1.0, LBL_Glint, false); }
+		else if ((e.thing is "ExclamationBase" || e.thing is "InteractionIcon") && !e.thing.bInvisible) { AddItem("ScreenLabelItem", e.thing, "", "", 0x0, 1.0, LBL_Sprite); }
 	}
 
 	override void WorldTick()
 	{
 		for (int i = 0; i < ScreenLabelItems.Size(); i++)
 		{
+			if (!ScreenLabelItems[i] || !ScreenLabelItems[i].mo) { continue; }
+
 			for (int p = 0; p < MAXPLAYERS; p++)
 			{
-				if (!playeringame[p] || !ScreenLabelItems[i] || !ScreenLabelItems[i].mo) { continue; }
+				if (!playeringame[p]) { continue; }
 
 				Vector3 pos = ScreenLabelItems[i].mo.pos;
 				if (ScreenLabelItems[i].ln) { pos.xy = (ScreenLabelItems[i].ln.v1.p + ScreenLabelItems[i].ln.v2.p) / 2; }
 				if (pos != ScreenLabelItems[i].mo.pos) { ScreenLabelItems[i].mo.SetXYZ(pos); }
 
-				ScreenLabelItems[i].draw[p] = !!(players[p].mo && ScreenLabelItems[i].mo && ScreenLabelItems[i].mo.CheckSight(players[p].mo, SF_IGNOREVISIBILITY && SF_IGNOREWATERBOUNDARY));
+				ScreenLabelItems[i].draw[p] = !!(players[p].mo && ScreenLabelItems[i].mo && ScreenLabelItems[i].mo.CheckSight(players[p].mo, SF_IGNOREVISIBILITY | SF_IGNOREWATERBOUNDARY | SF_SEEPASTSHOOTABLELINES | SF_SEEPASTBLOCKEVERYTHING));
 
 				if (ScreenLabelItems[i].type == LBL_Item && ScreenLabelItems[i].draw[p])
 				{
@@ -417,6 +426,9 @@ class ScreenLabelHandler : EventHandler
 					bool hit = ScreenLabelItems[i].mo.LineTrace(-spos.x, 512, -spos.y, 0, ScreenLabelItems[i].mo.height / 2, 16, 0, LOF);
 					if (hit && (!LOF.HitActor || LOF.HitActor != players[p].mo)) { ScreenLabelItems[i].draw[p] = false; }
 				}
+
+				if (ScreenLabelItems[i].draw[p] && ScreenLabelItems[i].drawalpha[p] < 1.0) { ScreenLabelItems[i].drawalpha[p] = min(1.0, ScreenLabelItems[i].drawalpha[p] + 0.1); }
+				else if (!ScreenLabelItems[i].draw[p] && ScreenLabelItems[i].drawalpha[p] > 0.0) { ScreenLabelItems[i].drawalpha[p] = max(0.0, ScreenLabelItems[i].drawalpha[p] - 0.1); }
 
 				let pp = BoAPlayer(players[p].mo);
 				if (!pp) { continue; }
@@ -685,7 +697,7 @@ class ScreenLabelHandler : EventHandler
 					Inventory(ScreenLabelItems[i].mo) && 
 					Inventory(ScreenLabelItems[i].mo).owner
 				) ||
-				!ScreenLabelItems[i].draw[consoleplayer]
+				!ScreenLabelItems[i].drawalpha[consoleplayer]
 			) { continue; }
 
 			if (
@@ -703,8 +715,9 @@ class ScreenLabelHandler : EventHandler
 			Vector3 pos = mo.pos;
 			if (ln) { pos.xy = (ln.v1.p + ln.v2.p) / 2; }
 
+			double alpha = ScreenLabelItems[i].alpha * 	ScreenLabelItems[i].drawalpha[consoleplayer];
+
 			double dist = Level.Vec3Diff(e.viewpos, pos).Length();
-			double alpha = ScreenLabelItems[i].alpha;
 			double fovscale = p.fov / 90;
 
 			double top = mo.height;
@@ -726,6 +739,10 @@ class ScreenLabelHandler : EventHandler
 
 			Vector3 offset = (0, 0, mo.GetBobOffset() - mo.floorclip);
 			if (ScreenLabelItems[i].type == LBL_Item) { offset.z += top + 4; }
+			else if (ScreenLabelItems[i].type == LBL_Sprite)
+			{
+				offset.z += top;
+			}
 			else if (ScreenLabelItems[i].type == LBL_Glint)
 			{
 				offset.z += top / 2;
@@ -746,6 +763,9 @@ class ScreenLabelHandler : EventHandler
 
 			Vector2 drawpos = viewport.SceneToWindow(gl_proj.ProjectToNormal());
 			Vector2 startpos = drawpos;
+
+			TextureID image;
+			Vector2 imagedimensions;
 
 			switch (ScreenLabelItems[i].type)
 			{
@@ -768,22 +788,22 @@ class ScreenLabelHandler : EventHandler
 
 						if (ScreenLabelItems[i].icon)
 						{
-							TextureID icon = TexMan.CheckForTexture(ScreenLabelItems[i].icon, TexMan.Type_Any);
+							image = TexMan.CheckForTexture(ScreenLabelItems[i].icon, TexMan.Type_Any);
 							TextureID border = TexMan.CheckForTexture("MP_MARK2", TexMan.Type_Any);
 							TextureID bkg = TexMan.CheckForTexture("MP_MARK3", TexMan.Type_Any);
 							TextureID iconbkg = TexMan.CheckForTexture("MP_MARK4", TexMan.Type_Any);
 
-							if (icon)
+							if (image)
 							{
-								Vector2 icondimensions = TexMan.GetScaledSize(icon);
-								double picscale = 112.0 / icondimensions.x;
-								icondimensions *= picscale * scale;
-								drawpos.y -= icondimensions.y / 2;
+								imagedimensions = TexMan.GetScaledSize(image);
+								double picscale = 112.0 / imagedimensions.x;
+								imagedimensions *= picscale * scale;
+								drawpos.y -= imagedimensions.y / 2;
 
-								if (bkg) { screen.DrawTexture(bkg, true, drawpos.x, drawpos.y, DTA_DestWidthF, icondimensions.x, DTA_DestHeightF, icondimensions.y, DTA_CenterOffset, true, DTA_Alpha, alpha, DTA_AlphaChannel, true, DTA_FillColor, clr); }
-								if (border) { screen.DrawTexture(border, true, drawpos.x, drawpos.y, DTA_DestWidthF, icondimensions.x, DTA_DestHeightF, icondimensions.y, DTA_CenterOffset, true, DTA_Alpha, alpha); }
-								if (iconbkg) { screen.DrawTexture(iconbkg, true, drawpos.x, drawpos.y, DTA_DestWidthF, icondimensions.x, DTA_DestHeightF, icondimensions.y, DTA_CenterOffset, true, DTA_Alpha, alpha, DTA_AlphaChannel, true, DTA_FillColor, clr); }
-								screen.DrawTexture(icon, true, drawpos.x, drawpos.y, DTA_DestWidthF, icondimensions.x, DTA_DestHeightF, icondimensions.y, DTA_CenterOffset, true, DTA_Alpha, alpha);
+								if (bkg) { screen.DrawTexture(bkg, true, drawpos.x, drawpos.y, DTA_DestWidthF, imagedimensions.x, DTA_DestHeightF, imagedimensions.y, DTA_CenterOffset, true, DTA_Alpha, alpha, DTA_AlphaChannel, true, DTA_FillColor, clr); }
+								if (border) { screen.DrawTexture(border, true, drawpos.x, drawpos.y, DTA_DestWidthF, imagedimensions.x, DTA_DestHeightF, imagedimensions.y, DTA_CenterOffset, true, DTA_Alpha, alpha); }
+								if (iconbkg) { screen.DrawTexture(iconbkg, true, drawpos.x, drawpos.y, DTA_DestWidthF, imagedimensions.x, DTA_DestHeightF, imagedimensions.y, DTA_CenterOffset, true, DTA_Alpha, alpha, DTA_AlphaChannel, true, DTA_FillColor, clr); }
+								screen.DrawTexture(image, true, drawpos.x, drawpos.y, DTA_DestWidthF, imagedimensions.x, DTA_DestHeightF, imagedimensions.y, DTA_CenterOffset, true, DTA_Alpha, alpha);
 							}
 						}
 
@@ -802,7 +822,7 @@ class ScreenLabelHandler : EventHandler
 					if (true)
 					{
 						if (dist > 768) { continue; }
-						if (dist > 256) { alpha = 1.0 - (dist - 256) / 512; }
+						else if (dist > 256) { alpha = 1.0 - (dist - 256) / 512; }
 
 						Font tinyfont = Font.GetFont("THREEFIV");
 
@@ -851,10 +871,8 @@ class ScreenLabelHandler : EventHandler
 					if (revar && revar.GetBool())
 					{
 						if (dist > 256) { continue; }
-						else if (dist > 160) { alpha = 1.0 - (dist - 160) / 64; }
+						else if (dist > 160) { alpha *= 1.0 - (dist - 160) / 64; }
 
-						TextureID image;
-						Vector2 imagedimensions = (0, 0);
 						if (ScreenLabelItems[i].icon)
 						{
 							image = TexMan.CheckForTexture(ScreenLabelItems[i].icon, TexMan.Type_Any);
@@ -913,36 +931,58 @@ class ScreenLabelHandler : EventHandler
 					}
 					break;
 				case LBL_Glint:
-						if (dist > 512) { continue; }
-						else if (dist > 384) { alpha = 1.0 - (dist - 384) / 128; }
+					if (dist > 512) { continue; }
+					else if (dist > 384) { alpha *= 1.0 - (dist - 384) / 128; }
 
-						alpha *= 2.0;
+					alpha *= 2.0;
 
-						if (ScreenLabelItems[i].icon && ScreenLabelItems[i].alpha)
+					if (ScreenLabelItems[i].icon && ScreenLabelItems[i].alpha)
+					{
+						image = TexMan.CheckForTexture(ScreenLabelItems[i].icon, TexMan.Type_Any);
+						if (image.IsValid())
 						{
-							TextureID glint = TexMan.CheckForTexture(ScreenLabelItems[i].icon, TexMan.Type_Any);
-							if (glint.IsValid())
-							{
-								Vector2 imagedimensions = TexMan.GetScaledSize(glint);
+							imagedimensions = TexMan.GetScaledSize(image);
 
-								double scaleamt = 40.0;
-								CVar scalecvar = CVar.FindCVar("boa_itemlabelscale");
-								if (scalecvar) { scaleamt /= max(0.01, scalecvar.GetFloat()); }
-								double scaleval = (Screen.GetHeight() / scaleamt) / imagedimensions.y;
+							double scaleamt = 40.0;
+							CVar scalecvar = CVar.FindCVar("boa_itemlabelscale");
+							if (scalecvar) { scaleamt /= max(0.01, scalecvar.GetFloat()); }
+							double scaleval = (Screen.GetHeight() / scaleamt) / imagedimensions.y;
 
-								double glintscale = scaleval / (fovscale * dist / 512);
-								DrawToHUD.DrawTexture(glint, drawpos, ScreenLabelItems[i].alpha * alpha, glintscale, ScreenLabelItems[i].clr ? ScreenLabelItems[i].clr : -1, (-1, -1), DrawToHud.TEX_CENTERED | DrawToHUD.TEX_NOSCALE | (ScreenLabelItems[i].clr ? DrawtoHUD.TEX_COLOROVERLAY : 0));
-							}
+							double glintscale = scaleval / (fovscale * dist / 512);
+							DrawToHUD.DrawTexture(image, drawpos, alpha, glintscale, ScreenLabelItems[i].clr ? ScreenLabelItems[i].clr : -1, (-1, -1), DrawToHud.TEX_CENTERED | DrawToHUD.TEX_NOSCALE | (ScreenLabelItems[i].clr ? DrawtoHUD.TEX_COLOROVERLAY : 0));
 						}
+					}
+					break;
+				case LBL_Sprite:
+					if (dist > 1024) { continue; }
+					else if (dist > 256) { alpha *= 1.0 - (dist - 256) / 768; }
+					else if (dist < 96) { alpha *= max(0.0, (dist - 64) / 32); }
+
+					alpha *= 2.0;
+
+					if (ScreenLabelItems[i].icon) { image = TexMan.CheckForTexture(ScreenLabelItems[i].icon, TexMan.Type_Any); }
+					else { image = mo.CurState.GetSpriteTexture(0); }
+
+					if (image.IsValid())
+					{
+						imagedimensions = TexMan.GetScaledSize(image);
+						imagedimensions.x *= mo.scale.x;
+						imagedimensions.y *= mo.scale.y;
+
+						dist = Level.Vec2Diff(e.viewpos.xy, pos.xy).Length();
+						double imagescale = clamp(1.0 / (fovscale * dist / 384), 0.0, 8.0);
+
+						drawpos.y += imagedimensions.y / 2 * imagescale;
+
+						DrawToHUD.DrawTexture(image, drawpos, mo.alpha * alpha, imagescale, -1, imagedimensions, DrawToHUD.TEX_NOSCALE | DrawToHUD.TEX_CENTERED);
+					}
 					break;
 				case LBL_Default:
 				default:
 					if (dist > 768) { continue; }
-					if (dist > 256) { alpha = 1.0 - (dist - 256) / 512; }
+					else if (dist > 256) { alpha *= 1.0 - (dist - 256) / 512; }
 
 					// Get icon image information in order to properly offset text and set frame size
-					TextureID image;
-					Vector2 imagedimensions = (0, 0);
 					if (ScreenLabelItems[i].icon)
 					{
 						image = TexMan.CheckForTexture(ScreenLabelItems[i].icon, TexMan.Type_Any);
