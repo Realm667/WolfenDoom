@@ -20,9 +20,9 @@
  * SOFTWARE.
 **/
 
-// The bDormant true/false values for normal MapMarker actors are reversed in the current GZDoom version...
+// The bDormant true/false values for normal MapMarker actors are reversed in GZDoom...
 // Bug report here: https://forum.zdoom.org/viewtopic.php?f=2&t=61717
-// Since this hasn't been fixed and was identified months ago, a workaround is included here.
+// Since this won't be fixed, a workaround is included here.
 class BoAMapMarker : MapMarker
 {
 	String user_icon; // This will only affect the compass icon, not the automap icon

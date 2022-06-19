@@ -45,8 +45,6 @@ class ScreenLabelItem : Thinker
 		Super.PostBeginPlay();
 	}
 
-
-
 	override void Tick()
 	{
 		if (mo)
@@ -351,7 +349,7 @@ class ScreenLabelHandler : EventHandler
 		if (e.thing is "Key_RE") { AddItem("ScreenLabelItem", e.thing, "", "", 0x0, 1.0, LBL_Glint, false); }
 		else if (e.thing is "Gem") { AddItem("ScreenLabelItem", e.thing, "", "", 0xc7ecb9, 1.0, LBL_Glint, false); }
 		else if (e.thing is "StatueKey") { AddItem("ScreenLabelItem", e.thing, "", "", 0x3eedc1, 1.0, LBL_Glint, false); }
-		else if ((e.thing is "ExclamationBase" || e.thing is "InteractionIcon") && !e.thing.bInvisible) { AddItem("ScreenLabelItem", e.thing, "", "", 0x0, 1.0, LBL_Sprite); }
+//		else if ((e.thing is "ExclamationBase" || e.thing is "InteractionIcon") && !e.thing.bInvisible) { AddItem("ScreenLabelItem", e.thing, "", "", 0x0, 1.0, LBL_Sprite); }
 	}
 
 	override void WorldTick()

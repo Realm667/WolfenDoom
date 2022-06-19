@@ -33,7 +33,8 @@ class Exclamation : ExclamationBase
 		Radius 8;
 		Height 64;
 		Scale 1.35;
-		RenderStyle "None";
+		RenderStyle "Translucent";
+//		RenderStyle "None";
 		Alpha 1.0;
 		+CLIENTSIDEONLY
 		+NOGRAVITY
@@ -173,7 +174,8 @@ class InteractionIcon: Actor
 		Height 8;
 		Radius 64;
 		Scale 1.0;
-		RenderStyle "None";
+		RenderStyle "Translucent";
+//		RenderStyle "None";
 		Alpha 1.0;
 		-SOLID
 		+CLIENTSIDEONLY
