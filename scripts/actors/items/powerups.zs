@@ -583,7 +583,7 @@ class BoACompass : CustomInventory
 class DisguiseToken : CustomInventory
 {
 	int viewheight;
-	double playerscale;
+	float playerscale;
 	double viewbob;
 	double forwardmove1, forwardmove2;
 	double sidemove1, sidemove2;
