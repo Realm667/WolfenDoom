@@ -506,6 +506,28 @@ class JunkPile3 : Debris
 	}
 }
 
+class JunkPile3NoBedTab : Debris
+{
+	Default
+	{
+		//$Category Props (BoA)/Debris
+		//$Title Junk Pile (small, no bunkbed and table)
+		Radius 24;
+		Height 8;
+		+SOLID
+		DropItem "DebrisGirder", -2, 4;
+		DropItem "DebrisPipe", -2, 10;
+		DropItem "DebrisBeam", -10, 15;
+		DropItem "DebrisBrick", -10, 15;
+		DropItem "DebrisChunk", -10, 15;
+		DropItem "DebrisBottle", 0, 2;
+		DropItem "DebrisBottle2", 0, 2;
+		DropItem "Radiator_Short", 128;
+		DropItem "Chair3", 64;
+		DropItem "WineBottle", 255, 5;
+	}
+}
+
 class JunkPile4 : Debris
 {
 	Default
