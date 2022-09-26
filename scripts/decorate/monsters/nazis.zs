@@ -888,19 +888,20 @@ class UrinalNazi : ToiletNazi
 		See:
 			"####" J 35 A_StopSound(CHAN_VOICE);
 			"####" A 2 CheckSpawnReplacement(replacement, "See", 255);
+			Stop;
 		Pain:
 			"####" K 6 A_NaziPain(0, True);
 			"####" A 0 CheckSpawnReplacement(replacement, "See", 255);
+			Stop;
 		Death:
 			"####" A 0 {
 				Actor mo = CheckSpawnReplacement(replacement, "Death", 255);
 				if (mo)
 				{
-					mo.health = 0;
-					mo.bShootable = false;
-					mo.bIsMonster = false;
+					mo.DamageMobj(null, null, mo.health - health, "Normal");
 				}
 			}
+			Stop;
 	}
 
 	override void PostBeginPlay()
