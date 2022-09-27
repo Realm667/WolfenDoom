@@ -714,6 +714,7 @@ class ToiletNazi : BasicGuard
 		Nazi.CrouchChance 0;
 		ToiletNazi.Replacement "WGuard"; // Replacement to spawn when "leaving WC"
 		ToiletNazi.SpawnSprite "GRDTA0"; // Base sprite to use.  Make sure to include the sprite in the Sprites state below
+		Activation THINGSPEC_ThingTargets;
 		Speed 0;
 		+CANPASS
 		+DONTTHRUST
@@ -898,7 +899,7 @@ class UrinalNazi : ToiletNazi
 				Actor mo = CheckSpawnReplacement(replacement, "Death", 255);
 				if (mo)
 				{
-					mo.DamageMobj(null, null, mo.health - health, "Normal");
+					mo.DamageMobj(target, target, mo.health - health, "Normal");
 				}
 			}
 			Stop;
