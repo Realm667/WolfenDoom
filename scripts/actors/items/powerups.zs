@@ -1411,7 +1411,7 @@ class ZyklonResistance : PowerupGiver
 
 class PowerZyklonResistance : PowerProtection
 {
-	int nauseatime;
+	int nauseastarttime;
 	int nauseaticker;
 
 	Default
@@ -1429,15 +1429,21 @@ class PowerZyklonResistance : PowerProtection
 
 	override void InitEffect()
 	{
-		nauseaticker = 350;
-		nauseatime = level.time + 35;
+		// Inventory is moved, not cloned, to morphed player actor
+		// nauseaticker and nauseastarttime should start at 0 when the player
+		// first uses this item
+		if (nauseastarttime == 0)
+		{
+			nauseaticker = 350;
+			nauseastarttime = level.time + 35;
+		}
 
 		Super.InitEffect();
 	}
 
 	override void DoEffect()
 	{
-		if (owner && owner.player && nauseaticker > 0 && nauseatime <= level.time)
+		if (owner && owner.player && nauseaticker > 0 && nauseastarttime <= level.time)
 		{
 			if (nauseaticker == 350)
 			{
