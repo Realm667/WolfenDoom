@@ -898,7 +898,7 @@ class UrinalNazi : ToiletNazi
 				Actor mo = CheckSpawnReplacement(replacement, "Death", 255);
 				if (mo)
 				{
-					mo.DamageMobj(null, null, mo.health - health, "Normal");
+					mo.DamageMobj(target, target, mo.health - health, "Normal");
 				}
 			}
 			Stop;
