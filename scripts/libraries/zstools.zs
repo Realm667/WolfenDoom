@@ -603,7 +603,10 @@ class ZScriptTools
 	// beginning of the level, such as in C3M0_B). Pauses the game for one tic as a side effect.
 	static void CloseAutomap()
 	{
-		level.StartIntermission('Automap_Hack', FSTATE_InLevel);
+		// Causes VM errors on recent GZDoom builds:
+		// VM execution aborted: array access out of bounds. Negative current index = -1
+		// Called from ScreenJobRunner.CanWipe at gzdoom.pk3:zscript/engine/screenjob.zs, line 374
+		// level.StartIntermission('Automap_Hack', FSTATE_InLevel);
 	}
 }
 
