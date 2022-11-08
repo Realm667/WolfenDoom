@@ -595,7 +595,7 @@ class ZScriptTools
 
 		imagesize.x *= texsize.x;
 		imagesize.y *= texsize.y;
-
+    
 		return texsize, imagesize;
 	}
 	
@@ -603,7 +603,9 @@ class ZScriptTools
 	// beginning of the level, such as in C3M0_B). Pauses the game for one tic as a side effect.
 	static void CloseAutomap()
 	{
-		level.StartIntermission('Automap_Hack', FSTATE_InLevel);
+		if (level.Time > 2) {
+			level.StartIntermission('Automap_Hack', FSTATE_InLevel);
+		}
 	}
 }
 
