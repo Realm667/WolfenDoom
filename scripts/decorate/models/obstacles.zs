@@ -209,6 +209,17 @@ class GasDrum : Obstacle3d //MaxED
 	}
 }
 
+class GasDrumSide : GasDrum
+{
+	Default
+	{
+		//$Title Gas Drum on Side, non-solid for players
+		Height 24;
+		+THRUSPECIES
+		Species "Player";
+	}
+}
+
 class FuelDrumAstro: Actor //Ozy81
 {
 	Default
