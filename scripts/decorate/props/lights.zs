@@ -166,6 +166,82 @@ class WallLight1NC : WallLight1
 	}
 }
 
+class WallLight1R : WallLight1
+{
+	Default
+	{
+	//$Title 3d Wall Light, RED (OFF, STATIC)
+	}
+}
+
+class WallLight1RLit : WallLight1
+{
+	Default
+	{
+	//$Title 3d Wall Light, RED (ON, STATIC)
+	}
+	States
+	{
+	Spawn:
+		MDLA A 0 NODELAY A_SpawnItemEx("VolumetricLight_ConeDown", Scale.X*16, 0, 24, 0, 0, 0, 0, SXF_ISTRACER, 0, tid);
+		MDLA A -1 LIGHT("OZYWALT5");
+		Stop;
+	}
+}
+
+class WallLight1RNC : WallLight1
+{
+	Default
+	{
+	//$Category Lights (BoA)/No Cones
+	//$Title 3d Wall Light, RED no cone (ON, STATIC)
+	}
+	States
+	{
+	Spawn:
+		MDLA A -1 LIGHT("OZYWALT6");
+		Stop;
+	}
+}
+
+class WallLight1G : WallLight1
+{
+	Default
+	{
+	//$Title 3d Wall Light, GREEN (OFF, STATIC)
+	}
+}
+
+class WallLight1GLit : WallLight1
+{
+	Default
+	{
+	//$Title 3d Wall Light, GREEN (ON, STATIC)
+	}
+	States
+	{
+	Spawn:
+		MDLA A 0 NODELAY A_SpawnItemEx("VolumetricLight_ConeDown", Scale.X*16, 0, 24, 0, 0, 0, 0, SXF_ISTRACER, 0, tid);
+		MDLA A -1 LIGHT("OZYWALT7");
+		Stop;
+	}
+}
+
+class WallLight1GNC : WallLight1
+{
+	Default
+	{
+	//$Category Lights (BoA)/No Cones
+	//$Title 3d Wall Light, GREEN no cone (ON, STATIC)
+	}
+	States
+	{
+	Spawn:
+		MDLA A -1 LIGHT("OZYWALT8");
+		Stop;
+	}
+}
+
 class WallLight2 : WallLight1
 {
 	Default

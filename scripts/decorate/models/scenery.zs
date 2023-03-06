@@ -405,6 +405,15 @@ class FlakGun3DNC : MuseumBase
 	}
 }
 
+class FlakGun3DClip : FlakGun3D
+{
+	Default
+	{
+		//$Title Flakgun (clipping fix)
+		RenderRadius 256;
+	}
+}
+
 //RTCW stuff
 class Book1_3d : Obstacle3d
 {
