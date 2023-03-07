@@ -178,7 +178,9 @@ class FuelDrumSide : FuelDrum
 {
 	Default
 	{
+		//$Category Models (BoA)/Obstacles
 		//$Title Fuel Drum on Side, non-solid for players
+		//$Color 3
 		Height 24;
 		+THRUSPECIES
 		Species "Player";
