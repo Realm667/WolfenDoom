@@ -406,14 +406,14 @@ class Chandelier1Switchable : LightBaseARGs
 		MDLA A 0 NODELAY A_StartSound("FIRE_SMALL", CHAN_BODY, CHANF_LOOPING, frandom(0.2,0.4) - args[0]);
 	ActiveFlames: //ozy. let's apply these nice flames on candles first - coords be damned
 		MDLA A 0 {
-		A_SpawnItemEx("Flame_Normal3d", Scale.X*1, 	Scale.Y*33, 	Scale.X+Scale.Y*14, 0, 0, 0, 0, SXF_SETMASTER | SXF_CLIENTSIDE, 0, tid);
-		A_SpawnItemEx("Flame_Normal3d", Scale.X*1, 	Scale.Y*-31, Scale.X+Scale.Y*5, 0, 0, 0, 0, SXF_SETMASTER | SXF_CLIENTSIDE, 0, tid);
-		A_SpawnItemEx("Flame_Normal3d", Scale.X*24, 	Scale.Y*23, 	Scale.X+Scale.Y*7, 0, 0, 0, 0, SXF_SETMASTER | SXF_CLIENTSIDE, 0, tid);
-		A_SpawnItemEx("Flame_Normal3d", Scale.X*-22, Scale.Y*-22, Scale.X+Scale.Y*7, 0, 0, 0, 0, SXF_SETMASTER | SXF_CLIENTSIDE, 0, tid);
-		A_SpawnItemEx("Flame_Normal3d", Scale.X*34, 	Scale.Y*1, 	Scale.X+Scale.Y*14, 0, 0, 0, 0, SXF_SETMASTER | SXF_CLIENTSIDE, 0, tid);
-		A_SpawnItemEx("Flame_Normal3d", Scale.X*-31, Scale.Y*1, 	Scale.X+Scale.Y*12, 0, 0, 0, 0, SXF_SETMASTER | SXF_CLIENTSIDE, 0, tid);
-		A_SpawnItemEx("Flame_Normal3d", Scale.X*-22, Scale.Y*23, 	Scale.X+Scale.Y*5, 0, 0, 0, 0, SXF_SETMASTER | SXF_CLIENTSIDE, 0, tid);
-		A_SpawnItemEx("Flame_Normal3d", Scale.X*24, 	Scale.Y*-22, Scale.X+Scale.Y*8, 0, 0, 0, 0, SXF_SETMASTER | SXF_CLIENTSIDE, 0, tid); }
+		A_SpawnItemEx("Flame_Tall3d", Scale.X*1, 	Scale.Y*33, 	Scale.X+Scale.Y*14, 0, 0, 0, 0, SXF_SETMASTER | SXF_CLIENTSIDE, 0, tid);
+		A_SpawnItemEx("Flame_Tall3d", Scale.X*1, 	Scale.Y*-31, Scale.X+Scale.Y*5, 0, 0, 0, 0, SXF_SETMASTER | SXF_CLIENTSIDE, 0, tid);
+		A_SpawnItemEx("Flame_Tall3d", Scale.X*24, 	Scale.Y*23, 	Scale.X+Scale.Y*7, 0, 0, 0, 0, SXF_SETMASTER | SXF_CLIENTSIDE, 0, tid);
+		A_SpawnItemEx("Flame_Tall3d", Scale.X*-22, Scale.Y*-22, Scale.X+Scale.Y*7, 0, 0, 0, 0, SXF_SETMASTER | SXF_CLIENTSIDE, 0, tid);
+		A_SpawnItemEx("Flame_Tall3d", Scale.X*34, 	Scale.Y*1, 	Scale.X+Scale.Y*14, 0, 0, 0, 0, SXF_SETMASTER | SXF_CLIENTSIDE, 0, tid);
+		A_SpawnItemEx("Flame_Tall3d", Scale.X*-31, Scale.Y*1, 	Scale.X+Scale.Y*12, 0, 0, 0, 0, SXF_SETMASTER | SXF_CLIENTSIDE, 0, tid);
+		A_SpawnItemEx("Flame_Tall3d", Scale.X*-22, Scale.Y*23, 	Scale.X+Scale.Y*5, 0, 0, 0, 0, SXF_SETMASTER | SXF_CLIENTSIDE, 0, tid);
+		A_SpawnItemEx("Flame_Tall3d", Scale.X*24, 	Scale.Y*-22, Scale.X+Scale.Y*8, 0, 0, 0, 0, SXF_SETMASTER | SXF_CLIENTSIDE, 0, tid); }
 	Activate:
 		MDLA A 1;
 		Loop;
@@ -491,14 +491,14 @@ class Chandelier1SwitchableNH : LightBaseARGs2
 		MDLA A 0 NODELAY A_StartSound("FIRE_SMALL", CHAN_BODY, CHANF_LOOPING, frandom(0.2,0.4) - args[0]);
 	ActiveFlames: //ozy. let's apply these nice flames on candles first - coords be damned
 		MDLA A 0 {
-		A_SpawnItemEx("Flame_Normal3d", Scale.X*1, 	Scale.Y*33, 	Scale.X+Scale.Y*14, 0, 0, 0, 0, SXF_SETMASTER | SXF_CLIENTSIDE, 0, tid);
-		A_SpawnItemEx("Flame_Normal3d", Scale.X*1, 	Scale.Y*-31, Scale.X+Scale.Y*5, 0, 0, 0, 0, SXF_SETMASTER | SXF_CLIENTSIDE, 0, tid);
-		A_SpawnItemEx("Flame_Normal3d", Scale.X*24, 	Scale.Y*23, 	Scale.X+Scale.Y*7, 0, 0, 0, 0, SXF_SETMASTER | SXF_CLIENTSIDE, 0, tid);
-		A_SpawnItemEx("Flame_Normal3d", Scale.X*-22, Scale.Y*-22, Scale.X+Scale.Y*7, 0, 0, 0, 0, SXF_SETMASTER | SXF_CLIENTSIDE, 0, tid);
-		A_SpawnItemEx("Flame_Normal3d", Scale.X*34, 	Scale.Y*1, 	Scale.X+Scale.Y*14, 0, 0, 0, 0, SXF_SETMASTER | SXF_CLIENTSIDE, 0, tid);
-		A_SpawnItemEx("Flame_Normal3d", Scale.X*-31, Scale.Y*1, 	Scale.X+Scale.Y*12, 0, 0, 0, 0, SXF_SETMASTER | SXF_CLIENTSIDE, 0, tid);
-		A_SpawnItemEx("Flame_Normal3d", Scale.X*-22, Scale.Y*23, 	Scale.X+Scale.Y*5, 0, 0, 0, 0, SXF_SETMASTER | SXF_CLIENTSIDE, 0, tid);
-		A_SpawnItemEx("Flame_Normal3d", Scale.X*24, 	Scale.Y*-22, Scale.X+Scale.Y*8, 0, 0, 0, 0, SXF_SETMASTER | SXF_CLIENTSIDE, 0, tid); }
+		A_SpawnItemEx("Flame_Tall3d", Scale.X*1, 	Scale.Y*33, 	Scale.X+Scale.Y*14, 0, 0, 0, 0, SXF_SETMASTER | SXF_CLIENTSIDE, 0, tid);
+		A_SpawnItemEx("Flame_Tall3d", Scale.X*1, 	Scale.Y*-31, Scale.X+Scale.Y*5, 0, 0, 0, 0, SXF_SETMASTER | SXF_CLIENTSIDE, 0, tid);
+		A_SpawnItemEx("Flame_Tall3d", Scale.X*24, 	Scale.Y*23, 	Scale.X+Scale.Y*7, 0, 0, 0, 0, SXF_SETMASTER | SXF_CLIENTSIDE, 0, tid);
+		A_SpawnItemEx("Flame_Tall3d", Scale.X*-22, Scale.Y*-22, Scale.X+Scale.Y*7, 0, 0, 0, 0, SXF_SETMASTER | SXF_CLIENTSIDE, 0, tid);
+		A_SpawnItemEx("Flame_Tall3d", Scale.X*34, 	Scale.Y*1, 	Scale.X+Scale.Y*14, 0, 0, 0, 0, SXF_SETMASTER | SXF_CLIENTSIDE, 0, tid);
+		A_SpawnItemEx("Flame_Tall3d", Scale.X*-31, Scale.Y*1, 	Scale.X+Scale.Y*12, 0, 0, 0, 0, SXF_SETMASTER | SXF_CLIENTSIDE, 0, tid);
+		A_SpawnItemEx("Flame_Tall3d", Scale.X*-22, Scale.Y*23, 	Scale.X+Scale.Y*5, 0, 0, 0, 0, SXF_SETMASTER | SXF_CLIENTSIDE, 0, tid);
+		A_SpawnItemEx("Flame_Tall3d", Scale.X*24, 	Scale.Y*-22, Scale.X+Scale.Y*8, 0, 0, 0, 0, SXF_SETMASTER | SXF_CLIENTSIDE, 0, tid); }
 	Activate:
 		MDLA A 1;
 		Loop;
