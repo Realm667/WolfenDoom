@@ -623,8 +623,11 @@ class Base : Actor
 	bool A_DoSideRoll(int dodgespeed = 10, bool checkonly = false, bool force = false)
 	{
 		// If we're static, still waiting after the last dodge, or are on a path, don't try to dodge right now
+		double checkskill = G_SkillPropertyInt(SKILLP_ACSReturn); //skip the dodge if we are on lower skills - ozy81
+		
 		if
 		(
+			checkskill <= 1 ||
 			!speed ||
 			dodging ||
 			(!force && dodgetimeout > 0) ||
@@ -650,9 +653,9 @@ class Base : Actor
 
 			dodging = true;
 
-			// Take 50% damage instead, and prevent pain
+			// Take 70% damage instead, and prevent pain
 			bNoPain = true;
-			DamageFactor = Default.DamageFactor * 0.5;
+			DamageFactor = Default.DamageFactor * 0.7;
 
 			if (!force || (lastHeard && lastHeard is "Whizzer")) { dodgecounter++; }
 
