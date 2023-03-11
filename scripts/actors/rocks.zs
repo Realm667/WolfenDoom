@@ -10,7 +10,7 @@ class RockSpawner : SceneryBase
 		//$Arg1Tooltip "Actor is affected by gravity and is solid \nNo: 0\nYes: 1"
 		DistanceCheck "boa_scenelod"; //needed only for inheritances
 		Radius 28;
-		Height 24;
+		Height 16;
 		Health -1;
 		-CANPASS
 		-FLOORCLIP
