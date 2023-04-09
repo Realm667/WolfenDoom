@@ -697,8 +697,6 @@ class DialogueTextBox : DialogueComponent
 	{
 		Super.Draw();
 
-		caption = Stringtable.Localize(caption);
-
 		if (w <= 0) { w = dialogue.targetscreenx - pos.x; }
 		String temp;
 		if (updatetext) { caption = Stringtable.Localize(caption); [temp, captionLines] = BrokenString.BreakString(caption, int(w / scale), fnt:SetFont); updatetext = false; } //N00b
