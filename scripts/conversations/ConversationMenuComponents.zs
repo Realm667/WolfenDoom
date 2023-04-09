@@ -249,6 +249,8 @@ class DialogueDescriptor : Object ui
 
 		DrawElement(x, y, pic, scale, colr);
 	}
+	
+	void UpdateText() { int s = controls.Size(); for (int i = 0; i < s; ++i) { let a = DialogueTextBox(controls[i]); if (a) { a.updatetext = true; } } } //Added by N00b
 }
 
 class DialogueComponent : Object ui
@@ -680,11 +682,13 @@ class DialogueScrollBar : DialogueComponent
 class DialogueTextBox : DialogueComponent
 {
 	int textheight;
+	BrokenString captionLines;
+	bool updatetext; //N00b
 
 	override void Init()
 	{
 		Super.Init();
-
+		updatetext = true;
 		if (!fontcolor) { fontcolor = Font.CR_WHITE; }
 		textheight = int(SetFont.GetHeight() * scale); // Ignores extra line spacing - used to check scrollbar requirement
 	}
@@ -696,8 +700,8 @@ class DialogueTextBox : DialogueComponent
 		caption = Stringtable.Localize(caption);
 
 		if (w <= 0) { w = dialogue.targetscreenx - pos.x; }
-		String temp; BrokenString captionLines;
-		[temp, captionLines] = BrokenString.BreakString(caption, int(w / scale), fnt:SetFont);
+		String temp;
+		if (updatetext) { caption = Stringtable.Localize(caption); [temp, captionLines] = BrokenString.BreakString(caption, int(w / scale), fnt:SetFont); updatetext = false; } //N00b
 		int count = captionLines.Count();
 
 		if (h <= 0) { h = lineheight / scale * (count - 1) + SetFont.GetHeight(); }
@@ -900,6 +904,7 @@ class DialogueResponses : DialogueComponent
 		else if (mkey == Menu.MKEY_Enter)
 		{
 			int replynum = dialogue.currentmenu.GetReplyNumber();
+			dialogue.UpdateText();
 			if (dialogue.selection >= responses.Size())
 			{
 				dialogue.currentmenu.SendConversationReply(-2, replynum);
