@@ -308,12 +308,7 @@ class LavaCauldronFire: SceneryBase
 	States
 	{
 	Spawn:
-		TNT1 A 0 {
-			if (!CheckRange(boa_sfxlod, true))
-			{
-				A_SpawnItemEx("FloatingCinder", 0, 0, random(0,2), 1, 0, random (1, 3), random (0, 360), SXF_TRANSFERPITCH | SXF_CLIENTSIDE);
-			}
-		}
+		TNT1 A 0 { CinderSpawner.SpawnCinder(self, p: (0,0,frandom(0,2))); }
 		"####" A 16 A_Explode(8, (int) (Radius), 0, FALSE, (int) (Radius));
 		Loop;
 	}

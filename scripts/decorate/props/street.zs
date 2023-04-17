@@ -119,22 +119,12 @@ class BurningBarrelBoA : StreetBase
 		BBAR A 0 NODELAY A_StartSound("SFX/FireLoop1", CHAN_BODY, CHANF_LOOPING, frandom(0.4,0.8), ATTN_STATIC);
 		SpawnLoop:
 		TNT1 A 0 A_CheckRange(768,"NoSound");
-		TNT1 A 0 {
-			if (!CheckRange(boa_sfxlod, true))
-			{
-				A_SpawnItemEx("FloatingCinder", 0, 0, random(48,54), 1, 0, random (1, 3), random (0, 360), SXF_TRANSFERPITCH | SXF_CLIENTSIDE);
-			}
-		}
+		TNT1 A 0 { CinderSpawner.SpawnCinder(self, p: (0,0,frandom(48,54))); }
 		BBAR ABCD 3;
 		Loop;
 	NoSound:
 		TNT1 A 0 A_StopSound(CHAN_BODY);
-		TNT1 A 0 {
-			if (!CheckRange(boa_sfxlod, true))
-			{
-				A_SpawnItemEx("FloatingCinder", 0, 0, random(48,54), 1, 0, random (1, 3), random (0, 360), SXF_TRANSFERPITCH | SXF_CLIENTSIDE);
-			}
-		}
+		TNT1 A 0 { CinderSpawner.SpawnCinder(self, p: (0,0,frandom(48,54))); }
 		BBAR ABCD 3;
 		Goto Spawn;
 	Death:

@@ -849,7 +849,7 @@ class Flame_Normal3d : SceneryBase
 	{
 	Spawn:
 		TNT1 A 0 A_Jump(235,2); //cindeeeeeeeeeeeeeerz! Yes, I love them - ozy
-		TNT1 A 0 { if (!CheckRange(boa_sfxlod, true)) { A_SpawnItemEx("FloatingCinder", 0, 0, random(0,2), 1, 0, random (1, 3), random (0, 360), SXF_TRANSFERPITCH | SXF_CLIENTSIDE); } }
+		TNT1 A 0 { CinderSpawner.SpawnCinder(self, p: (0,0,frandom(0,2))); }
 		TNT1 A 0 A_Jump(128,"Flames2","Flames3","Flames4");
 		3DFR ABCDEFGHIJ 2 LIGHT ("3DFLAME_N");
 		Loop;
@@ -875,7 +875,7 @@ class Flame_Short3d : Flame_Normal3d
 	{
 	Spawn:
 		TNT1 A 0 A_Jump(250,2);
-		TNT1 A 0 { if (!CheckRange(boa_sfxlod, true)) { A_SpawnItemEx("FloatingCinder", 0, 0, random(0,2), 1, 0, random (1, 3), random (0, 360), SXF_TRANSFERPITCH | SXF_CLIENTSIDE); } }
+		TNT1 A 0 { CinderSpawner.SpawnCinder(self, p: (0,0,frandom(0,2))); }
 		TNT1 A 0 A_Jump(128,"Flames2","Flames3","Flames4");
 		3DFR ABCDEFGHIJ 2 LIGHT ("3DFLAME_S");
 		Loop;
@@ -901,7 +901,7 @@ class Flame_Tall3d : Flame_Normal3d
 	{
 	Spawn:
 		TNT1 A 0 A_Jump(215,2);
-		TNT1 A 0 { if (!CheckRange(boa_sfxlod, true)) { A_SpawnItemEx("FloatingCinder", 0, 0, random(0,2), 1, 0, random (1, 3), random (0, 360), SXF_TRANSFERPITCH | SXF_CLIENTSIDE); } }
+		TNT1 A 0 { CinderSpawner.SpawnCinder(self, p: (0,0,frandom(0,2))); }
 		TNT1 A 0 A_Jump(128,"Flames2","Flames3","Flames4");
 		3DFR ABCDEFGHIJ 2 LIGHT ("3DFLAME_T");
 		Loop;
@@ -927,7 +927,7 @@ class Flame_Lamp3d : Flame_Normal3d
 	{
 	Spawn:
 		TNT1 A 0 A_Jump(250,2);
-		TNT1 A 0 { if (!CheckRange(boa_sfxlod, true)) { A_SpawnItemEx("FloatingCinder", 0, 0, random(0,2), 1, 0, random (1, 3), random (0, 360), SXF_TRANSFERPITCH | SXF_CLIENTSIDE); } }
+		TNT1 A 0 { CinderSpawner.SpawnCinder(self, p: (0,0,frandom(0,2))); }
 		TNT1 A 0 A_Jump(128,"Flames2","Flames3","Flames4");
 		3DFR ABCDEFGHIJ 2 LIGHT ("3DFLAME_L");
 		Loop;
@@ -953,7 +953,7 @@ class Flame_Oven3d : Flame_Normal3d
 	{
 	Spawn:
 		TNT1 A 0 A_Jump(144,2);
-		TNT1 A 0 { if (!CheckRange(boa_sfxlod, true)) { A_SpawnItemEx("FloatingCinder2", Scale.X*48, 0, 4, 1, 0, random (1, 3), random (0, 360), SXF_TRANSFERPITCH | SXF_CLIENTSIDE); } }
+		TNT1 A 0 { CinderSpawner.SpawnCinder(self, p: (scale.x*48,0,4)); }
 		TNT1 A 0 A_Jump(128,"Flames2","Flames3","Flames4");
 		3DFR ABCDEFGHIJ 2 LIGHT ("WolfStove");
 		Loop;
@@ -2112,7 +2112,7 @@ class FBowlFire: SceneryBase
 	States
 	{
 	Spawn:
-		TNT1 A 0 { if (!CheckRange(boa_sfxlod, true)) { A_SpawnItemEx("FloatingCinder", 0, 0, random(0,2), 1, 0, random (1, 3), random (0, 360), SXF_TRANSFERPITCH | SXF_CLIENTSIDE); } }
+		TNT1 A 0 { CinderSpawner.SpawnCinder(self, p: (0,0,frandom(0,2))); }
 		"####" A 16 A_Explode(8, (int) (Radius), 0, FALSE, (int) (Radius));
 		Loop;
 	}
@@ -2185,12 +2185,7 @@ class FBarrel1 : SceneryBase
 			return ResolveState("On");
 		}
 	On:
-		"####" A 0 {
-			if (!CheckRange(boa_sfxlod, true))
-			{
-				A_SpawnItemEx("FloatingCinder", 0, 0, random(48,54), 1, 0, random (1, 3), random (0, 360), SXF_SETMASTER | SXF_TRANSFERPITCH | SXF_CLIENTSIDE, 0, tid);
-			}
-		}
+		"####" A 0 { CinderSpawner.SpawnCinder(self, p: (0,0,frandom(48,54))); }
 	FireLoop:
 		"####" ABCD 3 LIGHT("BOAEBRL1");
 		Loop;

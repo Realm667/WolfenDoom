@@ -1,7 +1,7 @@
 class AshSpawner : EffectSpawner
 {
-	static const class<Actor> ashclasses[] = { "FloatingAshLight", "FloatingAshGrey", "FloatingAshDarkGrey", "FloatingAshDark" };
-
+    static const Color ashcolors[] = { "A0 A0 A0", "80 80 80", "60 60 60", "45 45 45" };
+    
 	Default
 	{
 		//$Category Special Effects (BoA)
@@ -47,57 +47,19 @@ class AshSpawner : EffectSpawner
 	override void SpawnEffect()
 	{
 		Super.SpawnEffect();
-
-		class<Actor> ashclass = ashclasses[Random(0, 3)];
-
+        int i = Random(0, 3);
 		double zoffset = 0;
 		if (manager) { zoffset = min(manager.particlez - pos.z, 0); }
-
-		A_SpawnItemEx(ashclass, Random(-Args[0],Args[0]), Random(-Args[0],Args[0]), min(Args[1], zoffset), frandom(0.0, 0.2), 0, 0, random(0.0, 1.0), 128, Args[4]);
+        if (Random(0, 255) < Args[4]) { return; }
+        A_SpawnParticleEx(ashcolors[i], TexMan.CheckForTexture("ASHXA0"), STYLE_Shaded, SPF_RELATIVE | SPF_ROLL,
+            /*lifetime*/ 250 * 2,
+            /*size*/ frandom(6, 12),
+            /*angle*/ angle + frandom(0.0, 1.0),
+            /*pos*/ frandom(-args[0], args[0]), frandom(-args[0], args[0]), min(Args[1], zoffset),
+            /*vel*/ frandom(0.0, 0.2), 0, 0,
+            /*acc*/ 0, 0, -frandom(0.1, 0.3),
+            /*startalphaf*/ 1.0,
+            /*fadestepf*/ 0.0,
+            rollvel: random(0, 1) ? 1 : -1);
 	}
 }
-
-class FloatingAshLight : ParticleBase
-{
-	Default
-	{
-		Radius 1;
-		Height 1;
-		Scale 0.15;
-		Gravity 1.0;
-		+MISSILE
-		+NOBLOCKMAP
-		-NOGRAVITY
-		RenderStyle "Shaded";
-		StencilColor "A0 A0 A0";
-		ReactionTime 250;
-	}
-
-	States
-	{
-		Spawn1:
-			ASHX ABCDEFGH 2 A_CountDown();
-			Loop;
-		Spawn2:
-			ASHX HGFEDCBA 2 A_CountDown();
-			Loop;
-		Death:
-			ASHX F 2 A_FadeOut(0.06);
-			Loop;
-	}
-
-	override void PostBeginPlay()
-	{
-		Super.PostBeginPlay();
-
-		gravity = FRandom(0.1, 0.3);
-		scale.x = scale.y = FRandom(0.09, 0.12);
-
-		if (Random(0, 1)) { SetStateLabel("Spawn1"); }
-		else { SetStateLabel("Spawn2"); }
-	}
-}
-
-class FloatingAshGrey : FloatingAshLight { Default { StencilColor "80 80 80"; } }
-class FloatingAshDarkGrey : FloatingAshLight { Default { StencilColor "60 60 60"; } }
-class FloatingAshDark : FloatingAshLight { Default { StencilColor "45 45 45"; } }

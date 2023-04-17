@@ -198,14 +198,14 @@ class BoAPlayer : PlayerPawn
 	Death.Fire:
 		"####" # 0 {sprite = GetSpriteIndex(Random() < 128 ? "BURN" : "NRUB");}
 		"####" A 5 Bright Light("ITBURNS1") { A_Wander(); }
-		"####" BC 5 Bright Light("ITBURNS1") { A_Wander(); A_SpawnItemEx("FloatingCinder", random(-8,8), random(-8,8), random(0,32), 1, 0, random (1, 3), random (0, 360), SXF_TRANSFERPITCH | SXF_CLIENTSIDE, 160); A_SpawnItemEx("BodySmoke", random(-3,3), random(-3,3), random(0,56), 0, 0, frandom(0.2,1.0)); }
+		"####" BC 5 Bright Light("ITBURNS1") { A_Wander(); CinderSpawner.SpawnCinder(self); A_SpawnItemEx("BodySmoke", random(-3,3), random(-3,3), random(0,56), 0, 0, frandom(0.2,1.0)); }
 		"####" D 5 Bright Light("ITBURNS1") { A_Wander(); A_StartSound("death/burning"); }
-		"####" E 5 Bright Light("ITBURNS1") { A_Wander(); A_SpawnItemEx("FloatingCinder", random(-8,8), random(-8,8), random(0,32), 1, 0, random (1, 3), random (0, 360), SXF_TRANSFERPITCH | SXF_CLIENTSIDE, 160); A_SpawnItemEx("BodySmoke", random(-3,3), random(-3,3), random(0,56), 0, 0, frandom(0.2,1.0)); }
-		"####" FABCD 5 Bright Light("ITBURNS2") { A_Wander(); A_SpawnItemEx("FloatingCinder", random(-8,8), random(-8,8), random(0,32), 1, 0, random (1, 3), random (0, 360), SXF_TRANSFERPITCH | SXF_CLIENTSIDE, 160); A_SpawnItemEx("BodySmoke", random(-3,3), random(-3,3), random(0,56), 0, 0, frandom(0.2,1.0)); }
+		"####" E 5 Bright Light("ITBURNS1") { A_Wander(); CinderSpawner.SpawnCinder(self); A_SpawnItemEx("BodySmoke", random(-3,3), random(-3,3), random(0,56), 0, 0, frandom(0.2,1.0)); }
+		"####" FABCD 5 Bright Light("ITBURNS2") { A_Wander(); CinderSpawner.SpawnCinder(self); A_SpawnItemEx("BodySmoke", random(-3,3), random(-3,3), random(0,56), 0, 0, frandom(0.2,1.0)); }
 		"####" EFAG 5 Bright Light("ITBURNS3") A_Wander();
 		"####" H 5 Bright Light("ITBURNS3") A_Wander();
-		"####" IJK 5 Bright Light("ITBURNS2") { A_SpawnItemEx("FloatingCinder", random(-8,8), random(-8,8), random(0,16), 1, 0, random (1, 3), random (0, 360), SXF_TRANSFERPITCH | SXF_CLIENTSIDE, 160); A_SpawnItemEx("BodySmoke", random(-3,3), random(-3,3), random(0,56), 0, 0, frandom(0.2,1.0)); }
-		"####" LMN 5 Bright Light("ITBURNS1") { A_SpawnItemEx("FloatingCinder", random(-8,8), random(-8,8), random(0,8), 1, 0, random (1, 3), frandom (0, 360), SXF_TRANSFERPITCH | SXF_CLIENTSIDE, 160); A_SpawnItemEx("BodySmoke", random(-3,3), random(-3,3), random(0,56), 0, 0, frandom(0.2,1.0)); }
+		"####" IJK 5 Bright Light("ITBURNS2") { CinderSpawner.SpawnCinder(self, p: (frandom(-8,8),frandom(-8,8),frandom(0,16))); A_SpawnItemEx("BodySmoke", random(-3,3), random(-3,3), random(0,56), 0, 0, frandom(0.2,1.0)); }
+		"####" LMN 5 Bright Light("ITBURNS1") { CinderSpawner.SpawnCinder(self, p: (frandom(-8,8),frandom(-8,8),frandom(0,8))); A_SpawnItemEx("BodySmoke", random(-3,3), random(-3,3), random(0,56), 0, 0, frandom(0.2,1.0)); }
 		"####" A 0 A_SpawnItemEx("BodySmokeSpawner", 0, 0, 0, 0, 0, 0, 0, SXF_SETMASTER);
 	Death.Fire.Smoke:
 		"####" O 0 A_Jump(32,"Death.Fire.End");
