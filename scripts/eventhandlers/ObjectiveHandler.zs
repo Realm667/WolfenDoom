@@ -32,13 +32,13 @@ class Objective : Thinker
 	// This is how to set up objectives directly via ZSCript calls:
 	//  ACS: ScriptCall("Objective", "Add", text, num, false, false, true);
 	//  ZSCript: Objective.Add(text, order, num, false, false, true);
-	//   text:      The text string or localization to display as the objective
-	//   order:     The order of the objective in the listing.  You are no longer limited to
-	//              only three items for primary and secondary, but still can only show a 
-	//              total of six at once on the current background graphic
+	//   text:	  The text string or localization to display as the objective
+	//   order:	 The order of the objective in the listing.  You are no longer limited to
+	//			  only three items for primary and secondary, but still can only show a 
+	//			  total of six at once on the current background graphic
 	//   secondary: false if this is a primary objective, true if secondary
 	//   complete:  true if completed, false if not
-	//   quiet:     Displays "New Objective Added" message and plays sound if true
+	//   quiet:	 Displays "New Objective Added" message and plays sound if true
 	//
 	// New additions that share either a text string or order number with an existing 
 	// entry will replace the older entry

@@ -966,7 +966,7 @@ class DoorHandler : Actor
 		BlockLinesIterator it = BlockLinesIterator.Create(self, 1);
 
 		walkablemidtex = args[1];
-      
+	  
 		While (it.Next())
 		{
 			Line current = it.curline;

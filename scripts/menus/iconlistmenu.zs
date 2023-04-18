@@ -71,7 +71,7 @@
   means that if you re-order your menu items, you'll need to rename your images
   and LANGUAGE entries as well).
 
-    Lookup Strings Used:
+	Lookup Strings Used:
 	Icon Images (Texture name lookup):
 	[Lookup Base][index] 	   	Example: EPISODE1, SKILL2, etc.
 

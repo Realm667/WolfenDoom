@@ -23,33 +23,33 @@
 /*
 
   ActorSpawner
-    These are spawn point actors that spawn actors when active, and maintain a set
-    number of those actors alive (1 by default).  Actors will not be spawned if a player
-    can see the spawn point or if a player is within a defined minimum spawn distance
-    from the spawner (default 512 units).
+	These are spawn point actors that spawn actors when active, and maintain a set
+	number of those actors alive (1 by default).  Actors will not be spawned if a player
+	can see the spawn point or if a player is within a defined minimum spawn distance
+	from the spawner (default 512 units).
 
-    By default, the spawner will spawn a single guard.  Once that guard is killed, the
-    spawner will spawn another guard, and so on.
+	By default, the spawner will spawn a single guard.  Once that guard is killed, the
+	spawner will spawn another guard, and so on.
 
-    Spawned actors can be given a TID and can be set to navigate to a specific
-    PatrolPoint TID after spawn as well.
+	Spawned actors can be given a TID and can be set to navigate to a specific
+	PatrolPoint TID after spawn as well.
 
   Custom UDMF Properties
-    arg0str
-      Sets the class of actor to be spawned (default "Guard")
+	arg0str
+	  Sets the class of actor to be spawned (default "Guard")
 
-    user_tid
-      Sets the TID that the spawned enemies are given.  By default they have no TID.
+	user_tid
+	  Sets the TID that the spawned enemies are given.  By default they have no TID.
 
-    user_goal
-      Sets the goal/patrolpoint TID that the spawned enemies will walk to once they return to
-      being idle.  By default, they go back to their spawn point and stand still.
+	user_goal
+	  Sets the goal/patrolpoint TID that the spawned enemies will walk to once they return to
+	  being idle.  By default, they go back to their spawn point and stand still.
 
-    user_maxactors
-      Sets how many enemies from this spawner to maintain alive at once (default 1) - use negative numbers to set total number spawned instead of number to keep alive
+	user_maxactors
+	  Sets how many enemies from this spawner to maintain alive at once (default 1) - use negative numbers to set total number spawned instead of number to keep alive
 
-    user_minspawndistance
-      Distance from player inside of which the spawner will stop spawning (default 512)
+	user_minspawndistance
+	  Distance from player inside of which the spawner will stop spawning (default 512)
 
 */
 class ActorSpawner : SwitchableDecoration

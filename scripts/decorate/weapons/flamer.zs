@@ -1,6 +1,6 @@
 /*
  * Copyright (c) 2015-2022 Tormentor667, Ozymandias81, Ed the Bat, MaxED, Talon1024,
- *                         AFADoomer
+ *						 AFADoomer
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal

@@ -1,6 +1,6 @@
 /*
  * Copyright (c) 2017-2021 Ozymandias81, Guardsoul, Tormentor667, AFADoomer,
- *                         Talon1024
+ *						 Talon1024
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal

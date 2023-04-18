@@ -898,12 +898,12 @@ class KeenPlayer : PlayerPawn
 
    override void CheckCrouch(bool totallyfrozen)
    {
-      let player = self.player;
-      UserCmd cmd = player.cmd;
+	  let player = self.player;
+	  UserCmd cmd = player.cmd;
 
-      if (cmd.buttons & BT_CROUCH) { cmd.upmove -= flyspeed[!!(cmd.buttons & BT_SPEED ^ cl_run)]; }
+	  if (cmd.buttons & BT_CROUCH) { cmd.upmove -= flyspeed[!!(cmd.buttons & BT_SPEED ^ cl_run)]; }
 
-      Super.CheckCrouch(totallyfrozen);
+	  Super.CheckCrouch(totallyfrozen);
    }
 }
 

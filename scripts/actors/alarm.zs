@@ -26,7 +26,7 @@
   Optionally, alarm activation can trigger spawn of additional enemies.
 
   Three actors are involved:
-    AlarmPanel
+	AlarmPanel
 	These are usable flatsprite actors that control Alarms and Alarm Spawners that have the
 	same TID as the panel.  The Nazi-class descendant actor who is closest to the alarm panel
 	(within 1024 units) will be automatically selected as the activator, and, once alerted,
@@ -44,11 +44,11 @@
 
 	Active AlarmPanel actors have a red glow on them.
 
-    Alarm
+	Alarm
 	These are simple actors that, upon activation, alert all actors within a 512-
 	unit radius and set the actors' target to the alarm panel activator's target.
 
-    AlarmSpawner
+	AlarmSpawner
 	These are spawn point actors that spawn up to three SneakableSSMP40Guard actors
 	when they are activated.  A maximum of three guards will be present at any time;
 	if three guards were spawned and one guard was killed before the alarm was shut
@@ -58,11 +58,11 @@
 
 	Useful custom properties (set on Custom tab of thing properties in GZDB):
 	  user_tid
-	    Sets the TID that the spawned enemies are given.  By default they have no TID.
+		Sets the TID that the spawned enemies are given.  By default they have no TID.
 
 	  user_goal
-	    Sets the goal/patrolpoint TID that the spawned enemies will walk to once they return to
-	    being idle.  By default, they go back to their spawn point and stand still.
+		Sets the goal/patrolpoint TID that the spawned enemies will walk to once they return to
+		being idle.  By default, they go back to their spawn point and stand still.
 
   Alarms and Alarm Spawners must be given the same TID as an Alarm Panel that will control
   them, otherwise they will not function.  You can have multiple Alarm Panels with the same

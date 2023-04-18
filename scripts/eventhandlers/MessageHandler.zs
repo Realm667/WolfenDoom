@@ -21,9 +21,9 @@
 **/
 
 // This code replaces ACS-based messages that were originally coded by:
-//   Dialogue Messages:     Ed the Bat, with work by MaxED, Talon1024, and Ozymandias81
-//   Developer Messages:    Talon1024
-//   Hint Messages:         AFADoomer
+//   Dialogue Messages:	 Ed the Bat, with work by MaxED, Talon1024, and Ozymandias81
+//   Developer Messages:	Talon1024
+//   Hint Messages:		 AFADoomer
 //
 // While minimal code was directly taken from the ACS implementation, their work served
 // as the template for the creation of the message classes below.

@@ -37,17 +37,17 @@ class EisenhimmelHangarDoors : MapObject
 		//$Color 3
 		+CullActorBase.DONTCULL
 	}
-    States
-    {
-    Spawn:
-        MDLA A -1;
-    Hold:
-        "####" "#" -1;
-        Stop;
-    Close:
-        MDLA ABCDEFGH 114;
-        Goto Hold;
-    }
+	States
+	{
+	Spawn:
+		MDLA A -1;
+	Hold:
+		"####" "#" -1;
+		Stop;
+	Close:
+		MDLA ABCDEFGH 114;
+		Goto Hold;
+	}
 }
 
 class ArnhemCathedral : MapObject

@@ -46,7 +46,7 @@ class ZombieKazi : ZombieStandard
 		"####" H 0 A_Jump(256,"See");
 	Pain.Fire:
 	Pain.Electric:
-        "####" H 1 A_Jump(192,"Pain");
+		"####" H 1 A_Jump(192,"Pain");
 		"####" H 0 A_XDie;
 		Stop;
 	Pain.Rocket:
@@ -63,9 +63,9 @@ class ZombieKazi : ZombieStandard
 	XDeath: //what a fall through :P
 	Disintegrate:
 	Death:
-    Death.Fire:
-    Death.Electric:
-    Death.Rocket:
+	Death.Fire:
+	Death.Electric:
+	Death.Rocket:
 		"####" F 5 A_Quake(5,27,0,512);
 		"####" I 0 { A_SpawnItemEx("ZombieNuke",0,0,0); A_SpawnItemEx("KaZomBoom",0,0,0); }
 		"####" IIIIIIIIIIIIIIII 0 A_SpawnItemEx("Debris_Bone", random(8,-8), random(8,-8), random(54,64), random(1,6), random(1,6), random(1,6), random(0,360), SXF_CLIENTSIDE);
@@ -681,11 +681,11 @@ class ZombieKaziRuthless: ZombieKazi
 	DropItem "Soul";
 	DropItem "Soul", 128;
 	DropItem "SoulBig", 32;
-    Speed 10.0;
+	Speed 10.0;
 	}
 	States
 	{
-    Missile:
+	Missile:
 		"####" E 0 A_JumpIfCloser(192,"Melee",TRUE);
 		"####" EF 20 A_FaceTarget;
 		"####" G 0 A_StartSound("nazombie/vomit", CHAN_WEAPON);
@@ -707,11 +707,11 @@ class ZombieBrainRuthless: ZombieBrain
 	DropItem "MauserAmmo", 32;
 	DropItem "Soul";
 	DropItem "Soul", 64;
-    Speed 12.0;
+	Speed 12.0;
 	}
 	States
 	{
-    Missile:
+	Missile:
 		"####" EF 20 A_FaceTarget;
 		"####" G 0 A_StartSound("nazombie/vomit", CHAN_WEAPON);
 		"####" G 12 A_SpawnProjectile("ZombieVomit_C3M6A",54,0,0, CMF_AIMDIRECTION);
@@ -742,6 +742,6 @@ class ZGermanShepherdRuthless: ZGermanShepherd
 	DropItem "DogFood", 64;
 	DropItem "Soul";
 	DropItem "Soul", 64;
-    Speed 14.0;
+	Speed 14.0;
 	}
 }

@@ -49,30 +49,30 @@ class CinderSpawner : EffectSpawner
 	override void SpawnEffect()
 	{
 		Super.SpawnEffect();
-        CinderSpawner.SpawnCinder(self, (frandom(-args[0],args[0]),frandom(-args[0],args[0]),frandom(0,args[1])),
-            (frandom(args[2],args[3]),0,frandom(-args[2],args[2])), 4, args[4]);
+		CinderSpawner.SpawnCinder(self, (frandom(-args[0],args[0]),frandom(-args[0],args[0]),frandom(0,args[1])),
+			(frandom(args[2],args[3]),0,frandom(-args[2],args[2])), 4, args[4]);
 	}
-    
-    static void SpawnCinder(Actor a, Vector3 p = (4,64,1024), Vector3 v = (4,64,1024), double halfang = 180, int failchance = 160)
-    {
-        if (Random(0, 255) < failchance) { return; }
-        // GZDoom allows neither non-constant default parameters nor constant vectors.
-        if (p == (4,64,1024)) { p = (frandom(-8,8),frandom(-8,8),frandom(0,32)); }
-        if (v == (4,64,1024)) { v = (1,0,frandom(1,3)); }
-        a.A_SpawnParticleEx(
-            /*color1*/ "FFFFFF",
-            /*texture*/ TexMan.CheckForTexture("EMBRA0"),
-            /*style*/ STYLE_Add,
-            /*flags*/ SPF_FULLBRIGHT | SPF_RELATIVE,
-            /*lifetime*/ 8 * (16 + Random(0, 8)),
-            /*size*/ frandom(3, 6),
-            /*angle*/ frandom(-halfang, halfang),
-            /*posoff*/ p.x, p.y, p.z,
-            /*vel*/ v.x, v.y, v.z,
-            /*acc*/ 0, 0, 0,
-            /*startalphaf*/ 0.8,
-            /*fadestepf*/ 0.0);
-    }
+	
+	static void SpawnCinder(Actor a, Vector3 p = (4,64,1024), Vector3 v = (4,64,1024), double halfang = 180, int failchance = 160)
+	{
+		if (Random(0, 255) < failchance) { return; }
+		// GZDoom allows neither non-constant default parameters nor constant vectors.
+		if (p == (4,64,1024)) { p = (frandom(-8,8),frandom(-8,8),frandom(0,32)); }
+		if (v == (4,64,1024)) { v = (1,0,frandom(1,3)); }
+		a.A_SpawnParticleEx(
+			/*color1*/ "FFFFFF",
+			/*texture*/ TexMan.CheckForTexture("EMBRA0"),
+			/*style*/ STYLE_Add,
+			/*flags*/ SPF_FULLBRIGHT | SPF_RELATIVE,
+			/*lifetime*/ 8 * (16 + Random(0, 8)),
+			/*size*/ frandom(3, 6),
+			/*angle*/ frandom(-halfang, halfang),
+			/*posoff*/ p.x, p.y, p.z,
+			/*vel*/ v.x, v.y, v.z,
+			/*acc*/ 0, 0, 0,
+			/*startalphaf*/ 0.8,
+			/*fadestepf*/ 0.0);
+	}
 }
 
 ////////////////
@@ -100,12 +100,12 @@ class CinderSpawnerSky : SnowSpawner
 
 		double zoffset = 0;
 		if (manager) { zoffset = min(manager.particlez - pos.z, 0); }
-        if (Random(0, 255) < Args[1]) { return; }
-        
+		if (Random(0, 255) < Args[1]) { return; }
+		
 		if (args[2]) { CinderSpawner.SpawnCinder(self, (frandom(-args[0],args[0]), 0, zoffset),
-                (frandom(-1.0,1.0),frandom(-1.0,1.0),frandom(-1.0,-3.0)), 180, args[1]); }
+				(frandom(-1.0,1.0),frandom(-1.0,1.0),frandom(-1.0,-3.0)), 180, args[1]); }
 		else { CinderSpawner.SpawnCinder(self, (frandom(-args[0],args[0]), frandom(-args[0], args[0]), zoffset),
-                (frandom(-1.0,1.0),frandom(-1.0,1.0),frandom(-1.0,-3.0)), 0, args[1]); }
+				(frandom(-1.0,1.0),frandom(-1.0,1.0),frandom(-1.0,-3.0)), 0, args[1]); }
 	}
 }
 

@@ -595,7 +595,7 @@ class ZScriptTools
 
 		imagesize.x *= texsize.x;
 		imagesize.y *= texsize.y;
-    
+	
 		return texsize, imagesize;
 	}
 	

@@ -219,7 +219,7 @@ class ZyklonBSteamParticle_C3M6A : ZyklonBSteamParticle
 		PoisonDamage 8;
 	}
 
-    States
+	States
 	{
 		Spawn:
 			ZTEM A 0;

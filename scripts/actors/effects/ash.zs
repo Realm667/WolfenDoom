@@ -1,7 +1,7 @@
 class AshSpawner : EffectSpawner
 {
-    static const Color ashcolors[] = { "A0 A0 A0", "80 80 80", "60 60 60", "45 45 45" };
-    
+	static const Color ashcolors[] = { "A0 A0 A0", "80 80 80", "60 60 60", "45 45 45" };
+	
 	Default
 	{
 		//$Category Special Effects (BoA)
@@ -47,19 +47,19 @@ class AshSpawner : EffectSpawner
 	override void SpawnEffect()
 	{
 		Super.SpawnEffect();
-        int i = Random(0, 3);
+		int i = Random(0, 3);
 		double zoffset = 0;
 		if (manager) { zoffset = min(manager.particlez - pos.z, 0); }
-        if (Random(0, 255) < Args[4]) { return; }
-        A_SpawnParticleEx(ashcolors[i], TexMan.CheckForTexture("ASHXA0"), STYLE_Shaded, SPF_RELATIVE | SPF_ROLL,
-            /*lifetime*/ 250 * 2,
-            /*size*/ frandom(6, 12),
-            /*angle*/ angle + frandom(0.0, 1.0),
-            /*pos*/ frandom(-args[0], args[0]), frandom(-args[0], args[0]), min(Args[1], zoffset),
-            /*vel*/ frandom(0.0, 0.2), 0, 0,
-            /*acc*/ 0, 0, -frandom(0.1, 0.3),
-            /*startalphaf*/ 1.0,
-            /*fadestepf*/ 0.0,
-            rollvel: random(0, 1) ? 1 : -1);
+		if (Random(0, 255) < Args[4]) { return; }
+		A_SpawnParticleEx(ashcolors[i], TexMan.CheckForTexture("ASHXA0"), STYLE_Shaded, SPF_RELATIVE | SPF_ROLL,
+			/*lifetime*/ 250 * 2,
+			/*size*/ frandom(6, 12),
+			/*angle*/ angle + frandom(0.0, 1.0),
+			/*pos*/ frandom(-args[0], args[0]), frandom(-args[0], args[0]), min(Args[1], zoffset),
+			/*vel*/ frandom(0.0, 0.2), 0, 0,
+			/*acc*/ 0, 0, -frandom(0.1, 0.3),
+			/*startalphaf*/ 1.0,
+			/*fadestepf*/ 0.0,
+			rollvel: random(0, 1) ? 1 : -1);
 	}
 }

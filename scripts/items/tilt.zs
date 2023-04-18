@@ -1,6 +1,6 @@
 //
 //  Modified version of Nash's Tilt++ v1.5
-//    https://forum.zdoom.org/viewtopic.php?f=43&t=55413
+//	https://forum.zdoom.org/viewtopic.php?f=43&t=55413
 //
 //===========================================================================
 //

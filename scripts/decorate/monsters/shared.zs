@@ -418,7 +418,7 @@ class RumbleWaves: Actor
 		TNT1 A 0;
 		"####" A 0 A_Jump(128, "Dirt2");
 	Dirt1:
-		"####" A 4      {
+		"####" A 4	  {
 				A_SpawnProjectile("RumbleFX1");
 				A_RadiusGive("HeatShaderControl", radius+64, RGF_PLAYERS | RGF_GIVESELF, 32);
 				if (waterlevel > 0) {
@@ -426,7 +426,7 @@ class RumbleWaves: Actor
 				}
 	Goto Spawn;
 	Dirt2:
-		"####" A 4      {
+		"####" A 4	  {
 				A_SpawnProjectile("RumbleFX2");
 				A_RadiusGive("HeatShaderControl", radius+64, RGF_PLAYERS | RGF_GIVESELF, 32);
 				if (waterlevel > 0) {
@@ -524,7 +524,7 @@ class BarkWaves : RumbleWaves
 		TNT1 A 0;
 		"####" A 0 A_Jump(128, "Dirt2");
 	Dirt1:
-		"####" A 4      {
+		"####" A 4	  {
 				A_SpawnProjectile("BarkFX1");
 				A_RadiusGive("HeatShaderControl", radius+64, RGF_PLAYERS | RGF_GIVESELF, 32);
 				if (waterlevel > 0) {
@@ -532,7 +532,7 @@ class BarkWaves : RumbleWaves
 				}
 	Goto Spawn;
 	Dirt2:
-		"####" A 4      {
+		"####" A 4	  {
 				A_SpawnProjectile("BarkFX2");
 				A_RadiusGive("HeatShaderControl", radius+64, RGF_PLAYERS | RGF_GIVESELF, 32);
 				if (waterlevel > 0) {
@@ -1415,7 +1415,7 @@ class ZyklonBBomb : ClusterBomb
 	Default
 	{
 	Speed 20;
-    Gravity 0.3;
+	Gravity 0.3;
 	DamageType "UndeadPoison";
 	Obituary "$OBZYKLON";
 	DeathSound "mortard1";
@@ -1642,17 +1642,17 @@ class ZombieVomit_C3M6A: ZombieVomit
 {
 	Default
 	{
-    DamageFunction (random(1,4));
+	DamageFunction (random(1,4));
 	}
-    States
-    {
-    Death:
+	States
+	{
+	Death:
 		TNT1 A 0 BRIGHT A_SpawnProjectile("PoisonCloudUndead",16,0,0,2,0);
 		"####" AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 0 A_SpawnItemEx("UndeadSmoke",random(-64,64),random(-64,64),random(-48,48),Vel.X,0,frandom(0.5,1),0,SXF_TRANSFERTRANSLATION,160);
 		"####" AAAAAAAA 0 A_SpawnItemEx("ZyklonZCloud",random(-64,64),random(-64,64),random(-48,48),0,0,0.1,0,128); //2x less ZyklonClouds
 		"####" AAAAAAAAA 1 A_SpawnItemEx("Zombie_FlyingBlood", random(2,-2), random(2,-2), random(2,2), random(1,6), random(1,6), random(1,6), random(0,360), SXF_CLIENTSIDE);
 		Stop;
-    }
+	}
 }
 
 class ZFlyingHack : FlyingHack

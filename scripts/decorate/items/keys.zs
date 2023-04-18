@@ -167,7 +167,7 @@ class SurrenderingSoldierKey : SkullKey //was SpyToken, pickup msg not needed
 		Inventory.MaxAmount 1;
 		PuzzleItem.Number 5;
 	}
-    States
+	States
 	{
 		Spawn:
 			SKLK E -1 LIGHT("BoAGenericKey");

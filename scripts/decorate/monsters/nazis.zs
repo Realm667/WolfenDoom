@@ -1,6 +1,6 @@
 /*
  * Copyright (c) 2015-2021 Tormentor667, Ozymandias81, Guardsoul, Ed the Bat,
- *                         MaxED, AFADoomer, Talon1024
+ *						 MaxED, AFADoomer, Talon1024
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -2104,10 +2104,10 @@ class WGrenadier: Sniper_Crouch
 	Pain:
 		"####" D 6 A_NaziPain(256, True, -12);
 		Goto See;
-    Pain.Fire:
+	Pain.Fire:
 	Pain.Electric:
-        "####" D 1 A_Jump(192,"Pain");
-    Pain.Rocket:
+		"####" D 1 A_Jump(192,"Pain");
+	Pain.Rocket:
 		"####" D 0 A_XDie;
 		Stop;
 	Melee:
@@ -2153,9 +2153,9 @@ class WGrenadier: Sniper_Crouch
 		"####" H -1;
 		Stop;
 	XDeath:
-    Death.Fire:
-    Death.Electric:
-    Death.Rocket:
+	Death.Fire:
+	Death.Electric:
+	Death.Rocket:
 		TNT1 A 0 A_SpawnItemEx("GeneralExplosion_Nazis",0,0,32);
 		Goto Super::Death.Fire;
 	Idle:
@@ -2303,10 +2303,10 @@ class WPanzerGuard : BasicGuard
 	Pain:
 		"####" D 6 A_NaziPain(256);
 		Goto See;
-    Pain.Fire:
+	Pain.Fire:
 	Pain.Electric:
-        "####" D 1 A_Jump(192,"Pain");
-    Pain.Rocket:
+		"####" D 1 A_Jump(192,"Pain");
+	Pain.Rocket:
 		"####" D 0 A_XDie;
 		Stop;
 	Melee:
@@ -2344,9 +2344,9 @@ class WPanzerGuard : BasicGuard
 		"####" M -1;
 		Stop;
 	XDeath:
-    Death.Fire:
-    Death.Electric:
-    Death.Rocket:
+	Death.Fire:
+	Death.Electric:
+	Death.Rocket:
 		Goto Super::XDeath.Boom;
 	Raise: //not used
 		MGR2 MLK 5;
@@ -2401,8 +2401,8 @@ class FlamerSoldier : BasicGuard
 		Stop;
 	Pain.Fire:
 	Pain.Electric:
-        "####" I 1 A_Jump(192,"Pain");
-    Pain.Rocket:
+		"####" I 1 A_Jump(192,"Pain");
+	Pain.Rocket:
 		"####" I 0 A_XDie;
 		Stop;
 	Death:
@@ -2414,9 +2414,9 @@ class FlamerSoldier : BasicGuard
 		"####" N -1;
 		Stop;
 	XDeath:
-    Death.Fire:
-    Death.Electric:
-    Death.Rocket:
+	Death.Fire:
+	Death.Electric:
+	Death.Rocket:
 		TNT1 A 0 A_SpawnItemEx("GeneralExplosion_Nazis",0,0,32);
 		Goto Super::Death.Fire;
 	}
