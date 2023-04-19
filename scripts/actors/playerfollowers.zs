@@ -565,6 +565,7 @@ class PlayerFollower : Actor // Default version - for actors like prisoner with 
 		}
 
 		if (target && target.health <= 0) { target = null; }
+		if (target && target.bNEVERTARGET) { target = null; } //for surrendering enemies -- N00b
 		if (target is "TankBase" && TankBase(target).treads) { target = TankBase(target).treads; }
 
 		enemycount = 0;
@@ -582,6 +583,7 @@ class PlayerFollower : Actor // Default version - for actors like prisoner with 
 				mo.health <= 0 ||
 				mo.bDormant ||
 				!mo.bShootable ||
+				mo.bNeverTarget || //for surrendering enemies
 				mo.bFriendly == bFriendly ||
 				mo.GetSpecies() == Species ||
 				Distance3d(mo) > targetrange ||
@@ -1252,6 +1254,7 @@ class PrisonerAgent : PlayerFollower
 		Scale 0.67;
 		+FRIENDLY
 		+NOINFIGHTING
+		+NOPAIN
 		Obituary "$PRISONER";
 		Species "PlayerFollower";
 		PlayerFollower.CloseFollow True;

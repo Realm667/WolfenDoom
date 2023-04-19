@@ -2085,12 +2085,12 @@ class Nazi : Base
 		if (bCountKill) { ClearCounters(); }
 		user_ForceWeaponDrop = true;
 		surrendered = true;
-
+		bNEVERTARGET = true;
 		health = 1;
 		vel *= 0;
 
 		// 1 in 8 chance that surrendering enemies will urinate
-		if (Random(0, 7) == 0)
+		if (Random(0, 7) == 0 && !(self is "NaziMedic")) // exclude medics as they comply instead of just being frightened
 		{
 			Actor pee = Spawn("PeePool", pos);
 			if (pee) { pee.master = self; }
