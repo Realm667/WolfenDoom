@@ -368,7 +368,7 @@ class BoAPlayer : PlayerPawn
 			[friction, movefactor] = GetFriction();
 			bobfactor = friction < ORIG_FRICTION ? movefactor : ORIG_FRICTION_FACTOR;
 
-			if (!player.onground && !bNoGravity && !waterlevel && !leveltilt && !climbing)
+			if (!player.onground && !bNoGravity && !waterlevel /*&& !leveltilt*/ && !climbing)
 			{
 				// [RH] allow very limited movement if not on ground.
 				movefactor *= level.aircontrol;
@@ -962,7 +962,7 @@ class BoAPlayer : PlayerPawn
 			vel.z -= grav * cos(leveltilt);
 			vel.x -= grav * sin(leveltilt) * cos(leveltiltangle);
 			vel.y -= grav * sin(leveltilt) * sin(leveltiltangle);
-
+			
 			if (leveltilt != oldtilt)
 			{
 				// if (leveltilt == 0) will never be true because of the

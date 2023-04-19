@@ -163,24 +163,6 @@ class NaziWeapon : Weapon
 				}
 
 				oldbuttons = owner.player.cmd.buttons;
-
-				// If you're using the knife and there's a chance of a stealth kill, hide 
-				// the crosshair so that the status bar code can draw the overlay knife icon.
-				if (self is "KnifeSilent")
-				{
-					BoAPlayer p = BoAPlayer(owner);
-
-					if (
-						p && 
-						Nazi(p.crosshairtarget) && 
-						!Nazi(p.crosshairtarget).user_incombat &&
-						!(p.crosshairtarget is "WGuard_Wounded") && //this gave away wounded guards
-						p.Distance2D(p.crosshairtarget) < p.crosshairtarget.radius + 64.0
-					)
-					{
-						crosshair = 99;
-					}
-				}
 			}
 		}
 

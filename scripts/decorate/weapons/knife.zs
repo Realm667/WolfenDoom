@@ -70,6 +70,24 @@ class KnifeSilent : NaziWeapon
 		KNFG A 10;
 		Goto Ready;
 	}
+	
+	override void Tick()
+	{
+		if (owner && owner.player && owner.player.ReadyWeapon == self)
+		{
+			BoAPlayer p = BoAPlayer(owner);
+			if (
+				p && 
+				Nazi(p.crosshairtarget) && 
+				!Nazi(p.crosshairtarget).user_incombat &&
+				!(p.crosshairtarget is "WGuard_Wounded") && //this gave away wounded guards
+				p.Distance2D(p.crosshairtarget) < p.crosshairtarget.radius + 64.0)
+			{
+				crosshair = 99;
+			}
+		}
+		
+	}
 }
 
 class KnifePuff : ShovelPuff

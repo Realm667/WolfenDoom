@@ -1,7 +1,8 @@
 class CloudSpawner : EffectSpawner
 {
-	class<Actor> cloud;
-	double minspeed, maxspeed;
+	static const string cloudsprites[] = { "CLXGA0", "CLXGB0", "CLXTA0", "CLXTB0", "CLXDA0", "CLXDB0" };
+	double minspeed, maxspeed, s;
+	int i;
 
 	Default
 	{
@@ -45,50 +46,56 @@ class CloudSpawner : EffectSpawner
 	override void PostBeginPlay()
 	{
 		Super.PostBeginPlay();
-
-		String cloudtype = "Cloud";
-
+		s = 4.0;
 		Switch(args[3])
 		{
 			case 0:
-				cloudtype = "Small" .. cloudtype;
+				s = 1.0;
 				break;
 			case 1:
-				cloudtype = "Medium" .. cloudtype;
+				s = 2.0;
 				break;
 			default:
 			case 2:
-				cloudtype = "Large" .. cloudtype;
 				break;
 		}
 
-
+		i = 0;
 		Switch(args[4])
 		{
 			default:
-				cloudtype = cloudtype .. "Grey";
 				minspeed = 5.0;
 				maxspeed = 8.0;
 				break;
 			case 1:
-				cloudtype = cloudtype .. "Tan";
+				i = 1;
 				minspeed = 5.0;
 				maxspeed = 8.0;
 				break;
 			case 2:
-				cloudtype = cloudtype .. "Dark";
+				i = 2;
 				minspeed = 40.0;
 				maxspeed = 70.0;
 				break;
 		}
-
-		cloud = cloudtype;
 	}
 
 	override void SpawnEffect()
 	{
 		Super.SpawnEffect();
-
-		A_SpawnItemEx(cloud, random(Args[0]*2, -Args[0]*2), random(Args[0]*2, -Args[0]*2), random(0, Args[1]), frandom(minspeed, maxspeed), 0, 0, random(6, -6), SXF_CLIENTSIDE | SXF_TRANSFERSCALE | SXF_TRANSFERRENDERSTYLE | SXF_TRANSFERSTENCILCOL, Args[2]);
+		if (Random(0, 255) < Args[2]) { return; }
+		A_SpawnParticleEx(
+			/*color1*/ "FFFFFF",
+			/*texture*/ TexMan.CheckForTexture(cloudsprites[2 * i + Random(0, 1)]),
+			/*style*/ STYLE_Translucent,
+			/*flags*/ SPF_FULLBRIGHT | SPF_RELATIVE,
+			/*lifetime*/ 35000, // was infinite
+			/*size*/ 384 * s,
+			/*angle*/ frandom(-6, 6),
+			/*posoff*/ frandom(args[0]*2,-args[0]*2), frandom(args[0]*2,-args[0]*2), frandom(0, args[1]),
+			/*vel*/ frandom(minspeed, maxspeed), 0, 0,
+			/*acc*/ 0, 0, 0,
+			/*startalphaf*/ 0.5,
+			/*fadestepf*/ 0);
 	}
 }
