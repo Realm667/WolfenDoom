@@ -893,21 +893,19 @@ class UrinalNazi : ToiletNazi
 			"####" K 6 A_NaziPain(0, True);
 			"####" A 0 CheckSpawnReplacement(replacement, "See", 255);
 			Stop;
-		Death:
-			"####" A 0 {
-				Actor mo = CheckSpawnReplacement(replacement, "Death", 255);
-				if (mo)
-				{
-					mo.DamageMobj(target, target, mo.health - health, "Normal");
-				}
-			}
-			Stop;
 	}
 
 	override void PostBeginPlay()
 	{
 		// Skip the toilet-finding logic from the parent class
 		Actor.PostBeginPlay();
+	}
+	
+	override void Die(Actor source, Actor inflictor, int dmgflags, Name MeansOfDeath)
+	{
+		Actor mo = CheckSpawnReplacement(replacement, "Death", 255);
+		mo.Die(source, inflictor, dmgflags, MeansOfDeath);
+		//Super.Die(source, inflictor, dmgflags, MeansOfDeath);
 	}
 }
 

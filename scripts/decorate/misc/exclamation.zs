@@ -121,13 +121,6 @@ class ExclamationTextpaper : ExclamationTouchable
 		EXCL G -1;
 		Stop;
 	}
-
-	override void PostBeginPlay()
-	{
-		if (!master) { Destroy(); }
-
-		Super.PostBeginPlay();
-	}
 }
 
 class ExclamationHintpaper : ExclamationTouchable
@@ -155,13 +148,6 @@ class ExclamationHintpaper : ExclamationTouchable
 	TouchLoop:
 		EXCL I -1;
 		Stop;
-	}
-
-	override void PostBeginPlay()
-	{
-		if (!master) { Destroy(); }
-
-		Super.PostBeginPlay();
 	}
 }
 
