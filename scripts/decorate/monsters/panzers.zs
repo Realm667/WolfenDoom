@@ -420,8 +420,16 @@ class ZombieNuke : Nuke //for zombiekazi
 }
 
 //UFOs
-class UFONuke : Nuke
+class UFONuke : Actor
 {
+	Default
+	{
+	+NOBLOCKMAP
+	+NOGRAVITY
+	+NOINTERACTION
+	Radius 0;
+	Height 0;
+	}
 	States
 	{
 	Spawn:
@@ -437,10 +445,14 @@ class UFONuke : Nuke
 	}
 }
 
-class UFOFire : TankFire
+class UFOFire : UFONuke
 {
 	Default
 	{
+	RenderStyle "Add";
+	+BRIGHT
+	+DONTSPLASH
+	+EXPLODEONWATER
 	Scale 4.0;
 	}
 	States
@@ -458,12 +470,24 @@ class UFOFire : TankFire
 	}
 }
 
-class UFOFlare : TankFlare { Default { Scale 1.8; } }
+class UFOFlare : UFOFire
+{
+	Default { Scale 1.8; }
+	States
+	{
+	Spawn:
+		FLAR B 1 A_FadeOut(0.015);
+		Wait;
+	}
+}
 
-class UFONukeSmoke : NukeSmoke
+class UFONukeSmoke : UFONuke
 {
 	Default
 	{
+	+DONTSPLASH
+	+EXPLODEONWATER
+	Alpha 0.5;
 	Scale 3.7;
 	}
 	States
@@ -481,7 +505,7 @@ class UFONukeSmoke : NukeSmoke
 	}
 }
 
-class UFONukeFloor : Nuke
+class UFONukeFloor : UFONuke
 {
 	States
 	{
@@ -492,7 +516,7 @@ class UFONukeFloor : Nuke
 	}
 }
 
-class UFONukeSmokeFloor : Nuke
+class UFONukeSmokeFloor : UFONuke
 {
 	States
 	{
@@ -503,7 +527,7 @@ class UFONukeSmokeFloor : Nuke
 	}
 }
 
-class UFOPillar : Nuke
+class UFOPillar : UFONuke
 {
 	States
 	{
@@ -516,7 +540,7 @@ class UFOPillar : Nuke
 	}
 }
 
-class UFOSmokePillar : Nuke
+class UFOSmokePillar : UFONuke
 {
 	States
 	{
@@ -527,7 +551,7 @@ class UFOSmokePillar : Nuke
 	}
 }
 
-class UFOMushroom : Nuke
+class UFOMushroom : UFONuke
 {
 	States
 	{
@@ -538,7 +562,7 @@ class UFOMushroom : Nuke
 	}
 }
 
-class UFOSmokeMushroom : Nuke
+class UFOSmokeMushroom : UFONuke
 {
 	States
 	{
@@ -549,7 +573,7 @@ class UFOSmokeMushroom : Nuke
 	}
 }
 
-class UFOSmokeRing : Nuke
+class UFOSmokeRing : UFONuke
 {
 	int user_theta;
 	States
