@@ -552,8 +552,11 @@ class PlayerFollower : Actor // Default version - for actors like prisoner with 
 
 		vel = (0, 0, 0);
 
-		if (target && target is "GrenadeBase" && Distance3D(target) < GrenadeBase(target).feardistance) { return ResolveState("Chase"); }
-
+		if (target && target is "GrenadeBase" && Distance3D(target) < GrenadeBase(target).feardistance) {
+			if (nonmoving && allowinteraction > 1) { } //fixes lockup --N00b
+			else { return ResolveState("Chase"); }
+		}
+		
 		if (target == goal) { target = null; }
 
 		if (!target && playerToChase && CheckSight(playerToChase))
