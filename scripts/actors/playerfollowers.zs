@@ -568,7 +568,7 @@ class PlayerFollower : Actor // Default version - for actors like prisoner with 
 		}
 
 		if (target && target.health <= 0) { target = null; }
-		if (target && target.InStateSequence(target.CurState, target.ResolveState("Death.Surrender"))) { target = null; } //for surrendering enemies -- N00b
+		if (target && Nazi(target) && Nazi(target).surrendered) { target = null; } //for surrendering enemies -- N00b
 		if (target is "TankBase" && TankBase(target).treads) { target = TankBase(target).treads; }
 
 		enemycount = 0;
@@ -589,7 +589,8 @@ class PlayerFollower : Actor // Default version - for actors like prisoner with 
 				mo.bFriendly == bFriendly ||
 				mo.GetSpecies() == Species ||
 				Distance3d(mo) > targetrange ||
-				!CheckSight(mo)
+				!CheckSight(mo) ||
+				Nazi(mo) && Nazi(mo).surrendered
 			) { continue; }
 
 			if (Distance3d(mo) < 128.0 && mo is "Nazi") { enemycount += mo.bBoss ? 4 : 1; }
