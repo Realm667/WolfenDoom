@@ -6,6 +6,8 @@
 
 class SnowSpawner : EffectSpawner
 {
+	int particleLifetime;
+
 	Default
 	{
 		//$Category Special Effects (BoA)
@@ -47,20 +49,74 @@ class SnowSpawner : EffectSpawner
 		Super.PostBeginPlay();
 
 		if (!args[0]) { args[0] = 128; }
+
+		Sector mySector = Level.PointInSector(Pos.XY);
+		// The +SPAWNCEILING flag makes the snow spawner spawn in the ceiling
+		double floorHeight = mySector.NextLowestFloorAt(Pos.X, Pos.Y, Pos.Z);
+		double snowSpeed = 1.5; // Average with a bit more leeway
+		double heightDiff = Pos.Z - floorHeight;
+		particleLifetime = int(floor(heightDiff / snowSpeed)) + 70; // 2 extra seconds in case heightDiff / snowSpeed is not enough
+		// Let's see if this code is really necessary first
+		/* 
+		// Check around the snow particle spawn area for the lowest sector height
+		switch (args[2]) {
+			case 0: // Square
+			default:
+				for (int i = 0; i < 5; i++) {
+					for (int j = 0; j < 5; j++) {
+						//
+					}
+				}
+				break;
+			case 1: // Circle
+				//
+				break;
+		} */
 	}
 
 	override void SpawnEffect()
 	{
 		Super.SpawnEffect();
 
+		if (random(0, 255) < Args[1]) {
+			return;
+		}
+
 		double zoffset = 0;
 		if (manager) { zoffset = min(manager.particlez - pos.z, 0); }
 
-		if (args[2]) { A_SpawnItemEx("SnowParticle", random(-Args[0], Args[0]), 0, zoffset, frandom(-1.0, 1.0), frandom(-1.0, 1.0),frandom(-1.0, -3.0), random(0, 359), 0, Args[1]); }
-		else { A_SpawnItemEx("SnowParticle", random(-Args[0], Args[0]), random(-Args[0], Args[0]), zoffset, frandom(-1.0, 1.0), frandom(-1.0, 1.0), frandom(-1.0, -3.0), 0, 0, Args[1]); }
+		TextureID snowflake = TexMan.CheckForTexture("SNOWA0", TexMan.Type_Sprite);
+		double psize = 3.0; // Sprite width(?) * SnowParticle scale
+
+		if (Args[2]) {
+			A_SpawnParticleEx(
+				"FFFFFF", // color1
+				snowflake, // texture
+				STYLE_Normal, // style
+				SPF_RELATIVE, // flags
+				particleLifetime, // lifetime
+				psize, // size
+				random(0, 359), // angle
+				random(-Args[0], Args[0]), 0, zoffset, // xyz off
+				frandom(-1.0, 1.0), frandom(-1.0, 1.0), frandom(-1.0, -3.0) // xyz vel
+			);
+		} else {
+			A_SpawnParticleEx(
+				"FFFFFF", // color1
+				snowflake, // texture
+				STYLE_Normal, // style
+				SPF_RELATIVE, // flags
+				particleLifetime, // lifetime
+				psize, // size
+				0.0, // angle
+				random(-Args[0], Args[0]), random(-Args[0], Args[0]), zoffset, // xyz off
+				frandom(-1.0, 1.0), frandom(-1.0, 1.0), frandom(-1.0, -3.0) // xyz vel
+			);
+		}
 	}
 }
 
+// Kept for savegame compatibility - Talon1024 and Username-N00b-is-not-available
 class SnowParticle : ParticleBase
 {
 	Default
