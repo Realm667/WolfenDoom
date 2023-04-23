@@ -2643,7 +2643,13 @@ class Nazi : Base
 
 	override bool OkayToSwitchTarget(Actor other)
 	{
-		if (bFriendly == other.bFriendly && species == other.species .. "Tank") { return false; }
+		if (
+			(bFriendly == other.bFriendly && species == other.species .. "Tank")
+			// ToiletNazis are hostile on maps with sneakables if they aren't
+			// sneakable themselves, and sneakables are "friendly" if they
+			// haven't noticed you
+			|| (bFriendly && user_sneakable && other is "ToiletNazi" && !other.bFriendly && !Nazi(other).user_sneakable))
+				{ return false; }
 		
 		return Super.OkayToSwitchTarget(other);
 	}
