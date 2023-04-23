@@ -568,7 +568,6 @@ class PlayerFollower : Actor // Default version - for actors like prisoner with 
 		}
 
 		if (target && target.health <= 0) { target = null; }
-		if (target && Nazi(target) && Nazi(target).surrendered) { target = null; } //for surrendering enemies -- N00b
 		if (target is "TankBase" && TankBase(target).treads) { target = TankBase(target).treads; }
 
 		enemycount = 0;
@@ -590,7 +589,7 @@ class PlayerFollower : Actor // Default version - for actors like prisoner with 
 				mo.GetSpecies() == Species ||
 				Distance3d(mo) > targetrange ||
 				!CheckSight(mo) ||
-				Nazi(mo) && Nazi(mo).surrendered
+				(Nazi(mo) && Nazi(mo).surrendered)
 			) { continue; }
 
 			if (Distance3d(mo) < 128.0 && mo is "Nazi") { enemycount += mo.bBoss ? 4 : 1; }
@@ -626,6 +625,7 @@ class PlayerFollower : Actor // Default version - for actors like prisoner with 
 		{
 			LookForEnemies(true); // In no Nazis around, fall back to default algorithm to find an enemy to shoot at
 		}
+		if (target && Nazi(target) && Nazi(target).surrendered) { target = null; } //don't shoot surrendering enemies -- N00b
 
 		double targetdist = target ? Distance3d(target) : 0;
 		double playerdist = playerToChase ? Distance2d(playerToChase) : 0;
