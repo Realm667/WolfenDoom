@@ -97,8 +97,9 @@ class SnowSpawner : EffectSpawner
 				particleLifetime, // lifetime
 				psize, // size
 				random(0, 359), // angle
-				random(-Args[0], Args[0]), 0, zoffset, // xyz off
-				frandom(-1.0, 1.0), frandom(-1.0, 1.0), frandom(-1.0, -3.0) // xyz vel
+				random(-Args[0], Args[0]), 0, zoffset, // off xyz
+				frandom(-1.0, 1.0), frandom(-1.0, 1.0), frandom(-1.0, -3.0), // vel xyz
+				fadestepf: 0.0
 			);
 		} else {
 			A_SpawnParticleEx(
@@ -109,8 +110,9 @@ class SnowSpawner : EffectSpawner
 				particleLifetime, // lifetime
 				psize, // size
 				0.0, // angle
-				random(-Args[0], Args[0]), random(-Args[0], Args[0]), zoffset, // xyz off
-				frandom(-1.0, 1.0), frandom(-1.0, 1.0), frandom(-1.0, -3.0) // xyz vel
+				random(-Args[0], Args[0]), random(-Args[0], Args[0]), zoffset, // off xyz
+				frandom(-1.0, 1.0), frandom(-1.0, 1.0), frandom(-1.0, -3.0), // vel xyz
+				fadestepf: 0.0
 			);
 		}
 	}
