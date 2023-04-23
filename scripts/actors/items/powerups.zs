@@ -938,18 +938,27 @@ class InventoryHolder play
 			else if (boa_debugholdinventory) { Console.Printf("Unable to restore %s because it is null!", itemTypeNames[i]); }
 		}
 		// Restore armor
+		if (boa_debugholdinventory) {
+			Console.Printf("Attempting to restore armor (%d)", armor);
+		}
 		if (receiver.FindInventory("HexenArmor"))
 		{
 			HexenArmor armorobj = HexenArmor(receiver.FindInventory("HexenArmor"));
+			if (boa_debugholdinventory) {
+				Console.Printf("Hexen armor slots:");
+			}
 			for (int i = 0; i < 5; i++) {
 				armorobj.Slots[i] = hexenarmorslots[i];
+				if (boa_debugholdinventory) {
+					Console.Printf("%d: %.3f", i, hexenarmorslots[i]);
+				}
 			}
 			armorobj.Icon = TexMan.CheckForTexture(armorIcon);
 		}
-		else if (armor)
+		if (armor)
 		{
 			BasicArmor armorobj = BasicArmor(receiver.FindInventory("BasicArmor"));
-			if (!armorobj && !receiver.FindInventory("HexenArmor"))
+			if (!armorobj)
 			{
 				armorobj = BasicArmor(receiver.GiveInventoryType("BasicArmor"));
 			}
@@ -957,6 +966,9 @@ class InventoryHolder play
 			armorobj.MaxAmount = armorMax;
 			armorobj.SavePercent = savepercent;
 			armorobj.Icon = TexMan.CheckForTexture(armorIcon);
+			if (boa_debugholdinventory) {
+				Console.Printf("Basic armor: %d/%d (%.3f)", armor, armorMax, savepercent);
+			}
 		}
 		// Restore health amount
 		if (restoreHealth)
