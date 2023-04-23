@@ -63,3 +63,50 @@ class AshSpawner : EffectSpawner
 			rollvel: random(0, 1) ? 1 : -1);
 	}
 }
+
+// THE FOLLOWING CLASSES ARE UNUSED, only re-added them for savegame compatibility -- N00b
+
+class FloatingAshLight : ParticleBase
+{
+	Default
+	{
+		Radius 1;
+		Height 1;
+		Scale 0.15;
+		Gravity 1.0;
+		+MISSILE
+		+NOBLOCKMAP
+		-NOGRAVITY
+		RenderStyle "Shaded";
+		StencilColor "A0 A0 A0";
+		ReactionTime 250;
+	}
+
+	States
+	{
+		Spawn1:
+			ASHX ABCDEFGH 2 A_CountDown();
+			Loop;
+		Spawn2:
+			ASHX HGFEDCBA 2 A_CountDown();
+			Loop;
+		Death:
+			ASHX F 2 A_FadeOut(0.06);
+			Loop;
+	}
+
+	override void PostBeginPlay()
+	{
+		Super.PostBeginPlay();
+
+		gravity = FRandom(0.1, 0.3);
+		scale.x = scale.y = FRandom(0.09, 0.12);
+
+		if (Random(0, 1)) { SetStateLabel("Spawn1"); }
+		else { SetStateLabel("Spawn2"); }
+	}
+}
+
+class FloatingAshGrey : FloatingAshLight { Default { StencilColor "80 80 80"; } }
+class FloatingAshDarkGrey : FloatingAshLight { Default { StencilColor "60 60 60"; } }
+class FloatingAshDark : FloatingAshLight { Default { StencilColor "45 45 45"; } }

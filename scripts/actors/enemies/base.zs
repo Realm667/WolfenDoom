@@ -2085,7 +2085,6 @@ class Nazi : Base
 		if (bCountKill) { ClearCounters(); }
 		user_ForceWeaponDrop = true;
 		surrendered = true;
-		bNEVERTARGET = true;
 		health = 1;
 		vel *= 0;
 

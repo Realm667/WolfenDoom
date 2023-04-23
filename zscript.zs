@@ -193,6 +193,7 @@ version "4.7.1"
 #include "scripts/decorate/items/astrostein.zs"		//Secret Operation Episode 2
 
 //Special Effects
+#include "scripts/decorate/sfx/clouds.zs" // unused -- N00b
 #include "scripts/decorate/sfx/fog.zs"
 #include "scripts/decorate/sfx/glass.zs"
 #include "scripts/decorate/sfx/explosion.zs"

@@ -109,4 +109,47 @@ class CinderSpawnerSky : SnowSpawner
 	}
 }
 
-//Change "FloatingCinder"s in scripts/decorate/props/lights.zs
+// THE FOLLOWING CLASSES ARE UNUSED, only re-added them for savegame compatibility -- N00b
+
+class FloatingCinder : ParticleBase
+{
+	Default
+	{
+		DistanceCheck "boa_sfxlod";
+		Radius 0;
+		Height 0;
+		+DONTSPLASH
+		+FORCEXYBILLBOARD
+		+MISSILE
+		+NOBLOCKMAP
+		+NOGRAVITY
+		RenderStyle "Add";
+		Alpha 0.8;
+		Scale 0.04;
+	}
+
+	States
+	{
+		Spawn:
+			EMBR A 128 BRIGHT;
+		Death:
+			EMBR A 1 BRIGHT A_FadeOut(0.06, FTF_REMOVE);
+			Loop;
+	}
+
+	override void PostBeginPlay()
+	{
+		Super.PostBeginPlay();
+
+		scale.x = scale.y = FRandom(0.03, 0.06);
+		tics = 8 * (16 + Random(0, 8)); // Not quite what the previous A_Jump logic did, but similar
+	}
+}
+
+class FloatingCinder2 : FloatingCinder
+{
+	Default
+	{
+		+NOINTERACTION
+	}
+}

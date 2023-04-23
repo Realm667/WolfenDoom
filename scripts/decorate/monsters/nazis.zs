@@ -2040,7 +2040,7 @@ class ArcticSniper_Crouch : NaziStandard
 		Goto Look;
 	See:
 		SNSP D 0;
-		Goto See.Statisch;
+		Goto See.Sniper;
 	Pain:
 		SNSP N 6 A_NaziPain(256);
 		Goto See;
