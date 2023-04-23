@@ -799,8 +799,9 @@ class InventoryHolder play
 	Inventory holder;
 	
 	int armor;
+	int armorMax;
 	double savepercent;
-	TextureID armorIcon;
+	String armorIcon;
 	double hexenarmorslots[5];
 	int health;
 
@@ -877,25 +878,31 @@ class InventoryHolder play
 		itemTypeNames.Push(curItem.GetClassName());
 		int prevMaxAmount = curItem.MaxAmount;
 		int prevAmount = curItem.Amount;
-		curItem.BecomePickup();
-		curItem.MaxAmount = prevMaxAmount;
-		curItem.Amount = prevAmount;
-		curItem.A_ChangeLinkFlags(1, 1); // Prevent players from picking it up.
-		curItem.SetStateLabel("Held");
-		heldItems.Push(curItem);
 
 		// Save armor values
 		if (curItem.GetClass() == "BasicArmor")
 		{
 			armor = curItem.Amount;
-			armorIcon = curItem.Icon;
+			armorMax = curItem.MaxAmount;
+			armorIcon = TexMan.GetName(curItem.Icon);
 			savepercent = BasicArmor(curItem).SavePercent;
+			curItem.DepleteOrDestroy();
 		}
 		else if (curItem.GetClass() == "HexenArmor")
 		{
 			let h = HexenArmor(curItem);
-			armorIcon = curItem.Icon;
+			armorIcon = TexMan.GetName(curItem.Icon);
 			for (int s = 0; s < 5; s++) { hexenarmorslots[s] = h.slots[s]; }
+			curItem.DepleteOrDestroy();
+		}
+		else
+		{
+			curItem.BecomePickup();
+			curItem.MaxAmount = prevMaxAmount;
+			curItem.Amount = prevAmount;
+			curItem.A_ChangeLinkFlags(1, 1); // Prevent players from picking it up.
+			curItem.SetStateLabel("Held");
+			heldItems.Push(curItem);
 		}
 
 		if (boa_debugholdinventory) {
@@ -930,7 +937,27 @@ class InventoryHolder play
 			}
 			else if (boa_debugholdinventory) { Console.Printf("Unable to restore %s because it is null!", itemTypeNames[i]); }
 		}
-
+		// Restore armor
+		if (receiver.FindInventory("HexenArmor"))
+		{
+			HexenArmor armorobj = HexenArmor(receiver.FindInventory("HexenArmor"));
+			for (int i = 0; i < 5; i++) {
+				armorobj.Slots[i] = hexenarmorslots[i];
+			}
+			armorobj.Icon = TexMan.CheckForTexture(armorIcon);
+		}
+		else if (armor)
+		{
+			BasicArmor armorobj = BasicArmor(receiver.FindInventory("BasicArmor"));
+			if (!armorobj && !receiver.FindInventory("HexenArmor"))
+			{
+				armorobj = BasicArmor(receiver.GiveInventoryType("BasicArmor"));
+			}
+			armorobj.Amount = armor;
+			armorobj.MaxAmount = armorMax;
+			armorobj.SavePercent = savepercent;
+			armorobj.Icon = TexMan.CheckForTexture(armorIcon);
+		}
 		// Restore health amount
 		if (restoreHealth)
 		{
@@ -946,24 +973,25 @@ class InventoryHolder play
 		Inventory existing = receiver.FindInventory(item.GetClass());
 		if (existing)
 		{
-			if (existing is "BasicArmor")
+			// Armors are not "held" any more.
+			/* if (existing is "BasicArmor")
 			{
 				let a = BasicArmor(existing);
 				a.amount = armor;
 				a.SavePercent = savepercent;
-				a.Icon = armorIcon;
+				a.Icon = TexMan.CheckForTexture(armorIcon);
 			}
 			else if (existing is "HexenArmor")
 			{
 				let h = HexenArmor(existing);
 				for (int s = 0; s < 5; s++) { h.slots[s] = hexenarmorslots[s]; }
-				h.Icon = armorIcon;
+				h.Icon = TexMan.CheckForTexture(armorIcon);
 			}
 			else
-			{
+			{ */
 				existing.MaxAmount = item.MaxAmount;
 				existing.Amount = item.Amount;
-			}
+			/* } */
 		}
 		else
 		{
