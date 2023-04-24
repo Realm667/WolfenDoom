@@ -798,10 +798,9 @@ class InventoryHolder play
 	Actor owner;
 	Inventory holder;
 	
-	int armor;
-	int armorMax;
+	int armor, armorMax;
 	double savepercent;
-	String armorIcon;
+	String armorIcon, harmorIcon;
 	double hexenarmorslots[5];
 	int health;
 
@@ -886,13 +885,21 @@ class InventoryHolder play
 			armorMax = curItem.MaxAmount;
 			armorIcon = TexMan.GetName(curItem.Icon);
 			savepercent = BasicArmor(curItem).SavePercent;
+			if (boa_debugholdinventory)
+			{
+				Console.Printf("BasicArmor %d/%d (%.3f, icon %s)", armor, armorMax, savepercent, armorIcon);
+			}
 			curItem.DepleteOrDestroy();
 		}
 		else if (curItem.GetClass() == "HexenArmor")
 		{
 			let h = HexenArmor(curItem);
-			armorIcon = TexMan.GetName(curItem.Icon);
+			harmorIcon = TexMan.GetName(curItem.Icon);
 			for (int s = 0; s < 5; s++) { hexenarmorslots[s] = h.slots[s]; }
+			if (boa_debugholdinventory)
+			{
+				Console.Printf("HexenArmor (%.3f, %.3f, %.3f, %.3f, %.3f, icon %s)", h.slots[0], h.slots[1], h.slots[2], h.slots[3], h.slots[4], harmorIcon);
+			}
 			curItem.DepleteOrDestroy();
 		}
 		else
@@ -905,7 +912,8 @@ class InventoryHolder play
 			heldItems.Push(curItem);
 		}
 
-		if (boa_debugholdinventory) {
+		if (boa_debugholdinventory)
+		{
 			Console.Printf("%s (%d/%d) (%d/%d)", curItem.GetClassName(), curItem.Amount, curItem.MaxAmount, prevAmount, prevMaxAmount);
 		}
 	}
@@ -944,16 +952,16 @@ class InventoryHolder play
 		if (receiver.FindInventory("HexenArmor"))
 		{
 			HexenArmor armorobj = HexenArmor(receiver.FindInventory("HexenArmor"));
-			if (boa_debugholdinventory) {
-				Console.Printf("Hexen armor slots:");
+			if (boa_debugholdinventory)
+			{
+				Console.Printf("Hexen armor slots: %.3f, %.3f, %.3f, %.3f, %.3f", hexenarmorslots[0], hexenarmorslots[1], hexenarmorslots[2], hexenarmorslots[3], hexenarmorslots[4]);
+				Console.Printf("Icon: %s", harmorIcon);
 			}
-			for (int i = 0; i < 5; i++) {
+			for (int i = 0; i < 5; i++)
+			{
 				armorobj.Slots[i] = hexenarmorslots[i];
-				if (boa_debugholdinventory) {
-					Console.Printf("%d: %.3f", i, hexenarmorslots[i]);
-				}
 			}
-			armorobj.Icon = TexMan.CheckForTexture(armorIcon);
+			armorobj.Icon = TexMan.CheckForTexture(harmorIcon);
 		}
 		if (armor)
 		{
@@ -966,8 +974,9 @@ class InventoryHolder play
 			armorobj.MaxAmount = armorMax;
 			armorobj.SavePercent = savepercent;
 			armorobj.Icon = TexMan.CheckForTexture(armorIcon);
-			if (boa_debugholdinventory) {
-				Console.Printf("Basic armor: %d/%d (%.3f)", armor, armorMax, savepercent);
+			if (boa_debugholdinventory)
+			{
+				Console.Printf("Basic armor: %d/%d (%.3f, icon %s)", armor, armorMax, savepercent, armorIcon);
 			}
 		}
 		// Restore health amount
