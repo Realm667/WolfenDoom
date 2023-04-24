@@ -161,12 +161,17 @@ defaultmap
 
 	// Force SSAO being disabled in skyboxes
 	disableskyboxao
+
+	// Reduce the amount of data (and thus time) it takes to save your game
+	ForgetState
 }
 
 map INTERMAP lookup "INTERMAP"	//Tormentor667, MaxED & DoomJuan - Ed The Bat, Talon1024 & Ozy81 for minor edits
 {
 	levelnum = 99
 	cluster = 1
+	// The player returns to INTERMAP after every mission
+	RememberState
 }
 
 map TITLEMAP lookup "TITLEMAP" //MaxED & Tormentor667
