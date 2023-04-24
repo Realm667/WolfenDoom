@@ -949,7 +949,7 @@ class InventoryHolder play
 		if (boa_debugholdinventory) {
 			Console.Printf("Attempting to restore armor (%d)", armor);
 		}
-		if (receiver.FindInventory("HexenArmor"))
+		// HexenArmor
 		{
 			HexenArmor armorobj = HexenArmor(receiver.FindInventory("HexenArmor"));
 			if (boa_debugholdinventory)
@@ -963,7 +963,7 @@ class InventoryHolder play
 			}
 			armorobj.Icon = TexMan.CheckForTexture(harmorIcon);
 		}
-		if (armor)
+		// BasicArmor
 		{
 			BasicArmor armorobj = BasicArmor(receiver.FindInventory("BasicArmor"));
 			if (!armorobj)
