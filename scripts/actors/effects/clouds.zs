@@ -133,16 +133,16 @@ class CloudSpawner : EffectSpawner
 
 		double spawnAngle = Actor.deltaangle(angle, frandom(-6, 6));
 		Vector2 spawnPos = (frandom(args[0]*2,-args[0]*2), frandom(args[0]*2,-args[0]*2)); // relative
-		spawnPos = Pos.XY + Actor.RotateVector(spawnPos, spawnAngle); // absolute
+		spawnPos = Actor.RotateVector(spawnPos, spawnAngle); // relative
 		double spawnZ = frandom(0, args[1]);
-		Vector3 particlePos = (spawnPos, spawnZ);
+		Vector3 particlePos = Vec3Offset(spawnPos.X, spawnPos.Y, spawnZ); // absolute
 
 		double particleSpeed = frandom(minspeed, maxspeed);
 		Vector3 traceDirection;
 		traceDirection.XY = Actor.AngleToVector(spawnAngle, 1);
 		Vector3 particleVel = traceDirection * particleSpeed;
 
-		Sector spawnSector = Level.PointInSector(spawnPos);
+		Sector spawnSector = Level.PointInSector(particlePos.XY);
 		BoASolidSurfaceFinderTracer surfFinder = new("BoASolidSurfaceFinderTracer");
 		surfFinder.Trace(particlePos, spawnSector, traceDirection, 10000.0, TRACE_PortalRestrict | TRACE_HitSky, ignoreAllActors: true);
 		int lifetime = surfFinder.results.Distance / particleSpeed;
