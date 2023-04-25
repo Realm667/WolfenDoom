@@ -607,6 +607,21 @@ class ZScriptTools
 			level.StartIntermission('Automap_Hack', FSTATE_InLevel);
 		}
 	}
+	
+	play static void KillEverything(int x, int y, int z, int r = 65536, Name mod = "Falling") //for C3M5_C --N00b
+	{
+		BlockThingsIterator it = BlockThingsIterator.CreateFromPos(x, y, z, z, r, 0);
+		Actor mo;
+		while (it.Next())
+		{
+			mo = it.Thing;
+			if (mo && mo.bISMONSTER) { mo.DamageMobj(null, null, 0x7fffffff, "Massacre", DMG_FORCED|DMG_FOILINVUL); }
+			else if (mo && mo is "PlayerPawn")
+			{
+				for (int i = 0; i < 2; ++i) { mo.DamageMobj(null, null, 0x7fffffff, mod, DMG_FORCED|DMG_FOILINVUL); } // neutralize Totale Macht
+			}
+		}
+	}
 }
 
 // Separate class for this because it has to be a thinker, unfortunately.
