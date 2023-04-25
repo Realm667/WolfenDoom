@@ -2033,17 +2033,15 @@ class SecretUFO : SwitchableDecoration //3dRealms - no distancecheck for this
 		"####" A 15;
 		Loop;
 	Inactive:
-		MDLA A 0 A_StartSound("UFOEXPL", CHAN_AUTO, 0, 1.0, ATTN_NONE);
-		"####" A 0 A_NoBlocking;
-		"####" A 0 A_RemoveChildren(TRUE, RMVF_EVERYTHING);
-		"####" AAAAAAAAAAAAA 0 A_SpawnItemEx("Debris_Tank", random(-256, 256), random(-256, 256), random(16, -16), random(1, 3), random(1, 3), random(1, 3), random(0, 360), SXF_CLIENTSIDE);
-		"####" AAAAAAAAAAAAA 0 A_SpawnItemEx("Debris_MetalJunk", random(-256, 256), random(-256, 256), random(16, -16), random(1, 3), random(1, 3), random(1, 3), random(0, 360), SXF_CLIENTSIDE);
-		"####" AAAAAAAAAAAAA 0 A_SpawnItemEx("Debris_Metal1", random(-256, 256), random(-256, 256), random(16, -16), random(1, 3), random(1, 3), random(1, 3), random(0, 360), SXF_CLIENTSIDE);
-		"####" AAAAAAAAAAAAA 0 A_SpawnItemEx("Debris_Metal2", random(-256, 256), random(-256, 256), random(16, -16), random(1, 3), random(1, 3), random(1, 3), random(0, 360), SXF_CLIENTSIDE);
-		"####" AAAAAAAAAAAAA 0 A_SpawnItemEx("Debris_Metal3", random(-256, 256), random(-256, 256), random(16, -16), random(1, 3), random(1, 3), random(1, 3), random(0, 360), SXF_CLIENTSIDE);
-		"####" AAAAAAAAAAAAA 0 A_SpawnItemEx("Debris_GlassShard_Large", random(64, 256), random(64, 256), random(16, -16), random(1, 3), random(1, 3), random(1, 3), random(0, 360), SXF_CLIENTSIDE);
-		"####" A 0 A_SpawnItemEx("UFONuke", 0, 0, 0, 0, 0, 0, 0, SXF_TRANSFERPOINTERS|SXF_NOCHECKPOSITION);
-		"####" A 0 A_SpawnItemEx("UFOSmokePillar", 0, 0, 0, 0, 0, 0, 0, SXF_TRANSFERPOINTERS);
+		MDLA A 0 { A_StartSound("UFOEXPL", CHAN_AUTO, 0, 1.0, ATTN_NONE); A_NoBlocking(); A_RemoveChildren(TRUE, RMVF_EVERYTHING); A_SetScale(2.0); }
+		"####" AAAAAAAAAAAAA 0 A_SpawnItemEx("Debris_Mecha3", random(-256, 256), random(-256, 256), random(16, -16), random(1, 3), random(1, 3), random(-20, 3), random(0, 360), SXF_CLIENTSIDE | SXF_TRANSFERSCALE);
+		"####" AAAAAAAAAAAAA 0 A_SpawnItemEx("Debris_Mecha4", random(-256, 256), random(-256, 256), random(16, -16), random(1, 3), random(1, 3), random(-20, 3), random(0, 360), SXF_CLIENTSIDE | SXF_TRANSFERSCALE);
+		"####" AAAAAAAAAAAAA 0 A_SpawnItemEx("Debris_AstroSuite", random(-256, 256), random(-256, 256), random(16, -16), random(1, 3), random(1, 3), random(-20, 3), random(0, 360), SXF_CLIENTSIDE | SXF_TRANSFERSCALE);
+		"####" AAAAAAAAAAAAA 0 A_SpawnItemEx("Debris_AstroRobot", random(-256, 256), random(-256, 256), random(16, -16), random(1, 3), random(1, 3), random(-20, 3), random(0, 360), SXF_CLIENTSIDE | SXF_TRANSFERSCALE);
+		"####" A 0 A_SetScale(5.0);
+		"####" AAAAAAAAAAAAA 0 A_SpawnItemEx("Debris_MetalJunk", random(64, 256), random(64, 256), random(16, -16), random(1, 3), random(1, 3), random(-20, 3), random(0, 360), SXF_CLIENTSIDE | SXF_TRANSFERSCALE);
+		"####" AAAAAAAAAAAAA 0 A_SpawnItemEx("Debris_Metal2", random(64, 256), random(64, 256), random(16, -16), random(1, 3), random(1, 3), random(-20, 3), random(0, 360), SXF_CLIENTSIDE | SXF_TRANSFERSCALE);
+		"####" A 0 { A_SetScale(1.0); A_SpawnItemEx("UFONuke", 0, 0, 0, 0, 0, 0, 0, SXF_TRANSFERPOINTERS|SXF_NOCHECKPOSITION); A_SpawnItemEx("UFOSmokePillar", 0, 0, 0, 0, 0, 0, 0, SXF_TRANSFERPOINTERS); }
 		"####" A 1 A_SpawnItemEx("UFOSmokePillar", 0, 0, -512, 0, 0, 0, 0, SXF_TRANSFERPOINTERS);
 		"####" A 10;
 		"####" A 1 A_FadeOut(0.0001);
