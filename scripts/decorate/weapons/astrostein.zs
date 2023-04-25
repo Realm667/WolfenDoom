@@ -178,7 +178,7 @@ class AstroShotgunShell : Ammo
 	override String PickupMessage()
 	{
 		String msg = StringTable.Localize(Super.PickupMessage());
-		msg.Replace("%a", String.Format("%i", amount));
+		msg.Replace("%a", String.Format("%i", amount * G_SkillPropertyFloat(SKILLP_AmmoFactor) * sv_ammofactor));
 
 		return msg;
 	}
@@ -338,7 +338,7 @@ class AstroRocketAmmo : Ammo
 	override String PickupMessage()
 	{
 		String msg = StringTable.Localize(Super.PickupMessage());
-		msg.Replace("%a", String.Format("%i", amount));
+		msg.Replace("%a", String.Format("%i", amount * G_SkillPropertyFloat(SKILLP_AmmoFactor) * sv_ammofactor));
 
 		return msg;
 	}
@@ -493,7 +493,7 @@ class AstroClipAmmo : Ammo
 	override String PickupMessage()
 	{
 		String msg = StringTable.Localize(Super.PickupMessage());
-		msg.Replace("%a", String.Format("%i", amount));
+		msg.Replace("%a", String.Format("%i", amount * G_SkillPropertyFloat(SKILLP_AmmoFactor) * sv_ammofactor));
 
 		return msg;
 	}
@@ -536,7 +536,7 @@ class AstrosteinMelee : NaziAstroWeapon
 		REZG CD 4 A_WeaponReady;
 		Loop;
 	Fire:
-		REZG AB 3 A_Saw("weapons/rezfull","weapons/rezhit",2,"ElektroshockerPuff");
+		REZG AAABBB 1 { if (frandom(0.0, 1.0) < 0.667) { A_Saw("weapons/rezfull","weapons/rezhit",1,"ElektroshockerPuff"); } }
 		REZG B 0 A_ReFire;
 		Goto Ready;
 	Spawn:

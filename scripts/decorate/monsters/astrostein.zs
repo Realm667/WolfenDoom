@@ -32,6 +32,7 @@ class AstroRobotSeekerBall : AstroDroneBall
 	Radius 12;
 	Height 16;
 	Speed 7;
+	FastSpeed 9;
 	MaxTargetRange 128;
 	Scale 1.2;
 	+SEEKERMISSILE
@@ -372,7 +373,7 @@ class AstroSuiteGuard : AstroGuard
 	Speed 2;
 	Scale 0.70;
 	Health 200;
-	Painchance 16;
+	Painchance 32;
 	+LOOKALLAROUND
 	+NOBLOOD
 	}
@@ -407,12 +408,12 @@ class AstroSuiteGuard : AstroGuard
 			"####" A 0 { return ResolveState("See"); }
 		Missile:
 		Missile.Aimed:
-			"####" EF 5 A_FaceTarget;
+			"####" EF 6 A_FaceTarget;
 			"####" F 0 A_StartSound("astrochaingun/fire");
 			"####" G 0 A_SpawnProjectile("EnemyAstroTracer",48,-10,random(-8,4));
 			"####" G 0 A_SpawnProjectile("EnemyAstroTracer",40,-10,random(-8,4));
 			"####" G 0 A_SpawnProjectile("EnemyAstroTracer",40,10,random(4,-8));
-			"####" G 8 LIGHT("ASTROFIRE") A_SpawnProjectile("EnemyAstroTracer",48,10,random(4,-8));
+			"####" G 6 LIGHT("ASTROFIRE") A_SpawnProjectile("EnemyAstroTracer",48,10,random(4,-8));
 			"####" E 8 A_Jump(256,"See");
 			Stop;
 		Pain:
@@ -804,7 +805,7 @@ class AstroUrsel : AstroCyborg1
 		Speed 5;
 		Scale 0.70;
 		Health 1500;
-		Painchance 16;
+		Painchance 32;
 		Obituary "$AURSEL";
 		SeeSound "BossGirl/Sighted";
 		PainSound "BossGirl/Pain";

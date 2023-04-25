@@ -46,7 +46,7 @@ class Ammo9mm : Ammo
 	override String PickupMessage()
 	{
 		String msg = StringTable.Localize(Super.PickupMessage());
-		msg.Replace("%a", String.Format("%i", amount));
+		msg.Replace("%a", String.Format("%i", amount * G_SkillPropertyFloat(SKILLP_AmmoFactor) * sv_ammofactor));
 
 		return msg;
 	}
@@ -95,7 +95,7 @@ class Ammo12Gauge : Ammo
 	override String PickupMessage()
 	{
 		String msg = StringTable.Localize(Super.PickupMessage());
-		msg.Replace("%a", String.Format("%i", amount));
+		msg.Replace("%a", String.Format("%i", amount * G_SkillPropertyFloat(SKILLP_AmmoFactor) * sv_ammofactor));
 
 		return msg;
 	}
@@ -146,7 +146,7 @@ class MauserAmmo : Ammo
 	override String PickupMessage()
 	{
 		String msg = StringTable.Localize(Super.PickupMessage());
-		msg.Replace("%a", String.Format("%i", amount));
+		msg.Replace("%a", String.Format("%i", amount * G_SkillPropertyFloat(SKILLP_AmmoFactor) * sv_ammofactor));
 
 		return msg;
 	}
@@ -197,7 +197,7 @@ class FlameAmmo : Ammo
 	override String PickupMessage()
 	{
 		String msg = StringTable.Localize(Super.PickupMessage());
-		msg.Replace("%a", String.Format("%i", amount));
+		msg.Replace("%a", String.Format("%i", amount * G_SkillPropertyFloat(SKILLP_AmmoFactor) * sv_ammofactor));
 
 		return msg;
 	}
@@ -229,7 +229,7 @@ class NebAmmo : Ammo
 	override String PickupMessage()
 	{
 		String msg = StringTable.Localize(Super.PickupMessage());
-		msg.Replace("%a", String.Format("%i", amount));
+		msg.Replace("%a", String.Format("%i", amount * G_SkillPropertyFloat(SKILLP_AmmoFactor) * sv_ammofactor));
 
 		return msg;
 	}
@@ -302,7 +302,7 @@ class TeslaCell : Ammo
 	override String PickupMessage()
 	{
 		String msg = StringTable.Localize(Super.PickupMessage());
-		msg.Replace("%a", String.Format("%i", amount));
+		msg.Replace("%a", String.Format("%i", amount * G_SkillPropertyFloat(SKILLP_AmmoFactor) * sv_ammofactor));
 
 		return msg;
 	}
