@@ -1,3 +1,47 @@
+// Copied from nemesis.zs, only to make one little tweak.
+class BoASolidSurfaceFinderTracer : LineTracer
+{
+	// Set by the callback
+	bool hitWall;
+
+	override ETraceStatus TraceCallback()
+	{
+		if (Results.HitType == TRACE_HitFloor || Results.HitType == TRACE_HitCeiling)
+		{
+			hitWall = true;
+			return TRACE_Stop;
+		}
+		else if (Results.HitType == TRACE_HitWall)
+		{
+			// Walls need further examination
+			if (Results.Tier != TIER_Middle)
+			{
+				hitWall = true;
+				return TRACE_Stop;
+			}
+			else
+			{
+				if (!(Results.HitLine.flags & Line.ML_TWOSIDED))
+				{
+					// Not a two-sided wall
+					hitWall = true;
+					return TRACE_Stop;
+				}
+				else
+				{
+					// Two-sided wall
+					if (Results.HitLine.flags & Line.ML_BLOCKEVERYTHING)
+					{
+						hitWall = true;
+						return TRACE_Stop;
+					}
+				}
+			}
+		}
+		return TRACE_Skip;
+	}
+}
+
 class CloudSpawner : EffectSpawner
 {
 	static const string cloudsprites[] = { "CLXGA0", "CLXGB0", "CLXTA0", "CLXTB0", "CLXDA0", "CLXDB0" };
@@ -45,7 +89,6 @@ class CloudSpawner : EffectSpawner
 
 	override void PostBeginPlay()
 	{
-		Super.PostBeginPlay();
 		s = 4.0;
 		Switch(args[3])
 		{
@@ -78,24 +121,48 @@ class CloudSpawner : EffectSpawner
 				maxspeed = 70.0;
 				break;
 		}
+		Super.PostBeginPlay();
 	}
 
 	override void SpawnEffect()
 	{
 		Super.SpawnEffect();
 		if (Random(0, 255) < Args[2]) { return; }
-		A_SpawnParticleEx(
-			/*color1*/ "FFFFFF",
-			/*texture*/ TexMan.CheckForTexture(cloudsprites[2 * i + Random(0, 1)]),
-			/*style*/ STYLE_Translucent,
-			/*flags*/ SPF_FULLBRIGHT | SPF_RELATIVE,
-			/*lifetime*/ 35000, // was infinite
-			/*size*/ 384 * s,
-			/*angle*/ frandom(-6, 6),
-			/*posoff*/ frandom(args[0]*2,-args[0]*2), frandom(args[0]*2,-args[0]*2), frandom(0, args[1]),
-			/*vel*/ frandom(minspeed, maxspeed), 0, 0,
-			/*acc*/ 0, 0, 0,
-			/*startalphaf*/ 0.5,
-			/*fadestepf*/ 0);
+
+		TextureID cloud = TexMan.CheckForTexture(cloudsprites[2 * i + Random(0, 1)]);
+
+		double spawnAngle = Actor.deltaangle(angle, frandom(-6, 6));
+		Vector2 spawnPos = (frandom(args[0]*2,-args[0]*2), frandom(args[0]*2,-args[0]*2)); // relative
+		spawnPos = Pos.XY + Actor.RotateVector(spawnPos, spawnAngle); // absolute
+		double spawnZ = frandom(0, args[1]);
+		Vector3 particlePos = (spawnPos, spawnZ);
+
+		double particleSpeed = frandom(minspeed, maxspeed);
+		Vector3 traceDirection;
+		traceDirection.XY = Actor.AngleToVector(spawnAngle, 1);
+		Vector3 particleVel = traceDirection * particleSpeed;
+
+		Sector spawnSector = Level.PointInSector(spawnPos);
+		BoASolidSurfaceFinderTracer surfFinder = new("BoASolidSurfaceFinderTracer");
+		surfFinder.Trace(particlePos, spawnSector, traceDirection, 10000.0, TRACE_PortalRestrict | TRACE_HitSky, ignoreAllActors: true);
+		int lifetime = surfFinder.results.Distance / particleSpeed;
+
+		FSpawnParticleParams particleInfo;
+		particleInfo.color1 = "FFFFFF";
+		particleInfo.texture = cloud;
+		particleInfo.style = STYLE_Translucent;
+		particleInfo.flags = SPF_FULLBRIGHT;
+		particleInfo.lifetime = lifetime;
+
+		particleInfo.size = 384 * s;
+
+		particleInfo.pos = particlePos;
+		particleInfo.vel = particleVel;
+		particleInfo.accel = (0., 0., 0.);
+
+		particleInfo.startalpha = 0.5;
+
+		Level.SpawnParticle(particleInfo);
 	}
 }
+
