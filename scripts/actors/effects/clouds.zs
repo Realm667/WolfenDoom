@@ -151,7 +151,7 @@ class CloudSpawner : EffectSpawner
 		particleInfo.color1 = "FFFFFF";
 		particleInfo.texture = cloud;
 		particleInfo.style = STYLE_Translucent;
-		particleInfo.flags = SPF_FULLBRIGHT;
+		particleInfo.flags = SPF_FULLBRIGHT | SPF_ROLL;
 		particleInfo.lifetime = lifetime;
 
 		particleInfo.size = 384 * s;
@@ -161,6 +161,8 @@ class CloudSpawner : EffectSpawner
 		particleInfo.accel = (0., 0., 0.);
 
 		particleInfo.startalpha = 0.5;
+
+		particleInfo.rollvel = frandom(1.3, 2.0);
 
 		Level.SpawnParticle(particleInfo);
 	}
