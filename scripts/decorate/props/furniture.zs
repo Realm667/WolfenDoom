@@ -135,7 +135,7 @@ class Table7: SceneryBase
 		MDLA A 0 NODELAY A_SpawnItemEx("WineBottle", random(-8, -3), random(-8, 8), 27, 0, 0, 0, 0, 0, 128, tid);
 		"####" A 0 A_SpawnItemEx("WineBottle", random(3, 8), random(-8, 8), 27, 0, 0, 0, 0, 0, 128, tid);
 		"####" A 0 A_SpawnItemEx("WineGlass", random(8, 16), random(-16, -8), 27, 0, 0, 0, 0, 0, 128, tid);
-		"####" A 0 A_SpawnItemEx("StackedMeal", random(-16, -18), random(-16, -18), 24, 0, 0, 0, 0, 0, 128, tid);
+		"####" A 0 A_SpawnItemEx("StackedMeal", random(-16, -18), random(-16, -18), 27, 0, 0, 0, 0, 0, 128, tid);
 		"####" A 0 A_SpawnItemEx("WineGlass", random(-16, -8), random(8, 16), 27, 0, 0, 0, 0, 0, 128, tid);
 		"####" A 0 A_SpawnItemEx("WineGlass", random(8, 16), random(8, 16), 27, 0, 0, 0, 0, 0, 128, tid);
 		"####" A -1;
