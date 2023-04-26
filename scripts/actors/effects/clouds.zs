@@ -131,7 +131,7 @@ class CloudSpawner : EffectSpawner
 
 		TextureID cloud = TexMan.CheckForTexture(cloudsprites[2 * i + Random(0, 1)]);
 
-		double spawnAngle = Actor.deltaangle(angle, frandom(-6, 6));
+		double spawnAngle = Actor.deltaangle(-angle, frandom(-6, 6));
 		Vector2 spawnPos = (frandom(args[0]*2,-args[0]*2), frandom(args[0]*2,-args[0]*2)); // relative
 		spawnPos = Actor.RotateVector(spawnPos, spawnAngle); // relative
 		double spawnZ = frandom(0, args[1]);
