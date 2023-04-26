@@ -103,11 +103,18 @@ class SteamSpawner : EffectSpawner
 	{
 		Super.SpawnEffect();
 
+		// This shadows the field defined on line 31
+		TextureID particle = TexMan.CheckForTexture("STEMA0");
+		int lifetime = 33;
+		double size = 20.48; // (512 * 0.65)
+		double startalpha = 0.65;
+		double fadestep = 0.02; // (0.04 / 2)
+		double sizestep = 3.328; // (0.013 / 2. * 512.)
+		double rollvel = 2.5; // (boashaders.txt:L1993)
+
 		if ((!args[1] || Random(0, 255) < freq))
 		{
 			if (args[1] && !args[3]) { A_StartSound(snd, 10, sndflags, 1.0); } // Each burst plays a sound on spawn
-
-			Actor mo;
 
 			if (args[0] < 3) // Original directional spawns
 			{
@@ -115,25 +122,61 @@ class SteamSpawner : EffectSpawner
 				velz = args[0] < 2 ? (args[0] == 1 ? -1 : 1) * 0.1 * Random(35, 40) : 0.1 * Random(-5, 5);
 				ang = args[0] < 2 ? Random(0, 360) : Random(-8, 8);
 
-				bool sp;
-				[sp, mo] = A_SpawnItemEx(particle, 0, 0, zoffset, velx, 0, velz, ang, 128);
+				// bool sp;
+				// [sp, mo] = A_SpawnItemEx(particle, 0, 0, zoffset, velx, 0, velz, ang, SXF_CLIENTSIDE);
+				A_SpawnParticleEx(
+					"FFFFFF", // color1
+					particle, // texture
+					STYLE_Translucent, // style
+					SPF_RELATIVE | SPF_ROLL, // flags
+					lifetime, // lifetime
+					size, // size (512 * 0.65)
+					ang, // angle
+					0, 0, zoffset, // xyz off
+					velx, 0, velz, // vel xyz
+					0, 0, 0, // accel xyz
+					startalpha, // startalphaf
+					fadestep, // fadestepf (0.04 / 2.)
+					sizestep, // sizestep (0.013 / 2. * 512)
+					frandom(0., 360.), // startroll
+					rollvel, // rollvel (boashaders.txt:L1993)
+					0.0 // rollacc
+				);
 			}
 			else
 			{
-				mo = Spawn(particle);
+				/* Actor mo = Spawn(particle);
 				if (mo)
 				{
 					mo.alpha *= scale.x;
 					mo.SetOrigin(pos + (FRandom(-2, 2), FRandom(-2, 2), FRandom(-2, 2)), false);
 					mo.Vel3DFromAngle(0.1 * Random(35, 40) * scale.x, angle, pitch);
-				}
+				} */
+				Vector3 vel = ZScriptTools.GetTraceDirection(angle, pitch) * (0.1 * Random(35, 40) * scale.x);
+				A_SpawnParticleEx(
+					"FFFFFF", // color1
+					particle, // texture
+					STYLE_Translucent, // style
+					SPF_RELPOS | SPF_ROLL, // flags
+					lifetime, // lifetime
+					size, // size (512 * 0.65)
+					0.0, // angle
+					FRandom(-2, 2), FRandom(-2, 2), FRandom(-2, 2), // xyz off
+					vel.x, vel.y, vel.z, // vel xyz
+					0, 0, 0, // accel xyz
+					startalpha, // startalphaf
+					fadestep, // fadestepf (0.04 / 2.)
+					sizestep, // sizestep (0.013 / 2. * 512)
+					frandom(0., 360.), // startroll
+					rollvel, // rollvel (boashaders.txt:L1993)
+					0.0 // rollacc
+				);
 			}
-
-			if (mo && mo.bMissile && mo.Damage) { mo.ChangeStatNum(Thinker.STAT_DEFAULT - 6); } // Let damaging steam actors be seen by the grenade avoidance code
 		}
 	}
 }
 
+// Kept for savegame compatibility - Talon1024 and N00b
 class SteamParticle : ParticleBase
 {
 	Default
@@ -176,6 +219,40 @@ class ZyklonBSteamSpawner : SteamSpawner
 		//$Title Zyklon B Steam Spawner
 		//$Sprite ZTEMA0
 		SteamSpawner.Particle "ZyklonBSteamParticle";
+	}
+
+	override void SpawnEffect()
+	{
+		EffectSpawner.SpawnEffect();
+
+		if ((!args[1] || Random(0, 255) < freq))
+		{
+			if (args[1] && !args[3]) { A_StartSound(snd, 10, sndflags, 1.0); } // Each burst plays a sound on spawn
+
+			Actor mo;
+
+			if (args[0] < 3) // Original directional spawns
+			{
+				velx = args[0] < 2 ? 0.1 * Random(0, 4) : 0.1 * Random(35, 40);
+				velz = args[0] < 2 ? (args[0] == 1 ? -1 : 1) * 0.1 * Random(35, 40) : 0.1 * Random(-5, 5);
+				ang = args[0] < 2 ? Random(0, 360) : Random(-8, 8);
+
+				bool sp;
+				[sp, mo] = A_SpawnItemEx(particle, 0, 0, zoffset, velx, 0, velz, ang, 128);
+			}
+			else
+			{
+				mo = Spawn(particle);
+				if (mo)
+				{
+					mo.alpha *= scale.x;
+					mo.SetOrigin(pos + (FRandom(-2, 2), FRandom(-2, 2), FRandom(-2, 2)), false);
+					mo.Vel3DFromAngle(0.1 * Random(35, 40) * scale.x, angle, pitch);
+				}
+			}
+
+			if (mo && mo.bMissile && mo.Damage) { mo.ChangeStatNum(Thinker.STAT_DEFAULT - 6); } // Let damaging steam actors be seen by the grenade avoidance code
+		}
 	}
 }
 
