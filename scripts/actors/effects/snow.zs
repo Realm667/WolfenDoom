@@ -94,7 +94,7 @@ class SnowSpawner : EffectSpawner
 		A_SpawnParticleEx(
 			"FFFFFF", // color1
 			snowflake, // texture
-			STYLE_Normal, // style
+			STYLE_Add, // style
 			SPF_RELATIVE, // flags
 			particleLifetime, // lifetime
 			psize, // size
