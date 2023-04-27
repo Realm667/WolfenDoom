@@ -70,8 +70,8 @@ class SnowSpawner : EffectSpawner
 		// Calculate absolute spawn position
 		double angle = Args[2] ? random(0, 359) : 0.0;
 		Vector3 spawnPos = Args[2] ?
-			Vec3Angle(xoffset, angle, zoffset, true) :
-			Vec3Offset(xoffset, yoffset, zoffset, true);
+			Vec3Angle(xoffset, angle, zoffset) :
+			Vec3Offset(xoffset, yoffset, zoffset);
 
 		// Calculate lifetime based on distance to floor
 		Sector mySector = Level.PointInSector(spawnPos.XY);
@@ -83,7 +83,7 @@ class SnowSpawner : EffectSpawner
 		FSpawnParticleParams particleInfo;
 		particleInfo.color1 = "FFFFFF";
 		particleInfo.texture = snowflake;
-		particleInfo.style = STYLE_Normal;
+		particleInfo.style = STYLE_Add;
 		particleInfo.flags = 0;
 		particleInfo.lifetime = lifetime;
 		particleInfo.size = psize;
