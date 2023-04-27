@@ -32,7 +32,29 @@ class StarParticle_Spawner : EffectSpawner
 	{
 		Super.SpawnEffect();
 
-		A_SpawnItemEx("StarParticle", random(0,128), 0, random(0,128), 0, random(2,8), 0, 0, SXF_CLIENTSIDE, 64);
+		if (random(0, 255) < 64) { return; } // Emulate failchance
+
+		TextureID star = TexMan.CheckForTexture("EMB5I0");
+
+		A_SpawnParticleEx(
+			"FFFFFF", // color1
+			star, // texture
+			STYLE_Add, // style
+			SPF_RELATIVE, // flags
+			150, // lifetime
+			1, // size
+			0, // angle
+			random(0, 128), // xoff
+			0, // yoff
+			random(0, 128), // zoff
+			0, // velx
+			random(2, 8), // vely
+			0, // velz
+			startalphaf: 1.0,
+			fadestepf: 0.0
+		);
+
+		// A_SpawnItemEx("StarParticle", random(0,128), 0, random(0,128), 0, random(2,8), 0, 0, SXF_CLIENTSIDE, 64);
 	}
 }
 
@@ -47,7 +69,29 @@ class StarParticle_Spawner2 : StarParticle_Spawner
 	{
 		EffectSpawner.SpawnEffect();
 
-		A_SpawnItemEx("StarParticle", random(0,128), random(0,128), 0, 0, random(2,8), -5, 0, SXF_CLIENTSIDE, 64);
+		if (random(0, 255) < 64) { return; } // Emulate failchance
+
+		TextureID star = TexMan.CheckForTexture("EMB5I0");
+
+		A_SpawnParticleEx(
+			"FFFFFF", // color1
+			star, // texture
+			STYLE_Add, // style
+			SPF_RELATIVE, // flags
+			150, // lifetime
+			1, // size
+			0, // angle
+			random(0, 128), // xoff
+			random(0, 128), // yoff
+			0, // zoff
+			0, // velx
+			random(2, 8), // vely
+			-5, // velz
+			startalphaf: 1.0,
+			fadestepf: 0.0
+		);
+
+		// A_SpawnItemEx("StarParticle", random(0,128), random(0,128), 0, 0, random(2,8), -5, 0, SXF_CLIENTSIDE, 64);
 	}
 }
 
@@ -62,10 +106,33 @@ class StarParticle_SpawnerFast : StarParticle_Spawner
 	{
 		EffectSpawner.SpawnEffect();
 
-		A_SpawnItemEx("StarParticle", random(0,128), 0, random(0,128), 0, random(20,30), 0, 0, SXF_CLIENTSIDE, 64);
+		if (random(0, 255) < 64) { return; } // Emulate failchance
+
+		TextureID star = TexMan.CheckForTexture("EMB5I0");
+
+		A_SpawnParticleEx(
+			"FFFFFF", // color1
+			star, // texture
+			STYLE_Add, // style
+			SPF_RELATIVE, // flags
+			150, // lifetime
+			1, // size
+			0, // angle
+			random(0, 128), // xoff
+			0, // yoff
+			random(0, 128), // zoff
+			0, // velx
+			random(20, 30), // vely
+			0, // velz
+			startalphaf: 1.0,
+			fadestepf: 0.0
+		);
+
+		// A_SpawnItemEx("StarParticle", random(0,128), 0, random(0,128), 0, random(20,30), 0, 0, SXF_CLIENTSIDE, 64);
 	}
 }
 
+// Kept for savegame compatibility - Talon1024 and N00b
 class StarParticle : ParticleBase
 {
 	Default
