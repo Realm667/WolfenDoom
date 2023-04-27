@@ -723,6 +723,43 @@ class DarkSmokeSpawner : EffectSpawner
 	{
 		Super.SpawnEffect();
 
-		A_SpawnItemEx("DarkSmoke" .. min(3, args[0] + 1));
+		// A_SpawnItemEx("DarkSmoke" .. min(3, args[0] + 1));
+
+		int variant = clamp(args[0], 0, 2);
+		TextureID smoke = TexMan.CheckForTexture(String.Format("DKS%cA0", RandomPick(77, 50))); // M or 2
+
+		// Calculate size
+		static const double sizes[] = { 0.3, 0.6, 1.0 };
+		double size = sizes[variant] * 384.;
+
+		// Calculate Z vel
+		static const double velzmin[] = { .75, 1.25, 2.25 }; // (3, 5, 9) / 4
+		static const double velzmax[] = { 1.5, 2.25, 3.75 }; // (6, 9, 15) / 4
+		double velz = frandom(velzmin[variant], velzmax[variant]);
+
+		// Calculate args for Thrust(speed, angle)
+		static const double speedmin[] = { 1, 1, 2 };
+		static const double speedmax[] = { 1, 2, 4 };
+		double speed = frandom(speedmin[variant], speedmax[variant]);
+		double angle = frandom(0, 22.5);
+		double velx = cos(angle) * speed;
+		double vely = sin(angle) * speed;
+
+		A_SpawnParticleEx(
+			"FFFFFF", // color1
+			smoke, // texture
+			STYLE_Normal, // style
+			SPF_ROLL, // flags
+			300, // lifetime (100 (1./0.01) * 3)
+			size, // size
+			angle, // angle
+			velx: velx, // velx
+			vely: vely, // vely
+			velz: velz, // velz
+			startalphaf: 0.7, // startalphaf
+			fadestepf: 0.0033333333333, // fadestepf (0.01 / 3)
+			startroll: random(0, 360), // startroll
+			rollvel: frandom(0.6, 0.8) // rollvel
+		);
 	}
 }
