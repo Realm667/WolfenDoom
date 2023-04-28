@@ -65,12 +65,45 @@ class WaterSplashGeneratorNormal : EffectSpawner
 	{
 		Super.SpawnEffect();
 
-		A_SpawnItemEx("WaterSplashObject", 0, 0, 0, 0, 0, 0, 0, SPLASHES_FLAGS);
+		// A_SpawnItemEx("WaterSplashObject", 0, 0, 0, 0, 0, 0, 0, SPLASHES_FLAGS);
+		// boashaders.txt:L2060-L2082
+		static const double rolls[] = { 2.0, 3.0, 2.5, 3.5 };
+
+		int variant = random(0, 3);
+
+		TextureID splash = TexMan.CheckForTexture(String.Format("WTS%cA0", 0x41 + variant));
+
+		A_SpawnParticleEx(
+			"FFFFFF", // color1
+			splash, // texture
+			GetRenderStyle(), // style (SXF_TRANSFERRENDERSTYLE)
+			SPF_RELATIVE | SPF_ROLL, // flags
+			32, // lifetime (0.8 / 0.025)
+			153.6, // size (0.3 * 512.)
+			FRandom(0.0, 360.0), // angle
+			0.0, // xoff
+			0.0, // yoff
+			0.0, // zoff
+			Random(0, 1), // velx
+			0.0, // vely
+			FRandom(1.0, 2.0), // velz
+			0.0, // accelx
+			0.0, // accely
+			0.0, // accelz (-NOGRAVITY does not work for SimpleActors and particle actors)
+			0.8, // startalphaf
+			0.025, // fadestepf
+			5.12, // sizestep (512 * 0.01)
+			0.0, // startroll
+			rolls[variant], // rollvel
+			0.0 // rollacc
+		);
+
 
 		if (spawncount++ > 7) { SetStateLabel("Inactive"); }
 	}
 }
 
+// Kept for savegame compatibility - Talon1024 and N00b
 class WaterSplashObject: ParticleBase
 {
 	Default
@@ -166,7 +199,40 @@ class WaterSplashGeneratorNormalLooping : WaterSplashGeneratorNormal
 		what = !what;
 
 		// Alternate spawning steam and splash every 4 tics
-		if (what) { A_SpawnItemEx("WaterSplashObject", 0, 0, 0, 0, 0, 0, 0, SPLASHES_FLAGS); }
+		if (what) {
+			// A_SpawnItemEx("WaterSplashObject", 0, 0, 0, 0, 0, 0, 0, SPLASHES_FLAGS);
+			// boashaders.txt:L2060-L2082
+			static const double rolls[] = { 2.0, 3.0, 2.5, 3.5 };
+
+			int variant = random(0, 3);
+
+			TextureID splash = TexMan.CheckForTexture(String.Format("WTS%cA0", 0x41 + variant));
+
+			A_SpawnParticleEx(
+				"FFFFFF", // color1
+				splash, // texture
+				GetRenderStyle(), // style (SXF_TRANSFERRENDERSTYLE)
+				SPF_RELATIVE | SPF_ROLL, // flags
+				32, // lifetime (0.8 / 0.025)
+				153.6, // size (0.3 * 512.)
+				FRandom(0.0, 360.0), // angle
+				0.0, // xoff
+				0.0, // yoff
+				0.0, // zoff
+				Random(0, 1), // velx
+				0.0, // vely
+				FRandom(1.0, 2.0), // velz
+				0.0, // accelx
+				0.0, // accely
+				0.0, // accelz (-NOGRAVITY does not work for SimpleActors and particle actors)
+				0.8, // startalphaf
+				0.025, // fadestepf
+				5.12, // sizestep (512 * 0.01)
+				0.0, // startroll
+				rolls[variant], // rollvel
+				0.0 // rollacc
+			);
+		}
 		else { A_SpawnItemEx("WaterSplashCloud", Random(-8, 8), Random(-8, 8), Random(0, 16), 0, 0, 0, 0, SPLASHES_FLAGS); }
 	}
 }
