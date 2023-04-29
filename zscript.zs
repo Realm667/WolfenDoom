@@ -24,6 +24,7 @@ version "4.7.1"
 #include "scripts/libraries/reader.zs"				// Ugly but functional parser for nested bracket data
 #include "scripts/libraries/matrix.zs"				// Matrix functions
 #include "scripts/libraries/breakstring.zs"			// Break string at width with proper carryover of text colors across lines
+#include "scripts/libraries/binreader.zs"			// Reader for binary files
 
 // Event Handler
 #include "scripts/eventhandlers/InventoryClearHandler.zs"
@@ -79,6 +80,8 @@ version "4.7.1"
 #include "scripts/actors/enemies/nemesis.zs"			// Nemesis (C3M0_A)
 #include "scripts/actors/enemies/controllable.zs"		// Controllable actors
 #include "scripts/actors/enemies/zombies.zs"			// Zombies
+#include "scripts/actors/modelcollision.zs"			// Hitscan-model collision
+#include "scripts/actors/fauxprojectile.zs"			// Hitscan FastProjectile imitation
 
 /// Interactive Props
 #include "scripts/actors/interactive.zs"			// Interactive actors (breakable vent, statue, etc.)

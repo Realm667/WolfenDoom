@@ -810,7 +810,7 @@ class TankBlocker : Actor
 		+CANPASS
 		+NOGRAVITY
 		+SOLID
-		+SHOOTABLE
+		//+SHOOTABLE
 		+NOBLOOD
 		+NODAMAGE
 		+NOTAUTOAIMED
@@ -866,6 +866,8 @@ class TankBlocker : Actor
 
 	override bool CanCollideWith(Actor other, bool passive)
 	{
+		if (other is "Bullet" || other is "TankShellTracer") { return false; }
+
 		if (master && master.master && other != master && other != master.master && !master.master.IsFriend(other))
 		{
 			other.DamageMobj(self, master.master, int(master.master.vel.length() * 0.625), "Trample");
@@ -926,7 +928,7 @@ class TankBlocker : Actor
 }
 
 // Base actor for tank treads
-class TankTreadsBase : Base
+class TankTreadsBase : ModelHitbox
 {
 	TankTurretBase turret;
 	Actor gunspot;
@@ -1070,7 +1072,7 @@ class TankTreadsBase : Base
 
 	override bool CanCollideWith(Actor other, bool passive)
 	{
-		if (master && other != master && !master.IsFriend(other))
+		if (master && other != master && !master.IsFriend(other) && other.bShootable)
 		{
 			other.DamageMobj(self, master, int(0.5 * master.vel.xy.length()), "Trample");
 
@@ -1200,7 +1202,7 @@ class PairedTire : Actor
 }
 
 // Base actor for tank turret
-class TankTurretBase : Base
+class TankTurretBase : ModelHitbox
 {
 	TankCannonBase gun;
 	actor gunspot, gunspot2;
@@ -1347,6 +1349,14 @@ class TankDeadBase : Base
 	}
 }
 
+// Scaling constants. Must be the same as in MODELDEF!
+const SCALE_M4 = 1.1;
+const SCALE_PZIV = 0.9;
+const SCALE_251 = 1.1;
+const SCALE_222 = 1.1;
+const SCALE_T34 = 1.1;
+const SCALE_TIGER = 0.9;
+
 // Sherman Tank components (used by both FriendlySherman and ShermanPlayer)
 class US_Sherman : TankTreadsBase
 {
@@ -1362,6 +1372,7 @@ class US_Sherman : TankTreadsBase
 		TankTreadsBase.GunSpotX 100;
 		TankTreadsBase.GunSpotY 25;
 		TankTreadsBase.GunSpotZ 54;
+		ModelHitbox.Model "/models/modelhitboxes/sherman/trhb.md3";
 	}
 
 	override void PostBeginPlay()
@@ -1376,6 +1387,12 @@ class US_Sherman : TankTreadsBase
 		A_SpawnItemEx("TankBlocker", l * 1.25, r, flags: SXF_SETMASTER | SXF_NOCHECKPOSITION);
 		A_SpawnItemEx("TankBlocker", -l * 1.5, -r, flags: SXF_SETMASTER | SXF_NOCHECKPOSITION);
 		A_SpawnItemEx("TankBlocker", -l * 1.5, r, flags: SXF_SETMASTER | SXF_NOCHECKPOSITION);
+
+		if (coll)
+		{
+			coll.SetScale((SCALE_M4, SCALE_M4, SCALE_M4));
+			coll.SetModelTranslation((-16.5, -2.0, 0.0));
+		}
 	}
 }
 
@@ -1387,6 +1404,7 @@ class US_ShermanTurret : TankTurretBase
 		TankTurretBase.GunSpotX 120;
 		TankTurretBase.GunSpotY 0;
 		TankTurretBase.GunSpotZ 20;
+		ModelHitbox.Model "/models/modelhitboxes/sherman/tuhb.md3";
 	}
 
 	override void PostBeginPlay()
@@ -1400,6 +1418,12 @@ class US_ShermanTurret : TankTurretBase
 		Super.PostBeginPlay();
 
 		if (gun) { gunspot2.master = gun; }
+
+		if (coll)
+		{
+			coll.SetScale((SCALE_M4, SCALE_M4, SCALE_M4));
+			coll.SetModelTranslation((-16.5, -2.0, -64.0));
+		}
 	}
 }
 
@@ -1424,6 +1448,7 @@ class FriendlySherman : TankBase
 		TankBase.TankActor "US_Sherman";
 		TankBase.MoveSound "TNK1LOOP";
 		TankBase.IdleSound "TKIDLE";
+		TankBase.TurretProjectile "ShermanMissile";
 		TankBase.FrontGunProjectile "Kar98kTracer";
 	}
 
@@ -1508,6 +1533,17 @@ class PanzerIVTreads : TankTreadsBase
 		TankTreadsBase.GunSpotX 80;
 		TankTreadsBase.GunSpotY 26;
 		TankTreadsBase.GunSpotZ 52;
+		ModelHitbox.Model "/models/modelhitboxes/panzeriv/trhb.md3";
+	}
+	
+	override void PostBeginPlay()
+	{
+		Super.PostBeginPlay();
+		if (coll)
+		{
+			coll.SetScale((SCALE_PZIV, SCALE_PZIV, SCALE_PZIV));
+			coll.SetModelTranslation((0, 0, 0));
+		}
 	}
 }
 
@@ -1519,6 +1555,7 @@ class PanzerIVTurret : TankTurretBase
 		TankTurretBase.GunSpotX 155;
 		TankTurretBase.GunSpotY 0;
 		TankTurretBase.GunSpotZ 12;
+		ModelHitbox.Model "/models/modelhitboxes/panzeriv/tuhb.md3";
 	}
 	override void PostBeginPlay()
 	{
@@ -1531,6 +1568,12 @@ class PanzerIVTurret : TankTurretBase
 		Super.PostBeginPlay();
 
 		if (gun) { gunspot2.master = gun; }
+
+		if (coll)
+		{
+			coll.SetScale((SCALE_PZIV, SCALE_PZIV, SCALE_PZIV));
+			coll.SetModelTranslation((0, 0, -64));
+		}
 	}
 }
 
@@ -1547,6 +1590,7 @@ class SSTank1 : TankBase
 		Health 3500;
 		Speed 2.66666667;
 		TankBase.TankActor "PanzerIVTreads";
+		TankBase.TurretProjectile "PanzerIVMissile";
 		TankBase.MinGunPitch -5;
 	}
 
@@ -1649,6 +1693,11 @@ class HalftrackTreads : TankTreadsBase
 		PairedTire(fr).turning = true;
 
 		Super.PostBeginPlay();
+		if (coll)
+		{
+			coll.SetScale((SCALE_251, SCALE_251, SCALE_251));
+			coll.SetModelTranslation((0, 0, 0));
+		}
 	}
 }
 
@@ -1663,6 +1712,16 @@ class HalftrackTurret : TankTurretBase
 		TankTurretBase.GunSpotX 70;
 		TankTurretBase.GunSpotY 0;
 		TankTurretBase.GunSpotZ 16;
+	}
+	override void PostBeginPlay()
+	{
+		Super.PostBeginPlay();
+
+		if (coll)
+		{
+			coll.SetScale((SCALE_251, SCALE_251, SCALE_251));
+			coll.SetModelTranslation((0, 0, 0));
+		}
 	}
 }
 
@@ -1750,6 +1809,17 @@ class TigerTreads : TankTreadsBase
 		TankTreadsBase.DebrisActor "Debris_Tank2";
 		TankTreadsBase.DeadActor "DestroyedTank3";
 		TankTreadsBase.TurretClass "TigerTurret";
+		ModelHitbox.Model "/models/modelhitboxes/tiger/trhb.md3";
+	}
+	override void PostBeginPlay()
+	{
+		Super.PostBeginPlay();
+
+		if (coll)
+		{
+			coll.SetScale((SCALE_TIGER, SCALE_TIGER, SCALE_TIGER));
+			coll.SetModelTranslation((-10.5, 0, 0));
+		}
 	}
 }
 
@@ -1764,6 +1834,17 @@ class TigerTurret : TankTurretBase
 		TankTurretBase.GunSpotX 180;
 		TankTurretBase.GunSpotY 4;
 		TankTurretBase.GunSpotZ 5;
+		ModelHitbox.Model "/models/modelhitboxes/tiger/tuhb.md3";
+	}
+	override void PostBeginPlay()
+	{
+		Super.PostBeginPlay();
+
+		if (coll)
+		{
+			coll.SetScale((SCALE_TIGER, SCALE_TIGER, SCALE_TIGER));
+			coll.SetModelTranslation((-10.5, 0, -64));
+		}
 	}
 }
 
@@ -1780,6 +1861,7 @@ class SSTank3 : TankBase
 		Health 3000;
 		Speed 2.55555556;
 		TankBase.TankActor "TigerTreads";
+		TankBase.TurretProjectile "TigerMissile";
 		TankBase.MinGunPitch -2;
 		TankBase.MaxGunPitch 25;
 	}
@@ -1842,6 +1924,12 @@ class LightPanzerTreads : TankTreadsBase
 		while (!br) { [sp, br] = A_SpawnItemEx("LightPanzerTire", -56.0, 35.0, 19.0, 0, 0, 0, 0, SXF_TRANSFERPITCH | SXF_TRANSFERROLL | SXF_TRANSFERSCALE | SXF_SETMASTER); }
 
 		Super.PostBeginPlay();
+
+		if (coll)
+		{
+			coll.SetScale((SCALE_222, SCALE_222, SCALE_222));
+			coll.SetModelTranslation((-4, 0, -55));
+		}
 	}
 }
 
@@ -1855,6 +1943,16 @@ class LightPanzerTurret : TankTurretBase
 		TankTurretBase.GunSpotX 60;
 		TankTurretBase.GunSpotY 0;
 		TankTurretBase.GunSpotZ 16;
+	}
+	override void PostBeginPlay()
+	{
+		Super.PostBeginPlay();
+
+		if (coll)
+		{
+			coll.SetScale((SCALE_222, SCALE_222, SCALE_222));
+			coll.SetModelTranslation((-4, 0, -55));
+		}
 	}
 }
 
@@ -1933,6 +2031,17 @@ class T34Treads : TankTreadsBase
 		TankTreadsBase.GunSpotX 85;
 		TankTreadsBase.GunSpotY 24;
 		TankTreadsBase.GunSpotZ 52;
+		ModelHitbox.Model "/models/modelhitboxes/t3485/trhb.md3";
+	}
+	override void PostBeginPlay()
+	{
+		Super.PostBeginPlay();
+
+		if (coll)
+		{
+			coll.SetScale((SCALE_T34, SCALE_T34, SCALE_T34));
+			coll.SetModelTranslation((-30, 0, 0));
+		}
 	}
 }
 
@@ -1946,6 +2055,17 @@ class T34Turret : TankTurretBase
 		TankTurretBase.GunSpotX 230;
 		TankTurretBase.GunSpotY 0;
 		TankTurretBase.GunSpotZ 8;
+		ModelHitbox.Model "/models/modelhitboxes/t3485/tuhb.md3";
+	}
+	override void PostBeginPlay()
+	{
+		Super.PostBeginPlay();
+
+		if (coll)
+		{
+			coll.SetScale((SCALE_T34, SCALE_T34, SCALE_T34));
+			coll.SetModelTranslation((-30, 0, -72));
+		}
 	}
 }
 
@@ -1969,6 +2089,7 @@ class T34Tank : TankBase
 		TankBase.MinGunPitch -5;
 		TankBase.MaxGunPitch 30;
 		TankBase.TankActor "T34Treads";
+		TankBase.TurretProjectile "T34Missile";
 		TankBase.FrontGunProjectile "Kar98kTracer";
 	}
 

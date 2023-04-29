@@ -483,7 +483,7 @@ class Cannon75mm: TankCannonWeapon
 	States
 	{
 		Fire:
-			TNT1 A 2 { DoCannon("tanks/75mmm3"); A_Quake(4, 11, 0, 384); }
+			TNT1 A 2 { DoCannon("tanks/75mmm3", "ShermanMissile"); A_Quake(4, 11, 0, 384); }
 			TNT1 A 0 A_TankRefire();
 			Goto Ready;
 		AltFire:
@@ -498,7 +498,7 @@ class Cannon75mmKwK: TankCannonWeapon // Pz. Kpfw. IV
 	States
 	{
 		Fire:
-			TNT1 A 2 { DoCannon("tanks/75mmkwk40"); A_Quake(4, 11, 0, 256); }
+			TNT1 A 2 { DoCannon("tanks/75mmkwk40", "PanzerIVMissile"); A_Quake(4, 11, 0, 256); }
 			TNT1 A 0 A_TankRefire();
 			Goto Ready;
 		AltFire:
@@ -588,6 +588,42 @@ class TankMissile : TankRocket
 			MNSS A 1 Bright Light("BOAFLMW2") A_StartSound("panzer/fly", CHAN_VOICE, CHANF_LOOPING, 1.0);
 			MNSS A 1 Bright Light("BOAFLMW2"); //no flames, it is a regular projectile
 			Wait;
+	}
+}
+
+class ShermanMissile: Bullet
+{
+	Default
+	{
+		Bullet.Penetration 81;
+		Bullet.BaseDamage 2000;
+	}
+}
+
+class PanzerIVMissile: Bullet
+{
+	Default
+	{
+		Bullet.Penetration 121;
+		Bullet.BaseDamage 2000;
+	}
+}
+
+class TigerMissile: Bullet
+{
+	Default
+	{
+		Bullet.Penetration 151;
+		Bullet.BaseDamage 3000;
+	}
+}
+
+class T34Missile: Bullet
+{
+	Default
+	{
+		Bullet.Penetration 111;
+		Bullet.BaseDamage 3000;
 	}
 }
 

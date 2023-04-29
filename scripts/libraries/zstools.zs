@@ -622,6 +622,12 @@ class ZScriptTools
 			}
 		}
 	}
+	
+	// Express a vector b as a linear combination of a1, a2 and a3; 3D only.
+	static Vector3 BasisCoefficients(Vector3 a1, Vector3 a2, Vector3 a3, Vector3 b)
+	{
+        double det = a1 dot (a2 cross a3); return (b dot (a2 cross a3), a1 dot (b cross a3), a1 dot (a2 cross b)) / det;
+	}
 }
 
 // Separate class for this because it has to be a thinker, unfortunately.
