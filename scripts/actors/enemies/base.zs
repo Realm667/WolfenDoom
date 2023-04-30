@@ -2276,6 +2276,7 @@ class Nazi : Base
 				if (Distance3D(goal) < 96)
 				{
 					BecomeAlerted(goal.target);
+					Console.Printf(StringTable.Localize("$BODYFOUND"));
 				}
 			}
 		}
