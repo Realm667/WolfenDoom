@@ -6,7 +6,7 @@
 
 class SnowSpawner : EffectSpawner
 {
-	int particleLifetime;
+	// int particleLifetime;
 
 	Default
 	{
@@ -29,7 +29,7 @@ class SnowSpawner : EffectSpawner
 		+NOGRAVITY
 		+NOINTERACTION
 		+NOSECTOR
-		+SPAWNCEILING;
+		+SPAWNCEILING
 		EffectSpawner.Range 1024;
 		EffectSpawner.SwitchVar "boa_snowswitch";
 		+EffectSpawner.ALLOWTICKDELAY
@@ -49,29 +49,6 @@ class SnowSpawner : EffectSpawner
 		Super.PostBeginPlay();
 
 		if (!args[0]) { args[0] = 128; }
-
-		Sector mySector = Level.PointInSector(Pos.XY);
-		// The +SPAWNCEILING flag makes the snow spawner spawn in the ceiling
-		double floorHeight = mySector.NextLowestFloorAt(Pos.X, Pos.Y, Pos.Z);
-		double snowSpeed = 1.5; // Average with a bit more leeway
-		double heightDiff = Pos.Z - floorHeight;
-		particleLifetime = int(floor(heightDiff / snowSpeed)) + 10; // a few extra tics in case heightDiff / snowSpeed is not enough
-		// Let's see if this code is really necessary first
-		/* 
-		// Check around the snow particle spawn area for the lowest sector height
-		switch (args[2]) {
-			case 0: // Square
-			default:
-				for (int i = 0; i < 5; i++) {
-					for (int j = 0; j < 5; j++) {
-						//
-					}
-				}
-				break;
-			case 1: // Circle
-				//
-				break;
-		} */
 	}
 
 	override void SpawnEffect()
@@ -83,30 +60,41 @@ class SnowSpawner : EffectSpawner
 		}
 
 		TextureID snowflake = TexMan.CheckForTexture("SNOWA0", TexMan.Type_Sprite);
-		double psize = 3.0; // Sprite width(?) * SnowParticle scale
+		double psize = 3.0; // Max of sprite width and height * SnowParticle scale
 
 		double xoffset = random(-Args[0], Args[0]);
 		double yoffset = Args[2] ? 0 : random(-Args[0], Args[0]);
 		double zoffset = 0;
 		if (manager) { zoffset = min(manager.particlez - pos.z, 0); }
-		double angle = Args[2] ? random(0, 359) : 0.0;
 
-		A_SpawnParticleEx(
-			"FFFFFF", // color1
-			snowflake, // texture
-			STYLE_Add, // style
-			SPF_RELATIVE, // flags
-			particleLifetime, // lifetime
-			psize, // size
-			angle, // angle
-			xoffset, yoffset, zoffset, // off xyz
-			frandom(-1.0, 1.0), frandom(-1.0, 1.0), frandom(-1.0, -3.0), // vel xyz
-			fadestepf: 0.0
-		);
+		// Calculate absolute spawn position
+		double angle = Args[2] ? random(0, 359) : 0.0;
+		Vector3 spawnPos = Args[2] ?
+			Vec3Angle(xoffset, angle, zoffset) :
+			Vec3Offset(xoffset, yoffset, zoffset);
+
+		// Calculate lifetime based on distance to floor
+		Sector mySector = Level.PointInSector(spawnPos.XY);
+		double floorHeight = mySector.NextLowestFloorAt(spawnPos.X, spawnPos.Y, spawnPos.Z);
+		double heightDiff = spawnPos.Z - floorHeight;
+		double speed = frandom(-1.0, -3.0);
+		int lifetime = int(floor(heightDiff / -speed)) + 2; // fall into floor
+
+		FSpawnParticleParams particleInfo;
+		particleInfo.color1 = "FFFFFF";
+		particleInfo.texture = snowflake;
+		particleInfo.style = STYLE_Add;
+		particleInfo.flags = 0;
+		particleInfo.lifetime = lifetime;
+		particleInfo.size = psize;
+		particleInfo.pos = spawnPos;
+		particleInfo.vel = (frandom(-1.0, 1.0), frandom(-1.0, 1.0), speed);
+		particleInfo.startalpha = 1.0;
+		Level.SpawnParticle(particleInfo);
 	}
 }
 
-// Kept for savegame compatibility - Talon1024 and Username-N00b-is-not-available
+// Kept for savegame compatibility - Talon1024 and N00b
 class SnowParticle : ParticleBase
 {
 	Default
