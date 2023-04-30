@@ -128,7 +128,41 @@ class RocketFlame: Actor
 	Spawn:
 		TNT1 A 1;
 		XPLO AB 2 BRIGHT LIGHT("NEBEXPLO");
-		XPLO C 2 BRIGHT LIGHT("NEBEXPLO") A_SpawnItemEx("RPG8RocketTrail",random(-1,1),0,1, 0, 0, frandom(0.1,0.3));
+		XPLO C 2 BRIGHT LIGHT("NEBEXPLO") {
+			// A_SpawnItemEx("RPG8RocketTrail",random(-1,1),0,1, 0, 0, frandom(0.1,0.3));
+
+			if (boa_smokeswitch==0) { return; }
+			static const int lifetimes[] = { 63, 71, 83, 100 };
+			static const double scales[] = { 1.6, 2.4, 0.8, 1.6 };
+			static const double rollvels[] = { 0.5, 0.2, 0.9, 1.3 };
+			int variant = random(0, 3);
+			TextureID smoke = TexMan.CheckForTexture(String.Format("SMOK%c0", variant + 0x41));
+
+			A_SpawnParticleEx(
+				"FFFFFF", // color1
+				smoke, // texture
+				STYLE_Translucent, // style
+				SPF_RELATIVE | SPF_ROLL, // flags
+				lifetimes[variant], // lifetime
+				28.8, // size (160 * 0.15)
+				FRandom(0.0, 360.0), // angle
+				frandom(-1., 1.), // xoff
+				0.0, // yoff
+				1.0, // zoff
+				0.0, // velx
+				0.0, // vely
+				FRandom(0.1, 0.3), // velz
+				0.0, // accelx
+				0.0, // accely
+				0.0, // accelz
+				0.5, // startalphaf
+				-1., // fadestepf
+				scales[variant], // sizestep
+				0.0, // startroll
+				rollvels[variant], // rollvel
+				0.0 // rollacc
+			);
+		}
 		Stop;
 	}
 }
@@ -171,7 +205,41 @@ class MutantFlame : RocketFlame
 	Spawn:
 		TNT1 A 1;
 		XPLO AB 2 BRIGHT LIGHT("MUTNEXPL");
-		XPLO C 2 BRIGHT LIGHT("MUTNEXPL") A_SpawnItemEx("RPG8RocketTrail",random(-1,1),0,1, 0, 0, frandom(0.1,0.3));
+		XPLO C 2 BRIGHT LIGHT("MUTNEXPL") {
+			// A_SpawnItemEx("RPG8RocketTrail",random(-1,1),0,1, 0, 0, frandom(0.1,0.3));
+
+			if (boa_smokeswitch==0) { return; }
+			static const int lifetimes[] = { 63, 71, 83, 100 };
+			static const double scales[] = { 1.6, 2.4, 0.8, 1.6 };
+			static const double rollvels[] = { 0.5, 0.2, 0.9, 1.3 };
+			int variant = random(0, 3);
+			TextureID smoke = TexMan.CheckForTexture(String.Format("SMOK%c0", variant + 0x41));
+
+			A_SpawnParticleEx(
+				"FFFFFF", // color1
+				smoke, // texture
+				STYLE_Translucent, // style
+				SPF_RELATIVE | SPF_ROLL, // flags
+				lifetimes[variant], // lifetime
+				28.8, // size (160 * 0.15)
+				FRandom(0.0, 360.0), // angle
+				frandom(-1., 1.), // xoff
+				0.0, // yoff
+				1.0, // zoff
+				0.0, // velx
+				0.0, // vely
+				FRandom(0.1, 0.3), // velz
+				0.0, // accelx
+				0.0, // accely
+				0.0, // accelz
+				0.5, // startalphaf
+				-1., // fadestepf
+				scales[variant], // sizestep
+				0.0, // startroll
+				rollvels[variant], // rollvel
+				0.0 // rollacc
+			);
+		}
 		Stop;
 	}
 }
