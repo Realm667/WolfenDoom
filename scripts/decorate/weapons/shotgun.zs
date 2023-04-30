@@ -151,8 +151,8 @@ class TrenchShotgun : NaziWeapon
 		Goto Ready;
 	Flash:
 		SHTF A 1 A_Light2;
-		TNT1 A 1;
-		TNT1 A 2 A_Light1;
+		SHTF A 1;
+		SHTF A 2 A_Light1;
 		Goto LightDone;
 	Spawn:
 		SHOT A -1;
