@@ -75,6 +75,7 @@ class SnowSpawner : EffectSpawner
 
 		// Calculate lifetime based on distance to floor
 		Sector mySector = Level.PointInSector(spawnPos.XY);
+		if (mySector.GetTexture(Sector.ceiling) != skyflatnum) { return; }
 		double floorHeight = mySector.NextLowestFloorAt(spawnPos.X, spawnPos.Y, spawnPos.Z);
 		double heightDiff = spawnPos.Z - floorHeight;
 		double speed = frandom(-1.0, -3.0);
