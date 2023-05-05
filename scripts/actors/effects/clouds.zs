@@ -1,47 +1,3 @@
-// Copied from nemesis.zs, only to make one little tweak.
-class BoASolidSurfaceFinderTracer : LineTracer
-{
-	// Set by the callback
-	bool hitWall;
-
-	override ETraceStatus TraceCallback()
-	{
-		if (Results.HitType == TRACE_HitFloor || Results.HitType == TRACE_HitCeiling)
-		{
-			hitWall = true;
-			return TRACE_Stop;
-		}
-		else if (Results.HitType == TRACE_HitWall)
-		{
-			// Walls need further examination
-			if (Results.Tier != TIER_Middle)
-			{
-				hitWall = true;
-				return TRACE_Stop;
-			}
-			else
-			{
-				if (!(Results.HitLine.flags & Line.ML_TWOSIDED))
-				{
-					// Not a two-sided wall
-					hitWall = true;
-					return TRACE_Stop;
-				}
-				else
-				{
-					// Two-sided wall
-					if (Results.HitLine.flags & Line.ML_BLOCKEVERYTHING)
-					{
-						hitWall = true;
-						return TRACE_Stop;
-					}
-				}
-			}
-		}
-		return TRACE_Skip;
-	}
-}
-
 class CloudSpawner : EffectSpawner
 {
 	static const string cloudsprites[] = { "CLXGA0", "CLXGB0", "CLXTA0", "CLXTB0", "CLXDA0", "CLXDB0" };
@@ -144,7 +100,7 @@ class CloudSpawner : EffectSpawner
 
 		Sector spawnSector = Level.PointInSector(particlePos.XY);
 		BoASolidSurfaceFinderTracer surfFinder = new("BoASolidSurfaceFinderTracer");
-		surfFinder.Trace(particlePos, spawnSector, traceDirection, 10000.0, TRACE_PortalRestrict | TRACE_HitSky, ignoreAllActors: true);
+		surfFinder.Trace(particlePos, spawnSector, traceDirection, 10000.0, TRACE_HitSky, ignoreAllActors: true);
 		int lifetime = surfFinder.results.Distance / particleSpeed;
 
 		FSpawnParticleParams particleInfo;

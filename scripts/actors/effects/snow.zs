@@ -73,13 +73,20 @@ class SnowSpawner : EffectSpawner
 			Vec3Angle(xoffset, angle, zoffset) :
 			Vec3Offset(xoffset, yoffset, zoffset);
 
+		Sector spawnSector = Level.PointInSector(spawnPos.XY);
+		if (spawnSector.GetTexture(Sector.ceiling) != ceilingpic) { return; }
+
 		// Calculate lifetime based on distance to floor
-		Sector mySector = Level.PointInSector(spawnPos.XY);
-		if (mySector.GetTexture(Sector.ceiling) != skyflatnum) { return; }
-		double floorHeight = mySector.NextLowestFloorAt(spawnPos.X, spawnPos.Y, spawnPos.Z);
-		double heightDiff = spawnPos.Z - floorHeight;
-		double speed = frandom(-1.0, -3.0);
-		int lifetime = int(floor(heightDiff / -speed)) + 2; // fall into floor
+		// Cheap but inaccurate
+		/* double floorHeight = spawnSector.NextLowestFloorAt(spawnPos.X, spawnPos.Y, spawnPos.Z);
+		double heightDiff = spawnPos.Z - floorHeight; */
+
+		// Use a hitscan to find the distance to the floor
+		// More expensive, and more accurate
+		Vector3 vel = (frandom(-1.0, 1.0), frandom(-1.0, 1.0), frandom(-1.0, -3.0));
+		BoASolidSurfaceFinderTracer finder = new("BoASolidSurfaceFinderTracer");
+		finder.Trace(spawnPos, spawnSector, vel.Unit(), 10000.0, TRACE_HitSky, ignoreAllActors: true);
+		int lifetime = int(floor(finder.Results.Distance / vel.Length())) + 2; // fall into floor
 
 		FSpawnParticleParams particleInfo;
 		particleInfo.color1 = "FFFFFF";
@@ -89,7 +96,7 @@ class SnowSpawner : EffectSpawner
 		particleInfo.lifetime = lifetime;
 		particleInfo.size = psize;
 		particleInfo.pos = spawnPos;
-		particleInfo.vel = (frandom(-1.0, 1.0), frandom(-1.0, 1.0), speed);
+		particleInfo.vel = vel;
 		particleInfo.startalpha = 1.0;
 		Level.SpawnParticle(particleInfo);
 	}
