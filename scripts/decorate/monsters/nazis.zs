@@ -2309,7 +2309,7 @@ class WPanzerGuard : BasicGuard
 		Stop;
 	Melee:
 	Missile:
-		"####" B 0 A_JumpIfInTargetLOS("Missile.Aimed", 45, JLOSF_DEADNOJUMP | JLOSF_CLOSENOJUMP, radius+1024, radius+128); //try avoid shoot at his feet while near him
+		"####" A 0 A_JumpIfInTargetLOS("Missile.Aimed", 45, JLOSF_DEADNOJUMP | JLOSF_CLOSENOJUMP, radius+1024, radius+128); //try avoid shoot at his feet while near him
 		Goto Idle;
 	Missile.Aimed:
 		"####" A 1 { A_SetTics(random(30,45)); A_FaceTarget(); }
