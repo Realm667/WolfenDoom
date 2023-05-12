@@ -185,12 +185,15 @@ class InteractionHandler : EventHandler
 		// change and queue the line special to be run after the change is complete
 		let ln = e.ActivatedLine;
 
+		// Copied from https://github.com/ZDoom/gzdoom/blob/39cea95dba2ddf7f367b7425b3acea5cec3c85b2/src/playsim/p_spec.cpp#L174
+		bool remote = (ln.special != 7 && ln.special != 8 && (ln.special < 11 || ln.special > 14));
 		if (
 			ln &&
 			ln.special && 
 			ln.flags & Line.ML_REPEAT_SPECIAL &&
 			e.Thing is "PlayerPawn" && 
-			(e.ActivationType == SPAC_USE || e.ActivationType == SPAC_UseBack)
+			(e.ActivationType == SPAC_USE || e.ActivationType == SPAC_UseBack) &&
+			e.Thing.CheckKeys(ln.locknumber, remote)
 		)
 		{
 			int delay = -1;
