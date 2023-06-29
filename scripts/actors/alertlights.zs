@@ -209,7 +209,7 @@ class SpotlightMount : Actor
 		+DONTSPLASH
 		+NOGRAVITY
 		Health 100;
-		Height 56;
+		Height 32;
 		DistanceCheck "boa_scenelod";
 	}
 

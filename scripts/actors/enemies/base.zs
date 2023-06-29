@@ -1373,6 +1373,7 @@ class Nazi : Base
 		See.Normal: // Guard Walk Pattern
 			"####" "#" 0 {
 				user_incombat = True;
+				A_SetSize(-1, Default.height);
 				if (bStandStill) { SetStateLabel("See.Stand"); }
 			}
 			"####" A 1 A_NaziChase;
@@ -1395,7 +1396,10 @@ class Nazi : Base
 			"####" DDD 1 A_NaziChase(null, null);
 			"####" A 0 { return ResolveState("See"); } // Jump to the actor's defined See state so any special handling can still happen each loop
 		See.Fast: // SS Walk Pattern
-			"####" "#" 0 { user_incombat = True; }
+			"####" "#" 0 {
+				user_incombat = True;
+				A_SetSize(-1, Default.height);
+			}
 			"####" A 1 A_NaziChase;
 			"####" AA 1 A_NaziChase(null, null);
 			"####" A 1 A_NaziChase;
@@ -1416,7 +1420,10 @@ class Nazi : Base
 			"####" DD 1 A_NaziChase(null, null);
 			"####" A 0 { return ResolveState("See"); }
 		See.Faster: // Officer Walk Pattern
-			"####" "#" 0 { user_incombat = True; }
+			"####" "#" 0 {
+				user_incombat = True;
+				A_SetSize(-1, Default.height);
+			}
 			"####" A 1 A_NaziChase;
 			"####" A 1 A_NaziChase(null, null);
 			"####" A 1 A_NaziChase;
@@ -1636,7 +1643,11 @@ class Nazi : Base
 			"####" DDD 1 A_NaziChase(null, null);
 			"####" A 0 { return ResolveState("See"); }
 		See.Frightened: // Prisoners Pattern
-			"####" "#" 0 { user_incombat = True; A_SetSpeed(6);}
+			"####" "#" 0 {
+				user_incombat = True;
+				A_SetSize(-1, Default.height);
+				A_SetSpeed(6);
+			}
 			"####" A 1 A_NaziChase;
 			"####" AA 1 A_NaziChase(null, null);
 			"####" A 1 A_NaziChase;
@@ -1663,6 +1674,7 @@ class Nazi : Base
 		See.Stand: // Standing state for basic Nazis
 			"####" "#" 0 {
 				user_incombat = True;
+				A_SetSize(-1, Default.height);
 				sprite = defaultsprite;
 				frame = SpawnState.frame;
 			}
