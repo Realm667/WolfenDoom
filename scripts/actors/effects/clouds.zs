@@ -100,7 +100,7 @@ class CloudSpawner : EffectSpawner
 
 		Sector spawnSector = Level.PointInSector(particlePos.XY);
 		BoASolidSurfaceFinderTracer surfFinder = new("BoASolidSurfaceFinderTracer");
-		surfFinder.Trace(particlePos, spawnSector, traceDirection, 10000.0, TRACE_HitSky, ignoreAllActors: true);
+		surfFinder.Trace(particlePos, spawnSector, traceDirection, 10000.0, TRACE_HitSky);
 		int lifetime = surfFinder.results.Distance / particleSpeed;
 
 		FSpawnParticleParams particleInfo;

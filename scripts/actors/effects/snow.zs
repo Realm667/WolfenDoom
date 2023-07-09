@@ -85,7 +85,7 @@ class SnowSpawner : EffectSpawner
 		// More expensive, and more accurate
 		Vector3 vel = (frandom(-1.0, 1.0), frandom(-1.0, 1.0), frandom(-1.0, -3.0));
 		BoASolidSurfaceFinderTracer finder = new("BoASolidSurfaceFinderTracer");
-		finder.Trace(spawnPos, spawnSector, vel.Unit(), 10000.0, TRACE_HitSky, ignoreAllActors: true);
+		finder.Trace(spawnPos, spawnSector, vel.Unit(), 10000.0, TRACE_HitSky);
 		int lifetime = int(floor(finder.Results.Distance / vel.Length())) + 2; // fall into floor
 
 		FSpawnParticleParams particleInfo;
