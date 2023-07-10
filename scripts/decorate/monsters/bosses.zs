@@ -3368,7 +3368,6 @@ class SuperSoldier : NaziBoss
 	Tag "$TAGUEBER";
 	Health 500;
 	Radius 24;
-	Height 64;
 	Mass 500;
 	PainChance 40;
 	+LOOKALLAROUND
