@@ -904,6 +904,7 @@ class UrinalNazi : ToiletNazi
 	override void Die(Actor source, Actor inflictor, int dmgflags, Name MeansOfDeath)
 	{
 		Actor mo = CheckSpawnReplacement(replacement, "Death", 255);
+		mo.Health = min(Health, 0); // So that ThingCount knows the replacement is dead.
 		mo.Die(source, inflictor, dmgflags, MeansOfDeath);
 		//Super.Die(source, inflictor, dmgflags, MeansOfDeath);
 	}
