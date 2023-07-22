@@ -230,6 +230,7 @@ class BoAStatusBar : BaseStatusBar
 
 		Super.Draw(state, TicFrac);
 
+		barstate = state;
 		if (CPlayer.mo.FindInventory("CutsceneEnabled") || CPlayer.morphtics || level.maptime < 5)
 		{
 			if (automapactive || state == HUD_StatusBar)
@@ -268,8 +269,6 @@ class BoAStatusBar : BaseStatusBar
 
 				if (GetGlobalACSValue(60) > -1) { DrawDayNightState(); }
 			BeginHUD(1, False);
-
-			barstate = state;
 
 			if (state == HUD_StatusBar)
 			{
