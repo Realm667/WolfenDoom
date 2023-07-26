@@ -699,7 +699,7 @@ class Shark : Base
 		Mass 120;
 		Speed 2.5;
 		FloatSpeed 1;
-		DamageFunction (random(1,5)*5);
+		DamageFunction (random(1,4)*3);
 		Monster;
 		-CASTSPRITESHADOW  //needed for shadows
 		-CANPUSHWALLS
