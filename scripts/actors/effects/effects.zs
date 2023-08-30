@@ -533,6 +533,15 @@ class EffectsManager : Thinker
 	}
 }
 
+struct ParticleSpawnPoint { // 48 bytes
+	Vector3 worldPos; // World position
+	double angle; // Azimuthal and polar angles
+	double pitch;
+	double distance; // Distance to nearest obstacle
+}
+
+const SPAWN_POINTS_PER_SPAWNER = 32;
+
 class EffectSpawner : SwitchableDecoration
 {
 	ParticleManager manager;

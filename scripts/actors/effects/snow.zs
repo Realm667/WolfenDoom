@@ -4,14 +4,7 @@
 //   improved by  Ceeb & MaxED   //
 ///////////////////////////////////
 
-struct ParticleSpawnPoint { // 48 bytes
-	Vector3 worldPos; // World position
-	double angle; // Azimuthal and polar angles
-	double pitch;
-	double distance; // Distance to nearest obstacle
-}
-
-const SPAWN_POINTS_PER_SPAWNER = 32;
+// See effects.zs:536 for ParticleSpawnPoint struct and SPAWN_POINTS_PER_SPAWNER
 
 class SnowSpawner : EffectSpawner
 {
@@ -71,12 +64,14 @@ class SnowSpawner : EffectSpawner
 			do {
 				valid = true;
 				double xoffset = random(-Args[0], Args[0]);
-				double yoffset = circular ? 0 : random(-Args[0], Args[0]);
+				double yoffset = circular ?
+					random(0, 359) :
+					random(-Args[0], Args[0]);
 
 				// Calculate absolute spawn position
-				double angle = circular ? random(0, 359) : 0.0;
 				Vector3 spawnPos = circular ?
-					(Vec2Angle(xoffset, angle), Pos.Z) :
+					// yoffset is used here as an angle
+					(Vec2Angle(xoffset, yoffset), Pos.Z) :
 					Vec2OffsetZ(xoffset, yoffset, Pos.Z);
 
 				Sector spawnSector = Level.PointInSector(spawnPos.XY);
