@@ -4,9 +4,19 @@
 //   improved by  Ceeb & MaxED   //
 ///////////////////////////////////
 
+struct ParticleSpawnPoint { // 48 bytes
+	Vector3 worldPos; // World position
+	double angle; // Azimuthal and polar angles
+	double pitch;
+	double distance; // Distance to nearest obstacle
+}
+
+const SPAWN_POINTS_PER_SPAWNER = 32;
+
 class SnowSpawner : EffectSpawner
 {
 	// int particleLifetime;
+	ParticleSpawnPoint spawnPoints[SPAWN_POINTS_PER_SPAWNER]; // 48 * 32 = 1536 bytes
 
 	Default
 	{
@@ -49,6 +59,51 @@ class SnowSpawner : EffectSpawner
 		Super.PostBeginPlay();
 
 		if (!args[0]) { args[0] = 128; }
+
+		SetupSpawnPoints();
+	}
+
+	void SetupSpawnPoints() {
+		bool circular = !!Args[2];
+
+		for (int i = 0; i < SPAWN_POINTS_PER_SPAWNER; i++) {
+			bool valid = true;
+			do {
+				valid = true;
+				double xoffset = random(-Args[0], Args[0]);
+				double yoffset = circular ? 0 : random(-Args[0], Args[0]);
+
+				// Calculate absolute spawn position
+				double angle = circular ? random(0, 359) : 0.0;
+				Vector3 spawnPos = circular ?
+					(Vec2Angle(xoffset, angle), Pos.Z) :
+					Vec2OffsetZ(xoffset, yoffset, Pos.Z);
+
+				Sector spawnSector = Level.PointInSector(spawnPos.XY);
+				if (spawnSector.GetTexture(Sector.ceiling) != ceilingpic) {
+					valid = false;
+					continue;
+				}
+
+				// Use a hitscan to find the distance to the nearest obstacle
+				Vector3 vel = (frandom(-1.0, 1.0), frandom(-1.0, 1.0), frandom(-1.0, -3.0));
+				vel = vel.Unit();
+				BoASolidSurfaceFinderTracer finder = new("BoASolidSurfaceFinderTracer");
+				finder.Trace(spawnPos, spawnSector, vel, 10000.0, TRACE_HitSky);
+
+				// Set up spawn point
+				spawnPoints[i].worldPos = spawnPos;
+				[spawnPoints[i].angle, spawnPoints[i].pitch] = ZScriptTools.AnglesFromDirection(vel);
+				/* // ========== Test start
+				Vector3 dirbo = ZScriptTools.GetTraceDirection(spawnPoints[i].angle, spawnPoints[i].pitch);
+				Console.Printf("dirbo: %.3f %.3f %.3f, vel: %.3f %.3f %.3f", dirbo, vel);
+				if (dirbo dot vel < 0.9375) {
+					Console.Printf("ZScriptTools.AnglesFromDirection is broken!");
+				}
+				// ========== Test end */
+				spawnPoints[i].distance = finder.Results.Distance;
+			} while(!valid);
+		}
 	}
 
 	override void SpawnEffect()
@@ -62,31 +117,9 @@ class SnowSpawner : EffectSpawner
 		TextureID snowflake = TexMan.CheckForTexture("SNOWA0", TexMan.Type_Sprite);
 		double psize = 3.0; // Max of sprite width and height * SnowParticle scale
 
-		double xoffset = random(-Args[0], Args[0]);
-		double yoffset = Args[2] ? 0 : random(-Args[0], Args[0]);
-		double zoffset = 0;
-		if (manager) { zoffset = min(manager.particlez - pos.z, 0); }
-
-		// Calculate absolute spawn position
-		double angle = Args[2] ? random(0, 359) : 0.0;
-		Vector3 spawnPos = Args[2] ?
-			Vec3Angle(xoffset, angle, zoffset) :
-			Vec3Offset(xoffset, yoffset, zoffset);
-
-		Sector spawnSector = Level.PointInSector(spawnPos.XY);
-		if (spawnSector.GetTexture(Sector.ceiling) != ceilingpic) { return; }
-
-		// Calculate lifetime based on distance to floor
-		// Cheap but inaccurate
-		/* double floorHeight = spawnSector.NextLowestFloorAt(spawnPos.X, spawnPos.Y, spawnPos.Z);
-		double heightDiff = spawnPos.Z - floorHeight; */
-
-		// Use a hitscan to find the distance to the floor
-		// More expensive, and more accurate
-		Vector3 vel = (frandom(-1.0, 1.0), frandom(-1.0, 1.0), frandom(-1.0, -3.0));
-		BoASolidSurfaceFinderTracer finder = new("BoASolidSurfaceFinderTracer");
-		finder.Trace(spawnPos, spawnSector, vel.Unit(), 10000.0, TRACE_HitSky);
-		int lifetime = int(floor(finder.Results.Distance / vel.Length())) + 2; // fall into floor
+		int index = Random[SnowSpawner](0, SPAWN_POINTS_PER_SPAWNER - 1);
+		Vector3 vel = ZScriptTools.GetTraceDirection(spawnPoints[index].angle, spawnPoints[index].pitch) * FRandom(1, 3);
+		int lifetime = int(floor(spawnPoints[index].Distance / vel.Length())) + 2; // fall into floor
 
 		FSpawnParticleParams particleInfo;
 		particleInfo.color1 = "FFFFFF";
@@ -95,7 +128,7 @@ class SnowSpawner : EffectSpawner
 		particleInfo.flags = 0;
 		particleInfo.lifetime = lifetime;
 		particleInfo.size = psize;
-		particleInfo.pos = spawnPos;
+		particleInfo.pos = spawnPoints[index].worldPos;
 		particleInfo.vel = vel;
 		particleInfo.startalpha = 1.0;
 		Level.SpawnParticle(particleInfo);

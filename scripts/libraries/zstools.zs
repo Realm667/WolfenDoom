@@ -141,6 +141,16 @@ class ZScriptTools
 		);
 	}
 
+	static double, double AnglesFromDirection(Vector3 direction)
+	{
+		direction = direction.Unit();
+		double xylen = direction.XY.Length();
+		double pitch = -asin(direction.z);
+		double signum = direction.y >= 0 ? 1 : -1;
+		double angle = signum * acos(direction.x/xylen);
+		return angle, pitch;
+	}
+
 	// Convert int to Roman numerals...  Just because.
 	// Reference https://www.hanshq.net/roman-numerals.html for algorithm used
 	static clearscope String ToRomanNumerals(int input)
