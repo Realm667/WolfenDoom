@@ -56,13 +56,17 @@ class SnowSpawner : EffectSpawner
 		SetupSpawnPoints();
 	}
 
+	static bool SpawnPointValid(Sector sec, TextureID ceilingpic) {
+		return (
+			sec &&
+			sec.GetTexture(Sector.ceiling) == ceilingpic);
+	}
+
 	void SetupSpawnPoints() {
 		bool circular = !!Args[2];
 
 		for (int i = 0; i < SPAWN_POINTS_PER_SPAWNER; i++) {
-			bool valid = true;
-			do {
-				valid = true;
+			do { // So that "continue" can be used to try again
 				double xoffset = random(-Args[0], Args[0]);
 				double yoffset = circular ?
 					random(0, 359) :
@@ -71,19 +75,19 @@ class SnowSpawner : EffectSpawner
 				// Calculate absolute spawn position
 				Vector3 spawnPos = circular ?
 					// yoffset is used here as an angle
-					(Vec2Angle(xoffset, yoffset), Pos.Z) :
-					Vec2OffsetZ(xoffset, yoffset, Pos.Z);
+					Vec3Angle(xoffset, yoffset, 0) :
+					Vec3Offset(xoffset, yoffset, 0);
 
 				Sector spawnSector = Level.PointInSector(spawnPos.XY);
-				if (spawnSector.GetTexture(Sector.ceiling) != ceilingpic) {
-					valid = false;
+				if (!SnowSpawner.SpawnPointValid(spawnSector, ceilingpic)) {
 					continue;
 				}
+				spawnPos.Z = min(spawnPos.Z, spawnSector.HighestCeilingAt(spawnPos.XY));
 
 				// Use a hitscan to find the distance to the nearest obstacle
+				BoASolidSurfaceFinderTracer finder = new("BoASolidSurfaceFinderTracer");
 				Vector3 vel = (frandom(-1.0, 1.0), frandom(-1.0, 1.0), frandom(-1.0, -3.0));
 				vel = vel.Unit();
-				BoASolidSurfaceFinderTracer finder = new("BoASolidSurfaceFinderTracer");
 				finder.Trace(spawnPos, spawnSector, vel, 10000.0, TRACE_HitSky);
 
 				// Set up spawn point
@@ -97,7 +101,7 @@ class SnowSpawner : EffectSpawner
 				}
 				// ========== Test end */
 				spawnPoints[i].distance = finder.Results.Distance;
-			} while(!valid);
+			} while(false); // See lines 63 and 77
 		}
 	}
 

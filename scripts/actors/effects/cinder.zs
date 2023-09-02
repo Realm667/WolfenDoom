@@ -1,5 +1,7 @@
 class CinderSpawner : EffectSpawner
 {
+	ParticleSpawnPoint spawnPoints[SPAWN_POINTS_PER_SPAWNER];
+
 	Default
 	{
 		//$Category Special Effects (BoA)
@@ -44,15 +46,83 @@ class CinderSpawner : EffectSpawner
 			args[2] = 1;
 			args[3] = 8;
 		}
+
+		SetupSpawnPoints();
 	}
 
 	override void SpawnEffect()
 	{
 		Super.SpawnEffect();
-		CinderSpawner.SpawnCinder(self, (frandom(-args[0],args[0]),frandom(-args[0],args[0]),frandom(0,args[1])),
-			(frandom(args[2],args[3]),0,frandom(-args[2],args[2])), 4, args[4]);
+
+		if (Random(0, 255) < args[4]) { return; }
+
+		int i = Random[CinderSpawner](0, SPAWN_POINTS_PER_SPAWNER - 1);
+		double speed = frandom(args[2], args[3]);
+		Vector3 vel = ZScriptTools.GetTraceDirection(spawnPoints[i].angle, spawnPoints[i].pitch) * speed;
+
+		FSpawnParticleParams particleInfo;
+		particleInfo.color1 = "FFFFFF";
+		particleInfo.texture = TexMan.CheckForTexture("EMBRA0");
+		particleInfo.style = STYLE_Add;
+		particleInfo.flags = SPF_FULLBRIGHT;
+		particleInfo.lifetime = int(floor(spawnPoints[i].distance / speed));
+		particleInfo.size = 2.56;
+		particleInfo.pos = spawnPoints[i].worldPos;
+		particleInfo.vel = vel;
+		particleInfo.startalpha = 0.8;
+		Level.SpawnParticle(particleInfo);
 	}
-	
+
+	void SetupSpawnPoints() {
+		for (int i = 0; i < SPAWN_POINTS_PER_SPAWNER; i++) {
+			do { // So that "continue" can be used to try again
+				Vector3 offset = (
+					frandom(-args[0],args[0]),
+					frandom(-args[0],args[0]),
+					random(0,args[1]));
+				Vector3 vel = (
+					frandom(args[2],args[3]),
+					0,
+					frandom(-args[2],args[2]));
+
+				// Rotate vel
+				{
+					double angle = Angle + frandom(-4, 4);
+					double c = cos(angle);
+					double s = sin(angle);
+					double speed = vel.x;
+					vel.x = speed * c;
+					vel.y = speed * s;
+				}
+				// Calculate absolute spawn position
+				Vector3 spawnPos = Vec3Offset(offset.x, offset.y, offset.z);
+
+				Sector spawnSector = Level.PointInSector(spawnPos.XY);
+				if (!SnowSpawner.SpawnPointValid(spawnSector, ceilingpic)) {
+					continue;
+				}
+				spawnPos.Z = max(spawnPos.Z, spawnSector.LowestFloorAt(spawnPos.XY));
+
+				// Use a hitscan to find the distance to the nearest obstacle
+				vel = vel.Unit();
+				BoASolidSurfaceFinderTracer finder = new("BoASolidSurfaceFinderTracer");
+				finder.Trace(spawnPos, spawnSector, vel, 10000.0, TRACE_HitSky);
+
+				// Set up spawn point
+				spawnPoints[i].worldPos = spawnPos;
+				[spawnPoints[i].angle, spawnPoints[i].pitch] = ZScriptTools.AnglesFromDirection(vel);
+				/* // ========== Test start
+				Vector3 dirbo = ZScriptTools.GetTraceDirection(spawnPoints[i].angle, spawnPoints[i].pitch);
+				Console.Printf("dirbo: %.3f %.3f %.3f, vel: %.3f %.3f %.3f", dirbo, vel);
+				if (dirbo dot vel < 0.9375) {
+					Console.Printf("ZScriptTools.AnglesFromDirection is broken!");
+				}
+				// ========== Test end */
+				spawnPoints[i].distance = finder.Results.Distance;
+			} while(false); // See lines 68 and 83
+		}
+	}
+
 	static void SpawnCinder(Actor a, Vector3 p = (4,64,1024), Vector3 v = (4,64,1024), double halfang = 180, int failchance = 160)
 	{
 		if (Random(0, 255) < failchance) { return; }
