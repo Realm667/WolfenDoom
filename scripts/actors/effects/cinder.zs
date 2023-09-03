@@ -162,20 +162,34 @@ class CinderSpawnerSky : SnowSpawner
 		Super.PostBeginPlay();
 
 		if (args[0] == 0) { args[0] = 128; }
+
+		SetupSpawnPoints();
 	}
 
 	override void SpawnEffect()
 	{
 		EffectSpawner.SpawnEffect();
 
-		double zoffset = 0;
-		if (manager) { zoffset = min(manager.particlez - pos.z, 0); }
 		if (Random(0, 255) < Args[1]) { return; }
-		
-		if (args[2]) { CinderSpawner.SpawnCinder(self, (frandom(-args[0],args[0]), 0, zoffset),
-				(frandom(-1.0,1.0),frandom(-1.0,1.0),frandom(-1.0,-3.0)), 180, args[1]); }
-		else { CinderSpawner.SpawnCinder(self, (frandom(-args[0],args[0]), frandom(-args[0], args[0]), zoffset),
-				(frandom(-1.0,1.0),frandom(-1.0,1.0),frandom(-1.0,-3.0)), 0, args[1]); }
+
+		TextureID cinder = TexMan.CheckForTexture("EMBRA0", TexMan.Type_Sprite);
+		double psize = 2.56; // Max of sprite width and height * FloatingCinder scale
+
+		int index = Random[SnowSpawner](0, SPAWN_POINTS_PER_SPAWNER - 1);
+		Vector3 vel = ZScriptTools.GetTraceDirection(spawnPoints[index].angle, spawnPoints[index].pitch) * FRandom(1, 3);
+		int lifetime = int(floor(spawnPoints[index].Distance / vel.Length())) + 2; // fall into floor
+
+		FSpawnParticleParams particleInfo;
+		particleInfo.color1 = "FFFFFF";
+		particleInfo.texture = cinder;
+		particleInfo.style = STYLE_Add;
+		particleInfo.flags = SPF_FULLBRIGHT;
+		particleInfo.lifetime = lifetime;
+		particleInfo.size = psize;
+		particleInfo.pos = spawnPoints[index].worldPos;
+		particleInfo.vel = vel;
+		particleInfo.startalpha = 1.0;
+		Level.SpawnParticle(particleInfo);
 	}
 }
 
