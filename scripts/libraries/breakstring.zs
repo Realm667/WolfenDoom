@@ -93,7 +93,7 @@ class BrokenString : Object
 
 			if (c != 0x0A) { word.AppendCharacter(c); } // Don't save line breaks as part of a word
 
-			if (c == 0x1C)
+			if (c == 0x1C) // TEXTCOLOR_ESCAPE
 			{
 				colorindex = i; // Remember the index of the color so that we can revert to the old color if the last space precededes the color change
 
@@ -153,7 +153,7 @@ class BrokenString : Object
 			*/
 
 			if (fnt.StringWidth(ZScriptTools.StripColorCodes(line)) + fnt.StringWidth(ZScriptTools.StripColorCodes(word)) + buttonwidth > maxwidth || c == 0x0A || c == 0)
-			{
+			{ // Text is longer than maxwidth or there is a line break
 				if ((c == 0x0A || c == 0) && fnt.StringWidth(ZScriptTools.StripColorCodes(line)) + fnt.StringWidth(ZScriptTools.StripColorCodes(word)) + buttonwidth < maxwidth)
 				{
 					line = line .. word;
@@ -163,14 +163,40 @@ class BrokenString : Object
 					lastcolor = currentcolor;
 				}
 
+				// Ported from this commit:
+				// https://github.com/ZDoom/GZDoom/commit/ccf46281df46d9b350efefd893d4844cac71bfe0
+				for (int pos = 0; pos < line.Length(); pos++)
+				{
+					if (line.ByteAt(pos) == 0x1C)
+					{
+						pos++;
+						if (pos)
+						{
+							if (line.ByteAt(pos) == 0x5B) // [
+							{ // Named colour
+								int cstart = pos;
+								while (line.ByteAt(pos) != 0x5D) // ]
+								{
+									pos++;
+								}
+								lastcolor = line.Mid(cstart, pos - cstart);
+							}
+							else
+							{
+								lastcolor = line.Mid(pos, 1);
+							}
+						}
+					}
+				}
+
 				String printcolor = currentcolor;				
 				if (colorindex > wordindex) { printcolor = lastcolor; } // Make sure the color change didn't happen after the last known space
 				printcolor = printcolor.length() > 1 ? "[" .. printcolor .. "]" : printcolor; // Handle named colors
 
 				if (brokenlines)
 				{
-					brokenlines.lines.Push(colorstring .. line);
 					colorstring = "\c" .. printcolor;
+					brokenlines.lines.Push(colorstring .. line);
 				}
 
 				output.AppendFormat("%s%c\c%s", line, 0x0A, printcolor);
