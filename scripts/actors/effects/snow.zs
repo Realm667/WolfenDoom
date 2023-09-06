@@ -82,7 +82,7 @@ class SnowSpawner : EffectSpawner
 				if (!SnowSpawner.SpawnPointValid(spawnSector, ceilingpic)) {
 					continue;
 				}
-				spawnPos.Z = min(spawnPos.Z, spawnSector.HighestCeilingAt(spawnPos.XY));
+				spawnPos.Z = min(spawnPos.Z, spawnSector.HighestCeilingAt(spawnPos.XY) - 2.0);
 
 				// Use a hitscan to find the distance to the nearest obstacle
 				BoASolidSurfaceFinderTracer finder = new("BoASolidSurfaceFinderTracer");
@@ -101,7 +101,8 @@ class SnowSpawner : EffectSpawner
 				}
 				// ========== Test end */
 				spawnPoints[i].distance = finder.Results.Distance;
-			} while(false); // See lines 63 and 77
+				break;
+			} while(true); // See lines 68 and 83
 		}
 	}
 

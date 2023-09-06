@@ -73,6 +73,12 @@ class CinderSpawner : EffectSpawner
 		Level.SpawnParticle(particleInfo);
 	}
 
+	static bool SpawnPointValid(Sector sec, TextureID floorpic) {
+		return (
+			sec &&
+			sec.GetTexture(Sector.floor) == floorpic);
+	}
+
 	void SetupSpawnPoints() {
 		for (int i = 0; i < SPAWN_POINTS_PER_SPAWNER; i++) {
 			do { // So that "continue" can be used to try again
@@ -98,10 +104,10 @@ class CinderSpawner : EffectSpawner
 				Vector3 spawnPos = Vec3Offset(offset.x, offset.y, offset.z);
 
 				Sector spawnSector = Level.PointInSector(spawnPos.XY);
-				if (!SnowSpawner.SpawnPointValid(spawnSector, ceilingpic)) {
+				if (!CinderSpawner.SpawnPointValid(spawnSector, floorpic)) {
 					continue;
 				}
-				spawnPos.Z = max(spawnPos.Z, spawnSector.LowestFloorAt(spawnPos.XY));
+				spawnPos.Z = max(spawnPos.Z, spawnSector.LowestFloorAt(spawnPos.XY) + 2.0);
 
 				// Use a hitscan to find the distance to the nearest obstacle
 				vel = vel.Unit();
@@ -119,7 +125,8 @@ class CinderSpawner : EffectSpawner
 				}
 				// ========== Test end */
 				spawnPoints[i].distance = finder.Results.Distance;
-			} while(false); // See lines 68 and 83
+				break;
+			} while(true); // See lines 83 and 108
 		}
 	}
 
