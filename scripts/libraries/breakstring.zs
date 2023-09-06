@@ -170,26 +170,23 @@ class BrokenString : Object
 					if (line.ByteAt(pos) == 0x1C)
 					{
 						pos++;
-						if (pos)
-						{
-							if (line.ByteAt(pos) == 0x5B) // [
-							{ // Named colour
-								int cstart = pos;
-								while (line.ByteAt(pos) != 0x5D) // ]
-								{
-									pos++;
-								}
-								lastcolor = line.Mid(cstart, pos - cstart);
-							}
-							else
+						if (line.ByteAt(pos) == 0x5B) // [
+						{ // Named colour
+							int cstart = pos + 1;
+							while (line.ByteAt(pos) != 0x5D) // ]
 							{
-								lastcolor = line.Mid(pos, 1);
+								pos++;
 							}
+							lastcolor = line.Mid(cstart, pos - cstart);
+						}
+						else
+						{ // Single-character colour
+							lastcolor = line.Mid(pos, 1);
 						}
 					}
 				}
 
-				String printcolor = currentcolor;				
+				String printcolor = currentcolor;
 				if (colorindex > wordindex) { printcolor = lastcolor; } // Make sure the color change didn't happen after the last known space
 				printcolor = printcolor.length() > 1 ? "[" .. printcolor .. "]" : printcolor; // Handle named colors
 
