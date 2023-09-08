@@ -165,23 +165,27 @@ class BrokenString : Object
 
 				// Ported from this commit:
 				// https://github.com/ZDoom/GZDoom/commit/ccf46281df46d9b350efefd893d4844cac71bfe0
-				for (int pos = 0; pos < line.Length(); pos++)
-				{
-					if (line.ByteAt(pos) == 0x1C)
+				if (brokenlines && brokenlines.Count() > 0) {
+					int prevLineIndex = brokenlines.Count() - 1;
+					String prevLine = brokenlines.lines[prevLineIndex];
+					for (int pos = 0; pos < prevLine.Length(); pos++)
 					{
-						pos++;
-						if (line.ByteAt(pos) == 0x5B) // [
-						{ // Named colour
-							int cstart = pos + 1;
-							while (line.ByteAt(pos) != 0x5D) // ]
-							{
-								pos++;
+						if (prevLine.ByteAt(pos) == 0x1C)
+						{
+							pos++;
+							if (prevLine.ByteAt(pos) == 0x5B) // [
+							{ // Named colour
+								int cstart = pos + 1;
+								while (prevLine.ByteAt(pos) != 0x5D) // ]
+								{
+									pos++;
+								}
+								lastcolor = prevLine.Mid(cstart, pos - cstart);
 							}
-							lastcolor = line.Mid(cstart, pos - cstart);
-						}
-						else
-						{ // Single-character colour
-							lastcolor = line.Mid(pos, 1);
+							else
+							{ // Single-character colour
+								lastcolor = prevLine.Mid(pos, 1);
+							}
 						}
 					}
 				}
