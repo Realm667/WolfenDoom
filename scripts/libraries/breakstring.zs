@@ -83,9 +83,9 @@ class BrokenString : Object
 		if (!input.length()) { return "", brokenlines; }
 		input = StringTable.Localize(input, false);
 
-		int c = -1, colorindex, wordindex;
+		int c = -1, colorindex, wordindex, wordcolors;
 		String output;
-		String currentcolor = defaultcolor, prevLineLastColor = defaultcolor;
+		String currentcolor = defaultcolor, wordstartcolor = defaultcolor, prevLineLastColor = defaultcolor;
 
 		int i = 0;
 		String line = "", word = "";
@@ -131,8 +131,13 @@ class BrokenString : Object
 				// Remember the previous color in case the string gets cut before this point
 				if (currentcolor != newcolor)
 				{
+					if (!wordcolors) {
+						wordstartcolor = currentcolor;
+					}
 					currentcolor = newcolor;
 				}
+
+				wordcolors += 1;
 
 				continue;
 			}
@@ -180,7 +185,9 @@ class BrokenString : Object
 
 					String printcolor = GetPrintColor(line, prevLineLastColor);
 
-					prevLineLastColor = currentcolor;
+					// Is the color code within the word?
+					prevLineLastColor = colorindex > wordindex ?
+						wordstartcolor : currentcolor;
 
 					if (brokenlines)
 					{
@@ -196,6 +203,7 @@ class BrokenString : Object
 				{
 					line = line .. word;
 					wordindex = i;
+					wordcolors = 0;
 					word = "";
 				}
 			}
