@@ -131,6 +131,8 @@ class BrokenString : Object
 				// Remember the previous color in case the string gets cut before this point
 				if (currentcolor != newcolor)
 				{
+					// The current value of word at this point may be on the
+					// next line.
 					if (!wordcolors) {
 						wordstartcolor = currentcolor;
 					}
