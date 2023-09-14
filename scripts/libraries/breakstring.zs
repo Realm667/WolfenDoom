@@ -243,7 +243,7 @@ class BrokenString : Object
 					brokenlines.lines.Push(word);
 				}
 			}
-			output.AppendFormat("%s", word);
+			output.AppendFormat("%s%s", line, word);
 		}
 
 		return output, brokenlines;
