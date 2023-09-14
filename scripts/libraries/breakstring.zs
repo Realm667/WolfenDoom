@@ -83,7 +83,8 @@ class BrokenString : Object
 		if (!input.length()) { return "", brokenlines; }
 		input = StringTable.Localize(input, false);
 
-		int c = -1, colorindex, wordindex, wordcolors;
+		bool wordcolors = false;
+		int c = -1, colorindex, wordindex;
 		String output;
 		String currentcolor = defaultcolor, wordstartcolor = defaultcolor, prevLineLastColor = defaultcolor;
 
@@ -139,7 +140,7 @@ class BrokenString : Object
 					currentcolor = newcolor;
 				}
 
-				wordcolors += 1;
+				wordcolors = true;
 
 				continue;
 			}
@@ -205,7 +206,7 @@ class BrokenString : Object
 				{
 					line = line .. word;
 					wordindex = i;
-					wordcolors = 0;
+					wordcolors = false;
 					word = "";
 				}
 			}
@@ -223,10 +224,12 @@ class BrokenString : Object
 			bool wordOverflow = totalwidth > maxwidth;
 			String printcolor = "";
 
-			if (wordOverflow && brokenlines) {
+			if (wordOverflow) {
+				String lastwordcolor = colorindex > wordindex ?
+					wordstartcolor : currentcolor;
 				// word is on its own line, so add it later, so it doesn't
 				// appear above the second last line
-				printcolor = GetPrintColor(word, prevLineLastColor);
+				printcolor = GetPrintColor(word, lastwordcolor);
 				word = printcolor .. word;
 			} else {
 				// Last line starts before last word
