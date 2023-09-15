@@ -179,10 +179,12 @@ class BrokenString : Object
 				);
 				if (totalwidth > maxwidth || c == 0x0A || c == 0)
 				{ // Text is longer than maxwidth or there is a line break
-					if ((c == 0x0A || c == 0) && totalwidth < maxwidth)
+					if ((maxwidth > 0 && totalwidth > maxwidth && line == "") ||
+						((c == 0x0A || c == 0) && totalwidth < maxwidth))
 					{
 						line = line .. word;
 						wordindex = i;
+						wordcolors = false;
 						word = "";
 					}
 
