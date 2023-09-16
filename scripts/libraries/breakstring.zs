@@ -59,19 +59,6 @@ class BrokenString : Object
 		return newobj;
 	}
 
-	private static String GetPrintColor(String text, String colorToUse)
-	{
-		String printcolor = "";
-		if (text.Left(1) != "\c") {
-			printcolor = colorToUse;
-			printcolor = printcolor.Length() > 1 ?
-				"[" .. printcolor .. "]" :
-				printcolor; // Handle named colors
-			printcolor = "\c" .. printcolor;
-		}
-		return printcolor;
-	}
-
 	// ZScript implementation of similar funtionality to V_BreakLines.
 	//  Some logic taken from https://github.com/coelckers/gzdoom/blob/master/src/common/fonts/v_text.cpp
 	ui static String, BrokenString BreakString(String input, int maxwidth, bool flow = false, String defaultcolor = "L", Font fnt = null)
@@ -83,10 +70,11 @@ class BrokenString : Object
 		if (!input.length()) { return "", brokenlines; }
 		input = StringTable.Localize(input, false);
 
-		bool wordcolors = false;
 		int c = -1, colorindex, wordindex;
+		bool wordcolors;
 		String output;
-		String currentcolor = defaultcolor, wordstartcolor = defaultcolor, prevLineLastColor = defaultcolor;
+		String currentcolor = defaultcolor, wordstartcolor = defaultcolor;
+		String colorstring = "\c" .. (defaultcolor.length() > 1 ? "[" .. defaultcolor .. "]" : defaultcolor);
 
 		int i = 0;
 		String line = "", word = "";
@@ -132,9 +120,10 @@ class BrokenString : Object
 				// Remember the previous color in case the string gets cut before this point
 				if (currentcolor != newcolor)
 				{
-					// The current value of word at this point may be on the
+					// At this point, the current value of word may be on the
 					// next line.
-					if (!wordcolors) {
+					if (!wordcolors)
+					{
 						wordstartcolor = currentcolor;
 					}
 					currentcolor = newcolor;
@@ -170,82 +159,51 @@ class BrokenString : Object
 				}
 			}
 			*/
-
-			if (ZScriptTools.IsWhiteSpace(c)){
-				int totalwidth = (
-					fnt.StringWidth(ZScriptTools.StripColorCodes(line)) +
-					fnt.StringWidth(ZScriptTools.StripColorCodes(word)) +
-					buttonwidth
-				);
-				if (totalwidth > maxwidth || c == 0x0A || c == 0)
-				{ // Text is longer than maxwidth or there is a line break
-					if ((maxwidth > 0 && totalwidth > maxwidth && line == "") ||
-						((c == 0x0A || c == 0) && totalwidth < maxwidth))
-					{
-						line = line .. word;
-						wordindex = i;
-						wordcolors = false;
-						word = "";
-					}
-
-					String printcolor = GetPrintColor(line, prevLineLastColor);
-
-					// Is the color code within the word?
-					prevLineLastColor = colorindex > wordindex ?
-						wordstartcolor : currentcolor;
-
-					if (brokenlines)
-					{
-						brokenlines.lines.Push(printcolor .. line);
-					}
-
-					output.AppendFormat("%s%c\c%s", line, 0x0A, printcolor);
-
-					line = "";
-					buttonwidth = 0;
-				}
-				else
+			int totalwidth = (
+				fnt.StringWidth(ZScriptTools.StripColorCodes(line)) +
+				fnt.StringWidth(ZScriptTools.StripColorCodes(word)) +
+				buttonwidth);
+			if (totalwidth > maxwidth || c == 0x0A || c == 0)
+			{
+				if ((c == 0x0A || c == 0) && totalwidth < maxwidth)
 				{
 					line = line .. word;
 					wordindex = i;
 					wordcolors = false;
 					word = "";
+
+					wordstartcolor = currentcolor;
 				}
+
+				String printcolor = currentcolor;
+				// Account for color changes in the middle of a word
+				if (colorindex > wordindex) { printcolor = wordstartcolor; }
+				printcolor = (printcolor.length() > 1 ? "[" .. printcolor .. "]" : printcolor); // Handle named colors
+
+				if (brokenlines)
+				{
+					brokenlines.lines.Push(colorstring .. line);
+					colorstring = "\c" .. printcolor;
+				}
+
+				output.AppendFormat("%s%c\c%s", line, 0x0A, printcolor);
+
+				line = "";
+				buttonwidth = 0;
+			}
+			else if (ZScriptTools.IsWhiteSpace(c))
+			{
+				line = line .. word;
+				wordindex = i;
+				wordcolors = false;
+				word = "";
 			}
 		}
 
-		// Append the last word and line to the text
-		if (line.length() || word.length())
+		if (word.length())
 		{
-			// Calculate total width of line
-			int totalwidth = (
-				fnt.StringWidth(ZScriptTools.StripColorCodes(line)) +
-				fnt.StringWidth(ZScriptTools.StripColorCodes(word)) +
-				buttonwidth
-			);
-			bool wordOverflow = totalwidth > maxwidth;
-			String printcolor = "";
-
-			if (wordOverflow) {
-				String lastwordcolor = colorindex > wordindex ?
-					wordstartcolor : currentcolor;
-				// word is on its own line, so add it later, so it doesn't
-				// appear above the second last line
-				printcolor = GetPrintColor(word, lastwordcolor);
-				word = printcolor .. word;
-			} else {
-				// Last line starts before last word
-				line.AppendFormat("%s", word);
-			}
-
-			printcolor = GetPrintColor(line, prevLineLastColor);
-			if (brokenlines) {
-				brokenlines.lines.Push(printcolor .. line);
-				if (wordOverflow) {
-					brokenlines.lines.Push(word);
-				}
-			}
-			output.AppendFormat("%s%s", line, word);
+			if (brokenlines) { brokenlines.lines.Push(colorstring .. word); }
+			output.AppendFormat("%s", word);
 		}
 
 		return output, brokenlines;
