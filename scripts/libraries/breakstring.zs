@@ -165,9 +165,16 @@ class BrokenString : Object
 				buttonwidth);
 			if (totalwidth > maxwidth || c == 0x0A || c == 0)
 			{
-				if ((c == 0x0A || c == 0) && totalwidth < maxwidth)
+				if (((maxwidth > 0 && line == "") ||
+					(c == 0x0A || c == 0) && totalwidth < maxwidth))
 				{
+					int nextChar = input.GetNextCodePoint(i);
 					line = line .. word;
+					// Don't put a dash in front of a space or the end.
+					if (nextChar && c && c != 0x0A && !ZScriptTools.IsWhiteSpace(nextChar))
+					{
+						line = line .. "-";
+					}
 					wordindex = i;
 					wordcolors = false;
 					word = "";
