@@ -45,6 +45,7 @@ version "4.7.1"
 #include "scripts/eventhandlers/Tracker.zs"
 #include "scripts/eventhandlers/PickupSpecialFix.zs"
 #include "scripts/eventhandlers/checkpoints.zs"			// Co-op checkpoints
+#include "scripts/eventhandlers/LocalizedTextures.zs"
 
 // Status Bar
 #include "scripts/BoAStatusBar.zs"
