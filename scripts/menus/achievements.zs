@@ -156,10 +156,29 @@ class AchievementSummary : BoAMenu
 		if (lines.Count() > 1)
 		{
 			int last = 0x20;
+			// GetNextCodePoint searches by byte, not by codepoint, and a lot
+			// of UTF-8 characters are composed of multiple bytes (For example,
+			// the Cyrillic alphabet, accented Latin alphabet characters, etc.).
+			// lastpos will equal pos if the character takes more than one byte,
+			// so use minus as a subtractor to account for multi-byte UTF-8
+			// characters.
+			int pos = shorttitle.CodePointCount() - 1;
+			int lastpos = pos;
+			int minus = 1;
 			while (titlefont.StringWidth(shorttitle) > titlewidth - titlefont.StringWidth("...") || last != 0x20)
 			{
 				shorttitle.DeleteLastCharacter();
-				last = shorttitle.GetNextCodePoint(shorttitle.CodePointCount() - 1);
+				lastpos = pos;
+				[last, pos] = shorttitle.GetNextCodePoint(pos);
+				if (lastpos == pos)
+				{
+					minus += 1;
+					pos -= minus;
+				}
+				else
+				{
+					minus = 1;
+				}
 			}
 
 			shorttitle = shorttitle .. "...";

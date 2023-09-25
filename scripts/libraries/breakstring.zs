@@ -94,6 +94,8 @@ class BrokenString : Object
 
 		bool endlinebreak = false; // Line break before the last word?
 
+		// bool debugme = input == "\cFТемпоральная одиссея 2044 года";
+
 		if (flow) // Flow the text to fill most of the lines that it would take up at the the passed-in maxwidth value
 		{
 			double w = fnt.StringWidth(input);
@@ -260,6 +262,10 @@ class BrokenString : Object
 			}
 		}
 
+		/* if (debugme && brokenlines)
+		{
+			Console.Printf("Number of lines: %d", brokenlines.lines.Size());
+		} */
 		return output, brokenlines;
 	}
 }
