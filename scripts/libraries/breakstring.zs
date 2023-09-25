@@ -92,6 +92,8 @@ class BrokenString : Object
 		String line = "", word = "";
 		int buttonwidth;
 
+		bool endlinebreak = false; // Line break before the last word?
+
 		if (flow) // Flow the text to fill most of the lines that it would take up at the the passed-in maxwidth value
 		{
 			double w = fnt.StringWidth(input);
@@ -99,6 +101,13 @@ class BrokenString : Object
 
 			maxwidth = int(min(fnt.StringWidth(input) * 1.25 / linecount, maxwidth));
 		}
+
+		/* if (debugme)
+		{
+			// Write debug info in CSV format, part 1
+			Console.Printf("==========");
+			Console.Printf("i,c,totalwidth,maxwidth,line,word");
+		} */
 
 		while (c != 0)
 		{
@@ -171,81 +180,84 @@ class BrokenString : Object
 			}
 			*/
 
-			if (ZScriptTools.IsWhiteSpace(c)){
+			if (c == 0 || ZScriptTools.IsWhiteSpace(c)){
 				int totalwidth = (
 					fnt.StringWidth(ZScriptTools.StripColorCodes(line)) +
 					fnt.StringWidth(ZScriptTools.StripColorCodes(word)) +
 					buttonwidth
 				);
-				if (totalwidth > maxwidth || c == 0x0A || c == 0)
-				{ // Text is longer than maxwidth or there is a line break
-					if ((maxwidth > 0 && line == "") ||
-						((c == 0x0A || c == 0) && totalwidth < maxwidth))
-					{
-						line = line .. word;
-						wordindex = i;
-						wordcolors = false;
-						word = "";
-					}
 
-					String printcolor = GetPrintColor(line, prevLineLastColor);
+				/* if (debugme) {
+					// Write debug info in CSV format, part 2
+					// Console.Printf("i,c,totalwidth,maxwidth,line,word");
+					Console.Printf("%d,%02x,%d,%d,%s,%s", i, c, totalwidth, maxwidth, line, word);
+				} */
 
-					// Is the color code within the word?
+				// What if there's a line break when maxwidth is 0?
+				if (endlinebreak || maxwidth > 0 && totalwidth > maxwidth)
+				{
+					// Put word on a new line if there's a line break OR the
+					// text overflows the maxwidth.
+
+					// Get the colour
+					String printcolor = line != "" ?
+						GetPrintColor(line, prevLineLastColor) : "";
+
+					// Use wordstartcolor if a colour code occurs in the middle
+					// of a word. Otherwise, use currentcolor.
 					prevLineLastColor = colorindex > wordindex ?
 						wordstartcolor : currentcolor;
 
+					// Add the line to the output
 					if (brokenlines)
 					{
 						brokenlines.lines.Push(printcolor .. line);
 					}
+					output.AppendFormat("%s%s", printcolor, line);
 
-					output.AppendFormat("%s%c\c%s", line, 0x0A, printcolor);
-
-					line = "";
+					// Set line to word, and reset word
+					line = word;
+					word = "";
 					buttonwidth = 0;
+					endlinebreak = false;
 				}
 				else
 				{
+					// Add word to line, and reset word.
+					// Also, if maxwidth is 0, this code will run and add the
+					// word to the line regardless.
 					line = line .. word;
-					wordindex = i;
-					wordcolors = false;
 					word = "";
 				}
-			}
-		}
 
-		// Append the last word and line to the text
-		if (line.length() || word.length())
-		{
-			// Calculate total width of line
-			int totalwidth = (
-				fnt.StringWidth(ZScriptTools.StripColorCodes(line)) +
-				fnt.StringWidth(ZScriptTools.StripColorCodes(word)) +
-				buttonwidth
-			);
-			bool wordOverflow = totalwidth > maxwidth;
-			String printcolor = "";
-
-			if (wordOverflow) {
-				String lastwordcolor = colorindex > wordindex ?
-					wordstartcolor : currentcolor;
-				// word is on its own line, so add it later, so it doesn't
-				// appear above the second last line
-				printcolor = GetPrintColor(word, lastwordcolor);
-				word = printcolor .. word;
-			} else {
-				// Last line starts before last word
-				line.AppendFormat("%s", word);
-			}
-
-			printcolor = GetPrintColor(line, prevLineLastColor);
-			if (brokenlines) {
-				brokenlines.lines.Push(printcolor .. line);
-				if (wordOverflow) {
-					brokenlines.lines.Push(word);
+				if (c == 0x0A)
+				{
+					// The character pointer encounters line breaks early, so
+					// handle them later.
+					endlinebreak = true;
 				}
+				else if (c == 0)
+				{ // End of input; Add the last line to the output.
+
+					// Get the colour
+					String printcolor = line != "" ?
+						GetPrintColor(line, prevLineLastColor) : "";
+
+					// Use wordstartcolor if a colour code occurs in the middle
+					// of a word. Otherwise, use currentcolor.
+					prevLineLastColor = colorindex > wordindex ?
+						wordstartcolor : currentcolor;
+
+					// Add the line to the output
+					if (brokenlines && line != "")
+					{
+						brokenlines.lines.Push(printcolor .. line);
+					}
+					output.AppendFormat("%s%s", printcolor, line);
+				}
+				wordindex = i;
+				wordcolors = false;
 			}
-			output.AppendFormat("%s%s", line, word);
 		}
 
 		return output, brokenlines;
