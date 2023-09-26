@@ -192,22 +192,33 @@ class BrokenString : Object
 				/* if (debugme) {
 					// Write debug info in CSV format, part 2
 					int dpos = 0, dchr;
-					String lquote = "", wquote = "";
+					String lquote = "", wquote = "", lline = "", wword = "";
 					do {
 						[dchr, dpos] = line.GetNextCodePoint(dpos);
+						lline.AppendCharacter(dchr);
 						if (dchr == 0x2C) { // comma
 							lquote = "\"";
+						} else if (dchr == 0x22) { // double-quote
+							// This will double the quotes so they don't break
+							// CSV double-quoted strings
+							lquote = "\"";
+							lline.AppendCharacter(dchr);
 						}
 					} while(dchr != 0);
 					dpos = 0;
 					do {
 						[dchr, dpos] = word.GetNextCodePoint(dpos);
+						wword.AppendCharacter(dchr);
 						if (dchr == 0x2C) { // comma
 							wquote = "\"";
+						} else if (dchr == 0x22) { // double-quote
+							wquote = "\"";
+							wword.AppendCharacter(dchr);
 						}
 					} while(dchr != 0);
+					dpos = 0;
 					// Console.Printf("i,c,totalwidth,maxwidth,line,word");
-					Console.Printf("%d,%02x,%d,%d,%s%s%s,%s%s%s", i, c, totalwidth, maxwidth, lquote, line, lquote, wquote, word, wquote);
+					Console.Printf("%d,%02x,%d,%d,%s%s%s,%s%s%s", i, c, totalwidth, maxwidth, lquote, lline, lquote, wquote, wword, wquote);
 				} */
 
 				// What if there's a line break when maxwidth is 0?
