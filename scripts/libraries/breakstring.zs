@@ -94,7 +94,7 @@ class BrokenString : Object
 
 		bool endlinebreak = false; // Line break before the last word?
 
-		// bool debugme = input == "\cFТемпоральная одиссея 2044 года";
+		// bool debugme = input == "\cFSpam, spam, spam, quicksaves, and spam";
 
 		if (flow) // Flow the text to fill most of the lines that it would take up at the the passed-in maxwidth value
 		{
@@ -191,8 +191,23 @@ class BrokenString : Object
 
 				/* if (debugme) {
 					// Write debug info in CSV format, part 2
+					int dpos = 0, dchr;
+					String lquote = "", wquote = "";
+					do {
+						[dchr, dpos] = line.GetNextCodePoint(dpos);
+						if (dchr == 0x2C) { // comma
+							lquote = "\"";
+						}
+					} while(dchr != 0);
+					dpos = 0;
+					do {
+						[dchr, dpos] = word.GetNextCodePoint(dpos);
+						if (dchr == 0x2C) { // comma
+							wquote = "\"";
+						}
+					} while(dchr != 0);
 					// Console.Printf("i,c,totalwidth,maxwidth,line,word");
-					Console.Printf("%d,%02x,%d,%d,%s,%s", i, c, totalwidth, maxwidth, line, word);
+					Console.Printf("%d,%02x,%d,%d,%s%s%s,%s%s%s", i, c, totalwidth, maxwidth, lquote, line, lquote, wquote, word, wquote);
 				} */
 
 				// What if there's a line break when maxwidth is 0?

@@ -331,7 +331,7 @@ class AchievementSummary : BoAMenu
 
 		int lineheight;
 
-		[title, lines] = BrokenString.BreakString(title, int((drawright - Screen.GetWidth() / 2 - spacing * 2 * scale) / textscale), false, "L", textfont);
+		[title, lines] = BrokenString.BreakString(title, int((drawright - Screen.GetWidth() / 2 - spacing * 2 * scale) / textscale), false, "L", titlefont);
 		lineheight = int(titlefont.GetHeight() * textscale);
 
 		for (int l = 0; l < lines.Count(); l++)
