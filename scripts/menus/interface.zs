@@ -223,6 +223,9 @@ class CombinationSafe : BoAMenu
 
 		hintpos = (320, 480 - hintlineheight * (hintlines.Count() + 0.5));
 		hintpos = Screen.VirtualToRealCoords(hintpos, (screen.GetWidth(), screen.GetHeight()), (640, 480));
+		int uiscale = BoAStatusBar.GetUIScale(hud_scale);
+		hintpos.x /= uiscale;
+		hintpos.y /= uiscale;
 	}
 
 	override void Drawer()

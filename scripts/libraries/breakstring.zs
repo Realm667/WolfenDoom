@@ -94,7 +94,7 @@ class BrokenString : Object
 
 		bool endlinebreak = false; // Line break before the last word?
 
-		// bool debugme = input == "\cFSpam, spam, spam, quicksaves, and spam";
+		// bool debugme = input == "\cCRotate alternately as red arrows indicate using\n\cU[[key:LeftRightArrows]]\cC to values of the safe combination.\n\cCThen press \cU[[key:Enter]]\cC to open the safe.";
 
 		if (flow) // Flow the text to fill most of the lines that it would take up at the the passed-in maxwidth value
 		{
@@ -195,7 +195,11 @@ class BrokenString : Object
 					String lquote = "", wquote = "", lline = "", wword = "";
 					do {
 						[dchr, dpos] = line.GetNextCodePoint(dpos);
-						lline.AppendCharacter(dchr);
+						if (dchr == 0x1C) { // TEXTCOLOR_ESCAPE
+							lline.AppendFormat("%s", "\\c");
+						} else {
+							lline.AppendCharacter(dchr);
+						}
 						if (dchr == 0x2C) { // comma
 							lquote = "\"";
 						} else if (dchr == 0x22) { // double-quote
@@ -208,7 +212,11 @@ class BrokenString : Object
 					dpos = 0;
 					do {
 						[dchr, dpos] = word.GetNextCodePoint(dpos);
-						wword.AppendCharacter(dchr);
+						if (dchr == 0x1C) {
+							wword.AppendFormat("%s", "\\c");
+						} else {
+							wword.AppendCharacter(dchr);
+						}
 						if (dchr == 0x2C) { // comma
 							wquote = "\"";
 						} else if (dchr == 0x22) { // double-quote
