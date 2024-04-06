@@ -83,8 +83,35 @@ class SkyViewPointStatic : SkyViewPoint
 
 		if ((mo.tid == 0 && level.sectorPortals[0].mSkybox == null) || mo.args[3] > 0)
 		{
-			level.sectorPortals[0].mSkybox = mo;
-			level.sectorPortals[0].mDestination = mo.CurSector;
+//			level.sectorPortals[0].mSkybox = mo;
+//			level.sectorPortals[0].mDestination = mo.CurSector;
+
+			// Gross hack because the skybox field was made read-only to mods
+			// Spawn a skybox picker for every sky sector to change the skybox
+
+			if (!mo.tid) { mo.ChangeTID(level.FindUniqueTID()); }
+
+			for (int s = 0; s < level.sectors.Size(); s++)
+			{
+				let sec = level.sectors[s];
+				
+				if (
+					sec
+					 &&
+					(
+						sec.GetPortalType(sector.ceiling) == SectorPortal.TYPE_SKYVIEWPOINT ||
+						sec.GetPortalType(sector.floor) == SectorPortal.TYPE_SKYVIEWPOINT
+					)
+				)
+				{
+					Actor picker = Spawn("SkyPicker");
+					if (picker)
+					{
+						picker.CurSector = sec;
+						picker.args[0] = mo.tid;
+					}
+				}
+			}
 		}
 	}
 
