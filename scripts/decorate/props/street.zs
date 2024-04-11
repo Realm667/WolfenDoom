@@ -109,8 +109,9 @@ class BurningBarrelBoA : StreetBase
 	//$Category Props (BoA)/Street
 	//$Title Burning Barrel (Destroyable)
 	//$Color 3
-	Height 64;
+	Height 50;
 	Health 5;
+	Scale 0.7;
 	+DONTTHRUST
 	}
 	States
