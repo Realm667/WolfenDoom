@@ -65,7 +65,30 @@ class NaziWeapon : Weapon
 			BJKK A 1 Offset(40, 24);
 			BJKK A 1 Offset(24, 7);
 			BJKK A 1 Offset(6, 2) A_StartSound("knife/swing",CHAN_WEAPON);
-			BJKK B 2 Offset(4, 0) A_CustomPunch(int(8 * invoker.modifier), TRUE, CPF_NOTURN, "KickPuff", invoker.modifier ? 80 : 70); //CPF_NOTURN is added in order to avoid 3d actors to turn towards us like if they are autoaimed - I want to destroy a tank with kicks!
+			BJKK B 2 Offset(4, 0) {
+				A_CustomPunch(int(8 * invoker.modifier), TRUE, CPF_NOTURN, "KickPuff", invoker.modifier ? 80 : 70); //CPF_NOTURN is added in order to avoid 3d actors to turn towards us like if they are autoaimed - I want to destroy a tank with kicks!
+
+				if (invoker.owner && invoker.owner.player)
+				{
+					PlayerPawn p = PlayerPawn(invoker.owner);
+					if (!p) { return; }
+
+					FLineTraceData trace;
+					LineTrace(p.angle, p.UseRange, p.pitch, TRF_THRUACTORS, p.player.viewheight, 0.0, 0.0, trace);
+					Line AimLine = trace.HitLine;
+									
+					if (AimLine && AimLine.activation & SPAC_Use)
+					{
+						if (AimLine.special == 7) // PolyObj_DoorSwing
+						{
+							AimLine.args[1] *= 3; // Make it move fast
+							AimLine.args[3] = -1; // Make it stay open forever
+						}
+
+						AimLine.Activate(invoker.owner, 0, SPAC_Use); // Use the line...
+					}
+				}
+			}
 			BJKK A 1 Offset(6, 2) { bDontBlast = true; }
 			BJKK A 1 Offset(24, 7) { bDontBlast = false; } //KickPuff blast happens 3 tics after spawning
 			BJKK A 1 Offset(36, 20);
