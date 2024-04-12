@@ -117,7 +117,7 @@ class StealthBase : Actor
 			// Console.Printf("velmod %.3f", velmod);
 
 			// Increment sight time counter, scaled to how far away player is and how fast he's moving. Once the sight time counter reaches full, become alerted.
-			sighttime += (((Range - Distance3d(target)) / Range) * distWeight + velmod * speedWeight ) * min(1.0, 0.25 * (skill + 1));
+			sighttime += (((Range - Distance3d(target)) / Range) * distWeight + velmod * speedWeight ) * min(1.0, 0.25 * (G_SkillPropertyInt(SKILLP_ACSReturn) + 1));
 
 			if (master && !alert)
 			{  // Spawn the alert indicator

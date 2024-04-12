@@ -667,7 +667,7 @@ class InteractiveItem : PuzzleItem
 			icon = TexMan.CheckForTexture(ico, TexMan.Type_Any);
 		}
 
-		if (markertype.length() && G_SkillPropertyInt(SKILLP_ACSReturn) < 2)
+		if (markertype.length() && G_SkillPropertyInt(SKILLP_ACSReturn) < 3)
 		{
 			marker = Spawn(markertype, pos);
 			marker.master = self;
