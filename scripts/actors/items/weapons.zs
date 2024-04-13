@@ -73,10 +73,15 @@ class NaziWeapon : Weapon
 					PlayerPawn p = PlayerPawn(invoker.owner);
 					if (!p) { return; }
 
-					FLineTraceData trace;
-					LineTrace(p.angle, p.UseRange, p.pitch, TRF_THRUACTORS, p.player.viewheight, 0.0, 0.0, trace);
-					Line AimLine = trace.HitLine;
-									
+					BoAFindHitPointTracer kicktracer;
+					kicktracer = new("BoAFindHitPointTracer");
+
+					kicktracer.skipactor = p;
+					Vector3 tracedir = ZScriptTools.GetTraceDirection(p.angle, p.pitch);
+					kicktracer.Trace(pos + (0, 0, p.viewheight), p.CurSector, tracedir, p.UseRange, 0);
+
+					Line AimLine = kicktracer.Results.HitLine;
+
 					if (AimLine && AimLine.activation & SPAC_Use)
 					{
 						if (AimLine.special == 7) // PolyObj_DoorSwing
