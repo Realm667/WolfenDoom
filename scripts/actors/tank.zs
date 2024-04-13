@@ -38,10 +38,8 @@ class TankPlayer : PlayerPawn
 	double CrosshairDist;
 	int altrefire;
 	class<TankTreadsBase> treadsclass;
-	class<TankMorph> powerupclass;
 	class<TankPlayer> actorclass;
 	property TreadsClass: treadsclass;
-	property PowerupClass: powerupclass;
 	property ActorClass: actorclass;
 
 	Default
@@ -532,12 +530,18 @@ class TankPlayer : PlayerPawn
 		}
 		else { useholdtime = 0; }
 
-
 		if (useholdtime >= 35)
 		{
 			A_SetInventory("ShakeShaderControl", 1);
 			if (treads) {treads.usetimeout = 35; }
-			TakeInventory(powerupclass, 1);
+			
+			for (Inventory item = Inv; item;)
+			{
+				Inventory next = item.Inv;
+				let morph = PowerMorph(item);
+				if (morph) { morph.Destroy(); }
+				item = next;
+			}
 		}
 	}
 
@@ -588,7 +592,7 @@ class TankPlayer : PlayerPawn
 			}
 		}
 
-		// This call forces the player health to full Spawn Health, so we have to re-asjudt health after this point
+		// This call forces the player health to full Spawn Health, so we have to re-adjust health after this point
 		// Setting the third argument (force) to true ensures that all of the morph cleanup code runs even if the
 		// player spawn fails so that we can gracefully handle player location in the TankMorph powerup code.
 		bool ret = Super.UndoPlayerMorph(activator, unmorphflag, true); 
@@ -628,10 +632,41 @@ Class BoAFindHitPointTracer : LineTracer
 			if (Results.HitLine.flags & Line.ML_BLOCKING || Results.HitLine.flags & Line.ML_BLOCKEVERYTHING) { return TRACE_Stop; }
 			if (Results.HitTexture)
 			{
-				if (Results.Tier != TIER_Middle || Results.HitLine.flags & Line.ML_3DMIDTEX) // 3D Midtex check still isn't perfect...
+				if (Results.Tier != TIER_Middle) { return TRACE_Stop; }
+				else
 				{
-					return TRACE_Stop;
+					Line HitLine = Results.HitLine;
+					Side HitSide = HitLine.sidedef[Results.Side];
+					Vector3 HitPos = Results.HitPos;
+
+					if (HitSide)
+					{
+						TextureID tex = HitSide.GetTexture(Side.mid);
+
+						if (HitSide.flags & Side.WALLF_WRAP_MIDTEX || HitLine.flags & Line.ML_WRAP_MIDTEX) { return TRACE_Stop; } // If it's floor-to-ceiling, skip checks
+						else
+						{
+							double yoffset = HitSide.GetTextureYOffset(Side.mid);
+							Vector2 size = TexMan.GetScaledSize(tex);
+
+							if (HitLine.flags & Line.ML_DONTPEGBOTTOM) // Lower unpegged
+							{
+								if (HitPos.z > HitSide.sector.floorplane.ZAtPoint(HitPos.xy) + yoffset && HitPos.z < HitSide.sector.floorplane.ZAtPoint(HitPos.xy) + yoffset + size.y)
+								{
+									return TRACE_Stop;
+								}
+							}
+							else
+							{
+								if (HitPos.z > HitSide.sector.ceilingplane.ZAtPoint(HitPos.xy) + yoffset - size.y && HitPos.z < HitSide.sector.ceilingplane.ZAtPoint(HitPos.xy) + yoffset)
+								{
+									return TRACE_Stop;
+								}
+							}
+						}
+					}
 				}
+
 				return TRACE_Skip;
 			}
 			return TRACE_Skip;
@@ -672,8 +707,6 @@ class TankMorph : PowerMorph
 	double hexenarmorslots[5];
 	int premorphhealth;
 	double savepercent;
-	class<TankPlayer> actorclass;
-	property ActorClass: actorclass;
 
 	Default
 	{
@@ -734,40 +767,7 @@ class TankMorph : PowerMorph
 				if (tank.turretcamera) { tank.turretcamera.Destroy(); }
 				if (tank.povcamera) { tank.povcamera.Destroy(); }
 
-				// Restore pitch clamping, since this doesn't get reset otherwise
-				MorphedPlayer.MinPitch = -90;
-				MorphedPlayer.MaxPitch = 90;
-
 				if (tank.health <= 0) { tank.treads.SetStateLabel("Death"); }
-
-				// Reset the default inventory items (effects, shaders, etc.)
-				InventoryClearHandler.GiveDefaultInventory(MorphedPlayer.mo, true);
-
-				// Restore armor values
-				BasicArmor a = BasicArmor(MorphedPlayer.mo.FindInventory("BasicArmor"));
-				if (!a)
-				{
-					MorphedPlayer.mo.GiveInventory("BasicArmor", 0);
-					a = BasicArmor(MorphedPlayer.mo.FindInventory("BasicArmor"));
-				}
-
-				if (a)
-				{ 
-					a.amount = armor;
-					a.SavePercent = savepercent;
-				}
-
-				HexenArmor h = HexenArmor(MorphedPlayer.mo.FindInventory("HexenArmor"));
-				if (!h)
-				{
-					MorphedPlayer.mo.GiveInventory("HexenArmor", 0);
-					h = HexenArmor(MorphedPlayer.mo.FindInventory("HexenArmor"));
-				}
-
-				if (h)
-				{
-					for (int s = 0; s < 5; s++) { h.slots[s] = hexenarmorslots[s]; }
-				}
 
 				// Reposition the player so that it's not inside of the tank
 				Vector3 newpos = tank.pos + (0, 0, tank.height); // Dump the player on top of the body of the tank
@@ -805,6 +805,39 @@ class TankMorph : PowerMorph
 
 					MorphedPlayer.mo.SetOrigin(newpos, false);
 				}
+			}
+
+			// Restore pitch clamping, since this doesn't get reset otherwise
+			MorphedPlayer.MinPitch = -90;
+			MorphedPlayer.MaxPitch = 90;
+
+			// Reset the default inventory items (effects, shaders, etc.)
+			InventoryClearHandler.GiveDefaultInventory(MorphedPlayer.mo, true);
+
+			// Restore armor values
+			BasicArmor a = BasicArmor(MorphedPlayer.mo.FindInventory("BasicArmor"));
+			if (!a)
+			{
+				MorphedPlayer.mo.GiveInventory("BasicArmor", 0);
+				a = BasicArmor(MorphedPlayer.mo.FindInventory("BasicArmor"));
+			}
+
+			if (a)
+			{ 
+				a.amount = armor;
+				a.SavePercent = savepercent;
+			}
+
+			HexenArmor h = HexenArmor(MorphedPlayer.mo.FindInventory("HexenArmor"));
+			if (!h)
+			{
+				MorphedPlayer.mo.GiveInventory("HexenArmor", 0);
+				h = HexenArmor(MorphedPlayer.mo.FindInventory("HexenArmor"));
+			}
+
+			if (h)
+			{
+				for (int s = 0; s < 5; s++) { h.slots[s] = hexenarmorslots[s]; }
 			}
 
 			ResetInventoryBar();
@@ -872,9 +905,8 @@ class TankMorph : PowerMorph
 class Sherman: TankMorph
 {
 	default
-	{ //both are necessary, since we have to inherit from PowerMorph
+	{
 		PowerMorph.PlayerClass "ShermanPlayer";
-		TankMorph.ActorClass "ShermanPlayer";
 	}
 }
 
@@ -886,27 +918,24 @@ class ShermanPlayer: TankPlayer
 		Player.StartItem "Cannon75mm";
 		Player.WeaponSlot 1, "Cannon75mm";
 		TankPlayer.TreadsClass "US_Sherman";
-		TankPlayer.PowerupClass "Sherman";
 	}
 }
 
-class PanzerIVPlayer: ShermanPlayer
-{ //modders should inherit from TankPlayer directly
+class PanzerIV : TankMorph
+{
+	Default
+	{
+		PowerMorph.PlayerClass "PanzerIVPlayer";
+	}
+}
+
+class PanzerIVPlayer: TankPlayer
+{
 	default
 	{
 		Player.MorphWeapon "Cannon75mmKwK";
 		Player.StartItem "Cannon75mmKwK";
 		Player.WeaponSlot 1, "Cannon75mmKwK";
 		TankPlayer.TreadsClass "PanzerIVTreads";
-		TankPlayer.PowerupClass "PanzerIV";
-	}
-}
-
-class PanzerIV : Sherman //can also inherit directly from TankMorph
-{
-	Default
-	{
-		PowerMorph.PlayerClass "PanzerIVPlayer";
-		TankMorph.ActorClass "PanzerIVPlayer";
 	}
 }
