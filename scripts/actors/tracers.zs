@@ -771,6 +771,9 @@ class PlayerTracer : BulletTracer
 	{
 		MaxTargetRange 2048.0; // Used in P_SpawnPlayerMissile's P_LineAttack call to set range for auto-aiming
 		Species "PlayerFollower"; // By default, player bullets have PlayerFollower species
+		// If FastMonsters is enabled, GZDoom will set ALL actors' speeds to their FastSpeed,
+		// unless FastSpeed is negative.
+		FastSpeed -1;
 	}
 
 	override void PostBeginPlay()
