@@ -622,7 +622,6 @@ Class BoAFindHitPointTracer : LineTracer
 
 			return TRACE_Skip;
 		}
-		else if (Results.HitTexture) { return TRACE_Stop; }
 		else if (Results.HitType == TRACE_HitFloor || Results.HitType == TRACE_HitCeiling)
 		{
 			return TRACE_Stop;
@@ -630,7 +629,7 @@ Class BoAFindHitPointTracer : LineTracer
 		else if (Results.HitType == TRACE_HitWall)
 		{
 			if (Results.HitLine.flags & Line.ML_BLOCKING || Results.HitLine.flags & Line.ML_BLOCKEVERYTHING) { return TRACE_Stop; }
-			if (Results.HitTexture)
+			if (Results.HitTexture && Results.HitLine.alpha > 0.5)
 			{
 				if (Results.Tier != TIER_Middle) { return TRACE_Stop; }
 				else
@@ -646,8 +645,9 @@ Class BoAFindHitPointTracer : LineTracer
 						if (HitSide.flags & Side.WALLF_WRAP_MIDTEX || HitLine.flags & Line.ML_WRAP_MIDTEX) { return TRACE_Stop; } // If it's floor-to-ceiling, skip checks
 						else
 						{
-							double yoffset = HitSide.GetTextureYOffset(Side.mid);
-							Vector2 size = TexMan.GetScaledSize(tex);
+							double yscale = max(0.0001, HitSide.GetTextureYScale(Side.mid));
+							double yoffset = HitSide.GetTextureYOffset(Side.mid) / yscale;
+							Vector2 size = TexMan.GetScaledSize(tex) / yscale;
 
 							if (HitLine.flags & Line.ML_DONTPEGBOTTOM) // Lower unpegged
 							{
