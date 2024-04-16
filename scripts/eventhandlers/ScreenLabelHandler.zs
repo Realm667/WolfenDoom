@@ -314,8 +314,6 @@ class ScreenLabelHandler : EventHandler
 	{
 		if (!e.thing) { return; }
 
-		if (e.thing is "PlayerPawn") { AddItem("ScreenLabelItem", e.thing, "MP_MARK", "", 0x0, 0.8, LBL_ColorMarker); }
-
 		if (revar && revar.GetBool()) // Add additional markers only if special mode is engaged via CVar
 		{
 			bool destroyable = e.thing.bShootable && e.thing.health > 0 && !e.thing.bNoDamage && !e.Thing.bInvulnerable && e.thing.bSolid;
@@ -424,6 +422,14 @@ class ScreenLabelHandler : EventHandler
 					bool hit = ScreenLabelItems[i].mo.LineTrace(-spos.x, 512, -spos.y, 0, ScreenLabelItems[i].mo.height / 2, 16, 0, LOF);
 					if (hit && (!LOF.HitActor || LOF.HitActor != players[p].mo)) { ScreenLabelItems[i].draw[p] = false; }
 				}
+				else if (ScreenLabelItems[i].type == LBL_ColorMarker)
+				{
+					if (ScreenLabelItems[i].mo.health <= 0)
+					{
+						ScreenLabelItems[i].draw[p] = false;
+						ScreenLabelItems[i].drawalpha[p] = 0.0;
+					}
+				}
 
 				if (ScreenLabelItems[i].draw[p] && ScreenLabelItems[i].drawalpha[p] < 1.0) { ScreenLabelItems[i].drawalpha[p] = min(1.0, ScreenLabelItems[i].drawalpha[p] + 0.1); }
 				else if (!ScreenLabelItems[i].draw[p] && ScreenLabelItems[i].drawalpha[p] > 0.0) { ScreenLabelItems[i].drawalpha[p] = max(0.0, ScreenLabelItems[i].drawalpha[p] - 0.1); }
@@ -468,6 +474,16 @@ class ScreenLabelHandler : EventHandler
 				}
 			}
 		}
+	}
+
+	override void PlayerSpawned(PlayerEvent e)
+	{
+		AddItem("ScreenLabelItem", players[e.playernumber].mo, "MP_MARK", "", 0x0, 0.8, LBL_ColorMarker);
+	}
+
+	override void PlayerRespawned(PlayerEvent e)
+	{
+		AddItem("ScreenLabelItem", players[e.playernumber].mo, "MP_MARK", "", 0x0, 0.8, LBL_ColorMarker);
 	}
 
 	bool CheckLineTexture(Line ln, String texture)
