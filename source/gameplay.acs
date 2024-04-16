@@ -142,7 +142,7 @@ script "CLEAR INVENTORY"(void)
 	TakeActorInventory(0, "CutsceneEnabled", 1);
 }
 
-Script "QuickKick" (void)
+Script "QuickKick" (void) net
 {
 	If (
 		(CheckInventory("Stamina") < 30) ||
