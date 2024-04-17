@@ -553,25 +553,43 @@ class CountWidget : Widget
 			time = String.Format("%02i", BoAStatusBar(StatusBar).hour) .. ":" .. String.Format("%02i", BoAStatusBar(StatusBar).minute) .. ":" .. String.Format("%02i", BoAStatusBar(StatusBar).second);
 		}
 
+		if (showpartimes < 2) 
+		{
+			DrawToHud.Dim(0x0, 0.2 * alpha, int(pos.x - (margin[3] - 3)), int(pos.y + timey), int(size.x + (margin[3] + margin[1]) - 6), rowheight);
+			StatusBar.DrawString(BoAStatusBar(StatusBar).mHUDFont, time, (pos.x + 17, pos.y + timey + 1), alpha:alpha);
+			timey += rowheight;
+		}
+
 		if (showpartimes)
-		{ 
+		{
+			Font Symbols = Font.GetFont("Symbols");
+
 			DrawToHud.Dim(0x0, 0.2 * alpha, int(pos.x - (margin[3] - 3)), int(pos.y + timey), int(size.x + (margin[3] + margin[1]) - 6), rowheight);
 
 			int segments;
 			String partime;
 			[partime, segments] = CountWidget.TimeFormatted(level.partime, true, 3); // Format both times to the same segment width
 
-			StatusBar.DrawString(BoAStatusBar(StatusBar).mHUDFont, CountWidget.TimeFormatted(level.maptime, false, segments), (pos.x + size.x / 2 - 2, pos.y + timey + 1), StatusBar.DI_TEXT_ALIGN_RIGHT, alpha:alpha);
-			StatusBar.DrawString(BoAStatusBar(StatusBar).mHUDFont, String.Format("\c[Dark Gray]%s", "/"), (pos.x + size.x / 2, pos.y + timey + 1), StatusBar.DI_TEXT_ALIGN_CENTER, alpha:alpha);
-			StatusBar.DrawString(BoAStatusBar(StatusBar).mHUDFont, partime, (pos.x + size.x / 2 + 2, pos.y + timey + 1), 0, alpha:alpha);
+			StatusBar.DrawString(BoAStatusBar(StatusBar).mHUDFont, CountWidget.TimeFormatted(level.maptime, false, segments), (pos.x + 2, pos.y + timey + 1), StatusBar.DI_TEXT_ALIGN_LEFT, alpha:alpha);
+			DrawToHud.DrawText("🕒", (pos.x + size.x - 3 - HUDFont.StringWidth(partime), pos.y + timey + 1), Symbols, alpha, shade:Font.CR_GOLD, flags:ZScriptTools.STR_RIGHT);
 
-			if (showpartimes == 2) { return size; }
+			double paralpha = alpha;
+			int deltatics = level.partime * TICRATE - level.totaltime;
+			int delta = Thinker.Tics2Seconds(deltatics);
 
-			timey += rowheight;
+			if (delta < 0)
+			{
+				partime = String.Format("\c[Red]%s", partime);
+				paralpha = alpha;
+			}
+			else if (delta < 60)
+			{
+				partime = String.Format("\c[Gold]%s", partime);
+				paralpha = (deltatics / 14) % 2;
+			}
+			
+			StatusBar.DrawString(BoAStatusBar(StatusBar).mHUDFont, partime, (pos.x + size.x - 2, pos.y + timey + 1), StatusBar.DI_TEXT_ALIGN_RIGHT, alpha:paralpha);
 		}
-
-		DrawToHud.Dim(0x0, 0.2 * alpha, int(pos.x - (margin[3] - 3)), int(pos.y + timey), int(size.x + (margin[3] + margin[1]) - 6), rowheight);
-		StatusBar.DrawString(BoAStatusBar(StatusBar).mHUDFont, time, (pos.x + 17, pos.y + timey + 1), alpha:alpha);
 
 		return size;
 	}
