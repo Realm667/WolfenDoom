@@ -573,6 +573,8 @@ class CountWidget : Widget
 			StatusBar.DrawString(BoAStatusBar(StatusBar).mHUDFont, CountWidget.TimeFormatted(level.maptime, false, segments), (pos.x + 2, pos.y + timey + 1), StatusBar.DI_TEXT_ALIGN_LEFT, alpha:alpha);
 			DrawToHud.DrawText("🕒", (pos.x + size.x - 3 - HUDFont.StringWidth(partime), pos.y + timey + 1), Symbols, alpha, shade:Font.CR_GOLD, flags:ZScriptTools.STR_RIGHT);
 
+			StatusBar.DrawString(BoAStatusBar(StatusBar).mHUDFont, partime, (pos.x + size.x - 2, pos.y + timey + 1), StatusBar.DI_TEXT_ALIGN_RIGHT, alpha:alpha);
+
 			double paralpha = alpha;
 			int deltatics = level.partime * TICRATE - level.totaltime;
 			int delta = Thinker.Tics2Seconds(deltatics);
@@ -580,15 +582,18 @@ class CountWidget : Widget
 			if (delta < 0)
 			{
 				partime = String.Format("\c[Red]%s", partime);
-				paralpha = alpha;
 			}
 			else if (delta < 60)
 			{
 				partime = String.Format("\c[Gold]%s", partime);
-				paralpha = (deltatics / 14) % 2;
+				paralpha *= 0.5 + sin(deltatics * clamp(400.0 / delta, 5.0, 15.0)) / 2;
+				console.printfex(print_nonotify, "%f", paralpha);
 			}
-			
-			StatusBar.DrawString(BoAStatusBar(StatusBar).mHUDFont, partime, (pos.x + size.x - 2, pos.y + timey + 1), StatusBar.DI_TEXT_ALIGN_RIGHT, alpha:paralpha);
+
+			if (delta < 60)
+			{
+				StatusBar.DrawString(BoAStatusBar(StatusBar).mHUDFont, partime, (pos.x + size.x - 2, pos.y + timey + 1), StatusBar.DI_TEXT_ALIGN_RIGHT, alpha:paralpha);
+			}
 		}
 
 		return size;
