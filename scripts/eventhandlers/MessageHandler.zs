@@ -66,7 +66,7 @@ class MessageBase : Thinker
 	ui String brokentext;
 	transient ui BrokenString lines;
 
-	static MessageBase Init(Actor mo, String msgname, String text, int intime, int outtime, class<MessageBase> type = "MessageBase", int priority = 0, int flags = 0)
+	static MessageBase Init(Actor mo, String msgname, String text, int intime, int outtime, class<MessageBase> type = "MessageBase", int priority = 64, int flags = 0)
 	{
 		let handler = MessageHandler.Get();
 		if (!handler) { return null; }
@@ -584,7 +584,7 @@ class HintMessage : MessageBase
 	ui int lineheight;
 	transient ui int lastblocks;
 
-	static int Init(Actor mo, String text, String command, int priority = 0)
+	static int Init(Actor mo, String text, String command, int priority = 64)
 	{
 		HintMessage msg = HintMessage(MessageBase.Init(mo, text, text, 20, 20, "HintMessage", priority, (multiplayer && !deathmatch) ? MSG_ALLPLAYERS : 0));
 		if (msg)
@@ -662,26 +662,10 @@ class HintMessage : MessageBase
 		if (fullscreen)
 		{
 			pos.y -= destsize.y * handler.bottomoffset + 12;
-
-			if (player.mo.FindInventory("CutsceneEnabled"))
-			{
-				pos.y -= texth / 2;
-			}
-			else
-			{
-				ThinkerIterator it = ThinkerIterator.Create("StealthBase", Thinker.STAT_DEFAULT - 2);
-				if (StealthBase(it.Next())) { pos.y -= 52; }
-			}
 		}
 		else
 		{
 			pos.y += destsize.y * StatusBar.GetTopOfStatusBar() / Screen.GetHeight() - 12;
-
-			if (!player.mo.FindInventory("CutsceneEnabled"))
-			{
-				ThinkerIterator it = ThinkerIterator.Create("StealthBase", Thinker.STAT_DEFAULT - 2);
-				if (StealthBase(it.Next())) { pos.y -= 12; }
-			}
 		}
 
 		for (int l = 0; l < lines.Count(); l++)
@@ -697,7 +681,7 @@ class HintMessage : MessageBase
 			pos.y += lineheight;
 		}
 
-		return protrusion;
+		return -texth;
 	}
 }
 
@@ -717,7 +701,7 @@ class ObjectiveMessage : MessageBase
 
 	static int Init(Actor mo, String text, String image = "", String snd = "", String command = "", int time = 0, int objflags = 0, double posx = 400, double posy = 135, Vector2 destsize = (800, 600))
 	{
-		ObjectiveMessage msg = ObjectiveMessage(MessageBase.Init(mo, text, text, 18, 18, "ObjectiveMessage", 0, MSG_ALLOWREPLACE));
+		ObjectiveMessage msg = ObjectiveMessage(MessageBase.Init(mo, text, text, 18, 18, "ObjectiveMessage", 63, MSG_ALLOWREPLACE));
 		if (msg)
 		{
 			msg.image = image;
@@ -791,7 +775,7 @@ class DevCommentary : MessageBase
 		text.Split(input, "|");
 
 		if (input.Size()) { text = input[0]; }
-		DevCommentary msg = DevCommentary(MessageBase.Init(mo, text, text, intime, outtime, "DevCommentary", 1));
+		DevCommentary msg = DevCommentary(MessageBase.Init(mo, text, text, intime, outtime, "DevCommentary", 62));
 		if (msg)
 		{
 			if (msg && input.Size() > 1) { msg.image = input[1]; }
@@ -828,7 +812,6 @@ class DevCommentary : MessageBase
 		if (imagetex) { size = TexMan.GetScaledSize(imagetex); }
 
 		msgwidth = int(barwidth - size.x);
-
 
 		if (width != msgwidth)
 		{
@@ -1023,6 +1006,7 @@ class MessageHandler : EventHandler
 
 	ui double topoffset, bottomoffset;
 	bool fullscreen;
+	ui Widget w;
 
 	// Retrieve the message handler
 	static MessageHandler Get()
@@ -1174,6 +1158,12 @@ class MessageHandler : EventHandler
 		// These are recalculated cumulatively every tick
 		topoffset = 0;
 		bottomoffset = 0;
+
+		if (!players[consoleplayer].mo.FindInventory("CutsceneEnabled"))
+		{
+			if (!w) { w = Widget.Find("Stealth Bar"); }
+			if (w && w.IsVisible()) { bottomoffset = (-w.pos.y + 16) / Screen.GetHeight(); }
+		}
 
 		for (int a = 0; a < messages.Size(); a++)
 		{
