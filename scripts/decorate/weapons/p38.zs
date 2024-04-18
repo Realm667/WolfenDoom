@@ -61,9 +61,9 @@ class Walther9mm : NaziWeapon
 		WALG A 0 A_GunFlash;
 		WALG A 0 A_SetPitch(pitch-(0.2*boa_recoilamount));
 		WALG A 0 A_JumpIf(waterlevel > 0,2);
-		WALG A 0 A_FireProjectile("PistolSmokeSpawner",0,0,0,random(-4,4),0,0);
+		WALG A 0 A_FireProjectile("PistolSmokeSpawner",0,0,0, Random[Weapon](-4,4),0,0);
 		WALG A 0 A_StartSound("walther/fire", CHAN_WEAPON);
-		WALG A 0 A_SpawnItemEx("Casing9mm",12,-20,32,8,random(-2,2),random(0,4),random(-55,-80),SXF_NOCHECKPOSITION);
+		WALG A 0 A_SpawnItemEx("Casing9mm",12,-20,32,8, Random[Weapon](-2,2), Random[Weapon](0,4), Random[Weapon](-55,-80),SXF_NOCHECKPOSITION);
 		WALG A 0 A_AlertMonsters;
 		WALG A 1 A_FireProjectile("WaltherTracer");
 		WALG B 2;

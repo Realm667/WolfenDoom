@@ -62,7 +62,7 @@ class BoAWallTorchBase : EffectSpawner
 
 		if (!CheckSightOrRange(boa_sfxlod / 4, true))
 		{
-			A_SpawnItemEx(flame, frandom(-2.0, 2.0), frandom(-2.0, 2.0), frandom(34.0, 36.0), 0.001 * frandom(10.0, 200.0), 0.001 * frandom(10.0, 200.0), 0.001 * frandom(500.0, 1000.0), 0, SXF_SETMASTER | SXF_CLIENTSIDE);
+			A_SpawnItemEx(flame, FRandom[Torch](-2.0, 2.0), FRandom[Torch](-2.0, 2.0), FRandom[Torch](34.0, 36.0), 0.001 * FRandom[Torch](10.0, 200.0), 0.001 * FRandom[Torch](10.0, 200.0), 0.001 * FRandom[Torch](500.0, 1000.0), 0, SXF_SETMASTER | SXF_CLIENTSIDE);
 
 			frame = 24; // Y Frame
 		}
@@ -170,7 +170,7 @@ class RedFire : TorchFireBase
 	{
 		Super.PostBeginPlay();
 
-		int spr = GetSpriteIndex("FIR" .. Random(1, 2));
+		int spr = GetSpriteIndex("FIR" .. Random[Torch](1, 2));
 		if (spr != -1) { sprite = spr; }
 	}
 }
@@ -181,7 +181,7 @@ class ZykFire : TorchFireBase
 	{
 		Super.PostBeginPlay();
 
-		int spr = GetSpriteIndex("FIR" .. Random(3, 4));
+		int spr = GetSpriteIndex("FIR" .. Random[Torch](3, 4));
 		if (spr != -1) { sprite = spr; }
 	}
 }
@@ -192,7 +192,7 @@ class MutFire : TorchFireBase
 	{
 		Super.PostBeginPlay();
 
-		int spr = GetSpriteIndex("FIR" .. Random(5, 6));
+		int spr = GetSpriteIndex("FIR" .. Random[Torch](5, 6));
 		if (spr != -1) { sprite = spr; }
 	}
 }

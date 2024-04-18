@@ -132,7 +132,7 @@ class BaseLineSpawner: Actor
 	States
 	{
 	Spawn:
-		TNT1 A 0 NODELAY A_SpawnItemEx("BaseLine", random(16, -16), random(16, -16), random(0, 8), 0, 0, random(1,3), 0, 129, 0);
+		TNT1 A 0 NODELAY A_SpawnItemEx("BaseLine", Random[Effects](16, -16), Random[Effects](16, -16), Random[Effects](0, 8), 0, 0, Random[Effects](1,3), 0, 129, 0);
 		"####" A 0 A_FadeOut(0.02);
 		Loop;
 	}

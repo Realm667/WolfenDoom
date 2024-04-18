@@ -138,14 +138,14 @@ class CreepyGhostSpawner : EffectSpawner
 	{
 		Super.SpawnEffect();
 
-		if (spawnangle == 0) { A_SpawnItemEx(spawnclass, Random(-128, 128), 0, 0, 0, 0, Random(1, 4), Random(0, 360), spawnflags, 128); }
+		if (spawnangle == 0) { A_SpawnItemEx(spawnclass, Random[Creepy](-128, 128), 0, 0, 0, 0, Random[Creepy](1, 4), Random[Creepy](0, 360), spawnflags, 128); }
 
-		count += A_SpawnItemEx(spawnclass, Random(32, 192), 0, 0, 0, 0, Random(1, 4), spawnangle, spawnflags, 0);
-		count += A_SpawnItemEx(spawnclass, Random(32, 192), 0, 0, 0, 0, Random(1, 4), spawnangle + 10, spawnflags, 0);
-		count += A_SpawnItemEx(spawnclass, Random(32, 192), 0, 0, 0, 0, Random(1, 4), spawnangle + 20, spawnflags, 0);
-		count += A_SpawnItemEx(spawnclass, Random(32, 192), 0, 0, 0, 0, Random(1, 4), spawnangle + 30, spawnflags, 0);
-		count += A_SpawnItemEx(spawnclass, Random(32, 192), 0, 0, 0, 0, Random(1, 4), spawnangle + 40, spawnflags, 0);
-		count += A_SpawnItemEx(spawnclass, Random(32, 192), 0, 0, 0, 0, Random(1, 4), spawnangle + 50, spawnflags, 0);
+		count += A_SpawnItemEx(spawnclass, Random[Creepy](32, 192), 0, 0, 0, 0, Random[Creepy](1, 4), spawnangle, spawnflags, 0);
+		count += A_SpawnItemEx(spawnclass, Random[Creepy](32, 192), 0, 0, 0, 0, Random[Creepy](1, 4), spawnangle + 10, spawnflags, 0);
+		count += A_SpawnItemEx(spawnclass, Random[Creepy](32, 192), 0, 0, 0, 0, Random[Creepy](1, 4), spawnangle + 20, spawnflags, 0);
+		count += A_SpawnItemEx(spawnclass, Random[Creepy](32, 192), 0, 0, 0, 0, Random[Creepy](1, 4), spawnangle + 30, spawnflags, 0);
+		count += A_SpawnItemEx(spawnclass, Random[Creepy](32, 192), 0, 0, 0, 0, Random[Creepy](1, 4), spawnangle + 40, spawnflags, 0);
+		count += A_SpawnItemEx(spawnclass, Random[Creepy](32, 192), 0, 0, 0, 0, Random[Creepy](1, 4), spawnangle + 50, spawnflags, 0);
 
 		spawnangle = (spawnangle + 60) % 360;
 
@@ -238,7 +238,7 @@ class CreepyRaiseFlat : CreepyRaise
 			double r = Radius * scale.x * 1.5;
 
 			// Swirl-green sparks
-			Actor s = Spawn("FountainSoul2", pos + (FRandom(-r, r), FRandom(-r, r), 0));
+			Actor s = Spawn("FountainSoul2", pos + (FRandom[Soul](-r, r), FRandom[Soul](-r, r), 0));
 			if (s)
 			{
 				s.alpha = alpha;

@@ -42,17 +42,17 @@ class TMCivFemale1 : TMCivBase
 	States
 	{
 	Spawn:
-		FEM1 A 0 NODELAY A_SetScale(Scale.X * RandomPick(-1.0, 1.0), frandom(0.58, 0.63) );
+		FEM1 A 0 NODELAY A_SetScale(Scale.X * RandomPick[Scenery](-1.0, 1.0), FRandom[Scenery](0.58, 0.63) );
 	Randomize:
 		FEM1 A 0 A_Jump(256,"Pose1","Pose2","Pose3","Pose4","Pose5","Pose6","Pose7","Pose8","Pose9");
 		Stop;
 	Pose1:
-		"####" AABBCC 1 A_SetTics(random(10,20));
-		"####" DD 1 A_SetTics(random(80,160));
+		"####" AABBCC 1 A_SetTics(Random[Scenery](10,20));
+		"####" DD 1 A_SetTics(Random[Scenery](80,160));
 		Loop;
 	Pose2:
-		"####" DDEEFF 1 A_SetTics(random(10,20));
-		"####" EEDD 1 A_SetTics(random(40,60));
+		"####" DDEEFF 1 A_SetTics(Random[Scenery](10,20));
+		"####" EEDD 1 A_SetTics(Random[Scenery](40,60));
 		Loop;
 	Pose3:
 		"####" G -1;
@@ -64,19 +64,19 @@ class TMCivFemale1 : TMCivBase
 		"####" I -1;
 		Stop;
 	Pose6:
-		"####" FEFEFFE 1 A_SetTics(random(80,160));
+		"####" FEFEFFE 1 A_SetTics(Random[Scenery](80,160));
 		Loop;
 	Pose7:
-		"####" JKJKJJK 1 A_SetTics(random(80,160));
+		"####" JKJKJJK 1 A_SetTics(Random[Scenery](80,160));
 		Loop;
 	Pose8:
-		"####" AADD 1 A_SetTics(random(10,20));
-		"####" JKJKJKDA 1 A_SetTics(random(80,160));
+		"####" AADD 1 A_SetTics(Random[Scenery](10,20));
+		"####" JKJKJKDA 1 A_SetTics(Random[Scenery](80,160));
 		Loop;
 	Pose9:
-		"####" AADL 1 A_SetTics(random(8,14));
-		"####" MNO 1 A_SetTics(random(5,10));
-		"####" LLD 1 A_SetTics(random(8,14));
+		"####" AADL 1 A_SetTics(Random[Scenery](8,14));
+		"####" MNO 1 A_SetTics(Random[Scenery](5,10));
+		"####" LLD 1 A_SetTics(Random[Scenery](8,14));
 		Loop;
 	}
 }
@@ -90,7 +90,7 @@ class TMCivFemale2 : TMCivFemale1
 	States
 	{
 	Spawn:
-		FEM2 A 0 NODELAY A_SetScale(Scale.X * RandomPick(-1.0, 1.0), frandom(0.58, 0.63) );
+		FEM2 A 0 NODELAY A_SetScale(Scale.X * RandomPick[Scenery](-1.0, 1.0), FRandom[Scenery](0.58, 0.63) );
 	Randomize:
 		FEM2 A 0 A_Jump(256,"Pose1","Pose2","Pose3","Pose4","Pose5","Pose6","Pose7","Pose8","Pose9");
 		Stop;
@@ -106,7 +106,7 @@ class TMCivFemale3 : TMCivFemale1
 	States
 	{
 	Spawn:
-		FEM3 A 0 NODELAY A_SetScale(Scale.X * RandomPick(-1.0, 1.0), frandom(0.58, 0.63) );
+		FEM3 A 0 NODELAY A_SetScale(Scale.X * RandomPick[Scenery](-1.0, 1.0), FRandom[Scenery](0.58, 0.63) );
 	Randomize:
 		FEM3 A 0 A_Jump(256,"Pose1","Pose2","Pose3","Pose4","Pose5","Pose6","Pose7","Pose8","Pose9");
 		Stop;
@@ -122,7 +122,7 @@ class TMCivFemale4 : TMCivFemale1
 	States
 	{
 	Spawn:
-		FEM4 A 0 NODELAY A_SetScale(Scale.X * RandomPick(-1.0, 1.0), frandom(0.58, 0.63) );
+		FEM4 A 0 NODELAY A_SetScale(Scale.X * RandomPick[Scenery](-1.0, 1.0), FRandom[Scenery](0.58, 0.63) );
 	Randomize:
 		FEM4 A 0 A_Jump(256,"Pose1","Pose2","Pose3","Pose4","Pose5","Pose6","Pose7","Pose8","Pose9");
 		Stop;
@@ -138,55 +138,55 @@ class TMCivMale1 : TMCivBase
 	States
 	{
 	Spawn:
-		MAL1 A 0 NODELAY A_SetScale(Scale.X * RandomPick(-1.0, 1.0), frandom(0.60, 0.70) );
+		MAL1 A 0 NODELAY A_SetScale(Scale.X * RandomPick[Scenery](-1.0, 1.0), FRandom[Scenery](0.60, 0.70) );
 	Randomize:
 		MAL1 A 0 A_Jump(256,"Pose1","Pose2","Pose3","Pose4","Pose5","Pose6","Pose7","Pose8","Pose9","Pose10","Pose11","Pose12","Pose13");
 		Stop;
 	Pose1:
-		"####" AABBCC 1 A_SetTics(random(10,20));
-		"####" DD 1 A_SetTics(random(80,160));
+		"####" AABBCC 1 A_SetTics(Random[Scenery](10,20));
+		"####" DD 1 A_SetTics(Random[Scenery](80,160));
 		Loop;
 	Pose2:
-		"####" AAEEFF 1 A_SetTics(random(10,20));
-		"####" GGFF 1 A_SetTics(random(40,60));
+		"####" AAEEFF 1 A_SetTics(Random[Scenery](10,20));
+		"####" GGFF 1 A_SetTics(Random[Scenery](40,60));
 		Loop;
 	Pose3:
 		"####" A -1;
 		Loop;
 	Pose4:
-		"####" FGFGFFG 1 A_SetTics(random(80,160));
+		"####" FGFGFFG 1 A_SetTics(Random[Scenery](80,160));
 		Loop;
 	Pose5:
-		"####" HIHIHHI 1 A_SetTics(random(80,160));
+		"####" HIHIHHI 1 A_SetTics(Random[Scenery](80,160));
 		Loop;
 	Pose6:
-		"####" FEFEFFE 1 A_SetTics(random(80,160));
+		"####" FEFEFFE 1 A_SetTics(Random[Scenery](80,160));
 		Loop;
 	Pose7:
-		"####" AABJ 1 A_SetTics(random(8,14));
-		"####" KLM 1 A_SetTics(random(5,10));
-		"####" JJA 1 A_SetTics(random(8,14));
+		"####" AABJ 1 A_SetTics(Random[Scenery](8,14));
+		"####" KLM 1 A_SetTics(Random[Scenery](5,10));
+		"####" JJA 1 A_SetTics(Random[Scenery](8,14));
 		Loop;
 	Pose8:
-		"####" NNOOPP 1 A_SetTics(random(10,20));
-		"####" QQ 1 A_SetTics(random(80,160));
+		"####" NNOOPP 1 A_SetTics(Random[Scenery](10,20));
+		"####" QQ 1 A_SetTics(Random[Scenery](80,160));
 		Loop;
 	Pose9:
-		"####" NNRRSS 1 A_SetTics(random(10,20));
-		"####" TTSS 1 A_SetTics(random(40,60));
+		"####" NNRRSS 1 A_SetTics(Random[Scenery](10,20));
+		"####" TTSS 1 A_SetTics(Random[Scenery](40,60));
 		Loop;
 	Pose10:
 		"####" N -1;
 		Stop;
 	Pose11:
-		"####" STSTSST 1 A_SetTics(random(80,160));
+		"####" STSTSST 1 A_SetTics(Random[Scenery](80,160));
 		Loop;
 	Pose12:
-		"####" UVUVUUV 1 A_SetTics(random(80,160));
+		"####" UVUVUUV 1 A_SetTics(Random[Scenery](80,160));
 		Loop;
 	Pose13:
-		"####" NNWWXX 1 A_SetTics(random(10,20));
-		"####" YY 1 A_SetTics(random(80,160));
+		"####" NNWWXX 1 A_SetTics(Random[Scenery](10,20));
+		"####" YY 1 A_SetTics(Random[Scenery](80,160));
 		Loop;
 	}
 }
@@ -200,7 +200,7 @@ class TMCivMale2 : TMCivMale1
 	States
 	{
 	Spawn:
-		MAL2 A 0 NODELAY A_SetScale(Scale.X * RandomPick(-1.0, 1.0), frandom(0.60, 0.70) );
+		MAL2 A 0 NODELAY A_SetScale(Scale.X * RandomPick[Scenery](-1.0, 1.0), FRandom[Scenery](0.60, 0.70) );
 	Randomize:
 		MAL2 A 0 A_Jump(256,"Pose1","Pose2","Pose3","Pose4","Pose5","Pose6","Pose7","Pose8","Pose9","Pose10","Pose11","Pose12","Pose13");
 		Stop;
@@ -216,7 +216,7 @@ class TMCivMale3 : TMCivMale1
 	States
 	{
 	Spawn:
-		MAL3 A 0 NODELAY A_SetScale(Scale.X * RandomPick(-1.0, 1.0), frandom(0.60, 0.70) );
+		MAL3 A 0 NODELAY A_SetScale(Scale.X * RandomPick[Scenery](-1.0, 1.0), FRandom[Scenery](0.60, 0.70) );
 	Randomize:
 		MAL3 A 0 A_Jump(256,"Pose1","Pose2","Pose3","Pose4","Pose5","Pose6","Pose7","Pose8","Pose9","Pose10","Pose11","Pose12","Pose13");
 		Stop;
@@ -232,7 +232,7 @@ class TMCivMale4 : TMCivMale1
 	States
 	{
 	Spawn:
-		MAL4 A 0 NODELAY A_SetScale(Scale.X * RandomPick(-1.0, 1.0), frandom(0.60, 0.70) );
+		MAL4 A 0 NODELAY A_SetScale(Scale.X * RandomPick[Scenery](-1.0, 1.0), FRandom[Scenery](0.60, 0.70) );
 	Randomize:
 		MAL4 A 0 A_Jump(256,"Pose1","Pose2","Pose3","Pose4","Pose5","Pose6","Pose7","Pose8","Pose9","Pose10","Pose11","Pose12","Pose13");
 		Stop;
@@ -248,7 +248,7 @@ class TMCivMale5 : TMCivMale1
 	States
 	{
 	Spawn:
-		MAL5 A 0 NODELAY A_SetScale(Scale.X * RandomPick(-1.0, 1.0), frandom(0.60, 0.70) );
+		MAL5 A 0 NODELAY A_SetScale(Scale.X * RandomPick[Scenery](-1.0, 1.0), FRandom[Scenery](0.60, 0.70) );
 	Randomize:
 		MAL5 A 0 A_Jump(256,"Pose1","Pose2","Pose3","Pose4","Pose5","Pose6","Pose7","Pose8","Pose9","Pose10","Pose11","Pose12","Pose13");
 		Stop;
@@ -264,58 +264,58 @@ class TMCivMale6 : TMCivBase
 	States
 	{
 	Spawn:
-		MHA1 A 0 NODELAY A_SetScale(Scale.X * RandomPick(-1.0, 1.0), frandom(0.60, 0.70) );
+		MHA1 A 0 NODELAY A_SetScale(Scale.X * RandomPick[Scenery](-1.0, 1.0), FRandom[Scenery](0.60, 0.70) );
 	Randomize:
 		MHA1 A 0 A_Jump(256,"Pose1","Pose2","Pose3","Pose4","Pose5","Pose6","Pose7","Pose8","Pose9","Pose10","Pose11");
 		Stop;
 	Pose1:
-		"####" NNAABB 1 A_SetTics(random(10,20));
-		"####" CCB 1 A_SetTics(random(80,160));
+		"####" NNAABB 1 A_SetTics(Random[Scenery](10,20));
+		"####" CCB 1 A_SetTics(Random[Scenery](80,160));
 		Loop;
 	Pose2:
-		"####" NNDDEE 1 A_SetTics(random(10,20));
-		"####" FFEE 1 A_SetTics(random(40,60));
+		"####" NNDDEE 1 A_SetTics(Random[Scenery](10,20));
+		"####" FFEE 1 A_SetTics(Random[Scenery](40,60));
 		Loop;
 	Pose3:
-		"####" NNAAGG 1 A_SetTics(random(10,20));
-		"####" HHG 1 A_SetTics(random(80,160));
-		"####" I 1 A_SetTics(random(10,20));
+		"####" NNAAGG 1 A_SetTics(Random[Scenery](10,20));
+		"####" HHG 1 A_SetTics(Random[Scenery](80,160));
+		"####" I 1 A_SetTics(Random[Scenery](10,20));
 		Loop;
 	Pose4:
 		"####" N -1;
 		Stop;
 	Pose5:
-		"####" NNII 1 A_SetTics(random(10,20));
-		"####" OO 1 A_SetTics(random(80,160));
-		"####" I 1 A_SetTics(random(10,20));
+		"####" NNII 1 A_SetTics(Random[Scenery](10,20));
+		"####" OO 1 A_SetTics(Random[Scenery](80,160));
+		"####" I 1 A_SetTics(Random[Scenery](10,20));
 		Loop;
 	Pose6:
-		"####" NNII 1 A_SetTics(random(10,20));
-		"####" OO 1 A_SetTics(random(80,160));
-		"####" PQRRQP 1 A_SetTics(random(40,60));
-		"####" OI 1 A_SetTics(random(10,20));
+		"####" NNII 1 A_SetTics(Random[Scenery](10,20));
+		"####" OO 1 A_SetTics(Random[Scenery](80,160));
+		"####" PQRRQP 1 A_SetTics(Random[Scenery](40,60));
+		"####" OI 1 A_SetTics(Random[Scenery](10,20));
 		Loop;
 	Pose7:
-		"####" NTAA 1 A_SetTics(random(10,20));
-		"####" UUOO 1 A_SetTics(random(80,160));
-		"####" I 1 A_SetTics(random(10,20));
+		"####" NTAA 1 A_SetTics(Random[Scenery](10,20));
+		"####" UUOO 1 A_SetTics(Random[Scenery](80,160));
+		"####" I 1 A_SetTics(Random[Scenery](10,20));
 		Loop;
 	Pose8:
-		"####" NTAA 1 A_SetTics(random(10,20));
-		"####" UUOO 1 A_SetTics(random(80,160));
-		"####" PQRRQP 1 A_SetTics(random(40,60));
-		"####" OI 1 A_SetTics(random(10,20));
+		"####" NTAA 1 A_SetTics(Random[Scenery](10,20));
+		"####" UUOO 1 A_SetTics(Random[Scenery](80,160));
+		"####" PQRRQP 1 A_SetTics(Random[Scenery](40,60));
+		"####" OI 1 A_SetTics(Random[Scenery](10,20));
 		Loop;
 	Pose9:
-		"####" PQRRQP 1 A_SetTics(random(40,60));
+		"####" PQRRQP 1 A_SetTics(Random[Scenery](40,60));
 		Loop;
 	Pose10:
 		"####" S -1;
 		Stop;
 	Pose11:
-		"####" NABJ 1 A_SetTics(random(8,14));
-		"####" KLM 1 A_SetTics(random(5,10));
-		"####" JJA 1 A_SetTics(random(8,14));
+		"####" NABJ 1 A_SetTics(Random[Scenery](8,14));
+		"####" KLM 1 A_SetTics(Random[Scenery](5,10));
+		"####" JJA 1 A_SetTics(Random[Scenery](8,14));
 		Loop;
 	}
 }
@@ -329,7 +329,7 @@ class TMCivMale7 : TMCivMale6
 	States
 	{
 	Spawn:
-		MHA2 A 0 NODELAY A_SetScale(Scale.X * RandomPick(-1.0, 1.0), frandom(0.60, 0.70) );
+		MHA2 A 0 NODELAY A_SetScale(Scale.X * RandomPick[Scenery](-1.0, 1.0), FRandom[Scenery](0.60, 0.70) );
 	Randomize:
 		MHA2 A 0 A_Jump(256,"Pose1","Pose2","Pose3","Pose4","Pose5","Pose6","Pose7","Pose8","Pose9","Pose10","Pose11");
 		Stop;
@@ -345,7 +345,7 @@ class TMCivMale8 : TMCivMale6
 	States
 	{
 	Spawn:
-		MHA3 A 0 NODELAY A_SetScale(Scale.X * RandomPick(-1.0, 1.0), frandom(0.60, 0.70) );
+		MHA3 A 0 NODELAY A_SetScale(Scale.X * RandomPick[Scenery](-1.0, 1.0), FRandom[Scenery](0.60, 0.70) );
 	Randomize:
 		MHA3 A 0 A_Jump(256,"Pose1","Pose2","Pose3","Pose4","Pose5","Pose6","Pose7","Pose8","Pose9","Pose10","Pose11");
 		Stop;
@@ -361,7 +361,7 @@ class TMCivMale9 : TMCivMale6
 	States
 	{
 	Spawn:
-		MHA4 A 0 NODELAY A_SetScale(Scale.X * RandomPick(-1.0, 1.0), frandom(0.60, 0.70) );
+		MHA4 A 0 NODELAY A_SetScale(Scale.X * RandomPick[Scenery](-1.0, 1.0), FRandom[Scenery](0.60, 0.70) );
 	Randomize:
 		MHA4 A 0 A_Jump(256,"Pose1","Pose2","Pose3","Pose4","Pose5","Pose6","Pose7","Pose8","Pose9","Pose10","Pose11");
 		Stop;
@@ -378,33 +378,33 @@ class TMCivMale10 : TMCivMale6
 	States
 	{
 	Spawn:
-		MHA1 A 0 NODELAY A_SetScale(Scale.X * RandomPick(-1.0, 1.0), frandom(0.60, 0.70) );
+		MHA1 A 0 NODELAY A_SetScale(Scale.X * RandomPick[Scenery](-1.0, 1.0), FRandom[Scenery](0.60, 0.70) );
 	Randomize:
 		MHA1 A 0 A_Jump(256,"Pose1","Pose2","Pose3","Pose4","Pose5","Pose6","Pose7","Pose8","Pose9","Pose10","Pose11");
 		Stop;
 	Pose6:
-		"####" NNII 1 A_SetTics(random(10,20));
-		"####" OO 1 A_SetTics(random(80,160));
-		MHA5 PQRRQP 1 A_SetTics(random(40,60));
-		MHA1 OI 1 A_SetTics(random(10,20));
+		"####" NNII 1 A_SetTics(Random[Scenery](10,20));
+		"####" OO 1 A_SetTics(Random[Scenery](80,160));
+		MHA5 PQRRQP 1 A_SetTics(Random[Scenery](40,60));
+		MHA1 OI 1 A_SetTics(Random[Scenery](10,20));
 		Loop;
 	Pose8:
-		"####" NTAA 1 A_SetTics(random(10,20));
-		"####" UUOO 1 A_SetTics(random(80,160));
-		MHA5 PQRRQP 1 A_SetTics(random(40,60));
-		MHA1 OI 1 A_SetTics(random(10,20));
+		"####" NTAA 1 A_SetTics(Random[Scenery](10,20));
+		"####" UUOO 1 A_SetTics(Random[Scenery](80,160));
+		MHA5 PQRRQP 1 A_SetTics(Random[Scenery](40,60));
+		MHA1 OI 1 A_SetTics(Random[Scenery](10,20));
 		Loop;
 	Pose9:
-		MHA5 PQRRQP 1 A_SetTics(random(40,60));
+		MHA5 PQRRQP 1 A_SetTics(Random[Scenery](40,60));
 		Loop;
 	Pose10:
 		MHA5 S -1;
 		Stop;
 	Pose11:
-		"####" NABJ 1 A_SetTics(random(8,14));
-		"####" KL 1 A_SetTics(random(5,7));
-		MHA5 M 1 A_SetTics(random(2,3));
-		MHA1 JJA 1 A_SetTics(random(8,14));
+		"####" NABJ 1 A_SetTics(Random[Scenery](8,14));
+		"####" KL 1 A_SetTics(Random[Scenery](5,7));
+		MHA5 M 1 A_SetTics(Random[Scenery](2,3));
+		MHA1 JJA 1 A_SetTics(Random[Scenery](8,14));
 		Loop;
 	}
 }
@@ -419,7 +419,7 @@ class TMCivGirl1 : TMCivBase
 	States
 	{
 	Spawn:
-		CFL1 A 0 NODELAY A_SetScale(Scale.X, frandom(0.58, 0.63) );
+		CFL1 A 0 NODELAY A_SetScale(Scale.X, FRandom[Scenery](0.58, 0.63) );
 	Randomize:
 		CFL1 A 0 A_Jump(256,"Pose1","Pose2","Pose3","Pose4","Pose5","Pose6","Pose7","Pose8","Pose9","Pose10","Pose11");
 		Stop;
@@ -427,37 +427,37 @@ class TMCivGirl1 : TMCivBase
 		"####" A -1;
 		Stop;
 	Pose2:
-		"####" AABBCC 1 A_SetTics(random(10,20));
-		"####" DD 1 A_SetTics(random(80,160));
+		"####" AABBCC 1 A_SetTics(Random[Scenery](10,20));
+		"####" DD 1 A_SetTics(Random[Scenery](80,160));
 		Loop;
 	Pose3:
-		"####" CDDC 1 A_SetTics(random(40,60));
+		"####" CDDC 1 A_SetTics(Random[Scenery](40,60));
 		Loop;
 	Pose4: //this Pose suffer of random Scale.X values - ozy81
-		"####" EEFF 1 A_SetTics(random(10,20));
-		"####" GGF 1 A_SetTics(random(80,160));
+		"####" EEFF 1 A_SetTics(Random[Scenery](10,20));
+		"####" GGF 1 A_SetTics(Random[Scenery](80,160));
 		Loop;
 	Pose5:
 		"####" G -1;
 		Stop;
 	Pose6:
-		"####" AAHHI 1 A_SetTics(random(10,20));
-		"####" JJIJIIH 1 A_SetTics(random(40,60));
+		"####" AAHHI 1 A_SetTics(Random[Scenery](10,20));
+		"####" JJIJIIH 1 A_SetTics(Random[Scenery](40,60));
 		Loop;
 	Pose7:
-		"####" AAKL 1 A_SetTics(random(8,14));
-		"####" MNOP 1 A_SetTics(random(7,12));
-		"####" KK 1 A_SetTics(random(8,14));
+		"####" AAKL 1 A_SetTics(Random[Scenery](8,14));
+		"####" MNOP 1 A_SetTics(Random[Scenery](7,12));
+		"####" KK 1 A_SetTics(Random[Scenery](8,14));
 		Loop;
 	Pose8:
-		CFFL AABCBBCCB 1 A_SetTics(random(80,160));
+		CFFL AABCBBCCB 1 A_SetTics(Random[Scenery](80,160));
 		Loop;
 	Pose9:
-		CFFL CCDEDDEED 1 A_SetTics(random(60,120));
+		CFFL CCDEDDEED 1 A_SetTics(Random[Scenery](60,120));
 		Loop;
 	Pose10:
-		CFFL FF 1 A_SetTics(random(10,20));
-		CFFL CCDEDDEED 1 A_SetTics(random(40,60));
+		CFFL FF 1 A_SetTics(Random[Scenery](10,20));
+		CFFL CCDEDDEED 1 A_SetTics(Random[Scenery](40,60));
 		Loop;
 	Pose11:
 		CFFL F -1;
@@ -474,19 +474,19 @@ class TMCivGirl2 : TMCivGirl1
 	States
 	{
 	Spawn:
-		CFL2 A 0 NODELAY A_SetScale(Scale.X, frandom(0.58, 0.63) );
+		CFL2 A 0 NODELAY A_SetScale(Scale.X, FRandom[Scenery](0.58, 0.63) );
 	Randomize:
 		CFL2 A 0 A_Jump(256,"Pose1","Pose2","Pose3","Pose4","Pose5","Pose6","Pose7","Pose8","Pose9","Pose10","Pose11");
 		Stop;
 	Pose8:
-		CFFL GGHIHHIIH 1 A_SetTics(random(80,160));
+		CFFL GGHIHHIIH 1 A_SetTics(Random[Scenery](80,160));
 		Loop;
 	Pose9:
-		CFFL IIJKJJKKJ 1 A_SetTics(random(60,120));
+		CFFL IIJKJJKKJ 1 A_SetTics(Random[Scenery](60,120));
 		Loop;
 	Pose10:
-		CFFL LL 1 A_SetTics(random(10,20));
-		CFFL IIJKJJKKJ 1 A_SetTics(random(40,60));
+		CFFL LL 1 A_SetTics(Random[Scenery](10,20));
+		CFFL IIJKJJKKJ 1 A_SetTics(Random[Scenery](40,60));
 		Loop;
 	Pose11:
 		CFFL L -1;
@@ -503,19 +503,19 @@ class TMCivGirl3 : TMCivGirl1
 	States
 	{
 	Spawn:
-		CFL3 A 0 NODELAY A_SetScale(Scale.X, frandom(0.58, 0.63) );
+		CFL3 A 0 NODELAY A_SetScale(Scale.X, FRandom[Scenery](0.58, 0.63) );
 	Randomize:
 		CFL3 A 0 A_Jump(256,"Pose1","Pose2","Pose3","Pose4","Pose5","Pose6","Pose7","Pose8","Pose9","Pose10","Pose11");
 		Stop;
 	Pose8:
-		CFFL MMNONNOON 1 A_SetTics(random(80,160));
+		CFFL MMNONNOON 1 A_SetTics(Random[Scenery](80,160));
 		Loop;
 	Pose9:
-		CFFL OOPQPPQQP 1 A_SetTics(random(60,120));
+		CFFL OOPQPPQQP 1 A_SetTics(Random[Scenery](60,120));
 		Loop;
 	Pose10:
-		CFFL RR 1 A_SetTics(random(10,20));
-		CFFL OOPQPPQQP 1 A_SetTics(random(40,60));
+		CFFL RR 1 A_SetTics(Random[Scenery](10,20));
+		CFFL OOPQPPQQP 1 A_SetTics(Random[Scenery](40,60));
 		Loop;
 	Pose11:
 		CFFL R -1;
@@ -532,19 +532,19 @@ class TMCivGirl4 : TMCivGirl1
 	States
 	{
 	Spawn:
-		CFL4 A 0 NODELAY A_SetScale(Scale.X, frandom(0.58, 0.63) );
+		CFL4 A 0 NODELAY A_SetScale(Scale.X, FRandom[Scenery](0.58, 0.63) );
 	Randomize:
 		CFL4 A 0 A_Jump(256,"Pose1","Pose2","Pose3","Pose4","Pose5","Pose6","Pose7","Pose8","Pose9","Pose10","Pose11");
 		Stop;
 	Pose8:
-		CFFL SSTUTTUUT 1 A_SetTics(random(80,160));
+		CFFL SSTUTTUUT 1 A_SetTics(Random[Scenery](80,160));
 		Loop;
 	Pose9:
-		CFFL UUVWVVWWV 1 A_SetTics(random(60,120));
+		CFFL UUVWVVWWV 1 A_SetTics(Random[Scenery](60,120));
 		Loop;
 	Pose10:
-		CFFL XX 1 A_SetTics(random(10,20));
-		CFFL UUVWVVWWV 1 A_SetTics(random(40,60));
+		CFFL XX 1 A_SetTics(Random[Scenery](10,20));
+		CFFL UUVWVVWWV 1 A_SetTics(Random[Scenery](40,60));
 		Loop;
 	Pose11:
 		CFFL X -1;
@@ -561,19 +561,19 @@ class TMCivBoy1 : TMCivGirl1
 	States
 	{
 	Spawn:
-		CHL1 A 0 NODELAY A_SetScale(Scale.X, frandom(0.58, 0.63) );
+		CHL1 A 0 NODELAY A_SetScale(Scale.X, FRandom[Scenery](0.58, 0.63) );
 	Randomize:
 		CHL1 A 0 A_Jump(256,"Pose1","Pose2","Pose3","Pose4","Pose5","Pose6","Pose7","Pose8","Pose9","Pose10","Pose11");
 		Stop;
 	Pose8:
-		CHFL AABCBBCCB 1 A_SetTics(random(80,160));
+		CHFL AABCBBCCB 1 A_SetTics(Random[Scenery](80,160));
 		Loop;
 	Pose9:
-		CHFL CCDEDDEED 1 A_SetTics(random(60,120));
+		CHFL CCDEDDEED 1 A_SetTics(Random[Scenery](60,120));
 		Loop;
 	Pose10:
-		CHFL FF 1 A_SetTics(random(10,20));
-		CHFL CCDEDDEED 1 A_SetTics(random(40,60));
+		CHFL FF 1 A_SetTics(Random[Scenery](10,20));
+		CHFL CCDEDDEED 1 A_SetTics(Random[Scenery](40,60));
 		Loop;
 	Pose11:
 		CHFL F -1;
@@ -590,19 +590,19 @@ class TMCivBoy2 : TMCivGirl1
 	States
 	{
 	Spawn:
-		CHL2 A 0 NODELAY A_SetScale(Scale.X, frandom(0.58, 0.63) );
+		CHL2 A 0 NODELAY A_SetScale(Scale.X, FRandom[Scenery](0.58, 0.63) );
 	Randomize:
 		CHL2 A 0 A_Jump(256,"Pose1","Pose2","Pose3","Pose4","Pose5","Pose6","Pose7","Pose8","Pose9","Pose10","Pose11");
 		Stop;
 	Pose8:
-		CHFL GGHIHHIIH 1 A_SetTics(random(80,160));
+		CHFL GGHIHHIIH 1 A_SetTics(Random[Scenery](80,160));
 		Loop;
 	Pose9:
-		CHFL IIJKJJKKJ 1 A_SetTics(random(60,120));
+		CHFL IIJKJJKKJ 1 A_SetTics(Random[Scenery](60,120));
 		Loop;
 	Pose10:
-		CHFL LL 1 A_SetTics(random(10,20));
-		CHFL IIJKJJKKJ 1 A_SetTics(random(40,60));
+		CHFL LL 1 A_SetTics(Random[Scenery](10,20));
+		CHFL IIJKJJKKJ 1 A_SetTics(Random[Scenery](40,60));
 		Loop;
 	Pose11:
 		CHFL L -1;
@@ -619,19 +619,19 @@ class TMCivBoy3 : TMCivGirl1
 	States
 	{
 	Spawn:
-		CHL3 A 0 NODELAY A_SetScale(Scale.X, frandom(0.58, 0.63) );
+		CHL3 A 0 NODELAY A_SetScale(Scale.X, FRandom[Scenery](0.58, 0.63) );
 	Randomize:
 		CHL3 A 0 A_Jump(256,"Pose1","Pose2","Pose3","Pose4","Pose5","Pose6","Pose7","Pose8","Pose9","Pose10","Pose11");
 		Stop;
 	Pose8:
-		CHFL MMNONNOON 1 A_SetTics(random(80,160));
+		CHFL MMNONNOON 1 A_SetTics(Random[Scenery](80,160));
 		Loop;
 	Pose9:
-		CHFL OOPQPPQQP 1 A_SetTics(random(60,120));
+		CHFL OOPQPPQQP 1 A_SetTics(Random[Scenery](60,120));
 		Loop;
 	Pose10:
-		CHFL RR 1 A_SetTics(random(10,20));
-		CHFL OOPQPPQQP 1 A_SetTics(random(40,60));
+		CHFL RR 1 A_SetTics(Random[Scenery](10,20));
+		CHFL OOPQPPQQP 1 A_SetTics(Random[Scenery](40,60));
 		Loop;
 	Pose11:
 		CHFL R -1;
@@ -648,19 +648,19 @@ class TMCivBoy4 : TMCivGirl1
 	States
 	{
 	Spawn:
-		CHL4 A 0 NODELAY A_SetScale(Scale.X, frandom(0.58, 0.63) );
+		CHL4 A 0 NODELAY A_SetScale(Scale.X, FRandom[Scenery](0.58, 0.63) );
 	Randomize:
 		CHL4 A 0 A_Jump(256,"Pose1","Pose2","Pose3","Pose4","Pose5","Pose6","Pose7","Pose8","Pose9","Pose10","Pose11");
 		Stop;
 	Pose8:
-		CHFL SSTUTTUUT 1 A_SetTics(random(80,160));
+		CHFL SSTUTTUUT 1 A_SetTics(Random[Scenery](80,160));
 		Loop;
 	Pose9:
-		CHFL UUVWVVWWV 1 A_SetTics(random(60,120));
+		CHFL UUVWVVWWV 1 A_SetTics(Random[Scenery](60,120));
 		Loop;
 	Pose10:
-		CHFL XX 1 A_SetTics(random(10,20));
-		CHFL UUVWVVWWV 1 A_SetTics(random(40,60));
+		CHFL XX 1 A_SetTics(Random[Scenery](10,20));
+		CHFL UUVWVVWWV 1 A_SetTics(Random[Scenery](40,60));
 		Loop;
 	Pose11:
 		CHFL X -1;
@@ -677,7 +677,7 @@ class TMCivExtra1 : TMCivBase
 	States
 	{
 	Spawn:
-		XTR1 A 0 NODELAY A_SetScale(Scale.X * RandomPick(-1.0, 1.0), frandom(0.60, 0.70) );
+		XTR1 A 0 NODELAY A_SetScale(Scale.X * RandomPick[Scenery](-1.0, 1.0), FRandom[Scenery](0.60, 0.70) );
 	Randomize:
 		XTR1 A 0 A_Jump(256,"Pose1","Pose2","Pose3","Pose4","Pose5","Pose6","Pose7","Pose8","Pose9","Pose10","Pose11","Pose12","Pose13","Pose14","Pose15","Pose16");
 		Stop;
@@ -741,7 +741,7 @@ class TMCivExtra2 : TMCivExtra1
 	States
 	{
 	Spawn:
-		XTR2 A 0 NODELAY A_SetScale(Scale.X * RandomPick(-1.0, 1.0), frandom(0.60, 0.70) );
+		XTR2 A 0 NODELAY A_SetScale(Scale.X * RandomPick[Scenery](-1.0, 1.0), FRandom[Scenery](0.60, 0.70) );
 	Randomize:
 		XTR2 A 0 A_Jump(256,"Pose1","Pose2","Pose3","Pose4","Pose5","Pose6","Pose7","Pose8","Pose9","Pose10","Pose11","Pose12","Pose13","Pose14","Pose15","Pose16");
 		Stop;
@@ -757,7 +757,7 @@ class TMCivExtra3 : TMCivExtra1
 	States
 	{
 	Spawn:
-		XTR3 A 0 NODELAY A_SetScale(Scale.X * RandomPick(-1.0, 1.0), frandom(0.60, 0.70) );
+		XTR3 A 0 NODELAY A_SetScale(Scale.X * RandomPick[Scenery](-1.0, 1.0), FRandom[Scenery](0.60, 0.70) );
 	Randomize:
 		XTR3 A 0 A_Jump(256,"Pose1","Pose2","Pose3","Pose4","Pose5","Pose6","Pose7","Pose8","Pose9","Pose10","Pose11","Pose12","Pose13","Pose14","Pose15","Pose16","Pose17","Pose18","Pose19","Pose20");
 		Stop;
@@ -785,7 +785,7 @@ class TMCivExtra4 : TMCivExtra1
 	States
 	{
 	Spawn:
-		XTR4 A 0 NODELAY A_SetScale(Scale.X * RandomPick(-1.0, 1.0), frandom(0.60, 0.70) );
+		XTR4 A 0 NODELAY A_SetScale(Scale.X * RandomPick[Scenery](-1.0, 1.0), FRandom[Scenery](0.60, 0.70) );
 	Randomize:
 		XTR4 A 0 A_Jump(256,"Pose1","Pose2","Pose3","Pose4","Pose5","Pose6","Pose7","Pose8","Pose9","Pose10","Pose11","Pose12","Pose13","Pose14","Pose15","Pose16","Pose17","Pose18","Pose19","Pose20");
 		Stop;
@@ -813,7 +813,7 @@ class TMCivExtra5 : TMCivExtra1
 	States
 	{
 	Spawn:
-		XTR5 A 0 NODELAY A_SetScale(Scale.X * RandomPick(-1.0, 1.0), frandom(0.60, 0.70) );
+		XTR5 A 0 NODELAY A_SetScale(Scale.X * RandomPick[Scenery](-1.0, 1.0), FRandom[Scenery](0.60, 0.70) );
 	Randomize:
 		XTR5 A 0 A_Jump(256,"Pose1","Pose2","Pose3","Pose4","Pose5","Pose6","Pose7","Pose8","Pose9","Pose10","Pose11","Pose12","Pose13","Pose14","Pose15","Pose16","Pose17","Pose18","Pose19","Pose20");
 		Stop;
@@ -841,7 +841,7 @@ class TMCivExtra6 : TMCivExtra1
 	States
 	{
 	Spawn:
-		XTR6 A 0 NODELAY A_SetScale(Scale.X * RandomPick(-1.0, 1.0), frandom(0.60, 0.70) );
+		XTR6 A 0 NODELAY A_SetScale(Scale.X * RandomPick[Scenery](-1.0, 1.0), FRandom[Scenery](0.60, 0.70) );
 	Randomize:
 		XTR6 A 0 A_Jump(256,"Pose1","Pose2","Pose3","Pose4","Pose5","Pose6","Pose7","Pose8");
 		Stop;
@@ -905,7 +905,7 @@ class TMCivExtra7 : TMCivExtra1
 	States
 	{
 	Spawn:
-		XTR7 A 0 NODELAY A_SetScale(Scale.X * RandomPick(-1.0, 1.0), frandom(0.60, 0.70) );
+		XTR7 A 0 NODELAY A_SetScale(Scale.X * RandomPick[Scenery](-1.0, 1.0), FRandom[Scenery](0.60, 0.70) );
 	Randomize:
 		XTR7 A 0 A_Jump(256,"Pose1","Pose2","Pose3","Pose4","Pose5","Pose6","Pose7","Pose8","Pose9","Pose10","Pose11","Pose12","Pose13","Pose14","Pose15","Pose16","Pose17","Pose18","Pose19","Pose20","Pose21","Pose22","Pose23","Pose24","Pose25","Pose26","Pose27","Pose28","Pose29","Pose30","Pose31","Pose32");
 		Stop;
@@ -929,11 +929,11 @@ class TMCivExtra7 : TMCivExtra1
 		Stop;
 	Pose7:
 		"####" FE 40;
-		"####" GHIJKLGHIJKLGHIJKLG 1 A_SetTics(random(10,15));
+		"####" GHIJKLGHIJKLGHIJKLG 1 A_SetTics(Random[Scenery](10,15));
 		"####" EF 40;
 		Loop;
 	Pose8:
-		"####" GHIJKLGHIJKLGHIJKLG 1 A_SetTics(random(10,15));
+		"####" GHIJKLGHIJKLGHIJKLG 1 A_SetTics(Random[Scenery](10,15));
 		Loop;
 	Pose9:
 		"####" M -1;
@@ -955,11 +955,11 @@ class TMCivExtra7 : TMCivExtra1
 		Stop;
 	Pose15:
 		"####" RQ 40;
-		"####" STUVWXSTUVWXSTUVWXS 1 A_SetTics(random(10,15));
+		"####" STUVWXSTUVWXSTUVWXS 1 A_SetTics(Random[Scenery](10,15));
 		"####" QR 40;
 		Loop;
 	Pose16:
-		"####" STUVWXSTUVWXSTUVWXS 1 A_SetTics(random(10,15));
+		"####" STUVWXSTUVWXSTUVWXS 1 A_SetTics(Random[Scenery](10,15));
 		Loop;
 	Pose17:
 		XTR8 A -1;
@@ -981,11 +981,11 @@ class TMCivExtra7 : TMCivExtra1
 		Stop;
 	Pose23:
 		XTR8 FE 40;
-		XTR8 GHIJKLGHIJKLGHIJKLG 1 A_SetTics(random(10,15));
+		XTR8 GHIJKLGHIJKLGHIJKLG 1 A_SetTics(Random[Scenery](10,15));
 		XTR8 EF 40;
 		Loop;
 	Pose24:
-		XTR8 GHIJKLGHIJKLGHIJKLG 1 A_SetTics(random(10,15));
+		XTR8 GHIJKLGHIJKLGHIJKLG 1 A_SetTics(Random[Scenery](10,15));
 		Loop;
 	Pose25:
 		XTR8 M -1;
@@ -1007,11 +1007,11 @@ class TMCivExtra7 : TMCivExtra1
 		Stop;
 	Pose31:
 		XTR8 RQ 40;
-		XTR8 STUVWXSTUVWXSTUVWXS 1 A_SetTics(random(10,15));
+		XTR8 STUVWXSTUVWXSTUVWXS 1 A_SetTics(Random[Scenery](10,15));
 		XTR8 QR 40;
 		Loop;
 	Pose32:
-		XTR8 STUVWXSTUVWXSTUVWXS 1 A_SetTics(random(10,15));
+		XTR8 STUVWXSTUVWXSTUVWXS 1 A_SetTics(Random[Scenery](10,15));
 		Loop;
 	}
 }
@@ -1025,7 +1025,7 @@ class TMCivExtra8 : TMCivExtra1
 	States
 	{
 	Spawn:
-		HOBO A 0 NODELAY A_SetScale(Scale.X * RandomPick(-1.0, 1.0), frandom(0.60, 0.70) );
+		HOBO A 0 NODELAY A_SetScale(Scale.X * RandomPick[Scenery](-1.0, 1.0), FRandom[Scenery](0.60, 0.70) );
 	Randomize:
 		HOBO A 0 A_Jump(256,"Pose1","Pose2","Pose3","Pose4","Pose5","Pose6","Pose7","Pose8");
 		Stop;
@@ -1051,8 +1051,8 @@ class TMCivExtra8 : TMCivExtra1
 		"####" J -1;
 		Stop;
 	Pose8:
-		"####" F 1 A_SetTics(random(20,40));
-		"####" GGHHIIHIHHIHIIGGHHIG 1 A_SetTics(random(80,160));
+		"####" F 1 A_SetTics(Random[Scenery](20,40));
+		"####" GGHHIIHIHHIHIIGGHHIG 1 A_SetTics(Random[Scenery](80,160));
 		Loop;
 	}
 }

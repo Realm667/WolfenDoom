@@ -76,7 +76,7 @@ class NebRocket : GrenadeBase
 	Radius 11;
 	Height 8;
 	Speed 35;
-	DamageFunction (6*random(1,8));
+	DamageFunction (6*Random[Weapon](1,8));
 	DamageType "Rocket";
 	Projectile;
 	+FORCERADIUSDMG
@@ -94,7 +94,7 @@ class NebRocket : GrenadeBase
 	Spawn:
 		MNSS A 0 NODELAY A_StartSound("nazi/missileengine", CHAN_AUTO, CHANF_LOOPING, 0.3);
 	Fly:
-		MNSS A 1 BRIGHT LIGHT("NEBLIGHT") A_SpawnItemEx("RocketFlame",random(-1,1),0,random(-1,1));
+		MNSS A 1 BRIGHT LIGHT("NEBLIGHT") A_SpawnItemEx("RocketFlame", Random[Weapon](-1,1),0, Random[Weapon](-1,1));
 		Loop;
 	Death:
 	Crash:
@@ -102,7 +102,7 @@ class NebRocket : GrenadeBase
 		EXP1 A 0 A_SpawnGroundSplash;
 		EXP1 A 0 A_AlertMonsters;
 		EXP1 A 0 A_StopSound(CHAN_AUTO);
-		TNT1 AAAAAAAAAAAAAAAAAAAAAAAAAAA 0 A_SpawnItemEx("TracerSpark_Longlive", 0, 0, 0, frandom(-5.0,5.0), frandom(-5.0,5.0), frandom(-5.0,5.0), random(0,359)); //T667 improvements
+		TNT1 AAAAAAAAAAAAAAAAAAAAAAAAAAA 0 A_SpawnItemEx("TracerSpark_Longlive", 0, 0, 0, FRandom[Weapon](-5.0,5.0), FRandom[Weapon](-5.0,5.0), FRandom[Weapon](-5.0,5.0), Random[Weapon](0,359)); //T667 improvements
 		TNT1 A 0 A_SpawnItemEx("NebNuke",0,0,0,0,0,0,0,SXF_TRANSFERPOINTERS|SXF_NOCHECKPOSITION);
 		TNT1 A 8 A_SpawnItemEx("GeneralExplosion_Small",56,0,32);
 		FRME A 1 BRIGHT LIGHT("NEBEXPLO") { A_Explode(64,56); A_SpawnItemEx("ZScorch");}
@@ -129,13 +129,13 @@ class RocketFlame: Actor
 		TNT1 A 1;
 		XPLO AB 2 BRIGHT LIGHT("NEBEXPLO");
 		XPLO C 2 BRIGHT LIGHT("NEBEXPLO") {
-			// A_SpawnItemEx("RPG8RocketTrail",random(-1,1),0,1, 0, 0, frandom(0.1,0.3));
+			// A_SpawnItemEx("RPG8RocketTrail", Random[Weapon](-1,1),0,1, 0, 0, FRandom[Weapon](0.1,0.3));
 
 			if (boa_smokeswitch==0) { return; }
 			static const int lifetimes[] = { 63, 71, 83, 100 };
 			static const double scales[] = { 1.6, 2.4, 0.8, 1.6 };
 			static const double rollvels[] = { 0.5, 0.2, 0.9, 1.3 };
-			int variant = random(0, 3);
+			int variant = Random[Weapon](0, 3);
 			TextureID smoke = TexMan.CheckForTexture(String.Format("SMOK%c0", variant + 0x41));
 
 			A_SpawnParticleEx(
@@ -145,13 +145,13 @@ class RocketFlame: Actor
 				SPF_RELATIVE | SPF_ROLL, // flags
 				lifetimes[variant], // lifetime
 				28.8, // size (160 * 0.15)
-				FRandom(0.0, 360.0), // angle
-				frandom(-1., 1.), // xoff
+				FRandom[Weapon](0.0, 360.0), // angle
+				FRandom[Weapon](-1., 1.), // xoff
 				0.0, // yoff
 				1.0, // zoff
 				0.0, // velx
 				0.0, // vely
-				FRandom(0.1, 0.3), // velz
+				FRandom[Weapon](0.1, 0.3), // velz
 				0.0, // accelx
 				0.0, // accely
 				0.0, // accelz
@@ -206,13 +206,13 @@ class MutantFlame : RocketFlame
 		TNT1 A 1;
 		XPLO AB 2 BRIGHT LIGHT("MUTNEXPL");
 		XPLO C 2 BRIGHT LIGHT("MUTNEXPL") {
-			// A_SpawnItemEx("RPG8RocketTrail",random(-1,1),0,1, 0, 0, frandom(0.1,0.3));
+			// A_SpawnItemEx("RPG8RocketTrail", Random[Weapon](-1,1),0,1, 0, 0, FRandom[Weapon](0.1,0.3));
 
 			if (boa_smokeswitch==0) { return; }
 			static const int lifetimes[] = { 63, 71, 83, 100 };
 			static const double scales[] = { 1.6, 2.4, 0.8, 1.6 };
 			static const double rollvels[] = { 0.5, 0.2, 0.9, 1.3 };
-			int variant = random(0, 3);
+			int variant = Random[Weapon](0, 3);
 			TextureID smoke = TexMan.CheckForTexture(String.Format("SMOK%c0", variant + 0x41));
 
 			A_SpawnParticleEx(
@@ -222,13 +222,13 @@ class MutantFlame : RocketFlame
 				SPF_RELATIVE | SPF_ROLL, // flags
 				lifetimes[variant], // lifetime
 				28.8, // size (160 * 0.15)
-				FRandom(0.0, 360.0), // angle
-				frandom(-1., 1.), // xoff
+				FRandom[Weapon](0.0, 360.0), // angle
+				FRandom[Weapon](-1., 1.), // xoff
 				0.0, // yoff
 				1.0, // zoff
 				0.0, // velx
 				0.0, // vely
-				FRandom(0.1, 0.3), // velz
+				FRandom[Weapon](0.1, 0.3), // velz
 				0.0, // accelx
 				0.0, // accely
 				0.0, // accelz

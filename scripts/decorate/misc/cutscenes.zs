@@ -376,8 +376,8 @@ class TMHitler : TMFanfare1
 		ADFS E -1;
 		Stop;
 	Active:
-		"####" D 1 A_SetTics(random(40,60));
-		"####" CBDDDEBCBDBECCBDD 1 A_SetTics(random(32,64));
+		"####" D 1 A_SetTics(Random[Scenery](40,60));
+		"####" CBDDDEBCBDBECCBDD 1 A_SetTics(Random[Scenery](32,64));
 		Goto Inactive;
 	}
 }
@@ -792,8 +792,8 @@ class TMRUFlag : TMBlazko
 	States
 	{
 	Spawn:
-		RUSF AB 1 A_SetTics(random(20,80));
-		"####" BA 1 A_SetTics(random(20,80));
+		RUSF AB 1 A_SetTics(Random[Scenery](20,80));
+		"####" BA 1 A_SetTics(Random[Scenery](20,80));
 		Loop;
 	}
 }
@@ -813,70 +813,70 @@ class TMMarine1: Actor
 	States
 	{
 	Spawn:
-		FIN1 A 0 NODELAY A_SetScale(Scale.X * -1.0, frandom(0.60, 0.70) );
+		FIN1 A 0 NODELAY A_SetScale(Scale.X * -1.0, FRandom[Scenery](0.60, 0.70) );
 	Randomize:
 		FIN1 A 0 A_Jump(256,"Pose1","Pose2","Pose3","Pose4","Pose5","Pose6","Pose7","Pose8","Pose9","Pose10","Pose11","Pose12","Pose13","Pose14","Pose15","Pose16","Pose17","Pose17","Pose17");
 	Pose1:
-		"####" AABBDD 1 A_SetTics(random(10,20));
-		"####" CC 1 A_SetTics(random(80,160));
+		"####" AABBDD 1 A_SetTics(Random[Scenery](10,20));
+		"####" CC 1 A_SetTics(Random[Scenery](80,160));
 		Loop;
 	Pose2:
-		"####" AABBDD 1 A_SetTics(random(10,20));
-		"####" EEDDDDBB 1 A_SetTics(random(40,60));
+		"####" AABBDD 1 A_SetTics(Random[Scenery](10,20));
+		"####" EEDDDDBB 1 A_SetTics(Random[Scenery](40,60));
 		Loop;
 	Pose3:
-		"####" FFGG 1 A_SetTics(random(5,10));
-		"####" HHIHIHG 1 A_SetTics(random(20,50));
+		"####" FFGG 1 A_SetTics(Random[Scenery](5,10));
+		"####" HHIHIHG 1 A_SetTics(Random[Scenery](20,50));
 		Loop;
 	Pose4:
-		"####" HHIHIHIHH 1 A_SetTics(random(20,50));
+		"####" HHIHIHIHH 1 A_SetTics(Random[Scenery](20,50));
 		Loop;
 	Pose5:
-		"####" FFFF 1 A_SetTics(random(5,10));
-		"####" JJKJKJKJJ 1 A_SetTics(random(10,20));
+		"####" FFFF 1 A_SetTics(Random[Scenery](5,10));
+		"####" JJKJKJKJJ 1 A_SetTics(Random[Scenery](10,20));
 		Loop;
 	Pose6:
 		"####" L -1;
 		Stop;
 	Pose7:
-		"####" LLMM 1 A_SetTics(random(10,20));
-		"####" NN 1 A_SetTics(random(80,160));
+		"####" LLMM 1 A_SetTics(Random[Scenery](10,20));
+		"####" NN 1 A_SetTics(Random[Scenery](80,160));
 		Loop;
 	Pose8:
 		"####" N -1;
 		Stop;
 	Pose9:
-		"####" NN 1 A_SetTics(random(10,20));
-		"####" OOPPOPOPO 1 A_SetTics(random(40,60));
+		"####" NN 1 A_SetTics(Random[Scenery](10,20));
+		"####" OOPPOPOPO 1 A_SetTics(Random[Scenery](40,60));
 		Loop;
 	Pose10:
-		"####" QQRR 1 A_SetTics(random(10,20));
-		"####" SS 1 A_SetTics(random(80,160));
+		"####" QQRR 1 A_SetTics(Random[Scenery](10,20));
+		"####" SS 1 A_SetTics(Random[Scenery](80,160));
 		Loop;
 	Pose11:
 		"####" S -1;
 		Stop;
 	Pose12:
-		"####" SS 1 A_SetTics(random(10,20));
-		"####" TTUUTUTUT 1 A_SetTics(random(40,60));
+		"####" SS 1 A_SetTics(Random[Scenery](10,20));
+		"####" TTUUTUTUT 1 A_SetTics(Random[Scenery](40,60));
 		Loop;
 	Pose14:
 		"####" V -1;
 		Stop;
 	Pose14:
-		"####" VVWW 1 A_SetTics(random(10,20));
-		"####" XX 1 A_SetTics(random(80,160));
+		"####" VVWW 1 A_SetTics(Random[Scenery](10,20));
+		"####" XX 1 A_SetTics(Random[Scenery](80,160));
 		Loop;
 	Pose15:
 		"####" X -1;
 		Stop;
 	Pose16:
-		"####" XX 1 A_SetTics(random(10,20));
-		"####" YYZZYZYZY 1 A_SetTics(random(40,60));
+		"####" XX 1 A_SetTics(Random[Scenery](10,20));
+		"####" YYZZYZYZY 1 A_SetTics(Random[Scenery](40,60));
 		Loop;
 	Pose17:
-		FIN1 LLFG 1 A_SetTics(random(5,10));
-		FIJ1 AABCDAA 1 A_SetTics(random(5,10));
+		FIN1 LLFG 1 A_SetTics(Random[Scenery](5,10));
+		FIJ1 AABCDAA 1 A_SetTics(Random[Scenery](5,10));
 		Loop;
 	}
 }
@@ -890,37 +890,37 @@ class TMMarine1B : TMMarine1
 	States
 	{
 	Spawn:
-		FIB1 O 0 NODELAY A_SetScale(Scale.X * -1.0, frandom(0.60, 0.70) );
+		FIB1 O 0 NODELAY A_SetScale(Scale.X * -1.0, FRandom[Scenery](0.60, 0.70) );
 	Randomize:
 		FIB1 O 0 A_Jump(256,"Pose1","Pose2","Pose3","Pose4","Pose5","Pose6","Pose7","Pose8");
 		Stop;
 	Pose1:
-		"####" OOPPOPOPO 1 A_SetTics(random(40,60));
+		"####" OOPPOPOPO 1 A_SetTics(Random[Scenery](40,60));
 		Loop;
 	Pose2:
-		"####" QQRR 1 A_SetTics(random(10,20));
-		"####" SS 1 A_SetTics(random(80,160));
+		"####" QQRR 1 A_SetTics(Random[Scenery](10,20));
+		"####" SS 1 A_SetTics(Random[Scenery](80,160));
 		Loop;
 	Pose3:
 		"####" S -1;
 		Stop;
 	Pose4:
-		"####" SS 1 A_SetTics(random(10,20));
-		"####" TTUUTUTUT 1 A_SetTics(random(40,60));
+		"####" SS 1 A_SetTics(Random[Scenery](10,20));
+		"####" TTUUTUTUT 1 A_SetTics(Random[Scenery](40,60));
 		Loop;
 	Pose5:
 		"####" V -1;
 		Stop;
 	Pose6:
-		"####" VVWW 1 A_SetTics(random(10,20));
-		"####" XX 1 A_SetTics(random(80,160));
+		"####" VVWW 1 A_SetTics(Random[Scenery](10,20));
+		"####" XX 1 A_SetTics(Random[Scenery](80,160));
 		Loop;
 	Pose7:
 		"####" X -1;
 		Stop;
 	Pose8:
-		"####" XX 1 A_SetTics(random(10,20));
-		"####" YYZZYZYZY 1 A_SetTics(random(40,60));
+		"####" XX 1 A_SetTics(Random[Scenery](10,20));
+		"####" YYZZYZYZY 1 A_SetTics(Random[Scenery](40,60));
 		Loop;
 	}
 }
@@ -935,7 +935,7 @@ class TMMarine1G : TMMarine1B
 	States
 	{
 	Spawn:
-		FIG1 O 0 NODELAY A_SetScale(Scale.X * -1.0, frandom(0.60, 0.70) );
+		FIG1 O 0 NODELAY A_SetScale(Scale.X * -1.0, FRandom[Scenery](0.60, 0.70) );
 	Randomize:
 		FIG1 O 0 A_Jump(256,"Pose1","Pose2","Pose3","Pose4","Pose5","Pose6","Pose7","Pose8");
 		Stop;
@@ -951,7 +951,7 @@ class TMMarine1R : TMMarine1B
 	States
 	{
 	Spawn:
-		FSR1 O 0 NODELAY A_SetScale(Scale.X * -1.0, frandom(0.60, 0.70) );
+		FSR1 O 0 NODELAY A_SetScale(Scale.X * -1.0, FRandom[Scenery](0.60, 0.70) );
 	Randomize:
 		FSR1 O 0 A_Jump(256,"Pose1","Pose2","Pose3","Pose4","Pose5","Pose6","Pose7","Pose8");
 		Stop;
@@ -967,7 +967,7 @@ class TMMarine1Y : TMMarine1B
 	States
 	{
 	Spawn:
-		FIY1 O 0 NODELAY A_SetScale(Scale.X * -1.0, frandom(0.60, 0.70) );
+		FIY1 O 0 NODELAY A_SetScale(Scale.X * -1.0, FRandom[Scenery](0.60, 0.70) );
 	Randomize:
 		FIY1 O 0 A_Jump(256,"Pose1","Pose2","Pose3","Pose4","Pose5","Pose6","Pose7","Pose8");
 		Stop;
@@ -983,13 +983,13 @@ class TMMarine2 : TMMarine1
 	States
 	{
 	Spawn:
-		FIN2 A 0 NODELAY A_SetScale(Scale.X * -1.0, frandom(0.60, 0.70) );
+		FIN2 A 0 NODELAY A_SetScale(Scale.X * -1.0, FRandom[Scenery](0.60, 0.70) );
 	Randomize:
 		FIN2 A 0 A_Jump(256,"Pose1","Pose2","Pose3","Pose4","Pose5","Pose6","Pose7","Pose8","Pose9","Pose10","Pose11","Pose12","Pose13","Pose14","Pose15","Pose16","Pose17","Pose17","Pose17");
 		Stop;
 	Pose17:
-		FIN2 LLFG 1 A_SetTics(random(5,10));
-		FIJ2 AABCDAA 1 A_SetTics(random(5,10));
+		FIN2 LLFG 1 A_SetTics(Random[Scenery](5,10));
+		FIJ2 AABCDAA 1 A_SetTics(Random[Scenery](5,10));
 		Loop;
 	}
 }
@@ -1003,7 +1003,7 @@ class TMMarine2B : TMMarine1B
 	States
 	{
 	Spawn:
-		FIB2 O 0 NODELAY A_SetScale(Scale.X * -1.0, frandom(0.60, 0.70) );
+		FIB2 O 0 NODELAY A_SetScale(Scale.X * -1.0, FRandom[Scenery](0.60, 0.70) );
 	Randomize:
 		FIB2 O 0 A_Jump(256,"Pose1","Pose2","Pose3","Pose4","Pose5","Pose6","Pose7","Pose8");
 		Stop;
@@ -1019,7 +1019,7 @@ class TMMarine2G : TMMarine1B
 	States
 	{
 	Spawn:
-		FIG2 O 0 NODELAY A_SetScale(Scale.X * -1.0, frandom(0.60, 0.70) );
+		FIG2 O 0 NODELAY A_SetScale(Scale.X * -1.0, FRandom[Scenery](0.60, 0.70) );
 	Randomize:
 		FIG2 O 0 A_Jump(256,"Pose1","Pose2","Pose3","Pose4","Pose5","Pose6","Pose7","Pose8");
 		Stop;
@@ -1035,7 +1035,7 @@ class TMMarine2R : TMMarine1B
 	States
 	{
 	Spawn:
-		FSR2 O 0 NODELAY A_SetScale(Scale.X * -1.0, frandom(0.60, 0.70) );
+		FSR2 O 0 NODELAY A_SetScale(Scale.X * -1.0, FRandom[Scenery](0.60, 0.70) );
 	Randomize:
 		FSR2 O 0 A_Jump(256,"Pose1","Pose2","Pose3","Pose4","Pose5","Pose6","Pose7","Pose8");
 		Stop;
@@ -1051,7 +1051,7 @@ class TMMarine2Y : TMMarine1B
 	States
 	{
 	Spawn:
-		FIY2 O 0 NODELAY A_SetScale(Scale.X * -1.0, frandom(0.60, 0.70) );
+		FIY2 O 0 NODELAY A_SetScale(Scale.X * -1.0, FRandom[Scenery](0.60, 0.70) );
 	Randomize:
 		FIY2 O 0 A_Jump(256,"Pose1","Pose2","Pose3","Pose4","Pose5","Pose6","Pose7","Pose8");
 		Stop;
@@ -1067,13 +1067,13 @@ class TMMarine3 : TMMarine1
 	States
 	{
 	Spawn:
-		FIN3 A 0 NODELAY A_SetScale(Scale.X * -1.0, frandom(0.60, 0.70) );
+		FIN3 A 0 NODELAY A_SetScale(Scale.X * -1.0, FRandom[Scenery](0.60, 0.70) );
 	Randomize:
 		FIN3 A 0 A_Jump(256,"Pose1","Pose2","Pose3","Pose4","Pose5","Pose6","Pose7","Pose8","Pose9","Pose10","Pose11","Pose12","Pose13","Pose14","Pose15","Pose16","Pose17","Pose17","Pose17");
 		Stop;
 	Pose17:
-		FIN3 LLFG 1 A_SetTics(random(5,10));
-		FIJ3 AABCDAA 1 A_SetTics(random(5,10));
+		FIN3 LLFG 1 A_SetTics(Random[Scenery](5,10));
+		FIJ3 AABCDAA 1 A_SetTics(Random[Scenery](5,10));
 		Loop;
 	}
 }
@@ -1087,7 +1087,7 @@ class TMMarine3B : TMMarine1B
 	States
 	{
 	Spawn:
-		FIB3 O 0 NODELAY A_SetScale(Scale.X * -1.0, frandom(0.60, 0.70) );
+		FIB3 O 0 NODELAY A_SetScale(Scale.X * -1.0, FRandom[Scenery](0.60, 0.70) );
 	Randomize:
 		FIB3 O 0 A_Jump(256,"Pose1","Pose2","Pose3","Pose4","Pose5","Pose6","Pose7","Pose8");
 		Stop;
@@ -1103,7 +1103,7 @@ class TMMarine3G : TMMarine1B
 	States
 	{
 	Spawn:
-		FIG3 O 0 NODELAY A_SetScale(Scale.X * -1.0, frandom(0.60, 0.70) );
+		FIG3 O 0 NODELAY A_SetScale(Scale.X * -1.0, FRandom[Scenery](0.60, 0.70) );
 	Randomize:
 		FIG3 O 0 A_Jump(256,"Pose1","Pose2","Pose3","Pose4","Pose5","Pose6","Pose7","Pose8");
 		Stop;
@@ -1119,7 +1119,7 @@ class TMMarine3R : TMMarine1B
 	States
 	{
 	Spawn:
-		FSR3 O 0 NODELAY A_SetScale(Scale.X * -1.0, frandom(0.60, 0.70) );
+		FSR3 O 0 NODELAY A_SetScale(Scale.X * -1.0, FRandom[Scenery](0.60, 0.70) );
 	Randomize:
 		FSR3 O 0 A_Jump(256,"Pose1","Pose2","Pose3","Pose4","Pose5","Pose6","Pose7","Pose8");
 		Stop;
@@ -1135,7 +1135,7 @@ class TMMarine3Y : TMMarine1B
 	States
 	{
 	Spawn:
-		FIY3 O 0 NODELAY A_SetScale(Scale.X * RandomPick(-1.0, 1.0), frandom(0.60, 0.70) );
+		FIY3 O 0 NODELAY A_SetScale(Scale.X * RandomPick[Scenery](-1.0, 1.0), FRandom[Scenery](0.60, 0.70) );
 	Randomize:
 		FIY3 O 0 A_Jump(256,"Pose1","Pose2","Pose3","Pose4","Pose5","Pose6","Pose7","Pose8");
 		Stop;
@@ -1156,71 +1156,71 @@ class TMMarine4: Actor
 	States
 	{
 	Spawn:
-		FIN4 A 0 NODELAY A_SetScale(Scale.X * -1.0, frandom(0.60, 0.70) );
+		FIN4 A 0 NODELAY A_SetScale(Scale.X * -1.0, FRandom[Scenery](0.60, 0.70) );
 	Randomize:
 		FIN4 A 0 A_Jump(256,"Pose1","Pose2","Pose3","Pose4","Pose5","Pose6","Pose7","Pose8","Pose9","Pose10","Pose11","Pose12","Pose13","Pose14","Pose15","Pose16","Pose17","Pose17","Pose17");
 		Stop;
 	Pose1:
-		"####" AABBDD 1 A_SetTics(random(10,20));
-		"####" CC 1 A_SetTics(random(80,160));
+		"####" AABBDD 1 A_SetTics(Random[Scenery](10,20));
+		"####" CC 1 A_SetTics(Random[Scenery](80,160));
 		Loop;
 	Pose2:
-		"####" AABBDD 1 A_SetTics(random(10,20));
-		"####" EEDDDDBB 1 A_SetTics(random(40,60));
+		"####" AABBDD 1 A_SetTics(Random[Scenery](10,20));
+		"####" EEDDDDBB 1 A_SetTics(Random[Scenery](40,60));
 		Loop;
 	Pose3:
-		"####" FFGG 1 A_SetTics(random(5,10));
-		"####" HHIHIHG 1 A_SetTics(random(20,50));
+		"####" FFGG 1 A_SetTics(Random[Scenery](5,10));
+		"####" HHIHIHG 1 A_SetTics(Random[Scenery](20,50));
 		Loop;
 	Pose4:
-		"####" HHIHIHIHH 1 A_SetTics(random(20,50));
+		"####" HHIHIHIHH 1 A_SetTics(Random[Scenery](20,50));
 		Loop;
 	Pose5:
-		"####" FFFF 1 A_SetTics(random(5,10));
-		"####" JJKJKJKJJ 1 A_SetTics(random(10,20));
+		"####" FFFF 1 A_SetTics(Random[Scenery](5,10));
+		"####" JJKJKJKJJ 1 A_SetTics(Random[Scenery](10,20));
 		Loop;
 	Pose6:
 		"####" L -1;
 		Stop;
 	Pose7:
-		"####" LLMM 1 A_SetTics(random(10,20));
-		"####" NN 1 A_SetTics(random(80,160));
+		"####" LLMM 1 A_SetTics(Random[Scenery](10,20));
+		"####" NN 1 A_SetTics(Random[Scenery](80,160));
 		Loop;
 	Pose8:
 		"####" N -1;
 		Stop;
 	Pose9:
-		"####" NN 1 A_SetTics(random(10,20));
-		"####" OOPPOPOPO 1 A_SetTics(random(40,60));
+		"####" NN 1 A_SetTics(Random[Scenery](10,20));
+		"####" OOPPOPOPO 1 A_SetTics(Random[Scenery](40,60));
 		Loop;
 	Pose10:
-		"####" QQRR 1 A_SetTics(random(10,20));
-		"####" SS 1 A_SetTics(random(80,160));
+		"####" QQRR 1 A_SetTics(Random[Scenery](10,20));
+		"####" SS 1 A_SetTics(Random[Scenery](80,160));
 		Loop;
 	Pose11:
 		"####" S -1;
 		Stop;
 	Pose12:
-		"####" SS 1 A_SetTics(random(10,20));
-		"####" TTUUTUTUT 1 A_SetTics(random(40,60));
+		"####" SS 1 A_SetTics(Random[Scenery](10,20));
+		"####" TTUUTUTUT 1 A_SetTics(Random[Scenery](40,60));
 		Loop;
 	Pose14:
 		"####" V -1;
 		Stop;
 	Pose14:
-		"####" VVWW 1 A_SetTics(random(10,20));
-		"####" XX 1 A_SetTics(random(80,160));
+		"####" VVWW 1 A_SetTics(Random[Scenery](10,20));
+		"####" XX 1 A_SetTics(Random[Scenery](80,160));
 		Loop;
 	Pose15:
 		"####" X -1;
 		Stop;
 	Pose16:
-		"####" XX 1 A_SetTics(random(10,20));
-		"####" YYZZYZYZY 1 A_SetTics(random(40,60));
+		"####" XX 1 A_SetTics(Random[Scenery](10,20));
+		"####" YYZZYZYZY 1 A_SetTics(Random[Scenery](40,60));
 		Loop;
 	Pose17:
-		FIN4 LLFG 1 A_SetTics(random(5,10));
-		FIJ4 AABCDAA 1 A_SetTics(random(5,10));
+		FIN4 LLFG 1 A_SetTics(Random[Scenery](5,10));
+		FIJ4 AABCDAA 1 A_SetTics(Random[Scenery](5,10));
 		Loop;
 	}
 }
@@ -1234,36 +1234,36 @@ class TMMarine4B : TMMarine4
 	States
 	{
 	Spawn:
-		FIB4 O 0 NODELAY A_SetScale(Scale.X * -1.0, frandom(0.60, 0.70) );
+		FIB4 O 0 NODELAY A_SetScale(Scale.X * -1.0, FRandom[Scenery](0.60, 0.70) );
 	Randomize:
 		FIB4 O 0 A_Jump(256,"Pose1","Pose2","Pose3","Pose4","Pose5","Pose6","Pose7","Pose8");
 	Pose1:
-		"####" OOPPOPOPO 1 A_SetTics(random(40,60));
+		"####" OOPPOPOPO 1 A_SetTics(Random[Scenery](40,60));
 		Loop;
 	Pose2:
-		"####" QQRR 1 A_SetTics(random(10,20));
-		"####" SS 1 A_SetTics(random(80,160));
+		"####" QQRR 1 A_SetTics(Random[Scenery](10,20));
+		"####" SS 1 A_SetTics(Random[Scenery](80,160));
 		Loop;
 	Pose3:
 		"####" S -1;
 		Stop;
 	Pose4:
-		"####" SS 1 A_SetTics(random(10,20));
-		"####" TTUUTUTUT 1 A_SetTics(random(40,60));
+		"####" SS 1 A_SetTics(Random[Scenery](10,20));
+		"####" TTUUTUTUT 1 A_SetTics(Random[Scenery](40,60));
 		Loop;
 	Pose5:
 		"####" V -1;
 		Stop;
 	Pose6:
-		"####" VVWW 1 A_SetTics(random(10,20));
-		"####" XX 1 A_SetTics(random(80,160));
+		"####" VVWW 1 A_SetTics(Random[Scenery](10,20));
+		"####" XX 1 A_SetTics(Random[Scenery](80,160));
 		Loop;
 	Pose7:
 		"####" X -1;
 		Stop;
 	Pose8:
-		"####" XX 1 A_SetTics(random(10,20));
-		"####" YYZZYZYZY 1 A_SetTics(random(40,60));
+		"####" XX 1 A_SetTics(Random[Scenery](10,20));
+		"####" YYZZYZYZY 1 A_SetTics(Random[Scenery](40,60));
 		Loop;
 	}
 }
@@ -1277,7 +1277,7 @@ class TMMarine4G : TMMarine4B
 	States
 	{
 	Spawn:
-		FIG4 O 0 NODELAY A_SetScale(Scale.X * -1.0, frandom(0.60, 0.70) );
+		FIG4 O 0 NODELAY A_SetScale(Scale.X * -1.0, FRandom[Scenery](0.60, 0.70) );
 	Randomize:
 		FIG4 O 0 A_Jump(256,"Pose1","Pose2","Pose3","Pose4","Pose5","Pose6","Pose7","Pose8");
 		Stop;
@@ -1293,7 +1293,7 @@ class TMMarine4R : TMMarine4B
 	States
 	{
 	Spawn:
-		FSR4 O 0 NODELAY A_SetScale(Scale.X * -1.0, frandom(0.60, 0.70) );
+		FSR4 O 0 NODELAY A_SetScale(Scale.X * -1.0, FRandom[Scenery](0.60, 0.70) );
 	Randomize:
 		FSR4 O 0 A_Jump(256,"Pose1","Pose2","Pose3","Pose4","Pose5","Pose6","Pose7","Pose8");
 		Stop;
@@ -1309,7 +1309,7 @@ class TMMarine4Y : TMMarine4B
 	States
 	{
 	Spawn:
-		FIY4 O 0 NODELAY A_SetScale(Scale.X * -1.0, frandom(0.60, 0.70) );
+		FIY4 O 0 NODELAY A_SetScale(Scale.X * -1.0, FRandom[Scenery](0.60, 0.70) );
 	Randomize:
 		FIY4 O 0 A_Jump(256,"Pose1","Pose2","Pose3","Pose4","Pose5","Pose6","Pose7","Pose8");
 		Stop;
@@ -1330,7 +1330,7 @@ class TMWound1: Actor
 	States
 	{
 	Spawn:
-		FIN5 A 0 NODELAY A_SetScale(Scale.X * -1.0, frandom(0.60, 0.70) );
+		FIN5 A 0 NODELAY A_SetScale(Scale.X * -1.0, FRandom[Scenery](0.60, 0.70) );
 	Randomize:
 		FIN5 A 0 A_Jump(256,"Pose1","Pose2","Pose3","Pose4");
 		Stop;
@@ -1361,7 +1361,7 @@ class TMWound2 : TMWound1
 	States
 	{
 	Spawn:
-		FIB5 A 0 NODELAY A_SetScale(Scale.X * -1.0, frandom(0.60, 0.70) );
+		FIB5 A 0 NODELAY A_SetScale(Scale.X * -1.0, FRandom[Scenery](0.60, 0.70) );
 	Randomize:
 		FIB5 A 0 A_Jump(256,"Pose1","Pose2","Pose3","Pose4");
 		Stop;
@@ -1392,7 +1392,7 @@ class TMWound3 : TMWound1
 	States
 	{
 	Spawn:
-		FIG5 A 0 NODELAY A_SetScale(Scale.X * -1.0, frandom(0.60, 0.70) );
+		FIG5 A 0 NODELAY A_SetScale(Scale.X * -1.0, FRandom[Scenery](0.60, 0.70) );
 	Randomize:
 		FIG5 A 0 A_Jump(256,"Pose1","Pose2","Pose3","Pose4");
 		Stop;
@@ -1423,7 +1423,7 @@ class TMWound4 : TMWound1
 	States
 	{
 	Spawn:
-		FSR5 A 0 NODELAY A_SetScale(Scale.X * -1.0, frandom(0.60, 0.70) );
+		FSR5 A 0 NODELAY A_SetScale(Scale.X * -1.0, FRandom[Scenery](0.60, 0.70) );
 	Randomize:
 		FSR5 A 0 A_Jump(256,"Pose1","Pose2","Pose3","Pose4");
 		Stop;
@@ -1454,7 +1454,7 @@ class TMWound5 : TMWound1
 	States
 	{
 	Spawn:
-		FIY5 A 0 NODELAY A_SetScale(Scale.X * -1.0, frandom(0.60, 0.70) );
+		FIY5 A 0 NODELAY A_SetScale(Scale.X * -1.0, FRandom[Scenery](0.60, 0.70) );
 	Randomize:
 		FIY5 A 0 A_Jump(256,"Pose1","Pose2","Pose3","Pose4");
 		Stop;

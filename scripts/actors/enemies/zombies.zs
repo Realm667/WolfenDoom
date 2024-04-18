@@ -33,9 +33,9 @@ class CivilianZombie : ZombieStandard
 			Stop;
 		Melee:
 			"####" EF 4 A_FaceTarget();
-			"####" G 5 A_CustomMeleeAttack(4*random(1,3), "nazombie/pain", "", "UndeadPoison", TRUE);
+			"####" G 5 A_CustomMeleeAttack(4*Random[Zombie](1,3), "nazombie/pain", "", "UndeadPoison", TRUE);
 			"####" F 4 A_FaceTarget();
-			"####" G 5 A_CustomMeleeAttack(4*random(1,3), "nazombie/pain", "", "UndeadPoison", TRUE);
+			"####" G 5 A_CustomMeleeAttack(4*Random[Zombie](1,3), "nazombie/pain", "", "UndeadPoison", TRUE);
 			Goto See;
 		Pain:
 			"####" H 6 A_NaziPain(256, True, -8, "ZPain_Overlay");
@@ -46,7 +46,7 @@ class CivilianZombie : ZombieStandard
 			"####" J 6;
 			"####" K 5 A_NoBlocking();
 			"####" LM 4;
-			"####" O 5 A_SpawnItemEx("ZombieSoul", 0, 0, 10, 0, 0, frandom(1,3));
+			"####" O 5 A_SpawnItemEx("ZombieSoul", 0, 0, 10, 0, 0, FRandom[Smoke](1,3));
 			"####" P -1;
 			Stop;
 		Raise:
@@ -62,7 +62,7 @@ class CivilianZombie : ZombieStandard
 
 	override void PostBeginPlay()
 	{
-		if (variant < 0 || variant > 3) { variant = Random(1, 3); }
+		if (variant < 0 || variant > 3) { variant = Random[Zombie](1, 3); }
 
 		State VariantState = FindState("Variants") + variant;
 

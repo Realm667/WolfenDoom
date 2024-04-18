@@ -67,10 +67,10 @@ class SnowSpawner : EffectSpawner
 
 		for (int i = 0; i < SPAWN_POINTS_PER_SPAWNER; i++) {
 			do { // So that "continue" can be used to try again
-				double xoffset = random(-Args[0], Args[0]);
+				double xoffset = Random[Snow](-Args[0], Args[0]);
 				double yoffset = circular ?
-					random(0, 359) :
-					random(-Args[0], Args[0]);
+					Random[Snow](0, 359) :
+					Random[Snow](-Args[0], Args[0]);
 
 				// Calculate absolute spawn position
 				Vector3 spawnPos = circular ?
@@ -86,7 +86,7 @@ class SnowSpawner : EffectSpawner
 
 				// Use a hitscan to find the distance to the nearest obstacle
 				BoASolidSurfaceFinderTracer finder = new("BoASolidSurfaceFinderTracer");
-				Vector3 vel = (frandom(-1.0, 1.0), frandom(-1.0, 1.0), frandom(-1.0, -3.0));
+				Vector3 vel = (FRandom[Snow](-1.0, 1.0), FRandom[Snow](-1.0, 1.0), FRandom[Snow](-1.0, -3.0));
 				vel = vel.Unit();
 				finder.Trace(spawnPos, spawnSector, vel, 10000.0, TRACE_HitSky);
 
@@ -110,7 +110,7 @@ class SnowSpawner : EffectSpawner
 	{
 		Super.SpawnEffect();
 
-		if (random(0, 255) < Args[1]) {
+		if (Random[Snow](0, 255) < Args[1]) {
 			return;
 		}
 
@@ -118,7 +118,7 @@ class SnowSpawner : EffectSpawner
 		double psize = 3.0; // Max of sprite width and height * SnowParticle scale
 
 		int index = Random[SnowSpawner](0, SPAWN_POINTS_PER_SPAWNER - 1);
-		Vector3 vel = ZScriptTools.GetTraceDirection(spawnPoints[index].angle, spawnPoints[index].pitch) * FRandom(1, 3);
+		Vector3 vel = ZScriptTools.GetTraceDirection(spawnPoints[index].angle, spawnPoints[index].pitch) * FRandom[Snow](1, 3);
 		int lifetime = int(floor(spawnPoints[index].Distance / vel.Length())) + 2; // fall into floor
 
 		FSpawnParticleParams particleInfo;
@@ -167,6 +167,6 @@ class SnowParticle : ParticleBase
 	override void PostBeginPlay()
 	{
 		Super.PostBeginPlay();
-		scale.x = scale.y = FRandom(0.3, 0.6);
+		scale.x = scale.y = FRandom[Snow](0.3, 0.6);
 	}
 }

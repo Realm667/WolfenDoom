@@ -65,11 +65,11 @@ class GoeringProjectile : NebRocket
 	Fly:
 		MNSS AAAAAAAAAA 8 BRIGHT LIGHT("NEBLIGHT")
 			{
-				A_SpawnItemEx("TracerSpark", random(-8,8), random(-8,8), random(-8,8), random(-2,2), random(-2,2), random(-2,2), random(0,359));
-				A_SpawnItemEx("TracerSpark", random(-8,8), random(-8,8), random(-8,8), random(-2,2), random(-2,2), random(-2,2), random(0,359));
-				A_SpawnItemEx("TracerSpark", random(-8,8), random(-8,8), random(-8,8), random(-2,2), random(-2,2), random(-2,2), random(0,359));
-				A_SpawnItemEx("TracerSpark", random(-8,8), random(-8,8), random(-8,8), random(-2,2), random(-2,2), random(-2,2), random(0,359));
-				A_SpawnItemEx("TracerSpark", random(-8,8), random(-8,8), random(-8,8), random(-2,2), random(-2,2), random(-2,2), random(0,359));
+				A_SpawnItemEx("TracerSpark", Random[Spark](-8,8), Random[Spark](-8,8), Random[Spark](-8,8), Random[Spark](-2,2), Random[Spark](-2,2), Random[Spark](-2,2), Random[Spark](0,359));
+				A_SpawnItemEx("TracerSpark", Random[Spark](-8,8), Random[Spark](-8,8), Random[Spark](-8,8), Random[Spark](-2,2), Random[Spark](-2,2), Random[Spark](-2,2), Random[Spark](0,359));
+				A_SpawnItemEx("TracerSpark", Random[Spark](-8,8), Random[Spark](-8,8), Random[Spark](-8,8), Random[Spark](-2,2), Random[Spark](-2,2), Random[Spark](-2,2), Random[Spark](0,359));
+				A_SpawnItemEx("TracerSpark", Random[Spark](-8,8), Random[Spark](-8,8), Random[Spark](-8,8), Random[Spark](-2,2), Random[Spark](-2,2), Random[Spark](-2,2), Random[Spark](0,359));
+				A_SpawnItemEx("TracerSpark", Random[Spark](-8,8), Random[Spark](-8,8), Random[Spark](-8,8), Random[Spark](-2,2), Random[Spark](-2,2), Random[Spark](-2,2), Random[Spark](0,359));
 				A_SpawnItemEx("FlamerSmoke1");
 			}
 		MNSS A 1 BRIGHT LIGHT("NEBLIGHT")
@@ -95,7 +95,7 @@ class GoeringProjectile : NebRocket
 		Loop;
 	Death:
 		TNT1 A 0 A_SpawnItemEx("GeneralExplosion_ShockwaveOrange", 0, 0, 0, 0, 0, 0, 0, SXF_CLIENTSIDE | SXF_TRANSFERSCALE);
-		FRME A 1 BRIGHT LIGHT("NEBEXPLO") A_Explode(random(25,30));
+		FRME A 1 BRIGHT LIGHT("NEBEXPLO") A_Explode(Random[Boom](25,30));
 		FRME BCDEFGHIHJKLMNOPQRS 1 BRIGHT LIGHT("NEBEXPLO");
 		Stop;
 	}
@@ -108,7 +108,7 @@ class GoeringBall: Actor
 	Radius 6;
 	Height 8;
 	Speed 15;
-	DamageFunction (3*random(1,8));
+	DamageFunction (3*Random[Effect](1,8));
 	RenderStyle "Add";
 	SeeSound "Goering/shotsit";
 	DeathSound "Goering/shotdth";
@@ -153,7 +153,7 @@ class OccultBlazeFX1: Actor
 	Radius 16;
 	Height 2;
 	Speed 0;
-	DamageFunction (random(0,1));
+	DamageFunction (Random[Effect](0,1));
 	DamageType "Fire";
 	Renderstyle "Add";
 	Species "Nazi";
@@ -207,7 +207,7 @@ class OccultBlazeFlames: Actor
 	Radius 16;
 	Height 32;
 	Speed 8;
-	DamageFunction (random(2,4));
+	DamageFunction (Random[Effect](2,4));
 	DamageType "Fire";
 	Renderstyle "Add";
 	Species "Nazi";
@@ -398,7 +398,7 @@ class RumbleWaves: Actor
 	Radius 40;
 	Height 64;
 	Speed 16;
-	DamageFunction (random(2,4));
+	DamageFunction (Random[Effect](2,4));
 	DamageType "UndeadPoison";
 	Species "Nazi";
 	Projectile;
@@ -554,7 +554,7 @@ class ClusterBomb : GrenadeBase
 	Radius 4;
 	Height 3;
 	Speed 40;
-	DamageFunction (random(1,8));
+	DamageFunction (Random[Effect](1,8));
 	DamageType "Frag";
 	Reactiontime 8; //for countdown
 	Projectile;
@@ -584,7 +584,7 @@ class ClusterBomb : GrenadeBase
 		"####" A 0 A_StartSound("clusterbomb/explode", CHAN_AUTO, 0, 1.0, 0.1);
 		"####" A 0 A_SpawnItemEx("KD_HL2SmokeGenerator");
 		"####" A 0 A_SpawnItemEx("KD_HL2SparkGenerator");
-		"####" AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 0 A_SpawnitemEx("ClusterBomb_Debris", 0, 0, 8, random(2,16), random(2,16), random(2,16), random(0,359), 0, 0);
+		"####" AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 0 A_SpawnitemEx("ClusterBomb_Debris", 0, 0, 8, Random[DEbris](2,16), Random[DEbris](2,16), Random[DEbris](2,16), Random[DEbris](0,359), 0, 0);
 		"####" A 1 Radius_Quake(10,10,0,16,0);
 		Stop;
 	}
@@ -597,7 +597,7 @@ class ClusterBomb_Debris: Actor
 	Radius 8;
 	Height 16;
 	Mass 20;
-	DamageFunction (2*random(1,8));
+	DamageFunction (2*Random[Effect](1,8));
 	Scale 0.5;
 	Gravity 0.75;
 	Projectile;
@@ -628,7 +628,7 @@ class ClusterBomb_Debris: Actor
 	}
 }
 
-class HardClusterBomb_Debris : ClusterBomb_Debris { Default { +MTHRUSPECIES DamageFunction (3*random(1,8)); } }
+class HardClusterBomb_Debris : ClusterBomb_Debris { Default { +MTHRUSPECIES DamageFunction (3*Random[Effect](1,8)); } }
 
 class HimmlerMortar : GrenadeBase
 {
@@ -637,7 +637,7 @@ class HimmlerMortar : GrenadeBase
 	Radius 4;
 	Height 4;
 	Speed 15;
-	DamageFunction (10*random(1,8));
+	DamageFunction (10*Random[Effect](1,8));
 	Gravity 0.25;
 	Scale 0.8;
 	Projectile;
@@ -662,8 +662,8 @@ class HimmlerMortar : GrenadeBase
 		"####" A 0 A_StartSound("clusterbomb/explode", CHAN_AUTO, 0, 1.0, 0.1);
 		"####" A 0 A_SpawnItemEx("KD_HL2SmokeGenerator");
 		"####" A 0 A_SpawnItemEx("KD_HL2SparkGenerator");
-		"####" AAAAAAAAAAAAAAAAAAAA 0 A_SpawnitemEx("Mortar_Debris", 0, 0, 8, random(2,16), random(2,16), random(2,16), random(0,359), 0, 0);
-		"####" AAAAAAAAA 0 A_SpawnitemEx("ClusterBomb_Debris", 0, 0, 8, random(2,16), random(2,16), random(2,16), random(0,359), 0, 0);
+		"####" AAAAAAAAAAAAAAAAAAAA 0 A_SpawnitemEx("Mortar_Debris", 0, 0, 8, Random[Debris](2,16), Random[Debris](2,16), Random[Debris](2,16), Random[Debris](0,359), 0, 0);
+		"####" AAAAAAAAA 0 A_SpawnitemEx("ClusterBomb_Debris", 0, 0, 8, Random[Debris](2,16), Random[Debris](2,16), Random[Debris](2,16), Random[Debris](0,359), 0, 0);
 		"####" A 1 Radius_Quake(20,35,0,32,0);
 		Stop;
 	}
@@ -674,7 +674,7 @@ class ZMortar : HimmlerMortar
 	Default
 	{
 	Speed 18;
-	DamageFunction (random(4,10));
+	DamageFunction (Random[Effect](4,10));
 	DamageType "MutantPoison";
 	Gravity 0.20;
 	Obituary "$OBGASMORT";
@@ -696,12 +696,12 @@ class ZMortar : HimmlerMortar
 		"####" A 0 A_StartSound("clusterbomb/explode", CHAN_AUTO, 0, 1.0, 0.1);
 		"####" A 0 A_SpawnItemEx("KD_HL2SmokeGenerator");
 		"####" A 0 A_SpawnItemEx("KD_HL2SparkGenerator");
-		"####" AAAAAAAAAAAAAAAAAAAA 0 A_SpawnitemEx("Mortar_Debris", 0, 0, 8, random(2,16), random(2,16), random(2,16), random(0,359), 0, 0);
-		"####" AAAAAAAAA 0 A_SpawnitemEx("ClusterBomb_Debris", 0, 0, 8, random(2,16), random(2,16), random(2,16), random(0,359), 0, 0);
+		"####" AAAAAAAAAAAAAAAAAAAA 0 A_SpawnitemEx("Mortar_Debris", 0, 0, 8, Random[Debris](2,16), Random[Debris](2,16), Random[Debris](2,16), Random[Debris](0,359), 0, 0);
+		"####" AAAAAAAAA 0 A_SpawnitemEx("ClusterBomb_Debris", 0, 0, 8, Random[Debris](2,16), Random[Debris](2,16), Random[Debris](2,16), Random[Debris](0,359), 0, 0);
 		TNT1 A 0 BRIGHT A_SpawnProjectile("PoisonCloudUndead",16,0,0,2,0);
-		"####" AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 0 A_SpawnItemEx("UndeadSmoke",random(-64,64),random(-64,64),random(-48,48),Vel.X,0,frandom(0.5,1),0,SXF_TRANSFERTRANSLATION,160);
-		"####" AAAAAAAAAAAAAAAA 0 A_SpawnItemEx("ZyklonZCloud",random(-64,64),random(-64,64),random(-48,48),0,0,0.1,0,128);
-		"####" AAAAAAAAA 1 A_SpawnItemEx("Zombie_FlyingBlood", random(2,-2), random(2,-2), random(2,2), random(1,6), random(1,6), random(1,6), random(0,360), SXF_CLIENTSIDE);
+		"####" AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 0 A_SpawnItemEx("UndeadSmoke", Random[Smoke](-64,64), Random[Smoke](-64,64), Random[Smoke](-48,48),Vel.X,0, FRandom[Smoke](0.5,1),0,SXF_TRANSFERTRANSLATION,160);
+		"####" AAAAAAAAAAAAAAAA 0 A_SpawnItemEx("ZyklonZCloud", Random[Smoke](-64,64), Random[Smoke](-64,64), Random[Smoke](-48,48),0,0,0.1,0,128);
+		"####" AAAAAAAAA 1 A_SpawnItemEx("Zombie_FlyingBlood", Random[Gibs](2,-2), Random[Gibs](2,-2), Random[Gibs](2,2), Random[Gibs](1,6), Random[Gibs](1,6), Random[Gibs](1,6), Random[Gibs](0,360), SXF_CLIENTSIDE);
 		Stop;
 	}
 }
@@ -754,8 +754,8 @@ class GasBomb : ClusterBomb
 		"####" A 0 A_SpawnItemEx("KD_HL2SmokeGenerator");
 		"####" A 0 A_SpawnItemEx("KD_HL2SparkGenerator");
 		"####" A 0 BRIGHT A_SpawnProjectile("PoisonCloudUndead",16,0,0,2,0);
-		"####" AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 0 A_SpawnItemEx("UndeadFartCloud",random(-64,64),random(-64,64),random(-48,48),0,0,0.1,0,128);
-		"####" AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 0 A_SpawnItemEx("UndeadSmoke",random(-64,64),random(-64,64),random(-48,48),Vel.X,0,frandom(0.5,1),0,SXF_TRANSFERTRANSLATION,160);
+		"####" AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 0 A_SpawnItemEx("UndeadFartCloud", Random[Smoke](-64,64), Random[Smoke](-64,64), Random[Smoke](-48,48),0,0,0.1,0,128);
+		"####" AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 0 A_SpawnItemEx("UndeadSmoke", Random[Smoke](-64,64), Random[Smoke](-64,64), Random[Smoke](-48,48),Vel.X,0, FRandom[Smoke](0.5,1),0,SXF_TRANSFERTRANSLATION,160);
 		"####" A 1 Radius_Quake(10,10,0,16,0);
 		Stop;
 	}
@@ -773,7 +773,7 @@ class NebRocketEnemy : NebRocket
 	{
 	Death:
 		TNT1 A 0 A_SpawnItemEx("GeneralExplosion_ShockwaveOrange", 0, 0, 0, 0, 0, 0, 0, SXF_CLIENTSIDE | SXF_TRANSFERSCALE);
-		FRME A 1 BRIGHT LIGHT("NEBEXPLO") A_Explode(random(25,30));
+		FRME A 1 BRIGHT LIGHT("NEBEXPLO") A_Explode(Random[Effect](25,30));
 		FRME BCDEFGHIHJKLMNOPQRS 1 BRIGHT LIGHT("NEBEXPLO");
 		Stop;
 	}
@@ -788,7 +788,7 @@ class MiniRocket: Actor
 	Radius 11;
 	Height 8;
 	Speed 15;
-	DamageFunction (5*random(1,8));
+	DamageFunction (5*Random[Effect](1,8));
 	Projectile;
 	+RANDOMIZE
 	Scale 0.47;
@@ -799,7 +799,7 @@ class MiniRocket: Actor
 	{
 	Spawn:
 		NMIS A 0 NODELAY A_StartSound("nazi/missileengine", CHAN_AUTO, CHANF_LOOPING, 0.3);
-		NMIS A 1 BRIGHT LIGHT("OTTOFIRE") A_SpawnItemEx("RocketFlame",random(-1,1),0,random(-1,1));
+		NMIS A 1 BRIGHT LIGHT("OTTOFIRE") A_SpawnItemEx("RocketFlame", Random[Rocket](-1,1),0, Random[Rocket](-1,1));
 		Wait;
 	Death:
 		FRME A 1 BRIGHT LIGHT("OTTOFIRE") A_Explode(20,40);
@@ -816,7 +816,7 @@ class MiniMiniRocket : MiniRocket
 	Default
 	{
 	Scale 0.27;
-	DamageFunction (random(1,4)*4);
+	DamageFunction (Random[Effect](1,4)*4);
 	DeathSound "nebelwerfer/xplode";
 	}
 }
@@ -828,7 +828,7 @@ class SeekerRocket : MiniRocket
 	Default
 	{
 	Scale 0.27;
-	DamageFunction (random(1,4)*4);
+	DamageFunction (Random[Effect](1,4)*4);
 	MaxTargetRange 128;
 	+SEEKERMISSILE
 	DeathSound "nebelwerfer/xplode";
@@ -837,7 +837,7 @@ class SeekerRocket : MiniRocket
 	{
 	Spawn:
 		NMIS A 0 NODELAY A_StartSound("nazi/missileengine", CHAN_AUTO, CHANF_LOOPING, 0.3);
-		NMIS A 1 BRIGHT LIGHT("OTTOFIRE") {A_SeekerMissile(8, random(8,16)); A_SpawnItemEx("RocketFlame",random(-1,1),0,random(-1,1));}
+		NMIS A 1 BRIGHT LIGHT("OTTOFIRE") {A_SeekerMissile(8, Random[Rocket](8,16)); A_SpawnItemEx("RocketFlame", Random[Rocket](-1,1),0, Random[Rocket](-1,1));}
 		Wait;
 	Death:
 		FRME A 1 BRIGHT LIGHT("OTTOFIRE") A_Explode(20,40);
@@ -878,25 +878,25 @@ class MiniMechaRocket : MiniRocket
 	{
 	Speed 20;
 	Scale 0.27;
-	DamageFunction (random(1,2)*5); //5-10 damage + 10 splash damage
+	DamageFunction (Random[Effect](1,2)*5); //5-10 damage + 10 splash damage
 	DeathSound "nebelwerfer/xplode";
 	}
 	States
 	{
 	Spawn:
 		NMIS A 0 NODELAY {
-			user_wspeed = random(2, 4) * (random(0, 1) * 2 - 1); /*the first parameter is integer afaik from wiki*/
-			user_wrange = frandom(3.0, 5.0);
+			user_wspeed = Random[Rocket](2, 4) * (Random[Effect](0, 1) * 2 - 1); /*the first parameter is integer afaik from wiki*/
+			user_wrange = FRandom[Rocket](3.0, 5.0);
 		}
 	Spawn.Fly:
 		NMIS A 0 A_StartSound("nazi/missileengine", CHAN_AUTO, CHANF_LOOPING, 0.3);
 		"####" "#" 1 {
 			A_Weave(user_wspeed, user_wspeed, user_wrange, user_wrange);
-			A_SpawnItemEx("RocketFlame",random(-1,1),0,random(-1,1));
+			A_SpawnItemEx("RocketFlame", Random[Rocket](-1,1),0, Random[Rocket](-1,1));
 		}
 		Loop;
 	Death:
-		FRME A 1 BRIGHT LIGHT("OTTOFIRE") A_Explode(random(16,32), 96, 0);
+		FRME A 1 BRIGHT LIGHT("OTTOFIRE") A_Explode(Random[Effect](16,32), 96, 0);
 		FRME A 0 A_StopSound(CHAN_AUTO);
 		FRME BCDEFGHIHJKLMNOPQRS 1 BRIGHT LIGHT("OTTOFIRE");
 		Stop;
@@ -968,7 +968,7 @@ class FlyingNeedleZ : MiniRocket
 		NEDL EFGH 3;
 		Loop;
 	Death:
-		TNT1 AA 0 A_SpawnItemEx("ZyklonBCloud",random(-4,4),random(-4,4),random(4,4),frandom(-2.0,2.0),frandom(-2.0,2.0),frandom(0.0,1.0),0,128);
+		TNT1 AA 0 A_SpawnItemEx("ZyklonBCloud", Random[Smoke](-4,4), Random[Smoke](-4,4), Random[Smoke](4,4), FRandom[Smoke](-2.0,2.0), FRandom[Smoke](-2.0,2.0), FRandom[Smoke](0.0,1.0),0,128);
 		Stop;
 	}
 }
@@ -995,7 +995,7 @@ class FlyingHack : MiniRocket
 	Gravity 0.3;
 	Scale 0.47;
 	DamageType "None";
-	DamageFunction (random(1,2));
+	DamageFunction (Random[Effect](1,2));
 	SeeSound "";
 	DeathSound "dspfwood";
 	-NOGRAVITY
@@ -1056,7 +1056,7 @@ class Flamerbolt : Flamebolt
 {
 	Default
 	{
-	DamageFunction (random(0,1));
+	DamageFunction (Random[Effect](0,1));
 	}
 	States
 	{
@@ -1072,14 +1072,14 @@ class Flamerbolt : Flamebolt
 
 class EnemyFlamerShot : Flamerbolt { }
 class HardEnemyFlamerShot : EnemyFlamerShot { Default { +MTHRUSPECIES } }
-class EnemyFlamebolt : Flameball { Default { DamageFunction (8 * random(1,8)); } }
+class EnemyFlamebolt : Flameball { Default { DamageFunction (8 * Random[Rocket](1,8)); } }
 class HardEnemyFlamebolt : EnemyFlamebolt { Default { +MTHRUSPECIES } }
 
 class EnemyFlamebolt2 : EnemyFlamebolt
 {
 	Default
 	{
-	DamageFunction (random(1,4)*5);
+	DamageFunction (Random[Effect](1,4)*5);
 	Scale .35;
 	}
 	States
@@ -1160,7 +1160,7 @@ class MutantRocket: Actor
 	Height 8;
 	Speed 12;
 	FastSpeed 14;
-	DamageFunction (random(1,3));
+	DamageFunction (Random[Effect](1,3));
 	DamageType "MutantPoison";
 	Projectile;
 	Scale 0.4;
@@ -1173,20 +1173,20 @@ class MutantRocket: Actor
 	Spawn:
 		NMIS A 0 NODELAY A_StartSound("nazi/missileengine", CHAN_AUTO, CHANF_LOOPING, 0.3);
 	Fly:
-		NMIS A 1 BRIGHT LIGHT("MUTNROCK") A_SpawnItemEx("MutantFlame",random(-1,1),0,random(-1,1));
+		NMIS A 1 BRIGHT LIGHT("MUTNROCK") A_SpawnItemEx("MutantFlame", Random[Rocket](-1,1),0, Random[Rocket](-1,1));
 		Loop;
 	Death:
 		FUGS A 1 BRIGHT LIGHT("MUTNROCK") A_Explode(5,15);
 		FUGS A 0 A_StopSound(CHAN_AUTO);
 		FUGS A 0 BRIGHT A_SpawnProjectile("PoisonCloudMutant",16,0,0,2,0);
-		FUGS AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 0 A_SpawnItemEx("MutantFartCloud",random(-64,64),random(-64,64),random(-48,48),0,0,0.1,0,128);
-		FUGS AAAAAAAAAAAAAAAAAAAAAAAA 0 A_SpawnItemEx("MutantSmoke",random(-64,64),random(-64,64),random(-48,48),Vel.X,0,frandom(0.5,1),0,SXF_TRANSFERTRANSLATION,160);
+		FUGS AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 0 A_SpawnItemEx("MutantFartCloud", Random[Smoke](-64,64), Random[Smoke](-64,64), Random[Smoke](-48,48),0,0,0.1,0,128);
+		FUGS AAAAAAAAAAAAAAAAAAAAAAAA 0 A_SpawnItemEx("MutantSmoke", Random[Smoke](-64,64), Random[Smoke](-64,64), Random[Smoke](-48,48),Vel.X,0, FRandom[Smoke](0.5,1),0,SXF_TRANSFERTRANSLATION,160);
 		FUGS AAAAAAAAAA 1 BRIGHT LIGHT("MUTNROCK");
 		Stop;
 	}
 }
 
-class HardMutantRocket : MutantRocket { Default { DamageFunction (random(2,4)); +MTHRUSPECIES } }
+class HardMutantRocket : MutantRocket { Default { DamageFunction (Random[Effect](2,4)); +MTHRUSPECIES } }
 
 class PoisonCloudMutant : GrenadeBase
 {
@@ -1233,7 +1233,7 @@ class MutantBounceBall: Actor
 	Scale 0.3;
 	Projectile;
 	Speed 12;
-	DamageFunction (3*random(1,8));
+	DamageFunction (3*Random[Effect](1,8));
 	Gravity 0.125;
 	RenderStyle "Add";
 	BounceType "Grenade";
@@ -1250,10 +1250,10 @@ class MutantBounceBall: Actor
 	States
 	{
 	Spawn:
-		SMBL AB 4 A_SpawnItemEx("SparkP",0,0,0,random(1,2),random(1,2),random(1,2),random(1,360));
+		SMBL AB 4 A_SpawnItemEx("SparkP",0,0,0, Random[Spark](1,2), Random[Spark](1,2), Random[Spark](1,2), Random[Spark](1,360));
 		Loop;
 	Death:
-		TNT1 AAAAA 0 A_SpawnItemEx("SparkP",0,0,0,random(1,2),random(1,2),random(1,2),random(1,360));
+		TNT1 AAAAA 0 A_SpawnItemEx("SparkP",0,0,0, Random[Spark](1,2), Random[Spark](1,2), Random[Spark](1,2), Random[Spark](1,360));
 		TNT1 A 0 A_SpawnItemEx("SparkFlareP");
 		SMBL CDE 4;
 		Stop;
@@ -1266,7 +1266,7 @@ class RedBounceBall : MutantBounceBall
 	{
 	Scale 0.5;
 	Speed 16;
-	DamageFunction (4*random(1,8));
+	DamageFunction (4*Random[Effect](1,8));
 	BounceFactor 1.2;
 	WallBounceFactor 1.2;
 	BounceCount 7;
@@ -1275,10 +1275,10 @@ class RedBounceBall : MutantBounceBall
 	States
 	{
 	Spawn:
-		EMBL AB 4 A_SpawnItemEx("SparkR",0,0,0,random(1,2),random(1,2),random(1,2),random(1,360));
+		EMBL AB 4 A_SpawnItemEx("SparkR",0,0,0, Random[Spark](1,2), Random[Spark](1,2), Random[Spark](1,2), Random[Spark](1,360));
 		Loop;
 	Death:
-		TNT1 AAAAA 0 A_SpawnItemEx("SparkR",0,0,0,random(1,2),random(1,2),random(1,2),random(1,360));
+		TNT1 AAAAA 0 A_SpawnItemEx("SparkR",0,0,0, Random[Spark](1,2), Random[Spark](1,2), Random[Spark](1,2), Random[Spark](1,360));
 		TNT1 A 0 A_SpawnItemEx("SparkFlareR");
 		EMBL CDE 4;
 		Stop;
@@ -1378,7 +1378,7 @@ class FlyingCleaver: Actor
 	{
 	Radius 8;
 	Speed 15;
-	DamageFunction (random(4,6));
+	DamageFunction (Random[Effect](4,6));
 	DamageType "None";
 	DeathSound "dspfwood";
 	PROJECTILE;
@@ -1435,7 +1435,7 @@ class ZyklonBBomb : ClusterBomb
 		"####" A 0 A_SpawnItemEx("KD_HL2SmokeGenerator");
 		"####" A 0 A_StartSound("mortarg1");
 		"####" A 0 LIGHT("AODEPLASMATRAIL_1") A_SpawnProjectile("PoisonCloudUndead",16,0,0,2,0);
-		"####" AAAAAAAAAAAAAAAA 0 A_SpawnItemEx("ZyklonBCloud",random(-16,16),random(-16,16),random(8,16),frandom(-2.0,2.0),frandom(-2.0,2.0),frandom(0.0,1.0),0,128);
+		"####" AAAAAAAAAAAAAAAA 0 A_SpawnItemEx("ZyklonBCloud", Random[Smoke](-16,16), Random[Smoke](-16,16), Random[Smoke](8,16), FRandom[Smoke](-2.0,2.0), FRandom[Smoke](-2.0,2.0), FRandom[Smoke](0.0,1.0),0,128);
 		Stop;
 	}
 }
@@ -1447,7 +1447,7 @@ class ZyklonBCloud : ParticleBase
 	Radius 48;
 	Height 32;
 	Scale 1.5;
-	DamageFunction (2*random(1,8));
+	DamageFunction (2*Random[Effect](1,8));
 	PoisonDamage 2;
 	DamageType "UndeadPoisonAmbience";
 	Projectile;
@@ -1489,7 +1489,7 @@ class ZyklonZCloud2 : ZyklonZCloud
 	Default
 	{
 	Scale 1.0;
-	DamageFunction (random(0,1));
+	DamageFunction (Random[Effect](0,1));
 	PoisonDamage 1;
 	}
 	States
@@ -1531,7 +1531,7 @@ class ZyklonBBall: Actor
 	Radius 11;
 	Height 8;
 	Speed 15;
-	DamageFunction (10*random(1,8));
+	DamageFunction (10*Random[Effect](1,8));
 	PoisonDamage 2;
 	Scale 1.0;
 	DamageType "UndeadPoisonAmbience";
@@ -1580,14 +1580,14 @@ class ZombieRocket : MiniRocket
 	Default
 	{
 	Speed 20;
-	DamageFunction (3*random(1,8));
+	DamageFunction (3*Random[Effect](1,8));
 	Renderstyle "Shadow";
 	}
 	States
 	{
 	Spawn:
 		NMIS A 0 NODELAY A_StartSound("nazi/missileengine", CHAN_AUTO, CHANF_LOOPING, 0.3);
-		NMIS A 1 BRIGHT LIGHT("OTTOFIRE") A_SpawnItemEx("ZombieFlame",random(-1,1),0,random(-1,1));
+		NMIS A 1 BRIGHT LIGHT("OTTOFIRE") A_SpawnItemEx("ZombieFlame", Random[Rocket](-1,1),0, Random[Rocket](-1,1));
 		Wait;
 	Death:
 		FRME A 1 BRIGHT LIGHT("OTTOFIRE") A_Explode(15,35);
@@ -1595,8 +1595,8 @@ class ZombieRocket : MiniRocket
 		"####" A 0 A_SpawnItemEx("KD_HL2SmokeGenerator");
 		"####" A 0 A_SpawnItemEx("KD_HL2SparkGenerator");
 		"####" A 0 BRIGHT A_SpawnProjectile("PoisonCloudUndead",16,0,0,2,0);
-		"####" AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 0 A_SpawnItemEx("UndeadFartCloud",random(-64,64),random(-64,64),random(-48,48),0,0,0.1,0,128);
-		"####" AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 0 A_SpawnItemEx("UndeadSmoke",random(-64,64),random(-64,64),random(-48,48),Vel.X,0,frandom(0.5,1),0,SXF_TRANSFERTRANSLATION,160);
+		"####" AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 0 A_SpawnItemEx("UndeadFartCloud", Random[Smoke](-64,64), Random[Smoke](-64,64), Random[Smoke](-48,48),0,0,0.1,0,128);
+		"####" AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 0 A_SpawnItemEx("UndeadSmoke", Random[Smoke](-64,64), Random[Smoke](-64,64), Random[Smoke](-48,48),Vel.X,0, FRandom[Smoke](0.5,1),0,SXF_TRANSFERTRANSLATION,160);
 		"####" BCDEFGHIHJKLMNOPQRS 1 BRIGHT LIGHT("OTTOFIRE");
 		Stop;
 	}
@@ -1613,7 +1613,7 @@ class ZombieVomit: Actor
 	Speed 20;
 	Gravity 0.5;
 	FastSpeed 24;
-	DamageFunction (random(3,8));
+	DamageFunction (Random[Effect](3,8));
 	Scale 0.45;
 	Projectile;
 	SeeSound "Blood/Spit";
@@ -1631,9 +1631,9 @@ class ZombieVomit: Actor
 		Loop;
 	Death:
 		TNT1 A 0 BRIGHT A_SpawnProjectile("PoisonCloudUndead",16,0,0,2,0);
-		"####" AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 0 A_SpawnItemEx("UndeadSmoke",random(-64,64),random(-64,64),random(-48,48),Vel.X,0,frandom(0.5,1),0,SXF_TRANSFERTRANSLATION,160);
-		"####" AAAAAAAAAAAAAAAA 0 A_SpawnItemEx("ZyklonZCloud",random(-64,64),random(-64,64),random(-48,48),0,0,0.1,0,128);
-		"####" AAAAAAAAA 1 A_SpawnItemEx("Zombie_FlyingBlood", random(2,-2), random(2,-2), random(2,2), random(1,6), random(1,6), random(1,6), random(0,360), SXF_CLIENTSIDE);
+		"####" AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 0 A_SpawnItemEx("UndeadSmoke", Random[Smoke](-64,64), Random[Smoke](-64,64), Random[Smoke](-48,48),Vel.X,0, FRandom[Smoke](0.5,1),0,SXF_TRANSFERTRANSLATION,160);
+		"####" AAAAAAAAAAAAAAAA 0 A_SpawnItemEx("ZyklonZCloud", Random[Smoke](-64,64), Random[Smoke](-64,64), Random[Smoke](-48,48),0,0,0.1,0,128);
+		"####" AAAAAAAAA 1 A_SpawnItemEx("Zombie_FlyingBlood", Random[Gibs](2,-2), Random[Gibs](2,-2), Random[Gibs](2,2), Random[Gibs](1,6), Random[Gibs](1,6), Random[Gibs](1,6), Random[Gibs](0,360), SXF_CLIENTSIDE);
 		Stop;
 	}
 }
@@ -1642,15 +1642,15 @@ class ZombieVomit_C3M6A: ZombieVomit
 {
 	Default
 	{
-	DamageFunction (random(1,4));
+	DamageFunction (Random[Effect](1,4));
 	}
 	States
 	{
 	Death:
 		TNT1 A 0 BRIGHT A_SpawnProjectile("PoisonCloudUndead",16,0,0,2,0);
-		"####" AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 0 A_SpawnItemEx("UndeadSmoke",random(-64,64),random(-64,64),random(-48,48),Vel.X,0,frandom(0.5,1),0,SXF_TRANSFERTRANSLATION,160);
-		"####" AAAAAAAA 0 A_SpawnItemEx("ZyklonZCloud",random(-64,64),random(-64,64),random(-48,48),0,0,0.1,0,128); //2x less ZyklonClouds
-		"####" AAAAAAAAA 1 A_SpawnItemEx("Zombie_FlyingBlood", random(2,-2), random(2,-2), random(2,2), random(1,6), random(1,6), random(1,6), random(0,360), SXF_CLIENTSIDE);
+		"####" AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 0 A_SpawnItemEx("UndeadSmoke", Random[Smoke](-64,64), Random[Smoke](-64,64), Random[Smoke](-48,48),Vel.X,0, FRandom[Smoke](0.5,1),0,SXF_TRANSFERTRANSLATION,160);
+		"####" AAAAAAAA 0 A_SpawnItemEx("ZyklonZCloud", Random[Smoke](-64,64), Random[Smoke](-64,64), Random[Smoke](-48,48),0,0,0.1,0,128); //2x less ZyklonClouds
+		"####" AAAAAAAAA 1 A_SpawnItemEx("Zombie_FlyingBlood", Random[Gibs](2,-2), Random[Gibs](2,-2), Random[Gibs](2,2), Random[Gibs](1,6), Random[Gibs](1,6), Random[Gibs](1,6), Random[Gibs](0,360), SXF_CLIENTSIDE);
 		Stop;
 	}
 }
@@ -1661,7 +1661,7 @@ class ZFlyingHack : FlyingHack
 	{
 	Speed 16;
 	-RIPPER
-	DamageFunction (random(17, 31)); //since it is not a ripper anymore, and used only by a boss monster ZombieButcher --N00b
+	DamageFunction (Random[Effect](17, 31)); //since it is not a ripper anymore, and used only by a boss monster ZombieButcher --N00b
 	DamageType "UndeadPoison";
 	}
 	States
@@ -1694,7 +1694,7 @@ class ZHackPuff : HackPuff
 	{
 	Death:
 	XDeath:
-		POOF AAAAAAAA 0 A_SpawnItemEx("ZyklonBCloud",random(-16,16),random(-16,16),random(8,16),frandom(-2.0,2.0),frandom(-2.0,2.0),frandom(0.0,1.0),0,128);
+		POOF AAAAAAAA 0 A_SpawnItemEx("ZyklonBCloud", Random[Smoke](-16,16), Random[Smoke](-16,16), Random[Smoke](8,16), FRandom[Smoke](-2.0,2.0), FRandom[Smoke](-2.0,2.0), FRandom[Smoke](0.0,1.0),0,128);
 		POOF A 3 A_StartSound("knife/hit");
 		Goto Crash+1;
 	}
@@ -1729,7 +1729,7 @@ class ZFlamebolt: Actor
 	{
 	Speed 10;
 	Radius 16;
-	DamageFunction (random(1,2));
+	DamageFunction (Random[Effect](1,2));
 	PoisonDamage 4;
 	Scale 0.1;
 	Alpha 0.9;
@@ -1783,7 +1783,7 @@ class ZFlameball : ZFlamebolt
 {
 	Default
 	{
-	DamageFunction (10*random(1,8));
+	DamageFunction (10*Random[Effect](1,8));
 	Speed 12;
 	Scale 0.3;
 	Alpha 0.5;
@@ -1796,7 +1796,7 @@ class ZFlameball : ZFlamebolt
 	Spawn:
 		ZBAL A 4 BRIGHT LIGHT("ZYKFLMW2")
 			{
-				A_SpawnItemEx("SparkG", random(-32,32), random(-32,32), random(-32,32), random(-2,2), random(-2,2), random(-2,2), random(0,359));
+				A_SpawnItemEx("SparkG", Random[Spark](-32,32), Random[Spark](-32,32), Random[Spark](-32,32), Random[Spark](-2,2), Random[Spark](-2,2), Random[Spark](-2,2), Random[Spark](0,359));
 				A_SetRoll(Roll+24, SPF_INTERPOLATE);
 				if (waterlevel > 0) {
 					A_ScaleVelocity(0.0);
@@ -1830,9 +1830,9 @@ class ZFlameball : ZFlamebolt
 		"####" A 0 A_SpawnItemEx("NebSmokeMushroom",0,0,0);
 		"####" A 0 A_SpawnItemEx("NebSmokePillar",0,0,0,0,0,2);
 		"####" A 0 A_SetScale(1.0);
-		"####" AAAAAAAAAAAAAAAAAAAA 0 A_SpawnItemEx("SparkG", random(-32,32), random(-32,32), random(-32,32), random(-4,4), random(-4,4), random(-4,4), random(0,359));
-		"####" AAAAAAAAAAAA 0 A_SpawnItemEx("ZyklonBCloud",random(-64,64),random(-64,64),random(-48,48),0,0,0.1,0,128);
-		ZBLX A 2 BRIGHT LIGHT("ZYKFLMW2") A_Explode(random(16,24),128,0,FALSE,64,0,0);
+		"####" AAAAAAAAAAAAAAAAAAAA 0 A_SpawnItemEx("SparkG", Random[Spark](-32,32), Random[Spark](-32,32), Random[Spark](-32,32), Random[Spark](-4,4), Random[Spark](-4,4), Random[Spark](-4,4), Random[Spark](0,359));
+		"####" AAAAAAAAAAAA 0 A_SpawnItemEx("ZyklonBCloud", Random[Smoke](-64,64), Random[Smoke](-64,64), Random[Smoke](-48,48),0,0,0.1,0,128);
+		ZBLX A 2 BRIGHT LIGHT("ZYKFLMW2") A_Explode(Random[Effect](16,24),128,0,FALSE,64,0,0);
 		ZBLX BCDEFGHIJK 2 BRIGHT LIGHT("ZYKFLMW2");
 		Stop;
 	}
@@ -1849,7 +1849,7 @@ class MengeleBomb : GrenadeBase
 	Radius 8;
 	Height 16;
 	Speed 20;
-	DamageFunction (1*random(1,8));
+	DamageFunction (1*Random[Effect](1,8));
 	DamageType "Frag";
 	Reactiontime 16; //for countdown
 	Projectile;
@@ -1878,13 +1878,13 @@ class MengeleBomb : GrenadeBase
 		THRM ABAB 8;
 		"####" A 0 A_AlertMonsters;
 		"####" B 0 A_StartSound("clusterbomb/explode", CHAN_AUTO, 0, 1.0, 0.1);
-		"####" ABABA 0 A_SpawnItemEx("ZyklonBCloud",random(-4,4),random(-4,4),random(4,4),frandom(-2.0,2.0),frandom(-2.0,2.0),frandom(0.0,1.0),0,128);
-		"####" ABABA 4 A_SpawnItemEx("MengeleBombFire", random(0,16), random(0,16), random(0,16), 0, 0, 0, 0, 0, 0);
+		"####" ABABA 0 A_SpawnItemEx("ZyklonBCloud", Random[Smoke](-4,4), Random[Smoke](-4,4), Random[Smoke](4,4), FRandom[Smoke](-2.0,2.0), FRandom[Smoke](-2.0,2.0), FRandom[Smoke](0.0,1.0),0,128);
+		"####" ABABA 4 A_SpawnItemEx("MengeleBombFire", Random[Effect](0,16), Random[Effect](0,16), Random[Effect](0,16), 0, 0, 0, 0, 0, 0);
 		"####" A 0 A_SpawnitemEx("ZyklonSkull", 0, 0, 16, 0, 0, 0, 0, 0, 0);
 		"####" AAAAAAAAAA 5 
 				{
 					A_Fadeout(0.1);
-					A_SpawnItemEx("ZyklonBCloud",random(-4,4),random(-4,4),random(4,4),frandom(-2.0,2.0),frandom(-2.0,2.0),frandom(0.0,1.0),0,128);
+					A_SpawnItemEx("ZyklonBCloud", Random[Smoke](-4,4), Random[Smoke](-4,4), Random[Smoke](4,4), FRandom[Smoke](-2.0,2.0), FRandom[Smoke](-2.0,2.0), FRandom[Smoke](0.0,1.0),0,128);
 				}
 		Stop;
 	}
@@ -1930,7 +1930,7 @@ class MengeleFireSpawner: Actor
 	States
 	{
 	Spawn: 
-		TNT1 A 6 A_SpawnProjectile("MengeleFire",8.0,frandom(-2.0,2.0),0,CMF_CHECKTARGETDEAD);
+		TNT1 A 6 A_SpawnProjectile("MengeleFire",8.0, FRandom[Smoke](-2.0,2.0),0,CMF_CHECKTARGETDEAD);
 		Loop;
 	Death:  
 		TNT1 A 6;
@@ -1946,7 +1946,7 @@ class MengeleFire: Actor
 	Height 1;
 	Scale 1.2;
 	Speed 0;
-	DamageFunction (20*random(1,8));
+	DamageFunction (20*Random[Effect](1,8));
 	Projectile;
 	RenderStyle "Add";
 	Alpha 0.8;
@@ -1998,10 +1998,10 @@ class ZyklonGrenadePacket : GrenadeBase
 		"####" A 0 A_SpawnItemEx("ZyklonBlazeFX2");
 		"####" A 2 Radius_Quake(10,10,0,16,0);
 		"####" A 0 A_StartSound("grenade/explode", CHAN_AUTO, 0, 1.0, 0.1);
-		"####" ABABA 0 A_SpawnItemEx("ZyklonBCloud",random(-4,4),random(-4,4),random(4,4),frandom(-2.0,2.0),frandom(-2.0,2.0),frandom(0.0,1.0),0,128);
+		"####" ABABA 0 A_SpawnItemEx("ZyklonBCloud", Random[Smoke](-4,4), Random[Smoke](-4,4), Random[Smoke](4,4), FRandom[Smoke](-2.0,2.0), FRandom[Smoke](-2.0,2.0), FRandom[Smoke](0.0,1.0),0,128);
 		"####" AAAAAAAAAA 5 
 				{
-					A_SpawnItemEx("ZyklonBCloud",random(-4,4),random(-4,4),random(4,4),frandom(-2.0,2.0),frandom(-2.0,2.0),frandom(0.0,1.0),0,128);
+					A_SpawnItemEx("ZyklonBCloud", Random[Smoke](-4,4), Random[Smoke](-4,4), Random[Smoke](4,4), FRandom[Smoke](-2.0,2.0), FRandom[Smoke](-2.0,2.0), FRandom[Smoke](0.0,1.0),0,128);
 				}
 		Stop;
 	}
@@ -2084,7 +2084,7 @@ class AODEPlasmaBlast: Actor
 	Radius 13;
 	Height 8;
 	Speed 25;
-	DamageFunction (3*random(1,8));
+	DamageFunction (3*Random[Effect](1,8));
 	Projectile;
 	DamageType "Disintegrate";
 	Scale .75;
@@ -2145,7 +2145,7 @@ class AODEBlastPod: Actor //From the Vore actor - Projectile sprites by Vader - 
 	Height 16;
 	Speed 6;
 	FastSpeed 9;
-	DamageFunction (random(10,20));
+	DamageFunction (Random[Effect](10,20));
 	Projectile;
 	+BRIGHT
 	+SEEKERMISSILE
@@ -2159,24 +2159,24 @@ class AODEBlastPod: Actor //From the Vore actor - Projectile sprites by Vader - 
 	States
 	{
 	Spawn:
-		CNOB A 0 A_SpawnItemEx("AODEBlastPodTrail", random(5, -5), 0, random(5, -1), 0, 0, 0, 180);
-		"####" A 1 A_SpawnItemEx("AODEBlastPodTrail", random(5, -5), 0, random(5, -1), 0, 0, 0, 180);
-		"####" A 0 A_SpawnItemEx("AODEBlastPodTrail", random(5, -5), 0, random(5, -1), 0, 0, 0, 180);
-		"####" A 1 A_SpawnItemEx("AODEBlastPodTrail", random(5, -5), 0, random(5, -1), 0, 0, 0, 180);
-		"####" B 0 A_SpawnItemEx("AODEBlastPodTrail", random(5, -5), 0, random(5, -1), 0, 0, 0, 180);
-		"####" B 1 A_SpawnItemEx("AODEBlastPodTrail", random(5, -5), 0, random(5, -1), 0, 0, 0, 180);
-		"####" B 0 A_SpawnItemEx("AODEBlastPodTrail", random(5, -5), 0, random(5, -1), 0, 0, 0, 180);
-		"####" B 1 A_SpawnItemEx("AODEBlastPodTrail", random(5, -5), 0, random(5, -1), 0, 0, 0, 180);
-		"####" C 0 A_SpawnItemEx("AODEBlastPodTrail", random(5, -5), 0, random(5, -1), 0, 0, 0, 180);
-		"####" C 1 A_SpawnItemEx("AODEBlastPodTrail", random(5, -5), 0, random(5, -1), 0, 0, 0, 180);
-		"####" C 0 A_SpawnItemEx("AODEBlastPodTrail", random(5, -5), 0, random(5, -1), 0, 0, 0, 180);
-		"####" C 1 A_SpawnItemEx("AODEBlastPodTrail", random(5, -5), 0, random(5, -1), 0, 0, 0, 180);
+		CNOB A 0 A_SpawnItemEx("AODEBlastPodTrail", Random[Effect](5, -5), 0, Random[Effect](5, -1), 0, 0, 0, 180);
+		"####" A 1 A_SpawnItemEx("AODEBlastPodTrail", Random[Effect](5, -5), 0, Random[Effect](5, -1), 0, 0, 0, 180);
+		"####" A 0 A_SpawnItemEx("AODEBlastPodTrail", Random[Effect](5, -5), 0, Random[Effect](5, -1), 0, 0, 0, 180);
+		"####" A 1 A_SpawnItemEx("AODEBlastPodTrail", Random[Effect](5, -5), 0, Random[Effect](5, -1), 0, 0, 0, 180);
+		"####" B 0 A_SpawnItemEx("AODEBlastPodTrail", Random[Effect](5, -5), 0, Random[Effect](5, -1), 0, 0, 0, 180);
+		"####" B 1 A_SpawnItemEx("AODEBlastPodTrail", Random[Effect](5, -5), 0, Random[Effect](5, -1), 0, 0, 0, 180);
+		"####" B 0 A_SpawnItemEx("AODEBlastPodTrail", Random[Effect](5, -5), 0, Random[Effect](5, -1), 0, 0, 0, 180);
+		"####" B 1 A_SpawnItemEx("AODEBlastPodTrail", Random[Effect](5, -5), 0, Random[Effect](5, -1), 0, 0, 0, 180);
+		"####" C 0 A_SpawnItemEx("AODEBlastPodTrail", Random[Effect](5, -5), 0, Random[Effect](5, -1), 0, 0, 0, 180);
+		"####" C 1 A_SpawnItemEx("AODEBlastPodTrail", Random[Effect](5, -5), 0, Random[Effect](5, -1), 0, 0, 0, 180);
+		"####" C 0 A_SpawnItemEx("AODEBlastPodTrail", Random[Effect](5, -5), 0, Random[Effect](5, -1), 0, 0, 0, 180);
+		"####" C 1 A_SpawnItemEx("AODEBlastPodTrail", Random[Effect](5, -5), 0, Random[Effect](5, -1), 0, 0, 0, 180);
 		"####" C 0 A_JumpIfTargetInLOS(1, 360, 1);
 		Loop;
-		"####" A 0 A_SpawnItemEx("AODEBlastPodTrail", random(5, -5), 0, random(5, -1), 0, 0, 0, 180);
-		"####" A 1 A_SpawnItemEx("AODEBlastPodTrail", random(5, -5), 0, random(5, -1), 0, 0, 0, 180);
-		"####" A 0 A_SpawnItemEx("AODEBlastPodTrail", random(5, -5), 0, random(5, -1), 0, 0, 0, 180);
-		"####" A 1 A_SpawnItemEx("AODEBlastPodTrail", random(5, -5), 0, random(5, -1), 0, 0, 0, 180);
+		"####" A 0 A_SpawnItemEx("AODEBlastPodTrail", Random[Effect](5, -5), 0, Random[Effect](5, -1), 0, 0, 0, 180);
+		"####" A 1 A_SpawnItemEx("AODEBlastPodTrail", Random[Effect](5, -5), 0, Random[Effect](5, -1), 0, 0, 0, 180);
+		"####" A 0 A_SpawnItemEx("AODEBlastPodTrail", Random[Effect](5, -5), 0, Random[Effect](5, -1), 0, 0, 0, 180);
+		"####" A 1 A_SpawnItemEx("AODEBlastPodTrail", Random[Effect](5, -5), 0, Random[Effect](5, -1), 0, 0, 0, 180);
 		"####" C 0 A_JumpIfTargetInLOS(1, 360, 1);
 		Goto Spawn+4;
 		"####" BBB 0 A_SeekerMissile(90, 90, 2);
@@ -2279,7 +2279,7 @@ class SmokeMonsterProjectile: Actor
 	States
 	{
 	Spawn:
-		TNT1 AAAAAA 0 A_SpawnItemEx("MonsterHole", 0, 0, 8, Random(-1, 1), Random(-1, 1), Random(-1,1), Random(1,360), SXF_SETMASTER);
+		TNT1 AAAAAA 0 A_SpawnItemEx("MonsterHole", 0, 0, 8, Random[SmokeMonster](-1, 1), Random[SmokeMonster](-1, 1), Random[SmokeMonster](-1,1), Random[SmokeMonster](1,360), SXF_SETMASTER);
 		TNT1 A 1;
 		Loop;
 	}
@@ -2326,7 +2326,7 @@ class MonsterHole2 : MonsterHole
 			TNT1 A 0 {
 				if (!CheckRange(boa_sfxlod, true))
 				{
-					A_SpawnItemEx("ZyklonZCloud4",0,0,8,random(-1,1),random(-1,1),random(-1,1),random(1,360),128);
+					A_SpawnItemEx("ZyklonZCloud4",0,0,8, Random[Smoke](-1,1), Random[Smoke](-1,1), Random[Smoke](-1,1), Random[Smoke](1,360),128);
 				}
 			}
 			ZMMO ABCDEFGHIJKLMNOPQ 2;
@@ -2335,7 +2335,7 @@ class MonsterHole2 : MonsterHole
 			TNT1 A 0 {
 				if (!CheckRange(boa_sfxlod, true))
 				{
-					A_SpawnItemEx("ZyklonZCloud5",0,0,8,random(-1,1),random(-1,1),random(-1,1),random(1,360),128);
+					A_SpawnItemEx("ZyklonZCloud5",0,0,8, Random[Smoke](-1,1), Random[Smoke](-1,1), Random[Smoke](-1,1), Random[Smoke](1,360),128);
 				}
 			}
 			ZMMO ABCDEFGHIJKLMNOPQ 2;
@@ -2360,8 +2360,8 @@ class ZyklonCritter: Actor
 	{
 	Spawn:
 		TNT1 A 0 NODELAY A_Jump(255,1,2);
-		TNT1 A -1 A_SpawnItemEx("ZBatFamiliar",random(-4,4),random(-4,4),0,0,SXF_NOCHECKPOSITION,0);
-		TNT1 A -1 A_SpawnItemEx("ZyklonSkull",random(-4,4),random(-4,4),0,0,SXF_NOCHECKPOSITION,0);
+		TNT1 A -1 A_SpawnItemEx("ZBatFamiliar", Random[Critter](-4,4), Random[Critter](-4,4),0,0,SXF_NOCHECKPOSITION,0);
+		TNT1 A -1 A_SpawnItemEx("ZyklonSkull", Random[Critter](-4,4), Random[Critter](-4,4),0,0,SXF_NOCHECKPOSITION,0);
 		Stop;
 	}
 }
@@ -2392,7 +2392,7 @@ class BloodSpit: Actor
 	Radius 6;
 	Height 6;
 	Speed 17;
-	DamageFunction (3*random(1,8));
+	DamageFunction (3*Random[Effect](1,8));
 	Scale 0.5;
 	SeeSound "Blood/Spit";
 	DeathSound "Blood/Impact";
@@ -2524,8 +2524,8 @@ class Gibs1: Actor
 		GIB4 ABC 0 A_Jump(256,"End");
 		GIB5 ABC 0 A_Jump(256,"End");
 	End:
-		"####" "#######" 4 A_SpawnProjectile("BloodFlySM",0,0,random(0,360),CMF_AIMDIRECTION|CMF_BADPITCH,random(-100,100));
-		"####" "#" 700 A_SpawnProjectile("BloodFlySM",0,0,random(0,360),CMF_AIMDIRECTION|CMF_BADPITCH,random(-100,100));
+		"####" "#######" 4 A_SpawnProjectile("BloodFlySM",0,0, Random[Gibs](0,360),CMF_AIMDIRECTION|CMF_BADPITCH, Random[Gibs](-100,100));
+		"####" "#" 700 A_SpawnProjectile("BloodFlySM",0,0, Random[Gibs](0,360),CMF_AIMDIRECTION|CMF_BADPITCH, Random[Gibs](-100,100));
 		Stop;
 	}
 }
@@ -2616,7 +2616,7 @@ class ScorpionSpit: Actor
 	Height 8;
 	Speed 28;
 	VSpeed 20;
-	DamageFunction (6*random(1,8));
+	DamageFunction (6*Random[Effect](1,8));
 	Projectile;
 	Gravity 0.4;
 	DamageType "PoisonCloud";
@@ -2627,7 +2627,7 @@ class ScorpionSpit: Actor
 	States
 	{
 	Spawn:
-		SPIT A 0 NODELAY A_SetScale(Scale.X + frandom(-0.05,0.05),Scale.Y + frandom(-0.05,0.05));
+		SPIT A 0 NODELAY A_SetScale(Scale.X + FRandom[Rocket](-0.05,0.05),Scale.Y + FRandom[Rocket](-0.05,0.05));
 		Goto See;
 	See:
 		SPIT A 3 A_SpawnItemEx("NashGore_FlyingBlood",0,0,0,0,0,0,0,128);
@@ -2658,12 +2658,12 @@ class ScorpionChunk: Actor
 	States
 	{
 	Spawn:
-		TNT1 A 0 NODELAY A_SetScale(Scale.X + frandom(-0.1,0.1),Scale.Y + frandom(-0.1,0.1));
+		TNT1 A 0 NODELAY A_SetScale(Scale.X + FRandom[Gibs](-0.1,0.1),Scale.Y + FRandom[Gibs](-0.1,0.1));
 		TNT1 A 0 A_Jump(256,1,2,3,4,5,6,7);
 		SCRG ABCDEFG 0 A_Jump(256,"Chunk");
 		Stop;
 	Chunk:
-		SCRG "#" 6 A_SpawnItemEx("ScorpionFlyingBlood",random(-1,1),random(-1,1));
+		SCRG "#" 6 A_SpawnItemEx("ScorpionFlyingBlood", Random[Gibs](-1,1), Random[Gibs](-1,1));
 		Loop;
 	Death:
 		SCRG "#" 0 A_SpawnItemEx("ScorpionBlood");
@@ -2686,12 +2686,12 @@ class BigScorpionChunk : ScorpionChunk
 	States
 	{
 	Spawn:
-		TNT1 A 0 NODELAY A_SetScale(Scale.X + frandom(-0.1,0.1),Scale.Y + frandom(-0.1,0.1));
+		TNT1 A 0 NODELAY A_SetScale(Scale.X + FRandom[Gibs](-0.1,0.1),Scale.Y + FRandom[Gibs](-0.1,0.1));
 		TNT1 A 0 A_Jump(256,1,2,3,4,5,6,7);
 		SC2G ABCDEFG 0 A_Jump(256,"Chunk");
 		Stop;
 	Chunk:
-		SC2G "#" 6 A_SpawnItemEx("NashGore_FlyingBlood",random(-1,1),random(-1,1));
+		SC2G "#" 6 A_SpawnItemEx("NashGore_FlyingBlood", Random[Gibs](-1,1), Random[Gibs](-1,1));
 		Loop;
 	Death:
 		SC2G "#" 0 A_SpawnItemEx("NashGore_Blood");
@@ -2742,7 +2742,7 @@ class ZTracer: Actor
 	Height 5;
 	Speed 15;
 	ReactionTime 175;
-	DamageFunction (5*random(1,8));
+	DamageFunction (5*Random[Effect](1,8));
 	DamageType "Fire";
 	RenderStyle "Add";
 	Alpha 0.67;
@@ -2826,7 +2826,7 @@ class TPortLightning : VisualSpecialEffect
 	{
 	Spawn:
 		TNT1 A 0; // Huh, that's the jump...
-		"####" A 0 A_Jump(256,random(1,72));
+		"####" A 0 A_Jump(256, Random[Lightning](1,72));
 	Select:
 		BLL1 ABCDEFGHIJKLMNOPQR 0 A_Jump(256,"Fade");
 		BLL2 ABCDEFGHIJKLMNOPQR 0 A_Jump(256,"Fade");
@@ -2872,10 +2872,10 @@ class TPortLightningWave : VisualSpecialEffect
 	{
 	Spawn:
 		TNT1 A 0;
-		"####" A 0 A_SpawnItemEx("TPortLightningSmall",random(-2,2),random(-2,2),random(-2,2),0,0,0,0,0,32);
-		"####" A 0 A_SpawnItemEx("TPortLightningMedium",random(-3,3),random(-3,3),random(-3,3),0,0,0,0,0,56);
-		"####" A 0 A_SpawnItemEx("TPortLightningLarge",random(-4,4),random(-4,4),random(-3,3),0,0,0,0,0,96);
-		"####" A 0 A_SpawnItemEx("TPortLightningHuge",random(-5,5),random(-5,5),random(-5,5),0,0,0,0,0,144);
+		"####" A 0 A_SpawnItemEx("TPortLightningSmall", Random[Lightning](-2,2), Random[Lightning](-2,2), Random[Lightning](-2,2),0,0,0,0,0,32);
+		"####" A 0 A_SpawnItemEx("TPortLightningMedium", Random[Lightning](-3,3), Random[Lightning](-3,3), Random[Lightning](-3,3),0,0,0,0,0,56);
+		"####" A 0 A_SpawnItemEx("TPortLightningLarge", Random[Lightning](-4,4), Random[Lightning](-4,4), Random[Lightning](-3,3),0,0,0,0,0,96);
+		"####" A 0 A_SpawnItemEx("TPortLightningHuge", Random[Lightning](-5,5), Random[Lightning](-5,5), Random[Lightning](-5,5),0,0,0,0,0,144);
 		Stop;
 	}
 }
@@ -2886,10 +2886,10 @@ class TPortLightningWave2 : VisualSpecialEffect
 	{
 	Spawn:
 		TNT1 A 0;
-		"####" A 0 A_SpawnItemEx("TPortLightningSmallH",random(-2,2),random(-2,2),random(-2,2),0,0,0,0,0,32);
-		"####" A 0 A_SpawnItemEx("TPortLightningMediumH",random(-3,3),random(-3,3),random(-3,3),0,0,0,0,0,56);
-		"####" A 0 A_SpawnItemEx("TPortLightningLargeH",random(-4,4),random(-4,4),random(-3,3),0,0,0,0,0,96);
-		"####" A 0 A_SpawnItemEx("TPortLightningHugeH",random(-5,5),random(-5,5),random(-5,5),0,0,0,0,0,144);
+		"####" A 0 A_SpawnItemEx("TPortLightningSmallH", Random[Lightning](-2,2), Random[Lightning](-2,2), Random[Lightning](-2,2),0,0,0,0,0,32);
+		"####" A 0 A_SpawnItemEx("TPortLightningMediumH", Random[Lightning](-3,3), Random[Lightning](-3,3), Random[Lightning](-3,3),0,0,0,0,0,56);
+		"####" A 0 A_SpawnItemEx("TPortLightningLargeH", Random[Lightning](-4,4), Random[Lightning](-4,4), Random[Lightning](-3,3),0,0,0,0,0,96);
+		"####" A 0 A_SpawnItemEx("TPortLightningHugeH", Random[Lightning](-5,5), Random[Lightning](-5,5), Random[Lightning](-5,5),0,0,0,0,0,144);
 		Stop;
 	}
 }
@@ -2900,10 +2900,10 @@ class TPortLightningWaveZap : VisualSpecialEffect
 	{
 	Spawn:
 		TNT1 A 0;
-		"####" A 0 A_SpawnItemEx("TPortLightningSmall",random(-2,2),random(-2,2),random(-2,2),0,0,0,0,0,32);
-		"####" A 0 A_SpawnItemEx("TPortLightningSmall",random(-3,3),random(-3,3),random(-3,3),0,0,0,0,0,56);
-		"####" A 0 A_SpawnItemEx("TPortLightningSmall",random(-4,4),random(-4,4),random(-3,3),0,0,0,0,0,96);
-		"####" A 0 A_SpawnItemEx("TPortLightningSmall",random(-5,5),random(-5,5),random(-5,5),0,0,0,0,0,144);
+		"####" A 0 A_SpawnItemEx("TPortLightningSmall", Random[Lightning](-2,2), Random[Lightning](-2,2), Random[Lightning](-2,2),0,0,0,0,0,32);
+		"####" A 0 A_SpawnItemEx("TPortLightningSmall", Random[Lightning](-3,3), Random[Lightning](-3,3), Random[Lightning](-3,3),0,0,0,0,0,56);
+		"####" A 0 A_SpawnItemEx("TPortLightningSmall", Random[Lightning](-4,4), Random[Lightning](-4,4), Random[Lightning](-3,3),0,0,0,0,0,96);
+		"####" A 0 A_SpawnItemEx("TPortLightningSmall", Random[Lightning](-5,5), Random[Lightning](-5,5), Random[Lightning](-5,5),0,0,0,0,0,144);
 		Stop;
 	}
 }
@@ -3048,7 +3048,7 @@ class SleepEffect: Actor
 	States
 	{
 	Spawn:
-		TNT1 A 0 NODELAY A_SetScale(Scale.X*(frandom(0.7,1.0)), Scale.Y*(frandom(0.7,1.0)));
+		TNT1 A 0 NODELAY A_SetScale(Scale.X*(FRandom[Effect](0.7,1.0)), Scale.Y*(FRandom[Effect](0.7,1.0)));
 		TNT1 A 0 A_Jump(256,1,2);
 		SLZZ A 0 A_Jump(256,"End");
 		SLZZ A 0 A_Jump(256,"End");

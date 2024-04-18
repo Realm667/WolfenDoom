@@ -223,24 +223,24 @@ class SpotlightMount : Actor
 		Death:
 			"####" B 0 {
 				A_RemoveChildren(TRUE, RMVF_EVERYTHING);
-				A_SpawnItemEx("Debris_GlassShard_Medium", 0, 0, 0, random(1,3), random(1,3), random(1,3), random(0,360), SXF_CLIENTSIDE);
+				A_SpawnItemEx("Debris_GlassShard_Medium", 0, 0, 0, random[Spotlight](1,3), random[Spotlight](1,3), random[Spotlight](1,3), random[Spotlight](0,360), SXF_CLIENTSIDE);
 				A_StartSound("GLASS5");
-				A_SpawnProjectile("SparkB", 0, 0, random(0,360), CMF_AIMDIRECTION|CMF_BADPITCH, random(-67,-113));
-				A_SpawnProjectile("SparkW", 0, 0, random(0,360), CMF_AIMDIRECTION|CMF_BADPITCH, random(-67,-113));
-				A_SpawnProjectile("SparkW", 0, 0, random(0,360), CMF_AIMDIRECTION|CMF_BADPITCH, random(-67,-113));
-				A_SpawnProjectile("SparkO", 0, 0, random(0,360), CMF_AIMDIRECTION|CMF_BADPITCH, random(-67,-113));
-				A_SpawnProjectile("SparkO", 0, 0, random(0,360), CMF_AIMDIRECTION|CMF_BADPITCH, random(-67,-113));
-				A_SpawnProjectile("SparkO", 0, 0, random(0,360), CMF_AIMDIRECTION|CMF_BADPITCH, random(-67,-113));
-				A_SpawnProjectile("SparkO", 0, 0, random(0,360), CMF_AIMDIRECTION|CMF_BADPITCH, random(-67,-113));
-				A_SpawnProjectile("SparkY", 0, 0, random(0,360), CMF_AIMDIRECTION|CMF_BADPITCH, random(-67,-113));
-				A_SpawnProjectile("SparkY", 0, 0, random(0,360), CMF_AIMDIRECTION|CMF_BADPITCH, random(-67,-113));
-				A_SpawnProjectile("SparkY", 0, 0, random(0,360), CMF_AIMDIRECTION|CMF_BADPITCH, random(-67,-113));
-				A_SpawnProjectile("SparkY", 0, 0, random(0,360), CMF_AIMDIRECTION|CMF_BADPITCH, random(-67,-113));
-				A_SpawnProjectile("SparkY", 0, 0, random(0,360), CMF_AIMDIRECTION|CMF_BADPITCH, random(-67,-113));
-				A_SpawnProjectile("SparkY", 0, 0, random(0,360), CMF_AIMDIRECTION|CMF_BADPITCH, random(-67,-113));
-				A_SpawnProjectile("SparkY", 0, 0, random(0,360), CMF_AIMDIRECTION|CMF_BADPITCH, random(-67,-113));
-				A_SpawnProjectile("SparkY", 0, 0, random(0,360), CMF_AIMDIRECTION|CMF_BADPITCH, random(-67,-113));
-				A_SpawnProjectile("SparkY", 0, 0, random(0,360), CMF_AIMDIRECTION|CMF_BADPITCH, random(-67,-113));
+				A_SpawnProjectile("SparkB", 0, 0, random[Spotlight](0,360), CMF_AIMDIRECTION|CMF_BADPITCH, random[Spotlight](-67,-113));
+				A_SpawnProjectile("SparkW", 0, 0, random[Spotlight](0,360), CMF_AIMDIRECTION|CMF_BADPITCH, random[Spotlight](-67,-113));
+				A_SpawnProjectile("SparkW", 0, 0, random[Spotlight](0,360), CMF_AIMDIRECTION|CMF_BADPITCH, random[Spotlight](-67,-113));
+				A_SpawnProjectile("SparkO", 0, 0, random[Spotlight](0,360), CMF_AIMDIRECTION|CMF_BADPITCH, random[Spotlight](-67,-113));
+				A_SpawnProjectile("SparkO", 0, 0, random[Spotlight](0,360), CMF_AIMDIRECTION|CMF_BADPITCH, random[Spotlight](-67,-113));
+				A_SpawnProjectile("SparkO", 0, 0, random[Spotlight](0,360), CMF_AIMDIRECTION|CMF_BADPITCH, random[Spotlight](-67,-113));
+				A_SpawnProjectile("SparkO", 0, 0, random[Spotlight](0,360), CMF_AIMDIRECTION|CMF_BADPITCH, random[Spotlight](-67,-113));
+				A_SpawnProjectile("SparkY", 0, 0, random[Spotlight](0,360), CMF_AIMDIRECTION|CMF_BADPITCH, random[Spotlight](-67,-113));
+				A_SpawnProjectile("SparkY", 0, 0, random[Spotlight](0,360), CMF_AIMDIRECTION|CMF_BADPITCH, random[Spotlight](-67,-113));
+				A_SpawnProjectile("SparkY", 0, 0, random[Spotlight](0,360), CMF_AIMDIRECTION|CMF_BADPITCH, random[Spotlight](-67,-113));
+				A_SpawnProjectile("SparkY", 0, 0, random[Spotlight](0,360), CMF_AIMDIRECTION|CMF_BADPITCH, random[Spotlight](-67,-113));
+				A_SpawnProjectile("SparkY", 0, 0, random[Spotlight](0,360), CMF_AIMDIRECTION|CMF_BADPITCH, random[Spotlight](-67,-113));
+				A_SpawnProjectile("SparkY", 0, 0, random[Spotlight](0,360), CMF_AIMDIRECTION|CMF_BADPITCH, random[Spotlight](-67,-113));
+				A_SpawnProjectile("SparkY", 0, 0, random[Spotlight](0,360), CMF_AIMDIRECTION|CMF_BADPITCH, random[Spotlight](-67,-113));
+				A_SpawnProjectile("SparkY", 0, 0, random[Spotlight](0,360), CMF_AIMDIRECTION|CMF_BADPITCH, random[Spotlight](-67,-113));
+				A_SpawnProjectile("SparkY", 0, 0, random[Spotlight](0,360), CMF_AIMDIRECTION|CMF_BADPITCH, random[Spotlight](-67,-113));
 			}
 			"####" B -1;
 			Stop;
@@ -259,7 +259,7 @@ class SpotlightMount : Actor
 		user_maxAngle = args[0];
 		user_position = 0;
 		user_sightRange = 1024;
-		user_direction = RandomPick(-1, 1);
+		user_direction = RandomPick[Spotlight](-1, 1);
 
 		A_SpawnItemEx("SpotlightFlare", 5.0, 0, 0, 0, 0, 0, 0, SXF_SETMASTER | SXF_NOCHECKPOSITION | SXF_TRANSFERPITCH);
 		A_SpawnItemEx("SpotlightBeam", 0, 0, 0, 0, 0, 0, 0, SXF_SETMASTER | SXF_NOCHECKPOSITION | SXF_TRANSFERPITCH);
@@ -277,7 +277,7 @@ class SpotlightMount : Actor
 				if (user_position >= user_maxAngle || user_position <= user_minAngle) {
 					user_holdTime++;
 					if (user_holdTime >= 70) {
-						user_holdTime = Random(0, 35);
+						user_holdTime = Random[Spotlight](0, 35);
 						user_direction = -user_direction;
 						user_position += user_direction;
 						angle += user_direction;
@@ -487,7 +487,7 @@ class SpotlightFlickerAdditiveBoA : SpotlightFlickerAdditive replaces SpotlightF
 			if (vis)
 			{
 				double brightness = (args[0] + args[1] + args[2]) / (255. * 3) * 1.25; // Calculate the light's overall brightness
-				brightness *= FRandom(0.25, 0.5); // Fudge the brightness level due to flickering
+				brightness *= FRandom[Spotlight](0.25, 0.5); // Fudge the brightness level due to flickering
 
 				double amount;
 

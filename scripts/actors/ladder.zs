@@ -230,7 +230,7 @@ class LadderBase : Actor
 				else if (user_soundtype == 2) { it.thing.A_StartSound("floor/rock", CHAN_BODY, 0, vol * 0.3); }
 				else if (user_soundtype == 3) { it.thing.A_StartSound("floor/metal", CHAN_BODY, 0, vol * 0.1); }
 				else if (user_soundtype == 4) { it.thing.A_StartSound("floor/wood", CHAN_BODY, 0, vol * 0.5); }
-				else if (user_soundtype == 5) { it.thing.A_StartSound("ckeen/climb", CHAN_BODY, 0, vol * 0.5, pitch:FRandom(0.9, 1.1)); }
+				else if (user_soundtype == 5) { it.thing.A_StartSound("ckeen/climb", CHAN_BODY, 0, vol * 0.5, pitch:FRandom[Ladder](0.9, 1.1)); }
 				else { it.thing.A_StartSound("world/ladder", CHAN_BODY, 0, vol * 0.4); }
 
 				soundtimeout = 15;
@@ -249,7 +249,7 @@ class LadderBase : Actor
 					}
 				} 
 
-				soundtimeout2 = Random(35, 70);
+				soundtimeout2 = Random[Ladder](35, 70);
 			}
 		}
 
@@ -536,7 +536,7 @@ class RopeSpawner : Actor
 		}
 
 		soundtimeout = soundtimeout <= 0 ? interval : soundtimeout - 1;
-		soundtimeout2 = soundtimeout2 <= 0 ? interval + Random(15, 50) : soundtimeout2 - 1; // Randomize creaking interval some
+		soundtimeout2 = soundtimeout2 <= 0 ? interval + Random[Ladder](15, 50) : soundtimeout2 - 1; // Randomize creaking interval some
 	}
 
 	Actor FindTarget()
@@ -636,10 +636,10 @@ class BridgeSegment : RopeSegment
 
 	override void PostBeginPlay()
 	{
-		Roll = Random(-5, 5);
+		Roll = Random[Ladder](-5, 5);
 
-		frame = Random(0, 7);
-		Scale.X *= RandomPick(-1, 1);
+		frame = Random[Ladder](0, 7);
+		Scale.X *= RandomPick[Ladder](-1, 1);
 
 		Super.PostBeginPlay();
 	}

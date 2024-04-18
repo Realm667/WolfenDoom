@@ -68,9 +68,9 @@ class ZombieKazi : ZombieStandard
 	Death.Rocket:
 		"####" F 5 A_Quake(5,27,0,512);
 		"####" I 0 { A_SpawnItemEx("ZombieNuke",0,0,0); A_SpawnItemEx("KaZomBoom",0,0,0); }
-		"####" IIIIIIIIIIIIIIII 0 A_SpawnItemEx("Debris_Bone", random(8,-8), random(8,-8), random(54,64), random(1,6), random(1,6), random(1,6), random(0,360), SXF_CLIENTSIDE);
-		"####" I 1 {A_SpawnItemEx("Debris_Skull", random(8,-8), random(8,-8), random(54,64), random(1,6), random(1,6), random(1,6), random(0,360), SXF_CLIENTSIDE); A_NoBlocking();}
-		"####" J 4 A_SpawnItemEx("ZombieSoul", 0, 0, 10, 0, 0, frandom(1,3));
+		"####" IIIIIIIIIIIIIIII 0 A_SpawnItemEx("Debris_Bone", Random[Debris](8,-8), Random[Debris](8,-8), Random[Debris](54,64), Random[Debris](1,6), Random[Debris](1,6), Random[Debris](1,6), Random[Debris](0,360), SXF_CLIENTSIDE);
+		"####" I 1 {A_SpawnItemEx("Debris_Skull", Random[Debris](8,-8), Random[Debris](8,-8), Random[Debris](54,64), Random[Debris](1,6), Random[Debris](1,6), Random[Debris](1,6), Random[Debris](0,360), SXF_CLIENTSIDE); A_NoBlocking();}
+		"####" J 4 A_SpawnItemEx("ZombieSoul", 0, 0, 10, 0, 0, FRandom[Soul](1,3));
 		"####" KLM 4;
 		"####" U -1 { A_UnSetSolid(); A_SetFloorclip(); }
 		Stop;
@@ -157,9 +157,9 @@ class ZombieBrain : ZombieStandard
 		Stop;
 	Melee:
 		"####" F 4 A_FaceTarget;
-		"####" G 5 A_CustomMeleeAttack(5*random(2,4), "nazombie/pain", "", "UndeadPoison", TRUE);
+		"####" G 5 A_CustomMeleeAttack(5*Random[Zombie](2,4), "nazombie/pain", "", "UndeadPoison", TRUE);
 		"####" F 4 A_FaceTarget;
-		"####" G 5 A_CustomMeleeAttack(5*random(2,4), "nazombie/pain", "", "UndeadPoison", TRUE);
+		"####" G 5 A_CustomMeleeAttack(5*Random[Zombie](2,4), "nazombie/pain", "", "UndeadPoison", TRUE);
 		Goto See;
 	Missile:
 		"####" EF 20 A_FaceTarget;
@@ -174,7 +174,7 @@ class ZombieBrain : ZombieStandard
 		"####" I 5;
 		"####" J 5 A_Scream;
 		"####" K 5 A_UnblockAndDrop;
-		"####" L 5 A_SpawnItemEx("ZombieSoul", 0, 0, 10, 0, 0, frandom(1,3));
+		"####" L 5 A_SpawnItemEx("ZombieSoul", 0, 0, 10, 0, 0, FRandom[Soul](1,3));
 		"####" M -1;
 		Stop;
 	Raise:
@@ -251,15 +251,15 @@ class ZombieOfficer : ZombieBrain
 		"####" E 12 A_FaceTarget;
 		"####" H 0 A_StartSound("nazi/stg44", CHAN_WEAPON, 0, frandom (0.6,0.9), ATTN_NORM);
 		"####" H 8 A_SpawnProjectile("EnemySMGTracer",30,6,30);
-		"####" H 0 A_SpawnItemEx("Casing9mm", 8,0,40, random(3,4), random(-1,1), random(2,4), random(-55,-80),SXF_NOCHECKPOSITION);
+		"####" H 0 A_SpawnItemEx("Casing9mm", 8,0,40, Random[Zombie](3,4), Random[Zombie](-1,1), Random[Zombie](2,4), Random[Zombie](-55,-80),SXF_NOCHECKPOSITION);
 		"####" H 0 {user_count++; if(user_count > 39) {user_count = 0; return ResolveState("Reload");} return ResolveState(null);}
 		"####" H 0 A_StartSound("nazi/mp40", CHAN_WEAPON, 0, frandom (0.6,0.9), ATTN_NORM);
 		"####" H 8 A_SpawnProjectile("EnemySMGTracer",30,4,15);
-		"####" H 0 A_SpawnItemEx("Casing9mm", 8,0,40, random(3,4), random(-1,1), random(2,4), random(-55,-80),SXF_NOCHECKPOSITION);
+		"####" H 0 A_SpawnItemEx("Casing9mm", 8,0,40, Random[Zombie](3,4), Random[Zombie](-1,1), Random[Zombie](2,4), Random[Zombie](-55,-80),SXF_NOCHECKPOSITION);
 		"####" H 0 {user_count++; if(user_count > 39) {user_count = 0; return ResolveState("Reload");} return ResolveState(null);}
 		"####" H 0 A_StartSound("nazi/mp40", CHAN_WEAPON, 0, frandom (0.6,0.9), ATTN_NORM);
 		"####" H 8 A_SpawnProjectile("EnemySMGTracer",30,2,0);
-		"####" H 0 A_SpawnItemEx("Casing9mm", 8,0,40, random(3,4), random(-1,1), random(2,4), random(-55,-80),SXF_NOCHECKPOSITION);
+		"####" H 0 A_SpawnItemEx("Casing9mm", 8,0,40, Random[Zombie](3,4), Random[Zombie](-1,1), Random[Zombie](2,4), Random[Zombie](-55,-80),SXF_NOCHECKPOSITION);
 		"####" H 0 {user_count++; if(user_count > 39) {user_count = 0; return ResolveState("Reload");} return ResolveState(null);}
 		"####" E 4 A_FaceTarget;
 		Goto See;
@@ -267,39 +267,39 @@ class ZombieOfficer : ZombieBrain
 		"####" E 10 A_FaceTarget;
 		"####" F 0 A_StartSound("nazi/mp40", CHAN_WEAPON, 0, frandom (0.6,0.9), ATTN_NORM);
 		"####" F 4 A_SpawnProjectile("EnemySMGTracer",30,18,90);
-		"####" F 0 A_SpawnItemEx("Casing9mm", 8,0,40, random(3,4), random(-1,1), random(2,4), random(-55,-80),SXF_NOCHECKPOSITION);
+		"####" F 0 A_SpawnItemEx("Casing9mm", 8,0,40, Random[Zombie](3,4), Random[Zombie](-1,1), Random[Zombie](2,4), Random[Zombie](-55,-80),SXF_NOCHECKPOSITION);
 		"####" F 0 {user_count++; if(user_count > 39) {user_count = 0; return ResolveState("Reload");} return ResolveState(null);}
 		"####" F 0 A_StartSound("nazi/mp40", CHAN_WEAPON, 0, frandom (0.6,0.9), ATTN_NORM);
 		"####" F 4 A_SpawnProjectile("EnemySMGTracer",30,16,80);
-		"####" F 0 A_SpawnItemEx("Casing9mm", 8,0,40, random(3,4), random(-1,1), random(2,4), random(-55,-80),SXF_NOCHECKPOSITION);
+		"####" F 0 A_SpawnItemEx("Casing9mm", 8,0,40, Random[Zombie](3,4), Random[Zombie](-1,1), Random[Zombie](2,4), Random[Zombie](-55,-80),SXF_NOCHECKPOSITION);
 		"####" F 0 {user_count++; if(user_count > 39) {user_count = 0; return ResolveState("Reload");} return ResolveState(null);}
 		"####" F 0 A_StartSound("nazi/mp40", CHAN_WEAPON, 0, frandom (0.6,0.9), ATTN_NORM);
 		"####" F 4 A_SpawnProjectile("EnemySMGTracer",30,14,70);
-		"####" F 0 A_SpawnItemEx("Casing9mm", 8,0,40, random(3,4), random(-1,1), random(2,4), random(-55,-80),SXF_NOCHECKPOSITION);
+		"####" F 0 A_SpawnItemEx("Casing9mm", 8,0,40, Random[Zombie](3,4), Random[Zombie](-1,1), Random[Zombie](2,4), Random[Zombie](-55,-80),SXF_NOCHECKPOSITION);
 		"####" F 0 {user_count++; if(user_count > 39) {user_count = 0; return ResolveState("Reload");} return ResolveState(null);}
 		"####" G 0 A_StartSound("nazi/mp40", CHAN_WEAPON, 0, frandom (0.6,0.9), ATTN_NORM);
 		"####" G 4 A_SpawnProjectile("EnemySMGTracer",30,12,60);
-		"####" G 0 A_SpawnItemEx("Casing9mm", 8,0,40, random(3,4), random(-1,1), random(2,4), random(-55,-80),SXF_NOCHECKPOSITION);
+		"####" G 0 A_SpawnItemEx("Casing9mm", 8,0,40, Random[Zombie](3,4), Random[Zombie](-1,1), Random[Zombie](2,4), Random[Zombie](-55,-80),SXF_NOCHECKPOSITION);
 		"####" G 0 {user_count++; if(user_count > 39) {user_count = 0; return ResolveState("Reload");} return ResolveState(null);}
 		"####" G 0 A_StartSound("nazi/mp40", CHAN_WEAPON, 0, frandom (0.6,0.9), ATTN_NORM);
 		"####" G 4 A_SpawnProjectile("EnemySMGTracer",30,10,50);
-		"####" G 0 A_SpawnItemEx("Casing9mm", 8,0,40, random(3,4), random(-1,1), random(2,4), random(-55,-80),SXF_NOCHECKPOSITION);
+		"####" G 0 A_SpawnItemEx("Casing9mm", 8,0,40, Random[Zombie](3,4), Random[Zombie](-1,1), Random[Zombie](2,4), Random[Zombie](-55,-80),SXF_NOCHECKPOSITION);
 		"####" G 0 {user_count++; if(user_count > 39) {user_count = 0; return ResolveState("Reload");} return ResolveState(null);}
 		"####" G 0 A_StartSound("nazi/mp40", CHAN_WEAPON, 0, frandom (0.6,0.9), ATTN_NORM);
 		"####" G 4 A_SpawnProjectile("EnemySMGTracer",30,8,40);
-		"####" G 0 A_SpawnItemEx("Casing9mm", 8,0,40, random(3,4), random(-1,1), random(2,4), random(-55,-80),SXF_NOCHECKPOSITION);
+		"####" G 0 A_SpawnItemEx("Casing9mm", 8,0,40, Random[Zombie](3,4), Random[Zombie](-1,1), Random[Zombie](2,4), Random[Zombie](-55,-80),SXF_NOCHECKPOSITION);
 		"####" G 0 {user_count++; if(user_count > 39) {user_count = 0; return ResolveState("Reload");} return ResolveState(null);}
 		"####" H 0 A_StartSound("nazi/mp40", CHAN_WEAPON, 0, frandom (0.6,0.9), ATTN_NORM);
 		"####" H 4 A_SpawnProjectile("EnemySMGTracer",30,6,30);
-		"####" H 0 A_SpawnItemEx("Casing9mm", 8,0,40, random(3,4), random(-1,1), random(2,4), random(-55,-80),SXF_NOCHECKPOSITION);
+		"####" H 0 A_SpawnItemEx("Casing9mm", 8,0,40, Random[Zombie](3,4), Random[Zombie](-1,1), Random[Zombie](2,4), Random[Zombie](-55,-80),SXF_NOCHECKPOSITION);
 		"####" H 0 {user_count++; if(user_count > 39) {user_count = 0; return ResolveState("Reload");} return ResolveState(null);}
 		"####" H 0 A_StartSound("nazi/mp40", CHAN_WEAPON, 0, frandom (0.6,0.9), ATTN_NORM);
 		"####" H 4 A_SpawnProjectile("EnemySMGTracer",30,4,15);
-		"####" H 0 A_SpawnItemEx("Casing9mm", 8,0,40, random(3,4), random(-1,1), random(2,4), random(-55,-80),SXF_NOCHECKPOSITION);
+		"####" H 0 A_SpawnItemEx("Casing9mm", 8,0,40, Random[Zombie](3,4), Random[Zombie](-1,1), Random[Zombie](2,4), Random[Zombie](-55,-80),SXF_NOCHECKPOSITION);
 		"####" H 0 {user_count++; if(user_count > 39) {user_count = 0; return ResolveState("Reload");} return ResolveState(null);}
 		"####" H 0 A_StartSound("nazi/mp40", CHAN_WEAPON, 0, frandom (0.6,0.9), ATTN_NORM);
 		"####" H 4 A_SpawnProjectile("EnemySMGTracer",30,2,0);
-		"####" H 0 A_SpawnItemEx("Casing9mm", 8,0,40, random(3,4), random(-1,1), random(2,4), random(-55,-80),SXF_NOCHECKPOSITION);
+		"####" H 0 A_SpawnItemEx("Casing9mm", 8,0,40, Random[Zombie](3,4), Random[Zombie](-1,1), Random[Zombie](2,4), Random[Zombie](-55,-80),SXF_NOCHECKPOSITION);
 		"####" H 0 {user_count++; if(user_count > 39) {user_count = 0; return ResolveState("Reload");} return ResolveState(null);}
 		"####" E 8 A_MonsterRefire(96,"See");
 		"####" E 0 A_FaceTarget;
@@ -307,7 +307,7 @@ class ZombieOfficer : ZombieBrain
 	Reload:
 		"####" E 0 {bNoPain = TRUE;}
 		"####" E 25 A_StartSound("sten/reload", CHAN_ITEM, 0, frandom (0.6,0.9), ATTN_NORM);
-		"####" E 0 A_SpawnItemEx("MauserRifleCasing", 8,0,40, random(3,4), random(-1,1), random(2,4), random(-55,-80),SXF_NOCHECKPOSITION);
+		"####" E 0 A_SpawnItemEx("MauserRifleCasing", 8,0,40, Random[Zombie](3,4), Random[Zombie](-1,1), Random[Zombie](2,4), Random[Zombie](-55,-80),SXF_NOCHECKPOSITION);
 		"####" E 0 {bNoPain = FALSE;}
 		Goto See;
 	Pain:
@@ -317,7 +317,7 @@ class ZombieOfficer : ZombieBrain
 		"####" I 5;
 		"####" J 5 A_Scream;
 		"####" K 5 A_UnblockAndDrop;
-		"####" L 5 A_SpawnItemEx("ZombieSoul", 0, 0, 10, 0, 0, frandom(1,3));
+		"####" L 5 A_SpawnItemEx("ZombieSoul", 0, 0, 10, 0, 0, FRandom[Soul](1,3));
 		"####" M 5;
 		"####" O -1;
 		Stop;
@@ -425,7 +425,7 @@ class ZGermanShepherd : ZombieStandard
 		Loop;
 	Melee:
 		"####" EF 2 Fast A_FaceTarget;
-		"####" G 8 Fast A_CustomMeleeAttack(random(1,6)*3, "dog/attack", "dog/attack", "UndeadPoison", TRUE);
+		"####" G 8 Fast A_CustomMeleeAttack(Random[Zombie](1,6)*3, "dog/attack", "dog/attack", "UndeadPoison", TRUE);
 		"####" FE 4 Fast;
 		Goto See;
 	Pain:
@@ -438,7 +438,7 @@ class ZGermanShepherd : ZombieStandard
 	Death:
 		"####" H 8;
 		"####" I 8 A_Scream;
-		"####" J 6 A_SpawnItemEx("ZombieSoul", 0, 0, 10, 0, 0, frandom(1,3));
+		"####" J 6 A_SpawnItemEx("ZombieSoul", 0, 0, 10, 0, 0, FRandom[Soul](1,3));
 		"####" K -1 A_NoBlocking;
 		Stop;
 	Death.Fire:
@@ -498,12 +498,12 @@ class ZombieGeneral : RocketMan
 	ChainGun:
 		ZFET H 0 A_FaceTarget;
 		"####" H 0 A_StartSound("chaingun/fire", CHAN_WEAPON);
-		"####" H 2 A_SpawnProjectile("EnemyChaingunTracer",40,-20,random(-11,11));
-		"####" G 0 A_SpawnItemEx("Casing9mm", -12,0,36, random(-3,-4), random(-1,1), random(4,6), random(-55,-80),SXF_NOCHECKPOSITION);
+		"####" H 2 A_SpawnProjectile("EnemyChaingunTracer",40,-20, Random[Tracer](-11,11));
+		"####" G 0 A_SpawnItemEx("Casing9mm", -12,0,36, Random[Zombie](-3,-4), Random[Zombie](-1,1), Random[Zombie](4,6), Random[Zombie](-55,-80),SXF_NOCHECKPOSITION);
 		"####" G 2 A_MonsterRefire(64,"See");
 		Loop;
 	GasBomb:
-		ZFET F 4 LIGHT("OTTOFIRE") A_SpawnProjectile("GasBomb",43,24,random(-16,16));
+		ZFET F 4 LIGHT("OTTOFIRE") A_SpawnProjectile("GasBomb",43,24, Random[Smoke](-16,16));
 		"####" E 8;
 		Goto Missile;
 	Pain:
@@ -512,7 +512,7 @@ class ZombieGeneral : RocketMan
 	Death:
 		ZFET J 5;
 		"####" K 7 A_Scream;
-		"####" L 9 A_SpawnItemEx("ZombieSoul", 0, 0, 10, 0, 0, frandom(1,3));
+		"####" L 9 A_SpawnItemEx("ZombieSoul", 0, 0, 10, 0, 0, FRandom[Soul](1,3));
 		"####" M -1 A_NoBlocking;
 		Stop;
 	Raise:
@@ -576,8 +576,8 @@ class ZombieZyklonstein : RocketMan
 	Chaingun:
 		ZSKL H 0 A_FaceTarget;
 		"####" H 0 A_StartSound("chaingun/fire", CHAN_WEAPON);
-		"####" H 2 A_SpawnProjectile("EnemyChaingunTracer",40,-20,random(-11,11));
-		"####" G 0 A_SpawnItemEx("Casing9mm", -12,0,36, random(-3,-4), random(-1,1), random(4,6), random(-55,-80),SXF_NOCHECKPOSITION);
+		"####" H 2 A_SpawnProjectile("EnemyChaingunTracer",40,-20, Random[Tracer](-11,11));
+		"####" G 0 A_SpawnItemEx("Casing9mm", -12,0,36, Random[Zombie](-3,-4), Random[Zombie](-1,1), Random[Zombie](4,6), Random[Zombie](-55,-80),SXF_NOCHECKPOSITION);
 		"####" G 2 A_MonsterRefire(64,"See");
 		Loop;
 	Pain:
@@ -586,7 +586,7 @@ class ZombieZyklonstein : RocketMan
 	Death:
 		ZSKL J 5;
 		"####" K 7 A_Scream;
-		"####" L 9 A_SpawnItemEx("ZombieSoul", 0, 0, 10, 0, 0, frandom(1,3));
+		"####" L 9 A_SpawnItemEx("ZombieSoul", 0, 0, 10, 0, 0, FRandom[Soul](1,3));
 		"####" M -1 A_NoBlocking;
 		Stop;
 	Raise:
@@ -636,21 +636,21 @@ class ZombieButcher : RocketMan
 	Missile:
 		BTCZ E 6 A_FaceTarget;
 		"####" E 0 A_Jump(128, "Missile2", "Missile3");
-		"####" F 2 A_ArcProjectile("ZFlyingHack",32,12,random(-8,8));
+		"####" F 2 A_ArcProjectile("ZFlyingHack",32,12, Random[Boss](-8,8));
 		"####" C 8;
 		Goto See;
 	Missile2:
-		BTCZ F 2 A_ArcProjectile("ZFlyingHack",32,12,random(-2,2));
+		BTCZ F 2 A_ArcProjectile("ZFlyingHack",32,12, Random[Boss](-2,2));
 		"####" E 4 A_FaceTarget;
-		"####" F 2 A_ArcProjectile("ZFlyingHack",32,12,random(-8,8));
+		"####" F 2 A_ArcProjectile("ZFlyingHack",32,12, Random[Boss](-8,8));
 		"####" C 8;
 		Goto See;
 	Missile3:
-		BTCZ F 2 A_ArcProjectile("ZFlyingHack",32,12,random(-2,2));
+		BTCZ F 2 A_ArcProjectile("ZFlyingHack",32,12, Random[Boss](-2,2));
 		"####" E 4 A_FaceTarget;
-		"####" F 2 A_ArcProjectile("ZFlyingHack",32,12,random(-8,8));
+		"####" F 2 A_ArcProjectile("ZFlyingHack",32,12, Random[Boss](-8,8));
 		"####" E 4 A_FaceTarget;
-		"####" F 2 A_ArcProjectile("ZFlyingHack",32,12,random(-12,12));
+		"####" F 2 A_ArcProjectile("ZFlyingHack",32,12, Random[Boss](-12,12));
 		"####" C 8;
 		Goto See;
 	Pain:

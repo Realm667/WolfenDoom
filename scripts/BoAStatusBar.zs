@@ -1227,7 +1227,7 @@ class BoAStatusBar : BaseStatusBar
 			double height = Screen.GetHeight();
 
 			TextureID pain = TexMan.CheckForTexture("graphics/hud/keen/pain.png", TexMan.Type_ANY);
-			screen.DrawTexture(pain, false, 0, 0, DTA_VirtualWidthF, width, DTA_VirtualHeightF, height, DTA_DestWidthF, width, DTA_DestHeightF, height, DTA_Alpha, 0.35, DTA_FlipX, Random(0, 1), DTA_FlipY, Random(0, 1));
+			screen.DrawTexture(pain, false, 0, 0, DTA_VirtualWidthF, width, DTA_VirtualHeightF, height, DTA_DestWidthF, width, DTA_DestHeightF, height, DTA_Alpha, 0.35, DTA_FlipX, Random[KeenPain](0, 1), DTA_FlipY, Random[KeenPain](0, 1));
 		}
 
 		let keen = KeenPlayer(CPlayer.mo);

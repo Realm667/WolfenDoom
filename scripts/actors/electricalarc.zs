@@ -88,7 +88,7 @@ class ElectricalPillar : ElectricalArc
 
 	override void Tick()
 	{
-		angle = Random(1, 360);
+		angle = Random[Lightning](1, 360);
 
 		Super.Tick();
 	}

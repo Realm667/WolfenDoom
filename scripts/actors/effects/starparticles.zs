@@ -32,7 +32,7 @@ class StarParticle_Spawner : EffectSpawner
 	{
 		Super.SpawnEffect();
 
-		if (random(0, 255) < 64) { return; } // Emulate failchance
+		if (Random[Spark](0, 255) < 64) { return; } // Emulate failchance
 
 		TextureID star = TexMan.CheckForTexture("EMB5I0");
 
@@ -44,17 +44,17 @@ class StarParticle_Spawner : EffectSpawner
 			150, // lifetime
 			1, // size
 			0, // angle
-			random(0, 128), // xoff
+			Random[Spark](0, 128), // xoff
 			0, // yoff
-			random(0, 128), // zoff
+			Random[Spark](0, 128), // zoff
 			0, // velx
-			random(2, 8), // vely
+			Random[Spark](2, 8), // vely
 			0, // velz
 			startalphaf: 1.0,
 			fadestepf: 0.0
 		);
 
-		// A_SpawnItemEx("StarParticle", random(0,128), 0, random(0,128), 0, random(2,8), 0, 0, SXF_CLIENTSIDE, 64);
+		// A_SpawnItemEx("StarParticle", Random[Spark](0,128), 0, Random[Spark](0,128), 0, Random[Spark](2,8), 0, 0, SXF_CLIENTSIDE, 64);
 	}
 }
 
@@ -69,7 +69,7 @@ class StarParticle_Spawner2 : StarParticle_Spawner
 	{
 		EffectSpawner.SpawnEffect();
 
-		if (random(0, 255) < 64) { return; } // Emulate failchance
+		if (Random[Spark](0, 255) < 64) { return; } // Emulate failchance
 
 		TextureID star = TexMan.CheckForTexture("EMB5I0");
 
@@ -81,17 +81,17 @@ class StarParticle_Spawner2 : StarParticle_Spawner
 			150, // lifetime
 			1, // size
 			0, // angle
-			random(0, 128), // xoff
-			random(0, 128), // yoff
+			Random[Spark](0, 128), // xoff
+			Random[Spark](0, 128), // yoff
 			0, // zoff
 			0, // velx
-			random(2, 8), // vely
+			Random[Spark](2, 8), // vely
 			-5, // velz
 			startalphaf: 1.0,
 			fadestepf: 0.0
 		);
 
-		// A_SpawnItemEx("StarParticle", random(0,128), random(0,128), 0, 0, random(2,8), -5, 0, SXF_CLIENTSIDE, 64);
+		// A_SpawnItemEx("StarParticle", Random[Spark](0,128), Random[Spark](0,128), 0, 0, Random[Spark](2,8), -5, 0, SXF_CLIENTSIDE, 64);
 	}
 }
 
@@ -106,7 +106,7 @@ class StarParticle_SpawnerFast : StarParticle_Spawner
 	{
 		EffectSpawner.SpawnEffect();
 
-		if (random(0, 255) < 64) { return; } // Emulate failchance
+		if (Random[Spark](0, 255) < 64) { return; } // Emulate failchance
 
 		TextureID star = TexMan.CheckForTexture("EMB5I0");
 
@@ -118,17 +118,17 @@ class StarParticle_SpawnerFast : StarParticle_Spawner
 			150, // lifetime
 			1, // size
 			0, // angle
-			random(0, 128), // xoff
+			Random[Spark](0, 128), // xoff
 			0, // yoff
-			random(0, 128), // zoff
+			Random[Spark](0, 128), // zoff
 			0, // velx
-			random(20, 30), // vely
+			Random[Spark](20, 30), // vely
 			0, // velz
 			startalphaf: 1.0,
 			fadestepf: 0.0
 		);
 
-		// A_SpawnItemEx("StarParticle", random(0,128), 0, random(0,128), 0, random(20,30), 0, 0, SXF_CLIENTSIDE, 64);
+		// A_SpawnItemEx("StarParticle", Random[Spark](0,128), 0, Random[Spark](0,128), 0, Random[Spark](20,30), 0, 0, SXF_CLIENTSIDE, 64);
 	}
 }
 

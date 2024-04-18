@@ -79,60 +79,60 @@ class AngelOfDeath : Base
 	SeekerBlast:
 		"####" E 0 A_StartSound("aode/fire");
 		AODE F 8 A_FaceTarget;
-		"####" G 8 A_SpawnProjectile("AODEBlastPod", 68, 38, random(-4,4));
-		"####" G 0 A_SpawnItemEx("SparkFlareG", 68, 38, random(52,58));
+		"####" G 8 A_SpawnProjectile("AODEBlastPod", 68, 38, Random[Boss](-4,4));
+		"####" G 0 A_SpawnItemEx("SparkFlareG", 68, 38, Random[Boss](52,58));
 		Goto See;
 	RapidFire:
 		"####" EF 8 A_FaceTarget;
-		"####" G 5 A_SpawnProjectile("AODEPlasmaBlast", 68, 38, random(-4,4));
-		"####" G 0 A_SpawnItemEx("SparkFlareG", 68, 38, random(52,58));
+		"####" G 5 A_SpawnProjectile("AODEPlasmaBlast", 68, 38, Random[Boss](-4,4));
+		"####" G 0 A_SpawnItemEx("SparkFlareG", 68, 38, Random[Boss](52,58));
 		"####" G 0 A_FaceTarget;
-		"####" G 5 A_SpawnProjectile("AODEPlasmaBlast", 68, 38, random(-4,4));
-		"####" G 0 A_SpawnItemEx("SparkFlareG", 68, 38, random(52,58));
+		"####" G 5 A_SpawnProjectile("AODEPlasmaBlast", 68, 38, Random[Boss](-4,4));
+		"####" G 0 A_SpawnItemEx("SparkFlareG", 68, 38, Random[Boss](52,58));
 		"####" G 0 A_FaceTarget;
-		"####" G 5 A_SpawnProjectile("AODEPlasmaBlast", 68, 38, random(-4,4));
-		"####" G 0 A_SpawnItemEx("SparkFlareG", 68, 38, random(52,58));
+		"####" G 5 A_SpawnProjectile("AODEPlasmaBlast", 68, 38, Random[Boss](-4,4));
+		"####" G 0 A_SpawnItemEx("SparkFlareG", 68, 38, Random[Boss](52,58));
 		"####" G 0 A_FaceTarget;
-		"####" G 5 A_SpawnProjectile("AODEPlasmaBlast", 68, 38, random(-4,4));
-		"####" G 0 A_SpawnItemEx("SparkFlareG", 68, 38, random(52,58));
+		"####" G 5 A_SpawnProjectile("AODEPlasmaBlast", 68, 38, Random[Boss](-4,4));
+		"####" G 0 A_SpawnItemEx("SparkFlareG", 68, 38, Random[Boss](52,58));
 		"####" G 0 A_FaceTarget;
-		"####" G 5 A_SpawnProjectile("AODEPlasmaBlast", 68, 38, random(-4,4));
-		"####" G 0 A_SpawnItemEx("SparkFlareG", 68, 38, random(52,58));
+		"####" G 5 A_SpawnProjectile("AODEPlasmaBlast", 68, 38, Random[Boss](-4,4));
+		"####" G 0 A_SpawnItemEx("SparkFlareG", 68, 38, Random[Boss](52,58));
 		"####" G 0 A_FaceTarget;
-		"####" G 5 A_SpawnProjectile("AODEPlasmaBlast", 68, 38, random(-4,4));
-		"####" G 0 A_SpawnItemEx("SparkFlareG", 68, 38, random(52,58));
+		"####" G 5 A_SpawnProjectile("AODEPlasmaBlast", 68, 38, Random[Boss](-4,4));
+		"####" G 0 A_SpawnItemEx("SparkFlareG", 68, 38, Random[Boss](52,58));
 		"####" G 0 A_FaceTarget;
-		"####" G 5 A_SpawnProjectile("AODEPlasmaBlast", 68, 38, random(-4,4));
-		"####" G 0 A_SpawnItemEx("SparkFlareG", 68, 38, random(52,58));
+		"####" G 5 A_SpawnProjectile("AODEPlasmaBlast", 68, 38, Random[Boss](-4,4));
+		"####" G 0 A_SpawnItemEx("SparkFlareG", 68, 38, Random[Boss](52,58));
 		"####" G 0 A_FaceTarget;
-		"####" G 5 A_SpawnProjectile("AODEPlasmaBlast", 68, 38, random(-4,4));
-		"####" G 0 A_SpawnItemEx("SparkFlareG", 68, 38, random(52,58));
+		"####" G 5 A_SpawnProjectile("AODEPlasmaBlast", 68, 38, Random[Boss](-4,4));
+		"####" G 0 A_SpawnItemEx("SparkFlareG", 68, 38, Random[Boss](52,58));
 		"####" G 0 A_FaceTarget;
-		"####" G 5 A_SpawnProjectile("AODEPlasmaBlast", 68, 38, random(-4,4));
-		"####" G 0 A_SpawnItemEx("SparkFlareG", 68, 38, random(52,58));
+		"####" G 5 A_SpawnProjectile("AODEPlasmaBlast", 68, 38, Random[Boss](-4,4));
+		"####" G 0 A_SpawnItemEx("SparkFlareG", 68, 38, Random[Boss](52,58));
 		"####" G 0 A_FaceTarget;
-		"####" G 5 A_SpawnProjectile("AODEPlasmaBlast", 68, 38, random(-4,4));
-		"####" G 0 A_SpawnItemEx("SparkFlareG", 68, 38, random(52,58));
+		"####" G 5 A_SpawnProjectile("AODEPlasmaBlast", 68, 38, Random[Boss](-4,4));
+		"####" G 0 A_SpawnItemEx("SparkFlareG", 68, 38, Random[Boss](52,58));
 		"####" G 0 A_FaceTarget;
-		"####" G 5 A_SpawnProjectile("AODEPlasmaBlast", 68, 38, random(-4,4));
-		"####" G 0 A_SpawnItemEx("SparkFlareG", 68, 38, random(52,58));
+		"####" G 5 A_SpawnProjectile("AODEPlasmaBlast", 68, 38, Random[Boss](-4,4));
+		"####" G 0 A_SpawnItemEx("SparkFlareG", 68, 38, Random[Boss](52,58));
 		"####" G 5 A_FaceTarget;
 		Goto See;
 	SpreadFire:
 		AODE EF 8 A_FaceTarget;
-		"####" G 0 A_SpawnProjectile("AODEPlasmaBlast", 68, 38, random(-7,7), CMF_AIMOFFSET|CMF_OFFSETPITCH|CMF_BADPITCH, random(-3,3));
-		"####" G 0 A_SpawnProjectile("AODEPlasmaBlast", 68, 38, random(-7,7), CMF_AIMOFFSET|CMF_OFFSETPITCH|CMF_BADPITCH, random(-3,3));
-		"####" G 0 A_SpawnProjectile("AODEPlasmaBlast", 68, 38, random(-7,7), CMF_AIMOFFSET|CMF_OFFSETPITCH|CMF_BADPITCH, random(-3,3));
-		"####" G 0 A_SpawnProjectile("AODEPlasmaBlast", 68, 38, random(-7,7), CMF_AIMOFFSET|CMF_OFFSETPITCH|CMF_BADPITCH, random(-3,3));
-		"####" G 0 A_SpawnProjectile("AODEPlasmaBlast", 68, 38, random(-7,7), CMF_AIMOFFSET|CMF_OFFSETPITCH|CMF_BADPITCH, random(-3,3));
-		"####" G 5 A_SpawnProjectile("AODEPlasmaBlast", 68, 38, random(-4,4));
+		"####" G 0 A_SpawnProjectile("AODEPlasmaBlast", 68, 38, Random[Boss](-7,7), CMF_AIMOFFSET|CMF_OFFSETPITCH|CMF_BADPITCH, Random[Boss](-3,3));
+		"####" G 0 A_SpawnProjectile("AODEPlasmaBlast", 68, 38, Random[Boss](-7,7), CMF_AIMOFFSET|CMF_OFFSETPITCH|CMF_BADPITCH, Random[Boss](-3,3));
+		"####" G 0 A_SpawnProjectile("AODEPlasmaBlast", 68, 38, Random[Boss](-7,7), CMF_AIMOFFSET|CMF_OFFSETPITCH|CMF_BADPITCH, Random[Boss](-3,3));
+		"####" G 0 A_SpawnProjectile("AODEPlasmaBlast", 68, 38, Random[Boss](-7,7), CMF_AIMOFFSET|CMF_OFFSETPITCH|CMF_BADPITCH, Random[Boss](-3,3));
+		"####" G 0 A_SpawnProjectile("AODEPlasmaBlast", 68, 38, Random[Boss](-7,7), CMF_AIMOFFSET|CMF_OFFSETPITCH|CMF_BADPITCH, Random[Boss](-3,3));
+		"####" G 5 A_SpawnProjectile("AODEPlasmaBlast", 68, 38, Random[Boss](-4,4));
 		"####" EF 8 A_FaceTarget;
-		"####" G 0 A_SpawnProjectile("AODEPlasmaBlast", 68, 38, random(-7,7), CMF_AIMOFFSET|CMF_OFFSETPITCH|CMF_BADPITCH, random(-3,3));
-		"####" G 0 A_SpawnProjectile("AODEPlasmaBlast", 68, 38, random(-7,7), CMF_AIMOFFSET|CMF_OFFSETPITCH|CMF_BADPITCH, random(-3,3));
-		"####" G 0 A_SpawnProjectile("AODEPlasmaBlast", 68, 38, random(-7,7), CMF_AIMOFFSET|CMF_OFFSETPITCH|CMF_BADPITCH, random(-3,3));
-		"####" G 0 A_SpawnProjectile("AODEPlasmaBlast", 68, 38, random(-7,7), CMF_AIMOFFSET|CMF_OFFSETPITCH|CMF_BADPITCH, random(-3,3));
-		"####" G 0 A_SpawnProjectile("AODEPlasmaBlast", 68, 38, random(-7,7), CMF_AIMOFFSET|CMF_OFFSETPITCH|CMF_BADPITCH, random(-3,3));
-		"####" G 5 A_SpawnProjectile("AODEPlasmaBlast", 68, 38, random(-4,4));
+		"####" G 0 A_SpawnProjectile("AODEPlasmaBlast", 68, 38, Random[Boss](-7,7), CMF_AIMOFFSET|CMF_OFFSETPITCH|CMF_BADPITCH, Random[Boss](-3,3));
+		"####" G 0 A_SpawnProjectile("AODEPlasmaBlast", 68, 38, Random[Boss](-7,7), CMF_AIMOFFSET|CMF_OFFSETPITCH|CMF_BADPITCH, Random[Boss](-3,3));
+		"####" G 0 A_SpawnProjectile("AODEPlasmaBlast", 68, 38, Random[Boss](-7,7), CMF_AIMOFFSET|CMF_OFFSETPITCH|CMF_BADPITCH, Random[Boss](-3,3));
+		"####" G 0 A_SpawnProjectile("AODEPlasmaBlast", 68, 38, Random[Boss](-7,7), CMF_AIMOFFSET|CMF_OFFSETPITCH|CMF_BADPITCH, Random[Boss](-3,3));
+		"####" G 0 A_SpawnProjectile("AODEPlasmaBlast", 68, 38, Random[Boss](-7,7), CMF_AIMOFFSET|CMF_OFFSETPITCH|CMF_BADPITCH, Random[Boss](-3,3));
+		"####" G 5 A_SpawnProjectile("AODEPlasmaBlast", 68, 38, Random[Boss](-4,4));
 		"####" E 5 A_FaceTarget;
 		Goto See;
 	Pain:
@@ -218,7 +218,7 @@ class AngelOfDeath_End : AngelOfDeath
 		"####" ABCDCB 2 A_FastChase;
 		Loop;
 	See.Wound:
-		"####" A 0 A_SpawnItemEx("ZyklonZCloud2",random(-64,64),random(-64,64),random(-48,48),0,0,0.1,0,128);
+		"####" A 0 A_SpawnItemEx("ZyklonZCloud2", Random[AoD](-64,64), Random[AoD](-64,64), Random[AoD](-48,48),0,0,0.1,0,128);
 		"####" A 1 {A_FastChase(); A_UnsetReflective(); bAllowPain = TRUE; bVisibilityPulse = FALSE;}
 		"####" A 0 A_SpawnItemEx("AODEClone1", 0, 0, 0, 0, 0, 0, 0, 0);
 		"####" B 1 A_FastChase;
@@ -227,7 +227,7 @@ class AngelOfDeath_End : AngelOfDeath
 		"####" C 0 A_SpawnItemEx("AODEClone3", 0, 0, 0, 0, 0, 0, 0, 0);
 		"####" D 1 A_FastChase;
 		"####" D 0 A_SpawnItemEx("AODEClone4", 0, 0, 0, 0, 0, 0, 0, 0);
-		"####" D 0 A_SpawnItemEx("ZyklonZCloud2",random(-64,64),random(-64,64),random(-48,48),0,0,0.1,0,128);
+		"####" D 0 A_SpawnItemEx("ZyklonZCloud2", Random[AoD](-64,64), Random[AoD](-64,64), Random[AoD](-48,48),0,0,0.1,0,128);
 		"####" A 1 A_FastChase;
 		"####" A 0 A_SpawnItemEx("AODEClone1", 0, 0, 0, 0, 0, 0, 0, 0);
 		"####" B 1 A_FastChase;
@@ -258,7 +258,7 @@ class AngelOfDeath_End : AngelOfDeath
 		"####" C 2 A_SetTranslucent(0.15, STYLE_TRANSLUCENT);
 		"####" B 2 A_SetTranslucent(0.10, STYLE_TRANSLUCENT);
 	Cloak.Loop:
-		"####" A 0 A_SpawnItemEx("ZyklonZCloud2",random(-64,64),random(-64,64),random(-48,48),0,0,0.1,0,0);
+		"####" A 0 A_SpawnItemEx("ZyklonZCloud2", Random[AoD](-64,64), Random[AoD](-64,64), Random[AoD](-48,48),0,0,0.1,0,0);
 		"####" A 0 {user_count++; if(user_count > 4) {user_count = 0; return ResolveState("Cloak.Stop");} return ResolveState(null);}
 		"####" ABCDCB 2 A_Wander;
 		Loop;
@@ -303,60 +303,60 @@ class AngelOfDeath_End : AngelOfDeath
 	SeekerBlast:
 		"####" E 0 A_StartSound("aode/fire");
 		AODE F 8 A_FaceTarget;
-		"####" G 8 A_SpawnProjectile("AODEBlastPod", 68, 38, random(-4,4));
-		"####" G 0 A_SpawnItemEx("SparkFlareG", 68, 38, random(52,58));
+		"####" G 8 A_SpawnProjectile("AODEBlastPod", 68, 38, Random[Boss](-4,4));
+		"####" G 0 A_SpawnItemEx("SparkFlareG", 68, 38, Random[Boss](52,58));
 		Goto See;
 	RapidFire:
 		"####" EF 6 A_FaceTarget;
-		"####" G 4 A_SpawnProjectile("AODEPlasmaBlast", 68, 38, random(-4,4));
-		"####" G 0 A_SpawnItemEx("SparkFlareG", 68, 38, random(52,58));
+		"####" G 4 A_SpawnProjectile("AODEPlasmaBlast", 68, 38, Random[Boss](-4,4));
+		"####" G 0 A_SpawnItemEx("SparkFlareG", 68, 38, Random[Boss](52,58));
 		"####" G 0 A_FaceTarget;
-		"####" G 4 A_SpawnProjectile("AODEPlasmaBlast", 68, 38, random(-4,4));
-		"####" G 0 A_SpawnItemEx("SparkFlareG", 68, 38, random(52,58));
+		"####" G 4 A_SpawnProjectile("AODEPlasmaBlast", 68, 38, Random[Boss](-4,4));
+		"####" G 0 A_SpawnItemEx("SparkFlareG", 68, 38, Random[Boss](52,58));
 		"####" G 0 A_FaceTarget;
-		"####" G 4 A_SpawnProjectile("AODEPlasmaBlast", 68, 38, random(-4,4));
-		"####" G 0 A_SpawnItemEx("SparkFlareG", 68, 38, random(52,58));
+		"####" G 4 A_SpawnProjectile("AODEPlasmaBlast", 68, 38, Random[Boss](-4,4));
+		"####" G 0 A_SpawnItemEx("SparkFlareG", 68, 38, Random[Boss](52,58));
 		"####" G 0 A_FaceTarget;
-		"####" G 4 A_SpawnProjectile("AODEPlasmaBlast", 68, 38, random(-4,4));
-		"####" G 0 A_SpawnItemEx("SparkFlareG", 68, 38, random(52,58));
+		"####" G 4 A_SpawnProjectile("AODEPlasmaBlast", 68, 38, Random[Boss](-4,4));
+		"####" G 0 A_SpawnItemEx("SparkFlareG", 68, 38, Random[Boss](52,58));
 		"####" G 0 A_FaceTarget;
-		"####" G 4 A_SpawnProjectile("AODEPlasmaBlast", 68, 38, random(-4,4));
-		"####" G 0 A_SpawnItemEx("SparkFlareG", 68, 38, random(52,58));
+		"####" G 4 A_SpawnProjectile("AODEPlasmaBlast", 68, 38, Random[Boss](-4,4));
+		"####" G 0 A_SpawnItemEx("SparkFlareG", 68, 38, Random[Boss](52,58));
 		"####" G 0 A_FaceTarget;
-		"####" G 4 A_SpawnProjectile("AODEPlasmaBlast", 68, 38, random(-4,4));
-		"####" G 0 A_SpawnItemEx("SparkFlareG", 68, 38, random(52,58));
+		"####" G 4 A_SpawnProjectile("AODEPlasmaBlast", 68, 38, Random[Boss](-4,4));
+		"####" G 0 A_SpawnItemEx("SparkFlareG", 68, 38, Random[Boss](52,58));
 		"####" G 0 A_FaceTarget;
-		"####" G 4 A_SpawnProjectile("AODEPlasmaBlast", 68, 38, random(-4,4));
-		"####" G 0 A_SpawnItemEx("SparkFlareG", 68, 38, random(52,58));
+		"####" G 4 A_SpawnProjectile("AODEPlasmaBlast", 68, 38, Random[Boss](-4,4));
+		"####" G 0 A_SpawnItemEx("SparkFlareG", 68, 38, Random[Boss](52,58));
 		"####" G 0 A_FaceTarget;
-		"####" G 4 A_SpawnProjectile("AODEPlasmaBlast", 68, 38, random(-4,4));
-		"####" G 0 A_SpawnItemEx("SparkFlareG", 68, 38, random(52,58));
+		"####" G 4 A_SpawnProjectile("AODEPlasmaBlast", 68, 38, Random[Boss](-4,4));
+		"####" G 0 A_SpawnItemEx("SparkFlareG", 68, 38, Random[Boss](52,58));
 		"####" G 0 A_FaceTarget;
-		"####" G 4 A_SpawnProjectile("AODEPlasmaBlast", 68, 38, random(-4,4));
-		"####" G 0 A_SpawnItemEx("SparkFlareG", 68, 38, random(52,58));
+		"####" G 4 A_SpawnProjectile("AODEPlasmaBlast", 68, 38, Random[Boss](-4,4));
+		"####" G 0 A_SpawnItemEx("SparkFlareG", 68, 38, Random[Boss](52,58));
 		"####" G 0 A_FaceTarget;
-		"####" G 4 A_SpawnProjectile("AODEPlasmaBlast", 68, 38, random(-4,4));
-		"####" G 0 A_SpawnItemEx("SparkFlareG", 68, 38, random(52,58));
+		"####" G 4 A_SpawnProjectile("AODEPlasmaBlast", 68, 38, Random[Boss](-4,4));
+		"####" G 0 A_SpawnItemEx("SparkFlareG", 68, 38, Random[Boss](52,58));
 		"####" G 0 A_FaceTarget;
-		"####" G 4 A_SpawnProjectile("AODEPlasmaBlast", 68, 38, random(-4,4));
-		"####" G 0 A_SpawnItemEx("SparkFlareG", 68, 38, random(52,58));
+		"####" G 4 A_SpawnProjectile("AODEPlasmaBlast", 68, 38, Random[Boss](-4,4));
+		"####" G 0 A_SpawnItemEx("SparkFlareG", 68, 38, Random[Boss](52,58));
 		"####" G 4 A_FaceTarget;
 		Goto See;
 	SpreadFire:
 		AODE EF 6 A_FaceTarget;
-		"####" G 0 A_SpawnProjectile("AODEPlasmaBlast", 68, 38, random(-7,7), CMF_AIMOFFSET|CMF_OFFSETPITCH|CMF_BADPITCH, random(-3,3));
-		"####" G 0 A_SpawnProjectile("AODEPlasmaBlast", 68, 38, random(-7,7), CMF_AIMOFFSET|CMF_OFFSETPITCH|CMF_BADPITCH, random(-3,3));
-		"####" G 0 A_SpawnProjectile("AODEPlasmaBlast", 68, 38, random(-7,7), CMF_AIMOFFSET|CMF_OFFSETPITCH|CMF_BADPITCH, random(-3,3));
-		"####" G 0 A_SpawnProjectile("AODEPlasmaBlast", 68, 38, random(-7,7), CMF_AIMOFFSET|CMF_OFFSETPITCH|CMF_BADPITCH, random(-3,3));
-		"####" G 0 A_SpawnProjectile("AODEPlasmaBlast", 68, 38, random(-7,7), CMF_AIMOFFSET|CMF_OFFSETPITCH|CMF_BADPITCH, random(-3,3));
-		"####" G 5 A_SpawnProjectile("AODEPlasmaBlast", 68, 38, random(-4,4));
+		"####" G 0 A_SpawnProjectile("AODEPlasmaBlast", 68, 38, Random[Boss](-7,7), CMF_AIMOFFSET|CMF_OFFSETPITCH|CMF_BADPITCH, Random[Boss](-3,3));
+		"####" G 0 A_SpawnProjectile("AODEPlasmaBlast", 68, 38, Random[Boss](-7,7), CMF_AIMOFFSET|CMF_OFFSETPITCH|CMF_BADPITCH, Random[Boss](-3,3));
+		"####" G 0 A_SpawnProjectile("AODEPlasmaBlast", 68, 38, Random[Boss](-7,7), CMF_AIMOFFSET|CMF_OFFSETPITCH|CMF_BADPITCH, Random[Boss](-3,3));
+		"####" G 0 A_SpawnProjectile("AODEPlasmaBlast", 68, 38, Random[Boss](-7,7), CMF_AIMOFFSET|CMF_OFFSETPITCH|CMF_BADPITCH, Random[Boss](-3,3));
+		"####" G 0 A_SpawnProjectile("AODEPlasmaBlast", 68, 38, Random[Boss](-7,7), CMF_AIMOFFSET|CMF_OFFSETPITCH|CMF_BADPITCH, Random[Boss](-3,3));
+		"####" G 5 A_SpawnProjectile("AODEPlasmaBlast", 68, 38, Random[Boss](-4,4));
 		"####" EF 6 A_FaceTarget;
-		"####" G 0 A_SpawnProjectile("AODEPlasmaBlast", 68, 38, random(-7,7), CMF_AIMOFFSET|CMF_OFFSETPITCH|CMF_BADPITCH, random(-3,3));
-		"####" G 0 A_SpawnProjectile("AODEPlasmaBlast", 68, 38, random(-7,7), CMF_AIMOFFSET|CMF_OFFSETPITCH|CMF_BADPITCH, random(-3,3));
-		"####" G 0 A_SpawnProjectile("AODEPlasmaBlast", 68, 38, random(-7,7), CMF_AIMOFFSET|CMF_OFFSETPITCH|CMF_BADPITCH, random(-3,3));
-		"####" G 0 A_SpawnProjectile("AODEPlasmaBlast", 68, 38, random(-7,7), CMF_AIMOFFSET|CMF_OFFSETPITCH|CMF_BADPITCH, random(-3,3));
-		"####" G 0 A_SpawnProjectile("AODEPlasmaBlast", 68, 38, random(-7,7), CMF_AIMOFFSET|CMF_OFFSETPITCH|CMF_BADPITCH, random(-3,3));
-		"####" G 4 A_SpawnProjectile("AODEPlasmaBlast", 68, 38, random(-4,4));
+		"####" G 0 A_SpawnProjectile("AODEPlasmaBlast", 68, 38, Random[Boss](-7,7), CMF_AIMOFFSET|CMF_OFFSETPITCH|CMF_BADPITCH, Random[Boss](-3,3));
+		"####" G 0 A_SpawnProjectile("AODEPlasmaBlast", 68, 38, Random[Boss](-7,7), CMF_AIMOFFSET|CMF_OFFSETPITCH|CMF_BADPITCH, Random[Boss](-3,3));
+		"####" G 0 A_SpawnProjectile("AODEPlasmaBlast", 68, 38, Random[Boss](-7,7), CMF_AIMOFFSET|CMF_OFFSETPITCH|CMF_BADPITCH, Random[Boss](-3,3));
+		"####" G 0 A_SpawnProjectile("AODEPlasmaBlast", 68, 38, Random[Boss](-7,7), CMF_AIMOFFSET|CMF_OFFSETPITCH|CMF_BADPITCH, Random[Boss](-3,3));
+		"####" G 0 A_SpawnProjectile("AODEPlasmaBlast", 68, 38, Random[Boss](-7,7), CMF_AIMOFFSET|CMF_OFFSETPITCH|CMF_BADPITCH, Random[Boss](-3,3));
+		"####" G 4 A_SpawnProjectile("AODEPlasmaBlast", 68, 38, Random[Boss](-4,4));
 		"####" E 4 A_FaceTarget;
 		Goto See;
 	Pain:
@@ -397,8 +397,8 @@ class AngelOfDeath_End : AngelOfDeath
 	SeekerBlast.Wound:
 		"####" E 0 A_StartSound("aode/fire");
 		AODE F 8 A_FaceTarget;
-		"####" G 8 A_SpawnProjectile("AODEBlastPod", 68, 38, random(-4,4));
-		"####" G 0 A_SpawnItemEx("SparkFlareG", 68, 38, random(52,58));
+		"####" G 8 A_SpawnProjectile("AODEBlastPod", 68, 38, Random[Boss](-4,4));
+		"####" G 0 A_SpawnItemEx("SparkFlareG", 68, 38, Random[Boss](52,58));
 		Goto See.Wound;
 	Melee.Wound:
 		"####" EF 3;
@@ -417,55 +417,55 @@ class AngelOfDeath_End : AngelOfDeath
 		Goto RapidFire.Wound;
 	RapidFire.Wound:
 		"####" EF 5 A_FaceTarget;
-		"####" G 3 A_SpawnProjectile("AODEPlasmaBlast", 68, 38, random(-4,4));
-		"####" G 0 A_SpawnItemEx("SparkFlareG", 68, 38, random(52,58));
+		"####" G 3 A_SpawnProjectile("AODEPlasmaBlast", 68, 38, Random[Boss](-4,4));
+		"####" G 0 A_SpawnItemEx("SparkFlareG", 68, 38, Random[Boss](52,58));
 		"####" G 0 A_FaceTarget;
-		"####" G 3 A_SpawnProjectile("AODEPlasmaBlast", 68, 38, random(-4,4));
-		"####" G 0 A_SpawnItemEx("SparkFlareG", 68, 38, random(52,58));
+		"####" G 3 A_SpawnProjectile("AODEPlasmaBlast", 68, 38, Random[Boss](-4,4));
+		"####" G 0 A_SpawnItemEx("SparkFlareG", 68, 38, Random[Boss](52,58));
 		"####" G 0 A_FaceTarget;
-		"####" G 3 A_SpawnProjectile("AODEPlasmaBlast", 68, 38, random(-4,4));
-		"####" G 0 A_SpawnItemEx("SparkFlareG", 68, 38, random(52,58));
+		"####" G 3 A_SpawnProjectile("AODEPlasmaBlast", 68, 38, Random[Boss](-4,4));
+		"####" G 0 A_SpawnItemEx("SparkFlareG", 68, 38, Random[Boss](52,58));
 		"####" G 0 A_FaceTarget;
-		"####" G 3 A_SpawnProjectile("AODEPlasmaBlast", 68, 38, random(-4,4));
-		"####" G 0 A_SpawnItemEx("SparkFlareG", 68, 38, random(52,58));
+		"####" G 3 A_SpawnProjectile("AODEPlasmaBlast", 68, 38, Random[Boss](-4,4));
+		"####" G 0 A_SpawnItemEx("SparkFlareG", 68, 38, Random[Boss](52,58));
 		"####" G 0 A_FaceTarget;
-		"####" G 3 A_SpawnProjectile("AODEPlasmaBlast", 68, 38, random(-4,4));
-		"####" G 0 A_SpawnItemEx("SparkFlareG", 68, 38, random(52,58));
+		"####" G 3 A_SpawnProjectile("AODEPlasmaBlast", 68, 38, Random[Boss](-4,4));
+		"####" G 0 A_SpawnItemEx("SparkFlareG", 68, 38, Random[Boss](52,58));
 		"####" G 0 A_FaceTarget;
-		"####" G 3 A_SpawnProjectile("AODEPlasmaBlast", 68, 38, random(-4,4));
-		"####" G 0 A_SpawnItemEx("SparkFlareG", 68, 38, random(52,58));
+		"####" G 3 A_SpawnProjectile("AODEPlasmaBlast", 68, 38, Random[Boss](-4,4));
+		"####" G 0 A_SpawnItemEx("SparkFlareG", 68, 38, Random[Boss](52,58));
 		"####" G 0 A_FaceTarget;
-		"####" G 3 A_SpawnProjectile("AODEPlasmaBlast", 68, 38, random(-4,4));
-		"####" G 0 A_SpawnItemEx("SparkFlareG", 68, 38, random(52,58));
+		"####" G 3 A_SpawnProjectile("AODEPlasmaBlast", 68, 38, Random[Boss](-4,4));
+		"####" G 0 A_SpawnItemEx("SparkFlareG", 68, 38, Random[Boss](52,58));
 		"####" G 0 A_FaceTarget;
-		"####" G 3 A_SpawnProjectile("AODEPlasmaBlast", 68, 38, random(-4,4));
-		"####" G 0 A_SpawnItemEx("SparkFlareG", 68, 38, random(52,58));
+		"####" G 3 A_SpawnProjectile("AODEPlasmaBlast", 68, 38, Random[Boss](-4,4));
+		"####" G 0 A_SpawnItemEx("SparkFlareG", 68, 38, Random[Boss](52,58));
 		"####" G 0 A_FaceTarget;
-		"####" G 3 A_SpawnProjectile("AODEPlasmaBlast", 68, 38, random(-4,4));
-		"####" G 0 A_SpawnItemEx("SparkFlareG", 68, 38, random(52,58));
+		"####" G 3 A_SpawnProjectile("AODEPlasmaBlast", 68, 38, Random[Boss](-4,4));
+		"####" G 0 A_SpawnItemEx("SparkFlareG", 68, 38, Random[Boss](52,58));
 		"####" G 0 A_FaceTarget;
-		"####" G 3 A_SpawnProjectile("AODEPlasmaBlast", 68, 38, random(-4,4));
-		"####" G 0 A_SpawnItemEx("SparkFlareG", 68, 38, random(52,58));
+		"####" G 3 A_SpawnProjectile("AODEPlasmaBlast", 68, 38, Random[Boss](-4,4));
+		"####" G 0 A_SpawnItemEx("SparkFlareG", 68, 38, Random[Boss](52,58));
 		"####" G 0 A_FaceTarget;
-		"####" G 3 A_SpawnProjectile("AODEPlasmaBlast", 68, 38, random(-4,4));
-		"####" G 0 A_SpawnItemEx("SparkFlareG", 68, 38, random(52,58));
+		"####" G 3 A_SpawnProjectile("AODEPlasmaBlast", 68, 38, Random[Boss](-4,4));
+		"####" G 0 A_SpawnItemEx("SparkFlareG", 68, 38, Random[Boss](52,58));
 		"####" G 3 A_FaceTarget;
 		Goto See.Wound;
 	SpreadFire.Wound:
 		AODE EF 4 A_FaceTarget;
-		"####" G 0 A_SpawnProjectile("AODEPlasmaBlast", 68, 38, random(-7,7), CMF_AIMOFFSET|CMF_OFFSETPITCH|CMF_BADPITCH, random(-3,3));
-		"####" G 0 A_SpawnProjectile("AODEPlasmaBlast", 68, 38, random(-7,7), CMF_AIMOFFSET|CMF_OFFSETPITCH|CMF_BADPITCH, random(-3,3));
-		"####" G 0 A_SpawnProjectile("AODEPlasmaBlast", 68, 38, random(-7,7), CMF_AIMOFFSET|CMF_OFFSETPITCH|CMF_BADPITCH, random(-3,3));
-		"####" G 0 A_SpawnProjectile("AODEPlasmaBlast", 68, 38, random(-7,7), CMF_AIMOFFSET|CMF_OFFSETPITCH|CMF_BADPITCH, random(-3,3));
-		"####" G 0 A_SpawnProjectile("AODEPlasmaBlast", 68, 38, random(-7,7), CMF_AIMOFFSET|CMF_OFFSETPITCH|CMF_BADPITCH, random(-3,3));
-		"####" G 3 A_SpawnProjectile("AODEPlasmaBlast", 68, 38, random(-4,4));
+		"####" G 0 A_SpawnProjectile("AODEPlasmaBlast", 68, 38, Random[Boss](-7,7), CMF_AIMOFFSET|CMF_OFFSETPITCH|CMF_BADPITCH, Random[Boss](-3,3));
+		"####" G 0 A_SpawnProjectile("AODEPlasmaBlast", 68, 38, Random[Boss](-7,7), CMF_AIMOFFSET|CMF_OFFSETPITCH|CMF_BADPITCH, Random[Boss](-3,3));
+		"####" G 0 A_SpawnProjectile("AODEPlasmaBlast", 68, 38, Random[Boss](-7,7), CMF_AIMOFFSET|CMF_OFFSETPITCH|CMF_BADPITCH, Random[Boss](-3,3));
+		"####" G 0 A_SpawnProjectile("AODEPlasmaBlast", 68, 38, Random[Boss](-7,7), CMF_AIMOFFSET|CMF_OFFSETPITCH|CMF_BADPITCH, Random[Boss](-3,3));
+		"####" G 0 A_SpawnProjectile("AODEPlasmaBlast", 68, 38, Random[Boss](-7,7), CMF_AIMOFFSET|CMF_OFFSETPITCH|CMF_BADPITCH, Random[Boss](-3,3));
+		"####" G 3 A_SpawnProjectile("AODEPlasmaBlast", 68, 38, Random[Boss](-4,4));
 		"####" EF 4 A_FaceTarget;
-		"####" G 0 A_SpawnProjectile("AODEPlasmaBlast", 68, 38, random(-7,7), CMF_AIMOFFSET|CMF_OFFSETPITCH|CMF_BADPITCH, random(-3,3));
-		"####" G 0 A_SpawnProjectile("AODEPlasmaBlast", 68, 38, random(-7,7), CMF_AIMOFFSET|CMF_OFFSETPITCH|CMF_BADPITCH, random(-3,3));
-		"####" G 0 A_SpawnProjectile("AODEPlasmaBlast", 68, 38, random(-7,7), CMF_AIMOFFSET|CMF_OFFSETPITCH|CMF_BADPITCH, random(-3,3));
-		"####" G 0 A_SpawnProjectile("AODEPlasmaBlast", 68, 38, random(-7,7), CMF_AIMOFFSET|CMF_OFFSETPITCH|CMF_BADPITCH, random(-3,3));
-		"####" G 0 A_SpawnProjectile("AODEPlasmaBlast", 68, 38, random(-7,7), CMF_AIMOFFSET|CMF_OFFSETPITCH|CMF_BADPITCH, random(-3,3));
-		"####" G 3 A_SpawnProjectile("AODEPlasmaBlast", 68, 38, random(-4,4));
+		"####" G 0 A_SpawnProjectile("AODEPlasmaBlast", 68, 38, Random[Boss](-7,7), CMF_AIMOFFSET|CMF_OFFSETPITCH|CMF_BADPITCH, Random[Boss](-3,3));
+		"####" G 0 A_SpawnProjectile("AODEPlasmaBlast", 68, 38, Random[Boss](-7,7), CMF_AIMOFFSET|CMF_OFFSETPITCH|CMF_BADPITCH, Random[Boss](-3,3));
+		"####" G 0 A_SpawnProjectile("AODEPlasmaBlast", 68, 38, Random[Boss](-7,7), CMF_AIMOFFSET|CMF_OFFSETPITCH|CMF_BADPITCH, Random[Boss](-3,3));
+		"####" G 0 A_SpawnProjectile("AODEPlasmaBlast", 68, 38, Random[Boss](-7,7), CMF_AIMOFFSET|CMF_OFFSETPITCH|CMF_BADPITCH, Random[Boss](-3,3));
+		"####" G 0 A_SpawnProjectile("AODEPlasmaBlast", 68, 38, Random[Boss](-7,7), CMF_AIMOFFSET|CMF_OFFSETPITCH|CMF_BADPITCH, Random[Boss](-3,3));
+		"####" G 3 A_SpawnProjectile("AODEPlasmaBlast", 68, 38, Random[Boss](-4,4));
 		"####" E 3 A_FaceTarget;
 		Goto See.Wound;
 	Pain.Wound:
@@ -523,7 +523,7 @@ class SmokeMonster : Base
 	Height 56;
 	Mass 10000000;
 	Speed 4;
-	DamageFunction (random(1,8));
+	DamageFunction (Random[Boss](1,8));
 	PainChance 64; //more chances for teleport himself now, old was 10
 	DamageType "Smoke";
 	DamageFactor "Smoke", 0;
@@ -555,7 +555,7 @@ class SmokeMonster : Base
 	{
 	Spawn:
 		TNT1 A 1 A_LookThroughDisguise;
-		TNT1 AAAAAA 0 { if (!CheckRange(1200, true)) { A_SpawnItemEx("MonsterHole",0,0,8,random(-1,1),random(-1,1),random(-1,1),random(1,360), SXF_SETMASTER); } }
+		TNT1 AAAAAA 0 { if (!CheckRange(1200, true)) { A_SpawnItemEx("MonsterHole",0,0,8, Random[SmokeMonster](-1,1), Random[SmokeMonster](-1,1), Random[SmokeMonster](-1,1), Random[SmokeMonster](1,360), SXF_SETMASTER); } }
 		Loop;
 	See:
 		TNT1 A 0 A_JumpIf(user_saw>=1,"Walk");
@@ -563,159 +563,159 @@ class SmokeMonster : Base
 		TNT1 A 0 { user_saw = 1; }
 	Walk:
 		TNT1 A 1 A_Chase;
-		TNT1 AAAAAA 0 A_SpawnItemEx("MonsterHole",0,0,8,random(-1,1),random(-1,1),random(-1,1),random(1,360), SXF_SETMASTER);
+		TNT1 AAAAAA 0 A_SpawnItemEx("MonsterHole",0,0,8, Random[SmokeMonster](-1,1), Random[SmokeMonster](-1,1), Random[SmokeMonster](-1,1), Random[SmokeMonster](1,360), SXF_SETMASTER);
 		TNT1 A 1;
-		TNT1 AAAAAA 0 A_SpawnItemEx("MonsterHole",0,0,8,random(-1,1),random(-1,1),random(-1,1),random(1,360), SXF_SETMASTER);
+		TNT1 AAAAAA 0 A_SpawnItemEx("MonsterHole",0,0,8, Random[SmokeMonster](-1,1), Random[SmokeMonster](-1,1), Random[SmokeMonster](-1,1), Random[SmokeMonster](1,360), SXF_SETMASTER);
 		Loop;
 	Missile:
 		TNT1 A 0 A_StartSound("Smoke/charge");
 	Melee:
 		TNT1 A 1 A_SkullAttack;
-		TNT1 AAAAAA 0 A_SpawnItemEx("MonsterHole",0,0,8,random(-1,1),random(-1,1),random(-1,1),random(1,360), SXF_SETMASTER);
+		TNT1 AAAAAA 0 A_SpawnItemEx("MonsterHole",0,0,8, Random[SmokeMonster](-1,1), Random[SmokeMonster](-1,1), Random[SmokeMonster](-1,1), Random[SmokeMonster](1,360), SXF_SETMASTER);
 		TNT1 A 1 A_FaceTarget;
-		TNT1 AAAAAA 0 A_SpawnItemEx("MonsterHole",0,0,8,random(-1,1),random(-1,1),random(-1,1),random(1,360), SXF_SETMASTER);
+		TNT1 AAAAAA 0 A_SpawnItemEx("MonsterHole",0,0,8, Random[SmokeMonster](-1,1), Random[SmokeMonster](-1,1), Random[SmokeMonster](-1,1), Random[SmokeMonster](1,360), SXF_SETMASTER);
 		TNT1 A 1 A_FaceTarget;
-		TNT1 AAAAAA 0 A_SpawnItemEx("MonsterHole",0,0,8,random(-1,1),random(-1,1),random(-1,1),random(1,360), SXF_SETMASTER);
+		TNT1 AAAAAA 0 A_SpawnItemEx("MonsterHole",0,0,8, Random[SmokeMonster](-1,1), Random[SmokeMonster](-1,1), Random[SmokeMonster](-1,1), Random[SmokeMonster](1,360), SXF_SETMASTER);
 		TNT1 A 1 A_FaceTarget;
-		TNT1 AAAAAA 0 A_SpawnItemEx("MonsterHole",0,0,8,random(-1,1),random(-1,1),random(-1,1),random(1,360), SXF_SETMASTER);
+		TNT1 AAAAAA 0 A_SpawnItemEx("MonsterHole",0,0,8, Random[SmokeMonster](-1,1), Random[SmokeMonster](-1,1), Random[SmokeMonster](-1,1), Random[SmokeMonster](1,360), SXF_SETMASTER);
 		TNT1 A 1 A_FaceTarget;
-		TNT1 AAAAAA 0 A_SpawnItemEx("MonsterHole",0,0,8,random(-1,1),random(-1,1),random(-1,1),random(1,360), SXF_SETMASTER);
+		TNT1 AAAAAA 0 A_SpawnItemEx("MonsterHole",0,0,8, Random[SmokeMonster](-1,1), Random[SmokeMonster](-1,1), Random[SmokeMonster](-1,1), Random[SmokeMonster](1,360), SXF_SETMASTER);
 		TNT1 A 1 A_FaceTarget;
-		TNT1 AAAAAA 0 A_SpawnItemEx("MonsterHole",0,0,8,random(-1,1),random(-1,1),random(-1,1),random(1,360), SXF_SETMASTER);
+		TNT1 AAAAAA 0 A_SpawnItemEx("MonsterHole",0,0,8, Random[SmokeMonster](-1,1), Random[SmokeMonster](-1,1), Random[SmokeMonster](-1,1), Random[SmokeMonster](1,360), SXF_SETMASTER);
 		TNT1 A 1 A_FaceTarget;
-		TNT1 AAAAAA 0 A_SpawnItemEx("MonsterHole",0,0,8,random(-1,1),random(-1,1),random(-1,1),random(1,360), SXF_SETMASTER);
+		TNT1 AAAAAA 0 A_SpawnItemEx("MonsterHole",0,0,8, Random[SmokeMonster](-1,1), Random[SmokeMonster](-1,1), Random[SmokeMonster](-1,1), Random[SmokeMonster](1,360), SXF_SETMASTER);
 		TNT1 A 1 A_FaceTarget;
-		TNT1 AAAAAA 0 A_SpawnItemEx("MonsterHole",0,0,8,random(-1,1),random(-1,1),random(-1,1),random(1,360), SXF_SETMASTER);
+		TNT1 AAAAAA 0 A_SpawnItemEx("MonsterHole",0,0,8, Random[SmokeMonster](-1,1), Random[SmokeMonster](-1,1), Random[SmokeMonster](-1,1), Random[SmokeMonster](1,360), SXF_SETMASTER);
 		TNT1 A 1 A_FaceTarget;
-		TNT1 AAAAAA 0 A_SpawnItemEx("MonsterHole",0,0,8,random(-1,1),random(-1,1),random(-1,1),random(1,360), SXF_SETMASTER);
+		TNT1 AAAAAA 0 A_SpawnItemEx("MonsterHole",0,0,8, Random[SmokeMonster](-1,1), Random[SmokeMonster](-1,1), Random[SmokeMonster](-1,1), Random[SmokeMonster](1,360), SXF_SETMASTER);
 		TNT1 A 1 A_FaceTarget;
-		TNT1 AAAAAA 0 A_SpawnItemEx("MonsterHole",0,0,8,random(-1,1),random(-1,1),random(-1,1),random(1,360), SXF_SETMASTER);
+		TNT1 AAAAAA 0 A_SpawnItemEx("MonsterHole",0,0,8, Random[SmokeMonster](-1,1), Random[SmokeMonster](-1,1), Random[SmokeMonster](-1,1), Random[SmokeMonster](1,360), SXF_SETMASTER);
 		TNT1 A 0 A_JumpIfTargetInLOS("Melee",75);
 		TNT1 A 0 A_Jump(8,"Walk");
 		TNT1 A 0 A_Stop;
 		Goto See;
 	Pain:
 		TNT1 A 1 A_StartSound("Smoke/pain");
-		TNT1 AAAAAA 0 A_SpawnItemEx("MonsterHole",0,0,8,random(-1,1),random(-1,1),random(-1,1),random(1,360), SXF_SETMASTER);
+		TNT1 AAAAAA 0 A_SpawnItemEx("MonsterHole",0,0,8, Random[SmokeMonster](-1,1), Random[SmokeMonster](-1,1), Random[SmokeMonster](-1,1), Random[SmokeMonster](1,360), SXF_SETMASTER);
 		TNT1 A 1;
-		TNT1 AAAAAA 0 A_SpawnItemEx("MonsterHole",0,0,8,random(-1,1),random(-1,1),random(-1,1),random(1,360), SXF_SETMASTER);
+		TNT1 AAAAAA 0 A_SpawnItemEx("MonsterHole",0,0,8, Random[SmokeMonster](-1,1), Random[SmokeMonster](-1,1), Random[SmokeMonster](-1,1), Random[SmokeMonster](1,360), SXF_SETMASTER);
 		TNT1 A 0 A_Jump(256,"SmokePain1","SmokePain2","SmokePain3");
 	SmokePain1:
 		TNT1 A 1 ThrustThing((int) (Angle*256/360-192), 8, 1, 0);
-		TNT1 AAAAAA 0 A_SpawnItemEx("MonsterHole",0,0,8,random(-1,1),random(-1,1),random(-1,1),random(1,360), SXF_SETMASTER);
+		TNT1 AAAAAA 0 A_SpawnItemEx("MonsterHole",0,0,8, Random[SmokeMonster](-1,1), Random[SmokeMonster](-1,1), Random[SmokeMonster](-1,1), Random[SmokeMonster](1,360), SXF_SETMASTER);
 		TNT1 A 1;
-		TNT1 AAAAAA 0 A_SpawnItemEx("MonsterHole",0,0,8,random(-1,1),random(-1,1),random(-1,1),random(1,360), SXF_SETMASTER);
+		TNT1 AAAAAA 0 A_SpawnItemEx("MonsterHole",0,0,8, Random[SmokeMonster](-1,1), Random[SmokeMonster](-1,1), Random[SmokeMonster](-1,1), Random[SmokeMonster](1,360), SXF_SETMASTER);
 		TNT1 A 1;
-		TNT1 AAAAAA 0 A_SpawnItemEx("MonsterHole",0,0,8,random(-1,1),random(-1,1),random(-1,1),random(1,360), SXF_SETMASTER);
+		TNT1 AAAAAA 0 A_SpawnItemEx("MonsterHole",0,0,8, Random[SmokeMonster](-1,1), Random[SmokeMonster](-1,1), Random[SmokeMonster](-1,1), Random[SmokeMonster](1,360), SXF_SETMASTER);
 		TNT1 A 1;
-		TNT1 AAAAAA 0 A_SpawnItemEx("MonsterHole",0,0,8,random(-1,1),random(-1,1),random(-1,1),random(1,360), SXF_SETMASTER);
+		TNT1 AAAAAA 0 A_SpawnItemEx("MonsterHole",0,0,8, Random[SmokeMonster](-1,1), Random[SmokeMonster](-1,1), Random[SmokeMonster](-1,1), Random[SmokeMonster](1,360), SXF_SETMASTER);
 		TNT1 A 1 ThrustThing((int) (Angle*256/360-192), 8, 1, 0);
-		TNT1 AAAAAA 0 A_SpawnItemEx("MonsterHole",0,0,8,random(-1,1),random(-1,1),random(-1,1),random(1,360), SXF_SETMASTER);
+		TNT1 AAAAAA 0 A_SpawnItemEx("MonsterHole",0,0,8, Random[SmokeMonster](-1,1), Random[SmokeMonster](-1,1), Random[SmokeMonster](-1,1), Random[SmokeMonster](1,360), SXF_SETMASTER);
 		TNT1 A 1;
-		TNT1 AAAAAA 0 A_SpawnItemEx("MonsterHole",0,0,8,random(-1,1),random(-1,1),random(-1,1),random(1,360), SXF_SETMASTER);
+		TNT1 AAAAAA 0 A_SpawnItemEx("MonsterHole",0,0,8, Random[SmokeMonster](-1,1), Random[SmokeMonster](-1,1), Random[SmokeMonster](-1,1), Random[SmokeMonster](1,360), SXF_SETMASTER);
 		TNT1 A 1;
-		TNT1 AAAAAA 0 A_SpawnItemEx("MonsterHole",0,0,8,random(-1,1),random(-1,1),random(-1,1),random(1,360), SXF_SETMASTER);
+		TNT1 AAAAAA 0 A_SpawnItemEx("MonsterHole",0,0,8, Random[SmokeMonster](-1,1), Random[SmokeMonster](-1,1), Random[SmokeMonster](-1,1), Random[SmokeMonster](1,360), SXF_SETMASTER);
 		TNT1 A 1;
-		TNT1 AAAAAA 0 A_SpawnItemEx("MonsterHole",0,0,8,random(-1,1),random(-1,1),random(-1,1),random(1,360), SXF_SETMASTER);
+		TNT1 AAAAAA 0 A_SpawnItemEx("MonsterHole",0,0,8, Random[SmokeMonster](-1,1), Random[SmokeMonster](-1,1), Random[SmokeMonster](-1,1), Random[SmokeMonster](1,360), SXF_SETMASTER);
 		TNT1 A 1 ThrustThing((int) (Angle*256/360-192), 8, 1, 0);
 	PainEnd:
-		TNT1 AAAAAA 0 A_SpawnItemEx("MonsterHole",0,0,8,random(-1,1),random(-1,1),random(-1,1),random(1,360), SXF_SETMASTER);
+		TNT1 AAAAAA 0 A_SpawnItemEx("MonsterHole",0,0,8, Random[SmokeMonster](-1,1), Random[SmokeMonster](-1,1), Random[SmokeMonster](-1,1), Random[SmokeMonster](1,360), SXF_SETMASTER);
 		TNT1 A 1;
-		TNT1 AAAAAA 0 A_SpawnItemEx("MonsterHole",0,0,8,random(-1,1),random(-1,1),random(-1,1),random(1,360), SXF_SETMASTER);
+		TNT1 AAAAAA 0 A_SpawnItemEx("MonsterHole",0,0,8, Random[SmokeMonster](-1,1), Random[SmokeMonster](-1,1), Random[SmokeMonster](-1,1), Random[SmokeMonster](1,360), SXF_SETMASTER);
 		TNT1 A 1 A_Stop;
-		TNT1 AAAAAA 0 A_SpawnItemEx("MonsterHole",0,0,8,random(-1,1),random(-1,1),random(-1,1),random(1,360), SXF_SETMASTER);
+		TNT1 AAAAAA 0 A_SpawnItemEx("MonsterHole",0,0,8, Random[SmokeMonster](-1,1), Random[SmokeMonster](-1,1), Random[SmokeMonster](-1,1), Random[SmokeMonster](1,360), SXF_SETMASTER);
 		Goto See;
 	SmokePain2:
 		TNT1 A 1 ThrustThing((int) (Angle*256/360-64), 8, 1, 0);
-		TNT1 AAAAAA 0 A_SpawnItemEx("MonsterHole",0,0,8,random(-1,1),random(-1,1),random(-1,1),random(1,360), SXF_SETMASTER);
+		TNT1 AAAAAA 0 A_SpawnItemEx("MonsterHole",0,0,8, Random[SmokeMonster](-1,1), Random[SmokeMonster](-1,1), Random[SmokeMonster](-1,1), Random[SmokeMonster](1,360), SXF_SETMASTER);
 		TNT1 A 1;
-		TNT1 AAAAAA 0 A_SpawnItemEx("MonsterHole",0,0,8,random(-1,1),random(-1,1),random(-1,1),random(1,360), SXF_SETMASTER);
+		TNT1 AAAAAA 0 A_SpawnItemEx("MonsterHole",0,0,8, Random[SmokeMonster](-1,1), Random[SmokeMonster](-1,1), Random[SmokeMonster](-1,1), Random[SmokeMonster](1,360), SXF_SETMASTER);
 		TNT1 A 1;
-		TNT1 AAAAAA 0 A_SpawnItemEx("MonsterHole",0,0,8,random(-1,1),random(-1,1),random(-1,1),random(1,360), SXF_SETMASTER);
+		TNT1 AAAAAA 0 A_SpawnItemEx("MonsterHole",0,0,8, Random[SmokeMonster](-1,1), Random[SmokeMonster](-1,1), Random[SmokeMonster](-1,1), Random[SmokeMonster](1,360), SXF_SETMASTER);
 		TNT1 A 1;
-		TNT1 AAAAAA 0 A_SpawnItemEx("MonsterHole",0,0,8,random(-1,1),random(-1,1),random(-1,1),random(1,360), SXF_SETMASTER);
+		TNT1 AAAAAA 0 A_SpawnItemEx("MonsterHole",0,0,8, Random[SmokeMonster](-1,1), Random[SmokeMonster](-1,1), Random[SmokeMonster](-1,1), Random[SmokeMonster](1,360), SXF_SETMASTER);
 		TNT1 A 1 ThrustThing((int) (Angle*256/360-64), 8, 1, 0);
-		TNT1 AAAAAA 0 A_SpawnItemEx("MonsterHole",0,0,8,random(-1,1),random(-1,1),random(-1,1),random(1,360), SXF_SETMASTER);
+		TNT1 AAAAAA 0 A_SpawnItemEx("MonsterHole",0,0,8, Random[SmokeMonster](-1,1), Random[SmokeMonster](-1,1), Random[SmokeMonster](-1,1), Random[SmokeMonster](1,360), SXF_SETMASTER);
 		TNT1 A 1;
-		TNT1 AAAAAA 0 A_SpawnItemEx("MonsterHole",0,0,8,random(-1,1),random(-1,1),random(-1,1),random(1,360), SXF_SETMASTER);
+		TNT1 AAAAAA 0 A_SpawnItemEx("MonsterHole",0,0,8, Random[SmokeMonster](-1,1), Random[SmokeMonster](-1,1), Random[SmokeMonster](-1,1), Random[SmokeMonster](1,360), SXF_SETMASTER);
 		TNT1 A 1;
-		TNT1 AAAAAA 0 A_SpawnItemEx("MonsterHole",0,0,8,random(-1,1),random(-1,1),random(-1,1),random(1,360), SXF_SETMASTER);
+		TNT1 AAAAAA 0 A_SpawnItemEx("MonsterHole",0,0,8, Random[SmokeMonster](-1,1), Random[SmokeMonster](-1,1), Random[SmokeMonster](-1,1), Random[SmokeMonster](1,360), SXF_SETMASTER);
 		TNT1 A 1;
-		TNT1 AAAAAA 0 A_SpawnItemEx("MonsterHole",0,0,8,random(-1,1),random(-1,1),random(-1,1),random(1,360), SXF_SETMASTER);
+		TNT1 AAAAAA 0 A_SpawnItemEx("MonsterHole",0,0,8, Random[SmokeMonster](-1,1), Random[SmokeMonster](-1,1), Random[SmokeMonster](-1,1), Random[SmokeMonster](1,360), SXF_SETMASTER);
 		TNT1 A 1 ThrustThing((int) (Angle*256/360-64), 8, 1, 0);
-		TNT1 AAAAAA 0 A_SpawnItemEx("MonsterHole",0,0,8,random(-1,1),random(-1,1),random(-1,1),random(1,360), SXF_SETMASTER);
+		TNT1 AAAAAA 0 A_SpawnItemEx("MonsterHole",0,0,8, Random[SmokeMonster](-1,1), Random[SmokeMonster](-1,1), Random[SmokeMonster](-1,1), Random[SmokeMonster](1,360), SXF_SETMASTER);
 		TNT1 A 1;
 		Goto PainEnd;
 	SmokePain3:
 		TNT1 A 1;
-		TNT1 AAAAAA 0 A_SpawnItemEx("MonsterHole",0,0,8,random(-8,8),random(-8,8),random(-8,8),random(1,360), SXF_SETMASTER);
+		TNT1 AAAAAA 0 A_SpawnItemEx("MonsterHole",0,0,8, Random[SmokeMonster](-8,8), Random[SmokeMonster](-8,8), Random[SmokeMonster](-8,8), Random[SmokeMonster](1,360), SXF_SETMASTER);
 		TNT1 A 1;
-		TNT1 AAAAAA 0 A_SpawnItemEx("MonsterHole",0,0,8,random(-8,8),random(-8,8),random(-8,8),random(1,360), SXF_SETMASTER);
+		TNT1 AAAAAA 0 A_SpawnItemEx("MonsterHole",0,0,8, Random[SmokeMonster](-8,8), Random[SmokeMonster](-8,8), Random[SmokeMonster](-8,8), Random[SmokeMonster](1,360), SXF_SETMASTER);
 		TNT1 A 1;
-		TNT1 AAAAAA 0 A_SpawnItemEx("MonsterHole",0,0,8,random(-8,8),random(-8,8),random(-8,8),random(1,360), SXF_SETMASTER);
+		TNT1 AAAAAA 0 A_SpawnItemEx("MonsterHole",0,0,8, Random[SmokeMonster](-8,8), Random[SmokeMonster](-8,8), Random[SmokeMonster](-8,8), Random[SmokeMonster](1,360), SXF_SETMASTER);
 		TNT1 A 1;
-		TNT1 AAAAAA 0 A_SpawnItemEx("MonsterHole",0,0,8,random(-8,8),random(-8,8),random(-8,8),random(1,360), SXF_SETMASTER);
+		TNT1 AAAAAA 0 A_SpawnItemEx("MonsterHole",0,0,8, Random[SmokeMonster](-8,8), Random[SmokeMonster](-8,8), Random[SmokeMonster](-8,8), Random[SmokeMonster](1,360), SXF_SETMASTER);
 		TNT1 A 1;
-		TNT1 AAAAAA 0 A_SpawnItemEx("MonsterHole",0,0,8,random(-8,8),random(-8,8),random(-8,8),random(1,360), SXF_SETMASTER);
+		TNT1 AAAAAA 0 A_SpawnItemEx("MonsterHole",0,0,8, Random[SmokeMonster](-8,8), Random[SmokeMonster](-8,8), Random[SmokeMonster](-8,8), Random[SmokeMonster](1,360), SXF_SETMASTER);
 		TNT1 A 1;
-		TNT1 AAAAAA 0 A_SpawnItemEx("MonsterHole",0,0,8,random(-8,8),random(-8,8),random(-8,8),random(1,360), SXF_SETMASTER);
+		TNT1 AAAAAA 0 A_SpawnItemEx("MonsterHole",0,0,8, Random[SmokeMonster](-8,8), Random[SmokeMonster](-8,8), Random[SmokeMonster](-8,8), Random[SmokeMonster](1,360), SXF_SETMASTER);
 		TNT1 A 1;
-		TNT1 AAAAAA 0 A_SpawnItemEx("MonsterHole",0,0,8,random(-8,8),random(-8,8),random(-8,8),random(1,360), SXF_SETMASTER);
+		TNT1 AAAAAA 0 A_SpawnItemEx("MonsterHole",0,0,8, Random[SmokeMonster](-8,8), Random[SmokeMonster](-8,8), Random[SmokeMonster](-8,8), Random[SmokeMonster](1,360), SXF_SETMASTER);
 		TNT1 A 1;
-		TNT1 AAAAAA 0 A_SpawnItemEx("MonsterHole",0,0,8,random(-8,8),random(-8,8),random(-8,8),random(1,360), SXF_SETMASTER);
+		TNT1 AAAAAA 0 A_SpawnItemEx("MonsterHole",0,0,8, Random[SmokeMonster](-8,8), Random[SmokeMonster](-8,8), Random[SmokeMonster](-8,8), Random[SmokeMonster](1,360), SXF_SETMASTER);
 		TNT1 A 1;
 		Goto PainEnd;
 	Death:
 		TNT1 A 1;
 		TNT1 A 0 A_StopSound(CHAN_7);
 		TNT1 A 0 A_Scream;
-		TNT1 AAAAAA 0 A_SpawnItemEx("MonsterHole",0,0,8,random(-2,2),random(-2,2),random(-2,2),random(1,360), SXF_SETMASTER);
+		TNT1 AAAAAA 0 A_SpawnItemEx("MonsterHole",0,0,8, Random[SmokeMonster](-2,2), Random[SmokeMonster](-2,2), Random[SmokeMonster](-2,2), Random[SmokeMonster](1,360), SXF_SETMASTER);
 		TNT1 A 1;
-		TNT1 AAAAAA 0 A_SpawnItemEx("MonsterHole",0,0,8,random(-2,2),random(-2,2),random(-2,2),random(1,360), SXF_SETMASTER);
+		TNT1 AAAAAA 0 A_SpawnItemEx("MonsterHole",0,0,8, Random[SmokeMonster](-2,2), Random[SmokeMonster](-2,2), Random[SmokeMonster](-2,2), Random[SmokeMonster](1,360), SXF_SETMASTER);
 		TNT1 A 1;
-		TNT1 AAAAAA 0 A_SpawnItemEx("MonsterHole",0,0,8,random(-2,2),random(-2,2),random(-2,2),random(1,360), SXF_SETMASTER);
+		TNT1 AAAAAA 0 A_SpawnItemEx("MonsterHole",0,0,8, Random[SmokeMonster](-2,2), Random[SmokeMonster](-2,2), Random[SmokeMonster](-2,2), Random[SmokeMonster](1,360), SXF_SETMASTER);
 		TNT1 A 1;
-		TNT1 AAAAAA 0 A_SpawnItemEx("MonsterHole",0,0,8,random(-2,2),random(-2,2),random(-2,2),random(1,360), SXF_SETMASTER);
+		TNT1 AAAAAA 0 A_SpawnItemEx("MonsterHole",0,0,8, Random[SmokeMonster](-2,2), Random[SmokeMonster](-2,2), Random[SmokeMonster](-2,2), Random[SmokeMonster](1,360), SXF_SETMASTER);
 		TNT1 A 1;
-		TNT1 AAAAAA 0 A_SpawnItemEx("MonsterHole",0,0,8,random(-2,2),random(-2,2),random(-2,2),random(1,360), SXF_SETMASTER);
+		TNT1 AAAAAA 0 A_SpawnItemEx("MonsterHole",0,0,8, Random[SmokeMonster](-2,2), Random[SmokeMonster](-2,2), Random[SmokeMonster](-2,2), Random[SmokeMonster](1,360), SXF_SETMASTER);
 		TNT1 A 1;
-		TNT1 AAAAA 0 A_SpawnItemEx("MonsterHole",0,0,8,random(-3,3),random(-3,3),random(-3,3),random(1,360), SXF_SETMASTER);
+		TNT1 AAAAA 0 A_SpawnItemEx("MonsterHole",0,0,8, Random[SmokeMonster](-3,3), Random[SmokeMonster](-3,3), Random[SmokeMonster](-3,3), Random[SmokeMonster](1,360), SXF_SETMASTER);
 		TNT1 A 1;
-		TNT1 AAAAA 0 A_SpawnItemEx("MonsterHole",0,0,8,random(-3,3),random(-3,3),random(-3,3),random(1,360), SXF_SETMASTER);
+		TNT1 AAAAA 0 A_SpawnItemEx("MonsterHole",0,0,8, Random[SmokeMonster](-3,3), Random[SmokeMonster](-3,3), Random[SmokeMonster](-3,3), Random[SmokeMonster](1,360), SXF_SETMASTER);
 		TNT1 A 1;
-		TNT1 AAAAA 0 A_SpawnItemEx("MonsterHole",0,0,8,random(-3,3),random(-3,3),random(-3,3),random(1,360), SXF_SETMASTER);
+		TNT1 AAAAA 0 A_SpawnItemEx("MonsterHole",0,0,8, Random[SmokeMonster](-3,3), Random[SmokeMonster](-3,3), Random[SmokeMonster](-3,3), Random[SmokeMonster](1,360), SXF_SETMASTER);
 		TNT1 A 1;
-		TNT1 AAAAA 0 A_SpawnItemEx("MonsterHole",0,0,8,random(-3,3),random(-3,3),random(-3,3),random(1,360), SXF_SETMASTER);
+		TNT1 AAAAA 0 A_SpawnItemEx("MonsterHole",0,0,8, Random[SmokeMonster](-3,3), Random[SmokeMonster](-3,3), Random[SmokeMonster](-3,3), Random[SmokeMonster](1,360), SXF_SETMASTER);
 		TNT1 A 1;
-		TNT1 AAAAA 0 A_SpawnItemEx("MonsterHole",0,0,8,random(-3,3),random(-3,3),random(-3,3),random(1,360), SXF_SETMASTER);
+		TNT1 AAAAA 0 A_SpawnItemEx("MonsterHole",0,0,8, Random[SmokeMonster](-3,3), Random[SmokeMonster](-3,3), Random[SmokeMonster](-3,3), Random[SmokeMonster](1,360), SXF_SETMASTER);
 		TNT1 A 1;
-		TNT1 AAAA 0 A_SpawnItemEx("MonsterHole",0,0,8,random(-4,4),random(-4,4),random(-4,4),random(1,360), SXF_SETMASTER);
+		TNT1 AAAA 0 A_SpawnItemEx("MonsterHole",0,0,8, Random[SmokeMonster](-4,4), Random[SmokeMonster](-4,4), Random[SmokeMonster](-4,4), Random[SmokeMonster](1,360), SXF_SETMASTER);
 		TNT1 A 1;
-		TNT1 AAAA 0 A_SpawnItemEx("MonsterHole",0,0,8,random(-4,4),random(-4,4),random(-4,4),random(1,360), SXF_SETMASTER);
+		TNT1 AAAA 0 A_SpawnItemEx("MonsterHole",0,0,8, Random[SmokeMonster](-4,4), Random[SmokeMonster](-4,4), Random[SmokeMonster](-4,4), Random[SmokeMonster](1,360), SXF_SETMASTER);
 		TNT1 A 1;
-		TNT1 AAAA 0 A_SpawnItemEx("MonsterHole",0,0,8,random(-4,4),random(-4,4),random(-4,4),random(1,360), SXF_SETMASTER);
+		TNT1 AAAA 0 A_SpawnItemEx("MonsterHole",0,0,8, Random[SmokeMonster](-4,4), Random[SmokeMonster](-4,4), Random[SmokeMonster](-4,4), Random[SmokeMonster](1,360), SXF_SETMASTER);
 		TNT1 A 1;
-		TNT1 AAAA 0 A_SpawnItemEx("MonsterHole",0,0,8,random(-4,4),random(-4,4),random(-4,4),random(1,360), SXF_SETMASTER);
+		TNT1 AAAA 0 A_SpawnItemEx("MonsterHole",0,0,8, Random[SmokeMonster](-4,4), Random[SmokeMonster](-4,4), Random[SmokeMonster](-4,4), Random[SmokeMonster](1,360), SXF_SETMASTER);
 		TNT1 A 1;
-		TNT1 AAAA 0 A_SpawnItemEx("MonsterHole",0,0,8,random(-4,4),random(-4,4),random(-4,4),random(1,360), SXF_SETMASTER);
+		TNT1 AAAA 0 A_SpawnItemEx("MonsterHole",0,0,8, Random[SmokeMonster](-4,4), Random[SmokeMonster](-4,4), Random[SmokeMonster](-4,4), Random[SmokeMonster](1,360), SXF_SETMASTER);
 		TNT1 A 1;
-		TNT1 AAA 0 A_SpawnItemEx("MonsterHole",0,0,8,random(-5,5),random(-5,5),random(-5,5),random(1,360), SXF_SETMASTER);
+		TNT1 AAA 0 A_SpawnItemEx("MonsterHole",0,0,8, Random[SmokeMonster](-5,5), Random[SmokeMonster](-5,5), Random[SmokeMonster](-5,5), Random[SmokeMonster](1,360), SXF_SETMASTER);
 		TNT1 A 1;
-		TNT1 AAA 0 A_SpawnItemEx("MonsterHole",0,0,8,random(-5,5),random(-5,5),random(-5,5),random(1,360), SXF_SETMASTER);
+		TNT1 AAA 0 A_SpawnItemEx("MonsterHole",0,0,8, Random[SmokeMonster](-5,5), Random[SmokeMonster](-5,5), Random[SmokeMonster](-5,5), Random[SmokeMonster](1,360), SXF_SETMASTER);
 		TNT1 A 1;
-		TNT1 AAA 0 A_SpawnItemEx("MonsterHole",0,0,8,random(-5,5),random(-5,5),random(-5,5),random(1,360), SXF_SETMASTER);
+		TNT1 AAA 0 A_SpawnItemEx("MonsterHole",0,0,8, Random[SmokeMonster](-5,5), Random[SmokeMonster](-5,5), Random[SmokeMonster](-5,5), Random[SmokeMonster](1,360), SXF_SETMASTER);
 		TNT1 A 1;
-		TNT1 AAA 0 A_SpawnItemEx("MonsterHole",0,0,8,random(-5,5),random(-5,5),random(-5,5),random(1,360), SXF_SETMASTER);
+		TNT1 AAA 0 A_SpawnItemEx("MonsterHole",0,0,8, Random[SmokeMonster](-5,5), Random[SmokeMonster](-5,5), Random[SmokeMonster](-5,5), Random[SmokeMonster](1,360), SXF_SETMASTER);
 		TNT1 A 1;
-		TNT1 AA 0 A_SpawnItemEx("MonsterHole",0,0,8,random(-6,6),random(-6,6),random(-6,6),random(1,360), SXF_SETMASTER);
+		TNT1 AA 0 A_SpawnItemEx("MonsterHole",0,0,8, Random[SmokeMonster](-6,6), Random[SmokeMonster](-6,6), Random[SmokeMonster](-6,6), Random[SmokeMonster](1,360), SXF_SETMASTER);
 		TNT1 A 1;
-		TNT1 AA 0 A_SpawnItemEx("MonsterHole",0,0,8,random(-6,6),random(-6,6),random(-6,6),random(1,360), SXF_SETMASTER);
+		TNT1 AA 0 A_SpawnItemEx("MonsterHole",0,0,8, Random[SmokeMonster](-6,6), Random[SmokeMonster](-6,6), Random[SmokeMonster](-6,6), Random[SmokeMonster](1,360), SXF_SETMASTER);
 		TNT1 A 1;
-		TNT1 AA 0 A_SpawnItemEx("MonsterHole",0,0,8,random(-6,6),random(-6,6),random(-6,6),random(1,360), SXF_SETMASTER);
+		TNT1 AA 0 A_SpawnItemEx("MonsterHole",0,0,8, Random[SmokeMonster](-6,6), Random[SmokeMonster](-6,6), Random[SmokeMonster](-6,6), Random[SmokeMonster](1,360), SXF_SETMASTER);
 		TNT1 A 1;
-		TNT1 AA 0 A_SpawnItemEx("MonsterHole",0,0,8,random(-6,6),random(-6,6),random(-6,6),random(1,360), SXF_SETMASTER);
-		TNT1 AAA 1 A_SpawnItemEx("MonsterHole",0,0,8,random(-7,7),random(-7,7),random(-7,7),random(1,360), SXF_SETMASTER);
-		TNT1 AA 1 A_SpawnItemEx("MonsterHole",0,0,8,random(-8,8),random(-8,8),random(-8,8),random(1,360), SXF_SETMASTER);
+		TNT1 AA 0 A_SpawnItemEx("MonsterHole",0,0,8, Random[SmokeMonster](-6,6), Random[SmokeMonster](-6,6), Random[SmokeMonster](-6,6), Random[SmokeMonster](1,360), SXF_SETMASTER);
+		TNT1 AAA 1 A_SpawnItemEx("MonsterHole",0,0,8, Random[SmokeMonster](-7,7), Random[SmokeMonster](-7,7), Random[SmokeMonster](-7,7), Random[SmokeMonster](1,360), SXF_SETMASTER);
+		TNT1 AA 1 A_SpawnItemEx("MonsterHole",0,0,8, Random[SmokeMonster](-8,8), Random[SmokeMonster](-8,8), Random[SmokeMonster](-8,8), Random[SmokeMonster](1,360), SXF_SETMASTER);
 		Dead:
 		TNT1 A 0 { user_saw = 0; }
 		TNT1 A 0 A_UnSetSolid;
@@ -724,34 +724,34 @@ class SmokeMonster : Base
 	Teleport:
 		TNT1 A 0 A_SetReflective;
 		TNT1 A 1;
-		TNT1 AAAAAA 0 A_SpawnItemEx("MonsterHole",0,0,8,random(-2,2),random(-2,2),random(-2,2),random(1,360), SXF_SETMASTER);
+		TNT1 AAAAAA 0 A_SpawnItemEx("MonsterHole",0,0,8, Random[SmokeMonster](-2,2), Random[SmokeMonster](-2,2), Random[SmokeMonster](-2,2), Random[SmokeMonster](1,360), SXF_SETMASTER);
 		TNT1 A 1;
-		TNT1 AAAAA 0 A_SpawnItemEx("MonsterHole",0,0,8,random(-2,2),random(-2,2),random(-2,2),random(1,360), SXF_SETMASTER);
+		TNT1 AAAAA 0 A_SpawnItemEx("MonsterHole",0,0,8, Random[SmokeMonster](-2,2), Random[SmokeMonster](-2,2), Random[SmokeMonster](-2,2), Random[SmokeMonster](1,360), SXF_SETMASTER);
 		TNT1 A 1;
-		TNT1 AAAA 0 A_SpawnItemEx("MonsterHole",0,0,8,random(-2,2),random(-2,2),random(-2,2),random(1,360), SXF_SETMASTER);
+		TNT1 AAAA 0 A_SpawnItemEx("MonsterHole",0,0,8, Random[SmokeMonster](-2,2), Random[SmokeMonster](-2,2), Random[SmokeMonster](-2,2), Random[SmokeMonster](1,360), SXF_SETMASTER);
 		TNT1 A 1;
-		TNT1 AAA 0 A_SpawnItemEx("MonsterHole",0,0,8,random(-2,2),random(-2,2),random(-2,2),random(1,360), SXF_SETMASTER);
+		TNT1 AAA 0 A_SpawnItemEx("MonsterHole",0,0,8, Random[SmokeMonster](-2,2), Random[SmokeMonster](-2,2), Random[SmokeMonster](-2,2), Random[SmokeMonster](1,360), SXF_SETMASTER);
 		TNT1 A 1;
-		TNT1 AA 0 A_SpawnItemEx("MonsterHole",0,0,8,random(-2,2),random(-2,2),random(-2,2),random(1,360), SXF_SETMASTER);
+		TNT1 AA 0 A_SpawnItemEx("MonsterHole",0,0,8, Random[SmokeMonster](-2,2), Random[SmokeMonster](-2,2), Random[SmokeMonster](-2,2), Random[SmokeMonster](1,360), SXF_SETMASTER);
 		TNT1 A 1;
-		TNT1 A 0 A_SpawnItemEx("MonsterHole",0,0,8,random(-2,2),random(-2,2),random(-2,2),random(1,360), SXF_SETMASTER);
+		TNT1 A 0 A_SpawnItemEx("MonsterHole",0,0,8, Random[SmokeMonster](-2,2), Random[SmokeMonster](-2,2), Random[SmokeMonster](-2,2), Random[SmokeMonster](1,360), SXF_SETMASTER);
 		TNT1 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 0 A_Chase(null,null,CHF_NIGHTMAREFAST);
 		TNT1 A 0 A_Jump(128,50);
 		TNT1 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 0 A_Chase(null,null,CHF_NIGHTMAREFAST);
 		TNT1 A 0 A_Jump(128,50);
 		TNT1 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 0 A_Chase(null,null,CHF_NIGHTMAREFAST);
 		TNT1 A 1;
-		TNT1 A 0 A_SpawnItemEx("MonsterHole",0,0,8,random(-2,2),random(-2,2),random(-2,2),random(1,360), SXF_SETMASTER);
+		TNT1 A 0 A_SpawnItemEx("MonsterHole",0,0,8, Random[SmokeMonster](-2,2), Random[SmokeMonster](-2,2), Random[SmokeMonster](-2,2), Random[SmokeMonster](1,360), SXF_SETMASTER);
 		TNT1 A 1;
-		TNT1 AA 0 A_SpawnItemEx("MonsterHole",0,0,8,random(-2,2),random(-2,2),random(-2,2),random(1,360), SXF_SETMASTER);
+		TNT1 AA 0 A_SpawnItemEx("MonsterHole",0,0,8, Random[SmokeMonster](-2,2), Random[SmokeMonster](-2,2), Random[SmokeMonster](-2,2), Random[SmokeMonster](1,360), SXF_SETMASTER);
 		TNT1 A 1;
-		TNT1 AAA 0 A_SpawnItemEx("MonsterHole",0,0,8,random(-2,2),random(-2,2),random(-2,2),random(1,360), SXF_SETMASTER);
+		TNT1 AAA 0 A_SpawnItemEx("MonsterHole",0,0,8, Random[SmokeMonster](-2,2), Random[SmokeMonster](-2,2), Random[SmokeMonster](-2,2), Random[SmokeMonster](1,360), SXF_SETMASTER);
 		TNT1 A 1;
-		TNT1 AAAA 0 A_SpawnItemEx("MonsterHole",0,0,8,random(-2,2),random(-2,2),random(-2,2),random(1,360), SXF_SETMASTER);
+		TNT1 AAAA 0 A_SpawnItemEx("MonsterHole",0,0,8, Random[SmokeMonster](-2,2), Random[SmokeMonster](-2,2), Random[SmokeMonster](-2,2), Random[SmokeMonster](1,360), SXF_SETMASTER);
 		TNT1 A 1;
-		TNT1 AAAAA 0 A_SpawnItemEx("MonsterHole",0,0,8,random(-2,2),random(-2,2),random(-2,2),random(1,360), SXF_SETMASTER);
+		TNT1 AAAAA 0 A_SpawnItemEx("MonsterHole",0,0,8, Random[SmokeMonster](-2,2), Random[SmokeMonster](-2,2), Random[SmokeMonster](-2,2), Random[SmokeMonster](1,360), SXF_SETMASTER);
 		TNT1 A 1;
-		TNT1 AAAAAA 0 A_SpawnItemEx("MonsterHole",0,0,8,random(-2,2),random(-2,2),random(-2,2),random(1,360), SXF_SETMASTER);
+		TNT1 AAAAAA 0 A_SpawnItemEx("MonsterHole",0,0,8, Random[SmokeMonster](-2,2), Random[SmokeMonster](-2,2), Random[SmokeMonster](-2,2), Random[SmokeMonster](1,360), SXF_SETMASTER);
 		TNT1 A 0 A_UnSetReflective;
 		Goto See;
 	}
@@ -760,7 +760,7 @@ class SmokeMonster : Base
 class ZyklonMonsterBall : ZyklonBBall {
 	Default
 	{
-		DamageFunction (5 * random(1,8));
+		DamageFunction (5 * Random[Boss](1,8));
 	}
 }
 
@@ -777,7 +777,7 @@ class ZyklonMonster : Nazi
 	WoundHealth 2500;
 	Height 56;
 	Mass 10000000;
-	DamageFunction (random(1,8));
+	DamageFunction (Random[Boss](1,8));
 	Speed 6;
 	+ALLOWPAIN
 	+BOSS
@@ -827,7 +827,7 @@ class ZyklonMonster : Nazi
 	{
 	Spawn:
 		TNT1 A 1 A_LookThroughDisguise;
-		TNT1 AAAAAA 0 { if (!CheckRange(1200, true)) { A_SpawnItemEx("MonsterHole2",0,0,8,random(-1,1),random(-1,1),random(-1,1),random(1,360), SXF_SETMASTER); } }
+		TNT1 AAAAAA 0 { if (!CheckRange(1200, true)) { A_SpawnItemEx("MonsterHole2",0,0,8, Random[ZyklonMonster](-1,1), Random[ZyklonMonster](-1,1), Random[ZyklonMonster](-1,1), Random[ZyklonMonster](1,360), SXF_SETMASTER); } }
 		Loop;
 	See:
 		TNT1 A 0 A_JumpIf(user_saw>=1,"Walk");
@@ -835,121 +835,121 @@ class ZyklonMonster : Nazi
 		TNT1 A 0 { user_saw = 1; }
 	Walk:
 		TNT1 A 1 A_Chase;
-		TNT1 AAAAAA 0 A_SpawnItemEx("MonsterHole2",0,0,8,random(-1,1),random(-1,1),random(-1,1),random(1,360), SXF_SETMASTER);
+		TNT1 AAAAAA 0 A_SpawnItemEx("MonsterHole2",0,0,8, Random[ZyklonMonster](-1,1), Random[ZyklonMonster](-1,1), Random[ZyklonMonster](-1,1), Random[ZyklonMonster](1,360), SXF_SETMASTER);
 		TNT1 A 1 A_Chase;
-		TNT1 AAAAAA 0 A_SpawnItemEx("MonsterHole2",0,0,8,random(-1,1),random(-1,1),random(-1,1),random(1,360), SXF_SETMASTER);
+		TNT1 AAAAAA 0 A_SpawnItemEx("MonsterHole2",0,0,8, Random[ZyklonMonster](-1,1), Random[ZyklonMonster](-1,1), Random[ZyklonMonster](-1,1), Random[ZyklonMonster](1,360), SXF_SETMASTER);
 		Loop;
 	Missile:
 		TNT1 A 0 A_StartSound("Smoke/charge");
 		TNT1 A 0 A_Jump(96,"Missile.Monsters");
-		TNT1 A 1 { A_SpawnAtGoal("CreepyRaise", 0, 0, 0, 0, 0, 0, 0); A_SpawnProjectile("ZyklonMonsterBall",-16,16,-16,16,random(-16,16)); }
-		TNT1 AAAAAA 0 A_SpawnItemEx("MonsterHole2",0,0,8,random(-1,1),random(-1,1),random(-1,1),random(1,360), SXF_SETMASTER);
-		TNT1 A 1 { A_SpawnAtGoal("CreepyRaise", 0, 0, 0, 0, 0, 0, 0); A_SpawnProjectile("ZyklonMonsterBall",-16,16,-16,16,random(-16,16)); }
-		TNT1 AAA 0 A_SpawnItemEx("MonsterHole2",0,0,8,random(-1,1),random(-1,1),random(-1,1),random(1,360), SXF_SETMASTER);
-		TNT1 A 1 { A_SpawnAtGoal("CreepyRaise", 0, 0, 0, 0, 0, 0, 0); A_SpawnProjectile("ZyklonMonsterBall",-16,16,-16,16,random(-16,16)); }
-		TNT1 AAAAAA 0 A_SpawnItemEx("MonsterHole2",0,0,8,random(-1,1),random(-1,1),random(-1,1),random(1,360), SXF_SETMASTER);
-		TNT1 A 1 { A_SpawnAtGoal("CreepyRaise", 0, 0, 0, 0, 0, 0, 0); A_SpawnProjectile("ZyklonMonsterBall",-16,16,-16,16,random(-16,16)); }
+		TNT1 A 1 { A_SpawnAtGoal("CreepyRaise", 0, 0, 0, 0, 0, 0, 0); A_SpawnProjectile("ZyklonMonsterBall",-16,16,-16,16, Random[ZyklonMonster](-16,16)); }
+		TNT1 AAAAAA 0 A_SpawnItemEx("MonsterHole2",0,0,8, Random[ZyklonMonster](-1,1), Random[ZyklonMonster](-1,1), Random[ZyklonMonster](-1,1), Random[ZyklonMonster](1,360), SXF_SETMASTER);
+		TNT1 A 1 { A_SpawnAtGoal("CreepyRaise", 0, 0, 0, 0, 0, 0, 0); A_SpawnProjectile("ZyklonMonsterBall",-16,16,-16,16, Random[ZyklonMonster](-16,16)); }
+		TNT1 AAA 0 A_SpawnItemEx("MonsterHole2",0,0,8, Random[ZyklonMonster](-1,1), Random[ZyklonMonster](-1,1), Random[ZyklonMonster](-1,1), Random[ZyklonMonster](1,360), SXF_SETMASTER);
+		TNT1 A 1 { A_SpawnAtGoal("CreepyRaise", 0, 0, 0, 0, 0, 0, 0); A_SpawnProjectile("ZyklonMonsterBall",-16,16,-16,16, Random[ZyklonMonster](-16,16)); }
+		TNT1 AAAAAA 0 A_SpawnItemEx("MonsterHole2",0,0,8, Random[ZyklonMonster](-1,1), Random[ZyklonMonster](-1,1), Random[ZyklonMonster](-1,1), Random[ZyklonMonster](1,360), SXF_SETMASTER);
+		TNT1 A 1 { A_SpawnAtGoal("CreepyRaise", 0, 0, 0, 0, 0, 0, 0); A_SpawnProjectile("ZyklonMonsterBall",-16,16,-16,16, Random[ZyklonMonster](-16,16)); }
 		Goto See;
 	Missile.Monsters:
 		TNT1 A 0 A_Jump(256,1,2);
-		TNT1 A 1 { A_SpawnAtGoal("CreepyRaise", 0, 0, 0, 0, 0, 0, 0); A_PainAttack("ZyklonSkull",random(0,360),PAF_NOSKULLATTACK | PAF_NOTARGET,3); }
-		TNT1 A 1 { A_SpawnAtGoal("CreepyRaise", 0, 0, 0, 0, 0, 0, 0); A_PainAttack("ZBatFamiliar",random(0,360),PAF_NOSKULLATTACK | PAF_NOTARGET,3); }
+		TNT1 A 1 { A_SpawnAtGoal("CreepyRaise", 0, 0, 0, 0, 0, 0, 0); A_PainAttack("ZyklonSkull", Random[ZyklonMonster](0,360),PAF_NOSKULLATTACK | PAF_NOTARGET,3); }
+		TNT1 A 1 { A_SpawnAtGoal("CreepyRaise", 0, 0, 0, 0, 0, 0, 0); A_PainAttack("ZBatFamiliar", Random[ZyklonMonster](0,360),PAF_NOSKULLATTACK | PAF_NOTARGET,3); }
 		Goto See;
 	Melee:
 		TNT1 A 0 A_StartSound("Smoke/charge");
 		TNT1 A 1 A_SkullAttack;
-		TNT1 AAA 0 A_SpawnItemEx("MonsterHole2",0,0,8,random(-1,1),random(-1,1),random(-1,1),random(1,360), SXF_SETMASTER);
+		TNT1 AAA 0 A_SpawnItemEx("MonsterHole2",0,0,8, Random[ZyklonMonster](-1,1), Random[ZyklonMonster](-1,1), Random[ZyklonMonster](-1,1), Random[ZyklonMonster](1,360), SXF_SETMASTER);
 		TNT1 A 1 A_FaceTarget;
-		TNT1 AAAAAA 0 A_SpawnItemEx("MonsterHole2",0,0,8,random(-1,1),random(-1,1),random(-1,1),random(1,360), SXF_SETMASTER);
+		TNT1 AAAAAA 0 A_SpawnItemEx("MonsterHole2",0,0,8, Random[ZyklonMonster](-1,1), Random[ZyklonMonster](-1,1), Random[ZyklonMonster](-1,1), Random[ZyklonMonster](1,360), SXF_SETMASTER);
 		TNT1 A 1 A_FaceTarget;
-		TNT1 AAAAAA 0 A_SpawnItemEx("MonsterHole2",0,0,8,random(-1,1),random(-1,1),random(-1,1),random(1,360), SXF_SETMASTER);
+		TNT1 AAAAAA 0 A_SpawnItemEx("MonsterHole2",0,0,8, Random[ZyklonMonster](-1,1), Random[ZyklonMonster](-1,1), Random[ZyklonMonster](-1,1), Random[ZyklonMonster](1,360), SXF_SETMASTER);
 		TNT1 A 1 A_FaceTarget;
-		TNT1 AAAAAA 0 A_SpawnItemEx("MonsterHole2",0,0,8,random(-1,1),random(-1,1),random(-1,1),random(1,360), SXF_SETMASTER);
+		TNT1 AAAAAA 0 A_SpawnItemEx("MonsterHole2",0,0,8, Random[ZyklonMonster](-1,1), Random[ZyklonMonster](-1,1), Random[ZyklonMonster](-1,1), Random[ZyklonMonster](1,360), SXF_SETMASTER);
 		TNT1 A 1 A_FaceTarget;
-		TNT1 AAAAAA 0 A_SpawnItemEx("MonsterHole2",0,0,8,random(-1,1),random(-1,1),random(-1,1),random(1,360), SXF_SETMASTER);
+		TNT1 AAAAAA 0 A_SpawnItemEx("MonsterHole2",0,0,8, Random[ZyklonMonster](-1,1), Random[ZyklonMonster](-1,1), Random[ZyklonMonster](-1,1), Random[ZyklonMonster](1,360), SXF_SETMASTER);
 		TNT1 A 1 A_FaceTarget;
-		TNT1 AAA 0 A_SpawnItemEx("MonsterHole2",0,0,8,random(-1,1),random(-1,1),random(-1,1),random(1,360), SXF_SETMASTER);
+		TNT1 AAA 0 A_SpawnItemEx("MonsterHole2",0,0,8, Random[ZyklonMonster](-1,1), Random[ZyklonMonster](-1,1), Random[ZyklonMonster](-1,1), Random[ZyklonMonster](1,360), SXF_SETMASTER);
 		TNT1 A 1 A_FaceTarget;
-		TNT1 AAAAAA 0 A_SpawnItemEx("MonsterHole2",0,0,8,random(-1,1),random(-1,1),random(-1,1),random(1,360), SXF_SETMASTER);
+		TNT1 AAAAAA 0 A_SpawnItemEx("MonsterHole2",0,0,8, Random[ZyklonMonster](-1,1), Random[ZyklonMonster](-1,1), Random[ZyklonMonster](-1,1), Random[ZyklonMonster](1,360), SXF_SETMASTER);
 		TNT1 A 1 A_FaceTarget;
-		TNT1 AAAAAA 0 A_SpawnItemEx("MonsterHole2",0,0,8,random(-1,1),random(-1,1),random(-1,1),random(1,360), SXF_SETMASTER);
+		TNT1 AAAAAA 0 A_SpawnItemEx("MonsterHole2",0,0,8, Random[ZyklonMonster](-1,1), Random[ZyklonMonster](-1,1), Random[ZyklonMonster](-1,1), Random[ZyklonMonster](1,360), SXF_SETMASTER);
 		TNT1 A 1 A_FaceTarget;
-		TNT1 AAAAAA 0 A_SpawnItemEx("MonsterHole2",0,0,8,random(-1,1),random(-1,1),random(-1,1),random(1,360), SXF_SETMASTER);
+		TNT1 AAAAAA 0 A_SpawnItemEx("MonsterHole2",0,0,8, Random[ZyklonMonster](-1,1), Random[ZyklonMonster](-1,1), Random[ZyklonMonster](-1,1), Random[ZyklonMonster](1,360), SXF_SETMASTER);
 		TNT1 A 1 A_FaceTarget;
-		TNT1 AAAAAA 0 A_SpawnItemEx("MonsterHole2",0,0,8,random(-1,1),random(-1,1),random(-1,1),random(1,360), SXF_SETMASTER);
+		TNT1 AAAAAA 0 A_SpawnItemEx("MonsterHole2",0,0,8, Random[ZyklonMonster](-1,1), Random[ZyklonMonster](-1,1), Random[ZyklonMonster](-1,1), Random[ZyklonMonster](1,360), SXF_SETMASTER);
 		TNT1 A 0 A_JumpIfTargetInLOS("Melee",75);
 		TNT1 A 0 A_Jump(8,"Walk");
 		TNT1 A 0 A_Stop;
 		Goto See;
 	Pain:
 		TNT1 A 1 A_StartSound("Smoke/pain");
-		TNT1 AAAAAA 0 A_SpawnItemEx("MonsterHole2",0,0,8,random(-1,1),random(-1,1),random(-1,1),random(1,360), SXF_SETMASTER);
+		TNT1 AAAAAA 0 A_SpawnItemEx("MonsterHole2",0,0,8, Random[ZyklonMonster](-1,1), Random[ZyklonMonster](-1,1), Random[ZyklonMonster](-1,1), Random[ZyklonMonster](1,360), SXF_SETMASTER);
 		TNT1 A 1 ;
-		TNT1 AAA 0 A_SpawnItemEx("MonsterHole2",0,0,8,random(-1,1),random(-1,1),random(-1,1),random(1,360), SXF_SETMASTER);
+		TNT1 AAA 0 A_SpawnItemEx("MonsterHole2",0,0,8, Random[ZyklonMonster](-1,1), Random[ZyklonMonster](-1,1), Random[ZyklonMonster](-1,1), Random[ZyklonMonster](1,360), SXF_SETMASTER);
 		TNT1 A 0 A_Jump(256,"SmokePain1","SmokePain2","SmokePain3");
 	SmokePain1:
 		TNT1 A 1 ThrustThing((int) (Angle*256/360-192), 8, 1, 0);
-		TNT1 AAAAAA 0 A_SpawnItemEx("MonsterHole2",0,0,8,random(-1,1),random(-1,1),random(-1,1),random(1,360), SXF_SETMASTER);
+		TNT1 AAAAAA 0 A_SpawnItemEx("MonsterHole2",0,0,8, Random[ZyklonMonster](-1,1), Random[ZyklonMonster](-1,1), Random[ZyklonMonster](-1,1), Random[ZyklonMonster](1,360), SXF_SETMASTER);
 		TNT1 A 1;
-		TNT1 AAAAAA 0 A_SpawnItemEx("MonsterHole2",0,0,8,random(-1,1),random(-1,1),random(-1,1),random(1,360), SXF_SETMASTER);
+		TNT1 AAAAAA 0 A_SpawnItemEx("MonsterHole2",0,0,8, Random[ZyklonMonster](-1,1), Random[ZyklonMonster](-1,1), Random[ZyklonMonster](-1,1), Random[ZyklonMonster](1,360), SXF_SETMASTER);
 		TNT1 A 1;
-		TNT1 AAA 0 A_SpawnItemEx("MonsterHole2",0,0,8,random(-1,1),random(-1,1),random(-1,1),random(1,360), SXF_SETMASTER);
+		TNT1 AAA 0 A_SpawnItemEx("MonsterHole2",0,0,8, Random[ZyklonMonster](-1,1), Random[ZyklonMonster](-1,1), Random[ZyklonMonster](-1,1), Random[ZyklonMonster](1,360), SXF_SETMASTER);
 		TNT1 A 1;
-		TNT1 AAAAAA 0 A_SpawnItemEx("MonsterHole2",0,0,8,random(-1,1),random(-1,1),random(-1,1),random(1,360), SXF_SETMASTER);
+		TNT1 AAAAAA 0 A_SpawnItemEx("MonsterHole2",0,0,8, Random[ZyklonMonster](-1,1), Random[ZyklonMonster](-1,1), Random[ZyklonMonster](-1,1), Random[ZyklonMonster](1,360), SXF_SETMASTER);
 		TNT1 A 1 ThrustThing((int) (Angle*256/360-192), 8, 1, 0);
-		TNT1 AAAAAA 0 A_SpawnItemEx("MonsterHole2",0,0,8,random(-1,1),random(-1,1),random(-1,1),random(1,360), SXF_SETMASTER);
+		TNT1 AAAAAA 0 A_SpawnItemEx("MonsterHole2",0,0,8, Random[ZyklonMonster](-1,1), Random[ZyklonMonster](-1,1), Random[ZyklonMonster](-1,1), Random[ZyklonMonster](1,360), SXF_SETMASTER);
 		TNT1 A 1;
-		TNT1 AAA 0 A_SpawnItemEx("MonsterHole2",0,0,8,random(-1,1),random(-1,1),random(-1,1),random(1,360), SXF_SETMASTER);
+		TNT1 AAA 0 A_SpawnItemEx("MonsterHole2",0,0,8, Random[ZyklonMonster](-1,1), Random[ZyklonMonster](-1,1), Random[ZyklonMonster](-1,1), Random[ZyklonMonster](1,360), SXF_SETMASTER);
 		TNT1 A 1;
-		TNT1 AAAAAA 0 A_SpawnItemEx("MonsterHole2",0,0,8,random(-1,1),random(-1,1),random(-1,1),random(1,360), SXF_SETMASTER);
+		TNT1 AAAAAA 0 A_SpawnItemEx("MonsterHole2",0,0,8, Random[ZyklonMonster](-1,1), Random[ZyklonMonster](-1,1), Random[ZyklonMonster](-1,1), Random[ZyklonMonster](1,360), SXF_SETMASTER);
 		TNT1 A 1;
-		TNT1 AAAAAA 0 A_SpawnItemEx("MonsterHole2",0,0,8,random(-1,1),random(-1,1),random(-1,1),random(1,360), SXF_SETMASTER);
+		TNT1 AAAAAA 0 A_SpawnItemEx("MonsterHole2",0,0,8, Random[ZyklonMonster](-1,1), Random[ZyklonMonster](-1,1), Random[ZyklonMonster](-1,1), Random[ZyklonMonster](1,360), SXF_SETMASTER);
 		TNT1 A 1 ThrustThing((int) (Angle*256/360-192), 8, 1, 0);
 	PainEnd:
-		TNT1 AAA 0 A_SpawnItemEx("MonsterHole2",0,0,8,random(-1,1),random(-1,1),random(-1,1),random(1,360), SXF_SETMASTER);
+		TNT1 AAA 0 A_SpawnItemEx("MonsterHole2",0,0,8, Random[ZyklonMonster](-1,1), Random[ZyklonMonster](-1,1), Random[ZyklonMonster](-1,1), Random[ZyklonMonster](1,360), SXF_SETMASTER);
 		TNT1 A 1;
-		TNT1 AAAAAA 0 A_SpawnItemEx("MonsterHole2",0,0,8,random(-1,1),random(-1,1),random(-1,1),random(1,360), SXF_SETMASTER);
+		TNT1 AAAAAA 0 A_SpawnItemEx("MonsterHole2",0,0,8, Random[ZyklonMonster](-1,1), Random[ZyklonMonster](-1,1), Random[ZyklonMonster](-1,1), Random[ZyklonMonster](1,360), SXF_SETMASTER);
 		TNT1 A 1 A_Stop;
-		TNT1 AAAAAA 0 A_SpawnItemEx("MonsterHole2",0,0,8,random(-1,1),random(-1,1),random(-1,1),random(1,360), SXF_SETMASTER);
+		TNT1 AAAAAA 0 A_SpawnItemEx("MonsterHole2",0,0,8, Random[ZyklonMonster](-1,1), Random[ZyklonMonster](-1,1), Random[ZyklonMonster](-1,1), Random[ZyklonMonster](1,360), SXF_SETMASTER);
 		Goto See;
 	SmokePain2:
 		TNT1 A 1 ThrustThing((int) (Angle*256/360-64), 8, 1, 0);
-		TNT1 AAA 0 A_SpawnItemEx("MonsterHole2",0,0,8,random(-1,1),random(-1,1),random(-1,1),random(1,360), SXF_SETMASTER);
+		TNT1 AAA 0 A_SpawnItemEx("MonsterHole2",0,0,8, Random[ZyklonMonster](-1,1), Random[ZyklonMonster](-1,1), Random[ZyklonMonster](-1,1), Random[ZyklonMonster](1,360), SXF_SETMASTER);
 		TNT1 A 1;
-		TNT1 AAAAAA 0 A_SpawnItemEx("MonsterHole2",0,0,8,random(-1,1),random(-1,1),random(-1,1),random(1,360), SXF_SETMASTER);
+		TNT1 AAAAAA 0 A_SpawnItemEx("MonsterHole2",0,0,8, Random[ZyklonMonster](-1,1), Random[ZyklonMonster](-1,1), Random[ZyklonMonster](-1,1), Random[ZyklonMonster](1,360), SXF_SETMASTER);
 		TNT1 A 1;
-		TNT1 AAAAAA 0 A_SpawnItemEx("MonsterHole2",0,0,8,random(-1,1),random(-1,1),random(-1,1),random(1,360), SXF_SETMASTER);
+		TNT1 AAAAAA 0 A_SpawnItemEx("MonsterHole2",0,0,8, Random[ZyklonMonster](-1,1), Random[ZyklonMonster](-1,1), Random[ZyklonMonster](-1,1), Random[ZyklonMonster](1,360), SXF_SETMASTER);
 		TNT1 A 1;
-		TNT1 AAA 0 A_SpawnItemEx("MonsterHole2",0,0,8,random(-1,1),random(-1,1),random(-1,1),random(1,360), SXF_SETMASTER);
+		TNT1 AAA 0 A_SpawnItemEx("MonsterHole2",0,0,8, Random[ZyklonMonster](-1,1), Random[ZyklonMonster](-1,1), Random[ZyklonMonster](-1,1), Random[ZyklonMonster](1,360), SXF_SETMASTER);
 		TNT1 A 1 ThrustThing((int) (Angle*256/360-64), 8, 1, 0);
-		TNT1 AAAAAA 0 A_SpawnItemEx("MonsterHole2",0,0,8,random(-1,1),random(-1,1),random(-1,1),random(1,360), SXF_SETMASTER);
+		TNT1 AAAAAA 0 A_SpawnItemEx("MonsterHole2",0,0,8, Random[ZyklonMonster](-1,1), Random[ZyklonMonster](-1,1), Random[ZyklonMonster](-1,1), Random[ZyklonMonster](1,360), SXF_SETMASTER);
 		TNT1 A 1;
-		TNT1 AAAAAA 0 A_SpawnItemEx("MonsterHole2",0,0,8,random(-1,1),random(-1,1),random(-1,1),random(1,360), SXF_SETMASTER);
+		TNT1 AAAAAA 0 A_SpawnItemEx("MonsterHole2",0,0,8, Random[ZyklonMonster](-1,1), Random[ZyklonMonster](-1,1), Random[ZyklonMonster](-1,1), Random[ZyklonMonster](1,360), SXF_SETMASTER);
 		TNT1 A 1;
-		TNT1 AAA 0 A_SpawnItemEx("MonsterHole2",0,0,8,random(-1,1),random(-1,1),random(-1,1),random(1,360), SXF_SETMASTER);
+		TNT1 AAA 0 A_SpawnItemEx("MonsterHole2",0,0,8, Random[ZyklonMonster](-1,1), Random[ZyklonMonster](-1,1), Random[ZyklonMonster](-1,1), Random[ZyklonMonster](1,360), SXF_SETMASTER);
 		TNT1 A 1;
-		TNT1 AAAAAA 0 A_SpawnItemEx("MonsterHole2",0,0,8,random(-1,1),random(-1,1),random(-1,1),random(1,360), SXF_SETMASTER);
+		TNT1 AAAAAA 0 A_SpawnItemEx("MonsterHole2",0,0,8, Random[ZyklonMonster](-1,1), Random[ZyklonMonster](-1,1), Random[ZyklonMonster](-1,1), Random[ZyklonMonster](1,360), SXF_SETMASTER);
 		TNT1 A 1 ThrustThing((int) (Angle*256/360-64), 8, 1, 0);
-		TNT1 AAAAAA 0 A_SpawnItemEx("MonsterHole2",0,0,8,random(-1,1),random(-1,1),random(-1,1),random(1,360), SXF_SETMASTER);
+		TNT1 AAAAAA 0 A_SpawnItemEx("MonsterHole2",0,0,8, Random[ZyklonMonster](-1,1), Random[ZyklonMonster](-1,1), Random[ZyklonMonster](-1,1), Random[ZyklonMonster](1,360), SXF_SETMASTER);
 		TNT1 A 1;
 		Goto PainEnd;
 	SmokePain3:
 		TNT1 A 1;
-		TNT1 AAAAAA 0 A_SpawnItemEx("MonsterHole2",0,0,8,random(-8,8),random(-8,8),random(-8,8),random(1,360), SXF_SETMASTER);
+		TNT1 AAAAAA 0 A_SpawnItemEx("MonsterHole2",0,0,8, Random[ZyklonMonster](-8,8), Random[ZyklonMonster](-8,8), Random[ZyklonMonster](-8,8), Random[ZyklonMonster](1,360), SXF_SETMASTER);
 		TNT1 A 1;
-		TNT1 AAAAAA 0 A_SpawnItemEx("MonsterHole2",0,0,8,random(-8,8),random(-8,8),random(-8,8),random(1,360), SXF_SETMASTER);
+		TNT1 AAAAAA 0 A_SpawnItemEx("MonsterHole2",0,0,8, Random[ZyklonMonster](-8,8), Random[ZyklonMonster](-8,8), Random[ZyklonMonster](-8,8), Random[ZyklonMonster](1,360), SXF_SETMASTER);
 		TNT1 A 1;
-		TNT1 AAA 0 A_SpawnItemEx("MonsterHole2",0,0,8,random(-8,8),random(-8,8),random(-8,8),random(1,360), SXF_SETMASTER);
+		TNT1 AAA 0 A_SpawnItemEx("MonsterHole2",0,0,8, Random[ZyklonMonster](-8,8), Random[ZyklonMonster](-8,8), Random[ZyklonMonster](-8,8), Random[ZyklonMonster](1,360), SXF_SETMASTER);
 		TNT1 A 1;
-		TNT1 AAAAAA 0 A_SpawnItemEx("MonsterHole2",0,0,8,random(-8,8),random(-8,8),random(-8,8),random(1,360), SXF_SETMASTER);
-		TNT1 A 1 A_SpawnItemEx("ZyklonCritter",random(-4,4),random(-4,4),0,0,SXF_NOCHECKPOSITION,0); //sometimes can spawn a monster
-		TNT1 AAAAAA 0 A_SpawnItemEx("MonsterHole2",0,0,8,random(-8,8),random(-8,8),random(-8,8),random(1,360), SXF_SETMASTER);
+		TNT1 AAAAAA 0 A_SpawnItemEx("MonsterHole2",0,0,8, Random[ZyklonMonster](-8,8), Random[ZyklonMonster](-8,8), Random[ZyklonMonster](-8,8), Random[ZyklonMonster](1,360), SXF_SETMASTER);
+		TNT1 A 1 A_SpawnItemEx("ZyklonCritter", Random[ZyklonMonster](-4,4), Random[ZyklonMonster](-4,4),0,0,SXF_NOCHECKPOSITION,0); //sometimes can spawn a monster
+		TNT1 AAAAAA 0 A_SpawnItemEx("MonsterHole2",0,0,8, Random[ZyklonMonster](-8,8), Random[ZyklonMonster](-8,8), Random[ZyklonMonster](-8,8), Random[ZyklonMonster](1,360), SXF_SETMASTER);
 		TNT1 A 1;
-		TNT1 AAA 0 A_SpawnItemEx("MonsterHole2",0,0,8,random(-8,8),random(-8,8),random(-8,8),random(1,360), SXF_SETMASTER);
+		TNT1 AAA 0 A_SpawnItemEx("MonsterHole2",0,0,8, Random[ZyklonMonster](-8,8), Random[ZyklonMonster](-8,8), Random[ZyklonMonster](-8,8), Random[ZyklonMonster](1,360), SXF_SETMASTER);
 		TNT1 A 1;
-		TNT1 AAAAAA 0 A_SpawnItemEx("MonsterHole2",0,0,8,random(-8,8),random(-8,8),random(-8,8),random(1,360), SXF_SETMASTER);
+		TNT1 AAAAAA 0 A_SpawnItemEx("MonsterHole2",0,0,8, Random[ZyklonMonster](-8,8), Random[ZyklonMonster](-8,8), Random[ZyklonMonster](-8,8), Random[ZyklonMonster](1,360), SXF_SETMASTER);
 		TNT1 A 1;
-		TNT1 AAAAAA 0 A_SpawnItemEx("MonsterHole2",0,0,8,random(-8,8),random(-8,8),random(-8,8),random(1,360), SXF_SETMASTER);
+		TNT1 AAAAAA 0 A_SpawnItemEx("MonsterHole2",0,0,8, Random[ZyklonMonster](-8,8), Random[ZyklonMonster](-8,8), Random[ZyklonMonster](-8,8), Random[ZyklonMonster](1,360), SXF_SETMASTER);
 		TNT1 A 1;
 		Goto PainEnd;
 	Death:
@@ -957,53 +957,53 @@ class ZyklonMonster : Nazi
 		TNT1 A 0 A_StopSound(CHAN_7);
 		TNT1 A 0 A_Scream;
 		TNT1 A 0 A_Explode;
-		TNT1 AAAAAA 0 A_SpawnItemEx("MonsterHole2",0,0,8,random(-2,2),random(-2,2),random(-2,2),random(1,360), SXF_SETMASTER);
+		TNT1 AAAAAA 0 A_SpawnItemEx("MonsterHole2",0,0,8, Random[ZyklonMonster](-2,2), Random[ZyklonMonster](-2,2), Random[ZyklonMonster](-2,2), Random[ZyklonMonster](1,360), SXF_SETMASTER);
 		TNT1 A 1;
-		TNT1 AAAAAA 0 A_SpawnItemEx("MonsterHole2",0,0,8,random(-2,2),random(-2,2),random(-2,2),random(1,360), SXF_SETMASTER);
+		TNT1 AAAAAA 0 A_SpawnItemEx("MonsterHole2",0,0,8, Random[ZyklonMonster](-2,2), Random[ZyklonMonster](-2,2), Random[ZyklonMonster](-2,2), Random[ZyklonMonster](1,360), SXF_SETMASTER);
 		TNT1 A 1;
-		TNT1 AAA 0 A_SpawnItemEx("MonsterHole2",0,0,8,random(-2,2),random(-2,2),random(-2,2),random(1,360), SXF_SETMASTER);
+		TNT1 AAA 0 A_SpawnItemEx("MonsterHole2",0,0,8, Random[ZyklonMonster](-2,2), Random[ZyklonMonster](-2,2), Random[ZyklonMonster](-2,2), Random[ZyklonMonster](1,360), SXF_SETMASTER);
 		TNT1 A 1;
-		TNT1 AAAAAA 0 A_SpawnItemEx("MonsterHole2",0,0,8,random(-2,2),random(-2,2),random(-2,2),random(1,360), SXF_SETMASTER);
+		TNT1 AAAAAA 0 A_SpawnItemEx("MonsterHole2",0,0,8, Random[ZyklonMonster](-2,2), Random[ZyklonMonster](-2,2), Random[ZyklonMonster](-2,2), Random[ZyklonMonster](1,360), SXF_SETMASTER);
 		TNT1 A 1;
-		TNT1 AAAAAA 0 A_SpawnItemEx("MonsterHole2",0,0,8,random(-2,2),random(-2,2),random(-2,2),random(1,360), SXF_SETMASTER);
+		TNT1 AAAAAA 0 A_SpawnItemEx("MonsterHole2",0,0,8, Random[ZyklonMonster](-2,2), Random[ZyklonMonster](-2,2), Random[ZyklonMonster](-2,2), Random[ZyklonMonster](1,360), SXF_SETMASTER);
 		TNT1 A 1;
-		TNT1 AAA 0 A_SpawnItemEx("MonsterHole2",0,0,8,random(-3,3),random(-3,3),random(-3,3),random(1,360), SXF_SETMASTER);
+		TNT1 AAA 0 A_SpawnItemEx("MonsterHole2",0,0,8, Random[ZyklonMonster](-3,3), Random[ZyklonMonster](-3,3), Random[ZyklonMonster](-3,3), Random[ZyklonMonster](1,360), SXF_SETMASTER);
 		TNT1 A 1;
-		TNT1 AAAAA 0 A_SpawnItemEx("MonsterHole2",0,0,8,random(-3,3),random(-3,3),random(-3,3),random(1,360), SXF_SETMASTER);
+		TNT1 AAAAA 0 A_SpawnItemEx("MonsterHole2",0,0,8, Random[ZyklonMonster](-3,3), Random[ZyklonMonster](-3,3), Random[ZyklonMonster](-3,3), Random[ZyklonMonster](1,360), SXF_SETMASTER);
 		TNT1 A 1;
-		TNT1 AAAAA 0 A_SpawnItemEx("MonsterHole2",0,0,8,random(-3,3),random(-3,3),random(-3,3),random(1,360), SXF_SETMASTER);
+		TNT1 AAAAA 0 A_SpawnItemEx("MonsterHole2",0,0,8, Random[ZyklonMonster](-3,3), Random[ZyklonMonster](-3,3), Random[ZyklonMonster](-3,3), Random[ZyklonMonster](1,360), SXF_SETMASTER);
 		TNT1 A 1;
-		TNT1 AAA 0 A_SpawnItemEx("MonsterHole2",0,0,8,random(-3,3),random(-3,3),random(-3,3),random(1,360), SXF_SETMASTER);
+		TNT1 AAA 0 A_SpawnItemEx("MonsterHole2",0,0,8, Random[ZyklonMonster](-3,3), Random[ZyklonMonster](-3,3), Random[ZyklonMonster](-3,3), Random[ZyklonMonster](1,360), SXF_SETMASTER);
 		TNT1 A 1;
-		TNT1 AAAAA 0 A_SpawnItemEx("MonsterHole2",0,0,8,random(-3,3),random(-3,3),random(-3,3),random(1,360), SXF_SETMASTER);
+		TNT1 AAAAA 0 A_SpawnItemEx("MonsterHole2",0,0,8, Random[ZyklonMonster](-3,3), Random[ZyklonMonster](-3,3), Random[ZyklonMonster](-3,3), Random[ZyklonMonster](1,360), SXF_SETMASTER);
 		TNT1 A 1;
-		TNT1 AAAA 0 A_SpawnItemEx("MonsterHole2",0,0,8,random(-4,4),random(-4,4),random(-4,4),random(1,360), SXF_SETMASTER);
+		TNT1 AAAA 0 A_SpawnItemEx("MonsterHole2",0,0,8, Random[ZyklonMonster](-4,4), Random[ZyklonMonster](-4,4), Random[ZyklonMonster](-4,4), Random[ZyklonMonster](1,360), SXF_SETMASTER);
 		TNT1 A 1;
-		TNT1 AAAA 0 A_SpawnItemEx("MonsterHole2",0,0,8,random(-4,4),random(-4,4),random(-4,4),random(1,360), SXF_SETMASTER);
+		TNT1 AAAA 0 A_SpawnItemEx("MonsterHole2",0,0,8, Random[ZyklonMonster](-4,4), Random[ZyklonMonster](-4,4), Random[ZyklonMonster](-4,4), Random[ZyklonMonster](1,360), SXF_SETMASTER);
 		TNT1 A 1;
-		TNT1 AAAA 0 A_SpawnItemEx("MonsterHole2",0,0,8,random(-4,4),random(-4,4),random(-4,4),random(1,360), SXF_SETMASTER);
+		TNT1 AAAA 0 A_SpawnItemEx("MonsterHole2",0,0,8, Random[ZyklonMonster](-4,4), Random[ZyklonMonster](-4,4), Random[ZyklonMonster](-4,4), Random[ZyklonMonster](1,360), SXF_SETMASTER);
 		TNT1 A 1;
-		TNT1 AA 0 A_SpawnItemEx("MonsterHole2",0,0,8,random(-4,4),random(-4,4),random(-4,4),random(1,360), SXF_SETMASTER);
+		TNT1 AA 0 A_SpawnItemEx("MonsterHole2",0,0,8, Random[ZyklonMonster](-4,4), Random[ZyklonMonster](-4,4), Random[ZyklonMonster](-4,4), Random[ZyklonMonster](1,360), SXF_SETMASTER);
 		TNT1 A 1;
-		TNT1 AAAA 0 A_SpawnItemEx("MonsterHole2",0,0,8,random(-4,4),random(-4,4),random(-4,4),random(1,360), SXF_SETMASTER);
+		TNT1 AAAA 0 A_SpawnItemEx("MonsterHole2",0,0,8, Random[ZyklonMonster](-4,4), Random[ZyklonMonster](-4,4), Random[ZyklonMonster](-4,4), Random[ZyklonMonster](1,360), SXF_SETMASTER);
 		TNT1 A 1;
-		TNT1 AAA 0 A_SpawnItemEx("MonsterHole2",0,0,8,random(-5,5),random(-5,5),random(-5,5),random(1,360), SXF_SETMASTER);
+		TNT1 AAA 0 A_SpawnItemEx("MonsterHole2",0,0,8, Random[ZyklonMonster](-5,5), Random[ZyklonMonster](-5,5), Random[ZyklonMonster](-5,5), Random[ZyklonMonster](1,360), SXF_SETMASTER);
 		TNT1 A 1;
-		TNT1 AAA 0 A_SpawnItemEx("MonsterHole2",0,0,8,random(-5,5),random(-5,5),random(-5,5),random(1,360), SXF_SETMASTER);
+		TNT1 AAA 0 A_SpawnItemEx("MonsterHole2",0,0,8, Random[ZyklonMonster](-5,5), Random[ZyklonMonster](-5,5), Random[ZyklonMonster](-5,5), Random[ZyklonMonster](1,360), SXF_SETMASTER);
 		TNT1 A 1;
-		TNT1 AAA 0 A_SpawnItemEx("MonsterHole2",0,0,8,random(-5,5),random(-5,5),random(-5,5),random(1,360), SXF_SETMASTER);
+		TNT1 AAA 0 A_SpawnItemEx("MonsterHole2",0,0,8, Random[ZyklonMonster](-5,5), Random[ZyklonMonster](-5,5), Random[ZyklonMonster](-5,5), Random[ZyklonMonster](1,360), SXF_SETMASTER);
 		TNT1 A 1;
-		TNT1 AAA 0 A_SpawnItemEx("MonsterHole2",0,0,8,random(-5,5),random(-5,5),random(-5,5),random(1,360), SXF_SETMASTER);
+		TNT1 AAA 0 A_SpawnItemEx("MonsterHole2",0,0,8, Random[ZyklonMonster](-5,5), Random[ZyklonMonster](-5,5), Random[ZyklonMonster](-5,5), Random[ZyklonMonster](1,360), SXF_SETMASTER);
 		TNT1 A 1;
-		TNT1 AA 0 A_SpawnItemEx("MonsterHole2",0,0,8,random(-6,6),random(-6,6),random(-6,6),random(1,360), SXF_SETMASTER);
+		TNT1 AA 0 A_SpawnItemEx("MonsterHole2",0,0,8, Random[ZyklonMonster](-6,6), Random[ZyklonMonster](-6,6), Random[ZyklonMonster](-6,6), Random[ZyklonMonster](1,360), SXF_SETMASTER);
 		TNT1 A 1;
-		TNT1 AA 0 A_SpawnItemEx("MonsterHole2",0,0,8,random(-6,6),random(-6,6),random(-6,6),random(1,360), SXF_SETMASTER);
+		TNT1 AA 0 A_SpawnItemEx("MonsterHole2",0,0,8, Random[ZyklonMonster](-6,6), Random[ZyklonMonster](-6,6), Random[ZyklonMonster](-6,6), Random[ZyklonMonster](1,360), SXF_SETMASTER);
 		TNT1 A 1;
-		TNT1 A 0 A_SpawnItemEx("MonsterHole2",0,0,8,random(-6,6),random(-6,6),random(-6,6),random(1,360), SXF_SETMASTER);
+		TNT1 A 0 A_SpawnItemEx("MonsterHole2",0,0,8, Random[ZyklonMonster](-6,6), Random[ZyklonMonster](-6,6), Random[ZyklonMonster](-6,6), Random[ZyklonMonster](1,360), SXF_SETMASTER);
 		TNT1 A 1;
-		TNT1 AA 0 A_SpawnItemEx("MonsterHole2",0,0,8,random(-6,6),random(-6,6),random(-6,6),random(1,360), SXF_SETMASTER);
-		TNT1 AAA 1 A_SpawnItemEx("MonsterHole2",0,0,8,random(-7,7),random(-7,7),random(-7,7),random(1,360), SXF_SETMASTER);
-		TNT1 AA 1 A_SpawnItemEx("MonsterHole2",0,0,8,random(-8,8),random(-8,8),random(-8,8),random(1,360), SXF_SETMASTER);
+		TNT1 AA 0 A_SpawnItemEx("MonsterHole2",0,0,8, Random[ZyklonMonster](-6,6), Random[ZyklonMonster](-6,6), Random[ZyklonMonster](-6,6), Random[ZyklonMonster](1,360), SXF_SETMASTER);
+		TNT1 AAA 1 A_SpawnItemEx("MonsterHole2",0,0,8, Random[ZyklonMonster](-7,7), Random[ZyklonMonster](-7,7), Random[ZyklonMonster](-7,7), Random[ZyklonMonster](1,360), SXF_SETMASTER);
+		TNT1 AA 1 A_SpawnItemEx("MonsterHole2",0,0,8, Random[ZyklonMonster](-8,8), Random[ZyklonMonster](-8,8), Random[ZyklonMonster](-8,8), Random[ZyklonMonster](1,360), SXF_SETMASTER);
 		Dead:
 		TNT1 A 0 { user_saw = 0; }
 		TNT1 A 0 A_UnSetSolid;
@@ -1012,34 +1012,34 @@ class ZyklonMonster : Nazi
 	Teleport:
 		TNT1 A 0 A_SetReflective;
 		TNT1 A 1;
-		TNT1 AAAAAA 0 A_SpawnItemEx("MonsterHole2",0,0,8,random(-2,2),random(-2,2),random(-2,2),random(1,360), SXF_SETMASTER);
+		TNT1 AAAAAA 0 A_SpawnItemEx("MonsterHole2",0,0,8, Random[ZyklonMonster](-2,2), Random[ZyklonMonster](-2,2), Random[ZyklonMonster](-2,2), Random[ZyklonMonster](1,360), SXF_SETMASTER);
 		TNT1 A 1;
-		TNT1 AAAAA 0 A_SpawnItemEx("MonsterHole2",0,0,8,random(-2,2),random(-2,2),random(-2,2),random(1,360), SXF_SETMASTER);
+		TNT1 AAAAA 0 A_SpawnItemEx("MonsterHole2",0,0,8, Random[ZyklonMonster](-2,2), Random[ZyklonMonster](-2,2), Random[ZyklonMonster](-2,2), Random[ZyklonMonster](1,360), SXF_SETMASTER);
 		TNT1 A 1;
-		TNT1 AA 0 A_SpawnItemEx("MonsterHole2",0,0,8,random(-2,2),random(-2,2),random(-2,2),random(1,360), SXF_SETMASTER);
+		TNT1 AA 0 A_SpawnItemEx("MonsterHole2",0,0,8, Random[ZyklonMonster](-2,2), Random[ZyklonMonster](-2,2), Random[ZyklonMonster](-2,2), Random[ZyklonMonster](1,360), SXF_SETMASTER);
 		TNT1 A 1;
-		TNT1 AAA 0 A_SpawnItemEx("MonsterHole2",0,0,8,random(-2,2),random(-2,2),random(-2,2),random(1,360), SXF_SETMASTER);
+		TNT1 AAA 0 A_SpawnItemEx("MonsterHole2",0,0,8, Random[ZyklonMonster](-2,2), Random[ZyklonMonster](-2,2), Random[ZyklonMonster](-2,2), Random[ZyklonMonster](1,360), SXF_SETMASTER);
 		TNT1 A 1;
-		TNT1 AA 0 A_SpawnItemEx("MonsterHole2",0,0,8,random(-2,2),random(-2,2),random(-2,2),random(1,360), SXF_SETMASTER);
+		TNT1 AA 0 A_SpawnItemEx("MonsterHole2",0,0,8, Random[ZyklonMonster](-2,2), Random[ZyklonMonster](-2,2), Random[ZyklonMonster](-2,2), Random[ZyklonMonster](1,360), SXF_SETMASTER);
 		TNT1 A 1;
-		TNT1 A 0 A_SpawnItemEx("MonsterHole2",0,0,8,random(-2,2),random(-2,2),random(-2,2),random(1,360), SXF_SETMASTER);
+		TNT1 A 0 A_SpawnItemEx("MonsterHole2",0,0,8, Random[ZyklonMonster](-2,2), Random[ZyklonMonster](-2,2), Random[ZyklonMonster](-2,2), Random[ZyklonMonster](1,360), SXF_SETMASTER);
 		TNT1 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 0 A_Chase(null, null, CHF_NIGHTMAREFAST);
 		TNT1 A 0 A_Jump(128,50);
 		TNT1 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 0 A_Chase(null, null, CHF_NIGHTMAREFAST);
 		TNT1 A 0 A_Jump(128,50);
 		TNT1 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 0 A_Chase(null, null, CHF_NIGHTMAREFAST);
 		TNT1 A 1;
-		TNT1 A 0 A_SpawnItemEx("MonsterHole2",0,0,8,random(-2,2),random(-2,2),random(-2,2),random(1,360), SXF_SETMASTER);
+		TNT1 A 0 A_SpawnItemEx("MonsterHole2",0,0,8, Random[ZyklonMonster](-2,2), Random[ZyklonMonster](-2,2), Random[ZyklonMonster](-2,2), Random[ZyklonMonster](1,360), SXF_SETMASTER);
 		TNT1 A 1;
-		TNT1 AA 0 A_SpawnItemEx("MonsterHole2",0,0,8,random(-2,2),random(-2,2),random(-2,2),random(1,360), SXF_SETMASTER);
+		TNT1 AA 0 A_SpawnItemEx("MonsterHole2",0,0,8, Random[ZyklonMonster](-2,2), Random[ZyklonMonster](-2,2), Random[ZyklonMonster](-2,2), Random[ZyklonMonster](1,360), SXF_SETMASTER);
 		TNT1 A 1;
-		TNT1 AAA 0 A_SpawnItemEx("MonsterHole2",0,0,8,random(-2,2),random(-2,2),random(-2,2),random(1,360), SXF_SETMASTER);
+		TNT1 AAA 0 A_SpawnItemEx("MonsterHole2",0,0,8, Random[ZyklonMonster](-2,2), Random[ZyklonMonster](-2,2), Random[ZyklonMonster](-2,2), Random[ZyklonMonster](1,360), SXF_SETMASTER);
 		TNT1 A 1;
-		TNT1 AA 0 A_SpawnItemEx("MonsterHole2",0,0,8,random(-2,2),random(-2,2),random(-2,2),random(1,360), SXF_SETMASTER);
+		TNT1 AA 0 A_SpawnItemEx("MonsterHole2",0,0,8, Random[ZyklonMonster](-2,2), Random[ZyklonMonster](-2,2), Random[ZyklonMonster](-2,2), Random[ZyklonMonster](1,360), SXF_SETMASTER);
 		TNT1 A 1;
-		TNT1 AAAAA 0 A_SpawnItemEx("MonsterHole2",0,0,8,random(-2,2),random(-2,2),random(-2,2),random(1,360), SXF_SETMASTER);
+		TNT1 AAAAA 0 A_SpawnItemEx("MonsterHole2",0,0,8, Random[ZyklonMonster](-2,2), Random[ZyklonMonster](-2,2), Random[ZyklonMonster](-2,2), Random[ZyklonMonster](1,360), SXF_SETMASTER);
 		TNT1 A 1;
-		TNT1 AAAAAA 0 A_SpawnItemEx("MonsterHole2",0,0,8,random(-2,2),random(-2,2),random(-2,2),random(1,360), SXF_SETMASTER);
+		TNT1 AAAAAA 0 A_SpawnItemEx("MonsterHole2",0,0,8, Random[ZyklonMonster](-2,2), Random[ZyklonMonster](-2,2), Random[ZyklonMonster](-2,2), Random[ZyklonMonster](1,360), SXF_SETMASTER);
 		TNT1 A 0 A_UnSetReflective;
 		Goto See;
 	}
@@ -1060,7 +1060,7 @@ class NaziLoper : Nazi
 		Radius 24;
 		Mass 300;
 		Speed 7;
-		DamageFunction (8 * random(1,8)); //jump attacks
+		DamageFunction (8 * Random[Loper](1,8)); //jump attacks
 		DefThreshold 32;
 		Scale 0.65;
 		PainChance 64;
@@ -1092,18 +1092,18 @@ class NaziLoper : Nazi
 			"####" E 0 A_SpawnProjectile("TPortLightningWaveSpawner", 8, 0, 180, CMF_AIMDIRECTION, 0);
 			"####" E 8 A_FaceTarget;
 			"####" E 0 A_SpawnItemEx("TPortLightningWaveSpawner",0,0,8,0,0,0,0,0,160);
-			"####" FG 8 A_CustomMeleeAttack(2*random(2,10),"loper/attack","loper/attack","Melee",TRUE);
+			"####" FG 8 A_CustomMeleeAttack(2*Random[Loper](2,10),"loper/attack","loper/attack","Melee",TRUE);
 			Goto Look;
 		Missile:
 			"####" E 0 A_Jump(160,"Missile3");  // Leap attack
-			"####" E 0 A_Jump(random(128,192),"Missile2");
+			"####" E 0 A_Jump(Random[Loper](128,192),"Missile2");
 			"####" EE 2 LIGHT("LOPERLIT"){
 				A_StartSound("tesla/kill");
 				A_SpawnProjectile("TPortLightningWaveSpawner", 8, 0, 0, CMF_AIMDIRECTION, 0);
 				A_SpawnProjectile("TPortLightningWaveSpawner", 8, 0, 180, CMF_AIMDIRECTION, 0);
 				A_SpawnItemEx("TPortLightningWaveSpawner",0,0,8,0,0,0,0,0,160);
 				A_SpawnItemEx("TPortLightningWaveSpawner",0,0,8,0,0,0,0,0,160);
-				A_LightningAttack("LightningBeamZap2", 0, 0, random(4,8), 0, 0, false);
+				A_LightningAttack("LightningBeamZap2", 0, 0, Random[Loper](4,8), 0, 0, false);
 			}
 			"####" EE 8 A_FaceTarget;
 			"####" EE 2 LIGHT("LOPERLIT"){
@@ -1112,7 +1112,7 @@ class NaziLoper : Nazi
 				A_SpawnProjectile("TPortLightningWaveSpawner", 8, 0, 180, CMF_AIMDIRECTION, 0);
 				A_SpawnItemEx("TPortLightningWaveSpawner",0,0,8,0,0,0,0,0,160);
 				A_SpawnItemEx("TPortLightningWaveSpawner",0,0,8,0,0,0,0,0,160);
-				A_LightningAttack("LightningBeamZap2", 0, 0, random(4,8), 0, 0, false);
+				A_LightningAttack("LightningBeamZap2", 0, 0, Random[Loper](4,8), 0, 0, false);
 			}
 			"####" EE 8 A_FaceTarget;
 			Goto Look;
@@ -1121,9 +1121,9 @@ class NaziLoper : Nazi
 			"####" A 0 A_SpawnProjectile("TPortLightningWaveSpawner", 8, 0, 180, 2, 0);
 			"####" A 0 A_SpawnItemEx("TPortLightningWaveSpawner",0,0,8,0,0,0,0,0,160);
 			"####" A 0 A_SpawnItemEx("TPortLightningWaveSpawner",0,0,8,0,0,0,0,0,160);
-			"####" A 0 ThrustThing((int) (angle*256/360),random(4,6),0,0);
+			"####" A 0 ThrustThing((int) (angle*256/360), Random[Loper](4,6),0,0);
 			"####" AE 6 A_SpawnItemEx("TPortLightningWaveSpawner",0,0,8,0,0,0,0,0,160);
-			"####" H 8 ThrustThingZ(0,random(30,40),0,1);
+			"####" H 8 ThrustThingZ(0, Random[Loper](30,40),0,1);
 			"####" E 6 A_SpawnItemEx("TPortLightningWaveSpawner",0,0,8,0,0,0,0,0,160);
 			"####" FG 17 LIGHT("LOPERLIT") A_SpawnItemEx("TPortLightningWaveSpawner",0,0,8,0,0,0,0,0,160);
 			"####" G 1 LIGHT("LOPERLIT") Radius_Quake(10,10,0,16,0);
@@ -1150,7 +1150,7 @@ class NaziLoper : Nazi
 			"####" CE 8 A_FaceTarget;
 			"####" H 8;
 			"####" F 1;
-			"####" G 1 A_JumpAttack(30, .5, JAF_ARC | (random(0, 1) ? JAF_INTERCEPT : 0));
+			"####" G 1 A_JumpAttack(30, .5, JAF_ARC | (Random[Loper](0, 1) ? JAF_INTERCEPT : 0));
 			"####" E 3;
 			"####" C 5;
 			Goto Look;
@@ -1184,7 +1184,7 @@ class NaziLoper : Nazi
 			"####" I 1 LIGHT("LOPERLIT") A_SpawnItemEx("GeneralExplosion_Medium");
 			"####" I 1 LIGHT("LOPERLIT") Radius_Quake(10,10,0,16,0);
 			"####" J 8;
-			"####" K 1 {A_SpawnItemEx("Debris_Loper", random(8,-8), random(8,-8), random(54,64), frandom(0.5,0.7), frandom(0.5,0.7), frandom(0.5,0.7), random(0,360), SXF_CLIENTSIDE); A_NoBlocking();}
+			"####" K 1 {A_SpawnItemEx("Debris_Loper", Random[Debris](8,-8), Random[Debris](8,-8), Random[Debris](54,64), FRandom[Loper](0.5,0.7), FRandom[Loper](0.5,0.7), FRandom[Loper](0.5,0.7), Random[Debris](0,360), SXF_CLIENTSIDE); A_NoBlocking();}
 			"####" K 6;
 			"####" LM 8;
 			"####" N -1;
@@ -1229,7 +1229,7 @@ class FatMan : NaziBoss
 		"####" E 6 A_MonsterRefire(10,"See");
 		Goto Missile;
 	GasBomb:
-		OTTO F 4 A_ArcProjectile("GasBomb",42,12,random(-16,16));
+		OTTO F 4 A_ArcProjectile("GasBomb",42,12, Random[Boss](-16,16));
 		"####" E 8;
 		Goto Missile;
 	Pain:
@@ -1263,7 +1263,7 @@ class FatMan2 : FatMan
 		Goto See.BossFast;
 	Death:
 		OTTO KL 10 A_Scream;
-		"####" KKKK 0 A_SpawnItemEx("PowerPlantSmokePuff", random(-8,8), random(-8,8), random(0,16), random(0,1), random(0,1), random(1,3));
+		"####" KKKK 0 A_SpawnItemEx("PowerPlantSmokePuff", Random[Debris](-8,8), Random[Smoke](-8,8), Random[Smoke](0,16), Random[Smoke](0,1), Random[Smoke](0,1), Random[Smoke](1,3));
 		"####" KLKLKL 5 A_Fadeout(0.1); //laughs
 		Stop;
 	}
@@ -1370,7 +1370,7 @@ class GoeringBoss : RocketMan
 		"####" E 0 A_Jump(128, "Missile2");
 	Missile1:
 		"####" E 8 A_FaceTarget;
-		"####" F 5 A_ArcProjectile("ClusterBomb",40,22,random(-16,16));
+		"####" F 5 A_ArcProjectile("ClusterBomb",40,22, Random[Boss](-16,16));
 		Goto See;
 	Missile2:
 		"####" E 5 A_FaceTarget;
@@ -1435,12 +1435,12 @@ class HimmlerBoss : RocketMan
 		"####" P 4 A_SpawnProjectile("NebRocketEnemy",44,-18);
 		Goto See;
 	Mortar:
-		HIMM O 8 A_ArcProjectile("HimmlerMortar",40,28,0,CMF_SAVEPITCH,random(-30,-45));
+		HIMM O 8 A_ArcProjectile("HimmlerMortar",40,28,0,CMF_SAVEPITCH, Random[Boss](-30,-45));
 		"####" N 6;
 		Goto See;
 	DropMine:
 		"####" E 0 A_StartSound("grenade/bounce", CHAN_WEAPON);
-		HIMM M 12 A_SpawnItemEx("BossEnemyPlacedMine", 32, 0, 0, random(20,80), 0, 0, 0, SXF_SETMASTER);
+		HIMM M 12 A_SpawnItemEx("BossEnemyPlacedMine", 32, 0, 0, Random[Boss](20,80), 0, 0, 0, SXF_SETMASTER);
 		"####" L 6;
 		Goto See;
 	Pain:
@@ -1496,7 +1496,7 @@ class GoebbelsBoss : RocketMan
 		"####" E 6;
 		Goto See;
 	Missile2:
-		GOEB F 1 A_ArcProjectile("HandGrenade",44,12,frandom(-4,4));
+		GOEB F 1 A_ArcProjectile("HandGrenade",44,12, FRandom[Boss](-4,4));
 		"####" E 6;
 		Goto See;
 	Pain:
@@ -1551,7 +1551,7 @@ class BattonBoss : RocketMan
 		Goto See;
 	Death:
 		BATT H 5;
-		"####" G 0 A_SpawnItemEx("Debris_Batton", 12, 0, 32, random(1,6), random(1,6), random(1,6), random(0,360), SXF_CLIENTSIDE | SXF_NOCHECKPOSITION);
+		"####" G 0 A_SpawnItemEx("Debris_Batton", 12, 0, 32, Random[Debris](1,6), Random[Debris](1,6), Random[Debris](1,6), Random[Debris](0,360), SXF_CLIENTSIDE | SXF_NOCHECKPOSITION);
 		"####" G 8 A_Scream;
 		"####" I 10;
 		"####" J -1 A_NoBlocking;
@@ -1606,20 +1606,20 @@ class MaskedBoss : RocketMan
 	Chaingun:
 		MASZ F 0 A_FaceTarget;
 		"####" F 0 A_StartSound("chaingun/fire", CHAN_WEAPON);
-		"####" FF 0 A_SpawnProjectile("GoeringBall",54,30,random(-11,11));
-		"####" FF 0 A_SpawnProjectile("GoeringBall",54,-30,random(-11,11));
+		"####" FF 0 A_SpawnProjectile("GoeringBall",54,30, Random[Boss](-11,11));
+		"####" FF 0 A_SpawnProjectile("GoeringBall",54,-30, Random[Boss](-11,11));
 		"####" F 0 {user_count2++; if(user_count2 > 47) {user_count2 = 0; return ResolveState("Retreat");} return ResolveState(null);}
 		"####" F 2 LIGHT("DEKNBFIR");
 		"####" G 2 A_MonsterRefire(20,"See");
 		Loop;
 	Mortar:
-		MASZ H 4 A_ArcProjectile("HimmlerMortar",72,30,0,CMF_SAVEPITCH,random(-45,-60));
-		MASZ I 4 A_ArcProjectile("HimmlerMortar",75,-30,0,CMF_SAVEPITCH,random(-45,-60));
+		MASZ H 4 A_ArcProjectile("HimmlerMortar",72,30,0,CMF_SAVEPITCH, Random[Boss](-45,-60));
+		MASZ I 4 A_ArcProjectile("HimmlerMortar",75,-30,0,CMF_SAVEPITCH, Random[Boss](-45,-60));
 		"####" L 6;
 		Goto See;
 	ZMortar:
-		MASZ J 4 A_ArcProjectile("ZMortar",72,30,0,CMF_SAVEPITCH,random(-45,-60));
-		MASZ K 4 A_ArcProjectile("ZMortar",72,-30,0,CMF_SAVEPITCH,random(-45,-60));
+		MASZ J 4 A_ArcProjectile("ZMortar",72,30,0,CMF_SAVEPITCH, Random[Boss](-45,-60));
+		MASZ K 4 A_ArcProjectile("ZMortar",72,-30,0,CMF_SAVEPITCH, Random[Boss](-45,-60));
 		"####" L 6;
 		Goto See;
 	Retreat:
@@ -1700,7 +1700,7 @@ class BattonBoss2 : BattonBoss
 		Goto See;
 	Death:
 		BNAV H 5;
-		"####" G 0 A_SpawnItemEx("Debris_Batton2", 12, 0, 32, random(1,6), random(1,6), random(1,6), random(0,360), SXF_CLIENTSIDE | SXF_NOCHECKPOSITION);
+		"####" G 0 A_SpawnItemEx("Debris_Batton2", 12, 0, 32, Random[Debris](1,6), Random[Debris](1,6), Random[Debris](1,6), Random[Debris](0,360), SXF_CLIENTSIDE | SXF_NOCHECKPOSITION);
 		"####" G 8 A_Scream;
 		"####" I 10;
 		"####" J -1 A_NoBlocking;
@@ -1800,24 +1800,24 @@ class MadDoctor : RocketMan
 		SCHB E 10 A_FaceTarget;
 		"####" E 0 A_Jump(255, "Missile1", "Missile2", "Missile3");
 	Missile1:
-		"####" F 0 A_SpawnProjectile("FlyingNeedle",32,12, 0, 0, random(30,50));
-		"####" F 0 A_SpawnProjectile("FlyingNeedle",32,12, random(-20,20), CMF_AIMDIRECTION|CMF_BADPITCH, random(20,40));
-		"####" F 8 A_SpawnProjectile("FlyingNeedle",32,12, random(-20,20), CMF_AIMDIRECTION|CMF_BADPITCH, random(20,40));
+		"####" F 0 A_SpawnProjectile("FlyingNeedle",32,12, 0, 0, Random[Boss](30,50));
+		"####" F 0 A_SpawnProjectile("FlyingNeedle",32,12, Random[Boss](-20,20), CMF_AIMDIRECTION|CMF_BADPITCH, Random[Boss](20,40));
+		"####" F 8 A_SpawnProjectile("FlyingNeedle",32,12, Random[Boss](-20,20), CMF_AIMDIRECTION|CMF_BADPITCH, Random[Boss](20,40));
 		"####" A 8;
 		Goto See;
 	Missile2:
-		"####" F 0 A_SpawnProjectile("FlyingNeedle",32,12, 0, 0, random(30,50));
-		"####" F 0 A_SpawnProjectile("FlyingNeedle",32,12, random(-20,20), CMF_AIMDIRECTION|CMF_BADPITCH, random(20,40));
-		"####" F 0 A_SpawnProjectile("FlyingNeedle",32,12, 0, 0, random(30,50));
-		"####" F 0 A_SpawnProjectile("FlyingNeedle",32,12, random(-20,20), CMF_AIMDIRECTION|CMF_BADPITCH, random(20,40));
-		"####" F 0 A_SpawnProjectile("FlyingNeedle",32,12, 0, 0, random(30,50));
-		"####" F 8 A_SpawnProjectile("FlyingNeedle",32,12, random(-20,20), CMF_AIMDIRECTION|CMF_BADPITCH, random(20,40));
+		"####" F 0 A_SpawnProjectile("FlyingNeedle",32,12, 0, 0, Random[Boss](30,50));
+		"####" F 0 A_SpawnProjectile("FlyingNeedle",32,12, Random[Boss](-20,20), CMF_AIMDIRECTION|CMF_BADPITCH, Random[Boss](20,40));
+		"####" F 0 A_SpawnProjectile("FlyingNeedle",32,12, 0, 0, Random[Boss](30,50));
+		"####" F 0 A_SpawnProjectile("FlyingNeedle",32,12, Random[Boss](-20,20), CMF_AIMDIRECTION|CMF_BADPITCH, Random[Boss](20,40));
+		"####" F 0 A_SpawnProjectile("FlyingNeedle",32,12, 0, 0, Random[Boss](30,50));
+		"####" F 8 A_SpawnProjectile("FlyingNeedle",32,12, Random[Boss](-20,20), CMF_AIMDIRECTION|CMF_BADPITCH, Random[Boss](20,40));
 		"####" A 8;
 		Goto See;
 	Missile3:
-		"####" F 0 A_SpawnProjectile("FlyingNeedleNoGrav",32,12, random(12,-12));
-		"####" F 0 A_SpawnProjectile("FlyingNeedleNoGrav",32,12, random(12,-12));
-		"####" F 8 A_SpawnProjectile("FlyingNeedleNoGrav",32,12, random(12,-12));
+		"####" F 0 A_SpawnProjectile("FlyingNeedleNoGrav",32,12, Random[Boss](12,-12));
+		"####" F 0 A_SpawnProjectile("FlyingNeedleNoGrav",32,12, Random[Boss](12,-12));
+		"####" F 8 A_SpawnProjectile("FlyingNeedleNoGrav",32,12, Random[Boss](12,-12));
 		"####" A 8;
 		Goto See;
 	Pain:
@@ -1853,9 +1853,9 @@ class MadDoctor2 : MadDoctor
 		Goto Look;
 	Missile:
 		SCH2 E 10 A_FaceTarget;
-		"####" F 0 A_SpawnProjectile("FlyingNeedle",32,12, 0, 0, random(30,50));
-		"####" FF 0 A_SpawnProjectile("FlyingNeedle",32,12, random(-20,20), CMF_AIMDIRECTION|CMF_BADPITCH, random(20,40));
-		"####" F 8 A_SpawnProjectile("FlyingNeedle",32,12, random(-20,20), CMF_AIMDIRECTION|CMF_BADPITCH, random(20,40));
+		"####" F 0 A_SpawnProjectile("FlyingNeedle",32,12, 0, 0, Random[Boss](30,50));
+		"####" FF 0 A_SpawnProjectile("FlyingNeedle",32,12, Random[Boss](-20,20), CMF_AIMDIRECTION|CMF_BADPITCH, Random[Boss](20,40));
+		"####" F 8 A_SpawnProjectile("FlyingNeedle",32,12, Random[Boss](-20,20), CMF_AIMDIRECTION|CMF_BADPITCH, Random[Boss](20,40));
 		"####" A 8;
 		Goto See;
 	}
@@ -1892,14 +1892,14 @@ class MadDoctor3 : MadDoctor
 		MENZ E 0 A_Jump(128, "Missile2", "Missile3");
 	Missile1:
 		MENZ E 10 A_FaceTarget;
-		"####" FFF 0 A_SpawnProjectile("FlyingNeedleZ",32,12, 0, 0, random(30,50));
-		"####" FFF 0 A_SpawnProjectile("FlyingNeedleZ",32,12, random(-20,20), CMF_AIMDIRECTION|CMF_BADPITCH, random(20,40));
-		"####" F 8 A_SpawnProjectile("FlyingNeedleZ",32,12, random(-20,20), CMF_AIMDIRECTION|CMF_BADPITCH, random(20,40));
+		"####" FFF 0 A_SpawnProjectile("FlyingNeedleZ",32,12, 0, 0, Random[Boss](30,50));
+		"####" FFF 0 A_SpawnProjectile("FlyingNeedleZ",32,12, Random[Boss](-20,20), CMF_AIMDIRECTION|CMF_BADPITCH, Random[Boss](20,40));
+		"####" F 8 A_SpawnProjectile("FlyingNeedleZ",32,12, Random[Boss](-20,20), CMF_AIMDIRECTION|CMF_BADPITCH, Random[Boss](20,40));
 		"####" A 6 A_FaceTarget;
 		Goto See;
 	Missile2:
 		MENZ GHIJK 12 A_FaceTarget;
-		"####" L 8 A_SpawnProjectile("MengeleBomb",32,12, random(-64,64), 0, random(20,40));
+		"####" L 8 A_SpawnProjectile("MengeleBomb",32,12, Random[Boss](-64,64), 0, Random[Boss](20,40));
 		Goto See;
 	Missile3:
 		MENZ MN 12 A_FaceTarget;
@@ -1935,14 +1935,14 @@ class MadDoctor3B : MadDoctor3 //unused
 		MENG E 0 A_Jump(128, "Missile2", "Missile3");
 	Missile1:
 		MENG E 10 A_FaceTarget;
-		"####" FFF 0 A_SpawnProjectile("FlyingNeedleZ",32,12, 0, 0, random(30,50));
-		"####" FFF 0 A_SpawnProjectile("FlyingNeedleZ",32,12, random(-20,20), CMF_AIMDIRECTION|CMF_BADPITCH, random(20,40));
-		"####" F 8 A_SpawnProjectile("FlyingNeedleZ",32,12, random(-20,20), CMF_AIMDIRECTION|CMF_BADPITCH, random(20,40));
+		"####" FFF 0 A_SpawnProjectile("FlyingNeedleZ",32,12, 0, 0, Random[Boss](30,50));
+		"####" FFF 0 A_SpawnProjectile("FlyingNeedleZ",32,12, Random[Boss](-20,20), CMF_AIMDIRECTION|CMF_BADPITCH, Random[Boss](20,40));
+		"####" F 8 A_SpawnProjectile("FlyingNeedleZ",32,12, Random[Boss](-20,20), CMF_AIMDIRECTION|CMF_BADPITCH, Random[Boss](20,40));
 		"####" A 6 A_FaceTarget;
 		Goto See;
 	Missile2:
 		MENG GHIJK 12 A_FaceTarget;
-		"####" L 8 A_SpawnProjectile("MengeleBomb",32,12, random(-64,64), 0, random(20,40));
+		"####" L 8 A_SpawnProjectile("MengeleBomb",32,12, Random[Boss](-64,64), 0, Random[Boss](20,40));
 		Goto See;
 	Missile3:
 		MENG MN 12 A_FaceTarget;
@@ -1992,23 +1992,23 @@ class MadDoctor4 : MadDoctor
 	Missile:
 		MRLL E 0 A_Jump(128,"Missile2");
 		"####" E 10 A_FaceTarget;
-		"####" FFF 0 A_SpawnProjectile("FlyingNeedleZ",32,12, 0, 0, random(30,50));
-		"####" FFF 0 A_SpawnProjectile("FlyingNeedleZ",32,12, random(-20,20), CMF_AIMDIRECTION|CMF_BADPITCH, random(20,40));
-		"####" F 8 A_SpawnProjectile("FlyingNeedleZ",32,12, random(-20,20), CMF_AIMDIRECTION|CMF_BADPITCH, random(20,40));
+		"####" FFF 0 A_SpawnProjectile("FlyingNeedleZ",32,12, 0, 0, Random[Boss](30,50));
+		"####" FFF 0 A_SpawnProjectile("FlyingNeedleZ",32,12, Random[Boss](-20,20), CMF_AIMDIRECTION|CMF_BADPITCH, Random[Boss](20,40));
+		"####" F 8 A_SpawnProjectile("FlyingNeedleZ",32,12, Random[Boss](-20,20), CMF_AIMDIRECTION|CMF_BADPITCH, Random[Boss](20,40));
 		"####" A 6;
 		Goto See;
 	Missile2:
 		MRLL E 0 A_Jump(128,"Missile3");
 		"####" G 10 A_FaceTarget;
-		"####" HH 2 A_ArcProjectile("FlyingHack",32,-12,random(-8,8));
+		"####" HH 2 A_ArcProjectile("FlyingHack",32,-12, Random[Boss](-8,8));
 		"####" H 3 A_ArcProjectile("FlyingHack",32,-12);
 		"####" C 8;
 		Goto See;
 	Missile3:
 		"####" E 5 A_FaceTarget;
-		"####" F 0 A_SpawnProjectile("FlyingNeedleZNoGrav",32,12, random(12,-12));
-		"####" F 0 A_SpawnProjectile("FlyingNeedleZNoGrav",32,12, random(12,-12));
-		"####" F 4 A_SpawnProjectile("FlyingNeedleZNoGrav",32,12, random(12,-12));
+		"####" F 0 A_SpawnProjectile("FlyingNeedleZNoGrav",32,12, Random[Boss](12,-12));
+		"####" F 0 A_SpawnProjectile("FlyingNeedleZNoGrav",32,12, Random[Boss](12,-12));
+		"####" F 4 A_SpawnProjectile("FlyingNeedleZNoGrav",32,12, Random[Boss](12,-12));
 		"####" A 8;
 		Goto See;
 	Pain:
@@ -2050,7 +2050,7 @@ class MadCook : MadDoctor
 		Goto See;
 	Missile:
 		COOK E 10 A_FaceTarget;
-		"####" FF 2 A_ArcProjectile("FlyingHack",32,12,random(-8,8));
+		"####" FF 2 A_ArcProjectile("FlyingHack",32,12, Random[Boss](-8,8));
 		"####" F 3 A_ArcProjectile("FlyingHack",32,12);
 		"####" A 8;
 		Goto See;
@@ -2074,7 +2074,7 @@ class MadCook2 : MadCook
 		Goto See;
 	Missile:
 		COOG E 10 A_FaceTarget;
-		"####" FF 2 A_ArcProjectile("FlyingHack",32,12,random(-8,8));
+		"####" FF 2 A_ArcProjectile("FlyingHack",32,12, Random[Boss](-8,8));
 		"####" F 3 A_ArcProjectile("FlyingHack",32,12);
 		"####" A 8;
 		Goto See;
@@ -2098,7 +2098,7 @@ class MadCook3 : MadCook
 		Goto See;
 	Missile:
 		AFAB E 10 A_FaceTarget;
-		"####" FF 2 A_ArcProjectile("FlyingHack",32,12,random(-8,8));
+		"####" FF 2 A_ArcProjectile("FlyingHack",32,12, Random[Boss](-8,8));
 		"####" F 3 A_ArcProjectile("FlyingHack",32,12);
 		"####" A 8;
 		Goto See;
@@ -2122,7 +2122,7 @@ class MadCook4 : MadCook
 		Goto See;
 	Missile:
 		DJED E 10 A_FaceTarget;
-		"####" FF 2 A_ArcProjectile("FlyingHack",32,12,random(-8,8));
+		"####" FF 2 A_ArcProjectile("FlyingHack",32,12, Random[Boss](-8,8));
 		"####" F 3 A_ArcProjectile("FlyingHack",32,12);
 		"####" A 8;
 		Goto See;
@@ -2146,7 +2146,7 @@ class MadCook5 : MadCook
 		Goto See;
 	Missile:
 		DMJN E 10 A_FaceTarget;
-		"####" FF 2 A_ArcProjectile("FlyingHack",32,12,random(-8,8));
+		"####" FF 2 A_ArcProjectile("FlyingHack",32,12, Random[Boss](-8,8));
 		"####" F 3 A_ArcProjectile("FlyingHack",32,12);
 		"####" A 8;
 		Goto See;
@@ -2170,7 +2170,7 @@ class MadCook6 : MadCook
 		Goto See;
 	Missile:
 		OZYM E 10 A_FaceTarget;
-		"####" FF 2 A_ArcProjectile("FlyingHack",32,12,random(-8,8));
+		"####" FF 2 A_ArcProjectile("FlyingHack",32,12, Random[Boss](-8,8));
 		"####" F 3 A_ArcProjectile("FlyingHack",32,12);
 		"####" A 8;
 		Goto See;
@@ -2194,7 +2194,7 @@ class MadCook7 : MadCook
 		Goto See;
 	Missile:
 		TORM E 10 A_FaceTarget;
-		"####" FF 2 A_ArcProjectile("FlyingHack",32,12,random(-8,8));
+		"####" FF 2 A_ArcProjectile("FlyingHack",32,12, Random[Boss](-8,8));
 		"####" F 3 A_ArcProjectile("FlyingHack",32,12);
 		"####" A 8;
 		Goto See;
@@ -2222,7 +2222,7 @@ class MadCook8 : MadCook
 		Goto See;
 	Missile:
 		KOMU E 10 A_FaceTarget;
-		"####" FF 2 A_ArcProjectile("FlyingHack",32,12,random(-8,8));
+		"####" FF 2 A_ArcProjectile("FlyingHack",32,12, Random[Boss](-8,8));
 		"####" F 3 A_ArcProjectile("FlyingHack",32,12);
 		"####" A 8;
 		Goto See;
@@ -2246,21 +2246,21 @@ class MadButcher : MadDoctor
 	Missile:
 		BTCN E 6 A_FaceTarget;
 		"####" E 0 A_Jump(128, "Missile2", "Missile3");
-		"####" F 2 A_ArcProjectile("FlyingHack",32,12,random(-8,8));
+		"####" F 2 A_ArcProjectile("FlyingHack",32,12, Random[Boss](-8,8));
 		"####" C 8;
 		Goto See;
 	Missile2:
-		"####" F 2 A_ArcProjectile("FlyingHack",32,12,random(-2,2));
+		"####" F 2 A_ArcProjectile("FlyingHack",32,12, Random[Boss](-2,2));
 		"####" E 4 A_FaceTarget;
-		"####" F 2 A_ArcProjectile("FlyingHack",32,12,random(-8,8));
+		"####" F 2 A_ArcProjectile("FlyingHack",32,12, Random[Boss](-8,8));
 		"####" C 8;
 		Goto See;
 	Missile3:
-		"####" F 2 A_ArcProjectile("FlyingHack",32,12,random(-2,2));
+		"####" F 2 A_ArcProjectile("FlyingHack",32,12, Random[Boss](-2,2));
 		"####" E 4 A_FaceTarget;
-		"####" F 2 A_ArcProjectile("FlyingHack",32,12,random(-8,8));
+		"####" F 2 A_ArcProjectile("FlyingHack",32,12, Random[Boss](-8,8));
 		"####" E 4 A_FaceTarget;
-		"####" F 2 A_ArcProjectile("FlyingHack",32,12,random(-12,12));
+		"####" F 2 A_ArcProjectile("FlyingHack",32,12, Random[Boss](-12,12));
 		"####" C 8;
 		Goto See;
 	Pain:
@@ -2311,8 +2311,8 @@ class General : RocketMan
 	ChainGun:
 		FETT H 0 A_FaceTarget;
 		"####" H 0 A_StartSound("chaingun/fire", CHAN_WEAPON);
-		"####" H 2 A_SpawnProjectile("EnemyChaingunTracer",40,-20,random(-11,11));
-		"####" G 0 A_SpawnItemEx("Casing9mm", -12,0,36, random(-3,-4), random(-1,1), random(4,6), random(-55,-80),SXF_NOCHECKPOSITION);
+		"####" H 2 A_SpawnProjectile("EnemyChaingunTracer",40,-20, Random[Boss](-11,11));
+		"####" G 0 A_SpawnItemEx("Casing9mm", -12,0,36, Random[Boss](-3,-4), Random[Boss](-1,1), Random[Boss](4,6), Random[Boss](-55,-80),SXF_NOCHECKPOSITION);
 		"####" G 2 A_MonsterRefire(10,"See");
 		Loop;
 	Pain:
@@ -2397,12 +2397,12 @@ class BerlinGeneral2 : BerlinGeneral1
 		BOF2 E 4 A_FaceTarget;
 		"####" E 0 A_Jump(64,"Missile2");
 		"####" E 0 A_StartSound("chaingun/fire", CHAN_WEAPON);
-		"####" F 2 A_SpawnProjectile("EnemyChaingunTracer",43,24,random(-3,3));
-		"####" E 0 A_SpawnItemEx("Casing9mm", 20,0,40, random(-3,-4), random(-1,1), random(4,6), random(-55,-80),SXF_NOCHECKPOSITION);
+		"####" F 2 A_SpawnProjectile("EnemyChaingunTracer",43,24, Random[Boss](-3,3));
+		"####" E 0 A_SpawnItemEx("Casing9mm", 20,0,40, Random[Boss](-3,-4), Random[Boss](-1,1), Random[Boss](4,6), Random[Boss](-55,-80),SXF_NOCHECKPOSITION);
 		"####" E 0 {user_count++; if(user_count > 23) {user_count = 0; return ResolveState("See");} return ResolveState(null);}
 		"####" E 0 A_StartSound("chaingun/fire", CHAN_WEAPON);
-		"####" G 2 A_SpawnProjectile("EnemyChaingunTracer",43,24,random(-6,6));
-		"####" E 0 A_SpawnItemEx("Casing9mm", 20,0,40, random(-3,-4), random(-1,1), random(4,6), random(-55,-80),SXF_NOCHECKPOSITION);
+		"####" G 2 A_SpawnProjectile("EnemyChaingunTracer",43,24, Random[Boss](-6,6));
+		"####" E 0 A_SpawnItemEx("Casing9mm", 20,0,40, Random[Boss](-3,-4), Random[Boss](-1,1), Random[Boss](4,6), Random[Boss](-55,-80),SXF_NOCHECKPOSITION);
 		"####" E 0 {user_count++; if(user_count > 23) {user_count = 0; return ResolveState("See");} return ResolveState(null);}
 		"####" E 2 A_MonsterRefire(10,"See");
 		Loop;
@@ -2410,20 +2410,20 @@ class BerlinGeneral2 : BerlinGeneral1
 		BOF2 E 0 A_FaceTarget;
 		"####" E 0 A_Jump(64,"Missile2");
 		"####" E 0 A_StartSound("chaingun/fire", CHAN_WEAPON);
-		"####" F 2 A_SpawnProjectile("EnemyChaingunTracer",43,24,random(-3,3));
-		"####" E 0 A_SpawnItemEx("Casing9mm", 20,0,40, random(-3,-4), random(-1,1), random(4,6), random(-55,-80),SXF_NOCHECKPOSITION);
+		"####" F 2 A_SpawnProjectile("EnemyChaingunTracer",43,24, Random[Boss](-3,3));
+		"####" E 0 A_SpawnItemEx("Casing9mm", 20,0,40, Random[Boss](-3,-4), Random[Boss](-1,1), Random[Boss](4,6), Random[Boss](-55,-80),SXF_NOCHECKPOSITION);
 		"####" E 0 {user_count++; if(user_count > 23) {user_count = 0; return ResolveState("See");} return ResolveState(null);}
 		"####" E 0 A_StartSound("chaingun/fire", CHAN_WEAPON);
-		"####" G 2 A_SpawnProjectile("EnemyChaingunTracer",43,24,random(-6,6));
-		"####" E 0 A_SpawnItemEx("Casing9mm", 20,0,40, random(-3,-4), random(-1,1), random(4,6), random(-55,-80),SXF_NOCHECKPOSITION);
+		"####" G 2 A_SpawnProjectile("EnemyChaingunTracer",43,24, Random[Boss](-6,6));
+		"####" E 0 A_SpawnItemEx("Casing9mm", 20,0,40, Random[Boss](-3,-4), Random[Boss](-1,1), Random[Boss](4,6), Random[Boss](-55,-80),SXF_NOCHECKPOSITION);
 		"####" E 0 {user_count++; if(user_count > 23) {user_count = 0; return ResolveState("See");} return ResolveState(null);}
 		"####" E 0 A_StartSound("chaingun/fire", CHAN_WEAPON);
-		"####" F 2 A_SpawnProjectile("EnemyChaingunTracer",43,24,random(-9,9));
-		"####" E 0 A_SpawnItemEx("Casing9mm", 20,0,40, random(-3,-4), random(-1,1), random(4,6), random(-55,-80),SXF_NOCHECKPOSITION);
+		"####" F 2 A_SpawnProjectile("EnemyChaingunTracer",43,24, Random[Boss](-9,9));
+		"####" E 0 A_SpawnItemEx("Casing9mm", 20,0,40, Random[Boss](-3,-4), Random[Boss](-1,1), Random[Boss](4,6), Random[Boss](-55,-80),SXF_NOCHECKPOSITION);
 		"####" E 0 {user_count++; if(user_count > 23) {user_count = 0; return ResolveState("See");} return ResolveState(null);}
 		"####" E 0 A_StartSound("chaingun/fire", CHAN_WEAPON);
-		"####" G 2 A_SpawnProjectile("EnemyChaingunTracer",43,24,random(-12,12));
-		"####" E 0 A_SpawnItemEx("Casing9mm", 20,0,40, random(-3,-4), random(-1,1), random(4,6), random(-55,-80),SXF_NOCHECKPOSITION);
+		"####" G 2 A_SpawnProjectile("EnemyChaingunTracer",43,24, Random[Boss](-12,12));
+		"####" E 0 A_SpawnItemEx("Casing9mm", 20,0,40, Random[Boss](-3,-4), Random[Boss](-1,1), Random[Boss](4,6), Random[Boss](-55,-80),SXF_NOCHECKPOSITION);
 		"####" E 0 {user_count++; if(user_count > 23) {user_count = 0; return ResolveState("See");} return ResolveState(null);}
 		"####" E 2 A_MonsterRefire(10,"See");
 		Loop;
@@ -2584,19 +2584,19 @@ class Totengraber_Healthy : RocketMan
 	Missile:
 		"####" E 0 A_Jump(128, "Missile2");
 		"####" E 10 A_FaceTarget;
-		"####" F 6 LIGHT("TOTHFIRE") A_ArcProjectile("ZyklonBBomb",40,22,random(-10,10), 0, random(-1,-20));
+		"####" F 6 LIGHT("TOTHFIRE") A_ArcProjectile("ZyklonBBomb",40,22, Random[Boss](-10,10), 0, Random[Boss](-1,-20));
 		"####" E 6 A_FaceTarget;
-		"####" F 6 LIGHT("TOTHFIRE") A_ArcProjectile("ZyklonBBomb",40,22,random(-10,10), 0, random(-1,-20));
+		"####" F 6 LIGHT("TOTHFIRE") A_ArcProjectile("ZyklonBBomb",40,22, Random[Boss](-10,10), 0, Random[Boss](-1,-20));
 		Goto See;
 	Missile2:
 		"####" E 10 A_FaceTarget;
-		"####" G 2 LIGHT("TOT2FIRE") A_SpawnProjectile("ZyklonBBall",40,-14,random(-16,16));
+		"####" G 2 LIGHT("TOT2FIRE") A_SpawnProjectile("ZyklonBBall",40,-14, Random[Boss](-16,16));
 		"####" E 2;
-		"####" G 2 LIGHT("TOT2FIRE") A_SpawnProjectile("ZyklonBBall",40,-14,random(-16,16));
+		"####" G 2 LIGHT("TOT2FIRE") A_SpawnProjectile("ZyklonBBall",40,-14, Random[Boss](-16,16));
 		"####" E 2;
-		"####" G 2 LIGHT("TOT2FIRE") A_SpawnProjectile("ZyklonBBall",40,-14,random(-16,16));
+		"####" G 2 LIGHT("TOT2FIRE") A_SpawnProjectile("ZyklonBBall",40,-14, Random[Boss](-16,16));
 		"####" E 2;
-		"####" G 2 LIGHT("TOT2FIRE") A_SpawnProjectile("ZyklonBBall",40,-14,random(-16,16));
+		"####" G 2 LIGHT("TOT2FIRE") A_SpawnProjectile("ZyklonBBall",40,-14, Random[Boss](-16,16));
 		"####" E 2;
 		Goto See;
 	Pain:
@@ -2605,7 +2605,7 @@ class Totengraber_Healthy : RocketMan
 	Death:
 		"####" A 10 A_Scream;
 		"####" A 0 A_NoBlocking;
-		"####" AAAA 0 A_SpawnItemEx("PowerPlantSmokePuff", random(-8,8), random(-8,8), random(0,16), random(0,1), random(0,1), random(1,3));
+		"####" AAAA 0 A_SpawnItemEx("PowerPlantSmokePuff", Random[Smoke](-8,8), Random[Smoke](-8,8), Random[Smoke](0,16), Random[Smoke](0,1), Random[Smoke](0,1), Random[Smoke](1,3));
 		"####" AAAAAAAAAA 5 A_Fadeout(0.1); //laughs
 		Stop;
 	Idle:
@@ -2651,31 +2651,31 @@ class Totengraber_Wounded : RocketMan
 	See:
 		Goto See.BossBleeding;
 	Heal:
-		"####" E 6 A_SpawnAtGoal("CreepyRaiseFlat", random(10,-10), random(10,-10), 0, 0, 0, 0, 0);
+		"####" E 6 A_SpawnAtGoal("CreepyRaiseFlat", Random[Boss](10,-10), Random[Boss](10,-10), 0, 0, 0, 0, 0);
 		"####" E 0 A_HealGoal;
 		Goto See;
 	Missile:
 		"####" E 0 A_Jump(128, "Missile2");
 		"####" E 10 A_FaceTarget;
-		"####" EEE 0 A_SpawnItemEx("SkullBloodDrip",8,random(-4,-8),56,0,0,0,0,0);
-		"####" FF 0 LIGHT("TOTHFIRE") A_SpawnProjectile("ZyklonBBomb",40,22,random(-30,30), CMF_AIMDIRECTION, random(-1,-40));
-		"####" F 6 LIGHT("TOTHFIRE") A_SpawnProjectile("ZyklonBBomb",40,22,0,random(-30,30), CMF_AIMDIRECTION, random(-1,-40));
+		"####" EEE 0 A_SpawnItemEx("SkullBloodDrip",8, Random[Boss](-4,-8),56,0,0,0,0,0);
+		"####" FF 0 LIGHT("TOTHFIRE") A_SpawnProjectile("ZyklonBBomb",40,22, Random[Boss](-30,30), CMF_AIMDIRECTION, Random[Boss](-1,-40));
+		"####" F 6 LIGHT("TOTHFIRE") A_SpawnProjectile("ZyklonBBomb",40,22,0, Random[Boss](-30,30), CMF_AIMDIRECTION, Random[Boss](-1,-40));
 		Goto See;
 	Missile2:
 		"####" E 10 A_FaceTarget;
-		"####" EEE 0 A_SpawnItemEx("SkullBloodDrip",8,random(-4,-8),56,0,0,0,0,0);
-		"####" G 3 LIGHT("TOT2FIRE") A_SpawnProjectile("ZyklonBBall",40,-14,random(-32,32));
+		"####" EEE 0 A_SpawnItemEx("SkullBloodDrip",8, Random[Boss](-4,-8),56,0,0,0,0,0);
+		"####" G 3 LIGHT("TOT2FIRE") A_SpawnProjectile("ZyklonBBall",40,-14, Random[Boss](-32,32));
 		"####" E 2;
-		"####" G 2 LIGHT("TOT2FIRE") A_SpawnProjectile("ZyklonBBall",40,-14,random(-32,32));
+		"####" G 2 LIGHT("TOT2FIRE") A_SpawnProjectile("ZyklonBBall",40,-14, Random[Boss](-32,32));
 		"####" E 2;
-		"####" G 4 LIGHT("TOT2FIRE") A_SpawnProjectile("ZyklonBBall",40,-14,random(-32,32));
+		"####" G 4 LIGHT("TOT2FIRE") A_SpawnProjectile("ZyklonBBall",40,-14, Random[Boss](-32,32));
 		"####" E 2;
-		"####" EEE 0 A_SpawnItemEx("SkullBloodDrip",8,random(-4,-8),56,0,0,0,0,0);
-		"####" G 6 LIGHT("TOT2FIRE") A_SpawnProjectile("ZyklonBBall",40,-14,random(-32,32));
+		"####" EEE 0 A_SpawnItemEx("SkullBloodDrip",8, Random[Boss](-4,-8),56,0,0,0,0,0);
+		"####" G 6 LIGHT("TOT2FIRE") A_SpawnProjectile("ZyklonBBall",40,-14, Random[Boss](-32,32));
 		"####" E 2;
-		"####" G 3 LIGHT("TOT2FIRE") A_SpawnProjectile("ZyklonBBall",40,-14,random(-32,32));
+		"####" G 3 LIGHT("TOT2FIRE") A_SpawnProjectile("ZyklonBBall",40,-14, Random[Boss](-32,32));
 		"####" E 2;
-		"####" G 2 LIGHT("TOT2FIRE") A_SpawnProjectile("ZyklonBBall",40,-14,random(-32,32));
+		"####" G 2 LIGHT("TOT2FIRE") A_SpawnProjectile("ZyklonBBall",40,-14, Random[Boss](-32,32));
 		"####" E 2;
 		Goto See;
 	Pain:
@@ -2739,15 +2739,15 @@ class Mengele_Healthy : RocketMan
 		"####" E 0 A_Jump(128, "Missile2");
 		"####" E 10 A_FaceTarget;
 		"####" "#" 0 A_Jump(128, 2);
-		"####" F 6 LIGHT("TOTHFIRE") A_ArcProjectile("ZyklonBBomb",40,22,random(-10,10), 0, random(-1,-20));
+		"####" F 6 LIGHT("TOTHFIRE") A_ArcProjectile("ZyklonBBomb",40,22, Random[Boss](-10,10), 0, Random[Boss](-1,-20));
 		Goto See;
-		"####" L 6 LIGHT("TOTHFIRE") A_ArcProjectile("ZyklonBBomb",40,-22,random(-10,10), 0, random(-1,-20));
+		"####" L 6 LIGHT("TOTHFIRE") A_ArcProjectile("ZyklonBBomb",40,-22, Random[Boss](-10,10), 0, Random[Boss](-1,-20));
 		Goto See;
 	Missile2:
 		"####" E 10 A_FaceTarget;
-		"####" F 4 LIGHT("TOT2FIRE") A_SpawnProjectile("ZyklonBBall",40,22,random(-16,16));
+		"####" F 4 LIGHT("TOT2FIRE") A_SpawnProjectile("ZyklonBBall",40,22, Random[Boss](-16,16));
 		"####" E 4;
-		"####" L 4 LIGHT("TOT2FIRE") A_SpawnProjectile("ZyklonBBall",40,-22,random(-16,16));
+		"####" L 4 LIGHT("TOT2FIRE") A_SpawnProjectile("ZyklonBBall",40,-22, Random[Boss](-16,16));
 		Goto See;
 	Pain:
 		"####" H 6 A_NaziPain(256);
@@ -2755,7 +2755,7 @@ class Mengele_Healthy : RocketMan
 	Death:
 		"####" A 10 A_Scream;
 		"####" A 0 A_NoBlocking;
-		"####" AAAA 0 A_SpawnItemEx("PowerPlantSmokePuff", random(-8,8), random(-8,8), random(0,16), random(0,1), random(0,1), random(1,3));
+		"####" AAAA 0 A_SpawnItemEx("PowerPlantSmokePuff", Random[Smoke](-8,8), Random[Smoke](-8,8), Random[Smoke](0,16), Random[Smoke](0,1), Random[Smoke](0,1), Random[Smoke](1,3));
 		"####" AAAAAAAAAA 5 A_Fadeout(0.1); //laughs
 		Stop;
 	Idle:
@@ -2804,31 +2804,31 @@ class Mengele_Wounded : RocketMan
 	See:
 		Goto See.BossBleeding;
 	Heal:
-		"####" E 6 A_SpawnAtGoal("CreepyRaiseFlat", random(10,-10), random(10,-10), 0, 0, 0, 0, 0);
+		"####" E 6 A_SpawnAtGoal("CreepyRaiseFlat", Random[Boss](10,-10), Random[Boss](10,-10), 0, 0, 0, 0, 0);
 		"####" E 0 A_HealGoal;
 		Goto See;
 	Missile:
 		"####" E 0 A_Jump(128, "Missile2");
 		"####" E 10 A_FaceTarget;
-		"####" EEE 0 A_SpawnItemEx("SkullBloodDrip",8,random(-4,-8),56,0,0,0,0,0);
-		"####" L 3 LIGHT("TOTHFIRE") A_SpawnProjectile("ZyklonBBomb",40,-22,random(-30,30), CMF_AIMDIRECTION, random(-1,-40));
-		"####" F 3 LIGHT("TOTHFIRE") A_SpawnProjectile("ZyklonBBomb",40,22,0,random(-30,30), CMF_AIMDIRECTION, random(-1,-40));
+		"####" EEE 0 A_SpawnItemEx("SkullBloodDrip",8, Random[Boss](-4,-8),56,0,0,0,0,0);
+		"####" L 3 LIGHT("TOTHFIRE") A_SpawnProjectile("ZyklonBBomb",40,-22, Random[Boss](-30,30), CMF_AIMDIRECTION, Random[Boss](-1,-40));
+		"####" F 3 LIGHT("TOTHFIRE") A_SpawnProjectile("ZyklonBBomb",40,22,0, Random[Boss](-30,30), CMF_AIMDIRECTION, Random[Boss](-1,-40));
 		Goto See;
 	Missile2:
 		"####" E 10 A_FaceTarget;
-		"####" EEE 0 A_SpawnItemEx("SkullBloodDrip",8,random(-4,-8),56,0,0,0,0,0);
-		"####" F 6 LIGHT("TOT2FIRE") A_SpawnProjectile("ZyklonBBall",40,22,random(-32,32));
+		"####" EEE 0 A_SpawnItemEx("SkullBloodDrip",8, Random[Boss](-4,-8),56,0,0,0,0,0);
+		"####" F 6 LIGHT("TOT2FIRE") A_SpawnProjectile("ZyklonBBall",40,22, Random[Boss](-32,32));
 		"####" E 5;
-		"####" L 6 LIGHT("TOT2FIRE") A_SpawnProjectile("ZyklonBBall",40,-22,random(-32,32));
+		"####" L 6 LIGHT("TOT2FIRE") A_SpawnProjectile("ZyklonBBall",40,-22, Random[Boss](-32,32));
 		"####" E 5;
-		"####" F 6 LIGHT("TOT2FIRE") A_SpawnProjectile("ZyklonBBall",40,22,random(-32,32));
+		"####" F 6 LIGHT("TOT2FIRE") A_SpawnProjectile("ZyklonBBall",40,22, Random[Boss](-32,32));
 		"####" E 5;
-		"####" EEE 0 A_SpawnItemEx("SkullBloodDrip",8,random(-4,-8),56,0,0,0,0,0);
-		"####" L 6 LIGHT("TOT2FIRE") A_SpawnProjectile("ZyklonBBall",40,-22,random(-32,32));
+		"####" EEE 0 A_SpawnItemEx("SkullBloodDrip",8, Random[Boss](-4,-8),56,0,0,0,0,0);
+		"####" L 6 LIGHT("TOT2FIRE") A_SpawnProjectile("ZyklonBBall",40,-22, Random[Boss](-32,32));
 		"####" E 5;
-		"####" F 6 LIGHT("TOT2FIRE") A_SpawnProjectile("ZyklonBBall",40,22,random(-32,32));
+		"####" F 6 LIGHT("TOT2FIRE") A_SpawnProjectile("ZyklonBBall",40,22, Random[Boss](-32,32));
 		"####" E 5;
-		"####" L 6 LIGHT("TOT2FIRE") A_SpawnProjectile("ZyklonBBall",40,-22,random(-32,32));
+		"####" L 6 LIGHT("TOT2FIRE") A_SpawnProjectile("ZyklonBBall",40,-22, Random[Boss](-32,32));
 		"####" E 2;
 		Goto See;
 	Pain:
@@ -2933,10 +2933,10 @@ class DeathKnight : Nazi
 	Chaingun:
 		DKGT I 0 A_FaceTarget;
 		"####" I 0 A_StartSound("chaingun/fire", CHAN_WEAPON);
-		"####" II 0 A_SpawnProjectile("EnemyChaingunTracer",54,30,random(-11,11));
-		"####" II 0 A_SpawnProjectile("EnemyChaingunTracer",54,-30,random(-11,11));
-		"####" II 0 A_SpawnItemEx("Casing9mm", 32,0,58, random(3,4), random(-1,1), random(4,6), random(-55,-80),SXF_NOCHECKPOSITION);
-		"####" II 0 A_SpawnItemEx("Casing9mm", 32,0,58, random(3,4), random(-1,1), random(4,6), random(55,80),SXF_NOCHECKPOSITION);
+		"####" II 0 A_SpawnProjectile("EnemyChaingunTracer",54,30, Random[Boss](-11,11));
+		"####" II 0 A_SpawnProjectile("EnemyChaingunTracer",54,-30, Random[Boss](-11,11));
+		"####" II 0 A_SpawnItemEx("Casing9mm", 32,0,58, Random[Boss](3,4), Random[Boss](-1,1), Random[Boss](4,6), Random[Boss](-55,-80),SXF_NOCHECKPOSITION);
+		"####" II 0 A_SpawnItemEx("Casing9mm", 32,0,58, Random[Boss](3,4), Random[Boss](-1,1), Random[Boss](4,6), Random[Boss](55,80),SXF_NOCHECKPOSITION);
 		"####" I 0 {user_count2++; if(user_count2 > 47) {user_count2 = 0; return ResolveState("Retreat");} return ResolveState(null);}
 		"####" I 2 LIGHT("DEKNBFIR");
 		"####" H 2 A_MonsterRefire(20,"See");
@@ -2946,10 +2946,10 @@ class DeathKnight : Nazi
 		"####" K 0 A_SpawnProjectile("NebRocketEnemy",80,24);
 		"####" K 0 {user_count++; if(user_count > 15) {user_count = 0; return ResolveState("Retreat");} return ResolveState(null);}
 		"####" K 0 A_StartSound("chaingun/fire", CHAN_WEAPON);
-		"####" KK 0 A_SpawnProjectile("EnemyChaingunTracer",54,30,random(-11,11));
-		"####" KK 0 A_SpawnProjectile("EnemyChaingunTracer",54,-30,random(-11,11));
-		"####" KK 0 A_SpawnItemEx("Casing9mm", 32,0,58, random(3,4), random(-1,1), random(4,6), random(-55,-80),SXF_NOCHECKPOSITION);
-		"####" KK 0 A_SpawnItemEx("Casing9mm", 32,0,58, random(3,4), random(-1,1), random(4,6), random(55,80),SXF_NOCHECKPOSITION);
+		"####" KK 0 A_SpawnProjectile("EnemyChaingunTracer",54,30, Random[Boss](-11,11));
+		"####" KK 0 A_SpawnProjectile("EnemyChaingunTracer",54,-30, Random[Boss](-11,11));
+		"####" KK 0 A_SpawnItemEx("Casing9mm", 32,0,58, Random[Boss](3,4), Random[Boss](-1,1), Random[Boss](4,6), Random[Boss](-55,-80),SXF_NOCHECKPOSITION);
+		"####" KK 0 A_SpawnItemEx("Casing9mm", 32,0,58, Random[Boss](3,4), Random[Boss](-1,1), Random[Boss](4,6), Random[Boss](55,80),SXF_NOCHECKPOSITION);
 		"####" K 0 {user_count2++; if(user_count2 > 47) {user_count2 = 0; return ResolveState("Retreat");} return ResolveState(null);}
 		"####" K 2 LIGHT("DEKNBFIR");
 		"####" L 0 A_SpawnProjectile("NebRocketEnemy",80,-24);
@@ -3056,14 +3056,14 @@ class Longinus_Hitler : NaziBoss
 		"####" KLM 3;
 	Wounded: // Set/define the 'wounded' state sprite here!  NaziBoss class will automatically force the enemy to use this base sprite when 'wounded' is set to true!
 		SHI2 "#" 0 {
-			A_SpawnItemEx("HitlerChaingun", random(8,-8), random(8,-8), random(54,64), random(1,6), random(1,6), random(1,6), random(0,360), SXF_NOCHECKPOSITION);
+			A_SpawnItemEx("HitlerChaingun", Random[Boss](8,-8), Random[Boss](8,-8), Random[Boss](54,64), Random[Boss](1,6), Random[Boss](1,6), Random[Boss](1,6), Random[Boss](0,360), SXF_NOCHECKPOSITION);
 			WoundHealth = 0; // Reset the WoundHealth to zero so that this block will only get activated when he's initially wounded
 			wounded = true; // Set to true so that NaziBoss code will force the new sprite from here on
 			bNoPain = true; } // now he is enraged and does not feel pain
 		Goto See;
 	Heal:
 		"####" E 1 {bNoDamage = FALSE; A_UnsetReflective(); } //force Invulnerability removal - Ozy81
-		"####" E 17 A_SpawnAtGoal("CreepyRaiseFlat", random(10,-10), random(10,-10), 0, 0, 0, 0, 0);
+		"####" E 17 A_SpawnAtGoal("CreepyRaiseFlat", Random[Boss](10,-10), Random[Boss](10,-10), 0, 0, 0, 0, 0);
 		"####" S 18 A_HealGoal;
 		Goto See;
 	Missile: // Phase 1: 2 attacks (Chaingun/RumbleStomp) + Tesla for close range
@@ -3078,11 +3078,11 @@ class Longinus_Hitler : NaziBoss
 		"####" E 6 A_StartSound("chaingun/start", CHAN_AUTO);
 		"####" E 0 A_StartSound("chaingun/loop", CHAN_AUTO);
 	Chaingun.Loop:
-		"####" FF 2 LIGHT("HAIL3FIR") A_SpawnProjectile("EnemyChaingunTracer2",102,-56,random(-11,11));
-		"####" FF 0 A_SpawnItemEx("Casing9mm2", 102,0,-72, random(3,4), random(-1,1), random(4,6), random(110,160),SXF_NOCHECKPOSITION);
+		"####" FF 2 LIGHT("HAIL3FIR") A_SpawnProjectile("EnemyChaingunTracer2",102,-56, Random[Boss](-11,11));
+		"####" FF 0 A_SpawnItemEx("Casing9mm2", 102,0,-72, Random[Boss](3,4), Random[Boss](-1,1), Random[Boss](4,6), Random[Boss](110,160),SXF_NOCHECKPOSITION);
 		"####" I 0 {user_count2++; if(user_count2 > 5) {user_count2 = 0; return ResolveState("See");} return ResolveState(null);}
-		"####" GG 2 LIGHT("HAIL3FIR") A_SpawnProjectile("EnemyChaingunTracer2",102,-56,random(-11,11));
-		"####" GG 0 A_SpawnItemEx("Casing9mm2", 102,0,-72, random(3,4), random(-1,1), random(4,6), random(110,160),SXF_NOCHECKPOSITION);
+		"####" GG 2 LIGHT("HAIL3FIR") A_SpawnProjectile("EnemyChaingunTracer2",102,-56, Random[Boss](-11,11));
+		"####" GG 0 A_SpawnItemEx("Casing9mm2", 102,0,-72, Random[Boss](3,4), Random[Boss](-1,1), Random[Boss](4,6), Random[Boss](110,160),SXF_NOCHECKPOSITION);
 		"####" I 0 {user_count2++; if(user_count2 > 5) {user_count2 = 0; return ResolveState("See");} return ResolveState(null);}
 		"####" I 0 {user_count3++; if(user_count3 > 5) {return ResolveState("See");} return ResolveState(null);} //limit continuous refire
 		"####" G 2 A_MonsterRefire(20,"See");
@@ -3109,7 +3109,7 @@ class Longinus_Hitler : NaziBoss
 		"####" H 1 Radius_Quake(10,10,0,16,0);
 		"####" E 12
 		{
-			user_rumbleoffset = frandom(0.0, 360.0);
+			user_rumbleoffset = FRandom[Boss](0.0, 360.0);
 			for (user_count = 0; user_count < 8; user_count++)
 			{
 				A_SpawnProjectile("RumbleWaves",0,0,user_rumbleoffset+user_count*45.0,CMF_CHECKTARGETDEAD);
@@ -3123,7 +3123,7 @@ class Longinus_Hitler : NaziBoss
 		"####" H 1 Radius_Quake(10,10,0,16,0);
 		"####" E 12
 		{
-			user_rumbleoffset = frandom(0.0, 360.0);
+			user_rumbleoffset = FRandom[Boss](0.0, 360.0);
 			for (user_count = 0; user_count < 8; user_count++)
 			{
 				A_SpawnProjectile("RumbleWaves",0,0,user_rumbleoffset+user_count*45.0,CMF_CHECKTARGETDEAD);
@@ -3137,7 +3137,7 @@ class Longinus_Hitler : NaziBoss
 		"####" H 1 Radius_Quake(10,10,0,16,0);
 		"####" E 12
 		{
-			user_rumbleoffset = frandom(0.0, 360.0);
+			user_rumbleoffset = FRandom[Boss](0.0, 360.0);
 			for (user_count = 0; user_count < 8; user_count++)
 			{
 				A_SpawnProjectile("RumbleWaves",0,0,user_rumbleoffset+user_count*45.0,CMF_CHECKTARGETDEAD);
@@ -3155,10 +3155,10 @@ class Longinus_Hitler : NaziBoss
 		"####" V 14 A_FaceTarget;
 		"####" W 10 {
 			A_StartSound("grenade/throw");
-			A_ArcProjectile("ZyklonGrenadePacket",50,16,frandom(-30.0,30.0),CMF_CHECKTARGETDEAD);
-			A_ArcProjectile("ZyklonGrenadePacket",50,16,frandom(-30.0,30.0),CMF_CHECKTARGETDEAD);
-			A_ArcProjectile("ZyklonGrenadePacket",50,16,frandom(-30.0,30.0),CMF_CHECKTARGETDEAD);
-			A_ArcProjectile("ZyklonGrenadePacket",50,16,frandom(-30.0,30.0),CMF_CHECKTARGETDEAD);
+			A_ArcProjectile("ZyklonGrenadePacket",50,16, FRandom[Boss](-30.0,30.0),CMF_CHECKTARGETDEAD);
+			A_ArcProjectile("ZyklonGrenadePacket",50,16, FRandom[Boss](-30.0,30.0),CMF_CHECKTARGETDEAD);
+			A_ArcProjectile("ZyklonGrenadePacket",50,16, FRandom[Boss](-30.0,30.0),CMF_CHECKTARGETDEAD);
+			A_ArcProjectile("ZyklonGrenadePacket",50,16, FRandom[Boss](-30.0,30.0),CMF_CHECKTARGETDEAD);
 		}
 		"####" U 10;
 		"####" C 6;
@@ -3389,24 +3389,24 @@ class SuperSoldier : NaziBoss
 		"####" E 1 A_StartSound("chaingun/loop", CHAN_AUTO);
 		"####" E 10 A_FaceTarget;
 		"####" F 0 A_StartSound("chaingun/fire", CHAN_WEAPON);
-		"####" F 1 LIGHT("SUPAFIRE") A_SpawnProjectile("EnemyChaingunTracer",44,20,random(-11,11));
-		"####" F 1 LIGHT("SUPAFIRE") A_SpawnProjectile("EnemyChaingunTracer",44,-20,random(-11,11));
-		"####" F 0 A_SpawnItemEx("Casing9mm", 12,0,36, random(3,4), random(-1,1), random(4,6), random(-55,-80),SXF_NOCHECKPOSITION);
-		"####" F 0 A_SpawnItemEx("Casing9mm", 12,0,36, random(3,4), random(-1,1), random(4,6), random(55,80),SXF_NOCHECKPOSITION);
+		"####" F 1 LIGHT("SUPAFIRE") A_SpawnProjectile("EnemyChaingunTracer",44,20, Random[Boss](-11,11));
+		"####" F 1 LIGHT("SUPAFIRE") A_SpawnProjectile("EnemyChaingunTracer",44,-20, Random[Boss](-11,11));
+		"####" F 0 A_SpawnItemEx("Casing9mm", 12,0,36, Random[Boss](3,4), Random[Boss](-1,1), Random[Boss](4,6), Random[Boss](-55,-80),SXF_NOCHECKPOSITION);
+		"####" F 0 A_SpawnItemEx("Casing9mm", 12,0,36, Random[Boss](3,4), Random[Boss](-1,1), Random[Boss](4,6), Random[Boss](55,80),SXF_NOCHECKPOSITION);
 		"####" F 0 {user_count++; if(user_count > 23) {user_count = 0; return ResolveState("Retreat");} return ResolveState(null);}
 		"####" G 2 A_FaceTarget;
 		"####" F 0 A_StartSound("chaingun/fire", CHAN_WEAPON);
-		"####" F 1 LIGHT("SUPAFIRE") A_SpawnProjectile("EnemyChaingunTracer",44,20,random(-11,11));
-		"####" F 1 LIGHT("SUPAFIRE") A_SpawnProjectile("EnemyChaingunTracer",44,-20,random(-11,11));
-		"####" F 0 A_SpawnItemEx("Casing9mm", 12,0,36, random(3,4), random(-1,1), random(4,6), random(-55,-80),SXF_NOCHECKPOSITION);
-		"####" F 0 A_SpawnItemEx("Casing9mm", 12,0,36, random(3,4), random(-1,1), random(4,6), random(55,80),SXF_NOCHECKPOSITION);
+		"####" F 1 LIGHT("SUPAFIRE") A_SpawnProjectile("EnemyChaingunTracer",44,20, Random[Boss](-11,11));
+		"####" F 1 LIGHT("SUPAFIRE") A_SpawnProjectile("EnemyChaingunTracer",44,-20, Random[Boss](-11,11));
+		"####" F 0 A_SpawnItemEx("Casing9mm", 12,0,36, Random[Boss](3,4), Random[Boss](-1,1), Random[Boss](4,6), Random[Boss](-55,-80),SXF_NOCHECKPOSITION);
+		"####" F 0 A_SpawnItemEx("Casing9mm", 12,0,36, Random[Boss](3,4), Random[Boss](-1,1), Random[Boss](4,6), Random[Boss](55,80),SXF_NOCHECKPOSITION);
 		"####" F 0 {user_count++; if(user_count > 23) {user_count = 0; return ResolveState("Retreat");} return ResolveState(null);}
 		"####" G 2 A_FaceTarget;
 		"####" F 0 A_StartSound("chaingun/fire", CHAN_WEAPON);
-		"####" F 1 LIGHT("SUPAFIRE") A_SpawnProjectile("EnemyChaingunTracer",44,20,random(-11,11));
-		"####" F 1 LIGHT("SUPAFIRE") A_SpawnProjectile("EnemyChaingunTracer",44,-20,random(-11,11));
-		"####" F 0 A_SpawnItemEx("Casing9mm", 12,0,36, random(3,4), random(-1,1), random(4,6), random(-55,-80),SXF_NOCHECKPOSITION);
-		"####" F 0 A_SpawnItemEx("Casing9mm", 12,0,36, random(3,4), random(-1,1), random(4,6), random(55,80),SXF_NOCHECKPOSITION);
+		"####" F 1 LIGHT("SUPAFIRE") A_SpawnProjectile("EnemyChaingunTracer",44,20, Random[Boss](-11,11));
+		"####" F 1 LIGHT("SUPAFIRE") A_SpawnProjectile("EnemyChaingunTracer",44,-20, Random[Boss](-11,11));
+		"####" F 0 A_SpawnItemEx("Casing9mm", 12,0,36, Random[Boss](3,4), Random[Boss](-1,1), Random[Boss](4,6), Random[Boss](-55,-80),SXF_NOCHECKPOSITION);
+		"####" F 0 A_SpawnItemEx("Casing9mm", 12,0,36, Random[Boss](3,4), Random[Boss](-1,1), Random[Boss](4,6), Random[Boss](55,80),SXF_NOCHECKPOSITION);
 		"####" F 0 {user_count++; if(user_count > 23) {user_count = 0; return ResolveState("Retreat");} return ResolveState(null);}
 		"####" G 2 A_MonsterRefire(20,"See");
 		"####" G 0 A_FaceTarget;
@@ -3455,40 +3455,40 @@ class SuperSoldier_SS : SuperSoldier
 		"####" E 1 A_StartSound("chaingun/loop", CHAN_AUTO);
 		"####" E 10 A_FaceTarget;
 		"####" F 0 A_StartSound("chaingun/fire", CHAN_WEAPON);
-		"####" F 1 LIGHT("SUPAFIRE") A_SpawnProjectile("EnemyChaingunTracer",44,20,random(-11,11));
-		"####" F 1 LIGHT("SUPAFIRE") A_SpawnProjectile("EnemyChaingunTracer",44,-20,random(-11,11));
-		"####" F 0 A_SpawnItemEx("Casing9mm", 12,0,36, random(3,4), random(-1,1), random(4,6), random(-55,-80),SXF_NOCHECKPOSITION);
-		"####" F 0 A_SpawnItemEx("Casing9mm", 12,0,36, random(3,4), random(-1,1), random(4,6), random(55,80),SXF_NOCHECKPOSITION);
+		"####" F 1 LIGHT("SUPAFIRE") A_SpawnProjectile("EnemyChaingunTracer",44,20, Random[Boss](-11,11));
+		"####" F 1 LIGHT("SUPAFIRE") A_SpawnProjectile("EnemyChaingunTracer",44,-20, Random[Boss](-11,11));
+		"####" F 0 A_SpawnItemEx("Casing9mm", 12,0,36, Random[Boss](3,4), Random[Boss](-1,1), Random[Boss](4,6), Random[Boss](-55,-80),SXF_NOCHECKPOSITION);
+		"####" F 0 A_SpawnItemEx("Casing9mm", 12,0,36, Random[Boss](3,4), Random[Boss](-1,1), Random[Boss](4,6), Random[Boss](55,80),SXF_NOCHECKPOSITION);
 		"####" F 0 {user_count++; if(user_count > 23) {user_count = 0; return ResolveState("Retreat");} return ResolveState(null);}
 		"####" G 2 A_FaceTarget;
 		"####" F 0 A_StartSound("chaingun/fire", CHAN_WEAPON);
-		"####" F 1 LIGHT("SUPAFIRE") A_SpawnProjectile("EnemyChaingunTracer",44,20,random(-11,11));
-		"####" F 1 LIGHT("SUPAFIRE") A_SpawnProjectile("EnemyChaingunTracer",44,-20,random(-11,11));
-		"####" F 0 A_SpawnItemEx("Casing9mm", 12,0,36, random(3,4), random(-1,1), random(4,6), random(-55,-80),SXF_NOCHECKPOSITION);
-		"####" F 0 A_SpawnItemEx("Casing9mm", 12,0,36, random(3,4), random(-1,1), random(4,6), random(55,80),SXF_NOCHECKPOSITION);
+		"####" F 1 LIGHT("SUPAFIRE") A_SpawnProjectile("EnemyChaingunTracer",44,20, Random[Boss](-11,11));
+		"####" F 1 LIGHT("SUPAFIRE") A_SpawnProjectile("EnemyChaingunTracer",44,-20, Random[Boss](-11,11));
+		"####" F 0 A_SpawnItemEx("Casing9mm", 12,0,36, Random[Boss](3,4), Random[Boss](-1,1), Random[Boss](4,6), Random[Boss](-55,-80),SXF_NOCHECKPOSITION);
+		"####" F 0 A_SpawnItemEx("Casing9mm", 12,0,36, Random[Boss](3,4), Random[Boss](-1,1), Random[Boss](4,6), Random[Boss](55,80),SXF_NOCHECKPOSITION);
 		"####" F 0 {user_count++; if(user_count > 23) {user_count = 0; return ResolveState("Retreat");} return ResolveState(null);}
 		"####" G 2 A_FaceTarget;
 		"####" F 0 A_StartSound("chaingun/fire", CHAN_WEAPON);
-		"####" F 1 LIGHT("SUPAFIRE") A_SpawnProjectile("EnemyChaingunTracer",44,20,random(-11,11));
-		"####" F 1 LIGHT("SUPAFIRE") A_SpawnProjectile("EnemyChaingunTracer",44,-20,random(-11,11));
-		"####" F 0 A_SpawnItemEx("Casing9mm", 12,0,36, random(3,4), random(-1,1), random(4,6), random(-55,-80),SXF_NOCHECKPOSITION);
-		"####" F 0 A_SpawnItemEx("Casing9mm", 12,0,36, random(3,4), random(-1,1), random(4,6), random(55,80),SXF_NOCHECKPOSITION);
+		"####" F 1 LIGHT("SUPAFIRE") A_SpawnProjectile("EnemyChaingunTracer",44,20, Random[Boss](-11,11));
+		"####" F 1 LIGHT("SUPAFIRE") A_SpawnProjectile("EnemyChaingunTracer",44,-20, Random[Boss](-11,11));
+		"####" F 0 A_SpawnItemEx("Casing9mm", 12,0,36, Random[Boss](3,4), Random[Boss](-1,1), Random[Boss](4,6), Random[Boss](-55,-80),SXF_NOCHECKPOSITION);
+		"####" F 0 A_SpawnItemEx("Casing9mm", 12,0,36, Random[Boss](3,4), Random[Boss](-1,1), Random[Boss](4,6), Random[Boss](55,80),SXF_NOCHECKPOSITION);
 		"####" F 0 {user_count++; if(user_count > 23) {user_count = 0; return ResolveState("Retreat");} return ResolveState(null);}
 		"####" G 2 A_MonsterRefire(20,"See");
 		"####" G 0 A_FaceTarget;
  		Goto Missile+4;
 	Missile2:
 		HASS HMN 6 A_FaceTarget;
-		"####" O 4 LIGHT("SUPAFIRE") A_ArcProjectile("ClusterBomb",56,0,random(-16,16));
+		"####" O 4 LIGHT("SUPAFIRE") A_ArcProjectile("ClusterBomb",56,0, Random[Boss](-16,16));
 		"####" NMH 6;
 		Goto See;
 	Missile3:
 		HASS HMN 6 A_FaceTarget;
-		"####" O 4 LIGHT("SUPAFIRE") A_ArcProjectile("ClusterBomb",56,0,random(-16,16));
+		"####" O 4 LIGHT("SUPAFIRE") A_ArcProjectile("ClusterBomb",56,0, Random[Boss](-16,16));
 		"####" HMN 6 A_FaceTarget;
-		"####" O 4 LIGHT("SUPAFIRE") A_ArcProjectile("ClusterBomb",56,0,random(-32,-16));
+		"####" O 4 LIGHT("SUPAFIRE") A_ArcProjectile("ClusterBomb",56,0, Random[Boss](-32,-16));
 		"####" HMN 6 A_FaceTarget;
-		"####" O 4 LIGHT("SUPAFIRE") A_ArcProjectile("ClusterBomb",56,0,random(32,16));
+		"####" O 4 LIGHT("SUPAFIRE") A_ArcProjectile("ClusterBomb",56,0, Random[Boss](32,16));
 		"####" NMH 6;
 		Goto See;
 	Retreat:
@@ -3519,9 +3519,9 @@ class SuperSoldier_Afrika : SuperSoldier
 		"####" E 0 A_Jump(64,"Missile2");
 		"####" E 0 A_Jump(16,"Missile3");
 		"####" F 8;
-		"####" G 6 A_ArcProjectile("HandGrenade",50,16,frandom(-2,2),CMF_AIMDIRECTION); //one grenade will aim straight
+		"####" G 6 A_ArcProjectile("HandGrenade",50,16, FRandom[Boss](-2,2),CMF_AIMDIRECTION); //one grenade will aim straight
 		"####" F 8;
-		"####" I 6 A_ArcProjectile("HansGrenade",50,-16,frandom(-16,16));
+		"####" I 6 A_ArcProjectile("HansGrenade",50,-16, FRandom[Boss](-16,16));
 		"####" I 0 A_Jump(64,"Retreat");
 		"####" I 0 A_Jump(32,"Missile2");
 		"####" E 6;
@@ -3529,22 +3529,22 @@ class SuperSoldier_Afrika : SuperSoldier
 	Missile2:
 		HAFR E 12 A_FaceTarget;
 		"####" H 8;
-		"####" I 0 A_ArcProjectile("HansGrenade",50,16,frandom(-16,16));
-		"####" I 8 A_ArcProjectile("HandGrenade",50,-16,frandom(-16,16));
+		"####" I 0 A_ArcProjectile("HansGrenade",50,16, FRandom[Boss](-16,16));
+		"####" I 8 A_ArcProjectile("HandGrenade",50,-16, FRandom[Boss](-16,16));
 		"####" E 10;
 		"####" E 0 A_Jump(96,"Retreat");
 		Goto See;
 	Missile3:
 		HAFR E 6 A_FaceTarget;
 		"####" F 4;
-		"####" G 6 A_ArcProjectile("HandGrenade",50,16,frandom(-16,16));
+		"####" G 6 A_ArcProjectile("HandGrenade",50,16, FRandom[Boss](-16,16));
 		"####" F 4;
-		"####" I 6 A_ArcProjectile("HandGrenade",50,-16,frandom(-16,16));
+		"####" I 6 A_ArcProjectile("HandGrenade",50,-16, FRandom[Boss](-16,16));
 		"####" I 0 A_Jump(64,"Retreat");
 		"####" E 3;
 		"####" H 4;
-		"####" I 0 A_ArcProjectile("HansGrenade",50,16,frandom(-16,16));
-		"####" I 8 A_ArcProjectile("HansGrenade",50,-16,frandom(-16,16));
+		"####" I 0 A_ArcProjectile("HansGrenade",50,16, FRandom[Boss](-16,16));
+		"####" I 8 A_ArcProjectile("HansGrenade",50,-16, FRandom[Boss](-16,16));
 		"####" E 5;
 		"####" E 0 A_Jump(96,"Retreat");
 		Goto See;
@@ -3586,31 +3586,31 @@ class SuperSoldier_Arctic : SuperSoldier
 		"####" E 1 A_StartSound("chaingun/loop", CHAN_AUTO);
 		"####" E 8 A_FaceTarget;
 		"####" F 0 A_StartSound("chaingun/fire", CHAN_WEAPON);
-		"####" F 1 LIGHT("SUPAFIRE") A_SpawnProjectile("EnemyChaingunTracer",44,20,random(-11,11));
-		"####" F 1 LIGHT("SUPAFIRE") A_SpawnProjectile("EnemyChaingunTracer",44,-20,random(-11,11));
-		"####" F 0 A_SpawnItemEx("Casing9mm", 12,0,36, random(3,4), random(-1,1), random(4,6), random(-55,-80),SXF_NOCHECKPOSITION);
-		"####" F 0 A_SpawnItemEx("Casing9mm", 12,0,36, random(3,4), random(-1,1), random(4,6), random(55,80),SXF_NOCHECKPOSITION);
+		"####" F 1 LIGHT("SUPAFIRE") A_SpawnProjectile("EnemyChaingunTracer",44,20, Random[Boss](-11,11));
+		"####" F 1 LIGHT("SUPAFIRE") A_SpawnProjectile("EnemyChaingunTracer",44,-20, Random[Boss](-11,11));
+		"####" F 0 A_SpawnItemEx("Casing9mm", 12,0,36, Random[Boss](3,4), Random[Boss](-1,1), Random[Boss](4,6), Random[Boss](-55,-80),SXF_NOCHECKPOSITION);
+		"####" F 0 A_SpawnItemEx("Casing9mm", 12,0,36, Random[Boss](3,4), Random[Boss](-1,1), Random[Boss](4,6), Random[Boss](55,80),SXF_NOCHECKPOSITION);
 		"####" F 0 {user_count++; if(user_count > 23) {user_count = 0; return ResolveState("Retreat");} return ResolveState(null);}
 		"####" G 2 A_FaceTarget;
 		"####" F 0 A_StartSound("chaingun/fire", CHAN_WEAPON);
-		"####" F 1 LIGHT("SUPAFIRE") A_SpawnProjectile("EnemyChaingunTracer",44,20,random(-11,11));
-		"####" F 1 LIGHT("SUPAFIRE") A_SpawnProjectile("EnemyChaingunTracer",44,-20,random(-11,11));
-		"####" F 0 A_SpawnItemEx("Casing9mm", 12,0,36, random(3,4), random(-1,1), random(4,6), random(-55,-80),SXF_NOCHECKPOSITION);
-		"####" F 0 A_SpawnItemEx("Casing9mm", 12,0,36, random(3,4), random(-1,1), random(4,6), random(55,80),SXF_NOCHECKPOSITION);
+		"####" F 1 LIGHT("SUPAFIRE") A_SpawnProjectile("EnemyChaingunTracer",44,20, Random[Boss](-11,11));
+		"####" F 1 LIGHT("SUPAFIRE") A_SpawnProjectile("EnemyChaingunTracer",44,-20, Random[Boss](-11,11));
+		"####" F 0 A_SpawnItemEx("Casing9mm", 12,0,36, Random[Boss](3,4), Random[Boss](-1,1), Random[Boss](4,6), Random[Boss](-55,-80),SXF_NOCHECKPOSITION);
+		"####" F 0 A_SpawnItemEx("Casing9mm", 12,0,36, Random[Boss](3,4), Random[Boss](-1,1), Random[Boss](4,6), Random[Boss](55,80),SXF_NOCHECKPOSITION);
 		"####" F 0 {user_count++; if(user_count > 23) {user_count = 0; return ResolveState("Retreat");} return ResolveState(null);}
 		"####" G 2 A_FaceTarget;
 		"####" F 0 A_StartSound("chaingun/fire", CHAN_WEAPON);
-		"####" F 1 LIGHT("SUPAFIRE") A_SpawnProjectile("EnemyChaingunTracer",44,20,random(-11,11));
-		"####" F 1 LIGHT("SUPAFIRE") A_SpawnProjectile("EnemyChaingunTracer",44,-20,random(-11,11));
-		"####" F 0 A_SpawnItemEx("Casing9mm", 12,0,36, random(3,4), random(-1,1), random(4,6), random(-55,-80),SXF_NOCHECKPOSITION);
-		"####" F 0 A_SpawnItemEx("Casing9mm", 12,0,36, random(3,4), random(-1,1), random(4,6), random(55,80),SXF_NOCHECKPOSITION);
+		"####" F 1 LIGHT("SUPAFIRE") A_SpawnProjectile("EnemyChaingunTracer",44,20, Random[Boss](-11,11));
+		"####" F 1 LIGHT("SUPAFIRE") A_SpawnProjectile("EnemyChaingunTracer",44,-20, Random[Boss](-11,11));
+		"####" F 0 A_SpawnItemEx("Casing9mm", 12,0,36, Random[Boss](3,4), Random[Boss](-1,1), Random[Boss](4,6), Random[Boss](-55,-80),SXF_NOCHECKPOSITION);
+		"####" F 0 A_SpawnItemEx("Casing9mm", 12,0,36, Random[Boss](3,4), Random[Boss](-1,1), Random[Boss](4,6), Random[Boss](55,80),SXF_NOCHECKPOSITION);
 		"####" F 0 {user_count++; if(user_count > 23) {user_count = 0; return ResolveState("Retreat");} return ResolveState(null);}
 		"####" G 2 A_MonsterRefire(20,"See");
 		"####" G 0 A_FaceTarget;
  		Goto Missile+4;
 	Missile2:
 		"####" HMN 12 A_FaceTarget;
-		"####" O 0 A_StartSound("IceFire", CHAN_WEAPON, 0, frandom(0.5,0.8));
+		"####" O 0 A_StartSound("IceFire", CHAN_WEAPON, 0, FRandom[Boss](0.5,0.8));
 		"####" O 4 LIGHT("ICEBALL") A_SpawnProjectile("IceDart",50,0,0,CMF_AIMDIRECTION);
 		"####" NMH 12;
 		"####" H 0 A_Jump(64,"Retreat");
@@ -3641,18 +3641,18 @@ class SuperSoldier_Wehrmacht : SuperSoldier
 		"####" F 1 A_StartSound("chaingun/loop", CHAN_AUTO);
 		"####" F 6 A_FaceTarget;
 		"####" F 0 A_StartSound("chaingun/fire", CHAN_WEAPON);
-		"####" G 2 LIGHT("SUPAFIRE") A_SpawnProjectile("EnemyChaingunTracer",44,-20,random(-11,11));
-		"####" G 0 A_SpawnItemEx("Casing9mm", 12,0,36, random(3,4), random(-1,1), random(4,6), random(-55,-80),SXF_NOCHECKPOSITION);
+		"####" G 2 LIGHT("SUPAFIRE") A_SpawnProjectile("EnemyChaingunTracer",44,-20, Random[Boss](-11,11));
+		"####" G 0 A_SpawnItemEx("Casing9mm", 12,0,36, Random[Boss](3,4), Random[Boss](-1,1), Random[Boss](4,6), Random[Boss](-55,-80),SXF_NOCHECKPOSITION);
 		"####" G 0 {user_count++; if(user_count > 23) {user_count = 0; return ResolveState("Retreat");} return ResolveState(null);}
 		"####" F 4 A_FaceTarget;
 		"####" F 0 A_StartSound("chaingun/fire", CHAN_WEAPON);
-		"####" H 2 LIGHT("SUPAFIRE") A_SpawnProjectile("EnemyChaingunTracer",44,-20,random(-11,11));
-		"####" H 0 A_SpawnItemEx("Casing9mm", 12,0,36, random(3,4), random(-1,1), random(4,6), random(-55,-80),SXF_NOCHECKPOSITION);
+		"####" H 2 LIGHT("SUPAFIRE") A_SpawnProjectile("EnemyChaingunTracer",44,-20, Random[Boss](-11,11));
+		"####" H 0 A_SpawnItemEx("Casing9mm", 12,0,36, Random[Boss](3,4), Random[Boss](-1,1), Random[Boss](4,6), Random[Boss](-55,-80),SXF_NOCHECKPOSITION);
 		"####" H 0 {user_count++; if(user_count > 23) {user_count = 0; return ResolveState("Retreat");} return ResolveState(null);}
 		"####" F 4 A_FaceTarget;
 		"####" F 0 A_StartSound("chaingun/fire", CHAN_WEAPON);
-		"####" G 2 LIGHT("SUPAFIRE") A_SpawnProjectile("EnemyChaingunTracer",44,-20,random(-11,11));
-		"####" G 0 A_SpawnItemEx("Casing9mm", 12,0,36, random(3,4), random(-1,1), random(4,6), random(-55,-80),SXF_NOCHECKPOSITION);
+		"####" G 2 LIGHT("SUPAFIRE") A_SpawnProjectile("EnemyChaingunTracer",44,-20, Random[Boss](-11,11));
+		"####" G 0 A_SpawnItemEx("Casing9mm", 12,0,36, Random[Boss](3,4), Random[Boss](-1,1), Random[Boss](4,6), Random[Boss](-55,-80),SXF_NOCHECKPOSITION);
 		"####" G 0 {user_count++; if(user_count > 23) {user_count = 0; return ResolveState("Retreat");} return ResolveState(null);}
 		"####" F 4 A_MonsterRefire(20,"See");
 		"####" F 0 A_FaceTarget;
@@ -3660,7 +3660,7 @@ class SuperSoldier_Wehrmacht : SuperSoldier
 	Missile2:
 		HWER E 12 A_FaceTarget;
 		"####" I 8;
-		"####" J 6 A_ArcProjectile("HandGrenade",50,16,frandom(-2,2));
+		"####" J 6 A_ArcProjectile("HandGrenade",50,16, FRandom[Boss](-2,2));
 		"####" J 0 A_Jump(64,"Retreat");
 		"####" E 6;
 		Goto See;
@@ -3697,9 +3697,9 @@ class SuperSoldier_Navy : SuperSoldier
 		Goto Look;
 	Melee:
 		"####" N 4 A_FaceTarget;
-		"####" Q 5 A_CustomMeleeAttack(5*random(2,4));
+		"####" Q 5 A_CustomMeleeAttack(5*Random[Boss](2,4));
 		"####" N 4 A_FaceTarget;
-		"####" Q 5 A_CustomMeleeAttack(5*random(2,4));
+		"####" Q 5 A_CustomMeleeAttack(5*Random[Boss](2,4));
 		Goto See;
 	Missile:
 		"####" E 0 A_Jump(192,"Missile2");
@@ -3709,25 +3709,25 @@ class SuperSoldier_Navy : SuperSoldier
 		"####" E 10 A_FaceTarget;
 		"####" E 0 A_Jump(8,"Missile2");
 		"####" F 0 A_StartSound("chaingun/fire", CHAN_WEAPON);
-		"####" F 1 LIGHT("SUPAFIRE") A_SpawnProjectile("EnemyChaingunTracer",44,-20,random(-11,11));
-		"####" F 0 A_SpawnItemEx("Casing9mm", 12,0,36, random(3,4), random(-1,1), random(4,6), random(-55,-80),SXF_NOCHECKPOSITION);
+		"####" F 1 LIGHT("SUPAFIRE") A_SpawnProjectile("EnemyChaingunTracer",44,-20, Random[Boss](-11,11));
+		"####" F 0 A_SpawnItemEx("Casing9mm", 12,0,36, Random[Boss](3,4), Random[Boss](-1,1), Random[Boss](4,6), Random[Boss](-55,-80),SXF_NOCHECKPOSITION);
 		"####" F 0 {user_count++; if(user_count > 47) {user_count = 0; return ResolveState("Retreat");} return ResolveState(null);}
 		"####" G 2 A_FaceTarget;
 		"####" F 0 A_StartSound("chaingun/fire", CHAN_WEAPON);
-		"####" F 1 LIGHT("SUPAFIRE") A_SpawnProjectile("EnemyChaingunTracer",44,-20,random(-11,11));
-		"####" F 0 A_SpawnItemEx("Casing9mm", 12,0,36, random(3,4), random(-1,1), random(4,6), random(-55,-80),SXF_NOCHECKPOSITION);
+		"####" F 1 LIGHT("SUPAFIRE") A_SpawnProjectile("EnemyChaingunTracer",44,-20, Random[Boss](-11,11));
+		"####" F 0 A_SpawnItemEx("Casing9mm", 12,0,36, Random[Boss](3,4), Random[Boss](-1,1), Random[Boss](4,6), Random[Boss](-55,-80),SXF_NOCHECKPOSITION);
 		"####" F 0 {user_count++; if(user_count > 47) {user_count = 0; return ResolveState("Retreat");} return ResolveState(null);}
 		"####" G 2 A_FaceTarget;
 		"####" F 0 A_StartSound("chaingun/fire", CHAN_WEAPON);
-		"####" F 1 LIGHT("SUPAFIRE") A_SpawnProjectile("EnemyChaingunTracer",44,-20,random(-11,11));
-		"####" F 0 A_SpawnItemEx("Casing9mm", 12,0,36, random(3,4), random(-1,1), random(4,6), random(-55,-80),SXF_NOCHECKPOSITION);
+		"####" F 1 LIGHT("SUPAFIRE") A_SpawnProjectile("EnemyChaingunTracer",44,-20, Random[Boss](-11,11));
+		"####" F 0 A_SpawnItemEx("Casing9mm", 12,0,36, Random[Boss](3,4), Random[Boss](-1,1), Random[Boss](4,6), Random[Boss](-55,-80),SXF_NOCHECKPOSITION);
 		"####" F 0 {user_count++; if(user_count > 47) {user_count = 0; return ResolveState("Retreat");} return ResolveState(null);}
 		"####" G 2 A_MonsterRefire(20,"See");
 		"####" G 0 A_FaceTarget;
  		Goto Missile+4;
 	Missile2:
 		"####" MN 10 A_FaceTarget;
-		"####" O 4 A_SpawnProjectile("Harpoon",44,20,frandom(-2,2),CMF_AIMDIRECTION);
+		"####" O 4 A_SpawnProjectile("Harpoon",44,20, FRandom[Boss](-2,2),CMF_AIMDIRECTION);
 		"####" P 4 A_FaceTarget;
 		Goto See;
 	Retreat:
@@ -3761,17 +3761,17 @@ class SuperSoldier_Girl : SuperSoldier
 	Missile:
 		WBO4 E 20 A_FaceTarget;
 		"####" F 0 A_StartSound("browning/fire", CHAN_WEAPON);
-		"####" F 0 A_SpawnProjectile("EnemyPistolTracer",44,20,frandom(-6,6));
-		"####" F 0 A_SpawnProjectile("EnemyPistolTracer",44,-20,frandom(-6,6));
-		"####" F 0 A_SpawnItemEx("Casing9mm", 12,0,36, random(3,4), random(-1,1), random(4,6), random(-55,-80),SXF_NOCHECKPOSITION);
-		"####" F 0 A_SpawnItemEx("Casing9mm", 12,0,36, random(3,4), random(-1,1), random(4,6), random(55,80),SXF_NOCHECKPOSITION);
+		"####" F 0 A_SpawnProjectile("EnemyPistolTracer",44,20, FRandom[Boss](-6,6));
+		"####" F 0 A_SpawnProjectile("EnemyPistolTracer",44,-20, FRandom[Boss](-6,6));
+		"####" F 0 A_SpawnItemEx("Casing9mm", 12,0,36, Random[Boss](3,4), Random[Boss](-1,1), Random[Boss](4,6), Random[Boss](-55,-80),SXF_NOCHECKPOSITION);
+		"####" F 0 A_SpawnItemEx("Casing9mm", 12,0,36, Random[Boss](3,4), Random[Boss](-1,1), Random[Boss](4,6), Random[Boss](55,80),SXF_NOCHECKPOSITION);
 		"####" F 0 {user_count++; if(user_count > 11) {user_count = 0; return ResolveState("Retreat");} return ResolveState(null);}
 		"####" FG 3 LIGHT("SUPAFIRE") A_FaceTarget;
 		"####" F 0 A_StartSound("browning/fire", CHAN_WEAPON);
-		"####" F 0 A_SpawnProjectile("EnemyPistolTracer",44,20,frandom(-6,6));
-		"####" F 0 A_SpawnProjectile("EnemyPistolTracer",44,-20,frandom(-6,6));
-		"####" F 0 A_SpawnItemEx("Casing9mm", 12,0,36, random(3,4), random(-1,1), random(4,6), random(-55,-80),SXF_NOCHECKPOSITION);
-		"####" F 0 A_SpawnItemEx("Casing9mm", 12,0,36, random(3,4), random(-1,1), random(4,6), random(55,80),SXF_NOCHECKPOSITION);
+		"####" F 0 A_SpawnProjectile("EnemyPistolTracer",44,20, FRandom[Boss](-6,6));
+		"####" F 0 A_SpawnProjectile("EnemyPistolTracer",44,-20, FRandom[Boss](-6,6));
+		"####" F 0 A_SpawnItemEx("Casing9mm", 12,0,36, Random[Boss](3,4), Random[Boss](-1,1), Random[Boss](4,6), Random[Boss](-55,-80),SXF_NOCHECKPOSITION);
+		"####" F 0 A_SpawnItemEx("Casing9mm", 12,0,36, Random[Boss](3,4), Random[Boss](-1,1), Random[Boss](4,6), Random[Boss](55,80),SXF_NOCHECKPOSITION);
 		"####" F 0 {user_count++; if(user_count > 11) {user_count = 0; return ResolveState("Retreat");} return ResolveState(null);}
 		"####" FG 6 LIGHT("SUPAFIRE");
 		Goto See;
@@ -3805,78 +3805,78 @@ class SuperSoldier_Elsa : SuperSoldier_Girl
 		"####" E 0 A_Jump(128,"Missile3");
 		"####" E 0 A_Jump(64,"Missile4");
 		"####" F 0 A_StartSound("browning/fire", CHAN_WEAPON);
-		"####" FFFF 0 A_SpawnProjectile("EnemyPistolTracer",44,20,frandom(-6,6));
-		"####" FFFF 0 A_SpawnProjectile("EnemyPistolTracer",44,-20,frandom(-6,6));
-		"####" FFFF 0 A_SpawnItemEx("Casing9mm", 12,0,36, random(3,4), random(-1,1), random(4,6), random(-55,-80),SXF_NOCHECKPOSITION);
-		"####" FFFF 0 A_SpawnItemEx("Casing9mm", 12,0,36, random(3,4), random(-1,1), random(4,6), random(55,80),SXF_NOCHECKPOSITION);
+		"####" FFFF 0 A_SpawnProjectile("EnemyPistolTracer",44,20, FRandom[Boss](-6,6));
+		"####" FFFF 0 A_SpawnProjectile("EnemyPistolTracer",44,-20, FRandom[Boss](-6,6));
+		"####" FFFF 0 A_SpawnItemEx("Casing9mm", 12,0,36, Random[Boss](3,4), Random[Boss](-1,1), Random[Boss](4,6), Random[Boss](-55,-80),SXF_NOCHECKPOSITION);
+		"####" FFFF 0 A_SpawnItemEx("Casing9mm", 12,0,36, Random[Boss](3,4), Random[Boss](-1,1), Random[Boss](4,6), Random[Boss](55,80),SXF_NOCHECKPOSITION);
 		"####" F 0 {user_count++; if(user_count > 23) {user_count = 0; return ResolveState("Retreat");} return ResolveState(null);}
 		"####" FG 2 LIGHT("SUPAFIRE") A_FaceTarget;
 		"####" F 0 A_StartSound("browning/fire", CHAN_WEAPON);
-		"####" FFFF 0 A_SpawnProjectile("EnemyPistolTracer",44,20,frandom(-6,6));
-		"####" FFFF 0 A_SpawnProjectile("EnemyPistolTracer",44,-20,frandom(-6,6));
-		"####" FFFF 0 A_SpawnItemEx("Casing9mm", 12,0,36, random(3,4), random(-1,1), random(4,6), random(-55,-80),SXF_NOCHECKPOSITION);
-		"####" FFFF 0 A_SpawnItemEx("Casing9mm", 12,0,36, random(3,4), random(-1,1), random(4,6), random(55,80),SXF_NOCHECKPOSITION);
+		"####" FFFF 0 A_SpawnProjectile("EnemyPistolTracer",44,20, FRandom[Boss](-6,6));
+		"####" FFFF 0 A_SpawnProjectile("EnemyPistolTracer",44,-20, FRandom[Boss](-6,6));
+		"####" FFFF 0 A_SpawnItemEx("Casing9mm", 12,0,36, Random[Boss](3,4), Random[Boss](-1,1), Random[Boss](4,6), Random[Boss](-55,-80),SXF_NOCHECKPOSITION);
+		"####" FFFF 0 A_SpawnItemEx("Casing9mm", 12,0,36, Random[Boss](3,4), Random[Boss](-1,1), Random[Boss](4,6), Random[Boss](55,80),SXF_NOCHECKPOSITION);
 		"####" F 0 {user_count++; if(user_count > 23) {user_count = 0; return ResolveState("Retreat");} return ResolveState(null);}
 		"####" FG 2 LIGHT("SUPAFIRE") A_FaceTarget;
 		"####" F 0 A_StartSound("browning/fire", CHAN_WEAPON);
-		"####" FFFF 0 A_SpawnProjectile("EnemyPistolTracer",44,20,frandom(-6,6));
-		"####" FFFF 0 A_SpawnProjectile("EnemyPistolTracer",44,-20,frandom(-6,6));
-		"####" FFFF 0 A_SpawnItemEx("Casing9mm", 12,0,36, random(3,4), random(-1,1), random(4,6), random(-55,-80),SXF_NOCHECKPOSITION);
-		"####" FFFF 0 A_SpawnItemEx("Casing9mm", 12,0,36, random(3,4), random(-1,1), random(4,6), random(55,80),SXF_NOCHECKPOSITION);
+		"####" FFFF 0 A_SpawnProjectile("EnemyPistolTracer",44,20, FRandom[Boss](-6,6));
+		"####" FFFF 0 A_SpawnProjectile("EnemyPistolTracer",44,-20, FRandom[Boss](-6,6));
+		"####" FFFF 0 A_SpawnItemEx("Casing9mm", 12,0,36, Random[Boss](3,4), Random[Boss](-1,1), Random[Boss](4,6), Random[Boss](-55,-80),SXF_NOCHECKPOSITION);
+		"####" FFFF 0 A_SpawnItemEx("Casing9mm", 12,0,36, Random[Boss](3,4), Random[Boss](-1,1), Random[Boss](4,6), Random[Boss](55,80),SXF_NOCHECKPOSITION);
 		"####" F 0 {user_count++; if(user_count > 23) {user_count = 0; return ResolveState("Retreat");} return ResolveState(null);}
 		"####" FG 2 LIGHT("SUPAFIRE");
 		Goto See;
 	Missile2:
 		ELSA E 6 A_FaceTarget;
 		"####" F 0 A_StartSound("supaproj/fire", CHAN_WEAPON);
-		"####" F 4 { A_ArcProjectile("RedBounceBall",44,20,random(-2,2)); A_ArcProjectile("RedBounceBall",44,-20,random(-2,2)); }
+		"####" F 4 { A_ArcProjectile("RedBounceBall",44,20, Random[Boss](-2,2)); A_ArcProjectile("RedBounceBall",44,-20, Random[Boss](-2,2)); }
 		"####" F 0 {user_count++; if(user_count2 > 15) {user_count = 0; return ResolveState("Retreat");} return ResolveState(null);}
 		"####" E 5 A_FaceTarget;
 		"####" G 0 A_StartSound("supaproj/fire", CHAN_WEAPON);
-		"####" G 4 { A_ArcProjectile("RedBounceBall",44,20,random(-2,2)); A_ArcProjectile("RedBounceBall",44,-20,random(-2,2)); }
+		"####" G 4 { A_ArcProjectile("RedBounceBall",44,20, Random[Boss](-2,2)); A_ArcProjectile("RedBounceBall",44,-20, Random[Boss](-2,2)); }
 		"####" G 0 {user_count++; if(user_count2 > 15) {user_count = 0; return ResolveState("Retreat");} return ResolveState(null);}
 		"####" E 5 A_MonsterRefire(15,"See");
 		"####" E 0 A_FaceTarget;
 		Goto Missile+1;
 	Missile3:
 		ELSA E 5 A_FaceTarget;
-		"####" F 3 { A_ArcProjectile("ClusterBomb",44,20,random(-16,16)); A_ArcProjectile("ClusterBomb",44,-20,random(-16,16)); }
+		"####" F 3 { A_ArcProjectile("ClusterBomb",44,20, Random[Boss](-16,16)); A_ArcProjectile("ClusterBomb",44,-20, Random[Boss](-16,16)); }
 		"####" F 0 {user_count++; if(user_count3 > 7) {user_count = 0; return ResolveState("Retreat");} return ResolveState(null);}
 		"####" E 4 A_FaceTarget;
-		"####" F 3 { A_ArcProjectile("ClusterBomb",44,20,random(-32,16)); A_ArcProjectile("ClusterBomb",44,-20,random(-32,16)); }
+		"####" F 3 { A_ArcProjectile("ClusterBomb",44,20, Random[Boss](-32,16)); A_ArcProjectile("ClusterBomb",44,-20, Random[Boss](-32,16)); }
 		"####" F 0 {user_count++; if(user_count3 > 7) {user_count = 0; return ResolveState("See");} return ResolveState(null);}
 		"####" E 4 A_FaceTarget;
-		"####" F 3 { A_ArcProjectile("ClusterBomb",44,20,random(32,16)); A_ArcProjectile("ClusterBomb",44,-20,random(32,16)); }
+		"####" F 3 { A_ArcProjectile("ClusterBomb",44,20, Random[Boss](32,16)); A_ArcProjectile("ClusterBomb",44,-20, Random[Boss](32,16)); }
 		"####" F 0 {user_count++; if(user_count3 > 7) {user_count = 0; return ResolveState("Retreat");} return ResolveState(null);}
 		"####" E 5;
 		Goto See;
 	Missile4:
 		ELSA E 10 A_FaceTarget;
 		"####" F 0 A_StartSound("browning/fire", CHAN_WEAPON);
-		"####" FFFF 0 A_SpawnProjectile("EnemyPistolTracer",44,20,frandom(-6,6));
-		"####" FFFF 0 A_SpawnProjectile("EnemyPistolTracer",44,-20,frandom(-6,6));
-		"####" FFFF 0 A_SpawnItemEx("Casing9mm", 12,0,36, random(3,4), random(-1,1), random(4,6), random(-55,-80),SXF_NOCHECKPOSITION);
-		"####" FFFF 0 A_SpawnItemEx("Casing9mm", 12,0,36, random(3,4), random(-1,1), random(4,6), random(55,80),SXF_NOCHECKPOSITION);
+		"####" FFFF 0 A_SpawnProjectile("EnemyPistolTracer",44,20, FRandom[Boss](-6,6));
+		"####" FFFF 0 A_SpawnProjectile("EnemyPistolTracer",44,-20, FRandom[Boss](-6,6));
+		"####" FFFF 0 A_SpawnItemEx("Casing9mm", 12,0,36, Random[Boss](3,4), Random[Boss](-1,1), Random[Boss](4,6), Random[Boss](-55,-80),SXF_NOCHECKPOSITION);
+		"####" FFFF 0 A_SpawnItemEx("Casing9mm", 12,0,36, Random[Boss](3,4), Random[Boss](-1,1), Random[Boss](4,6), Random[Boss](55,80),SXF_NOCHECKPOSITION);
 		"####" F 0 {user_count++; if(user_count > 23) {user_count = 0; return ResolveState("Retreat");} return ResolveState(null);}
-		"####" F 3 LIGHT("SUPAFIRE") A_ArcProjectile("ClusterBomb",56,0,random(-4,4));
+		"####" F 3 LIGHT("SUPAFIRE") A_ArcProjectile("ClusterBomb",56,0, Random[Boss](-4,4));
 		"####" F 0 {user_count++; if(user_count3 > 7) {user_count = 0; return ResolveState("Retreat");} return ResolveState(null);}
 		"####" E 4 A_FaceTarget;
 		"####" FG 2 LIGHT("SUPAFIRE") A_FaceTarget;
 		"####" F 0 A_StartSound("browning/fire", CHAN_WEAPON);
-		"####" FFFF 0 A_SpawnProjectile("EnemyPistolTracer",44,20,frandom(-6,6));
-		"####" FFFF 0 A_SpawnProjectile("EnemyPistolTracer",44,-20,frandom(-6,6));
-		"####" FFFF 0 A_SpawnItemEx("Casing9mm", 12,0,36, random(3,4), random(-1,1), random(4,6), random(-55,-80),SXF_NOCHECKPOSITION);
-		"####" FFFF 0 A_SpawnItemEx("Casing9mm", 12,0,36, random(3,4), random(-1,1), random(4,6), random(55,80),SXF_NOCHECKPOSITION);
+		"####" FFFF 0 A_SpawnProjectile("EnemyPistolTracer",44,20, FRandom[Boss](-6,6));
+		"####" FFFF 0 A_SpawnProjectile("EnemyPistolTracer",44,-20, FRandom[Boss](-6,6));
+		"####" FFFF 0 A_SpawnItemEx("Casing9mm", 12,0,36, Random[Boss](3,4), Random[Boss](-1,1), Random[Boss](4,6), Random[Boss](-55,-80),SXF_NOCHECKPOSITION);
+		"####" FFFF 0 A_SpawnItemEx("Casing9mm", 12,0,36, Random[Boss](3,4), Random[Boss](-1,1), Random[Boss](4,6), Random[Boss](55,80),SXF_NOCHECKPOSITION);
 		"####" F 0 {user_count++; if(user_count > 23) {user_count = 0; return ResolveState("Retreat");} return ResolveState(null);}
-		"####" F 3 { A_ArcProjectile("ClusterBomb",44,20,random(-4,4)); A_ArcProjectile("ClusterBomb",44,-20,random(-4,4)); }
+		"####" F 3 { A_ArcProjectile("ClusterBomb",44,20, Random[Boss](-4,4)); A_ArcProjectile("ClusterBomb",44,-20, Random[Boss](-4,4)); }
 		"####" F 0 {user_count++; if(user_count3 > 7) {user_count = 0; return ResolveState("Retreat");} return ResolveState(null);}
 		"####" E 4 A_FaceTarget;
 		"####" F 0 A_StartSound("supaproj/fire", CHAN_WEAPON);
-		"####" F 4 { A_ArcProjectile("RedBounceBall",44,20,random(-2,2)); A_ArcProjectile("RedBounceBall",44,-20,random(-2,2)); }
+		"####" F 4 { A_ArcProjectile("RedBounceBall",44,20, Random[Boss](-2,2)); A_ArcProjectile("RedBounceBall",44,-20, Random[Boss](-2,2)); }
 		"####" F 0 {user_count++; if(user_count2 > 15) {user_count = 0; return ResolveState("Retreat");} return ResolveState(null);}
 		"####" E 4 A_FaceTarget;
 		"####" G 0 A_StartSound("supaproj/fire", CHAN_WEAPON);
-		"####" G 4 { A_ArcProjectile("RedBounceBall",44,20,random(-2,2)); A_ArcProjectile("RedBounceBall",44,-20,random(-2,2)); }
+		"####" G 4 { A_ArcProjectile("RedBounceBall",44,20, Random[Boss](-2,2)); A_ArcProjectile("RedBounceBall",44,-20, Random[Boss](-2,2)); }
 		"####" G 0 {user_count++; if(user_count2 > 15) {user_count = 0; return ResolveState("Retreat");} return ResolveState(null);}
 		"####" E 4 A_FaceTarget;
 		Goto See;
@@ -3926,31 +3926,31 @@ class SuperSoldier_Elite : SuperSoldier
 		"####" E 0 A_StartSound("chaingun/loop", CHAN_AUTO);
 		"####" E 10 A_FaceTarget;
 		"####" F 0 A_StartSound("chaingun/fire", CHAN_WEAPON);
-		"####" F 1 LIGHT("SUPAFIRE") A_SpawnProjectile("EnemyChaingunTracer",44,20,random(-11,11));
-		"####" F 1 LIGHT("SUPAFIRE") A_SpawnProjectile("EnemyChaingunTracer",44,-20,random(-11,11));
-		"####" F 0 A_SpawnItemEx("Casing9mm", 12,0,46, random(3,4), random(-1,1), random(4,6), random(-55,-80),SXF_NOCHECKPOSITION);
-		"####" F 0 A_SpawnItemEx("Casing9mm", 12,0,46, random(3,4), random(-1,1), random(4,6), random(55,80),SXF_NOCHECKPOSITION);
+		"####" F 1 LIGHT("SUPAFIRE") A_SpawnProjectile("EnemyChaingunTracer",44,20, Random[Boss](-11,11));
+		"####" F 1 LIGHT("SUPAFIRE") A_SpawnProjectile("EnemyChaingunTracer",44,-20, Random[Boss](-11,11));
+		"####" F 0 A_SpawnItemEx("Casing9mm", 12,0,46, Random[Boss](3,4), Random[Boss](-1,1), Random[Boss](4,6), Random[Boss](-55,-80),SXF_NOCHECKPOSITION);
+		"####" F 0 A_SpawnItemEx("Casing9mm", 12,0,46, Random[Boss](3,4), Random[Boss](-1,1), Random[Boss](4,6), Random[Boss](55,80),SXF_NOCHECKPOSITION);
 		"####" F 0 {user_count++; if(user_count > 39) {user_count = 0; return ResolveState("Retreat");} return ResolveState(null);}
 		"####" G 2 A_FaceTarget;
 		"####" F 0 A_StartSound("chaingun/fire", CHAN_WEAPON);
-		"####" F 1 LIGHT("SUPAFIRE") A_SpawnProjectile("EnemyChaingunTracer",44,20,random(-11,11));
-		"####" F 1 LIGHT("SUPAFIRE") A_SpawnProjectile("EnemyChaingunTracer",44,-20,random(-11,11));
-		"####" F 0 A_SpawnItemEx("Casing9mm", 12,0,46, random(3,4), random(-1,1), random(4,6), random(-55,-80),SXF_NOCHECKPOSITION);
-		"####" F 0 A_SpawnItemEx("Casing9mm", 12,0,46, random(3,4), random(-1,1), random(4,6), random(55,80),SXF_NOCHECKPOSITION);
+		"####" F 1 LIGHT("SUPAFIRE") A_SpawnProjectile("EnemyChaingunTracer",44,20, Random[Boss](-11,11));
+		"####" F 1 LIGHT("SUPAFIRE") A_SpawnProjectile("EnemyChaingunTracer",44,-20, Random[Boss](-11,11));
+		"####" F 0 A_SpawnItemEx("Casing9mm", 12,0,46, Random[Boss](3,4), Random[Boss](-1,1), Random[Boss](4,6), Random[Boss](-55,-80),SXF_NOCHECKPOSITION);
+		"####" F 0 A_SpawnItemEx("Casing9mm", 12,0,46, Random[Boss](3,4), Random[Boss](-1,1), Random[Boss](4,6), Random[Boss](55,80),SXF_NOCHECKPOSITION);
 		"####" F 0 {user_count++; if(user_count > 39) {user_count = 0; return ResolveState("Retreat");} return ResolveState(null);}
 		"####" G 2 A_FaceTarget;
 		"####" F 0 A_StartSound("chaingun/fire", CHAN_WEAPON);
-		"####" F 1 LIGHT("SUPAFIRE") A_SpawnProjectile("EnemyChaingunTracer",44,20,random(-11,11));
-		"####" F 1 LIGHT("SUPAFIRE") A_SpawnProjectile("EnemyChaingunTracer",44,-20,random(-11,11));
-		"####" F 0 A_SpawnItemEx("Casing9mm", 12,0,46, random(3,4), random(-1,1), random(4,6), random(-55,-80),SXF_NOCHECKPOSITION);
-		"####" F 0 A_SpawnItemEx("Casing9mm", 12,0,46, random(3,4), random(-1,1), random(4,6), random(55,80),SXF_NOCHECKPOSITION);
+		"####" F 1 LIGHT("SUPAFIRE") A_SpawnProjectile("EnemyChaingunTracer",44,20, Random[Boss](-11,11));
+		"####" F 1 LIGHT("SUPAFIRE") A_SpawnProjectile("EnemyChaingunTracer",44,-20, Random[Boss](-11,11));
+		"####" F 0 A_SpawnItemEx("Casing9mm", 12,0,46, Random[Boss](3,4), Random[Boss](-1,1), Random[Boss](4,6), Random[Boss](-55,-80),SXF_NOCHECKPOSITION);
+		"####" F 0 A_SpawnItemEx("Casing9mm", 12,0,46, Random[Boss](3,4), Random[Boss](-1,1), Random[Boss](4,6), Random[Boss](55,80),SXF_NOCHECKPOSITION);
 		"####" F 0 {user_count++; if(user_count > 39) {user_count = 0; return ResolveState("Retreat");} return ResolveState(null);}
 		"####" G 2 A_FaceTarget;
 		"####" F 0 A_StartSound("chaingun/fire", CHAN_WEAPON);
-		"####" F 1 LIGHT("SUPAFIRE") A_SpawnProjectile("EnemyChaingunTracer",44,20,random(-11,11));
-		"####" F 1 LIGHT("SUPAFIRE") A_SpawnProjectile("EnemyChaingunTracer",44,-20,random(-11,11));
-		"####" F 0 A_SpawnItemEx("Casing9mm", 12,0,46, random(3,4), random(-1,1), random(4,6), random(-55,-80),SXF_NOCHECKPOSITION);
-		"####" F 0 A_SpawnItemEx("Casing9mm", 12,0,46, random(3,4), random(-1,1), random(4,6), random(55,80),SXF_NOCHECKPOSITION);
+		"####" F 1 LIGHT("SUPAFIRE") A_SpawnProjectile("EnemyChaingunTracer",44,20, Random[Boss](-11,11));
+		"####" F 1 LIGHT("SUPAFIRE") A_SpawnProjectile("EnemyChaingunTracer",44,-20, Random[Boss](-11,11));
+		"####" F 0 A_SpawnItemEx("Casing9mm", 12,0,46, Random[Boss](3,4), Random[Boss](-1,1), Random[Boss](4,6), Random[Boss](-55,-80),SXF_NOCHECKPOSITION);
+		"####" F 0 A_SpawnItemEx("Casing9mm", 12,0,46, Random[Boss](3,4), Random[Boss](-1,1), Random[Boss](4,6), Random[Boss](55,80),SXF_NOCHECKPOSITION);
 		"####" F 0 {user_count++; if(user_count > 39) {user_count = 0; return ResolveState("Retreat");} return ResolveState(null);}
 		"####" G 2 A_MonsterRefire(20,"See");
 		"####" G 0 A_FaceTarget;
@@ -4021,7 +4021,7 @@ class Blondi : NaziBoss
 		Loop;
 	Melee:
 		"####" EF 2 Fast A_FaceTarget;
-		"####" G 8 Fast A_CustomMeleeAttack(random(6,9)*4,"dog/attack","dog/attack");
+		"####" G 8 Fast A_CustomMeleeAttack(Random[Boss](6,9)*4,"dog/attack","dog/attack");
 		"####" FE 4 Fast;
 		Goto See;
 	Missile:
@@ -4092,29 +4092,29 @@ class PhantomBoss : RocketMan
 		PHAN E 0 A_Jump(96,"Missile3");
 		PHAN E 0 A_Jump(128,"Missile2");
 		PHAN E 12 A_FaceTarget;
-		"####" F 8 A_SpawnProjectile("BossDagger",32,12,random(-2,2),CMF_CHECKTARGETDEAD);
+		"####" F 8 A_SpawnProjectile("BossDagger",32,12, Random[Boss](-2,2),CMF_CHECKTARGETDEAD);
 		"####" C 6;
 		Goto See;
 	Missile2:
 		PHAN U 12 A_FaceTarget;
-		"####" V 8 A_SpawnProjectile("BossDagger",32,-12,random(-2,2),CMF_CHECKTARGETDEAD);
+		"####" V 8 A_SpawnProjectile("BossDagger",32,-12, Random[Boss](-2,2),CMF_CHECKTARGETDEAD);
 		"####" W 12 A_FaceTarget;
-		"####" X 8 A_SpawnProjectile("BossDagger",32,12,random(-2,2),CMF_CHECKTARGETDEAD);
+		"####" X 8 A_SpawnProjectile("BossDagger",32,12, Random[Boss](-2,2),CMF_CHECKTARGETDEAD);
 		"####" C 8;
 		Goto See;
 	Missile3:
 		PHAN U 12 A_FaceTarget;
-		"####" V 8 A_SpawnProjectile("BossDagger",32,-12,random(-2,2),CMF_CHECKTARGETDEAD);
+		"####" V 8 A_SpawnProjectile("BossDagger",32,-12, Random[Boss](-2,2),CMF_CHECKTARGETDEAD);
 		"####" W 12 A_FaceTarget;
-		"####" X 8 A_SpawnProjectile("BossDagger",32,12,random(-2,2),CMF_CHECKTARGETDEAD);
+		"####" X 8 A_SpawnProjectile("BossDagger",32,12, Random[Boss](-2,2),CMF_CHECKTARGETDEAD);
 		"####" C 8;
-		"####" V 8 A_SpawnProjectile("BossDagger",32,-12,random(-2,2),CMF_CHECKTARGETDEAD);
+		"####" V 8 A_SpawnProjectile("BossDagger",32,-12, Random[Boss](-2,2),CMF_CHECKTARGETDEAD);
 		"####" W 12 A_FaceTarget;
-		"####" X 8 A_SpawnProjectile("BossDagger",32,12,random(-2,2),CMF_CHECKTARGETDEAD);
+		"####" X 8 A_SpawnProjectile("BossDagger",32,12, Random[Boss](-2,2),CMF_CHECKTARGETDEAD);
 		"####" C 8;
 		"####" E 12 A_FaceTarget;
-		"####" F 0 A_SpawnProjectile("BossDagger",32,-12,random(-2,2),CMF_CHECKTARGETDEAD);
-		"####" F 8 A_SpawnProjectile("BossDagger",32,12,random(-2,2),CMF_CHECKTARGETDEAD);
+		"####" F 0 A_SpawnProjectile("BossDagger",32,-12, Random[Boss](-2,2),CMF_CHECKTARGETDEAD);
+		"####" F 8 A_SpawnProjectile("BossDagger",32,12, Random[Boss](-2,2),CMF_CHECKTARGETDEAD);
 		"####" C 8;
 		Goto See;
 	Melee: //Drain power attack planned
@@ -4126,7 +4126,7 @@ class PhantomBoss : RocketMan
 		Goto See;
 	Heal:
 		"####" P 6;
-		"####" O 3 A_SpawnAtGoal("CreepyRaiseFlat", random(10,-10), random(10,-10), 0, 0, 0, 0, 0);
+		"####" O 3 A_SpawnAtGoal("CreepyRaiseFlat", Random[Boss](10,-10), Random[Boss](10,-10), 0, 0, 0, 0, 0);
 		"####" O 0 A_HealGoal;
 		"####" POP 12;
 		Goto See;
@@ -4180,8 +4180,8 @@ class PhantomBoss : RocketMan
 		"####" A 0 A_Look;
 		Loop;
 	Play:
-		"####" QRSQSRQ 1 A_SetTics(random(10,30));
-		"####" QQ 1 A_SetTics(random(10,40));
+		"####" QRSQSRQ 1 A_SetTics(Random[Boss](10,30));
+		"####" QQ 1 A_SetTics(Random[Boss](10,40));
 		Loop;
 	Stand:
 		PHAN T 8;

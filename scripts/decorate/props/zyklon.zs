@@ -36,13 +36,13 @@ class ZSkeletons: Actor
 	{
 	Spawn:
 		TNT1 A 0 NODELAY A_Jump(256,1,2,3,4,5,6,7);
-		ZPRP D -1 A_SetScale(Scale.X * RandomPick(-1, 1), Scale.Y);
-		ZPRP E -1 A_SetScale(Scale.X * RandomPick(-1, 1), Scale.Y);
-		ZPRP F -1 A_SetScale(Scale.X * RandomPick(-1, 1), Scale.Y);
-		ZPRP G -1 A_SetScale(Scale.X * RandomPick(-1, 1), Scale.Y);
-		ZPRP H -1 A_SetScale(Scale.X * RandomPick(-1, 1), Scale.Y);
-		ZPRP I -1 A_SetScale(Scale.X * RandomPick(-1, 1), Scale.Y);
-		ZPRP J -1 A_SetScale(Scale.X * RandomPick(-1, 1), Scale.Y);
+		ZPRP D -1 A_SetScale(Scale.X * RandomPick[Gibs](-1, 1), Scale.Y);
+		ZPRP E -1 A_SetScale(Scale.X * RandomPick[Gibs](-1, 1), Scale.Y);
+		ZPRP F -1 A_SetScale(Scale.X * RandomPick[Gibs](-1, 1), Scale.Y);
+		ZPRP G -1 A_SetScale(Scale.X * RandomPick[Gibs](-1, 1), Scale.Y);
+		ZPRP H -1 A_SetScale(Scale.X * RandomPick[Gibs](-1, 1), Scale.Y);
+		ZPRP I -1 A_SetScale(Scale.X * RandomPick[Gibs](-1, 1), Scale.Y);
+		ZPRP J -1 A_SetScale(Scale.X * RandomPick[Gibs](-1, 1), Scale.Y);
 		Stop;
 	}
 }
@@ -59,28 +59,28 @@ class ZRandomBodyParts1 : RandomBodyParts
 	{
 	Spawn:
 		TNT1 A 0 NODELAY A_Jump(256,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22);
-		ZCOR A -1 A_SetScale(Scale.X * RandomPick(-1, 1), Scale.Y);
-		ZCOR B -1 A_SetScale(Scale.X * RandomPick(-1, 1), Scale.Y);
-		ZCOR C -1 A_SetScale(Scale.X * RandomPick(-1, 1), Scale.Y);
-		ZCOR D -1 A_SetScale(Scale.X * RandomPick(-1, 1), Scale.Y);
-		ZCOR E -1 A_SetScale(Scale.X * RandomPick(-1, 1), Scale.Y);
-		ZCOR F -1 A_SetScale(Scale.X * RandomPick(-1, 1), Scale.Y);
-		ZCOR G -1 A_SetScale(Scale.X * RandomPick(-1, 1), Scale.Y);
-		ZCOR H -1 A_SetScale(Scale.X * RandomPick(-1, 1), Scale.Y);
-		ZCOR I -1 A_SetScale(Scale.X * RandomPick(-1, 1), Scale.Y);
-		ZCOR J -1 A_SetScale(Scale.X * RandomPick(-1, 1), Scale.Y);
-		ZCOR K -1 A_SetScale(Scale.X * RandomPick(-1, 1), Scale.Y);
-		ZCOR L -1 A_SetScale(Scale.X * RandomPick(-1, 1), Scale.Y);
-		ZCOR M -1 A_SetScale(Scale.X * RandomPick(-1, 1), Scale.Y);
-		ZCOR N -1 A_SetScale(Scale.X * RandomPick(-1, 1), Scale.Y);
-		ZCOR O -1 A_SetScale(Scale.X * RandomPick(-1, 1), Scale.Y);
-		ZCOR P -1 A_SetScale(Scale.X * RandomPick(-1, 1), Scale.Y);
-		ZCOR Q -1 A_SetScale(Scale.X * RandomPick(-1, 1), Scale.Y);
-		ZCOR R -1 A_SetScale(Scale.X * RandomPick(-1, 1), Scale.Y);
-		ZCOR S -1 A_SetScale(Scale.X * RandomPick(-1, 1), Scale.Y);
-		ZCOR T -1 A_SetScale(Scale.X * RandomPick(-1, 1), Scale.Y);
-		ZCOR U -1 A_SetScale(Scale.X * RandomPick(-1, 1), Scale.Y);
-		ZCOR V -1 A_SetScale(Scale.X * RandomPick(-1, 1), Scale.Y);
+		ZCOR A -1 A_SetScale(Scale.X * RandomPick[Gibs](-1, 1), Scale.Y);
+		ZCOR B -1 A_SetScale(Scale.X * RandomPick[Gibs](-1, 1), Scale.Y);
+		ZCOR C -1 A_SetScale(Scale.X * RandomPick[Gibs](-1, 1), Scale.Y);
+		ZCOR D -1 A_SetScale(Scale.X * RandomPick[Gibs](-1, 1), Scale.Y);
+		ZCOR E -1 A_SetScale(Scale.X * RandomPick[Gibs](-1, 1), Scale.Y);
+		ZCOR F -1 A_SetScale(Scale.X * RandomPick[Gibs](-1, 1), Scale.Y);
+		ZCOR G -1 A_SetScale(Scale.X * RandomPick[Gibs](-1, 1), Scale.Y);
+		ZCOR H -1 A_SetScale(Scale.X * RandomPick[Gibs](-1, 1), Scale.Y);
+		ZCOR I -1 A_SetScale(Scale.X * RandomPick[Gibs](-1, 1), Scale.Y);
+		ZCOR J -1 A_SetScale(Scale.X * RandomPick[Gibs](-1, 1), Scale.Y);
+		ZCOR K -1 A_SetScale(Scale.X * RandomPick[Gibs](-1, 1), Scale.Y);
+		ZCOR L -1 A_SetScale(Scale.X * RandomPick[Gibs](-1, 1), Scale.Y);
+		ZCOR M -1 A_SetScale(Scale.X * RandomPick[Gibs](-1, 1), Scale.Y);
+		ZCOR N -1 A_SetScale(Scale.X * RandomPick[Gibs](-1, 1), Scale.Y);
+		ZCOR O -1 A_SetScale(Scale.X * RandomPick[Gibs](-1, 1), Scale.Y);
+		ZCOR P -1 A_SetScale(Scale.X * RandomPick[Gibs](-1, 1), Scale.Y);
+		ZCOR Q -1 A_SetScale(Scale.X * RandomPick[Gibs](-1, 1), Scale.Y);
+		ZCOR R -1 A_SetScale(Scale.X * RandomPick[Gibs](-1, 1), Scale.Y);
+		ZCOR S -1 A_SetScale(Scale.X * RandomPick[Gibs](-1, 1), Scale.Y);
+		ZCOR T -1 A_SetScale(Scale.X * RandomPick[Gibs](-1, 1), Scale.Y);
+		ZCOR U -1 A_SetScale(Scale.X * RandomPick[Gibs](-1, 1), Scale.Y);
+		ZCOR V -1 A_SetScale(Scale.X * RandomPick[Gibs](-1, 1), Scale.Y);
 		Stop;
 	}
 }
@@ -97,14 +97,14 @@ class ZLyingBodies1 : RandomBodyParts
 	{
 	Spawn:
 		TNT1 A 0 NODELAY A_Jump(256,1,2,3,4,5,6,7,8,9);
-		ZBED A -1 A_SetScale(Scale.X * RandomPick(-1, 1), Scale.Y);
-		ZBED B -1 A_SetScale(Scale.X * RandomPick(-1, 1), Scale.Y);
-		ZBED C -1 A_SetScale(Scale.X * RandomPick(-1, 1), Scale.Y);
-		ZBED D -1 A_SetScale(Scale.X * RandomPick(-1, 1), Scale.Y);
-		ZBED E -1 A_SetScale(Scale.X * RandomPick(-1, 1), Scale.Y);
-		ZBED F -1 A_SetScale(Scale.X * RandomPick(-1, 1), Scale.Y);
-		ZBED G -1 A_SetScale(Scale.X * RandomPick(-1, 1), Scale.Y);
-		ZBED H -1 A_SetScale(Scale.X * RandomPick(-1, 1), Scale.Y);
+		ZBED A -1 A_SetScale(Scale.X * RandomPick[Gibs](-1, 1), Scale.Y);
+		ZBED B -1 A_SetScale(Scale.X * RandomPick[Gibs](-1, 1), Scale.Y);
+		ZBED C -1 A_SetScale(Scale.X * RandomPick[Gibs](-1, 1), Scale.Y);
+		ZBED D -1 A_SetScale(Scale.X * RandomPick[Gibs](-1, 1), Scale.Y);
+		ZBED E -1 A_SetScale(Scale.X * RandomPick[Gibs](-1, 1), Scale.Y);
+		ZBED F -1 A_SetScale(Scale.X * RandomPick[Gibs](-1, 1), Scale.Y);
+		ZBED G -1 A_SetScale(Scale.X * RandomPick[Gibs](-1, 1), Scale.Y);
+		ZBED H -1 A_SetScale(Scale.X * RandomPick[Gibs](-1, 1), Scale.Y);
 		ZBED I -1 A_SetScale(0.53);
 		Stop;
 	}
@@ -122,13 +122,13 @@ class ZLyingBodies2 : ZLyingBodies1
 	{
 	Spawn:
 		TNT1 A 0 NODELAY A_Jump(256,1,2,3,4,5,6,7);
-		ZCHL A -1 A_SetScale(Scale.X * RandomPick(-1, 1), Scale.Y);
-		ZCHL B -1 A_SetScale(Scale.X * RandomPick(-1, 1), Scale.Y);
-		ZCHL C -1 A_SetScale(Scale.X * RandomPick(-1, 1), Scale.Y);
-		ZCHL D -1 A_SetScale(Scale.X * RandomPick(-1, 1), Scale.Y);
-		ZCHL E -1 A_SetScale(Scale.X * RandomPick(-1, 1), Scale.Y);
-		ZCHL F -1 A_SetScale(Scale.X * RandomPick(-1, 1), Scale.Y);
-		ZCHL G -1 A_SetScale(Scale.X * RandomPick(-1, 1), Scale.Y);
+		ZCHL A -1 A_SetScale(Scale.X * RandomPick[Gibs](-1, 1), Scale.Y);
+		ZCHL B -1 A_SetScale(Scale.X * RandomPick[Gibs](-1, 1), Scale.Y);
+		ZCHL C -1 A_SetScale(Scale.X * RandomPick[Gibs](-1, 1), Scale.Y);
+		ZCHL D -1 A_SetScale(Scale.X * RandomPick[Gibs](-1, 1), Scale.Y);
+		ZCHL E -1 A_SetScale(Scale.X * RandomPick[Gibs](-1, 1), Scale.Y);
+		ZCHL F -1 A_SetScale(Scale.X * RandomPick[Gibs](-1, 1), Scale.Y);
+		ZCHL G -1 A_SetScale(Scale.X * RandomPick[Gibs](-1, 1), Scale.Y);
 		Stop;
 	}
 }
@@ -146,19 +146,19 @@ class ZBodySamples : Camp_PrisonerSamples
 	{
 	Spawn:
 		TNT1 A 0 NODELAY A_Jump(256,1,2,3,4,5,6,7,8,9,10,11,12,13);
-		CJAR A -1 A_SetScale(Scale.X * RandomPick(-1, 1), Scale.Y);
-		CJAR B -1 A_SetScale(Scale.X * RandomPick(-1, 1), Scale.Y);
-		CJAR C -1 A_SetScale(Scale.X * RandomPick(-1, 1), Scale.Y);
-		CJAR D -1 A_SetScale(Scale.X * RandomPick(-1, 1), Scale.Y);
-		ZJAR A -1 A_SetScale(Scale.X * RandomPick(-1, 1), Scale.Y);
-		ZJAR B -1 A_SetScale(Scale.X * RandomPick(-1, 1), Scale.Y);
-		ZJAR C -1 A_SetScale(Scale.X * RandomPick(-1, 1), Scale.Y);
-		ZJAR D -1 A_SetScale(Scale.X * RandomPick(-1, 1), Scale.Y);
-		ZJAR E -1 A_SetScale(Scale.X * RandomPick(-1, 1), Scale.Y);
-		ZJAR F -1 A_SetScale(Scale.X * RandomPick(-1, 1), Scale.Y);
-		ZJAR G -1 A_SetScale(Scale.X * RandomPick(-1, 1), Scale.Y);
-		ZJAR H -1 A_SetScale(Scale.X * RandomPick(-1, 1), Scale.Y);
-		ZJAR I -1 A_SetScale(Scale.X * RandomPick(-1, 1), Scale.Y);
+		CJAR A -1 A_SetScale(Scale.X * RandomPick[Gibs](-1, 1), Scale.Y);
+		CJAR B -1 A_SetScale(Scale.X * RandomPick[Gibs](-1, 1), Scale.Y);
+		CJAR C -1 A_SetScale(Scale.X * RandomPick[Gibs](-1, 1), Scale.Y);
+		CJAR D -1 A_SetScale(Scale.X * RandomPick[Gibs](-1, 1), Scale.Y);
+		ZJAR A -1 A_SetScale(Scale.X * RandomPick[Gibs](-1, 1), Scale.Y);
+		ZJAR B -1 A_SetScale(Scale.X * RandomPick[Gibs](-1, 1), Scale.Y);
+		ZJAR C -1 A_SetScale(Scale.X * RandomPick[Gibs](-1, 1), Scale.Y);
+		ZJAR D -1 A_SetScale(Scale.X * RandomPick[Gibs](-1, 1), Scale.Y);
+		ZJAR E -1 A_SetScale(Scale.X * RandomPick[Gibs](-1, 1), Scale.Y);
+		ZJAR F -1 A_SetScale(Scale.X * RandomPick[Gibs](-1, 1), Scale.Y);
+		ZJAR G -1 A_SetScale(Scale.X * RandomPick[Gibs](-1, 1), Scale.Y);
+		ZJAR H -1 A_SetScale(Scale.X * RandomPick[Gibs](-1, 1), Scale.Y);
+		ZJAR I -1 A_SetScale(Scale.X * RandomPick[Gibs](-1, 1), Scale.Y);
 		Stop;
 	}
 }
@@ -177,9 +177,9 @@ class ZImpaledHeads : Camp_RandomPileDead
 	{
 	Spawn:
 		TNT1 A 0 NODELAY A_Jump(256,1,2,3);
-		ZPRP A -1 A_SetScale(Scale.X * RandomPick(-1, 1), Scale.Y);
-		ZPRP B -1 A_SetScale(Scale.X * RandomPick(-1, 1), Scale.Y);
-		ZPRP C -1 A_SetScale(Scale.X * RandomPick(-1, 1), Scale.Y);
+		ZPRP A -1 A_SetScale(Scale.X * RandomPick[Gibs](-1, 1), Scale.Y);
+		ZPRP B -1 A_SetScale(Scale.X * RandomPick[Gibs](-1, 1), Scale.Y);
+		ZPRP C -1 A_SetScale(Scale.X * RandomPick[Gibs](-1, 1), Scale.Y);
 		Stop;
 	}
 }
@@ -195,21 +195,21 @@ class ZDeadBody : DeadBody
 	{
 	Spawn:
 		TNT1 A 0 NODELAY A_Jump(256,1,2,3,4,5,"Breathing");
-		ZODY A -1 A_SetScale(Scale.X * RandomPick(-1, 1), Scale.Y);
-		ZODY B -1 A_SetScale(Scale.X * RandomPick(-1, 1), Scale.Y);
-		ZODY C -1 A_SetScale(Scale.X * RandomPick(-1, 1), Scale.Y);
-		ZODY D -1 A_SetScale(Scale.X * RandomPick(-1, 1), Scale.Y);
-		ZODY E -1 A_SetScale(Scale.X * RandomPick(-1, 1), Scale.Y);
+		ZODY A -1 A_SetScale(Scale.X * RandomPick[Gibs](-1, 1), Scale.Y);
+		ZODY B -1 A_SetScale(Scale.X * RandomPick[Gibs](-1, 1), Scale.Y);
+		ZODY C -1 A_SetScale(Scale.X * RandomPick[Gibs](-1, 1), Scale.Y);
+		ZODY D -1 A_SetScale(Scale.X * RandomPick[Gibs](-1, 1), Scale.Y);
+		ZODY E -1 A_SetScale(Scale.X * RandomPick[Gibs](-1, 1), Scale.Y);
 		Stop;
 	Breathing:
-		ZODY E 0 A_SetScale(Scale.X * RandomPick(-1, 1), Scale.Y);
+		ZODY E 0 A_SetScale(Scale.X * RandomPick[Gibs](-1, 1), Scale.Y);
 	BreathLoop:
-		"####" E 1 A_SetTics(Random(40,80));
-		"####" F 1 A_SetTics(Random(8,16));
-		"####" G 1 A_SetTics(Random(8,16));
-		"####" H 1 A_SetTics(Random(8,16));
-		"####" G 1 A_SetTics(Random(8,16));
-		"####" F 1 A_SetTics(Random(8,16));
+		"####" E 1 A_SetTics(Random[Scenery](40,80));
+		"####" F 1 A_SetTics(Random[Scenery](8,16));
+		"####" G 1 A_SetTics(Random[Scenery](8,16));
+		"####" H 1 A_SetTics(Random[Scenery](8,16));
+		"####" G 1 A_SetTics(Random[Scenery](8,16));
+		"####" F 1 A_SetTics(Random[Scenery](8,16));
 		Loop;
 	}
 }
@@ -227,14 +227,14 @@ class ZDogsBodies : DogsBodies
 		TNT1 A 0 NODELAY A_Jump(256,1,2,3,4,5,6,7,8,9,10);
 		ZARK D -1 A_SetScale(0.9);
 		ZARK E -1 A_SetScale(0.9);
-		ZYDO D -1 A_SetScale(Scale.X * RandomPick(-1, 1), Scale.Y);
-		ZYDO E -1 A_SetScale(Scale.X * RandomPick(-1, 1), Scale.Y);
-		ZYDO F -1 A_SetScale(Scale.X * RandomPick(-1, 1), Scale.Y);
-		ZYDO G -1 A_SetScale(Scale.X * RandomPick(-1, 1), Scale.Y);
-		ZYDO H -1 A_SetScale(Scale.X * RandomPick(-1, 1), Scale.Y);
-		ZYDO I -1 A_SetScale(Scale.X * RandomPick(-1, 1), Scale.Y);
-		ZYDO K -1 A_SetScale(Scale.X * RandomPick(-1, 1), Scale.Y);
-		ZDOG K -1 A_SetScale(Scale.X * RandomPick(-1, 1), Scale.Y);
+		ZYDO D -1 A_SetScale(Scale.X * RandomPick[Gibs](-1, 1), Scale.Y);
+		ZYDO E -1 A_SetScale(Scale.X * RandomPick[Gibs](-1, 1), Scale.Y);
+		ZYDO F -1 A_SetScale(Scale.X * RandomPick[Gibs](-1, 1), Scale.Y);
+		ZYDO G -1 A_SetScale(Scale.X * RandomPick[Gibs](-1, 1), Scale.Y);
+		ZYDO H -1 A_SetScale(Scale.X * RandomPick[Gibs](-1, 1), Scale.Y);
+		ZYDO I -1 A_SetScale(Scale.X * RandomPick[Gibs](-1, 1), Scale.Y);
+		ZYDO K -1 A_SetScale(Scale.X * RandomPick[Gibs](-1, 1), Scale.Y);
+		ZDOG K -1 A_SetScale(Scale.X * RandomPick[Gibs](-1, 1), Scale.Y);
 		Stop;
 	}
 }
@@ -250,8 +250,8 @@ class ZCatsBodies : CatsBodies //recolors not included yet - ozy81
 	{
 	Spawn:
 		TNT1 A 0 NODELAY A_Jump(256,1,2);
-		ZCAT D -1 A_SetScale(Scale.X * RandomPick(-1, 1), Scale.Y);
-		ZCAT E -1 A_SetScale(Scale.X * RandomPick(-1, 1), Scale.Y);
+		ZCAT D -1 A_SetScale(Scale.X * RandomPick[Gibs](-1, 1), Scale.Y);
+		ZCAT E -1 A_SetScale(Scale.X * RandomPick[Gibs](-1, 1), Scale.Y);
 		Stop;
 	}
 }
@@ -267,13 +267,13 @@ class ZCowsBodies : CowsBodies
 	{
 	Spawn:
 		TNT1 A 0 NODELAY A_Jump(256,1,2,3,4,5,6,7);
-		ZCOW H -1 A_SetScale(Scale.X * RandomPick(-1, 1), Scale.Y);
-		ZCOW I -1 A_SetScale(Scale.X * RandomPick(-1, 1), Scale.Y);
-		ZCOW J -1 A_SetScale(Scale.X * RandomPick(-1, 1), Scale.Y);
-		ZCOW K -1 A_SetScale(Scale.X * RandomPick(-1, 1), Scale.Y);
-		ZCOW L -1 A_SetScale(Scale.X * RandomPick(-1, 1), Scale.Y);
-		ZCOW M -1 A_SetScale(Scale.X * RandomPick(-1, 1), Scale.Y);
-		ZCOW N -1 A_SetScale(Scale.X * RandomPick(-1, 1), Scale.Y);
+		ZCOW H -1 A_SetScale(Scale.X * RandomPick[Gibs](-1, 1), Scale.Y);
+		ZCOW I -1 A_SetScale(Scale.X * RandomPick[Gibs](-1, 1), Scale.Y);
+		ZCOW J -1 A_SetScale(Scale.X * RandomPick[Gibs](-1, 1), Scale.Y);
+		ZCOW K -1 A_SetScale(Scale.X * RandomPick[Gibs](-1, 1), Scale.Y);
+		ZCOW L -1 A_SetScale(Scale.X * RandomPick[Gibs](-1, 1), Scale.Y);
+		ZCOW M -1 A_SetScale(Scale.X * RandomPick[Gibs](-1, 1), Scale.Y);
+		ZCOW N -1 A_SetScale(Scale.X * RandomPick[Gibs](-1, 1), Scale.Y);
 		Stop;
 	}
 }
@@ -289,14 +289,14 @@ class ZPigsBodies : PigsBodies
 	{
 	Spawn:
 		TNT1 A 0 NODELAY A_Jump(256,1,2,3,4,5,6,7,8);
-		ZPIG J -1 A_SetScale(Scale.X * RandomPick(-1, 1), Scale.Y);
-		ZPIG K -1 A_SetScale(Scale.X * RandomPick(-1, 1), Scale.Y);
-		ZPIG L -1 A_SetScale(Scale.X * RandomPick(-1, 1), Scale.Y);
-		ZPIG M -1 A_SetScale(Scale.X * RandomPick(-1, 1), Scale.Y);
-		ZPIG N -1 A_SetScale(Scale.X * RandomPick(-1, 1), Scale.Y);
-		ZPIG O -1 A_SetScale(Scale.X * RandomPick(-1, 1), Scale.Y);
-		ZPIG P -1 A_SetScale(Scale.X * RandomPick(-1, 1), Scale.Y);
-		ZPIG Q -1 A_SetScale(Scale.X * RandomPick(-1, 1), Scale.Y);
+		ZPIG J -1 A_SetScale(Scale.X * RandomPick[Gibs](-1, 1), Scale.Y);
+		ZPIG K -1 A_SetScale(Scale.X * RandomPick[Gibs](-1, 1), Scale.Y);
+		ZPIG L -1 A_SetScale(Scale.X * RandomPick[Gibs](-1, 1), Scale.Y);
+		ZPIG M -1 A_SetScale(Scale.X * RandomPick[Gibs](-1, 1), Scale.Y);
+		ZPIG N -1 A_SetScale(Scale.X * RandomPick[Gibs](-1, 1), Scale.Y);
+		ZPIG O -1 A_SetScale(Scale.X * RandomPick[Gibs](-1, 1), Scale.Y);
+		ZPIG P -1 A_SetScale(Scale.X * RandomPick[Gibs](-1, 1), Scale.Y);
+		ZPIG Q -1 A_SetScale(Scale.X * RandomPick[Gibs](-1, 1), Scale.Y);
 		Stop;
 	}
 }
@@ -310,7 +310,7 @@ class ZDeadBear : DeadBear
 	States
 	{
 	Spawn:
-		ZBER B -1 NODELAY A_SetScale(Scale.X * RandomPick(-1, 1), Scale.Y);
+		ZBER B -1 NODELAY A_SetScale(Scale.X * RandomPick[Gibs](-1, 1), Scale.Y);
 		Stop;
 	}
 }

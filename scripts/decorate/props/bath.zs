@@ -51,12 +51,12 @@ class Shit : BathBase
 	States
 	{
 	Spawn:
-		SHIT A -1 NODELAY A_SetScale(Scale.X * RandomPick(-1, 1), Scale.Y);
+		SHIT A -1 NODELAY A_SetScale(Scale.X * RandomPick[Scenery](-1, 1), Scale.Y);
 		Stop;
 	Death:
 		"####" A 0 A_UnSetSolid;
-		"####" A 0 A_StartSound("SHITHPNS", CHAN_ITEM, 0, frandom(0.5,0.7), ATTN_NORM);
-		"####" A -1 A_SetScale(Scale.X * RandomPick(-1, 1), Scale.Y / 2);
+		"####" A 0 A_StartSound("SHITHPNS", CHAN_ITEM, 0, FRandom[Scenery](0.5,0.7), ATTN_NORM);
+		"####" A -1 A_SetScale(Scale.X * RandomPick[Scenery](-1, 1), Scale.Y / 2);
 		Stop;
 	}
 }
@@ -71,13 +71,13 @@ class Shitler : Shit
 	States
 	{
 	Spawn:
-		SHIT B -1 NODELAY A_SetScale(Scale.X * RandomPick(-1, 1), Scale.Y);
+		SHIT B -1 NODELAY A_SetScale(Scale.X * RandomPick[Scenery](-1, 1), Scale.Y);
 		Stop;
 	Death:
 		"####" C 0 A_UnSetSolid;
-		"####" C 0 A_StartSound("SHITHPNS", CHAN_ITEM, 0, frandom(0.5,0.7), ATTN_NORM);
+		"####" C 0 A_StartSound("SHITHPNS", CHAN_ITEM, 0, FRandom[Scenery](0.5,0.7), ATTN_NORM);
 		"####" CDE 4;
-		"####" E -1 A_SetScale(Scale.X * RandomPick(-1, 1), Scale.Y / 2);
+		"####" E -1 A_SetScale(Scale.X * RandomPick[Scenery](-1, 1), Scale.Y / 2);
 		Stop;
 	}
 }
@@ -100,8 +100,8 @@ class BucketMop : BathBase
 		Stop;
 	Death:
 		TNT1 A 0 A_UnSetSolid;
-		"####" A 0 A_StartSound("METALBRK", CHAN_AUTO, 0, frandom(0.2,0.5), ATTN_NORM);
-		"####" A 0 A_StartSound("WOODBRK", CHAN_AUTO, 0, frandom(0.5,0.8), ATTN_NORM);
+		"####" A 0 A_StartSound("METALBRK", CHAN_AUTO, 0, FRandom[Scenery](0.2,0.5), ATTN_NORM);
+		"####" A 0 A_StartSound("WOODBRK", CHAN_AUTO, 0, FRandom[Scenery](0.5,0.8), ATTN_NORM);
 		"####" A 2 A_SpawnItemEx("MetalFrags");
 		MOPP B -1;
 		Stop;
@@ -132,16 +132,16 @@ class ToiletShootable : BathBase
 		Stop;
 	Death:
 		MDLA A 2 A_Scream;
-		"####" AAAAAA 0 A_SpawnItemEx("Debris_Bin", random(0,16), random(0,16), random(0,56), random(1,3), random(1,3), random(1,3), random(0,360), SXF_CLIENTSIDE);
+		"####" AAAAAA 0 A_SpawnItemEx("Debris_Bin", Random[Debris](0,16), Random[Debris](0,16), Random[Debris](0,56), Random[Debris](1,3), Random[Debris](1,3), Random[Debris](1,3), Random[Debris](0,360), SXF_CLIENTSIDE);
 	Broken:
 		MDLA B 0 A_StartSound("toilet/broken", CHAN_AUTO, CHANF_LOOPING, 1.0, ATTN_STATIC);
 	Broken.Loop:
 		MDLA B 0 A_CheckRange(512,"BrokenSilent");
-		"####" B 1 A_SpawnItemEx("WaterSmokePuffSmall", 0, 0, 1, (0.1)*random(0, 4), 0, (0.1)*random(8, 16), random(0, 360), 128);
+		"####" B 1 A_SpawnItemEx("WaterSmokePuffSmall", 0, 0, 1, (0.1)*Random[Scenery](0, 4), 0, (0.1)*Random[Scenery](8, 16), Random[Smoke](0, 360), 128);
 		Loop;
 	BrokenSilent:
 		MDLA B 0 A_StopSound(CHAN_AUTO);
-		"####" B 1 A_SpawnItemEx("WaterSmokePuffSmall", 0, 0, 1, (0.1)*random(0, 4), 0, (0.1)*random(8, 16), random(0, 360), 128);
+		"####" B 1 A_SpawnItemEx("WaterSmokePuffSmall", 0, 0, 1, (0.1)*Random[Scenery](0, 4), 0, (0.1)*Random[Scenery](8, 16), Random[Smoke](0, 360), 128);
 		Goto Broken;
 	}
 }

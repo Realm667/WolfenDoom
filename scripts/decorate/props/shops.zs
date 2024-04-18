@@ -109,7 +109,7 @@ class ShopStand5 : ShopStand1
 		STND G -1;
 		Stop;
 	Set2:
-		STND H -1 A_SetScale(Scale.X * RandomPick(-1, 1), Scale.Y);
+		STND H -1 A_SetScale(Scale.X * RandomPick[Scenery](-1, 1), Scale.Y);
 		Stop;
 	}
 }
@@ -137,7 +137,7 @@ class ShopStand7 : ShopStand1
 	States
 	{
 	Spawn:
-		STND J -1 A_SetScale(Scale.X * RandomPick(-1, 1), Scale.Y);
+		STND J -1 A_SetScale(Scale.X * RandomPick[Scenery](-1, 1), Scale.Y);
 		Stop;
 	}
 }
@@ -167,7 +167,7 @@ class ShopStand9 : ShopStand1
 	Spawn:
 		STND J 0 NODELAY A_Jump(256,"Set1","Set2");
 	Set1:
-		STND J -1 A_SetScale(Scale.X * RandomPick(-1, 1), Scale.Y);
+		STND J -1 A_SetScale(Scale.X * RandomPick[Scenery](-1, 1), Scale.Y);
 		Stop;
 	Set2:
 		STND K -1;
@@ -189,7 +189,7 @@ class ShopStand10 : ShopStand1
 		STND L -1;
 		Stop;
 	Set2:
-		STND M -1 A_SetScale(Scale.X * RandomPick(-1, 1), Scale.Y);
+		STND M -1 A_SetScale(Scale.X * RandomPick[Scenery](-1, 1), Scale.Y);
 		Stop;
 	}
 }
@@ -243,12 +243,12 @@ class ShopStand1D: SceneryBase
 	Death:
 		"####" "#" 0 A_UnSetSolid;
 		"####" "#" 0 A_StartSound("WOODBRK", CHAN_AUTO, 0, frandom (0.2,0.5), ATTN_NORM);
-		"####" "########" 0 A_SpawnItemEx("Debris_Wood", random(0,16), random(0,16), random(0,56), random(1,3), random(1,3), random(1,3), random(0,360), SXF_CLIENTSIDE);
-		"####" "#####" 0 A_SpawnItemEx("Debris_FlagsR", random(0,16), random(0,16), random(24,56), random(1,3), random(1,3), random(1,3), random(0,360), SXF_CLIENTSIDE);
-		"####" "#####" 0 A_SpawnItemEx("Debris_FlagsD", random(0,16), random(0,16), random(24,56), random(1,3), random(1,3), random(1,3), random(0,360), SXF_CLIENTSIDE);
+		"####" "########" 0 A_SpawnItemEx("Debris_Wood", Random[Debris](0,16), Random[Debris](0,16), Random[Debris](0,56), Random[Debris](1,3), Random[Debris](1,3), Random[Debris](1,3), Random[Debris](0,360), SXF_CLIENTSIDE);
+		"####" "#####" 0 A_SpawnItemEx("Debris_FlagsR", Random[Debris](0,16), Random[Debris](0,16), Random[Debris](24,56), Random[Debris](1,3), Random[Debris](1,3), Random[Debris](1,3), Random[Debris](0,360), SXF_CLIENTSIDE);
+		"####" "#####" 0 A_SpawnItemEx("Debris_FlagsD", Random[Debris](0,16), Random[Debris](0,16), Random[Debris](24,56), Random[Debris](1,3), Random[Debris](1,3), Random[Debris](1,3), Random[Debris](0,360), SXF_CLIENTSIDE);
 		"####" "#" 0 A_Jump(256,"Death.Helm");
 	Death.Helm:
-		"####" "#" 0 A_SpawnItemEx("Debris_SSHelm", random(0,16), random(0,16), random(56,64), random(1,3), random(1,3), random(1,3), random(0,360), SXF_CLIENTSIDE);
+		"####" "#" 0 A_SpawnItemEx("Debris_SSHelm", Random[Debris](0,16), Random[Debris](0,16), Random[Debris](56,64), Random[Debris](1,3), Random[Debris](1,3), Random[Debris](1,3), Random[Debris](0,360), SXF_CLIENTSIDE);
 		"####" "#" 0 A_SpawnItemEx("BarrelFrags");
 		STND N -1;
 		Stop;
@@ -272,7 +272,7 @@ class ShopStand2D : ShopStand1D
 		STND D -1;
 		Stop;
 	Death.Helm:
-		"####" "#" 0 A_SpawnItemEx("Debris_SSHelm2", random(0,16), random(0,16), random(56,64), random(1,3), random(1,3), random(1,3), random(0,360), SXF_CLIENTSIDE);
+		"####" "#" 0 A_SpawnItemEx("Debris_SSHelm2", Random[Debris](0,16), Random[Debris](0,16), Random[Debris](56,64), Random[Debris](1,3), Random[Debris](1,3), Random[Debris](1,3), Random[Debris](0,360), SXF_CLIENTSIDE);
 		"####" "#" 0 A_SpawnItemEx("BarrelFrags");
 		STND N -1;
 		Stop;
@@ -293,9 +293,9 @@ class ShopStand3D : ShopStand1D
 	Death:
 		"####" "#" 0 A_UnSetSolid;
 		"####" "#" 0 A_StartSound("WOODBRK", CHAN_AUTO, 0, frandom (0.2,0.5), ATTN_NORM);
-		"####" "########" 0 A_SpawnItemEx("Debris_Wood", random(0,16), random(0,16), random(0,56), random(1,3), random(1,3), random(1,3), random(0,360), SXF_CLIENTSIDE);
-		"####" "#####" 0 A_SpawnItemEx("Debris_FlagsR", random(0,16), random(0,16), random(24,56), random(1,3), random(1,3), random(1,3), random(0,360), SXF_CLIENTSIDE);
-		"####" "#####" 0 A_SpawnItemEx("Debris_FlagsD", random(0,16), random(0,16), random(24,56), random(1,3), random(1,3), random(1,3), random(0,360), SXF_CLIENTSIDE);
+		"####" "########" 0 A_SpawnItemEx("Debris_Wood", Random[Debris](0,16), Random[Debris](0,16), Random[Debris](0,56), Random[Debris](1,3), Random[Debris](1,3), Random[Debris](1,3), Random[Debris](0,360), SXF_CLIENTSIDE);
+		"####" "#####" 0 A_SpawnItemEx("Debris_FlagsR", Random[Debris](0,16), Random[Debris](0,16), Random[Debris](24,56), Random[Debris](1,3), Random[Debris](1,3), Random[Debris](1,3), Random[Debris](0,360), SXF_CLIENTSIDE);
+		"####" "#####" 0 A_SpawnItemEx("Debris_FlagsD", Random[Debris](0,16), Random[Debris](0,16), Random[Debris](24,56), Random[Debris](1,3), Random[Debris](1,3), Random[Debris](1,3), Random[Debris](0,360), SXF_CLIENTSIDE);
 		"####" "#" 0 A_SpawnItemEx("BarrelFrags");
 		STND N -1;
 		Stop;
@@ -321,7 +321,7 @@ class ShopStand4D : ShopStand1D
 	Death:
 		"####" "#" 0 A_UnSetSolid;
 		"####" "#" 0 A_StartSound("WOODBRK", CHAN_AUTO, 0, frandom (0.1,0.3), ATTN_NORM);
-		"####" "#" 0 A_SpawnItemEx("Debris_SSHelm", random(0,16), random(0,16), random(4,16), random(1,3), random(1,3), random(1,3), random(0,360), SXF_CLIENTSIDE);
+		"####" "#" 0 A_SpawnItemEx("Debris_SSHelm", Random[Debris](0,16), Random[Debris](0,16), Random[Debris](4,16), Random[Debris](1,3), Random[Debris](1,3), Random[Debris](1,3), Random[Debris](0,360), SXF_CLIENTSIDE);
 		"####" "#" 0 A_SpawnItemEx("BarrelFrags");
 		STND O -1;
 		Stop;
@@ -342,8 +342,8 @@ class ShopStand5D : ShopStand1D
 	Death:
 		"####" "#" 0 A_UnSetSolid;
 		"####" "#" 0 A_StartSound("WOODBRK", CHAN_AUTO, 0, frandom (0.1,0.3), ATTN_NORM);
-		"####" "####" 0 A_SpawnItemEx("Debris_Wood", random(0,16), random(0,16), random(0,56), random(1,3), random(1,3), random(1,3), random(0,360), SXF_CLIENTSIDE);
-		"####" "#" 0 A_SpawnItemEx("Debris_SSHelm2", random(0,16), random(0,16), random(4,16), random(1,3), random(1,3), random(1,3), random(0,360), SXF_CLIENTSIDE);
+		"####" "####" 0 A_SpawnItemEx("Debris_Wood", Random[Debris](0,16), Random[Debris](0,16), Random[Debris](0,56), Random[Debris](1,3), Random[Debris](1,3), Random[Debris](1,3), Random[Debris](0,360), SXF_CLIENTSIDE);
+		"####" "#" 0 A_SpawnItemEx("Debris_SSHelm2", Random[Debris](0,16), Random[Debris](0,16), Random[Debris](4,16), Random[Debris](1,3), Random[Debris](1,3), Random[Debris](1,3), Random[Debris](0,360), SXF_CLIENTSIDE);
 		"####" "#" 0 A_SpawnItemEx("BarrelFrags");
 		STND O -1;
 		Stop;
@@ -364,7 +364,7 @@ class ShopStand6D : ShopStand1D
 	Death:
 		"####" "#" 0 A_UnSetSolid;
 		"####" "#" 0 A_StartSound("WOODBRK", CHAN_AUTO, 0, frandom (0.1,0.3), ATTN_NORM);
-		"####" "####" 0 A_SpawnItemEx("Debris_Wood", random(0,16), random(0,16), random(0,56), random(1,3), random(1,3), random(1,3), random(0,360), SXF_CLIENTSIDE);
+		"####" "####" 0 A_SpawnItemEx("Debris_Wood", Random[Debris](0,16), Random[Debris](0,16), Random[Debris](0,56), Random[Debris](1,3), Random[Debris](1,3), Random[Debris](1,3), Random[Debris](0,360), SXF_CLIENTSIDE);
 		"####" "#" 0 A_SpawnItemEx("BarrelFrags");
 		STND O -1;
 		Stop;
@@ -431,7 +431,7 @@ class Butchery2 : Butchery1
 	States
 	{
 	Spawn:
-		BUTC D -1 NODELAY A_SetScale(Scale.X * RandomPick(-1, 1), Scale.Y);
+		BUTC D -1 NODELAY A_SetScale(Scale.X * RandomPick[Scenery](-1, 1), Scale.Y);
 		Stop;
 	}
 }
@@ -446,7 +446,7 @@ class Butchery3 : Butchery1
 	States
 	{
 	Spawn:
-		BUTC F -1 NODELAY A_SetScale(Scale.X * RandomPick(-1, 1), Scale.Y);
+		BUTC F -1 NODELAY A_SetScale(Scale.X * RandomPick[Scenery](-1, 1), Scale.Y);
 		Stop;
 	}
 }
@@ -462,7 +462,7 @@ class Butchery4 : Butchery1
 	States
 	{
 	Spawn:
-		BUTC H -1 NODELAY A_SetScale(Scale.X * RandomPick(-1, 1), Scale.Y);
+		BUTC H -1 NODELAY A_SetScale(Scale.X * RandomPick[Scenery](-1, 1), Scale.Y);
 		Stop;
 	}
 }
@@ -536,7 +536,7 @@ class Butchery8 : Butchery1
 	States
 	{
 	Spawn:
-		BUTC P -1 NODELAY A_SetScale(Scale.X * RandomPick(-1, 1), Scale.Y);
+		BUTC P -1 NODELAY A_SetScale(Scale.X * RandomPick[Scenery](-1, 1), Scale.Y);
 		Stop;
 	}
 }
@@ -551,7 +551,7 @@ class Butchery9 : Butchery1
 	States
 	{
 	Spawn:
-		BUTC L -1 NODELAY A_SetScale(Scale.X * RandomPick(-1, 1), Scale.Y);
+		BUTC L -1 NODELAY A_SetScale(Scale.X * RandomPick[Scenery](-1, 1), Scale.Y);
 		Stop;
 	}
 }
@@ -590,8 +590,8 @@ class Butchery1D: SceneryBase
 	Death:
 		"####" "#" 0 A_UnSetSolid;
 		"####" "#" 0 A_StartSound("flesh/ribs", CHAN_AUTO, 0, frandom (0.5,0.8), ATTN_NORM);
-		"####" "########" 0 A_SpawnItemEx("Debris_Flesh", random(0,16), random(0,16), random(4,16), random(1,3), random(1,3), random(1,3), random(0,360), SXF_CLIENTSIDE);
-		TNT1 A 2 A_SpawnItemEx("NashGore_FlyingBlood", 0, 0, 8, random(-4, 4), random(-4, 4), random(2, 5), 0, 143, 176);
+		"####" "########" 0 A_SpawnItemEx("Debris_Flesh", Random[Debris](0,16), Random[Debris](0,16), Random[Debris](4,16), Random[Debris](1,3), Random[Debris](1,3), Random[Debris](1,3), Random[Debris](0,360), SXF_CLIENTSIDE);
+		TNT1 A 2 A_SpawnItemEx("NashGore_FlyingBlood", 0, 0, 8, Random[Debris](-4, 4), Random[Debris](-4, 4), Random[Debris](2, 5), 0, 143, 176);
 		BUTC C -1;
 		Stop;
 	}
@@ -611,8 +611,8 @@ class Butchery1D_R : Butchery1D
 	Death:
 		"####" "#" 0 A_UnSetSolid;
 		"####" "#" 0 A_StartSound("flesh/ribs", CHAN_AUTO, 0, frandom (0.5,0.8), ATTN_NORM);
-		"####" "########" 0 A_SpawnItemEx("Debris_Flesh", random(0,16), random(0,16), random(4,16), random(1,3), random(1,3), random(1,3), random(0,360), SXF_CLIENTSIDE);
-		TNT1 A 2 A_SpawnItemEx("NashGore_FlyingBlood", 0, 0, 8, random(-4, 4), random(-4, 4), random(2, 5), 0, 143, 176);
+		"####" "########" 0 A_SpawnItemEx("Debris_Flesh", Random[Debris](0,16), Random[Debris](0,16), Random[Debris](4,16), Random[Debris](1,3), Random[Debris](1,3), Random[Debris](1,3), Random[Debris](0,360), SXF_CLIENTSIDE);
+		TNT1 A 2 A_SpawnItemEx("NashGore_FlyingBlood", 0, 0, 8, Random[Debris](-4, 4), Random[Debris](-4, 4), Random[Debris](2, 5), 0, 143, 176);
 		BUTC C -1;
 		Stop;
 	}
@@ -632,8 +632,8 @@ class ButcheryNaziD : Butchery1D
 	Death:
 		"####" "#" 0 A_UnSetSolid;
 		"####" "#" 0 A_StartSound("flesh/ribs", CHAN_AUTO, 0, frandom (0.5,0.8), ATTN_NORM);
-		"####" "########" 0 A_SpawnItemEx("Debris_Flesh", random(0,16), random(0,16), random(4,16), random(1,3), random(1,3), random(1,3), random(0,360), SXF_CLIENTSIDE);
-		TNT1 A 2 A_SpawnItemEx("NashGore_FlyingBlood", 0, 0, 8, random(-4, 4), random(-4, 4), random(2, 5), 0, 143, 176);
+		"####" "########" 0 A_SpawnItemEx("Debris_Flesh", Random[Debris](0,16), Random[Debris](0,16), Random[Debris](4,16), Random[Debris](1,3), Random[Debris](1,3), Random[Debris](1,3), Random[Debris](0,360), SXF_CLIENTSIDE);
+		TNT1 A 2 A_SpawnItemEx("NashGore_FlyingBlood", 0, 0, 8, Random[Debris](-4, 4), Random[Debris](-4, 4), Random[Debris](2, 5), 0, 143, 176);
 		BUTC C -1;
 		Stop;
 	}
@@ -663,7 +663,7 @@ class Butchery2D : Butchery1D
 	Death:
 		"####" "#" 0 A_UnSetSolid;
 		"####" "#" 0 A_StartSound("flesh/ribs", CHAN_AUTO, 0, frandom (0.5,0.8), ATTN_NORM);
-		"####" "####" 0 A_SpawnItemEx("Debris_Flesh2", random(0,16), random(0,16), random(4,24), random(1,3), random(1,3), random(1,3), random(0,360), SXF_CLIENTSIDE);
+		"####" "####" 0 A_SpawnItemEx("Debris_Flesh2", Random[Debris](0,16), Random[Debris](0,16), Random[Debris](4,24), Random[Debris](1,3), Random[Debris](1,3), Random[Debris](1,3), Random[Debris](0,360), SXF_CLIENTSIDE);
 		BUTC E -1;
 		Stop;
 	}
@@ -686,7 +686,7 @@ class Butchery3D : Butchery1D
 	Death:
 		"####" "#" 0 A_UnSetSolid;
 		"####" "#" 0 A_StartSound("flesh/ribs", CHAN_AUTO, 0, frandom (0.5,0.8), ATTN_NORM);
-		"####" "####" 0 A_SpawnItemEx("Debris_Flesh2", random(0,16), random(0,16), random(4,24), random(1,3), random(1,3), random(1,3), random(0,360), SXF_CLIENTSIDE);
+		"####" "####" 0 A_SpawnItemEx("Debris_Flesh2", Random[Debris](0,16), Random[Debris](0,16), Random[Debris](4,24), Random[Debris](1,3), Random[Debris](1,3), Random[Debris](1,3), Random[Debris](0,360), SXF_CLIENTSIDE);
 		BUTC G -1;
 		Stop;
 	}
@@ -714,7 +714,7 @@ class Butchery4D : Butchery1D
 	Death:
 		"####" "#" 0 A_UnSetSolid;
 		"####" "#" 0 A_StartSound("flesh/ribs", CHAN_AUTO, 0, frandom (0.5,0.8), ATTN_NORM);
-		"####" "##########" 0 A_SpawnItemEx("Debris_Flesh2", random(0,16), random(0,16), random(16,56), random(1,3), random(1,3), random(1,3), random(0,360), SXF_CLIENTSIDE);
+		"####" "##########" 0 A_SpawnItemEx("Debris_Flesh2", Random[Debris](0,16), Random[Debris](0,16), Random[Debris](16,56), Random[Debris](1,3), Random[Debris](1,3), Random[Debris](1,3), Random[Debris](0,360), SXF_CLIENTSIDE);
 		BUTC X -1;
 		Stop;
 	}
@@ -747,8 +747,8 @@ class Butchery5D : Butchery1D
 	Death:
 		"####" "#" 0 A_UnSetSolid;
 		"####" "#" 0 A_StartSound("flesh/ribs", CHAN_AUTO, 0, frandom (0.5,0.8), ATTN_NORM);
-		"####" "########" 0 A_SpawnItemEx("Debris_Flesh", random(0,16), random(0,16), random(8,32), random(1,3), random(1,3), random(1,3), random(0,360), SXF_CLIENTSIDE);
-		TNT1 A 2 A_SpawnItemEx("NashGore_FlyingBlood", 0, 0, 8, random(-4, 4), random(-4, 4), random(2, 5), 0, 143, 176);
+		"####" "########" 0 A_SpawnItemEx("Debris_Flesh", Random[Debris](0,16), Random[Debris](0,16), Random[Debris](8,32), Random[Debris](1,3), Random[Debris](1,3), Random[Debris](1,3), Random[Debris](0,360), SXF_CLIENTSIDE);
+		TNT1 A 2 A_SpawnItemEx("NashGore_FlyingBlood", 0, 0, 8, Random[Debris](-4, 4), Random[Debris](-4, 4), Random[Debris](2, 5), 0, 143, 176);
 		BUTC K -1;
 		Stop;
 	}
@@ -776,7 +776,7 @@ class Butchery6D : Butchery1D
 	Death:
 		"####" "#" 0 A_UnSetSolid;
 		"####" "#" 0 A_StartSound("flesh/ribs", CHAN_AUTO, 0, frandom (0.5,0.8), ATTN_NORM);
-		"####" "##########" 0 A_SpawnItemEx("Debris_Flesh2", random(0,16), random(0,16), random(16,56), random(1,3), random(1,3), random(1,3), random(0,360), SXF_CLIENTSIDE);
+		"####" "##########" 0 A_SpawnItemEx("Debris_Flesh2", Random[Debris](0,16), Random[Debris](0,16), Random[Debris](16,56), Random[Debris](1,3), Random[Debris](1,3), Random[Debris](1,3), Random[Debris](0,360), SXF_CLIENTSIDE);
 		BUTC Q -1;
 		Stop;
 	}
@@ -804,7 +804,7 @@ class Butchery7D_A : Butchery1D
 	Death:
 		"####" "#" 0 A_UnSetSolid;
 		"####" "#" 0 A_StartSound("flesh/ribs", CHAN_AUTO, 0, frandom (0.5,0.8), ATTN_NORM);
-		"####" "##########" 0 A_SpawnItemEx("Debris_Flesh2", random(0,16), random(0,16), random(4,24), random(1,3), random(1,3), random(1,3), random(0,360), SXF_CLIENTSIDE);
+		"####" "##########" 0 A_SpawnItemEx("Debris_Flesh2", Random[Debris](0,16), Random[Debris](0,16), Random[Debris](4,24), Random[Debris](1,3), Random[Debris](1,3), Random[Debris](1,3), Random[Debris](0,360), SXF_CLIENTSIDE);
 		BUTC R -1 A_Feathers(); //inheritance with Heretic sprites here - Ozy81
 		Stop;
 	}
@@ -832,7 +832,7 @@ class Butchery7D_B : Butchery1D
 	Death:
 		"####" "#" 0 A_UnSetSolid;
 		"####" "#" 0 A_StartSound("flesh/ribs", CHAN_AUTO, 0, frandom (0.5,0.8), ATTN_NORM);
-		"####" "##########" 0 A_SpawnItemEx("Debris_Flesh2", random(0,16), random(0,16), random(4,24), random(1,3), random(1,3), random(1,3), random(0,360), SXF_CLIENTSIDE);
+		"####" "##########" 0 A_SpawnItemEx("Debris_Flesh2", Random[Debris](0,16), Random[Debris](0,16), Random[Debris](4,24), Random[Debris](1,3), Random[Debris](1,3), Random[Debris](1,3), Random[Debris](0,360), SXF_CLIENTSIDE);
 		BUTC S -1 A_Feathers(); //inheritance with Heretic sprites here - Ozy81
 		Stop;
 	}
@@ -860,7 +860,7 @@ class Butchery8D : Butchery1D
 	Death:
 		"####" "#" 0 A_UnSetSolid;
 		"####" "#" 0 A_StartSound("flesh/ribs", CHAN_AUTO, 0, frandom (0.5,0.8), ATTN_NORM);
-		"####" "##########" 0 A_SpawnItemEx("Debris_Flesh2", random(0,16), random(0,16), random(4,24), random(1,3), random(1,3), random(1,3), random(0,360), SXF_CLIENTSIDE);
+		"####" "##########" 0 A_SpawnItemEx("Debris_Flesh2", Random[Debris](0,16), Random[Debris](0,16), Random[Debris](4,24), Random[Debris](1,3), Random[Debris](1,3), Random[Debris](1,3), Random[Debris](0,360), SXF_CLIENTSIDE);
 		BUTC T -1;
 		Stop;
 	}
@@ -883,7 +883,7 @@ class Butchery9D : Butchery1D
 	Death:
 		"####" "#" 0 A_UnSetSolid;
 		"####" "#" 0 A_StartSound("flesh/ribs", CHAN_AUTO, 0, frandom (0.5,0.8), ATTN_NORM);
-		"####" "######" 0 A_SpawnItemEx("Debris_Flesh2", random(0,16), random(0,16), random(4,24), random(1,3), random(1,3), random(1,3), random(0,360), SXF_CLIENTSIDE);
+		"####" "######" 0 A_SpawnItemEx("Debris_Flesh2", Random[Debris](0,16), Random[Debris](0,16), Random[Debris](4,24), Random[Debris](1,3), Random[Debris](1,3), Random[Debris](1,3), Random[Debris](0,360), SXF_CLIENTSIDE);
 		Stop;
 	}
 }
@@ -949,7 +949,7 @@ class Bakery1D: SceneryBase
 	Death:
 		"####" "#" 0 A_UnSetSolid;
 		"####" "#" 0 A_StartSound("bread/crumbs", CHAN_AUTO, 0, frandom (0.5,0.8), ATTN_NORM);
-		"####" "########" 0 A_SpawnItemEx("Debris_Bread", random(0,16), random(0,16), random(4,16), random(1,3), random(1,3), random(1,3), random(0,360), SXF_CLIENTSIDE);
+		"####" "########" 0 A_SpawnItemEx("Debris_Bread", Random[Debris](0,16), Random[Debris](0,16), Random[Debris](4,16), Random[Debris](1,3), Random[Debris](1,3), Random[Debris](1,3), Random[Debris](0,360), SXF_CLIENTSIDE);
 		Stop;
 	}
 }

@@ -22,7 +22,7 @@ class SmokeBase : ParticleBase
 	{
 		Super.PostBeginPlay();
 
-		roll = Random(1, 360);
+		roll = Random[Smoke](1, 360);
 	}
 
 	// Handle fade in and fade out here, optionally passing in a scale change amount
@@ -90,10 +90,10 @@ class PuffSmoke : SmokeBase
 			if (!outtics) { outtics = 3; }
 		}
 
-		scale.x *= FRandom(0.7, 1.0);
-		scale.y *= FRandom(0.7, 1.0);
+		scale.x *= FRandom[Smoke](0.7, 1.0);
+		scale.y *= FRandom[Smoke](0.7, 1.0);
 
-		int spr = GetSpriteIndex("GRM" .. Random(1, 3));
+		int spr = GetSpriteIndex("GRM" .. Random[Smoke](1, 3));
 		if (spr != -1) { sprite = spr; }
 	}
 }
@@ -122,10 +122,10 @@ class WaterSmoke : PuffSmoke //needed for 3d toilet & 3d hydrants - ozy81
 	{
 		Super.PostBeginPlay();
 
-		scale.x *= FRandom(0.4, 0.7);
-		scale.y *= FRandom(0.4, 0.7);
+		scale.x *= FRandom[Smoke](0.4, 0.7);
+		scale.y *= FRandom[Smoke](0.4, 0.7);
 
-		int spr = GetSpriteIndex(String.Format("WTS%c", RandomPick(65, 67))); // A or C
+		int spr = GetSpriteIndex(String.Format("WTS%c", RandomPick[Smoke](65, 67))); // A or C
 		if (spr != -1) { sprite = spr; }
 	}
 }
@@ -158,7 +158,7 @@ class BodySmokeSpawner : EffectSpawner
 	{
 		Super.SpawnEffect();
 
-		A_SpawnItemEx("BodySmoke", Random(-3, 3), Random(-3, 3), 0, 0, 0, FRandom(0.2, 1.0));
+		A_SpawnItemEx("BodySmoke", Random[Smoke](-3, 3), Random[Smoke](-3, 3), 0, 0, 0, FRandom[Smoke](0.2, 1.0));
 	}
 
 	override void Tick()
@@ -213,7 +213,7 @@ class TankSmoke : PuffSmoke
 	{
 		Super.PostBeginPlay();
 
-		int spr = GetSpriteIndex("GRM" .. Random(1, 2));
+		int spr = GetSpriteIndex("GRM" .. Random[Smoke](1, 2));
 		if (spr != -1) { sprite = spr; }
 	}
 }
@@ -238,7 +238,7 @@ class TankSmokeSpawner : EffectSpawner
 	{
 		Super.SpawnEffect();
 
-		A_SpawnProjectile("TankSmoke", 58, 0, Random(0, 360), CMF_AIMDIRECTION, Random(-70, -130));
+		A_SpawnProjectile("TankSmoke", 58, 0, Random[Smoke](0, 360), CMF_AIMDIRECTION, Random[Smoke](-70, -130));
 	}	
 }
 
@@ -285,7 +285,7 @@ class PowerPlantSmokePuffLarge : PuffSmoke
 	{
 		Super.PostBeginPlay();
 
-		int spr = GetSpriteIndex("GRM" .. Random(1, 2));
+		int spr = GetSpriteIndex("GRM" .. Random[Smoke](1, 2));
 		if (spr != -1) { sprite = spr; }
 	}
 }
@@ -320,7 +320,7 @@ class PowerPlantSmokeGenerator : EffectSpawner
 	{
 		Super.SpawnEffect();
 
-		A_SpawnItemEx("PowerPlantSmokePuff", frandom(-8.0,8.0), frandom(-8.0,8.0), 0, frandom(0.2, -0.2), frandom(0.2, -0.2), frandom(0.5, 1.5));
+		A_SpawnItemEx("PowerPlantSmokePuff", FRandom[Smoke](-8.0,8.0), FRandom[Smoke](-8.0,8.0), 0, FRandom[Smoke](0.2, -0.2), FRandom[Smoke](0.2, -0.2), FRandom[Smoke](0.5, 1.5));
 	}
 }
 
@@ -335,7 +335,7 @@ class PowerPlantSmokeGeneratorSmall : PowerPlantSmokeGenerator
 	{
 		Super.SpawnEffect();
 
-		A_SpawnItemEx("PowerPlantSmokePuffSmall", frandom(-4.0,4.0), frandom(-4.0,4.0), 0, frandom(0.1, -0.1), frandom(0.1, -0.1), frandom(0.25, 0.75));
+		A_SpawnItemEx("PowerPlantSmokePuffSmall", FRandom[Smoke](-4.0,4.0), FRandom[Smoke](-4.0,4.0), 0, FRandom[Smoke](0.1, -0.1), FRandom[Smoke](0.1, -0.1), FRandom[Smoke](0.25, 0.75));
 	}
 }
 
@@ -351,7 +351,7 @@ class PowerPlantSmokeGenerator2 : PowerPlantSmokeGenerator
 	{
 		Super.SpawnEffect();
 
-		A_SpawnItemEx("PowerPlantSmokePuffLarge", frandom(-32.0,32.0), frandom(-32.0,32.0), 0, frandom(0.3, -0.3), frandom(0.3, -0.3), frandom(0.75, 2.0));
+		A_SpawnItemEx("PowerPlantSmokePuffLarge", FRandom[Smoke](-32.0,32.0), FRandom[Smoke](-32.0,32.0), 0, FRandom[Smoke](0.3, -0.3), FRandom[Smoke](0.3, -0.3), FRandom[Smoke](0.75, 2.0));
 	}
 }
 
@@ -416,7 +416,7 @@ class VolcanoSmokeGenerator : EffectSpawner
 		bool sp;
 		Actor mo;
 
-		[sp, mo] = A_SpawnItemEx("VolcanoPuffSmoke", random(-128,128), random(-128,128), 0, random(1,5), random(1,5), random(10,20), random(1,359));
+		[sp, mo] = A_SpawnItemEx("VolcanoPuffSmoke", Random[Smoke](-128,128), Random[Smoke](-128,128), 0, Random[Smoke](1,5), Random[Smoke](1,5), Random[Smoke](10,20), Random[Smoke](1,359));
 		if (sp && mo)
 		{
 			mo.scale.x *= scale.x;
@@ -460,7 +460,7 @@ class AmbientSmokeSB : SmokeBase
 	{
 		Super.PostBeginPlay();
 
-		int spr = GetSpriteIndex("GRM" .. Random(1, 2));
+		int spr = GetSpriteIndex("GRM" .. Random[Smoke](1, 2));
 		if (spr != -1) { sprite = spr; }
 	}
 }
@@ -522,9 +522,9 @@ class AmbientSmokeGenerator : EffectSpawner
 		if (args[2])
 		{
 			bDontCull = true; // Do not cull
-			A_SpawnItemEx("AmbientSmokeSB", random(-Args[0], Args[0]), random(-Args[0], Args[0]), random(0,48), 0, 0, 0.5, 0, 0, Args[1]);
+			A_SpawnItemEx("AmbientSmokeSB", Random[Smoke](-Args[0], Args[0]), Random[Smoke](-Args[0], Args[0]), Random[Smoke](0,48), 0, 0, 0.5, 0, 0, Args[1]);
 		}
-		else { A_SpawnItemEx("AmbientSmoke", random(-Args[0], Args[0]), random(-Args[0], Args[0]), random(0,48), 0, 0, 0.5, 0, 0, Args[1]); }
+		else { A_SpawnItemEx("AmbientSmoke", Random[Smoke](-Args[0], Args[0]), Random[Smoke](-Args[0], Args[0]), Random[Smoke](0,48), 0, 0, 0.5, 0, 0, Args[1]); }
 	}
 }
 
@@ -542,9 +542,9 @@ class AmbientSmokeGeneratorDown : AmbientSmokeGenerator
 		if (args[2])
 		{
 			bDontCull = true; // Do not cull
-			A_SpawnItemEx("AmbientSmokeSB", random(-Args[0], Args[0]), random(-Args[0], Args[0]), random(0,-48), 0, 0, 0.5, 0, 0, Args[1]);
+			A_SpawnItemEx("AmbientSmokeSB", Random[Smoke](-Args[0], Args[0]), Random[Smoke](-Args[0], Args[0]), Random[Smoke](0,-48), 0, 0, 0.5, 0, 0, Args[1]);
 		}
-		else { A_SpawnItemEx("AmbientSmoke", random(-Args[0], Args[0]), random(-Args[0], Args[0]), random(0,-48), 0, 0, -0.5, 0, 0, Args[1]); }
+		else { A_SpawnItemEx("AmbientSmoke", Random[Smoke](-Args[0], Args[0]), Random[Smoke](-Args[0], Args[0]), Random[Smoke](0,-48), 0, 0, -0.5, 0, 0, Args[1]); }
 	}
 }
 
@@ -579,7 +579,7 @@ class AmbientSmokeGenerator_Large : AmbientSmokeGenerator
 	{
 		Super.SpawnEffect();
 
-		A_SpawnItemEx("AmbientSmoke_Large", random(-Args[0]*10, Args[0]*10), random(-Args[0]*10, Args[0]*10), random(64,256), 0, 0, random(1,4), 0, 0, Args[1]);
+		A_SpawnItemEx("AmbientSmoke_Large", Random[Smoke](-Args[0]*10, Args[0]*10), Random[Smoke](-Args[0]*10, Args[0]*10), Random[Smoke](64,256), 0, 0, Random[Smoke](1,4), 0, 0, Args[1]);
 	}
 }
 
@@ -596,7 +596,7 @@ class AmbientSmokeGeneratorDown_Large : AmbientSmokeGeneratorDown
 	{
 		Super.SpawnEffect();
 
-		A_SpawnItemEx("AmbientSmoke_Large", random(-Args[0]*10, Args[0]*10), random(-Args[0]*10, Args[0]*10), random(-64,-128),   0, 0, random(-1,-4), 0, 0, Args[1]);
+		A_SpawnItemEx("AmbientSmoke_Large", Random[Smoke](-Args[0]*10, Args[0]*10), Random[Smoke](-Args[0]*10, Args[0]*10), Random[Smoke](-64,-128),   0, 0, Random[Smoke](-1,-4), 0, 0, Args[1]);
 	}
 }
 
@@ -633,7 +633,7 @@ class DarkSmokeBase : ParticleBase
 	{
 		Super.PostBeginPlay();
 
-		int spr = GetSpriteIndex(String.Format("DKS%c", RandomPick(77, 50))); // M or 2
+		int spr = GetSpriteIndex(String.Format("DKS%c", RandomPick[Smoke](77, 50))); // M or 2
 		if (spr != -1) { sprite = spr; }		
 	}
 }
@@ -644,8 +644,8 @@ class DarkSmoke1 : DarkSmokeBase
 	{
 		Super.PostBeginPlay();
 
-		Thrust(1, FRandom(0, 22.5));
-		vel.z = FRandom(3, 6) / 4;
+		Thrust(1, FRandom[Smoke](0, 22.5));
+		vel.z = FRandom[Smoke](3, 6) / 4;
 	}
 
 }
@@ -661,8 +661,8 @@ class DarkSmoke2 : DarkSmokeBase
 	{
 		Super.PostBeginPlay();
 
-		Thrust(FRandom(1, 2), FRandom(0, 22.5));
-		vel.z = FRandom(5, 9) / 4;
+		Thrust(FRandom[Smoke](1, 2), FRandom[Smoke](0, 22.5));
+		vel.z = FRandom[Smoke](5, 9) / 4;
 	}
 }
 
@@ -677,8 +677,8 @@ class DarkSmoke3 : DarkSmokeBase
 	{
 		Super.PostBeginPlay();
 
-		Thrust(FRandom(2, 4), FRandom(0, 22.5));
-		vel.z = FRandom(9, 15) / 4;
+		Thrust(FRandom[Smoke](2, 4), FRandom[Smoke](0, 22.5));
+		vel.z = FRandom[Smoke](9, 15) / 4;
 	}
 }
 
@@ -726,7 +726,7 @@ class DarkSmokeSpawner : EffectSpawner
 		// A_SpawnItemEx("DarkSmoke" .. min(3, args[0] + 1));
 
 		int variant = clamp(args[0], 0, 2);
-		TextureID smoke = TexMan.CheckForTexture(String.Format("DKS%cA0", RandomPick(77, 50))); // M or 2
+		TextureID smoke = TexMan.CheckForTexture(String.Format("DKS%cA0", RandomPick[Smoke](77, 50))); // M or 2
 
 		// Calculate size
 		static const double sizes[] = { 0.3, 0.6, 1.0 };
@@ -735,13 +735,13 @@ class DarkSmokeSpawner : EffectSpawner
 		// Calculate Z vel
 		static const double velzmin[] = { .75, 1.25, 2.25 }; // (3, 5, 9) / 4
 		static const double velzmax[] = { 1.5, 2.25, 3.75 }; // (6, 9, 15) / 4
-		double velz = frandom(velzmin[variant], velzmax[variant]);
+		double velz = FRandom[Smoke](velzmin[variant], velzmax[variant]);
 
 		// Calculate args for Thrust(speed, angle)
 		static const double speedmin[] = { 1, 1, 2 };
 		static const double speedmax[] = { 1, 2, 4 };
-		double speed = frandom(speedmin[variant], speedmax[variant]);
-		double angle = frandom(0, 22.5);
+		double speed = FRandom[Smoke](speedmin[variant], speedmax[variant]);
+		double angle = FRandom[Smoke](0, 22.5);
 		double velx = cos(angle) * speed;
 		double vely = sin(angle) * speed;
 
@@ -758,8 +758,8 @@ class DarkSmokeSpawner : EffectSpawner
 			velz: velz, // velz
 			startalphaf: 0.7, // startalphaf
 			fadestepf: 0.0033333333333, // fadestepf (0.01 / 3)
-			startroll: random(0, 360), // startroll
-			rollvel: frandom(0.6, 0.8) // rollvel
+			startroll: Random[Smoke](0, 360), // startroll
+			rollvel: FRandom[Smoke](0.6, 0.8) // rollvel
 		);
 	}
 }

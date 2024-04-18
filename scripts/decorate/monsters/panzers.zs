@@ -54,7 +54,7 @@ class KaBoomer: Actor
 	States
 	{
 	Spawn:
-		TNT1 AA 1 A_SpawnItemEx("KaBoom",0,0,0,random(-4,4),random(-4,4),random(-2,6),random(0,359),SXF_TRANSFERTRANSLATION|SXF_TRANSFERPOINTERS|SXF_NOCHECKPOSITION,40);
+		TNT1 AA 1 A_SpawnItemEx("KaBoom",0,0,0, Random[Boom](-4,4), Random[Boom](-4,4), Random[Boom](-2,6), Random[Boom](0,359),SXF_TRANSFERTRANSLATION|SXF_TRANSFERPOINTERS|SXF_NOCHECKPOSITION,40);
 		Stop;
 	}
 }
@@ -174,7 +174,7 @@ class NukeFloor : Nuke
 	{
 	Spawn:
 		TNT1 A 0;
-		"####" AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 1 A_SpawnItemEx("TankFire",0,0,0,0.1 * random(0,30),0.1 * random(0,30),0,random(0,359),128);
+		"####" AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 1 A_SpawnItemEx("TankFire",0,0,0,0.1 * Random[Boom](0,30),0.1 * Random[Boom](0,30),0, Random[Boom](0,359),128);
 		Stop;
 	}
 }
@@ -185,7 +185,7 @@ class NukeSmokeFloor : Nuke
 	{
 	Spawn:
 		TNT1 A 0;
-		"####" AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 1 A_SpawnItemEx("NukeSmoke",0,0,0,0.1 * random(0,30),0.1 * random(0,30),0,random(0,359),128);
+		"####" AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 1 A_SpawnItemEx("NukeSmoke",0,0,0,0.1 * Random[Boom](0,30),0.1 * Random[Boom](0,30),0, Random[Boom](0,359),128);
 		Stop;
 	}
 }
@@ -196,9 +196,9 @@ class TankPillar : Nuke
 	{
 	Spawn:
 		TNT1 A 0;
-		"####" AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 1 A_SpawnItemEx("TankFire",0,0,0,0.1 * random(0,10),0.1 * random(0,10),random(0,-3),random(0,359),128);
+		"####" AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 1 A_SpawnItemEx("TankFire",0,0,0,0.1 * Random[Boom](0,10),0.1 * Random[Boom](0,10), Random[Boom](0,-3), Random[Boom](0,359),128);
 		"####" A 0 A_SpawnItemEx("TankSmokeRing");
-		"####" AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 1 A_SpawnItemEx("TankFire",0,0,0,0.1 * random(0,10),0.1 * random(0,10),random(0,-3),random(0,359),128);
+		"####" AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 1 A_SpawnItemEx("TankFire",0,0,0,0.1 * Random[Boom](0,10),0.1 * Random[Boom](0,10), Random[Boom](0,-3), Random[Boom](0,359),128);
 		Stop;
 	}
 }
@@ -209,7 +209,7 @@ class TankSmokePillar : Nuke
 	{
 	Spawn:
 		TNT1 A 0;
-		"####" AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 1 A_SpawnItemEx("NukeSmoke",0,0,0,0.1 * random(0,10),0.1 * random(0,10),0.1 * random(0,-40),random(0,359),128);
+		"####" AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 1 A_SpawnItemEx("NukeSmoke",0,0,0,0.1 * Random[Boom](0,10),0.1 * Random[Boom](0,10),0.1 * Random[Boom](0,-40), Random[Boom](0,359),128);
 		Stop;
 	}
 }
@@ -220,7 +220,7 @@ class TankMushroom : Nuke
 	{
 	Spawn:
 		TNT1 A 0;
-		"####" AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 1 A_SpawnItemEx("TankFire",0,0,0,0.1 * random(0,25),0.01 * random(0,25),0.1 * random(-10,10),random(0,359),128);
+		"####" AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 1 A_SpawnItemEx("TankFire",0,0,0,0.1 * Random[Boom](0,25),0.01 * Random[Boom](0,25),0.1 * Random[Boom](-10,10), Random[Boom](0,359),128);
 		Stop;
 	}
 }
@@ -231,7 +231,7 @@ class TankSmokeMushroom : Nuke
 	{
 	Spawn:
 		TNT1 A 0;
-		"####" AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 1 A_SpawnItemEx("NukeSmoke",0,0,0,0.1 * random(0,25),0.1 * random(0,25),0.1 * random(-10,10),random(0,359),128);
+		"####" AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 1 A_SpawnItemEx("NukeSmoke",0,0,0,0.1 * Random[Boom](0,25),0.1 * Random[Boom](0,25),0.1 * Random[Boom](-10,10), Random[Boom](0,359),128);
 		Stop;
 	}
 }
@@ -321,7 +321,7 @@ class NebFloor : NukeFloor
 	{
 	Spawn:
 		TNT1 A 0;
-		"####" AAAAAAAA 1 A_SpawnItemEx("NebFire",0,0,0,0.1 * random(0,12),0.1 * random(0,12),0.1 * random(-3,3),random(0,359),128);
+		"####" AAAAAAAA 1 A_SpawnItemEx("NebFire",0,0,0,0.1 * Random[Boom](0,12),0.1 * Random[Boom](0,12),0.1 * Random[Boom](-3,3), Random[Boom](0,359),128);
 		Stop;
 	}
 }
@@ -332,7 +332,7 @@ class NebSmokeFloor : NukeSmokeFloor
 	{
 	Spawn:
 		TNT1 A 0;
-		"####" AAAAAAAA 1 A_SpawnItemEx("NebSmoke",0,0,0,0.1 * random(0,15),0.1 * random(0,15),0,random(0,359),128);
+		"####" AAAAAAAA 1 A_SpawnItemEx("NebSmoke",0,0,0,0.1 * Random[Boom](0,15),0.1 * Random[Boom](0,15),0, Random[Boom](0,359),128);
 		Stop;
 	}
 }
@@ -343,7 +343,7 @@ class NebSmokePillar : TankSmokePillar
 	{
 	Spawn:
 		TNT1 A 0;
-		"####" AAAAAAAA 1 A_SpawnItemEx("NebSmoke",0,0,0,0.1 * random(0,5),0.1 * random(0,5),0.1 * random(0,-20),random(0,359),128);
+		"####" AAAAAAAA 1 A_SpawnItemEx("NebSmoke",0,0,0,0.1 * Random[Boom](0,5),0.1 * Random[Boom](0,5),0.1 * Random[Boom](0,-20), Random[Boom](0,359),128);
 		Stop;
 	}
 }
@@ -354,7 +354,7 @@ class NebSmokeMushroom : TankSmokeMushroom
 	{
 	Spawn:
 		TNT1 A 0;
-		"####" AAAAAAAA 1 A_SpawnItemEx("NebSmoke",0,0,0,0.1 * random(0,15),0.1 * random(0,15),0.1 * random(-5,5),random(0,359),128);
+		"####" AAAAAAAA 1 A_SpawnItemEx("NebSmoke",0,0,0,0.1 * Random[Boom](0,15),0.1 * Random[Boom](0,15),0.1 * Random[Boom](-5,5), Random[Boom](0,359),128);
 		Stop;
 	}
 }
@@ -398,7 +398,7 @@ class KaZomBoom : KaBoom //Zombie KaBoom
 	{
 	Spawn:
 		BFE1 ABCDE 2;
-		"####" F 0 A_Explode(random(45,65),144,TRUE,128);
+		"####" F 0 A_Explode(Random[Boom](45,65),144,TRUE,128);
 		"####" FGHIJKL 2;
 		Stop;
 	}
@@ -511,7 +511,7 @@ class UFONukeFloor : UFONuke
 	{
 	Spawn:
 		TNT1 A 0;
-		"####" AAAAAAAAAAAAAAAAAAAAAAAAA 1 A_SpawnItemEx("UFOFire",0,0,0,-0.1 * random(0,30),-0.1 * random(0,30),0,random(0,359),128);
+		"####" AAAAAAAAAAAAAAAAAAAAAAAAA 1 A_SpawnItemEx("UFOFire",0,0,0,-0.1 * Random[Boom](0,30),-0.1 * Random[Boom](0,30),0, Random[Boom](0,359),128);
 		Stop;
 	}
 }
@@ -522,7 +522,7 @@ class UFONukeSmokeFloor : UFONuke
 	{
 	Spawn:
 		TNT1 A 0;
-		"####" AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 1 A_SpawnItemEx("UFONukeSmoke",0,0,0,-0.1 * random(0,30),-0.1 * random(0,30),0,random(0,359),128);
+		"####" AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 1 A_SpawnItemEx("UFONukeSmoke",0,0,0,-0.1 * Random[Boom](0,30),-0.1 * Random[Boom](0,30),0, Random[Boom](0,359),128);
 		Stop;
 	}
 }
@@ -533,9 +533,9 @@ class UFOPillar : UFONuke
 	{
 	Spawn:
 		TNT1 A 0;
-		"####" AAAAAAAAAAAAAAAAAAAAAAAAA 1 A_SpawnItemEx("UFOFire",0,0,0,-0.1 * random(0,10),-0.1 * random(0,10),random(0,-3),random(0,359),128);
+		"####" AAAAAAAAAAAAAAAAAAAAAAAAA 1 A_SpawnItemEx("UFOFire",0,0,0,-0.1 * Random[Boom](0,10),-0.1 * Random[Boom](0,10), Random[Boom](0,-3), Random[Boom](0,359),128);
 		"####" A 0 A_SpawnItemEx("UFOSmokeRing");
-		"####" AAAAAAAAAAAA 1 A_SpawnItemEx("UFOFire",0,0,0,-0.1 * random(0,10),-0.1 * random(0,10),random(0,-3),random(0,359),128);
+		"####" AAAAAAAAAAAA 1 A_SpawnItemEx("UFOFire",0,0,0,-0.1 * Random[Boom](0,10),-0.1 * Random[Boom](0,10), Random[Boom](0,-3), Random[Boom](0,359),128);
 		Stop;
 	}
 }
@@ -546,7 +546,7 @@ class UFOSmokePillar : UFONuke
 	{
 	Spawn:
 		TNT1 A 0;
-		"####" AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 1 A_SpawnItemEx("UFONukeSmoke",0,0,0,-0.1 * random(0,10),-0.1 * random(0,10),-0.1 * random(0,-40),random(0,359),128);
+		"####" AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 1 A_SpawnItemEx("UFONukeSmoke",0,0,0,-0.1 * Random[Boom](0,10),-0.1 * Random[Boom](0,10),-0.1 * Random[Boom](0,-40), Random[Boom](0,359),128);
 		Stop;
 	}
 }
@@ -557,7 +557,7 @@ class UFOMushroom : UFONuke
 	{
 	Spawn:
 		TNT1 A 0;
-		"####" AAAAAAAAAAAAAAAAAAAAAAAAA 1 A_SpawnItemEx("UFOFire",0,0,0,-0.1 * random(0,25),-0.01 * random(0,25),-0.1 * random(-10,10),random(0,359),128);
+		"####" AAAAAAAAAAAAAAAAAAAAAAAAA 1 A_SpawnItemEx("UFOFire",0,0,0,-0.1 * Random[Boom](0,25),-0.01 * Random[Boom](0,25),-0.1 * Random[Boom](-10,10), Random[Boom](0,359),128);
 		Stop;
 	}
 }
@@ -568,7 +568,7 @@ class UFOSmokeMushroom : UFONuke
 	{
 	Spawn:
 		TNT1 A 0;
-		"####" AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 1 A_SpawnItemEx("UFONukeSmoke",0,0,0,-0.1 * random(0,25),-0.1 * random(0,25),-0.1 * random(-10,10),random(0,359),128);
+		"####" AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 1 A_SpawnItemEx("UFONukeSmoke",0,0,0,-0.1 * Random[Boom](0,25),-0.1 * Random[Boom](0,25),-0.1 * Random[Boom](-10,10), Random[Boom](0,359),128);
 		Stop;
 	}
 }
@@ -660,7 +660,7 @@ class LZ127NukeFloor : Nuke
 	{
 	Spawn:
 		TNT1 A 0;
-		"####" AAAAAAAAAAAAAAAAAAAAAAAAA 1 A_SpawnItemEx("LZ127Fire",0,0,0,-0.1 * random(0,30),-0.1 * random(0,30),0,random(0,359),128);
+		"####" AAAAAAAAAAAAAAAAAAAAAAAAA 1 A_SpawnItemEx("LZ127Fire",0,0,0,-0.1 * Random[Boom](0,30),-0.1 * Random[Boom](0,30),0, Random[Boom](0,359),128);
 		Stop;
 	}
 }
@@ -671,7 +671,7 @@ class LZ127NukeSmokeFloor : Nuke
 	{
 	Spawn:
 		TNT1 A 0;
-		"####" AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 1 A_SpawnItemEx("LZ127NukeSmoke",0,0,0,-0.1 * random(0,30),-0.1 * random(0,30),0,random(0,359),128);
+		"####" AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 1 A_SpawnItemEx("LZ127NukeSmoke",0,0,0,-0.1 * Random[Boom](0,30),-0.1 * Random[Boom](0,30),0, Random[Boom](0,359),128);
 		Stop;
 	}
 }
@@ -682,9 +682,9 @@ class LZ127Pillar : Nuke
 	{
 	Spawn:
 		TNT1 A 0;
-		"####" AAAAAAAAAAAAAAAAAAAAAAAAA 1 A_SpawnItemEx("LZ127Fire",0,0,0,-0.1 * random(0,10),-0.1 * random(0,10),random(0,-3),random(0,359),128);
+		"####" AAAAAAAAAAAAAAAAAAAAAAAAA 1 A_SpawnItemEx("LZ127Fire",0,0,0,-0.1 * Random[Boom](0,10),-0.1 * Random[Boom](0,10), Random[Boom](0,-3), Random[Boom](0,359),128);
 		"####" A 0 A_SpawnItemEx("LZ127SmokeRing");
-		"####" AAAAAAAAAAAA 1 A_SpawnItemEx("LZ127Fire",0,0,0,-0.1 * random(0,10),-0.1 * random(0,10),random(0,-3),random(0,359),128);
+		"####" AAAAAAAAAAAA 1 A_SpawnItemEx("LZ127Fire",0,0,0,-0.1 * Random[Boom](0,10),-0.1 * Random[Boom](0,10), Random[Boom](0,-3), Random[Boom](0,359),128);
 		Stop;
 	}
 }
@@ -695,7 +695,7 @@ class LZ127SmokePillar : Nuke
 	{
 	Spawn:
 		TNT1 A 0;
-		"####" AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 1 A_SpawnItemEx("LZ127NukeSmoke",0,0,0,-0.1 * random(0,10),-0.1 * random(0,10),-0.1 * random(0,-40),random(0,359),128);
+		"####" AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 1 A_SpawnItemEx("LZ127NukeSmoke",0,0,0,-0.1 * Random[Boom](0,10),-0.1 * Random[Boom](0,10),-0.1 * Random[Boom](0,-40), Random[Boom](0,359),128);
 		Stop;
 	}
 }
@@ -706,7 +706,7 @@ class LZ127Mushroom : Nuke
 	{
 	Spawn:
 		TNT1 A 0;
-		"####" AAAAAAAAAAAAAAAAAAAAAAAAA 1 A_SpawnItemEx("LZ127Fire",0,0,0,-0.1 * random(0,25),-0.01 * random(0,25),-0.1 * random(-10,10),random(0,359),128);
+		"####" AAAAAAAAAAAAAAAAAAAAAAAAA 1 A_SpawnItemEx("LZ127Fire",0,0,0,-0.1 * Random[Boom](0,25),-0.01 * Random[Boom](0,25),-0.1 * Random[Boom](-10,10), Random[Boom](0,359),128);
 		Stop;
 	}
 }
@@ -717,7 +717,7 @@ class LZ127SmokeMushroom : Nuke
 	{
 	Spawn:
 		TNT1 A 0;
-		"####" AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 1 A_SpawnItemEx("LZ127NukeSmoke",0,0,0,-0.1 * random(0,25),-0.1 * random(0,25),-0.1 * random(-10,10),random(0,359),128);
+		"####" AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 1 A_SpawnItemEx("LZ127NukeSmoke",0,0,0,-0.1 * Random[Boom](0,25),-0.1 * Random[Boom](0,25),-0.1 * Random[Boom](-10,10), Random[Boom](0,359),128);
 		Stop;
 	}
 }

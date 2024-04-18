@@ -132,12 +132,12 @@ class Table7: SceneryBase
 	States
 	{
 	Spawn:
-		MDLA A 0 NODELAY A_SpawnItemEx("WineBottle", random(-8, -3), random(-8, 8), 27, 0, 0, 0, 0, 0, 128, tid);
-		"####" A 0 A_SpawnItemEx("WineBottle", random(3, 8), random(-8, 8), 27, 0, 0, 0, 0, 0, 128, tid);
-		"####" A 0 A_SpawnItemEx("WineGlass", random(8, 16), random(-16, -8), 27, 0, 0, 0, 0, 0, 128, tid);
-		"####" A 0 A_SpawnItemEx("StackedMeal", random(-16, -18), random(-16, -18), 27, 0, 0, 0, 0, 0, 128, tid);
-		"####" A 0 A_SpawnItemEx("WineGlass", random(-16, -8), random(8, 16), 27, 0, 0, 0, 0, 0, 128, tid);
-		"####" A 0 A_SpawnItemEx("WineGlass", random(8, 16), random(8, 16), 27, 0, 0, 0, 0, 0, 128, tid);
+		MDLA A 0 NODELAY A_SpawnItemEx("WineBottle", Random[Debris](-8, -3), Random[Debris](-8, 8), 27, 0, 0, 0, 0, 0, 128, tid);
+		"####" A 0 A_SpawnItemEx("WineBottle", Random[Debris](3, 8), Random[Debris](-8, 8), 27, 0, 0, 0, 0, 0, 128, tid);
+		"####" A 0 A_SpawnItemEx("WineGlass", Random[Debris](8, 16), Random[Debris](-16, -8), 27, 0, 0, 0, 0, 0, 128, tid);
+		"####" A 0 A_SpawnItemEx("StackedMeal", Random[Debris](-16, -18), Random[Debris](-16, -18), 27, 0, 0, 0, 0, 0, 128, tid);
+		"####" A 0 A_SpawnItemEx("WineGlass", Random[Debris](-16, -8), Random[Debris](8, 16), 27, 0, 0, 0, 0, 0, 128, tid);
+		"####" A 0 A_SpawnItemEx("WineGlass", Random[Debris](8, 16), Random[Debris](8, 16), 27, 0, 0, 0, 0, 0, 128, tid);
 		"####" A -1;
 		Stop;
 	}
@@ -166,11 +166,11 @@ class Table9 : Table7
 	States
 	{
 	Spawn:
-		MDLA A 0 NODELAY A_SpawnItemEx("Kettle", random(-4, -2), random(-4, 4), 27, 0, 0, 0, 0, 0, 128, tid);
-		"####" A 0 A_SpawnItemEx("Cup1", random(-18, -12), random(-18, -12), 27, 0, 0, 0, 0, 0, 128, tid);
-		"####" A 0 A_SpawnItemEx("Cup1", random(12, 18), random(-18, -12), 27, 0, 0, 0, 0, 0, 128, tid);
-		"####" A 0 A_SpawnItemEx("Cup1", random(-18, -12), random(12, 18), 27, 0, 0, 0, 0, 0, 128, tid);
-		"####" A 0 A_SpawnItemEx("Cup1", random(12, 18), random(12, 18), 27, 0, 0, 0, 0, 0, 128, tid);
+		MDLA A 0 NODELAY A_SpawnItemEx("Kettle", Random[Debris](-4, -2), Random[Debris](-4, 4), 27, 0, 0, 0, 0, 0, 128, tid);
+		"####" A 0 A_SpawnItemEx("Cup1", Random[Debris](-18, -12), Random[Debris](-18, -12), 27, 0, 0, 0, 0, 0, 128, tid);
+		"####" A 0 A_SpawnItemEx("Cup1", Random[Debris](12, 18), Random[Debris](-18, -12), 27, 0, 0, 0, 0, 0, 128, tid);
+		"####" A 0 A_SpawnItemEx("Cup1", Random[Debris](-18, -12), Random[Debris](12, 18), 27, 0, 0, 0, 0, 0, 128, tid);
+		"####" A 0 A_SpawnItemEx("Cup1", Random[Debris](12, 18), Random[Debris](12, 18), 27, 0, 0, 0, 0, 0, 128, tid);
 		"####" A -1;
 		Stop;
 	}
@@ -185,11 +185,11 @@ class Table10 : Table7
 	States
 	{
 	Spawn:
-		MDLA A 0 NODELAY A_SpawnItemEx("TeaPot2", random(-4, -2), random(-4, 4), 27, 0, 0, 0, 0, 0, 128, tid);
-		"####" A 0 A_SpawnItemEx("TeaCup3", random(-18, -12), random(-18, -12), 27, 0, 0, 0, 0, 0, 128, tid);
-		"####" A 0 A_SpawnItemEx("TeaCup4", random(12, 18), random(-18, -12), 27, 0, 0, 0, 0, 0, 128, tid);
-		"####" A 0 A_SpawnItemEx("TeaCup4", random(-18, -12), random(12, 18), 27, 0, 0, 0, 0, 0, 128, tid);
-		"####" A 0 A_SpawnItemEx("TeaCup4", random(12, 18), random(12, 18), 27, 0, 0, 0, 0, 0, 128, tid);
+		MDLA A 0 NODELAY A_SpawnItemEx("TeaPot2", Random[Debris](-4, -2), Random[Debris](-4, 4), 27, 0, 0, 0, 0, 0, 128, tid);
+		"####" A 0 A_SpawnItemEx("TeaCup3", Random[Debris](-18, -12), Random[Debris](-18, -12), 27, 0, 0, 0, 0, 0, 128, tid);
+		"####" A 0 A_SpawnItemEx("TeaCup4", Random[Debris](12, 18), Random[Debris](-18, -12), 27, 0, 0, 0, 0, 0, 128, tid);
+		"####" A 0 A_SpawnItemEx("TeaCup4", Random[Debris](-18, -12), Random[Debris](12, 18), 27, 0, 0, 0, 0, 0, 128, tid);
+		"####" A 0 A_SpawnItemEx("TeaCup4", Random[Debris](12, 18), Random[Debris](12, 18), 27, 0, 0, 0, 0, 0, 128, tid);
 		"####" A -1;
 		Stop;
 	}
@@ -204,11 +204,11 @@ class Table11 : Table7
 	States
 	{
 	Spawn:
-		MDLA A 0 NODELAY A_SpawnItemEx("TeaPot1", random(-4, -2), random(-4, 4), 27, 0, 0, 0, 0, 0, 128, tid);
-		"####" A 0 A_SpawnItemEx("TeaCup1", random(-18, -12), random(-18, -12), 27, 0, 0, 0, 0, 0, 128, tid);
-		"####" A 0 A_SpawnItemEx("TeaCup1", random(12, 18), random(-18, -12), 27, 0, 0, 0, 0, 0, 128, tid);
-		"####" A 0 A_SpawnItemEx("TeaCup1", random(-18, -12), random(12, 18), 27, 0, 0, 0, 0, 0, 128, tid);
-		"####" A 0 A_SpawnItemEx("TeaCup1", random(12, 18), random(12, 18), 27, 0, 0, 0, 0, 0, 128, tid);
+		MDLA A 0 NODELAY A_SpawnItemEx("TeaPot1", Random[Debris](-4, -2), Random[Debris](-4, 4), 27, 0, 0, 0, 0, 0, 128, tid);
+		"####" A 0 A_SpawnItemEx("TeaCup1", Random[Debris](-18, -12), Random[Debris](-18, -12), 27, 0, 0, 0, 0, 0, 128, tid);
+		"####" A 0 A_SpawnItemEx("TeaCup1", Random[Debris](12, 18), Random[Debris](-18, -12), 27, 0, 0, 0, 0, 0, 128, tid);
+		"####" A 0 A_SpawnItemEx("TeaCup1", Random[Debris](-18, -12), Random[Debris](12, 18), 27, 0, 0, 0, 0, 0, 128, tid);
+		"####" A 0 A_SpawnItemEx("TeaCup1", Random[Debris](12, 18), Random[Debris](12, 18), 27, 0, 0, 0, 0, 0, 128, tid);
 		"####" A -1;
 		Stop;
 	}
@@ -223,12 +223,12 @@ class Table12 : Table7
 	States
 	{
 	Spawn:
-		MDLA A 0 NODELAY A_SpawnItemEx("WineBottle", random(-8, -3), random(-8, 8), 27, 0, 0, 0, 0, 0, 128, tid);
-		"####" A 0 A_SpawnItemEx("WineBottle", random(3, 8), random(-8, 8), 27, 0, 0, 0, 0, 0, 128, tid);
-		"####" A 0 A_SpawnItemEx("WineGlass", random(8, 16), random(-16, -8), 27, 0, 0, 0, 0, 0, 128, tid);
-		"####" A 0 A_SpawnItemEx("StackedPartyMeal", random(-16, -18), random(-16, -18), 24, 0, 0, 0, 0, 0, 128, tid);
-		"####" A 0 A_SpawnItemEx("WineGlass", random(-16, -8), random(8, 16), 27, 0, 0, 0, 0, 0, 128, tid);
-		"####" A 0 A_SpawnItemEx("WineGlass", random(8, 16), random(8, 16), 27, 0, 0, 0, 0, 0, 128, tid);
+		MDLA A 0 NODELAY A_SpawnItemEx("WineBottle", Random[Debris](-8, -3), Random[Debris](-8, 8), 27, 0, 0, 0, 0, 0, 128, tid);
+		"####" A 0 A_SpawnItemEx("WineBottle", Random[Debris](3, 8), Random[Debris](-8, 8), 27, 0, 0, 0, 0, 0, 128, tid);
+		"####" A 0 A_SpawnItemEx("WineGlass", Random[Debris](8, 16), Random[Debris](-16, -8), 27, 0, 0, 0, 0, 0, 128, tid);
+		"####" A 0 A_SpawnItemEx("StackedPartyMeal", Random[Debris](-16, -18), Random[Debris](-16, -18), 24, 0, 0, 0, 0, 0, 128, tid);
+		"####" A 0 A_SpawnItemEx("WineGlass", Random[Debris](-16, -8), Random[Debris](8, 16), 27, 0, 0, 0, 0, 0, 128, tid);
+		"####" A 0 A_SpawnItemEx("WineGlass", Random[Debris](8, 16), Random[Debris](8, 16), 27, 0, 0, 0, 0, 0, 128, tid);
 		"####" A -1;
 		Stop;
 	}
@@ -244,10 +244,10 @@ class CafeStuff : Table7
 	States
 	{
 	Spawn:
-		MDLA A 0 NODELAY A_SpawnItemEx("TeaCup3", random(-24, -16), random(-24, -16), 32, 0, 0, 0, 0, 0, 128);
-		"####" A 0 A_SpawnItemEx("Cup1", random(16, 24), random(-24, -16), 32, 0, 0, 0, 0, 0, 128);
-		"####" A 0 A_SpawnItemEx("Cup1", random(-24, -16), random(16, 24), 32, 0, 0, 0, 0, 0, 128);
-		"####" A 0 A_SpawnItemEx("TeaCup3", random(16, 24), random(16, 24), 32, 0, 0, 0, 0, 0, 128);
+		MDLA A 0 NODELAY A_SpawnItemEx("TeaCup3", Random[Debris](-24, -16), Random[Debris](-24, -16), 32, 0, 0, 0, 0, 0, 128);
+		"####" A 0 A_SpawnItemEx("Cup1", Random[Debris](16, 24), Random[Debris](-24, -16), 32, 0, 0, 0, 0, 0, 128);
+		"####" A 0 A_SpawnItemEx("Cup1", Random[Debris](-24, -16), Random[Debris](16, 24), 32, 0, 0, 0, 0, 0, 128);
+		"####" A 0 A_SpawnItemEx("TeaCup3", Random[Debris](16, 24), Random[Debris](16, 24), 32, 0, 0, 0, 0, 0, 128);
 		"####" A -1;
 		Stop;
 	}
@@ -316,8 +316,8 @@ class Chair1 : Plant1 //linked to bureau.txt
 	Death:
 		TNT1 A 0 A_UnSetSolid;
 		TNT1 A 0 A_StartSound("WOODBRK", CHAN_AUTO, 0, frandom (0.5,0.8), ATTN_NORM);
-		"####" AAAAAAAAAA 0 A_SpawnItemEx("Debris_Wood", random(10,30), random(0,16), random(0,48), random(1,3), random(1,3), random(1,3), random(0,360), SXF_CLIENTSIDE);
-		"####" AAAAAAAAAA 0 A_SpawnItemEx("Debris_Wood", random(20,40), random(0,16), random(0,48), random(1,3), random(1,3), random(1,3), random(0,360), SXF_CLIENTSIDE);
+		"####" AAAAAAAAAA 0 A_SpawnItemEx("Debris_Wood", Random[Debris](10,30), Random[Debris](0,16), Random[Debris](0,48), Random[Debris](1,3), Random[Debris](1,3), Random[Debris](1,3), Random[Debris](0,360), SXF_CLIENTSIDE);
+		"####" AAAAAAAAAA 0 A_SpawnItemEx("Debris_Wood", Random[Debris](20,40), Random[Debris](0,16), Random[Debris](0,48), Random[Debris](1,3), Random[Debris](1,3), Random[Debris](1,3), Random[Debris](0,360), SXF_CLIENTSIDE);
 		MDLA BCDEFG 1;
 		MDLA H -1;
 		Stop;
@@ -335,8 +335,8 @@ class Chair2 : Chair1
 	Death:
 		TNT1 A 0 A_UnSetSolid;
 		TNT1 A 0 {A_StartSound("METALBRK", CHAN_AUTO, 0, frandom (0.5,0.8), ATTN_NORM); A_StartSound("WOODBRK", CHAN_AUTO, 0, frandom (0.5,0.8), ATTN_NORM);}
-		"####" AAAAAAAAAA 0 A_SpawnItemEx("Debris_Wood", random(10,40), random(0,16), random(0,48), random(1,3), random(1,3), random(1,3), random(0,360), SXF_CLIENTSIDE);
-		"####" AAAAAAAAAA 0 A_SpawnItemEx("Debris_Trash2", random(10,40), random(0,16), random(0,48), random(1,3), random(1,3), random(1,3), random(0,360), SXF_CLIENTSIDE);
+		"####" AAAAAAAAAA 0 A_SpawnItemEx("Debris_Wood", Random[Debris](10,40), Random[Debris](0,16), Random[Debris](0,48), Random[Debris](1,3), Random[Debris](1,3), Random[Debris](1,3), Random[Debris](0,360), SXF_CLIENTSIDE);
+		"####" AAAAAAAAAA 0 A_SpawnItemEx("Debris_Trash2", Random[Debris](10,40), Random[Debris](0,16), Random[Debris](0,48), Random[Debris](1,3), Random[Debris](1,3), Random[Debris](1,3), Random[Debris](0,360), SXF_CLIENTSIDE);
 		MDLA BCDEFGHIJKLMNO 1;
 		MDLA P -1;
 		Stop;
@@ -354,8 +354,8 @@ class Chair3 : Chair1
 	Death:
 		TNT1 A 0 A_UnSetSolid;
 		TNT1 A 0 A_StartSound("WOODBRK", CHAN_AUTO, 0, frandom (0.5,0.8), ATTN_NORM);
-		"####" AAAAAAAAAA 0 A_SpawnItemEx("Debris_Wood", random(10,30), random(0,16), random(0,48), random(1,3), random(1,3), random(1,3), random(0,360), SXF_CLIENTSIDE);
-		"####" AAAAAAAAAA 0 A_SpawnItemEx("Debris_Wood", random(20,40), random(0,16), random(0,48), random(1,3), random(1,3), random(1,3), random(0,360), SXF_CLIENTSIDE);
+		"####" AAAAAAAAAA 0 A_SpawnItemEx("Debris_Wood", Random[Debris](10,30), Random[Debris](0,16), Random[Debris](0,48), Random[Debris](1,3), Random[Debris](1,3), Random[Debris](1,3), Random[Debris](0,360), SXF_CLIENTSIDE);
+		"####" AAAAAAAAAA 0 A_SpawnItemEx("Debris_Wood", Random[Debris](20,40), Random[Debris](0,16), Random[Debris](0,48), Random[Debris](1,3), Random[Debris](1,3), Random[Debris](1,3), Random[Debris](0,360), SXF_CLIENTSIDE);
 		MDLA BCDEFGHIJKLMNO 1;
 		MDLA P -1;
 		Stop;
@@ -373,7 +373,7 @@ class Chair4 : Chair1
 	Death:
 		TNT1 A 0 A_UnSetSolid;
 		TNT1 A 0 A_StartSound("METALBRK", CHAN_AUTO, 0, frandom (0.5,0.8), ATTN_NORM);
-		"####" AAAAAAAAAA 0 A_SpawnItemEx("Debris_Trash2", random(10,40), random(0,16), random(0,48), random(1,3), random(1,3), random(1,3), random(0,360), SXF_CLIENTSIDE);
+		"####" AAAAAAAAAA 0 A_SpawnItemEx("Debris_Trash2", Random[Debris](10,40), Random[Debris](0,16), Random[Debris](0,48), Random[Debris](1,3), Random[Debris](1,3), Random[Debris](1,3), Random[Debris](0,360), SXF_CLIENTSIDE);
 		MDLA BCDEFG 1;
 		MDLA H -1;
 		Stop;

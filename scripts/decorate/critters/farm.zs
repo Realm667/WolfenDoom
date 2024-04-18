@@ -37,16 +37,16 @@ class Cows: SceneryBase
 	States
 	{
 	Spawn:
-		COWS A 0 NODELAY A_SetScale(Scale.X + frandom(0.1,0.2),Scale.Y + frandom(0.1,0.2));
+		COWS A 0 NODELAY A_SetScale(Scale.X + FRandom[Scenery](0.1,0.2),Scale.Y + FRandom[Scenery](0.1,0.2));
 	Randomize:
 		COWS A 0 A_Jump(128,"Cow2");
 	Cow1:
-		"####" BCDA 1 A_SetTics(random(4,10));
-		"####" AA 1 A_SetTics(random(10,40));
+		"####" BCDA 1 A_SetTics(Random[Scenery](4,10));
+		"####" AA 1 A_SetTics(Random[Scenery](10,40));
 		Loop;
 	Cow2:
-		"####" FGHE 1 A_SetTics(random(4,10));
-		"####" EE 1 A_SetTics(random(10,40));
+		"####" FGHE 1 A_SetTics(Random[Scenery](4,10));
+		"####" EE 1 A_SetTics(Random[Scenery](10,40));
 		Loop;
 	}
 }
@@ -61,10 +61,10 @@ class Camel : Cows
 	States
 	{
 	Spawn:
-		CAML A 0 NODELAY A_SetScale(Scale.X + frandom(0.1,0.2),Scale.Y + frandom(0.1,0.2));
+		CAML A 0 NODELAY A_SetScale(Scale.X + FRandom[Scenery](0.1,0.2),Scale.Y + FRandom[Scenery](0.1,0.2));
 	SpawnSet:
-		"####" BA 1 A_SetTics(random(40,80));
-		"####" CDEFDEF 1 A_SetTics(random(8,16));
+		"####" BA 1 A_SetTics(Random[Scenery](40,80));
+		"####" CDEFDEF 1 A_SetTics(Random[Scenery](8,16));
 		Loop;
 	}
 }
@@ -91,16 +91,16 @@ class BarkDog : SwitchableDecoration
 	States
 	{
 	Active:
-		BRDG E 0 A_StartSound("dog/attack", CHAN_ITEM, 0, frandom(0.7,1.0), ATTN_NORM);
+		BRDG E 0 A_StartSound("dog/attack", CHAN_ITEM, 0, FRandom[Scenery](0.7,1.0), ATTN_NORM);
 	ActiveSet:
-		"####" F 1 A_SetTics(random(4,8));
-		"####" GE 1 A_SetTics(random(20,40));
+		"####" F 1 A_SetTics(Random[Scenery](4,8));
+		"####" GE 1 A_SetTics(Random[Scenery](20,40));
 		Goto SpawnSet;
 	Spawn:
-		BRDG A 0 NODELAY A_SetScale(Scale.X * RandomPick(-1, 1), Scale.Y);
+		BRDG A 0 NODELAY A_SetScale(Scale.X * RandomPick[Scenery](-1, 1), Scale.Y);
 	SpawnSet:
-		BRDG DCBA 1 A_SetTics(random(4,10));
-		"####" AA 1 A_SetTics(random(10,40));
+		BRDG DCBA 1 A_SetTics(Random[Scenery](4,10));
+		"####" AA 1 A_SetTics(Random[Scenery](10,40));
 		Loop;
 	Inactive:
 		"####" A 0 A_StopSound(CHAN_ITEM);
@@ -123,32 +123,32 @@ class BlackCat : BarkDog
 	Active:
 		BCAT D 0 A_StopSound(CHAN_ITEM);
 		"####" D 0 A_JumpIfInventory("HissCounter", 2, "Hiss");
-		"####" D 0 A_StartSound("cat/meows", CHAN_AUTO, 0, frandom(0.7,1.0), ATTN_NORM);
+		"####" D 0 A_StartSound("cat/meows", CHAN_AUTO, 0, FRandom[Scenery](0.7,1.0), ATTN_NORM);
 	ActiveSet:
 		"####" D 0 A_GiveInventory("HissCounter", 1);
-		"####" D 1 A_SetTics(random(10,40));
+		"####" D 1 A_SetTics(Random[Scenery](10,40));
 		"####" D 0 A_StartSound("cat/meows", CHAN_AUTO, 0, 1.0, ATTN_NORM);
-		"####" EF 1 A_SetTics(random(20,40));
+		"####" EF 1 A_SetTics(Random[Scenery](20,40));
 		Goto Purr;
 	Hiss:
-		"####" D 1 A_SetTics(random(10,40));
-		"####" EF 1 A_SetTics(random(4,8));
-		"####" G 0 A_StartSound("cat/hiss", CHAN_AUTO, 0, frandom(0.7,1.0), ATTN_NORM);
-		"####" G 1 A_SetTics(random(20,30));
+		"####" D 1 A_SetTics(Random[Scenery](10,40));
+		"####" EF 1 A_SetTics(Random[Scenery](4,8));
+		"####" G 0 A_StartSound("cat/hiss", CHAN_AUTO, 0, FRandom[Scenery](0.7,1.0), ATTN_NORM);
+		"####" G 1 A_SetTics(Random[Scenery](20,30));
 		Goto Purr;
 	Spawn:
-		BCAT A 0 NODELAY A_SetScale(Scale.X * RandomPick(-1, 1), Scale.Y);
+		BCAT A 0 NODELAY A_SetScale(Scale.X * RandomPick[Scenery](-1, 1), Scale.Y);
 	Purr:
-		BCAT A 0 A_StartSound("cat/purr", CHAN_ITEM, CHANF_LOOPING, frandom(0.1,0.2), ATTN_STATIC);
+		BCAT A 0 A_StartSound("cat/purr", CHAN_ITEM, CHANF_LOOPING, FRandom[Scenery](0.1,0.2), ATTN_STATIC);
 	SpawnSet:
 		BCAT A 0 A_CheckRange(512,"SpawnSilent");
-		BCAT BCA 1 A_SetTics(random(4,10));
-		"####" AA 1 A_SetTics(random(10,40));
+		BCAT BCA 1 A_SetTics(Random[Scenery](4,10));
+		"####" AA 1 A_SetTics(Random[Scenery](10,40));
 		Loop;
 	SpawnSilent:
 		BCAT A 0 A_StopSound(CHAN_ITEM);
-		"####" BCA 1 A_SetTics(random(4,10));
-		"####" AA 1 A_SetTics(random(10,40));
+		"####" BCA 1 A_SetTics(Random[Scenery](4,10));
+		"####" AA 1 A_SetTics(Random[Scenery](10,40));
 		Goto Purr;
 	Inactive:
 		"####" A 0 A_StopSound(CHAN_ITEM);
@@ -178,16 +178,16 @@ class OcherCat: SceneryBase
 	States
 	{
 	Spawn:
-		OCAT A 0 NODELAY A_SetScale(Scale.X * RandomPick(-1, 1), Scale.Y);
+		OCAT A 0 NODELAY A_SetScale(Scale.X * RandomPick[Scenery](-1, 1), Scale.Y);
 	Randomize:
 		OCAT A 0 A_Jump(128,"Cat2");
 	Cat1:
-		OCAT BCAD 1 A_SetTics(random(4,10));
-		"####" AA 1 A_SetTics(random(10,40));
+		OCAT BCAD 1 A_SetTics(Random[Scenery](4,10));
+		"####" AA 1 A_SetTics(Random[Scenery](10,40));
 		Loop;
 	Cat2:
-		OCAT FGEH 1 A_SetTics(random(4,10));
-		"####" EE 1 A_SetTics(random(10,40));
+		OCAT FGEH 1 A_SetTics(Random[Scenery](4,10));
+		"####" EE 1 A_SetTics(Random[Scenery](10,40));
 		Loop;
 	}
 }
@@ -197,16 +197,16 @@ class GrayCat : OcherCat
 	States
 	{
 	Spawn:
-		GCAT A 0 NODELAY A_SetScale(Scale.X * RandomPick(-1, 1), Scale.Y);
+		GCAT A 0 NODELAY A_SetScale(Scale.X * RandomPick[Scenery](-1, 1), Scale.Y);
 	Randomize:
 		GCAT A 0 A_Jump(128,"Cat2");
 	Cat1:
-		GCAT BCAD 1 A_SetTics(random(4,10));
-		"####" AA 1 A_SetTics(random(10,40));
+		GCAT BCAD 1 A_SetTics(Random[Scenery](4,10));
+		"####" AA 1 A_SetTics(Random[Scenery](10,40));
 		Loop;
 	Cat2:
-		GCAT FGEH 1 A_SetTics(random(4,10));
-		"####" EE 1 A_SetTics(random(10,40));
+		GCAT FGEH 1 A_SetTics(Random[Scenery](4,10));
+		"####" EE 1 A_SetTics(Random[Scenery](10,40));
 		Loop;
 	}
 }
@@ -216,16 +216,16 @@ class WhiteCat : OcherCat
 	States
 	{
 	Spawn:
-		WCAT A 0 NODELAY A_SetScale(Scale.X * RandomPick(-1, 1), Scale.Y);
+		WCAT A 0 NODELAY A_SetScale(Scale.X * RandomPick[Scenery](-1, 1), Scale.Y);
 	Randomize:
 		WCAT A 0 A_Jump(128,"Cat2");
 	Cat1:
-		WCAT BCAD 1 A_SetTics(random(4,10));
-		"####" AA 1 A_SetTics(random(10,40));
+		WCAT BCAD 1 A_SetTics(Random[Scenery](4,10));
+		"####" AA 1 A_SetTics(Random[Scenery](10,40));
 		Loop;
 	Cat2:
-		WCAT FGEH 1 A_SetTics(random(4,10));
-		"####" EE 1 A_SetTics(random(10,40));
+		WCAT FGEH 1 A_SetTics(Random[Scenery](4,10));
+		"####" EE 1 A_SetTics(Random[Scenery](10,40));
 		Loop;
 	}
 }
@@ -264,13 +264,13 @@ class DogsBodies: SceneryBase
 		ZARK A -1 A_SetScale(0.9);
 		ZARK B -1 A_SetScale(0.9);
 		ZARK C -1 A_SetScale(0.9);
-		ZYDO A -1 A_SetScale(Scale.X * RandomPick(-1, 1), Scale.Y);
-		ZYDO B -1 A_SetScale(Scale.X * RandomPick(-1, 1), Scale.Y);
-		ZYDO C -1 A_SetScale(Scale.X * RandomPick(-1, 1), Scale.Y);
-		DOGY K -1 A_SetScale(Scale.X * RandomPick(-1, 1), Scale.Y);
-		DOG2 K -1 A_SetScale(Scale.X * RandomPick(-1, 1), Scale.Y);
-		DOG3 K -1 A_SetScale(Scale.X * RandomPick(-1, 1), Scale.Y);
-		ZYDO J -1 A_SetScale(Scale.X * RandomPick(-1, 1), Scale.Y);
+		ZYDO A -1 A_SetScale(Scale.X * RandomPick[Scenery](-1, 1), Scale.Y);
+		ZYDO B -1 A_SetScale(Scale.X * RandomPick[Scenery](-1, 1), Scale.Y);
+		ZYDO C -1 A_SetScale(Scale.X * RandomPick[Scenery](-1, 1), Scale.Y);
+		DOGY K -1 A_SetScale(Scale.X * RandomPick[Scenery](-1, 1), Scale.Y);
+		DOG2 K -1 A_SetScale(Scale.X * RandomPick[Scenery](-1, 1), Scale.Y);
+		DOG3 K -1 A_SetScale(Scale.X * RandomPick[Scenery](-1, 1), Scale.Y);
+		ZYDO J -1 A_SetScale(Scale.X * RandomPick[Scenery](-1, 1), Scale.Y);
 		Stop;
 	}
 }
@@ -287,9 +287,9 @@ class CatsBodies : DogsBodies //recolors not included yet - ozy81
 	{
 	Spawn:
 		TNT1 A 0 NODELAY A_Jump(256,1,2,3);
-		ZCAT A -1 A_SetScale(Scale.X * RandomPick(-1, 1), Scale.Y);
-		ZCAT B -1 A_SetScale(Scale.X * RandomPick(-1, 1), Scale.Y);
-		ZCAT C -1 A_SetScale(Scale.X * RandomPick(-1, 1), Scale.Y);
+		ZCAT A -1 A_SetScale(Scale.X * RandomPick[Scenery](-1, 1), Scale.Y);
+		ZCAT B -1 A_SetScale(Scale.X * RandomPick[Scenery](-1, 1), Scale.Y);
+		ZCAT C -1 A_SetScale(Scale.X * RandomPick[Scenery](-1, 1), Scale.Y);
 		Stop;
 	}
 }
@@ -306,13 +306,13 @@ class CowsBodies : DogsBodies
 	{
 	Spawn:
 		TNT1 A 0 NODELAY A_Jump(256,1,2,3,4,5,6,7);
-		ZCOW A -1 A_SetScale(Scale.X * RandomPick(-1, 1), Scale.Y);
-		ZCOW B -1 A_SetScale(Scale.X * RandomPick(-1, 1), Scale.Y);
-		ZCOW C -1 A_SetScale(Scale.X * RandomPick(-1, 1), Scale.Y);
-		ZCOW D -1 A_SetScale(Scale.X * RandomPick(-1, 1), Scale.Y);
-		ZCOW E -1 A_SetScale(Scale.X * RandomPick(-1, 1), Scale.Y);
-		ZCOW F -1 A_SetScale(Scale.X * RandomPick(-1, 1), Scale.Y);
-		ZCOW G -1 A_SetScale(Scale.X * RandomPick(-1, 1), Scale.Y);
+		ZCOW A -1 A_SetScale(Scale.X * RandomPick[Scenery](-1, 1), Scale.Y);
+		ZCOW B -1 A_SetScale(Scale.X * RandomPick[Scenery](-1, 1), Scale.Y);
+		ZCOW C -1 A_SetScale(Scale.X * RandomPick[Scenery](-1, 1), Scale.Y);
+		ZCOW D -1 A_SetScale(Scale.X * RandomPick[Scenery](-1, 1), Scale.Y);
+		ZCOW E -1 A_SetScale(Scale.X * RandomPick[Scenery](-1, 1), Scale.Y);
+		ZCOW F -1 A_SetScale(Scale.X * RandomPick[Scenery](-1, 1), Scale.Y);
+		ZCOW G -1 A_SetScale(Scale.X * RandomPick[Scenery](-1, 1), Scale.Y);
 		Stop;
 	}
 }
@@ -329,15 +329,15 @@ class PigsBodies : DogsBodies
 	{
 	Spawn:
 		TNT1 A 0 NODELAY A_Jump(256,1,2,3,4,5,6,7,8,9);
-		ZPIG A -1 A_SetScale(Scale.X * RandomPick(-1, 1), Scale.Y);
-		ZPIG B -1 A_SetScale(Scale.X * RandomPick(-1, 1), Scale.Y);
-		ZPIG C -1 A_SetScale(Scale.X * RandomPick(-1, 1), Scale.Y);
-		ZPIG D -1 A_SetScale(Scale.X * RandomPick(-1, 1), Scale.Y);
-		ZPIG E -1 A_SetScale(Scale.X * RandomPick(-1, 1), Scale.Y);
-		ZPIG F -1 A_SetScale(Scale.X * RandomPick(-1, 1), Scale.Y);
-		ZPIG G -1 A_SetScale(Scale.X * RandomPick(-1, 1), Scale.Y);
-		ZPIG H -1 A_SetScale(Scale.X * RandomPick(-1, 1), Scale.Y);
-		ZPIG I -1 A_SetScale(Scale.X * RandomPick(-1, 1), Scale.Y);
+		ZPIG A -1 A_SetScale(Scale.X * RandomPick[Scenery](-1, 1), Scale.Y);
+		ZPIG B -1 A_SetScale(Scale.X * RandomPick[Scenery](-1, 1), Scale.Y);
+		ZPIG C -1 A_SetScale(Scale.X * RandomPick[Scenery](-1, 1), Scale.Y);
+		ZPIG D -1 A_SetScale(Scale.X * RandomPick[Scenery](-1, 1), Scale.Y);
+		ZPIG E -1 A_SetScale(Scale.X * RandomPick[Scenery](-1, 1), Scale.Y);
+		ZPIG F -1 A_SetScale(Scale.X * RandomPick[Scenery](-1, 1), Scale.Y);
+		ZPIG G -1 A_SetScale(Scale.X * RandomPick[Scenery](-1, 1), Scale.Y);
+		ZPIG H -1 A_SetScale(Scale.X * RandomPick[Scenery](-1, 1), Scale.Y);
+		ZPIG I -1 A_SetScale(Scale.X * RandomPick[Scenery](-1, 1), Scale.Y);
 		Stop;
 	}
 }
@@ -351,7 +351,7 @@ class DeadBear : DogsBodies
 	States
 	{
 	Spawn:
-		ZBER A -1 NODELAY A_SetScale(Scale.X * RandomPick(-1, 1), Scale.Y);
+		ZBER A -1 NODELAY A_SetScale(Scale.X * RandomPick[Scenery](-1, 1), Scale.Y);
 		Stop;
 	}
 }

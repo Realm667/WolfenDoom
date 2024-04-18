@@ -61,7 +61,7 @@ class BombardShot : Actor
 	{
 		Super.PostBeginPlay();
 		static const Sound sounds[] = { "EXPLOSION_LEADIN01", "EXPLOSION_LEADIN02", "EXPLOSION_LEADIN03", "EXPLOSION_LEADIN04" };
-		flybySound = sounds[Random(0, 3)];
+		flybySound = sounds[Random[Sound](0, 3)];
 		flybyTics = int(ceil(S_GetLength(flybySound) * TICRATE));
 	}
 
@@ -114,7 +114,7 @@ class BombardShot : Actor
 				origins.Push(origin);
 				origin = originIter.Next();
 			}
-			origin = origins[Random(0, origins.Size() - 1)];
+			origin = origins[Random[Sound](0, origins.Size() - 1)];
 		}
 		else
 		{
@@ -129,7 +129,7 @@ class BombardShot : Actor
 				targets.Push(target);
 				target = targetIter.Next();
 			}
-			target = targets[Random(0, targets.Size() - 1)];
+			target = targets[Random[Sound](0, targets.Size() - 1)];
 		}
 		else
 		{
@@ -153,14 +153,14 @@ class BombardShot : Actor
 				if (largerArray)
 				{
 					// targets > origins
-					origin = origins[i < smallerSize ? i : Random(0, smallerSize - 1)];
+					origin = origins[i < smallerSize ? i : Random[Sound](0, smallerSize - 1)];
 					target = targets[i];
 				}
 				else
 				{
 					// origins > targets
 					origin = origins[i];
-					target = targets[i < smallerSize ? i : Random(0, smallerSize - 1)];
+					target = targets[i < smallerSize ? i : Random[Sound](0, smallerSize - 1)];
 				}
 				BombardShot.Fire(origin.Pos, target.Pos, forceTime);
 			}

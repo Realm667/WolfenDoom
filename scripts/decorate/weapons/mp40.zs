@@ -61,11 +61,11 @@ class MP40 : NaziWeapon
 		RIFG A 0 A_GunFlash;
 		RIFG A 0 A_SetPitch(pitch-(0.5*boa_recoilamount));
 		RIFG A 0 A_JumpIf(waterlevel > 0,2);
-		RIFG A 0 A_FireProjectile("ChainSmokeSpawner",0,0,0,random(-4,4),0,0);
-		RIFG A 0 A_StartSound("mp40/fire", CHAN_WEAPON, 0, frandom(0.6, 0.8));
-		RIFG A 0 A_SpawnItemEx("Casing9mm",12,-20,32,8,random(-2,2),random(0,4),random(-55,-80),SXF_NOCHECKPOSITION);
+		RIFG A 0 A_FireProjectile("ChainSmokeSpawner",0,0,0, Random[Weapon](-4,4),0,0);
+		RIFG A 0 A_StartSound("mp40/fire", CHAN_WEAPON, 0, FRandom[Weapon](0.6, 0.8));
+		RIFG A 0 A_SpawnItemEx("Casing9mm",12,-20,32,8, Random[Weapon](-2,2), Random[Weapon](0,4), Random[Weapon](-55,-80),SXF_NOCHECKPOSITION);
 		RIFG A 0 A_AlertMonsters;
-		RIFG A 1 A_FireProjectile("MP40Tracer",frandom(-1.4,1.4));
+		RIFG A 1 A_FireProjectile("MP40Tracer", FRandom[Weapon](-1.4,1.4));
 		RIFG B 1 Offset(0,38);
 		RIFG B 1 Offset(0,44);
 		RIFG B 1 Offset(0,40);
@@ -78,7 +78,7 @@ class MP40 : NaziWeapon
 		TNT1 A 0 A_CheckReload;
 		Goto Ready;
 	Reload:
-		RIFG A 1 Offset(0,35) A_StartSound("mp40/reload", CHAN_5, 0, frandom(0.6, 0.8));
+		RIFG A 1 Offset(0,35) A_StartSound("mp40/reload", CHAN_5, 0, FRandom[Weapon](0.6, 0.8));
 		RIFG A 1 Offset(0,38) A_Reloading(true);
 		RIFG A 1 Offset(0,44);
 		RIFG B 1 Offset(0,52);

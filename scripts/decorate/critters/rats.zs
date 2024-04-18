@@ -56,7 +56,7 @@ class PestSpawner : Actor
 
 		for (int s = 0; s < args[0]; s++)
 		{
-			Spawn(spawnactor, pos + (FRandom(-args[1], args[1]), FRandom(-args[1], args[1]), 0));
+			Spawn(spawnactor, pos + (FRandom[Pest](-args[1], args[1]), FRandom[Pest](-args[1], args[1]), 0));
 		}
 	}
 }
@@ -88,9 +88,9 @@ class Pest : Base
 	{
 		Super.PostBeginPlay();
 
-		angle = Random(0, 359);
-		movedir = Random(0, 7);
-		interval = Random(15, 35);
+		angle = Random[Pest](0, 359);
+		movedir = Random[Pest](0, 7);
+		interval = Random[Pest](15, 35);
 	}
 
 	override void Tick()
@@ -99,7 +99,7 @@ class Pest : Base
 
 		if (IsFrozen() || health <= 0 || !target) { return;}
 
-		if (GetAge() % interval == 0) { movedir = (movedir + Random(-1, 1)) % 8; }
+		if (GetAge() % interval == 0) { movedir = (movedir + Random[Pest](-1, 1)) % 8; }
 	}
 }
 
@@ -197,7 +197,7 @@ class Roach : Pest
 	{
 		Spawn:
 			BUGS A 10 {
-				tics = Random(1, 20);
+				tics = Random[Pest](1, 20);
 				A_LookThroughDisguise(0, 0, 0, 0, 360, "See");
 			}
 			Loop;
@@ -215,7 +215,7 @@ class Roach : Pest
 		Death:
 			"####" E -1 {
 				if (DeathSound) { A_StartSound(DeathSound, CHAN_VOICE, CHANF_DEFAULT, 0.5 * scale.x, ATTN_NORM, 1.0 / scale.x); }
-				scale.x *= RandomPick(-1, 1);
+				scale.x *= RandomPick[Pest](-1, 1);
 			}
 			Stop;
 		Death.Fire:
@@ -227,7 +227,7 @@ class Roach : Pest
 	{
 		Super.PostBeginPlay();
 
-		double factor = FRandom(0.4, 1.2);
+		double factor = FRandom[Pest](0.4, 1.2);
 		scale *= factor;
 		speed *= factor;
 	}

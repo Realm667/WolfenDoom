@@ -229,7 +229,7 @@ class PlayerFollower : Actor // Default version - for actors like prisoner with 
 			"####" I 1 A_SpawnItemEx("Pain_Overlay", Scale.X+3, 0, Height-8, 0, 0, 0, 0, SXF_NOCHECKPOSITION | SXF_USEBLOODCOLOR);
 			"####" I 3 {
 				A_Pain();
-				if (Random(0, 1023) < PainChance) { frighttimeout += min(SpawnHealth() - health, 10); }
+				if (Random[Follower](0, 1023) < PainChance) { frighttimeout += min(SpawnHealth() - health, 10); }
 			}
 			Goto Chase;
 		Luger: // Emulates the standard guard pistol - relatively standard
@@ -292,7 +292,7 @@ class PlayerFollower : Actor // Default version - for actors like prisoner with 
 				shots = 0;
 			}
 			Shotgun.Refire:
-				"####" H 5 LIGHT("NaziFire") A_FollowerFire("ShotgunTracer", "ShotgunCasing", "shotgun/fire", 35, Random(5, 15), 2.0, 1.5, 10);
+				"####" H 5 LIGHT("NaziFire") A_FollowerFire("ShotgunTracer", "ShotgunCasing", "shotgun/fire", 35, Random[Follower](5, 15), 2.0, 1.5, 10);
 				"####" G 5;
  				"####" F 15 {
 					A_FaceTarget(0, 0, 0, 0, FAF_MIDDLE, height * 3 / 4);
@@ -300,7 +300,7 @@ class PlayerFollower : Actor // Default version - for actors like prisoner with 
 				}
 				"####" F 0 {
 					reloadcount++;
-					return A_RefireReload("Shotgun.Refire", "Shotgun.Reload", 128, Random(1, 4), (target && target.bShootable || bFrightened) ? 1 : 8); // Quick reload if he's in trouble, otherwise wait to do all 8
+					return A_RefireReload("Shotgun.Refire", "Shotgun.Reload", 128, Random[Follower](1, 4), (target && target.bShootable || bFrightened) ? 1 : 8); // Quick reload if he's in trouble, otherwise wait to do all 8
 				}
 			Shotgun.Reload:
 				"####" F 0 {
@@ -530,7 +530,7 @@ class PlayerFollower : Actor // Default version - for actors like prisoner with 
 
 		if (target && target is "GrenadeBase")
 		{
-			if (!frighttimeout && (target.bMissile || target is "Whizzer")) { movedir = (target.movedir + RandomPick(1, 2, 6, 7)) % 8; frighttimeout += 16; } // Pick a random direction away from the shooter and the missile's path
+			if (!frighttimeout && (target.bMissile || target is "Whizzer")) { movedir = (target.movedir + RandomPick[Follower](1, 2, 6, 7)) % 8; frighttimeout += 16; } // Pick a random direction away from the shooter and the missile's path
 			else { frighttimeout += int(min(GrenadeBase(target).feardistance, 140)); } // Be frightened for a few seconds...  Less if there's a small fear distance/radius
 
 			if (!InStateSequence(CurState, FindState("Chase"))) { SetStateLabel("Chase"); }
@@ -641,9 +641,9 @@ class PlayerFollower : Actor // Default version - for actors like prisoner with 
 					faceangle = playerToChase.angle + 135 + Random[FaceAngle](-15, 15); // Make him look like he might be able to cover your back
 					if (abs(angle - faceangle) > 45) { angle = faceangle; }
 /*
-					if (!scouttime && Random() < 8)
+					if (!scouttime && Random[Follower]() < 8)
 					{
-						scouttime = Random(45, 105);
+						scouttime = Random[Follower](45, 105);
 
 						Vector3 targetpos = GetLineTargetPos(playerToChase);
 
@@ -694,7 +694,7 @@ class PlayerFollower : Actor // Default version - for actors like prisoner with 
 				target = null;
 				goal = playerToChase;
 			}
-			else if (atPlayer || Random(0, 255) < (chaseattackchance + frighttimeout) || targetdist < radius + 32 + target.radius) // ...and you are at the player, or the target is close, or at random chance...
+			else if (atPlayer || Random[Follower](0, 255) < (chaseattackchance + frighttimeout) || targetdist < radius + 32 + target.radius) // ...and you are at the player, or the target is close, or at random chance...
 			{
 				if (weapon != PWEAP_Melee || targetdist < radius + 32 + target.radius) // ...and you are in range...
 				{
@@ -731,8 +731,8 @@ class PlayerFollower : Actor // Default version - for actors like prisoner with 
 		A_AlertMonsters(0, AMF_TARGETEMITTER);
 		for (int i = 0; i < shots; i++)
 		{
-			angleoffset = FRandom(-angleoffset, angleoffset);
-			pitchoffset = FRandom(-pitchoffset, pitchoffset);
+			angleoffset = FRandom[Follower](-angleoffset, angleoffset);
+			pitchoffset = FRandom[Follower](-pitchoffset, pitchoffset);
 
 			Actor shot = A_SpawnProjectile(weapontracer, zoffset, xyoffset, angleoffset, CMF_OFFSETPITCH, pitchoffset);
 			if (shot && target && target.bBoss)
@@ -740,7 +740,7 @@ class PlayerFollower : Actor // Default version - for actors like prisoner with 
 				shot.SetDamage(max(1, int(shot.damage * (5 - G_SkillPropertyInt(SKILLP_ACSReturn)) / 5.0))); // Decrease damage done based on skill level
 			}
 		}
-		A_SpawnItemEx(casing, 1, 0, 56, Random(1, 2), Random(-1, 1), Random(1, 2), Random(-55, -80), SXF_NOCHECKPOSITION);
+		A_SpawnItemEx(casing, 1, 0, 56, Random[Follower](1, 2), Random[Follower](-1, 1), Random[Follower](1, 2), Random[Follower](-55, -80), SXF_NOCHECKPOSITION);
 		shots++;
 		totalshots++;
 	}
@@ -768,7 +768,7 @@ class PlayerFollower : Actor // Default version - for actors like prisoner with 
 		{
 			chance = int(chance / (Distance3D(target) / MissileRanges[weapon]));
 
-			if (Random(0, 255) < chance) { return ResolveState(Refire); }
+			if (Random[Follower](0, 255) < chance) { return ResolveState(Refire); }
 		}
 
 		return ResolveState("Chase");
@@ -835,7 +835,7 @@ class PlayerFollower : Actor // Default version - for actors like prisoner with 
 
 		trace = new("BoAFindHitPointTracer");
 
-		offset = Random(0, 35);
+		offset = Random[Follower](0, 35);
 
 		if (bFriendly) { BoACompass.Add(self, "GOAL1"); }
 
@@ -899,13 +899,13 @@ class PlayerFollower : Actor // Default version - for actors like prisoner with 
 		if (healtime > 0 && gametic % 2 == 0)
 		{
 			healtime = max(healtime - 1, 0);
-			A_SpawnItemEx(healparticle, random(10,-10), random(10,-10), random(16,64), 0, 0, random(1, 2), 0);
+			A_SpawnItemEx(healparticle, Random[Follower](10,-10), Random[Follower](10,-10), Random[Follower](16,64), 0, 0, Random[Follower](1, 2), 0);
 		}
 
 		if (playerToChase && playerhealtime > 0 && gametic % 20 == 0)
 		{
 			playerhealtime = max(playerhealtime - 1, 0);
-			playerToChase.A_SpawnItemEx(healparticle, random(10,-10), random(10,-10), random(16,64), 0, 0, random(1, 2), 0);
+			playerToChase.A_SpawnItemEx(healparticle, Random[Follower](10,-10), Random[Follower](10,-10), Random[Follower](16,64), 0, 0, Random[Follower](1, 2), 0);
 		}
 
 		Super.Tick();
@@ -923,7 +923,7 @@ class PlayerFollower : Actor // Default version - for actors like prisoner with 
 		{
 			if (allowinteraction)
 			{
-				msg = "STAY" .. Random(0, 4);
+				msg = "STAY" .. Random[Follower](0, 4);
 				activationcount = 0;
 			}
 			else
@@ -938,7 +938,7 @@ class PlayerFollower : Actor // Default version - for actors like prisoner with 
 
 			if (allowinteraction)
 			{
-				msg = "COME" .. Random(0, 4);
+				msg = "COME" .. Random[Follower](0, 4);
 				activationcount = 0;
 			}
 			else
@@ -1069,7 +1069,7 @@ class PlayerFollower2 : PlayerFollower // Alternate frames versions - for almost
 			"####" H 1 A_SpawnItemEx("Pain_Overlay", Scale.X+3, 0, Height-8, 0, 0, 0, 0, SXF_NOCHECKPOSITION | SXF_USEBLOODCOLOR);
 			"####" H 3 {
 				A_Pain();
-				if (Random(0, 1023) < PainChance) { frighttimeout += min(SpawnHealth() - health, 10); }
+				if (Random[Follower](0, 1023) < PainChance) { frighttimeout += min(SpawnHealth() - health, 10); }
 			}
 			Goto Chase;
 		Luger:
@@ -1082,7 +1082,7 @@ class PlayerFollower2 : PlayerFollower // Alternate frames versions - for almost
 				"####" F 0 { bNoPain = True; }
 				"####" F 30 {
 					A_StartSound("luger/reload", CHAN_ITEM, 0, FRandom (0.3, 0.6), ATTN_NORM);
-					A_SpawnItemEx("Casing9mm", 1, 0, 56, Random(3, 4), Random(-1, 1), Random(2, 4), Random(-55,-80), SXF_NOCHECKPOSITION);
+					A_SpawnItemEx("Casing9mm", 1, 0, 56, Random[Follower](3, 4), Random[Follower](-1, 1), Random[Follower](2, 4), Random[Follower](-55,-80), SXF_NOCHECKPOSITION);
 					shots = 0;
 				}
 				"####" F 0 {
@@ -1102,7 +1102,7 @@ class PlayerFollower2 : PlayerFollower // Alternate frames versions - for almost
 				"####" E 0 { bNoPain = True; }
 				"####" E 30 {
 					A_StartSound("MP40/reload", CHAN_WEAPON);
-					A_SpawnItemEx("Casing9mm", 8, 0, 40, Random(3, 4), Random(-1, 1), Random(2, 4), Random(-55, -80),SXF_NOCHECKPOSITION);
+					A_SpawnItemEx("Casing9mm", 8, 0, 40, Random[Follower](3, 4), Random[Follower](-1, 1), Random[Follower](2, 4), Random[Follower](-55, -80),SXF_NOCHECKPOSITION);
 					totalshots = 0;
 				}
 				"####" E 0 {
@@ -1134,7 +1134,7 @@ class PlayerFollower2 : PlayerFollower // Alternate frames versions - for almost
 				shots = 0;
 			}
 			Shotgun.Refire:
-				"####" G 5 LIGHT("NaziFire") A_FollowerFire("ShotgunTracer", "ShotgunCasing", "shotgun/fire", 35, Random(5, 15), 2.0, 1.5, 10);
+				"####" G 5 LIGHT("NaziFire") A_FollowerFire("ShotgunTracer", "ShotgunCasing", "shotgun/fire", 35, Random[Follower](5, 15), 2.0, 1.5, 10);
 				"####" F 5;
  				"####" E 15 {
 					A_FaceTarget(0, 0, 0, 0, FAF_MIDDLE, height * 3 / 4);
@@ -1142,7 +1142,7 @@ class PlayerFollower2 : PlayerFollower // Alternate frames versions - for almost
 				}
 				"####" E 0 {
 					reloadcount++;
-					return A_RefireReload("Shotgun.Refire", "Shotgun.Reload", 128, Random(1, 4), (target && target.bShootable || bFrightened) ? 1 : 8); // Quick reload if he's in trouble, otherwise wait to do all 8
+					return A_RefireReload("Shotgun.Refire", "Shotgun.Reload", 128, Random[Follower](1, 4), (target && target.bShootable || bFrightened) ? 1 : 8); // Quick reload if he's in trouble, otherwise wait to do all 8
 				}
 			Shotgun.Reload:
 				"####" E 0 {
@@ -1386,7 +1386,7 @@ class AscherArmed : PlayerFollower
 			"####" J 1 A_SpawnItemEx("Pain_Overlay", Scale.X+3, 0, Height-8, 0, 0, 0, 0, SXF_NOCHECKPOSITION | SXF_USEBLOODCOLOR);
 			"####" J 3 {
 				A_Pain();
-				if (Random(0, 1023) < PainChance) { frighttimeout += min(SpawnHealth() - health, 10); }
+				if (Random[Follower](0, 1023) < PainChance) { frighttimeout += min(SpawnHealth() - health, 10); }
 			}
 			Goto Chase;
 		Death:
@@ -1464,7 +1464,7 @@ class DouglasArmed : PlayerFollower2
 			Luger.Refire:
 				"####" G 8 LIGHT("NaziFire") A_FollowerFire("LugerTracer", "Casing9mm", "nazi/pistol", 54, 1, 1);
 				"####" F 8;
- 				"####" F 0 A_RefireReload("Luger.Refire", "Luger.Reload", 128, Random(4, 8));
+ 				"####" F 0 A_RefireReload("Luger.Refire", "Luger.Reload", 128, Random[Follower](4, 8));
 	}
 }
 

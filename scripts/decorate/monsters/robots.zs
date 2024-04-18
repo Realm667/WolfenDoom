@@ -65,8 +65,8 @@ class TeslaTurret : NaziStandard
 			A_LightningAttack("LightningBeamPillarZap2", 0, 0, 54, 0, -90, true);
 			A_LightningAttack("LightningBeamZap2", 0, 0, 54, 0, 0, false);
 		}
-		"####" AA 0 A_SpawnItemEx("SparkB",0,0,54,0,random(-1,1),random(-1,1),random(0,360),TESLA_FLAGS1,random(157,203));
-		"####" A 0 A_SpawnItemEx("SparkFlareB",0,0,54,0,0,0,random(0,360),TESLA_FLAGS2);
+		"####" AA 0 A_SpawnItemEx("SparkB",0,0,54,0, Random[Tesla](-1,1), Random[Tesla](-1,1), Random[Tesla](0,360),TESLA_FLAGS1, Random[Tesla](157,203));
+		"####" A 0 A_SpawnItemEx("SparkFlareB",0,0,54,0,0,0, Random[Tesla](0,360),TESLA_FLAGS2);
 		"####" A 5;
 		"####" A 0 A_JumpIfInTargetLOS("See", 0, JLOSF_CLOSENOJUMP, 0, 640);
 		Loop;

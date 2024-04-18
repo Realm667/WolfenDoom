@@ -42,7 +42,7 @@ class MechaNaziStanding1 : ControllableBase
 	States
 	{
 	Spawn:
-		MCST A 1 NODELAY A_SetTics(Random(1, 35));
+		MCST A 1 NODELAY A_SetTics(Random[Mech](1, 35));
 		Goto Active;
 	Active:
 		"####" "#" 35 A_CheckReplace(128);
@@ -62,7 +62,7 @@ class MechaNaziStanding2 : MechaNaziStanding1
 	States
 	{
 	Spawn:
-		MCST B 1 NODELAY A_SetTics(Random(1, 35));
+		MCST B 1 NODELAY A_SetTics(Random[Mech](1, 35));
 		Goto Active;
 	Active:
 		"####" "#" 35 A_CheckReplace(128);
@@ -81,7 +81,7 @@ class MechaNaziStanding3 : MechaNaziStanding1
 	States
 	{
 	Spawn:
-		MCST C 1 NODELAY A_SetTics(Random(1, 35));
+		MCST C 1 NODELAY A_SetTics(Random[Mech](1, 35));
 		Goto Active;
 	Active:
 		"####" "#" 35 A_CheckReplace(128);
@@ -100,7 +100,7 @@ class MechaNaziStanding4 : MechaNaziStanding1
 	States
 	{
 	Spawn:
-		MCST D 1 NODELAY A_SetTics(Random(1, 35));
+		MCST D 1 NODELAY A_SetTics(Random[Mech](1, 35));
 		Goto Active;
 	Active:
 		"####" "#" 35 A_CheckReplace(128);
@@ -119,7 +119,7 @@ class MechaNaziStanding5 : MechaNaziStanding1
 	States
 	{
 	Spawn:
-		MCST E 1 NODELAY A_SetTics(Random(1, 35));
+		MCST E 1 NODELAY A_SetTics(Random[Mech](1, 35));
 		Goto Active;
 	Active:
 		"####" "#" 35 A_CheckReplace(128);
@@ -163,50 +163,50 @@ class MechaNaziWalking1 : MechBoss
 		Loop;
 	Missile:
 		"####" N 9 A_FaceTarget;
-		"####" G 5 LIGHT("OTTOFIRE") A_SpawnProjectile("MiniMechaRocket",96,48,frandom(-4, 4),CMF_OFFSETPITCH,-4);
-		"####" G 5 LIGHT("OTTOFIRE") A_SpawnProjectile("MiniMechaRocket",80,32,frandom(-4, 4),CMF_OFFSETPITCH,-4);
-		"####" G 5 LIGHT("OTTOFIRE") A_SpawnProjectile("MiniMechaRocket",80,64,frandom(-4, 4),CMF_OFFSETPITCH,-4);
+		"####" G 5 LIGHT("OTTOFIRE") A_SpawnProjectile("MiniMechaRocket",96,48, FRandom[Mech](-4, 4),CMF_OFFSETPITCH,-4);
+		"####" G 5 LIGHT("OTTOFIRE") A_SpawnProjectile("MiniMechaRocket",80,32, FRandom[Mech](-4, 4),CMF_OFFSETPITCH,-4);
+		"####" G 5 LIGHT("OTTOFIRE") A_SpawnProjectile("MiniMechaRocket",80,64, FRandom[Mech](-4, 4),CMF_OFFSETPITCH,-4);
 		"####" N 9 A_FaceTarget;
-		"####" F 5 LIGHT("OTT2FIRE") A_SpawnProjectile("MiniMechaRocket",96,-48,frandom(-4, 4),CMF_OFFSETPITCH,-4);
-		"####" F 5 LIGHT("OTT2FIRE") A_SpawnProjectile("MiniMechaRocket",80,-32,frandom(-4, 4),CMF_OFFSETPITCH,-4);
-		"####" F 5 LIGHT("OTT2FIRE") A_SpawnProjectile("MiniMechaRocket",80,-64,frandom(-4, 4),CMF_OFFSETPITCH,-4);
+		"####" F 5 LIGHT("OTT2FIRE") A_SpawnProjectile("MiniMechaRocket",96,-48, FRandom[Mech](-4, 4),CMF_OFFSETPITCH,-4);
+		"####" F 5 LIGHT("OTT2FIRE") A_SpawnProjectile("MiniMechaRocket",80,-32, FRandom[Mech](-4, 4),CMF_OFFSETPITCH,-4);
+		"####" F 5 LIGHT("OTT2FIRE") A_SpawnProjectile("MiniMechaRocket",80,-64, FRandom[Mech](-4, 4),CMF_OFFSETPITCH,-4);
 		"####" N 9 A_FaceTarget;
-		"####" G 5 LIGHT("OTTOFIRE") A_SpawnProjectile("MiniMechaRocket",96,48,frandom(-4, 4),CMF_OFFSETPITCH,-4);
-		"####" G 5 LIGHT("OTTOFIRE") A_SpawnProjectile("MiniMechaRocket",80,32,frandom(-4, 4),CMF_OFFSETPITCH,-4);
-		"####" G 5 LIGHT("OTTOFIRE") A_SpawnProjectile("MiniMechaRocket",80,64,frandom(-4, 4),CMF_OFFSETPITCH,-4);
+		"####" G 5 LIGHT("OTTOFIRE") A_SpawnProjectile("MiniMechaRocket",96,48, FRandom[Mech](-4, 4),CMF_OFFSETPITCH,-4);
+		"####" G 5 LIGHT("OTTOFIRE") A_SpawnProjectile("MiniMechaRocket",80,32, FRandom[Mech](-4, 4),CMF_OFFSETPITCH,-4);
+		"####" G 5 LIGHT("OTTOFIRE") A_SpawnProjectile("MiniMechaRocket",80,64, FRandom[Mech](-4, 4),CMF_OFFSETPITCH,-4);
 		"####" N 9 A_FaceTarget;
-		"####" F 5 LIGHT("OTT2FIRE") A_SpawnProjectile("MiniMechaRocket",96,-48,frandom(-4, 4),CMF_OFFSETPITCH,-4);
-		"####" F 5 LIGHT("OTT2FIRE") A_SpawnProjectile("MiniMechaRocket",80,-32,frandom(-4, 4),CMF_OFFSETPITCH,-4);
-		"####" F 5 LIGHT("OTT2FIRE") A_SpawnProjectile("MiniMechaRocket",80,-64,frandom(-4, 4),CMF_OFFSETPITCH,-4);
+		"####" F 5 LIGHT("OTT2FIRE") A_SpawnProjectile("MiniMechaRocket",96,-48, FRandom[Mech](-4, 4),CMF_OFFSETPITCH,-4);
+		"####" F 5 LIGHT("OTT2FIRE") A_SpawnProjectile("MiniMechaRocket",80,-32, FRandom[Mech](-4, 4),CMF_OFFSETPITCH,-4);
+		"####" F 5 LIGHT("OTT2FIRE") A_SpawnProjectile("MiniMechaRocket",80,-64, FRandom[Mech](-4, 4),CMF_OFFSETPITCH,-4);
 		"####" N 7 A_FaceTarget;
 		"####" N 0 A_JumpIf(Health<300,"Missile2");
 		Goto See;
 	Missile2:
 		"####" N 2 A_FaceTarget;
-		"####" G 4 LIGHT("OTTOFIRE") A_SpawnProjectile("MiniMechaRocket",96,48,frandom(-4, 4),CMF_OFFSETPITCH,-4);
-		"####" G 4 LIGHT("OTTOFIRE") A_SpawnProjectile("MiniMechaRocket",80,32,frandom(-4, 4),CMF_OFFSETPITCH,-4);
-		"####" G 4 LIGHT("OTTOFIRE") A_SpawnProjectile("MiniMechaRocket",80,64,frandom(-4, 4),CMF_OFFSETPITCH,-4);
+		"####" G 4 LIGHT("OTTOFIRE") A_SpawnProjectile("MiniMechaRocket",96,48, FRandom[Mech](-4, 4),CMF_OFFSETPITCH,-4);
+		"####" G 4 LIGHT("OTTOFIRE") A_SpawnProjectile("MiniMechaRocket",80,32, FRandom[Mech](-4, 4),CMF_OFFSETPITCH,-4);
+		"####" G 4 LIGHT("OTTOFIRE") A_SpawnProjectile("MiniMechaRocket",80,64, FRandom[Mech](-4, 4),CMF_OFFSETPITCH,-4);
 		"####" N 2 A_FaceTarget;
-		"####" F 4 LIGHT("OTT2FIRE") A_SpawnProjectile("MiniMechaRocket",96,-48,frandom(-4, 4),CMF_OFFSETPITCH,-4);
-		"####" F 4 LIGHT("OTT2FIRE") A_SpawnProjectile("MiniMechaRocket",80,-32,frandom(-4, 4),CMF_OFFSETPITCH,-4);
-		"####" F 4 LIGHT("OTT2FIRE") A_SpawnProjectile("MiniMechaRocket",80,-64,frandom(-4, 4),CMF_OFFSETPITCH,-4);
+		"####" F 4 LIGHT("OTT2FIRE") A_SpawnProjectile("MiniMechaRocket",96,-48, FRandom[Mech](-4, 4),CMF_OFFSETPITCH,-4);
+		"####" F 4 LIGHT("OTT2FIRE") A_SpawnProjectile("MiniMechaRocket",80,-32, FRandom[Mech](-4, 4),CMF_OFFSETPITCH,-4);
+		"####" F 4 LIGHT("OTT2FIRE") A_SpawnProjectile("MiniMechaRocket",80,-64, FRandom[Mech](-4, 4),CMF_OFFSETPITCH,-4);
 		"####" N 2 A_FaceTarget;
-		"####" G 4 LIGHT("OTTOFIRE") A_SpawnProjectile("MiniMechaRocket",96,48,frandom(-4, 4),CMF_OFFSETPITCH,-4);
-		"####" G 4 LIGHT("OTTOFIRE") A_SpawnProjectile("MiniMechaRocket",80,32,frandom(-4, 4),CMF_OFFSETPITCH,-4);
-		"####" G 4 LIGHT("OTTOFIRE") A_SpawnProjectile("MiniMechaRocket",80,64,frandom(-4, 4),CMF_OFFSETPITCH,-4);
+		"####" G 4 LIGHT("OTTOFIRE") A_SpawnProjectile("MiniMechaRocket",96,48, FRandom[Mech](-4, 4),CMF_OFFSETPITCH,-4);
+		"####" G 4 LIGHT("OTTOFIRE") A_SpawnProjectile("MiniMechaRocket",80,32, FRandom[Mech](-4, 4),CMF_OFFSETPITCH,-4);
+		"####" G 4 LIGHT("OTTOFIRE") A_SpawnProjectile("MiniMechaRocket",80,64, FRandom[Mech](-4, 4),CMF_OFFSETPITCH,-4);
 		"####" N 2 A_FaceTarget;
-		"####" F 4 LIGHT("OTT2FIRE") A_SpawnProjectile("MiniMechaRocket",96,-48,frandom(-4, 4),CMF_OFFSETPITCH,-4);
-		"####" F 4 LIGHT("OTT2FIRE") A_SpawnProjectile("MiniMechaRocket",80,-32,frandom(-4, 4),CMF_OFFSETPITCH,-4);
-		"####" F 4 LIGHT("OTT2FIRE") A_SpawnProjectile("MiniMechaRocket",80,-64,frandom(-4, 4),CMF_OFFSETPITCH,-4);
+		"####" F 4 LIGHT("OTT2FIRE") A_SpawnProjectile("MiniMechaRocket",96,-48, FRandom[Mech](-4, 4),CMF_OFFSETPITCH,-4);
+		"####" F 4 LIGHT("OTT2FIRE") A_SpawnProjectile("MiniMechaRocket",80,-32, FRandom[Mech](-4, 4),CMF_OFFSETPITCH,-4);
+		"####" F 4 LIGHT("OTT2FIRE") A_SpawnProjectile("MiniMechaRocket",80,-64, FRandom[Mech](-4, 4),CMF_OFFSETPITCH,-4);
 		"####" N 7 A_FaceTarget;
 		Goto See;
 	Death:
 		TNT1 A 0 A_StartSound("weapons/explode", CHAN_AUTO, 0, 1.0, ATTN_IDLE);
 		"####" A 0 A_Scream;
 		"####" A 0 A_NoBlocking;
-		"####" AA 0 A_SpawnItemEx("Debris_Mecha", random(8,40), random(16,44), random(32,48), random(1,3), random(1,3), random(1,3), random(0,360), SXF_CLIENTSIDE);
-		"####" AAA 0 A_SpawnItemEx("Debris_Mecha", random(16,80), random(32,88), random(64,96), random(1,3), random(1,3), random(1,3), random(0,360), SXF_CLIENTSIDE);
-		"####" AAAA 0 A_SpawnItemEx("Debris_Mecha", random(32,96), random(64,128), random(72,128), random(1,3), random(1,3), random(1,3), random(0,360), SXF_CLIENTSIDE);
+		"####" AA 0 A_SpawnItemEx("Debris_Mecha", Random[Debris](8,40), Random[Debris](16,44), Random[Debris](32,48), Random[Debris](1,3), Random[Debris](1,3), Random[Debris](1,3), Random[Debris](0,360), SXF_CLIENTSIDE);
+		"####" AAA 0 A_SpawnItemEx("Debris_Mecha", Random[Debris](16,80), Random[Debris](32,88), Random[Debris](64,96), Random[Debris](1,3), Random[Debris](1,3), Random[Debris](1,3), Random[Debris](0,360), SXF_CLIENTSIDE);
+		"####" AAAA 0 A_SpawnItemEx("Debris_Mecha", Random[Debris](32,96), Random[Debris](64,128), Random[Debris](72,128), Random[Debris](1,3), Random[Debris](1,3), Random[Debris](1,3), Random[Debris](0,360), SXF_CLIENTSIDE);
 		"####" A 0 A_SpawnItemEx("Nuke", 0, 0, 64, 0, 0, 0, 0, SXF_TRANSFERPOINTERS|SXF_NOCHECKPOSITION);
 		"####" A 1 A_SpawnItemEx("KaBoomer", 0, 0, 32, 0, 0, 0, 0, SXF_TRANSFERPOINTERS);
 		"####" A 1 A_SpawnItemEx("GeneralExplosion_Large", 0, 0, 64);
@@ -236,9 +236,9 @@ class MechaNaziWalking2 : MechaNaziWalking1
 		TNT1 A 0 A_StartSound("weapons/explode", CHAN_AUTO, 0, 1.0, ATTN_IDLE);
 		"####" A 0 A_Scream;
 		"####" A 0 A_NoBlocking;
-		"####" AA 0 A_SpawnItemEx("Debris_Mecha2", random(8,40), random(16,44), random(32,48), random(1,3), random(1,3), random(1,3), random(0,360), SXF_CLIENTSIDE);
-		"####" AAA 0 A_SpawnItemEx("Debris_Mecha2", random(16,80), random(32,88), random(64,96), random(1,3), random(1,3), random(1,3), random(0,360), SXF_CLIENTSIDE);
-		"####" AAAA 0 A_SpawnItemEx("Debris_Mecha2", random(32,96), random(64,128), random(72,128), random(1,3), random(1,3), random(1,3), random(0,360), SXF_CLIENTSIDE);
+		"####" AA 0 A_SpawnItemEx("Debris_Mecha2", Random[Debris](8,40), Random[Debris](16,44), Random[Debris](32,48), Random[Debris](1,3), Random[Debris](1,3), Random[Debris](1,3), Random[Debris](0,360), SXF_CLIENTSIDE);
+		"####" AAA 0 A_SpawnItemEx("Debris_Mecha2", Random[Debris](16,80), Random[Debris](32,88), Random[Debris](64,96), Random[Debris](1,3), Random[Debris](1,3), Random[Debris](1,3), Random[Debris](0,360), SXF_CLIENTSIDE);
+		"####" AAAA 0 A_SpawnItemEx("Debris_Mecha2", Random[Debris](32,96), Random[Debris](64,128), Random[Debris](72,128), Random[Debris](1,3), Random[Debris](1,3), Random[Debris](1,3), Random[Debris](0,360), SXF_CLIENTSIDE);
 		"####" A 0 A_SpawnItemEx("Nuke", 0, 0, 64, 0, 0, 0, 0, SXF_TRANSFERPOINTERS|SXF_NOCHECKPOSITION);
 		"####" A 1 A_SpawnItemEx("KaBoomer", 0, 0, 32, 0, 0, 0, 0, SXF_TRANSFERPOINTERS);
 		"####" A 1 A_SpawnItemEx("GeneralExplosion_Large", 0, 0, 64);
@@ -268,9 +268,9 @@ class MechaNaziWalking3 : MechaNaziWalking1 //No Wounde soldiers
 		TNT1 A 0 A_StartSound("weapons/explode", CHAN_AUTO, 0, 1.0, ATTN_IDLE);
 		"####" A 0 A_Scream;
 		"####" A 0 A_NoBlocking;
-		"####" AA 0 A_SpawnItemEx("Debris_Mecha3", random(8,40), random(16,44), random(32,48), random(1,3), random(1,3), random(1,3), random(0,360), SXF_CLIENTSIDE);
-		"####" AAA 0 A_SpawnItemEx("Debris_Mecha3", random(16,80), random(32,88), random(64,96), random(1,3), random(1,3), random(1,3), random(0,360), SXF_CLIENTSIDE);
-		"####" AAAA 0 A_SpawnItemEx("Debris_Mecha3", random(32,96), random(64,128), random(72,128), random(1,3), random(1,3), random(1,3), random(0,360), SXF_CLIENTSIDE);
+		"####" AA 0 A_SpawnItemEx("Debris_Mecha3", Random[Debris](8,40), Random[Debris](16,44), Random[Debris](32,48), Random[Debris](1,3), Random[Debris](1,3), Random[Debris](1,3), Random[Debris](0,360), SXF_CLIENTSIDE);
+		"####" AAA 0 A_SpawnItemEx("Debris_Mecha3", Random[Debris](16,80), Random[Debris](32,88), Random[Debris](64,96), Random[Debris](1,3), Random[Debris](1,3), Random[Debris](1,3), Random[Debris](0,360), SXF_CLIENTSIDE);
+		"####" AAAA 0 A_SpawnItemEx("Debris_Mecha3", Random[Debris](32,96), Random[Debris](64,128), Random[Debris](72,128), Random[Debris](1,3), Random[Debris](1,3), Random[Debris](1,3), Random[Debris](0,360), SXF_CLIENTSIDE);
 		"####" A 0 A_SpawnItemEx("Nuke", 0, 0, 64, 0, 0, 0, 0, SXF_TRANSFERPOINTERS|SXF_NOCHECKPOSITION);
 		"####" A 1 A_SpawnItemEx("KaBoomer", 0, 0, 32, 0, 0, 0, 0, SXF_TRANSFERPOINTERS);
 		"####" A 1 A_SpawnItemEx("GeneralExplosion_Large", 0, 0, 64);
@@ -295,9 +295,9 @@ class MechaNaziWalking4 : MechaNaziWalking1
 		TNT1 A 0 A_StartSound("weapons/explode", CHAN_AUTO, 0, 1.0, ATTN_IDLE);
 		"####" A 0 A_Scream;
 		"####" A 0 A_NoBlocking;
-		"####" AA 0 A_SpawnItemEx("Debris_Mecha4", random(8,40), random(16,44), random(32,48), random(1,3), random(1,3), random(1,3), random(0,360), SXF_CLIENTSIDE);
-		"####" AAA 0 A_SpawnItemEx("Debris_Mecha4", random(16,80), random(32,88), random(64,96), random(1,3), random(1,3), random(1,3), random(0,360), SXF_CLIENTSIDE);
-		"####" AAAA 0 A_SpawnItemEx("Debris_Mecha4", random(32,96), random(64,128), random(72,128), random(1,3), random(1,3), random(1,3), random(0,360), SXF_CLIENTSIDE);
+		"####" AA 0 A_SpawnItemEx("Debris_Mecha4", Random[Debris](8,40), Random[Debris](16,44), Random[Debris](32,48), Random[Debris](1,3), Random[Debris](1,3), Random[Debris](1,3), Random[Debris](0,360), SXF_CLIENTSIDE);
+		"####" AAA 0 A_SpawnItemEx("Debris_Mecha4", Random[Debris](16,80), Random[Debris](32,88), Random[Debris](64,96), Random[Debris](1,3), Random[Debris](1,3), Random[Debris](1,3), Random[Debris](0,360), SXF_CLIENTSIDE);
+		"####" AAAA 0 A_SpawnItemEx("Debris_Mecha4", Random[Debris](32,96), Random[Debris](64,128), Random[Debris](72,128), Random[Debris](1,3), Random[Debris](1,3), Random[Debris](1,3), Random[Debris](0,360), SXF_CLIENTSIDE);
 		"####" A 0 A_SpawnItemEx("Nuke", 0, 0, 64, 0, 0, 0, 0, SXF_TRANSFERPOINTERS|SXF_NOCHECKPOSITION);
 		"####" A 1 A_SpawnItemEx("KaBoomer", 0, 0, 32, 0, 0, 0, 0, SXF_TRANSFERPOINTERS);
 		"####" A 1 A_SpawnItemEx("GeneralExplosion_Large", 0, 0, 64);
@@ -347,9 +347,9 @@ class MechaNaziWalking5 : MechaNaziWalking1
 		TNT1 A 0 A_StartSound("weapons/explode", CHAN_AUTO, 0, 1.0, ATTN_IDLE);
 		"####" A 0 A_Scream;
 		"####" A 0 A_NoBlocking;
-		"####" AA 0 A_SpawnItemEx("Debris_Mecha5", random(8,40), random(16,44), random(32,48), random(1,3), random(1,3), random(1,3), random(0,360), SXF_CLIENTSIDE);
-		"####" AAA 0 A_SpawnItemEx("Debris_Mecha5", random(16,80), random(32,88), random(64,96), random(1,3), random(1,3), random(1,3), random(0,360), SXF_CLIENTSIDE);
-		"####" AAAA 0 A_SpawnItemEx("Debris_Mecha5", random(32,96), random(64,128), random(72,128), random(1,3), random(1,3), random(1,3), random(0,360), SXF_CLIENTSIDE);
+		"####" AA 0 A_SpawnItemEx("Debris_Mecha5", Random[Debris](8,40), Random[Debris](16,44), Random[Debris](32,48), Random[Debris](1,3), Random[Debris](1,3), Random[Debris](1,3), Random[Debris](0,360), SXF_CLIENTSIDE);
+		"####" AAA 0 A_SpawnItemEx("Debris_Mecha5", Random[Debris](16,80), Random[Debris](32,88), Random[Debris](64,96), Random[Debris](1,3), Random[Debris](1,3), Random[Debris](1,3), Random[Debris](0,360), SXF_CLIENTSIDE);
+		"####" AAAA 0 A_SpawnItemEx("Debris_Mecha5", Random[Debris](32,96), Random[Debris](64,128), Random[Debris](72,128), Random[Debris](1,3), Random[Debris](1,3), Random[Debris](1,3), Random[Debris](0,360), SXF_CLIENTSIDE);
 		"####" A 0 A_SpawnItemEx("Nuke", 0, 0, 64, 0, 0, 0, 0, SXF_TRANSFERPOINTERS|SXF_NOCHECKPOSITION);
 		"####" A 1 A_SpawnItemEx("KaBoomer", 0, 0, 32, 0, 0, 0, 0, SXF_TRANSFERPOINTERS);
 		"####" A 1 A_SpawnItemEx("GeneralExplosion_Large", 0, 0, 64);

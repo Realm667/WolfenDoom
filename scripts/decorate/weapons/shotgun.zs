@@ -79,10 +79,10 @@ class TrenchShotgun : NaziWeapon
 		SHTG A 0 A_TakeInventory("TrenchShotgunLoaded",1,TIF_NOTAKEINFINITE);
 		SHTG A 0 A_StartSound("shotgun/fire", CHAN_WEAPON);
 		SHTG A 0 A_AlertMonsters;
-		SHTG AAAAAAAAAA 0 A_FireProjectile("ShotgunTracer",frandom(-2.0,2.0),0,0,0,0,frandom(-1.5,1.5));
+		SHTG AAAAAAAAAA 0 A_FireProjectile("ShotgunTracer", FRandom[Weapon](-2.0,2.0),0,0,0,0, FRandom[Weapon](-1.5,1.5));
 		SHTG F 1 A_GunFlash;
 		SHTG F 0 A_JumpIf(waterlevel > 0,2);
-		SHTG F 0 A_FireProjectile("ShotSmokeSpawner",0,0,0,random(-4,4),0,0);
+		SHTG F 0 A_FireProjectile("ShotSmokeSpawner",0,0,0, Random[Weapon](-4,4),0,0);
 		SHTG F 1 A_SetPitch(pitch-(4.0*boa_recoilamount));
 		SHTG F 1 Offset(0,40) A_SetPitch(pitch-(2.0*boa_recoilamount));
 		SHTG F 1 Offset(0,36) A_SetPitch(pitch-(1.0*boa_recoilamount));
@@ -96,7 +96,7 @@ class TrenchShotgun : NaziWeapon
 		SHTG C 1 Offset(3,35);
 		SHTG C 1 Offset(-1,38);
 		SHTG D 1 Offset(-4,41);
-		SHTG D 1 Offset(-4,43) A_SpawnItemEx("ShotgunCasing",12,-20,32,8,random(-2,2),random(0,4),random(-55,-80),SXF_NOCHECKPOSITION);
+		SHTG D 1 Offset(-4,43) A_SpawnItemEx("ShotgunCasing",12,-20,32,8, Random[Weapon](-2,2), Random[Weapon](0,4), Random[Weapon](-55,-80),SXF_NOCHECKPOSITION);
 		SHTG E 1 Offset(-4,45);
 		SHTG E 1 Offset(-3,44);
 		SHTG D 1 Offset(-2,40);

@@ -503,7 +503,7 @@ class Base : Actor
 				// If it's close, or you last heard a BulletTracer or GrenadeBase, be afraid
 				if (Distance3D(lastheard) <= scarerange || lastheard is "BulletTracer" || lastheard is "GrenadeBase" || (target && target is "Nazi") || (lastheard.bMissile && lastheard.damage))
 				{
-					frighttimeout = 35 + Random(0, 7) * 5; 
+					frighttimeout = 35 + Random[Base](0, 7) * 5; 
 					frightener = lastheard;
 				}
 				else
@@ -615,7 +615,7 @@ class Base : Actor
 
 	void ResetDodge(bool initial = false)
 	{
-		dodgetimeout = int(Random(350, 700) / max(speed, 1));
+		dodgetimeout = int(Random[Base](350, 700) / max(speed, 1));
 
 		if (initial) { dodgetimeout /= 3; } // Initial dodge delay is shorter 
 	}
@@ -684,7 +684,7 @@ class Base : Actor
 		double right = GetMoveDistance(-90);
 
 		if (left < radius + 96 && right < radius + 96) { return -1, 0; } // Don't dodge if there's not space on either side - augmented values to avoid stuck cases
-		if (left == right) return left, angle + 90 * RandomPick(-1, 1); // If the space on either side is the same, pick a random side
+		if (left == right) return left, angle + 90 * RandomPick[Base](-1, 1); // If the space on either side is the same, pick a random side
 		if (left > right) return left, angle + 90; // If there's more space on the left, dodge left
 
 		return right, angle - 90; // Otherwise, dodge right
@@ -939,7 +939,7 @@ class Base : Actor
 			{
 				case 2:
 					if (stepsound) { A_StartSound(stepsound, CHAN_AUTO, CHANF_DEFAULT, stepvolume, 8); }
-					A_StartSound("mech/walk", CHAN_AUTO, CHANF_DEFAULT, FRandom(0.7, 1.0) * typevolume, ATTN_IDLE);
+					A_StartSound("mech/walk", CHAN_AUTO, CHANF_DEFAULT, FRandom[Mech](0.7, 1.0) * typevolume, ATTN_IDLE);
 					break;
 				case 1:
 					if (stepsound) { A_StartSound(stepsound, CHAN_AUTO, CHANF_DEFAULT, stepvolume, 8); }
@@ -1032,12 +1032,12 @@ class Base : Actor
 
 								double visibility = lightlevel - fogfactor;
 
-								if (visibility > lightthreshold || visibility + dlvisibility > lightthreshold + 64 + Random(0, 32)) // Add some randomness to the light reaction distance
+								if (visibility > lightthreshold || visibility + dlvisibility > lightthreshold + 64 + Random[Base](0, 32)) // Add some randomness to the light reaction distance
 								{
 									if (target) { NewChaseDir(); }
 									else { RandomChaseDir(); }
 									FaceMovementDirection();
-									frighttimeout = 35 + Random(0, 7) * 5; // Use a counter to keep the actor frightened for a little bit
+									frighttimeout = 35 + Random[Base](0, 7) * 5; // Use a counter to keep the actor frightened for a little bit
 									frightener = self;
 								}
 							}
@@ -1061,9 +1061,9 @@ class Base : Actor
 								double minval = 128;
 								
 								double delta = lightlevel - max(minval, lightthreshold - 48); 
-								if (health > 0 && delta > 0 && Random() < 64 * (delta / 16) && !CheckSightOrRange(64)) // Smoke more as you approach burning point
+								if (health > 0 && delta > 0 && Random[Base]() < 64 * (delta / 16) && !CheckSightOrRange(64)) // Smoke more as you approach burning point
 								{
-									Spawn("BodySmoke", (pos.x + FRandom(-radius / 2, radius / 2), pos.y + FRandom(-radius / 2, radius / 2), pos.z + FRandom(0, height)));
+									Spawn("BodySmoke", (pos.x + FRandom[Smoke](-radius / 2, radius / 2), pos.y + FRandom[Smoke](-radius / 2, radius / 2), pos.z + FRandom[Smoke](0, height)));
 								}
 							}
 						}
@@ -1106,7 +1106,7 @@ class Base : Actor
 						frighttimeout = 70;
 						frightener = target;
 						dodgetimeout = 350; // No rolling while scared and running away
-						Speed = Default.Speed + Random(1, 2); // Walk/run a little faster to get away
+						Speed = Default.Speed + Random[Base](1, 2); // Walk/run a little faster to get away
 					}
 					else // Back to normal speed and un-frighten (if light level allows)
 					{
@@ -1116,7 +1116,7 @@ class Base : Actor
 				}
 
 				// Randomly despawn if the player can't see you and is outside of range and you had a despawntime timeout set (AlarmSpawner uses this)
-				if (despawntime == 0 && Random(0, 255) < 10 && InStateSequence(CurState, FindState("Look")) && CheckSightOrRange(512))
+				if (despawntime == 0 && Random[Base](0, 255) < 10 && InStateSequence(CurState, FindState("Look")) && CheckSightOrRange(512))
 				{
 					bShootable = false;
 					if (bCountKill) { level.total_monsters--; }
@@ -1625,18 +1625,18 @@ class Nazi : Base
 			"####" A 1 A_NaziChase;
 			"####" AAA 1 A_NaziChase(null, null);
 			"####" # 0 A_PlayStepSound(Base.Heavy, 0.3, 1.0);
-			"####" B 0 { A_SpawnItemEx("NashGore_BloodSplasher", 0, 0, 0, frandom(-2.0, 2.0), frandom(-2.0, 2.0), frandom(1.0, 2.0), random(0, 360), SXF_TRANSFERTRANSLATION | SXF_ABSOLUTEPOSITION | SXF_ABSOLUTEANGLE | SXF_ABSOLUTEVELOCITY, 0);}
+			"####" B 0 { A_SpawnItemEx("NashGore_BloodSplasher", 0, 0, 0, FRandom[Gibs](-2.0, 2.0), FRandom[Gibs](-2.0, 2.0), FRandom[Gibs](1.0, 2.0), Random[Gibs](0, 360), SXF_TRANSFERTRANSLATION | SXF_ABSOLUTEPOSITION | SXF_ABSOLUTEANGLE | SXF_ABSOLUTEVELOCITY, 0);}
 			"####" B 1 A_NaziChase;
 			"####" BBB 1 A_NaziChase(null, null);
 			"####" B 1 A_NaziChase;
 			"####" BBB 1 A_NaziChase(null, null);
-			"####" CCC 0 A_SpawnItemEx("SkullBloodDrip",8,random(-4,-8),56,0,0,0,0,0);
+			"####" CCC 0 A_SpawnItemEx("SkullBloodDrip",8,random[Blood](-4,-8),56,0,0,0,0,0);
 			"####" C 1 A_NaziChase;
 			"####" CCC 1 A_NaziChase(null, null);
 			"####" C 1 A_NaziChase;
 			"####" CCC 1 A_NaziChase(null, null);
 			"####" # 0 A_PlayStepSound(Base.Heavy, 0.3, 1.0);
-			"####" D 0 { A_SpawnItemEx("NashGore_FlyingBlood", 0, 0, 0, frandom(0.1, 1.0) * RandomPick(-1, 1), frandom(0.1, 1.0) * RandomPick(-1, 1), frandom(0.0, 2.0), 0, SXF_TRANSFERTRANSLATION | SXF_ABSOLUTEPOSITION | SXF_ABSOLUTEANGLE | SXF_ABSOLUTEVELOCITY, 0);}
+			"####" D 0 { A_SpawnItemEx("NashGore_FlyingBlood", 0, 0, 0, FRandom[Gibs](0.1, 1.0) * RandomPick[Gibs](-1, 1), FRandom[Gibs](0.1, 1.0) * RandomPick[Gibs](-1, 1), FRandom[Gibs](0.0, 2.0), 0, SXF_TRANSFERTRANSLATION | SXF_ABSOLUTEPOSITION | SXF_ABSOLUTEANGLE | SXF_ABSOLUTEVELOCITY, 0);}
 			"####" D 1 A_NaziChase;
 			"####" DDD 1 A_NaziChase(null, null);
 			"####" D 1 A_NaziChase;
@@ -1736,7 +1736,7 @@ class Nazi : Base
 			"####" A 0
 			{
 				A_LookEx(LOF_NOSEESOUND); // Look at the end of every walk cycle, in case we wandered into a non-background sector
-				if (Random(0, 2) == 0) { PlayActiveSound(); } // Play the active sound one third of the time
+				if (Random[Base](0, 2) == 0) { PlayActiveSound(); } // Play the active sound one third of the time
 			}
 			Loop;
 		Pain:
@@ -1770,14 +1770,14 @@ class Nazi : Base
 		Death.FireDogs.Random: // Jump to here if you have an actor that needs a different scale set
 			"####" # 0 {
 				DeathDamageType = "Fire"; // Because the flamethrower guards are set to this state via jump, not damage
-				sprite = GetSpriteIndex(Random() < 128 ? "DBRN" : "NRBD");
+				sprite = GetSpriteIndex(Random[Base]() < 128 ? "DBRN" : "NRBD");
 				bIsMonster = False; // Burned enemies can't be resurrected
 			}
 			"####" AA 10 Bright Light("ITBURNS1") { A_Wander(); }
-			"####" BBC 6 Bright Light("ITBURNS3") { A_Wander(); CinderSpawner.SpawnCinder(self); A_SpawnItemEx("BodySmoke", random(-3,3), random(-3,3), random(0,56), 0, 0, frandom(0.2,1.0)); }
+			"####" BBC 6 Bright Light("ITBURNS3") { A_Wander(); CinderSpawner.SpawnCinder(self); A_SpawnItemEx("BodySmoke", Random[Smoke](-3,3), Random[Smoke](-3,3), Random[Smoke](0,56), 0, 0, FRandom[Smoke](0.2,1.0)); }
 			"####" D 6 Bright Light("ITBURNS1") { A_Wander(); A_StartSound("dog/death", CHAN_VOICE); }
-			"####" E 6 Bright Light("ITBURNS1") { A_Wander(); CinderSpawner.SpawnCinder(self); A_SpawnItemEx("BodySmoke", random(-3,3), random(-3,3), random(0,56), 0, 0, frandom(0.2,1.0)); A_NoBlocking(); }
-			"####" FF 6 Bright Light("ITBURNS2") { A_Wander(); CinderSpawner.SpawnCinder(self); A_SpawnItemEx("BodySmoke", random(-3,3), random(-3,3), random(0,56), 0, 0, frandom(0.2,1.0)); }
+			"####" E 6 Bright Light("ITBURNS1") { A_Wander(); CinderSpawner.SpawnCinder(self); A_SpawnItemEx("BodySmoke", Random[Smoke](-3,3), Random[Smoke](-3,3), Random[Smoke](0,56), 0, 0, FRandom[Smoke](0.2,1.0)); A_NoBlocking(); }
+			"####" FF 6 Bright Light("ITBURNS2") { A_Wander(); CinderSpawner.SpawnCinder(self); A_SpawnItemEx("BodySmoke", Random[Smoke](-3,3), Random[Smoke](-3,3), Random[Smoke](0,56), 0, 0, FRandom[Smoke](0.2,1.0)); }
 			"####" A 0 A_SpawnItemEx("BodySmokeSpawner", 0, 0, 0, 0, 0, 0, 0, SXF_SETMASTER);
 		Death.FireDogs.Smoke:
 			"####" G 0 A_Jump(32,"Death.FireDogs.End");
@@ -1807,7 +1807,7 @@ class Nazi : Base
 			"####" "#" 1 {
 				int chunkx, chunky;
 				[chunkx, chunky] = EffectBlock.GetBlock(pos.x, pos.y);
-				if (!pmanager || level.time % max(1, pmanager.GetDelay(chunkx, chunky)) == 0) { A_SpawnItemEx("BaseLine", FRandom(0.8 * radius, -0.8 * radius), FRandom(0.8 * radius, -0.8 * radius), FRandom(0, 8), 0, 0, FRandom(1, 3), 0, 129, 0); }
+				if (!pmanager || level.time % max(1, pmanager.GetDelay(chunkx, chunky)) == 0) { A_SpawnItemEx("BaseLine", FRandom[Gibs](0.8 * radius, -0.8 * radius), FRandom[Gibs](0.8 * radius, -0.8 * radius), FRandom[Gibs](0, 8), 0, 0, FRandom[Gibs](1, 3), 0, 129, 0); }
 				A_FadeOut(0.02);
 			}
 			Loop;
@@ -1950,7 +1950,7 @@ class Nazi : Base
 			else if (activationcount == 0 && !CanBeSeen() && closestplayer && closestplayer.IsVisible(self, true)) // if you haven't been used yet and there are no other enemies around
 			{
 				A_Face(closestplayer);
-				if (Random() < 6) { A_StartSound("spy/attention", CHAN_VOICE, 0, 0.5); } // play an attention-getting sound
+				if (Random[Base]() < 6) { A_StartSound("spy/attention", CHAN_VOICE, 0, 0.5); } // play an attention-getting sound
 			}
 		}
 
@@ -2018,7 +2018,7 @@ class Nazi : Base
 		else
 		{
 			if (!bFriendly && closestplayer && target && closestplayer != target && Random[switchtarget](0, 100) < 20 && CheckSight(closestplayer) && Distance3D(closestplayer) < Distance3D(target)) { target = closestplayer; }
-			if (target is "TankPlayer") { target = Random(0, 1) ? Actor(TankPlayer(target).turret) : Actor(TankPlayer(target).treads); }
+			if (target is "TankPlayer") { target = Random[Base](0, 1) ? Actor(TankPlayer(target).turret) : Actor(TankPlayer(target).treads); }
 
 			if (!closestplayer) { closestplayer = FindClosestPlayer(self, IgnoreFriendlies:!bFriendly); }
 
@@ -2101,7 +2101,7 @@ class Nazi : Base
 		vel *= 0;
 
 		// 1 in 8 chance that surrendering enemies will urinate
-		if (Random(0, 7) == 0 && !(self is "NaziMedic")) // exclude medics as they comply instead of just being frightened
+		if (Random[Base](0, 7) == 0 && !(self is "NaziMedic")) // exclude medics as they comply instead of just being frightened
 		{
 			Actor pee = Spawn("PeePool", pos);
 			if (pee) { pee.master = self; }
@@ -2237,7 +2237,7 @@ class Nazi : Base
 		if (dodgesprite) { sprite = dodgesprite; }
 
 		SetStateLabel("Dodge.Crouch");
-		A_SetTics(Random(0, 35));
+		A_SetTics(Random[Base](0, 35));
 	}
 
 	state A_LookForBodies()
@@ -2284,7 +2284,7 @@ class Nazi : Base
 			if (healflags) { body = goal; return ResolveState("See"); }
 			else if (goal is "Nazi")
 			{
-				Speed = Default.Speed + Random(1, 2); // Walk a little faster
+				Speed = Default.Speed + Random[Base](1, 2); // Walk a little faster
 				if (Distance3D(goal) < 96)
 				{
 					BecomeAlerted(goal.target);
@@ -2313,7 +2313,7 @@ class Nazi : Base
 
 		if (timeout <= 0)
 		{
-			if (grenade.bMissile) { movedir = (grenade.movedir + RandomPick(1, 2, 6, 7)) % 8; } // Pick a random direction away from the shooter and the missile's path
+			if (grenade.bMissile) { movedir = (grenade.movedir + RandomPick[Grenade](1, 2, 6, 7)) % 8; } // Pick a random direction away from the shooter and the missile's path
 			else
 			{
 				if (target) { NewChaseDir(); }
@@ -2331,7 +2331,7 @@ class Nazi : Base
 
 		dodgetimeout = 350; // No rolling while scared and running away
 
-		Speed = Default.Speed + Random(1, 2); // Walk/run a little faster to get away
+		Speed = Default.Speed + Random[Base](1, 2); // Walk/run a little faster to get away
 
 		if (!InStateSequence(CurState, SeeState) && health > 0) { SetStateLabel("See"); } 
 	}
@@ -2450,23 +2450,23 @@ class Nazi : Base
 				mincoins = 10;
 				maxcoins = 10;
 			}
-			for (int c = 1; c < Random(mincoins, maxcoins); c++)
+			for (int c = 1; c < Random[Base](mincoins, maxcoins); c++)
 			{
-				Actor coin = Spawn("CoinDrop", pos + (Random(-4, 4), Random(-4, 4), 0));
+				Actor coin = Spawn("CoinDrop", pos + (Random[Base](-4, 4), Random[Base](-4, 4), 0));
 
 				if (coin)
 				{
-					coin.Vel3DFromAngle(Random(4, 8), Random(0, 359), Random(-75, -90));
+					coin.Vel3DFromAngle(Random[Base](4, 8), Random[Base](0, 359), Random[Base](-75, -90));
 					coin.ClearCounters();
 				}
 			}
 			// Drop additional treasures
 			if (gierdroplevel == 2)
 			{
-				Actor coin = Spawn("CoinBagDrop", pos + (Random(-4, 4), Random(-4, 4), 0));
+				Actor coin = Spawn("CoinBagDrop", pos + (Random[Base](-4, 4), Random[Base](-4, 4), 0));
 				if (coin)
 				{
-					coin.Vel3DFromAngle(Random(4, 8), Random(0, 359), Random(-75, -90));
+					coin.Vel3DFromAngle(Random[Base](4, 8), Random[Base](0, 359), Random[Base](-75, -90));
 					coin.ClearCounters();
 				}
 			}
@@ -2476,21 +2476,21 @@ class Nazi : Base
 				// Random treasure drop
 				for (int c = 0; c < 1; c++)
 				{
-					class<CoinDrop> dropClass = randomdrops[Random(0, randomdrops.Size() - 1)];
-					Actor coin = Spawn(dropClass, pos + (Random(-4, 4), Random(-4, 4), 0));
+					class<CoinDrop> dropClass = randomdrops[Random[Base](0, randomdrops.Size() - 1)];
+					Actor coin = Spawn(dropClass, pos + (Random[Base](-4, 4), Random[Base](-4, 4), 0));
 					if (coin)
 					{
-						coin.Vel3DFromAngle(Random(4, 8), Random(0, 359), Random(-75, -90));
+						coin.Vel3DFromAngle(Random[Base](4, 8), Random[Base](0, 359), Random[Base](-75, -90));
 						coin.ClearCounters();
 					}
 				}
 				// Drop 2 coin bags
 				for (int c = 0; c < 2; c++)
 				{
-					Actor coin = Spawn("CoinBagDrop", pos + (Random(-4, 4), Random(-4, 4), 0));
+					Actor coin = Spawn("CoinBagDrop", pos + (Random[Base](-4, 4), Random[Base](-4, 4), 0));
 					if (coin)
 					{
-						coin.Vel3DFromAngle(Random(4, 8), Random(0, 359), Random(-75, -90));
+						coin.Vel3DFromAngle(Random[Base](4, 8), Random[Base](0, 359), Random[Base](-75, -90));
 						coin.ClearCounters();
 					}
 				}
@@ -2569,7 +2569,7 @@ class Nazi : Base
 			}
 			else if (user_incombat) // If the actor has already been in its See state
 			{
-				if (self is "NaziStandard") { A_StartSound("Nazi1/Pain", CHAN_VOICE, 0, FRandom(0.2, 0.4), ATTN_NORM); } // Play quiet pain sound
+				if (self is "NaziStandard") { A_StartSound("Nazi1/Pain", CHAN_VOICE, 0, FRandom[Nazi](0.2, 0.4), ATTN_NORM); } // Play quiet pain sound
 				SoundAlert(source, false, 64); //ozy - only if near // Alert small radius
 			}
 			else // Otherwise, this attack was the equivalent of Stealth Kill for non-sneakable enemies
@@ -2634,7 +2634,7 @@ class Nazi : Base
 		{
 //			if (developer) { console.printf("You shot a friendly spy!"); }
 
-			if (Random() < 64)
+			if (Random[Base]() < 64)
 			{
 				bFriendly = false;
 				bNeverTarget = false;
@@ -2718,7 +2718,7 @@ class Nazi : Base
 			target = activationgoal;
 			LastEnemy = newtarget;
 			bChaseGoal = True;
-			Speed = Default.Speed + Random(1, 2);
+			Speed = Default.Speed + Random[Base](1, 2);
 		}
 		else
 		{
@@ -2989,7 +2989,7 @@ class Nazi : Base
 					goal = activationgoal; // Set the activation goal as the current navigation goal
 					bJustAttacked = True; // Keep the actor from attacking while chasing to the goal
 					bChaseGoal = True; // Chase to the goal only, not toward a target
-					Speed = Default.Speed + Random(1, 2); // Walk a little faster
+					Speed = Default.Speed + Random[Base](1, 2); // Walk a little faster
  					if (!InStateSequence(CurState, SeeState)) { SetStateLabel("See"); } // Go to the See state if not already there
 				}
 			}
@@ -3173,11 +3173,11 @@ class Nazi : Base
 		for (int i = 0; i < amt; i++)
 		{
 			double r = GetDefaultByType(item).radius + target.radius;
-			Vector3 spawnpos = target.pos + (FRandom(-r, r), FRandom(-r, r), 0);
+			Vector3 spawnpos = target.pos + (FRandom[Nazi](-r, r), FRandom[Nazi](-r, r), 0);
 			drop = Spawn(item, spawnpos, ALLOW_REPLACE);
 			if (drop)
 			{
-				drop.Vel3DFromAngle(Random(1, 4), Random(0, 359), Random(-75, -90)); // Don't stack items on top of each other
+				drop.Vel3DFromAngle(Random[Base](1, 4), Random[Base](0, 359), Random[Base](-75, -90)); // Don't stack items on top of each other
 				drop.ClearCounters();
 			}
 		}
@@ -3197,7 +3197,7 @@ class Nazi : Base
 			bPushable = True;
 
 			int index = activationcount;
-			if (index == 0 && user_spyitem == "") { index = Random(1, 3); }
+			if (index == 0 && user_spyitem == "") { index = Random[Base](1, 3); }
 			else if (index > 0) { index = 99; }
 
 			String msg = "";
@@ -3214,7 +3214,7 @@ class Nazi : Base
 				switch (index)
 				{
 					case 0:
-						msg = "GENERIC" .. Random(0, 4);
+						msg = "GENERIC" .. Random[Base](0, 4);
 						break;
 					case 1:
 						msg = "AMMO";
@@ -3226,7 +3226,7 @@ class Nazi : Base
 						msg = "GOLD";
 						break;
 					default:
-						msg = "MOVE" .. Random(0, 1);
+						msg = "MOVE" .. Random[Base](0, 1);
 						break;
 				}
 
@@ -3236,7 +3236,7 @@ class Nazi : Base
 				if (!(messagestr ~== msg))
 				{
 					if (index == 0 && user_spyitem) { messagestr = messagestr .. "\n\cC" .. StringTable.Localize("SPYMESSAGETAKETHIS", false); }
-					else if (index > 0 && index < 4) { messagestr = StringTable.Localize("SPYMESSAGEGENERIC" .. Random(0, 4), false) .. "\n\cC" .. messagestr; }
+					else if (index > 0 && index < 4) { messagestr = StringTable.Localize("SPYMESSAGEGENERIC" .. Random[Base](0, 4), false) .. "\n\cC" .. messagestr; }
 				}
 			}
 
@@ -3264,13 +3264,13 @@ class Nazi : Base
 				default:
 					break;
 				case 1:
-					SpyGive(user, "Ammo9mm", Random(1, 4) * 4);
+					SpyGive(user, "Ammo9mm", Random[Base](1, 4) * 4);
 					break;
 				case 2:
-					SpyGive(user, "Bandages", Random(1, 2));
+					SpyGive(user, "Bandages", Random[Base](1, 2));
 					break;
 				case 3:
-					SpyGive(user, "CoinItem", Random(2, 4) * 5);
+					SpyGive(user, "CoinItem", Random[Base](2, 4) * 5);
 					break;
 			}
 
@@ -3324,18 +3324,18 @@ class NaziStandard : Nazi
 		Death.Fire.Random: // Jump to here if you have an actor that needs a different scale set (See WereWaffenSS)
 			"####" # 0 {
 				DeathDamageType = "Fire"; // Because the flamethrower guards are set to this state via jump, not damage
-				sprite = GetSpriteIndex(Random() < 128 ? "BURN" : "NRUB");
+				sprite = GetSpriteIndex(Random[Base]() < 128 ? "BURN" : "NRUB");
 				bIsMonster = False; // Burned enemies can't be resurrected
 			}
 			"####" A 5 Bright Light("ITBURNS1") { A_Wander(); }
-			"####" BC 5 Bright Light("ITBURNS1") { A_Wander(); CinderSpawner.SpawnCinder(self); A_SpawnItemEx("BodySmoke", random(-3,3), random(-3,3), random(0,56), 0, 0, frandom(0.2,1.0)); }
+			"####" BC 5 Bright Light("ITBURNS1") { A_Wander(); CinderSpawner.SpawnCinder(self); A_SpawnItemEx("BodySmoke", Random[Smoke](-3,3), Random[Smoke](-3,3), Random[Smoke](0,56), 0, 0, FRandom[Smoke](0.2,1.0)); }
 			"####" D 5 Bright Light("ITBURNS1") { A_Wander(); A_StartSound("death/burning", CHAN_VOICE); }
-			"####" E 5 Bright Light("ITBURNS1") { A_Wander(); CinderSpawner.SpawnCinder(self); A_SpawnItemEx("BodySmoke", random(-3,3), random(-3,3), random(0,56), 0, 0, frandom(0.2,1.0)); }
-			"####" FABCD 5 Bright Light("ITBURNS2") { A_Wander(); CinderSpawner.SpawnCinder(self); A_SpawnItemEx("BodySmoke", random(-3,3), random(-3,3), random(0,56), 0, 0, frandom(0.2,1.0)); }
+			"####" E 5 Bright Light("ITBURNS1") { A_Wander(); CinderSpawner.SpawnCinder(self); A_SpawnItemEx("BodySmoke", Random[Smoke](-3,3), Random[Smoke](-3,3), Random[Smoke](0,56), 0, 0, FRandom[Smoke](0.2,1.0)); }
+			"####" FABCD 5 Bright Light("ITBURNS2") { A_Wander(); CinderSpawner.SpawnCinder(self); A_SpawnItemEx("BodySmoke", Random[Smoke](-3,3), Random[Smoke](-3,3), Random[Smoke](0,56), 0, 0, FRandom[Smoke](0.2,1.0)); }
 			"####" EFAG 5 Bright Light("ITBURNS3") A_Wander();
 			"####" H 5 Bright Light("ITBURNS3") A_UnblockAndDrop();
-			"####" IJK 5 Bright Light("ITBURNS2") { CinderSpawner.SpawnCinder(self); A_SpawnItemEx("BodySmoke", random(-3,3), random(-3,3), random(0,56), 0, 0, frandom(0.2,1.0)); }
-			"####" LMN 5 Bright Light("ITBURNS1") { CinderSpawner.SpawnCinder(self); A_SpawnItemEx("BodySmoke", random(-3,3), random(-3,3), random(0,56), 0, 0, frandom(0.2,1.0)); }
+			"####" IJK 5 Bright Light("ITBURNS2") { CinderSpawner.SpawnCinder(self); A_SpawnItemEx("BodySmoke", Random[Smoke](-3,3), Random[Smoke](-3,3), Random[Smoke](0,56), 0, 0, FRandom[Smoke](0.2,1.0)); }
+			"####" LMN 5 Bright Light("ITBURNS1") { CinderSpawner.SpawnCinder(self); A_SpawnItemEx("BodySmoke", Random[Smoke](-3,3), Random[Smoke](-3,3), Random[Smoke](0,56), 0, 0, FRandom[Smoke](0.2,1.0)); }
 			"####" A 0 A_SpawnItemEx("BodySmokeSpawner", 0, 0, 0, 0, 0, 0, 0, SXF_SETMASTER);
 		Death.Fire.Smoke:
 			"####" O 0 A_Jump(32,"Death.Fire.End");
@@ -3352,16 +3352,16 @@ class NaziStandard : Nazi
 		Death.Electric.Random: // Jump to here if you have an actor that needs a different scale set (See WereWaffenSS)
 			"####" # 0 {
 				DeathDamageType = "Electric";
-				sprite = GetSpriteIndex(Random() < 128 ? "FIZZ" : "ZZIF");
+				sprite = GetSpriteIndex(Random[Base]() < 128 ? "FIZZ" : "ZZIF");
 				bIsMonster = False; // Zapped enemies can't be resurrected
 			}
 			"####" A 5 Bright Light("TPortNormal");
-			"####" BA 5 Bright Light("TPortNormal") A_SpawnItemEx("BodySmoke", random(-3,3), random(-3,3), random(0,56), 0, 0, frandom(0.2,1.0));
-			"####" B 5 Bright Light("TPortNormal") { A_StartSound("death/burning", CHAN_VOICE); A_SpawnItemEx("BodySmoke", random(-3,3), random(-3,3), random(0,56), 0, 0, frandom(0.2,1.0)); }
-			"####" AABAB 5 Bright Light("TPortNormal") A_SpawnItemEx("BodySmoke", random(-3,3), random(-3,3), random(0,56), 0, 0, frandom(0.2,1.0));
+			"####" BA 5 Bright Light("TPortNormal") A_SpawnItemEx("BodySmoke", Random[Smoke](-3,3), Random[Smoke](-3,3), Random[Smoke](0,56), 0, 0, FRandom[Smoke](0.2,1.0));
+			"####" B 5 Bright Light("TPortNormal") { A_StartSound("death/burning", CHAN_VOICE); A_SpawnItemEx("BodySmoke", Random[Smoke](-3,3), Random[Smoke](-3,3), Random[Smoke](0,56), 0, 0, FRandom[Smoke](0.2,1.0)); }
+			"####" AABAB 5 Bright Light("TPortNormal") A_SpawnItemEx("BodySmoke", Random[Smoke](-3,3), Random[Smoke](-3,3), Random[Smoke](0,56), 0, 0, FRandom[Smoke](0.2,1.0));
 			"####" C 7 Light("TPortNormal") A_UnblockAndDrop();
-			"####" DE 6 Light("TPortNormal") A_SpawnItemEx("BodySmoke", random(-3,3), random(-3,3), random(0,56), 0, 0, frandom(0.2,1.0));
-			"####" FG 5 A_SpawnItemEx("BodySmoke", random(-3,3), random(-3,3), random(0,56), 0, 0, frandom(0.2,1.0));
+			"####" DE 6 Light("TPortNormal") A_SpawnItemEx("BodySmoke", Random[Smoke](-3,3), Random[Smoke](-3,3), Random[Smoke](0,56), 0, 0, FRandom[Smoke](0.2,1.0));
+			"####" FG 5 A_SpawnItemEx("BodySmoke", Random[Smoke](-3,3), Random[Smoke](-3,3), Random[Smoke](0,56), 0, 0, FRandom[Smoke](0.2,1.0));
 			"####" A 0 A_SpawnItemEx("BodySmokeSpawner", 0, 0, 0, 0, 0, 0, 0, SXF_SETMASTER);
 		Death.Electric.Smoke:
 			"####" H 0 A_Jump(32,"Death.Electric.End");
@@ -3380,7 +3380,7 @@ class NaziStandard : Nazi
 			Stop;
 		XDeath:
 			SLOP A 5 {
-				A_SpawnItemEx("NashGore_FlyingBlood", 0, 0, 8, random(-4, 4), random(-4, 4), random(2, 5), 0, 143, 176);
+				A_SpawnItemEx("NashGore_FlyingBlood", 0, 0, 8, Random[Gibs](-4, 4), Random[Gibs](-4, 4), Random[Gibs](2, 5), 0, 143, 176);
 				A_SetScale(0.65);
 				bIsMonster = False; // So that an exploded enemy can't be resurrected
 				A_StopSound(CHAN_VOICE); // Stop enemy shouting
@@ -3391,7 +3391,7 @@ class NaziStandard : Nazi
 			Stop;
 		XDeath.Giant:
 			SLOP A 5 {
-				A_SpawnItemEx("NashGore_FlyingBlood", 0, 0, 8, random(-4, 4), random(-4, 4), random(2, 5), 0, 143, 176);
+				A_SpawnItemEx("NashGore_FlyingBlood", 0, 0, 8, Random[Gibs](-4, 4), Random[Gibs](-4, 4), Random[Gibs](2, 5), 0, 143, 176);
 				A_SetScale(2.90);
 				bIsMonster = False; // So that an exploded enemy can't be resurrected
 				A_StopSound(CHAN_VOICE); // Stop enemy shouting
@@ -3402,13 +3402,13 @@ class NaziStandard : Nazi
 			Stop;
 		XDeath.Boom:
 			SLOP A 5 {
-				A_SpawnItemEx("NashGore_FlyingBlood", 0, 0, 8, random(-4, 4), random(-4, 4), random(2, 5), 0, 143, 176);
+				A_SpawnItemEx("NashGore_FlyingBlood", 0, 0, 8, Random[Gibs](-4, 4), Random[Gibs](-4, 4), Random[Gibs](2, 5), 0, 143, 176);
 				A_SetScale(0.65);
 				bIsMonster = False; // So that an exploded enemy can't be resurrected
 				A_StopSound(CHAN_VOICE); // Stop enemy shouting
 			}
 			"####" A 0 A_SpawnItemEx("PanzerBoom", 0, 0, 8);
-			"####" BCDE 5 A_SpawnItemEx("NashGore_FlyingBlood", 0, 0, 8, random(-4, 4), random(-4, 4), random(2, 5), 0, 143, 176);
+			"####" BCDE 5 A_SpawnItemEx("NashGore_FlyingBlood", 0, 0, 8, Random[Gibs](-4, 4), Random[Gibs](-4, 4), Random[Gibs](2, 5), 0, 143, 176);
 			"####" F 5 A_UnblockAndDrop();
 			"####" G -1;
 			Stop;
@@ -3445,18 +3445,18 @@ class MutantStandard : Nazi
 		Death.Fire.Random: // Jump to here if you have an actor that needs a different scale set (See WereWaffenSS)
 			"####" # 0 {
 				DeathDamageType = "Fire"; // Because the flamethrower guards are set to this state via jump, not damage
-				sprite = GetSpriteIndex(Random() < 128 ? "BURN" : "NRUB");
+				sprite = GetSpriteIndex(Random[Base]() < 128 ? "BURN" : "NRUB");
 				bIsMonster = False; // Burned enemies can't be resurrected
 			}
 			"####" A 5 Bright Light("ITBURNS1") { A_Wander(); }
-			"####" BC 5 Bright Light("ITBURNS1") { A_Wander(); CinderSpawner.SpawnCinder(self); A_SpawnItemEx("BodySmoke", random(-3,3), random(-3,3), random(0,56), 0, 0, frandom(0.2,1.0)); }
+			"####" BC 5 Bright Light("ITBURNS1") { A_Wander(); CinderSpawner.SpawnCinder(self); A_SpawnItemEx("BodySmoke", Random[Smoke](-3,3), Random[Smoke](-3,3), Random[Smoke](0,56), 0, 0, FRandom[Smoke](0.2,1.0)); }
 			"####" D 5 Bright Light("ITBURNS1") { A_Wander(); A_StartSound(DeathSound, CHAN_VOICE); }
-			"####" E 5 Bright Light("ITBURNS1") { A_Wander(); CinderSpawner.SpawnCinder(self); A_SpawnItemEx("BodySmoke", random(-3,3), random(-3,3), random(0,56), 0, 0, frandom(0.2,1.0)); }
-			"####" FABCD 5 Bright Light("ITBURNS2") { A_Wander(); CinderSpawner.SpawnCinder(self); A_SpawnItemEx("BodySmoke", random(-3,3), random(-3,3), random(0,56), 0, 0, frandom(0.2,1.0)); }
+			"####" E 5 Bright Light("ITBURNS1") { A_Wander(); CinderSpawner.SpawnCinder(self); A_SpawnItemEx("BodySmoke", Random[Smoke](-3,3), Random[Smoke](-3,3), Random[Smoke](0,56), 0, 0, FRandom[Smoke](0.2,1.0)); }
+			"####" FABCD 5 Bright Light("ITBURNS2") { A_Wander(); CinderSpawner.SpawnCinder(self); A_SpawnItemEx("BodySmoke", Random[Smoke](-3,3), Random[Smoke](-3,3), Random[Smoke](0,56), 0, 0, FRandom[Smoke](0.2,1.0)); }
 			"####" EFAG 5 Bright Light("ITBURNS3") A_Wander();
 			"####" H 5 Bright Light("ITBURNS3") A_UnblockAndDrop();
-			"####" IJK 5 Bright Light("ITBURNS2") { CinderSpawner.SpawnCinder(self, p: (frandom(-8,8),frandom(-8,8),frandom(0,16))); A_SpawnItemEx("BodySmoke", random(-3,3), random(-3,3), random(0,56), 0, 0, frandom(0.2,1.0)); }
-			"####" LMN 5 Bright Light("ITBURNS1") { CinderSpawner.SpawnCinder(self, p: (frandom(-8,8),frandom(-8,8),frandom(0,8))); A_SpawnItemEx("BodySmoke", random(-3,3), random(-3,3), random(0,56), 0, 0, frandom(0.2,1.0)); }
+			"####" IJK 5 Bright Light("ITBURNS2") { CinderSpawner.SpawnCinder(self, p: (FRandom[Cinder](-8,8), FRandom[Cinder](-8,8), FRandom[Cinder](0,16))); A_SpawnItemEx("BodySmoke", Random[Smoke](-3,3), Random[Smoke](-3,3), Random[Smoke](0,56), 0, 0, FRandom[Smoke](0.2,1.0)); }
+			"####" LMN 5 Bright Light("ITBURNS1") { CinderSpawner.SpawnCinder(self, p: (FRandom[Cinder](-8,8), FRandom[Cinder](-8,8), FRandom[Cinder](0,8))); A_SpawnItemEx("BodySmoke", Random[Smoke](-3,3), Random[Smoke](-3,3), Random[Smoke](0,56), 0, 0, FRandom[Smoke](0.2,1.0)); }
 			"####" A 0 A_SpawnItemEx("BodySmokeSpawner", 0, 0, 0, 0, 0, 0, 0, SXF_SETMASTER);
 		Death.Fire.Smoke:
 			"####" O 0 A_Jump(32,"Death.Fire.End");
@@ -3473,16 +3473,16 @@ class MutantStandard : Nazi
 		Death.Electric.Random: // Jump to here if you have an actor that needs a different scale set (See WereWaffenSS)
 			"####" # 0 {
 				DeathDamageType = "Electric";
-				sprite = GetSpriteIndex(Random() < 128 ? "FIZZ" : "ZZIF");
+				sprite = GetSpriteIndex(Random[Base]() < 128 ? "FIZZ" : "ZZIF");
 				bIsMonster = False; // Zapped enemies can't be resurrected
 			}
 			"####" A 5 Bright Light("TPortNormal");
-			"####" BA 5 Bright Light("TPortNormal") A_SpawnItemEx("BodySmoke", random(-3,3), random(-3,3), random(0,56), 0, 0, frandom(0.2,1.0));
-			"####" B 5 Bright Light("TPortNormal") { A_StartSound(DeathSound, CHAN_VOICE); A_SpawnItemEx("BodySmoke", random(-3,3), random(-3,3), random(0,56), 0, 0, frandom(0.2,1.0)); }
-			"####" AABAB 5 Bright Light("TPortNormal") A_SpawnItemEx("BodySmoke", random(-3,3), random(-3,3), random(0,56), 0, 0, frandom(0.2,1.0));
+			"####" BA 5 Bright Light("TPortNormal") A_SpawnItemEx("BodySmoke", Random[Smoke](-3,3), Random[Smoke](-3,3), Random[Smoke](0,56), 0, 0, FRandom[Smoke](0.2,1.0));
+			"####" B 5 Bright Light("TPortNormal") { A_StartSound(DeathSound, CHAN_VOICE); A_SpawnItemEx("BodySmoke", Random[Smoke](-3,3), Random[Smoke](-3,3), Random[Smoke](0,56), 0, 0, FRandom[Smoke](0.2,1.0)); }
+			"####" AABAB 5 Bright Light("TPortNormal") A_SpawnItemEx("BodySmoke", Random[Smoke](-3,3), Random[Smoke](-3,3), Random[Smoke](0,56), 0, 0, FRandom[Smoke](0.2,1.0));
 			"####" C 7 Light("TPortNormal") A_UnblockAndDrop();
-			"####" DE 6 Light("TPortNormal") A_SpawnItemEx("BodySmoke", random(-3,3), random(-3,3), random(0,56), 0, 0, frandom(0.2,1.0));
-			"####" FG 5 A_SpawnItemEx("BodySmoke", random(-3,3), random(-3,3), random(0,56), 0, 0, frandom(0.2,1.0));
+			"####" DE 6 Light("TPortNormal") A_SpawnItemEx("BodySmoke", Random[Smoke](-3,3), Random[Smoke](-3,3), Random[Smoke](0,56), 0, 0, FRandom[Smoke](0.2,1.0));
+			"####" FG 5 A_SpawnItemEx("BodySmoke", Random[Smoke](-3,3), Random[Smoke](-3,3), Random[Smoke](0,56), 0, 0, FRandom[Smoke](0.2,1.0));
 			"####" A 0 A_SpawnItemEx("BodySmokeSpawner", 0, 0, 0, 0, 0, 0, 0, SXF_SETMASTER);
 		Death.Electric.Smoke:
 			"####" H 0 A_Jump(32,"Death.Electric.End");
@@ -3501,7 +3501,7 @@ class MutantStandard : Nazi
 			Stop;
 		XDeath:
 			SLOM A 5 {
-				A_SpawnItemEx("MutantFlyingBlood", 0, 0, 8, random(-4, 4), random(-4, 4), random(2, 5), 0, 143, 176);
+				A_SpawnItemEx("MutantFlyingBlood", 0, 0, 8, Random[Gibs](-4, 4), Random[Gibs](-4, 4), Random[Gibs](2, 5), 0, 143, 176);
 				A_SetScale(0.62);
 				bIsMonster = False; // So that an exploded enemy can't be resurrected
 			}
@@ -3511,7 +3511,7 @@ class MutantStandard : Nazi
 			Stop;
 		XDeath.Big:
 			SLOM A 5 {
-				A_SpawnItemEx("MutantFlyingBlood", 0, 0, 8, random(-4, 4), random(-4, 4), random(2, 5), 0, 143, 176);
+				A_SpawnItemEx("MutantFlyingBlood", 0, 0, 8, Random[Gibs](-4, 4), Random[Gibs](-4, 4), Random[Gibs](2, 5), 0, 143, 176);
 				A_SetScale(0.95);
 				bIsMonster = False; // So that an exploded enemy can't be resurrected
 			}
@@ -3599,18 +3599,18 @@ class ZombieStandard : Nazi
 		Death.Fire.Random: // Jump to here if you have an actor that needs a different scale set (See WereWaffenSS)
 			"####" # 0 {
 				DeathDamageType = "Fire"; // Because the flamethrower guards are set to this state via jump, not damage
-				sprite = GetSpriteIndex(Random() < 128 ? "BURN" : "NRUB");
+				sprite = GetSpriteIndex(Random[Base]() < 128 ? "BURN" : "NRUB");
 				bIsMonster = False; // Burned enemies can't be resurrected
 			}
 			"####" A 5 Bright Light("ITBURNS1") { A_Wander(); }
-			"####" BC 5 Bright Light("ITBURNS1") { A_Wander(); CinderSpawner.SpawnCinder(self); A_SpawnItemEx("BodySmoke", random(-3,3), random(-3,3), random(0,56), 0, 0, frandom(0.2,1.0)); }
+			"####" BC 5 Bright Light("ITBURNS1") { A_Wander(); CinderSpawner.SpawnCinder(self); A_SpawnItemEx("BodySmoke", Random[Smoke](-3,3), Random[Smoke](-3,3), Random[Smoke](0,56), 0, 0, FRandom[Smoke](0.2,1.0)); }
 			"####" D 5 Bright Light("ITBURNS1") { A_Wander(); A_StartSound(DeathSound, CHAN_VOICE); }
-			"####" E 5 Bright Light("ITBURNS1") { A_Wander(); CinderSpawner.SpawnCinder(self); A_SpawnItemEx("BodySmoke", random(-3,3), random(-3,3), random(0,56), 0, 0, frandom(0.2,1.0)); }
-			"####" FABCD 5 Bright Light("ITBURNS2") { A_Wander(); CinderSpawner.SpawnCinder(self); A_SpawnItemEx("BodySmoke", random(-3,3), random(-3,3), random(0,56), 0, 0, frandom(0.2,1.0)); }
+			"####" E 5 Bright Light("ITBURNS1") { A_Wander(); CinderSpawner.SpawnCinder(self); A_SpawnItemEx("BodySmoke", Random[Smoke](-3,3), Random[Smoke](-3,3), Random[Smoke](0,56), 0, 0, FRandom[Smoke](0.2,1.0)); }
+			"####" FABCD 5 Bright Light("ITBURNS2") { A_Wander(); CinderSpawner.SpawnCinder(self); A_SpawnItemEx("BodySmoke", Random[Smoke](-3,3), Random[Smoke](-3,3), Random[Smoke](0,56), 0, 0, FRandom[Smoke](0.2,1.0)); }
 			"####" EFAG 5 Bright Light("ITBURNS3") A_Wander();
 			"####" H 5 Bright Light("ITBURNS3") A_UnblockAndDrop();
-			"####" IJK 5 Bright Light("ITBURNS2") { CinderSpawner.SpawnCinder(self, p: (frandom(-8,8),frandom(-8,8),frandom(0,16))); A_SpawnItemEx("BodySmoke", random(-3,3), random(-3,3), random(0,56), 0, 0, frandom(0.2,1.0)); }
-			"####" LMN 5 Bright Light("ITBURNS1") { CinderSpawner.SpawnCinder(self, p: (frandom(-8,8),frandom(-8,8),frandom(0,8))); A_SpawnItemEx("BodySmoke", random(-3,3), random(-3,3), random(0,56), 0, 0, frandom(0.2,1.0)); }
+			"####" IJK 5 Bright Light("ITBURNS2") { CinderSpawner.SpawnCinder(self, p: (FRandom[Cinder](-8,8), FRandom[Cinder](-8,8), FRandom[Cinder](0,16))); A_SpawnItemEx("BodySmoke", Random[Smoke](-3,3), Random[Smoke](-3,3), Random[Smoke](0,56), 0, 0, FRandom[Smoke](0.2,1.0)); }
+			"####" LMN 5 Bright Light("ITBURNS1") { CinderSpawner.SpawnCinder(self, p: (FRandom[Cinder](-8,8), FRandom[Cinder](-8,8), FRandom[Cinder](0,8))); A_SpawnItemEx("BodySmoke", Random[Smoke](-3,3), Random[Smoke](-3,3), Random[Smoke](0,56), 0, 0, FRandom[Smoke](0.2,1.0)); }
 			"####" A 0 A_SpawnItemEx("BodySmokeSpawner", 0, 0, 0, 0, 0, 0, 0, SXF_SETMASTER);
 		Death.Fire.Smoke:
 			"####" O 0 A_Jump(32,"Death.Fire.End");
@@ -3620,7 +3620,7 @@ class ZombieStandard : Nazi
 			"####" O 5 Light("ITBURNS5");
 			Loop;
 		Death.Fire.End:
-			"####" O 4 A_SpawnItemEx("ZombieSoul", 0, 0, 10, 0, 0, frandom(1,3));
+			"####" O 4 A_SpawnItemEx("ZombieSoul", 0, 0, 10, 0, 0, FRandom[Smoke](1,3));
 			"####" O -1;
 			Stop;
 		Death.Electric:
@@ -3628,16 +3628,16 @@ class ZombieStandard : Nazi
 		Death.Electric.Random: // Jump to here if you have an actor that needs a different scale set (See WereWaffenSS)
 			"####" # 0 {
 				DeathDamageType = "Electric";
-				sprite = GetSpriteIndex(Random() < 128 ? "FIZZ" : "ZZIF");
+				sprite = GetSpriteIndex(Random[Base]() < 128 ? "FIZZ" : "ZZIF");
 				bIsMonster = False; // Zapped enemies can't be resurrected
 			}
 			"####" A 5 Bright Light("TPortNormal");
-			"####" BA 5 Bright Light("TPortNormal") A_SpawnItemEx("BodySmoke", random(-3,3), random(-3,3), random(0,56), 0, 0, frandom(0.2,1.0));
-			"####" B 5 Bright Light("TPortNormal") { A_StartSound(DeathSound, CHAN_VOICE); A_SpawnItemEx("BodySmoke", random(-3,3), random(-3,3), random(0,56), 0, 0, frandom(0.2,1.0)); }
-			"####" AABAB 5 Bright Light("TPortNormal") A_SpawnItemEx("BodySmoke", random(-3,3), random(-3,3), random(0,56), 0, 0, frandom(0.2,1.0));
+			"####" BA 5 Bright Light("TPortNormal") A_SpawnItemEx("BodySmoke", Random[Smoke](-3,3), Random[Smoke](-3,3), Random[Smoke](0,56), 0, 0, FRandom[Smoke](0.2,1.0));
+			"####" B 5 Bright Light("TPortNormal") { A_StartSound(DeathSound, CHAN_VOICE); A_SpawnItemEx("BodySmoke", Random[Smoke](-3,3), Random[Smoke](-3,3), Random[Smoke](0,56), 0, 0, FRandom[Smoke](0.2,1.0)); }
+			"####" AABAB 5 Bright Light("TPortNormal") A_SpawnItemEx("BodySmoke", Random[Smoke](-3,3), Random[Smoke](-3,3), Random[Smoke](0,56), 0, 0, FRandom[Smoke](0.2,1.0));
 			"####" C 7 Light("TPortNormal") A_UnblockAndDrop();
-			"####" DE 6 Light("TPortNormal") A_SpawnItemEx("BodySmoke", random(-3,3), random(-3,3), random(0,56), 0, 0, frandom(0.2,1.0));
-			"####" FG 5 A_SpawnItemEx("BodySmoke", random(-3,3), random(-3,3), random(0,56), 0, 0, frandom(0.2,1.0));
+			"####" DE 6 Light("TPortNormal") A_SpawnItemEx("BodySmoke", Random[Smoke](-3,3), Random[Smoke](-3,3), Random[Smoke](0,56), 0, 0, FRandom[Smoke](0.2,1.0));
+			"####" FG 5 A_SpawnItemEx("BodySmoke", Random[Smoke](-3,3), Random[Smoke](-3,3), Random[Smoke](0,56), 0, 0, FRandom[Smoke](0.2,1.0));
 			"####" A 0 A_SpawnItemEx("BodySmokeSpawner", 0, 0, 0, 0, 0, 0, 0, SXF_SETMASTER);
 		Death.Electric.Smoke:
 			"####" H 0 A_Jump(32,"Death.Electric.End");
@@ -3651,16 +3651,16 @@ class ZombieStandard : Nazi
 			Stop;
 		XDeath:
 			SLOZ A 5 {
-				A_SpawnItemEx("Zombie_FlyingBlood", 0, 0, 8, random(-4, 4), random(-4, 4), random(2, 5), 0, 143, 176);
+				A_SpawnItemEx("Zombie_FlyingBlood", 0, 0, 8, Random[Gibs](-4, 4), Random[Gibs](-4, 4), Random[Gibs](2, 5), 0, 143, 176);
 				A_SetScale(0.65);
 				bIsMonster = False; // So that an exploded enemy can't be resurrected
 			}
 			"####" BCDE 5;
-			"####" F 5 {A_UnblockAndDrop(); A_SpawnItemEx("ZombieSoul", 0, 0, 10, 0, 0, frandom(1,3));}
+			"####" F 5 {A_UnblockAndDrop(); A_SpawnItemEx("ZombieSoul", 0, 0, 10, 0, 0, FRandom[Smoke](1,3));}
 			"####" G -1;
 			Stop;
 		Disintegrate:
-			"####" F 0 A_SpawnItemEx("ZombieSoul", 0, 0, 10, 0, 0, FRandom(1, 3));
+			"####" F 0 A_SpawnItemEx("ZombieSoul", 0, 0, 10, 0, 0, FRandom[Smoke](1, 3));
 			"####" F 0 A_Jump(256, "Disintegration");
 			Stop;
 	}
@@ -3916,7 +3916,7 @@ class BatBase : Base
 
 	void ResetCountdown()
 	{
-		countdown = int(35 * Random(5, maxchase) * max(1.0, (pos.z - floorz) / 256.0)); // Actively chase player for 5-10 seconds - or more, if the ceiling is high
+		countdown = int(35 * Random[Bats](5, maxchase) * max(1.0, (pos.z - floorz) / 256.0)); // Actively chase player for 5-10 seconds - or more, if the ceiling is high
 	}
 
 	void SpawnRoost()

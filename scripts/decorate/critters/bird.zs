@@ -152,15 +152,15 @@ class CrowWander1L : Base //Wandering version. Flees when player gets close and 
 		TNT1 A 0 A_StartSound("CRWFLP", CHAN_5, CHANF_LOOPING, 0.3);
 		"####" A 0 A_NoGravity;
 		"####" A 0 {bFloorHugger = FALSE;}
-		"####" A 0 ThrustThing(random(0,360), random(4,8), 0, 0);
+		"####" A 0 ThrustThing(random[Crow](0,360), random[Crow](4,8), 0, 0);
 		CRW1 IK 2;
-		TNT1 A 0 ThrustThingZ(0,random(4,8),0,1);
+		TNT1 A 0 ThrustThingZ(0,random[Crow](4,8),0,1);
 		"####" A 0 A_Jump(20,"Flight");
 		Goto WanderFly+3;
 	Flight:
 		TNT1 A 0 A_CheckRange(1280,2);
 		TNT1 A 0 A_StartSound("CRWFLP", CHAN_5, CHANF_LOOPING, 0.3);
-		"####" A 0 ThrustThing(random(0,360), random(3,6), 0, 0);
+		"####" A 0 ThrustThing(random[Crow](0,360), random[Crow](3,6), 0, 0);
 		CRW1 IK 2;
 		"####" A 0 A_Jump(35,"FlyDown");
 		Goto Flight+1;
@@ -169,7 +169,7 @@ class CrowWander1L : Base //Wandering version. Flees when player gets close and 
 		CRW1 IK 2;
 		TNT1 A 0 A_CheckRange(1280,2);
 		TNT1 A 0 A_StartSound("CRWFLP", CHAN_5, CHANF_LOOPING, 0.3);
-		"####" A 0 ThrustThing(random(0,360), random(3,6), 0, 0);
+		"####" A 0 ThrustThing(random[Crow](0,360), random[Crow](3,6), 0, 0);
 		"####" A 0 ThrustThingZ(0,-2,0,1);
 		"####" A 0 A_CheckFloor("Spawn");
 		Goto FlyDown+1;
@@ -182,9 +182,9 @@ class CrowWander1L : Base //Wandering version. Flees when player gets close and 
 		"####" A 0 A_StartSound("CRWFLP", CHAN_5, CHANF_LOOPING, 0.3);
 		"####" A 0 A_NoGravity;
 		"####" A 0 {bFloorHugger = FALSE;}
-		"####" A 0 ThrustThing(random(0,360), random(6,12), 0, 0);
+		"####" A 0 ThrustThing(random[Crow](0,360), random[Crow](6,12), 0, 0);
 		CRW1 IK 2;
-		TNT1 A 0 ThrustThingZ(0,random(12,20),0,1);
+		TNT1 A 0 ThrustThingZ(0,random[Crow](12,20),0,1);
 		"####" A 0 A_FadeOut(0.1);
 		Goto Pain+5;
 	}

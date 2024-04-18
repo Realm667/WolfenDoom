@@ -148,11 +148,11 @@ class KD_HL2Flash : KD_HL2ExplosionBase
 	States
 	{
 	Spawn:
-		TNT1 A 0 NODELAY A_SetScale(frandom(0.5, 0.8) * Scale.X);
+		TNT1 A 0 NODELAY A_SetScale(FRandom[Boom](0.5, 0.8) * Scale.X);
 		TNT1 A 0 A_Jump(256,1,2);
 		EXN1 AB 0 LIGHT("FireSpawnerSmall") A_Jump(256,"Fade");
 	Fade:
-		"####" "#" 1 BRIGHT LIGHT("FireSpawnerLarge") A_FadeOut(frandom(0.05, 0.10) * (6 - boa_boomswitch));
+		"####" "#" 1 BRIGHT LIGHT("FireSpawnerLarge") A_FadeOut(FRandom[Boom](0.05, 0.10) * (6 - boa_boomswitch));
 		Loop;
 	}
 }
@@ -167,8 +167,8 @@ class KD_HL2Smoke : KD_HL2ExplosionBase
 	States
 	{
 	Spawn:
-		TSMK A 1 A_SetScale(Scale.X + frandom(0.005, 0.015));
-		TSMK A 0 A_FadeOut(frandom(0.006, 0.012) * (6 - boa_boomswitch),FTF_REMOVE);
+		TSMK A 1 A_SetScale(Scale.X + FRandom[Boom](0.005, 0.015));
+		TSMK A 0 A_FadeOut(FRandom[Boom](0.006, 0.012) * (6 - boa_boomswitch),FTF_REMOVE);
 		Loop;
 	}
 }
@@ -179,7 +179,7 @@ class KD_HL2SmokeGenerator : KD_HL2GeneratorBase
 	{
 	Spawn:
 		TNT1 A 0 A_Countdown;
-		TNT1 A 0 A_SpawnItemEx("KD_HL2Smoke", 0, 0, 0, 0.0,frandom(0.0, 2.5) * Scale.X,frandom(-2.0, 2.0) * Scale.X, random(0, 359),SXF_CLIENTSIDE | SXF_TRANSFERSCALE, 30);
+		TNT1 A 0 A_SpawnItemEx("KD_HL2Smoke", 0, 0, 0, 0.0, FRandom[Smoke](0.0, 2.5) * Scale.X, FRandom[Smoke](-2.0, 2.0) * Scale.X, Random[Smoke](0, 359),SXF_CLIENTSIDE | SXF_TRANSFERSCALE, 30);
 		Loop;
 	}
 }
@@ -193,9 +193,9 @@ class KD_HL2Spark : KD_HL2ExplosionBase
 	States
 	{
 	Spawn:
-		PAO1 A 5 NODELAY LIGHT("BOACLMN1") A_SetScale(frandom(0.07, 0.1) * Scale.X);
+		PAO1 A 5 NODELAY LIGHT("BOACLMN1") A_SetScale(FRandom[Spark](0.07, 0.1) * Scale.X);
 	Drop:
-		PAO1 A 0 A_ChangeVelocity(frandom(0.98, 0.99) * Vel.X,frandom(0.98, 0.99) * Vel.Y,Vel.Z - frandom(0.2, 0.5), CVF_REPLACE);
+		PAO1 A 0 A_ChangeVelocity(FRandom[Spark](0.98, 0.99) * Vel.X, FRandom[Spark](0.98, 0.99) * Vel.Y,Vel.Z - FRandom[Boom](0.2, 0.5), CVF_REPLACE);
 		PAO1 A 1 A_SetScale(Scale.X - 0.002);
 		PAO1 A 0 A_FadeOut(0.01 * (6 - boa_boomswitch),FTF_REMOVE);
 		Loop;
@@ -208,7 +208,7 @@ class KD_HL2SparkGenerator : KD_HL2GeneratorBase
 	{
 	Spawn:
 		TNT1 A 0 A_Countdown;
-		TNT1 AAA 0 A_SpawnItemEx("KD_HL2Spark", 0, 0, 0, 0.0,frandom(0.0, 13.5) * Scale.X,frandom(-1.0, 9.5) * Scale.X, random(0, 359),SXF_CLIENTSIDE | SXF_TRANSFERSCALE, 60);
+		TNT1 AAA 0 A_SpawnItemEx("KD_HL2Spark", 0, 0, 0, 0.0, FRandom[Spark](0.0, 13.5) * Scale.X, FRandom[Spark](-1.0, 9.5) * Scale.X, Random[Spark](0, 359),SXF_CLIENTSIDE | SXF_TRANSFERSCALE, 60);
 		Loop;
 	}
 }
@@ -270,11 +270,11 @@ class KD_HL2FlashAstrostein : KD_HL2ExplosionBase
 	States
 	{
 	Spawn:
-		TNT1 A 0 NODELAY A_SetScale(frandom(0.5, 0.8) * Scale.X);
+		TNT1 A 0 NODELAY A_SetScale(FRandom[Boom](0.5, 0.8) * Scale.X);
 		TNT1 A 0 A_Jump(256,1,2);
 		EXN2 AB 0 LIGHT("FireSpawnerSmall") A_Jump(256,"Fade");
 	Fade:
-		"####" "#" 1 BRIGHT LIGHT("AstrosteinExplosionSpawnerLarge") A_FadeOut(frandom(0.05, 0.10),FTF_REMOVE);
+		"####" "#" 1 BRIGHT LIGHT("AstrosteinExplosionSpawnerLarge") A_FadeOut(FRandom[Boom](0.05, 0.10),FTF_REMOVE);
 		Wait;
 	}
 }
@@ -348,11 +348,11 @@ class KD_HL2FlashProto : KD_HL2ExplosionBase
 	States
 	{
 	Spawn:
-		TNT1 A 0 NODELAY A_SetScale(frandom(0.5, 0.8) * Scale.X);
+		TNT1 A 0 NODELAY A_SetScale(FRandom[Boom](0.5, 0.8) * Scale.X);
 		TNT1 A 0 A_Jump(256,1,2);
 		EXN3 AB 0 LIGHT("FireSpawnerSmall") A_Jump(256,"Fade");
 	Fade:
-		"####" "#" 1 BRIGHT LIGHT("ProtoExplosionSpawnerLarge") A_FadeOut(frandom(0.05, 0.10),FTF_REMOVE);
+		"####" "#" 1 BRIGHT LIGHT("ProtoExplosionSpawnerLarge") A_FadeOut(FRandom[Boom](0.05, 0.10),FTF_REMOVE);
 		Wait;
 	}
 }
@@ -369,7 +369,7 @@ class ProtoExplosion_Medium : SwitchableDecoration
 	Active:
 		TNT1 A 0 A_StartSound("astrostein/explosion");
 		TNT1 A 0 Radius_Quake(10,10,0,16,0);
-		TNT1 A 0 A_Explode(random(10,20), 192);
+		TNT1 A 0 A_Explode(Random[Boom](10,20), 192);
 		TNT1 A 0 A_RadiusGive("BlurShaderControl", 192, RGF_PLAYERS | RGF_GIVESELF, 80);
 		TNT1 A 0 A_JumpIf(boa_boomswitch==0,"EndSpawn");
 		TNT1 A 0 A_SpawnItemEx("KD_HL2FlashProto", 0, 0, 0, 0, 0, 0, 0,SXF_CLIENTSIDE | SXF_TRANSFERSCALE);
@@ -435,7 +435,7 @@ class KD_LagsFlash : KD_HL2Flash
 	States
 	{
 	Fade:
-		"####" "#" 1 BRIGHT LIGHT("FireSpawnerLarge") A_FadeOut(frandom(0.05, 0.10) * 1,FTF_REMOVE);
+		"####" "#" 1 BRIGHT LIGHT("FireSpawnerLarge") A_FadeOut(FRandom[Boom](0.05, 0.10) * 1,FTF_REMOVE);
 		Loop;
 	}
 }
@@ -445,8 +445,8 @@ class KD_LagsSmoke : KD_HL2Smoke
 	States
 	{
 	Spawn:
-		TSMK A 1 A_SetScale(Scale.X + frandom(0.005, 0.015));
-		TSMK A 0 A_FadeOut(frandom(0.006, 0.012) * 1,FTF_REMOVE);
+		TSMK A 1 A_SetScale(Scale.X + FRandom[Boom](0.005, 0.015));
+		TSMK A 0 A_FadeOut(FRandom[Boom](0.006, 0.012) * 1,FTF_REMOVE);
 		Loop;
 	}
 }
@@ -457,7 +457,7 @@ class KD_LagsSmokeGenerator : KD_HL2SmokeGenerator
 	{
 	Spawn:
 		TNT1 A 0 A_Countdown;
-		TNT1 A 0 A_SpawnItemEx("KD_LagsSmoke", 0, 0, 0, 0.0,frandom(0.0, 2.5) * Scale.X,frandom(-2.0, 2.0) * Scale.X, random(0, 359),SXF_CLIENTSIDE | SXF_TRANSFERSCALE, 30);
+		TNT1 A 0 A_SpawnItemEx("KD_LagsSmoke", 0, 0, 0, 0.0, FRandom[Smoke](0.0, 2.5) * Scale.X, FRandom[Smoke](-2.0, 2.0) * Scale.X, Random[Smoke](0, 359),SXF_CLIENTSIDE | SXF_TRANSFERSCALE, 30);
 		Loop;
 	}
 }
@@ -467,7 +467,7 @@ class KD_LagsSpark : KD_HL2Spark
 	States
 	{
 	Drop:
-		PAO1 A 0 A_ChangeVelocity(frandom(0.98, 0.99) * Vel.X,frandom(0.98, 0.99) * Vel.Y,Vel.Z - frandom(0.2, 0.5), CVF_REPLACE);
+		PAO1 A 0 A_ChangeVelocity(FRandom[Spark](0.98, 0.99) * Vel.X, FRandom[Spark](0.98, 0.99) * Vel.Y,Vel.Z - FRandom[Boom](0.2, 0.5), CVF_REPLACE);
 		PAO1 A 1 A_SetScale(Scale.X - 0.002);
 		PAO1 A 0 A_FadeOut(0.01 * 1,FTF_REMOVE);
 		Loop;
@@ -480,7 +480,7 @@ class KD_LagsSparkGenerator :  KD_HL2SparkGenerator
 	{
 	Spawn:
 		TNT1 A 0 A_Countdown;
-		TNT1 A 0 A_SpawnItemEx("KD_LagsSpark", 0, 0, 0, 0.0,frandom(0.0, 13.5) * Scale.X,frandom(-1.0, 9.5) * Scale.X, random(0, 359),SXF_CLIENTSIDE | SXF_TRANSFERSCALE, 60);
+		TNT1 A 0 A_SpawnItemEx("KD_LagsSpark", 0, 0, 0, 0.0, FRandom[Spark](0.0, 13.5) * Scale.X, FRandom[Spark](-1.0, 9.5) * Scale.X, Random[Spark](0, 359),SXF_CLIENTSIDE | SXF_TRANSFERSCALE, 60);
 		Loop;
 	}
 }
@@ -502,7 +502,7 @@ class GeneralExplosion_ShockwaveOrange: Actor
 		SHWV A 0;
 	Setup:
 		"####" "#" 0 {
-			Roll = frandom(0.0, 360.0);
+			Roll = FRandom[Boom](0.0, 360.0);
 			Scale *= .5;
 		}
 	Expand:

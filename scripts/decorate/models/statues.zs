@@ -293,10 +293,10 @@ class Prometheus_LF3d : Furniture_End3d
 		Stop;
 	Destroyed:
 		MDLA B 0 A_RemoveChildren(TRUE, RMVF_MISC);
-		"####" BBBBBBBBBBBBBBBB 0 A_SpawnItemEx("Debris_Statue3", random(32,96), random(16,64), random(24,32), random(2,4), random(2,4), random(2,4), random(0,360), SXF_CLIENTSIDE);
-		"####" BBBBBBBBBBBBB 0 A_SpawnItemEx("Debris_Statue1", random(32,96), random(16,64), random(24,32), random(2,4), random(2,4), random(2,4), random(0,360), SXF_CLIENTSIDE);
-		"####" BBBBBBBBBB 0 A_SpawnItemEx("Debris_Statue3", random(32,96), random(16,64), random(24,32), random(2,4), random(2,4), random(2,4), random(0,360), SXF_CLIENTSIDE);
-		"####" BBBBBBB 0 A_SpawnItemEx("Debris_Statue1", random(32,96), random(16,64), random(24,32), random(2,4), random(2,4), random(2,4), random(0,360), SXF_CLIENTSIDE);
+		"####" BBBBBBBBBBBBBBBB 0 A_SpawnItemEx("Debris_Statue3", Random[Debris](32,96), Random[Debris](16,64), Random[Debris](24,32), Random[Debris](2,4), Random[Debris](2,4), Random[Debris](2,4), Random[Debris](0,360), SXF_CLIENTSIDE);
+		"####" BBBBBBBBBBBBB 0 A_SpawnItemEx("Debris_Statue1", Random[Debris](32,96), Random[Debris](16,64), Random[Debris](24,32), Random[Debris](2,4), Random[Debris](2,4), Random[Debris](2,4), Random[Debris](0,360), SXF_CLIENTSIDE);
+		"####" BBBBBBBBBB 0 A_SpawnItemEx("Debris_Statue3", Random[Debris](32,96), Random[Debris](16,64), Random[Debris](24,32), Random[Debris](2,4), Random[Debris](2,4), Random[Debris](2,4), Random[Debris](0,360), SXF_CLIENTSIDE);
+		"####" BBBBBBB 0 A_SpawnItemEx("Debris_Statue1", Random[Debris](32,96), Random[Debris](16,64), Random[Debris](24,32), Random[Debris](2,4), Random[Debris](2,4), Random[Debris](2,4), Random[Debris](0,360), SXF_CLIENTSIDE);
 		MDLA B -1;
 		Stop;
 	}

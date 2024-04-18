@@ -175,16 +175,16 @@ class StatistPeeingMan : StatistBarkeeper
 	States
 	{
 	Spawn:
-		OLDM A 1 A_SetTics(random(20,40)); //possible whistle here
-		"####" BCDCCDBD 1 A_SetTics(random(20,40));
+		OLDM A 1 A_SetTics(Random[Scenery](20,40)); //possible whistle here
+		"####" BCDCCDBD 1 A_SetTics(Random[Scenery](20,40));
 		"####" "#" 1 A_Jump(128,"Left","Right");
 		Loop;
 	Left:
-		"####" EFGFFGEG 1 A_SetTics(random(20,40));
+		"####" EFGFFGEG 1 A_SetTics(Random[Scenery](20,40));
 		"####" "#" 1 A_Jump(32,"Right");
 		Goto Spawn;
 	Right:
-		"####" HIJIIJHJ 1 A_SetTics(random(20,40));
+		"####" HIJIIJHJ 1 A_SetTics(Random[Scenery](20,40));
 		"####" "#" 1 A_Jump(32,"Left");
 		Goto Spawn;
 	}
@@ -323,20 +323,20 @@ class StatistSSMerchant : StatistBarkeeper
 	States
 	{
 	Spawn:
-		MERK A 1 A_SetTics(random(20,40));
-		"####" BCDCCDBD 1 A_SetTics(random(20,40));
+		MERK A 1 A_SetTics(Random[Scenery](20,40));
+		"####" BCDCCDBD 1 A_SetTics(Random[Scenery](20,40));
 		"####" "#" 1 A_Jump(128,"SeeAround");
 		Loop;
 	SeeAround:
-		"####" DEFEEDFD 1 A_SetTics(random(20,40));
+		"####" DEFEEDFD 1 A_SetTics(Random[Scenery](20,40));
 		"####" "#" 1 A_Jump(32,"Spawn");
 		Goto Spawn;
 	SellLeft: //called via scripts
-		"####" GHIJKKJHJLGF 1 A_SetTics(random(60,120));
+		"####" GHIJKKJHJLGF 1 A_SetTics(Random[Scenery](60,120));
 		"####" "#" 1 A_Jump(192,"SeeAround");
 		Goto Spawn;
 	SellRight: //called via scripts
-		"####" NOPQRSOPNONM 1 A_SetTics(random(60,120));
+		"####" NOPQRSOPNONM 1 A_SetTics(Random[Scenery](60,120));
 		"####" "#" 1 A_Jump(192,"SeeAround");
 		Goto Spawn;
 	}
@@ -354,8 +354,8 @@ class StatistNWSmuggler : StatistBarkeeper
 	States
 	{
 	Spawn:
-		SMGL A 1 A_SetTics(random(20,40));
-		"####" AEEFFEFF 1 A_SetTics(random(20,40));
+		SMGL A 1 A_SetTics(Random[Scenery](20,40));
+		"####" AEEFFEFF 1 A_SetTics(Random[Scenery](20,40));
 		"####" "#" 1 A_Jump(128,"Smoke");
 		Loop;
 	Smoke:
@@ -383,7 +383,7 @@ class StatistWehrmachtSpy: StatistBarkeeper
 	Look:
 		"####" A 0 A_StartSound("nazi/snore", CHAN_VOICE, 0, 1.0, ATTN_STATIC);
 		"####" A 40;
-		"####" BBB 10 A_SpawnItemEx("SleepEffect", random(-2,2), random(-2,2), random(24,32), 0, 0, 1, 0, SXF_SETMASTER | SXF_CLIENTSIDE);
+		"####" BBB 10 A_SpawnItemEx("SleepEffect", Random[Effect](-2,2), Random[Effect](-2,2), Random[Effect](24,32), 0, 0, 1, 0, SXF_SETMASTER | SXF_CLIENTSIDE);
 		Loop;
 	See: //SetState("See") from scripts
 		"####" C 13;
@@ -617,16 +617,16 @@ class FatSinger : KittySinger
 		"####" G 5 A_UnSetSolid;
 		"####" HI 4;
 		"####" I 0 A_StartSound("FATSCREM", CHAN_AUTO, 0, 3.0, ATTN_STATIC);
-		"####" JK 1 A_SetTics(random(8,12));
-		"####" JK 1 { A_SetTics(random(1,2)); A_StartSound("nazi/farts", CHAN_AUTO, 0, frandom(1.0,3.0), ATTN_STATIC); }
-		SLOP H 0 A_SpawnItemEx("Debris_FatAxe", 0, 12, 24, random(1,6), random(1,6), random(1,6), random(0,360), SXF_CLIENTSIDE | SXF_NOCHECKPOSITION);
-		"####" H 0 A_SpawnItemEx("Debris_FatShield", 0, -12, 24, random(1,6), random(1,6), random(1,6), random(0,360), SXF_CLIENTSIDE | SXF_NOCHECKPOSITION);
-		"####" H 0 A_SpawnItemEx("Debris_FatHelm", 0, 0, 56, random(1,6), random(1,6), random(1,6), random(0,360), SXF_CLIENTSIDE | SXF_NOCHECKPOSITION);
-		"####" IIIIIIIIIIIIIIII 0 A_SpawnItemEx("BloodSkullCloud",random(-16,16),random(-16,16),random(24,48),random(1,2), random(1,2), random(1,2), random(0,360), SXF_CLIENTSIDE | SXF_NOCHECKPOSITION);
-		"####" IIIIIIIIIIIIIIIIIIIIIIIIIIIIIIII 0 A_SpawnItemEx("Debris_FatFlesh", random(-16,16), random(-16,16), random(24,48), random(1,3), random(1,3), random(1,3), random(0,360), SXF_CLIENTSIDE | SXF_NOCHECKPOSITION);
-		"####" IIIIIIIIIIIIIIIIIIIIIIII 0 A_SpawnItemEx("Debris_Flesh", random(-16,16), random(-16,16), random(24,48), random(1,3), random(1,3), random(1,3), random(0,360), SXF_CLIENTSIDE | SXF_NOCHECKPOSITION);
-		"####" IIIIIIIIIIIIIIIII 0 A_SpawnItemEx("Debris_Flesh2", random(-16,16), random(-16,16), random(24,48), random(1,3), random(1,3), random(1,3), random(0,360), SXF_CLIENTSIDE | SXF_NOCHECKPOSITION);
-		"####" IIIIIIIII 0 A_SpawnItemEx("NashGore_FlyingBlood", random(-16,16), random(-16,16), random(24,48), random(1,6), random(1,6), random(1,6), random(0,360), SXF_CLIENTSIDE | SXF_NOCHECKPOSITION);
+		"####" JK 1 A_SetTics(Random[Scenery](8,12));
+		"####" JK 1 { A_SetTics(Random[Scenery](1,2)); A_StartSound("nazi/farts", CHAN_AUTO, 0, FRandom[Nazi](1.0,3.0), ATTN_STATIC); }
+		SLOP H 0 A_SpawnItemEx("Debris_FatAxe", 0, 12, 24, Random[Debris](1,6), Random[Debris](1,6), Random[Debris](1,6), Random[Debris](0,360), SXF_CLIENTSIDE | SXF_NOCHECKPOSITION);
+		"####" H 0 A_SpawnItemEx("Debris_FatShield", 0, -12, 24, Random[Debris](1,6), Random[Debris](1,6), Random[Debris](1,6), Random[Debris](0,360), SXF_CLIENTSIDE | SXF_NOCHECKPOSITION);
+		"####" H 0 A_SpawnItemEx("Debris_FatHelm", 0, 0, 56, Random[Debris](1,6), Random[Debris](1,6), Random[Debris](1,6), Random[Debris](0,360), SXF_CLIENTSIDE | SXF_NOCHECKPOSITION);
+		"####" IIIIIIIIIIIIIIII 0 A_SpawnItemEx("BloodSkullCloud", Random[Debris](-16,16), Random[Debris](-16,16), Random[Debris](24,48), Random[Debris](1,2), Random[Debris](1,2), Random[Debris](1,2), Random[Debris](0,360), SXF_CLIENTSIDE | SXF_NOCHECKPOSITION);
+		"####" IIIIIIIIIIIIIIIIIIIIIIIIIIIIIIII 0 A_SpawnItemEx("Debris_FatFlesh", Random[Debris](-16,16), Random[Debris](-16,16), Random[Debris](24,48), Random[Debris](1,3), Random[Debris](1,3), Random[Debris](1,3), Random[Debris](0,360), SXF_CLIENTSIDE | SXF_NOCHECKPOSITION);
+		"####" IIIIIIIIIIIIIIIIIIIIIIII 0 A_SpawnItemEx("Debris_Flesh", Random[Debris](-16,16), Random[Debris](-16,16), Random[Debris](24,48), Random[Debris](1,3), Random[Debris](1,3), Random[Debris](1,3), Random[Debris](0,360), SXF_CLIENTSIDE | SXF_NOCHECKPOSITION);
+		"####" IIIIIIIIIIIIIIIII 0 A_SpawnItemEx("Debris_Flesh2", Random[Debris](-16,16), Random[Debris](-16,16), Random[Debris](24,48), Random[Debris](1,3), Random[Debris](1,3), Random[Debris](1,3), Random[Debris](0,360), SXF_CLIENTSIDE | SXF_NOCHECKPOSITION);
+		"####" IIIIIIIII 0 A_SpawnItemEx("NashGore_FlyingBlood", Random[Gibs](-16,16), Random[Gibs](-16,16), Random[Gibs](24,48), Random[Gibs](1,6), Random[Gibs](1,6), Random[Gibs](1,6), Random[Gibs](0,360), SXF_CLIENTSIDE | SXF_NOCHECKPOSITION);
 		"####" IJKL 5;
 		"####" M 5;
 		"####" N -1;
@@ -661,17 +661,17 @@ class BloodMime : KittySinger
 	Spawn:
 		MIME A 0;
 	SpawnLoop:
-		MIME AAAACDBBACDBACDDCC 1 A_SetTics(random(12,24));
+		MIME AAAACDBBACDBACDDCC 1 A_SetTics(Random[Scenery](12,24));
 		Loop;
 	Death:
 		"####" "#" 5 A_UnSetSolid;
 		"####" "#" 4;
 		"####" "#" 0 A_StartSound("FATSCREM", CHAN_AUTO, 0, 3.0, ATTN_STATIC);
-		"####" "#" 10 A_StartSound("nazi/farts", CHAN_AUTO, 0, frandom(1.0,3.0), ATTN_STATIC);
-		SLOP HHHHHHHHHHHHHHHHHHHHHHHH 0 A_SpawnItemEx("Debris_Flesh", random(-16,16), random(-16,16), random(24,48), random(1,3), random(1,3), random(1,3), random(0,360), SXF_CLIENTSIDE | SXF_NOCHECKPOSITION);
-		"####" IIIIIIIIIIIIIIIIIIIIIIII 0 A_SpawnItemEx("Debris_Flesh", random(-16,16), random(-16,16), random(24,48), random(1,3), random(1,3), random(1,3), random(0,360), SXF_CLIENTSIDE | SXF_NOCHECKPOSITION);
-		"####" IIIIIIIIIIIIIIIII 0 A_SpawnItemEx("Debris_Flesh2", random(-16,16), random(-16,16), random(24,48), random(1,3), random(1,3), random(1,3), random(0,360), SXF_CLIENTSIDE | SXF_NOCHECKPOSITION);
-		"####" IIIIIIIII 0 A_SpawnItemEx("NashGore_FlyingBlood", random(-16,16), random(-16,16), random(24,48), random(1,6), random(1,6), random(1,6), random(0,360), SXF_CLIENTSIDE | SXF_NOCHECKPOSITION);
+		"####" "#" 10 A_StartSound("nazi/farts", CHAN_AUTO, 0, FRandom[Nazi](1.0,3.0), ATTN_STATIC);
+		SLOP HHHHHHHHHHHHHHHHHHHHHHHH 0 A_SpawnItemEx("Debris_Flesh", Random[Debris](-16,16), Random[Debris](-16,16), Random[Debris](24,48), Random[Debris](1,3), Random[Debris](1,3), Random[Debris](1,3), Random[Debris](0,360), SXF_CLIENTSIDE | SXF_NOCHECKPOSITION);
+		"####" IIIIIIIIIIIIIIIIIIIIIIII 0 A_SpawnItemEx("Debris_Flesh", Random[Debris](-16,16), Random[Debris](-16,16), Random[Debris](24,48), Random[Debris](1,3), Random[Debris](1,3), Random[Debris](1,3), Random[Debris](0,360), SXF_CLIENTSIDE | SXF_NOCHECKPOSITION);
+		"####" IIIIIIIIIIIIIIIII 0 A_SpawnItemEx("Debris_Flesh2", Random[Debris](-16,16), Random[Debris](-16,16), Random[Debris](24,48), Random[Debris](1,3), Random[Debris](1,3), Random[Debris](1,3), Random[Debris](0,360), SXF_CLIENTSIDE | SXF_NOCHECKPOSITION);
+		"####" IIIIIIIII 0 A_SpawnItemEx("NashGore_FlyingBlood", Random[Gibs](-16,16), Random[Gibs](-16,16), Random[Gibs](24,48), Random[Gibs](1,6), Random[Gibs](1,6), Random[Gibs](1,6), Random[Gibs](0,360), SXF_CLIENTSIDE | SXF_NOCHECKPOSITION);
 		"####" IJKL 5;
 		"####" M 5;
 		"####" N -1;
@@ -974,7 +974,7 @@ class HelmetlessAlliedRC : HelmetlessMarine1T
 	States
 	{
 	Spawn:
-		ALC1 A 0 NODELAY A_SetScale(Scale.X, frandom(0.67, 0.69) );
+		ALC1 A 0 NODELAY A_SetScale(Scale.X, FRandom[Scenery](0.67, 0.69) );
 	Randomize:
 		ALC1 A 0 A_Jump(256,"Pose1","Pose2","Pose3");
 		Stop;
@@ -999,7 +999,7 @@ class HelmetlessAlliedRH : HelmetlessMarine1T
 	States
 	{
 	Spawn:
-		ALH1 A 0 NODELAY A_SetScale(Scale.X, frandom(0.67, 0.69) );
+		ALH1 A 0 NODELAY A_SetScale(Scale.X, FRandom[Scenery](0.67, 0.69) );
 	Randomize:
 		ALH1 A 0 A_Jump(256,"Pose1","Pose2","Pose3");
 		Stop;
@@ -1024,7 +1024,7 @@ class HelmetlessAlliedRO : HelmetlessMarine1T
 	States
 	{
 	Spawn:
-		ALO1 A 0 NODELAY A_SetScale(Scale.X, frandom(0.67, 0.69) );
+		ALO1 A 0 NODELAY A_SetScale(Scale.X, FRandom[Scenery](0.67, 0.69) );
 	Randomize:
 		ALO1 A 0 A_Jump(256,"Pose1","Pose2","Pose3");
 		Stop;
@@ -1058,7 +1058,7 @@ class HelmetlessAlliedRS : HelmetlessMarine1T
 	States
 	{
 	Spawn:
-		ALL1 A 0 NODELAY A_SetScale(Scale.X, frandom(0.67, 0.69) );
+		ALL1 A 0 NODELAY A_SetScale(Scale.X, FRandom[Scenery](0.67, 0.69) );
 	Randomize:
 		ALL1 A 0 A_Jump(256,"Pose1","Pose2","Pose3");
 		Stop;
@@ -1083,7 +1083,7 @@ class HelmetlessAlliedRT : HelmetlessMarine1T
 	States
 	{
 	Spawn:
-		ALL1 A 0 NODELAY A_SetScale(Scale.X, frandom(0.67, 0.69) );
+		ALL1 A 0 NODELAY A_SetScale(Scale.X, FRandom[Scenery](0.67, 0.69) );
 	Randomize:
 		ALL1 A 0 A_Jump(256,"Pose1","Pose2","Pose3");
 		Stop;
@@ -1318,14 +1318,14 @@ class Camp_StaticShovelDig: Actor
 		PRSC A 0;
 	SpawnLoop:
 		PRSC A 0 A_CheckRange(512,"SpawnLoopSilent");
-		PRSC A 1 A_SetTics(random(24,32));
+		PRSC A 1 A_SetTics(Random[Scenery](24,32));
 		"####" B 0 A_StartSound("floor/dirt", CHAN_ITEM, 0, 1.0);
-		"####" BCDE 1 A_SetTics(random(12,16));
+		"####" BCDE 1 A_SetTics(Random[Scenery](12,16));
 		Loop;
 	SpawnLoopSilent:
 		PRSC A 0 A_StopSound(CHAN_ITEM);
-		"####" A 1 A_SetTics(random(24,32));
-		"####" BCDE 1 A_SetTics(random(12,16));
+		"####" A 1 A_SetTics(Random[Scenery](24,32));
+		"####" BCDE 1 A_SetTics(Random[Scenery](12,16));
 		Goto SpawnLoop;
 	Death:
 		"####" A 0 A_UnSetSolid;
@@ -1348,18 +1348,18 @@ class Camp_StaticHammeringL : Camp_StaticShovelDig
 		HAMM A 0 NoDelay A_Jump(256,"SpawnLoop");
 	SpawnLoop:
 		HAMM A 0 A_CheckRange(512,"SpawnLoopSilent");
-		HAMM A 1 A_SetTics(random(24,32));
+		HAMM A 1 A_SetTics(Random[Scenery](24,32));
 		"####" B 0 A_StartSound("floor/gravel", CHAN_ITEM, 0, 1.0);
-		"####" BCD 1 A_SetTics(random(12,16));
-		"####" CDCD 1 A_SetTics(random(12,16));
-		"####" BB 1 A_SetTics(random(12,16));
+		"####" BCD 1 A_SetTics(Random[Scenery](12,16));
+		"####" CDCD 1 A_SetTics(Random[Scenery](12,16));
+		"####" BB 1 A_SetTics(Random[Scenery](12,16));
 		Loop;
 	SpawnLoopSilent:
 		HAMM A 0 A_StopSound(CHAN_ITEM);
-		"####" A 1 A_SetTics(random(24,32));
-		"####" BCD 1 A_SetTics(random(12,16));
-		"####" CDCD 1 A_SetTics(random(12,16));
-		"####" BB 1 A_SetTics(random(12,16));
+		"####" A 1 A_SetTics(Random[Scenery](24,32));
+		"####" BCD 1 A_SetTics(Random[Scenery](12,16));
+		"####" CDCD 1 A_SetTics(Random[Scenery](12,16));
+		"####" BB 1 A_SetTics(Random[Scenery](12,16));
 		Goto SpawnLoop;
 	Death:
 		PRSN I 5 A_Scream;
@@ -1462,8 +1462,8 @@ class Camp_PrisonerBald : NaziStandard //it has shooting frames but actually he 
 			bUseSpecial = FALSE; //let's pretend when the actor is active we can't interact with it
 
 			// Normalize scale amounts so actor height and radius aren't so far apart that they look disproportionate.
-			user_basescale = FRandom(-0.1, 0.05);
-			A_SetScale(Scale.X + user_basescale * FRandom(0.0, 0.65), Scale.Y + user_basescale * FRandom(0.0, 0.65));
+			user_basescale = FRandom[Scenery](-0.1, 0.05);
+			A_SetScale(Scale.X + user_basescale * FRandom[Scenery](0.0, 0.65), Scale.Y + user_basescale * FRandom[Scenery](0.0, 0.65));
 		}
 	Active: //check if it's active though
 	SpawnLoop:
@@ -1502,7 +1502,7 @@ class Camp_PrisonerBald : NaziStandard //it has shooting frames but actually he 
 		}
 		Loop;
 	See.Frightened:
-		"####" "#" 0 { A_SetSpeed(random(4,6)); }
+		"####" "#" 0 { A_SetSpeed(Random[Scenery](4,6)); }
 		"####" # 0 A_PlayStepSound();
 		"####" A 1 A_WanderGoal(0, 768);
 		"####" AAA 1 A_WanderGoal(0, 768);
@@ -1527,8 +1527,8 @@ class Camp_PrisonerBald : NaziStandard //it has shooting frames but actually he 
 		}
 		Goto See; // Go back to normal see so that they can become un-frightened once the frightener is out of range
 	LookAround:
-		"####" E 10 A_SetAngle(random(-45,45)+angle);
-		"####" E 0 A_SetTics(random(35,105));
+		"####" E 10 A_SetAngle(Random[Scenery](-45,45)+angle);
+		"####" E 0 A_SetTics(Random[Scenery](35,105));
 		"####" E 0;
 		"####" A 0 A_Jump(32, "See");
 		"####" A 0 A_Jump(4, "Cough"); //insert from here random sounds and give each call a separate state - ozy81
@@ -1538,13 +1538,13 @@ class Camp_PrisonerBald : NaziStandard //it has shooting frames but actually he 
 			bAllowPain = false;
 			bNonShootable = true;
 		}
-		"####" P 1 A_SetTics(random(12,16));
-		"####" QRQRSQP 1 A_SetTics(random(48,96));
+		"####" P 1 A_SetTics(Random[Scenery](12,16));
+		"####" QRQRSQP 1 A_SetTics(Random[Scenery](48,96));
 		"####" E 1;
 		"####" A 0 { // Restore pain jump and bullet hits, and be frightened when done crouching
 			bAllowPain = true;
 			bNonShootable = false;
-			frighttimeout = 35 + Random(0, 7) * 5;
+			frighttimeout = 35 + Random[Scenery](0, 7) * 5;
 			frightener = target;
 		}
 		Goto See.Frightened;
@@ -1564,10 +1564,10 @@ class Camp_PrisonerBald : NaziStandard //it has shooting frames but actually he 
 		"####" H 1 A_SpawnItemEx("Pain_Overlay", Scale.X+3, 0, Height-8, 0, 0, 0, 0, SXF_NOCHECKPOSITION | SXF_USEBLOODCOLOR);
 		"####" H 5 {
 				A_Pain();
-				frighttimeout = 35 + Random(0, 7) * 5; // FRIGHTENED flag is set by code in Base class when frighttimeout value is greater than zero
+				frighttimeout = 35 + Random[Scenery](0, 7) * 5; // FRIGHTENED flag is set by code in Base class when frighttimeout value is greater than zero
 				frightener = target;
 
-				if (Random(0, 19) == 0) { SetStateLabel("LookAround.Frightened"); } // 1 in 20 chance that they will crouch immediately when shot
+				if (Random[Scenery](0, 19) == 0) { SetStateLabel("LookAround.Frightened"); } // 1 in 20 chance that they will crouch immediately when shot
 			}
 		Goto See.Frightened;
 	Death:
@@ -1597,7 +1597,7 @@ class Camp_PrisonerBaldShirtless : Camp_PrisonerBald
 	States
 	{
 	Spawn:
-		PRSS E 0 NODELAY { bUseSpecial = FALSE; A_SetScale(Scale.X + frandom(-0.2,0.2),Scale.Y + frandom(-0.2,0.2)); }
+		PRSS E 0 NODELAY { bUseSpecial = FALSE; A_SetScale(Scale.X + FRandom[Scenery](-0.2,0.2),Scale.Y + FRandom[Scenery](-0.2,0.2)); }
 	Active:
 	SpawnLoop:
 		PRSS E 1 {

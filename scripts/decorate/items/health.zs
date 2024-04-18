@@ -687,18 +687,18 @@ class CupCake1 : Meal
 	Spawn:
 		CUPK A 0 NODELAY A_Jump(256,"Set1","Set2","Set3");
 	Set1:
-		CUPK A -1 A_SetScale(Scale.X * RandomPick(-1, 1), Scale.Y);
+		CUPK A -1 A_SetScale(Scale.X * RandomPick[Health](-1, 1), Scale.Y);
 		Stop;
 	Set2:
-		CUPK B -1 A_SetScale(Scale.X * RandomPick(-1, 1), Scale.Y);
+		CUPK B -1 A_SetScale(Scale.X * RandomPick[Health](-1, 1), Scale.Y);
 		Stop;
 	Set3:
-		CUPK C -1 A_SetScale(Scale.X * RandomPick(-1, 1), Scale.Y);
+		CUPK C -1 A_SetScale(Scale.X * RandomPick[Health](-1, 1), Scale.Y);
 		Stop;
 	Death:
 		"####" "#" 0 A_UnSetSolid;
 		"####" "#" 0 A_StartSound("bread/crumbs", CHAN_AUTO, 0, frandom (0.5,0.8), ATTN_NORM);
-		"####" "########" 0 A_SpawnItemEx("Debris_Bread", random(0,16), random(0,16), random(4,16), random(1,3), random(1,3), random(1,3), random(0,360), SXF_CLIENTSIDE);
+		"####" "########" 0 A_SpawnItemEx("Debris_Bread", Random[Debris](0,16), Random[Debris](0,16), Random[Debris](4,16), Random[Debris](1,3), Random[Debris](1,3), Random[Debris](1,3), Random[Debris](0,360), SXF_CLIENTSIDE);
 		Stop;
 	}
 }
@@ -714,13 +714,13 @@ class CupCake2 : CupCake1
 	Spawn:
 		CUPK D 0 NODELAY A_Jump(256,"Set1","Set2","Set3");
 	Set1:
-		CUPK D -1 A_SetScale(Scale.X * RandomPick(-1, 1), Scale.Y);
+		CUPK D -1 A_SetScale(Scale.X * RandomPick[Health](-1, 1), Scale.Y);
 		Stop;
 	Set2:
-		CUPK E -1 A_SetScale(Scale.X * RandomPick(-1, 1), Scale.Y);
+		CUPK E -1 A_SetScale(Scale.X * RandomPick[Health](-1, 1), Scale.Y);
 		Stop;
 	Set3:
-		CUPK F -1 A_SetScale(Scale.X * RandomPick(-1, 1), Scale.Y);
+		CUPK F -1 A_SetScale(Scale.X * RandomPick[Health](-1, 1), Scale.Y);
 		Stop;
 	}
 }
@@ -736,13 +736,13 @@ class CupCake3 : CupCake1
 	Spawn:
 		CUPK G 0 NODELAY A_Jump(256,"Set1","Set2","Set3");
 	Set1:
-		CUPK G -1 A_SetScale(Scale.X * RandomPick(-1, 1), Scale.Y);
+		CUPK G -1 A_SetScale(Scale.X * RandomPick[Health](-1, 1), Scale.Y);
 		Stop;
 	Set2:
-		CUPK H -1 A_SetScale(Scale.X * RandomPick(-1, 1), Scale.Y);
+		CUPK H -1 A_SetScale(Scale.X * RandomPick[Health](-1, 1), Scale.Y);
 		Stop;
 	Set3:
-		CUPK I -1 A_SetScale(Scale.X * RandomPick(-1, 1), Scale.Y);
+		CUPK I -1 A_SetScale(Scale.X * RandomPick[Health](-1, 1), Scale.Y);
 		Stop;
 	}
 }
@@ -758,13 +758,13 @@ class CupCake4 : CupCake1
 	Spawn:
 		CUPK J 0 NODELAY A_Jump(256,"Set1","Set2","Set3");
 	Set1:
-		CUPK J -1 A_SetScale(Scale.X * RandomPick(-1, 1), Scale.Y);
+		CUPK J -1 A_SetScale(Scale.X * RandomPick[Health](-1, 1), Scale.Y);
 		Stop;
 	Set2:
-		CUPK K -1 A_SetScale(Scale.X * RandomPick(-1, 1), Scale.Y);
+		CUPK K -1 A_SetScale(Scale.X * RandomPick[Health](-1, 1), Scale.Y);
 		Stop;
 	Set3:
-		CUPK L -1 A_SetScale(Scale.X * RandomPick(-1, 1), Scale.Y);
+		CUPK L -1 A_SetScale(Scale.X * RandomPick[Health](-1, 1), Scale.Y);
 		Stop;
 	}
 }
@@ -873,7 +873,7 @@ class Medikit_Large : Health
 	States
 	{
 	Spawn:
-		MEDI C -1 NODELAY A_SetScale(Scale.X * RandomPick(-1, 1), Scale.Y);
+		MEDI C -1 NODELAY A_SetScale(Scale.X * RandomPick[Health](-1, 1), Scale.Y);
 		Stop;
 	}
 

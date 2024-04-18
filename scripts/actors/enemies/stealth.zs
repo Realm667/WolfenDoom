@@ -253,7 +253,7 @@ class SneakableGuardEyesIdle : StealthBase
 	{
 		Super.PostBeginPlay();
 
-		idlesounddelay = Random(35, 700); // Set initial quote countdown time to 1 - 20 seconds so that they all don't start talking at once
+		idlesounddelay = Random[Stealth](35, 700); // Set initial quote countdown time to 1 - 20 seconds so that they all don't start talking at once
 
 		if (master && (!master.target || (master.target && master.target != master.goal)))
 		{
@@ -355,7 +355,7 @@ class SneakableGuardEyesIdle : StealthBase
 			}
 			else { master.A_StartSound("axis1/idle", CHAN_VOICE); }
 
-			idlesounddelay = Random(490, 630); // Set quote countdown time to 14 - 18 seconds
+			idlesounddelay = Random[Stealth](490, 630); // Set quote countdown time to 14 - 18 seconds
 		}
 	}
 
@@ -389,8 +389,8 @@ class SneakableGuardEyesAlerted : StealthBase
 
 	void ResetTimers(bool chatteronly = false)
 	{
-		if (!chatteronly) { timeout = Random(280, 350); }
-		lostsounddelay = Random(140, 210);
+		if (!chatteronly) { timeout = Random[Stealth](280, 350); }
+		lostsounddelay = Random[Stealth](140, 210);
 	}
 
 	void A_SneakableSearch()

@@ -39,8 +39,8 @@ class BoA_WaterSplash: Actor
 	States
 	{
 	Spawn:
-		WSPL A 0 A_SetScale(Scale.X+(frandom(-0.1,0.1)), Scale.Y+(frandom(-0.1,0.1)));
-		"####" "#" 0 A_SetTranslucent(frandom(0.6,0.3));
+		WSPL A 0 A_SetScale(Scale.X+(FRandom[Splash](-0.1,0.1)), Scale.Y+(FRandom[Splash](-0.1,0.1)));
+		"####" "#" 0 A_SetTranslucent(FRandom[Splash](0.6,0.3));
 	Death:
 		"####" "#" 0 A_FadeOut(0.1,FTF_REMOVE);
 		"####" "#" 1 A_SetScale(Scale.X+0.05, Scale.Y+0.05);
@@ -65,8 +65,8 @@ class BoA_WaterSplash_Chunk : BoA_WaterSplash
 		Goto Active;
 		WSPL C 0;
 	Active:
-		"####" "#" 0 A_SetScale(Scale.X+(frandom(-0.05,0.05)), Scale.Y+(frandom(-0.05,0.05)));
-		"####" "#" 0 A_SetTranslucent(frandom(0.8,0.5));
+		"####" "#" 0 A_SetScale(Scale.X+(FRandom[Splash](-0.05,0.05)), Scale.Y+(FRandom[Splash](-0.05,0.05)));
+		"####" "#" 0 A_SetTranslucent(FRandom[Splash](0.8,0.5));
 	Death:
 		"####" "#" 0 A_FadeOut(0.1,FTF_REMOVE);
 		"####" "#" 3 A_SetScale(Scale.X+0.05, Scale.Y+0.05);
@@ -89,8 +89,8 @@ class BoA_LavaSplash : BoA_WaterSplash
 	States
 	{
 	Spawn:
-		LSPL A 0 A_SetScale(Scale.X+(frandom(-0.1,0.1)), Scale.Y+(frandom(-0.1,0.1)));
-		"####" "#" 0 A_SetTranslucent(frandom(1.0,0.7),1);
+		LSPL A 0 A_SetScale(Scale.X+(FRandom[Splash](-0.1,0.1)), Scale.Y+(FRandom[Splash](-0.1,0.1)));
+		"####" "#" 0 A_SetTranslucent(FRandom[Splash](1.0,0.7),1);
 		"####" "#" 0 A_SpawnItemEx("DarkSmoke1");
 	Death:
 		"####" "#" 0 A_FadeOut(0.15,FTF_REMOVE);
@@ -115,8 +115,8 @@ class BoA_LavaSplash_Chunk : BoA_LavaSplash
 		Goto Active;
 		LSPL C 0;
 	Active:
-		"####" "#" 0 A_SetScale(Scale.X+(frandom(-0.05,0.05)), Scale.Y+(frandom(-0.05,0.05)));
-		"####" "#" 0 A_SetTranslucent(frandom(1.0,0.7),1);
+		"####" "#" 0 A_SetScale(Scale.X+(FRandom[Splash](-0.05,0.05)), Scale.Y+(FRandom[Splash](-0.05,0.05)));
+		"####" "#" 0 A_SetTranslucent(FRandom[Splash](1.0,0.7),1);
 	Death:
 		"####" "#" 0 A_FadeOut(0.1,FTF_REMOVE);
 		"####" "#" 3 A_SetScale(Scale.X+0.05, Scale.Y+0.05);
@@ -156,8 +156,8 @@ class BoA_NukageSplash: Actor
 	States
 	{
 	Spawn:
-		NSPL A 0 A_SetScale(Scale.X+(frandom(-0.1,0.1)), Scale.Y+(frandom(-0.1,0.1)));
-		"####" "#" 0 A_SetTranslucent(frandom(1.0,0.7),1);
+		NSPL A 0 A_SetScale(Scale.X+(FRandom[Splash](-0.1,0.1)), Scale.Y+(FRandom[Splash](-0.1,0.1)));
+		"####" "#" 0 A_SetTranslucent(FRandom[Splash](1.0,0.7),1);
 	Death:
 		"####" "#" 0 A_FadeOut(0.1,FTF_REMOVE);
 		"####" "#" 1 A_SetScale(Scale.X+0.05, Scale.Y+0.05);
@@ -182,8 +182,8 @@ class BoA_NukageSplash_Chunk : BoA_NukageSplash
 		Goto Active;
 		NSPL C 0;
 	Active:
-		"####" "#" 0 A_SetScale(Scale.X+(frandom(-0.05,0.05)), Scale.Y+(frandom(-0.05,0.05)));
-		"####" "#" 0 A_SetTranslucent(frandom(1.0,0.6),1);
+		"####" "#" 0 A_SetScale(Scale.X+(FRandom[Splash](-0.05,0.05)), Scale.Y+(FRandom[Splash](-0.05,0.05)));
+		"####" "#" 0 A_SetTranslucent(FRandom[Splash](1.0,0.6),1);
 	Death:
 		"####" "#" 0 A_FadeOut(0.1,FTF_REMOVE);
 		"####" "#" 3 A_SetScale(Scale.X+0.05, Scale.Y+0.05);
@@ -210,8 +210,8 @@ class BoA_SlimeSplash: Actor
 	States
 	{
 	Spawn:
-		SSPL A 0 A_SetScale(Scale.X+(frandom(-0.1,0.1)), Scale.Y+(frandom(-0.1,0.1)));
-		"####" "#" 0 A_SetTranslucent(frandom(1.0,0.7));
+		SSPL A 0 A_SetScale(Scale.X+(FRandom[Splash](-0.1,0.1)), Scale.Y+(FRandom[Splash](-0.1,0.1)));
+		"####" "#" 0 A_SetTranslucent(FRandom[Splash](1.0,0.7));
 	Death:
 		"####" "#" 0 A_FadeOut(0.03,FTF_REMOVE);
 		"####" "#" 1 A_SetScale(Scale.X+0.015, Scale.Y+0.015);
@@ -236,8 +236,8 @@ class BoA_SlimeSplash_Chunk : BoA_SlimeSplash
 		Goto Active;
 		SSPL C 0;
 	Active:
-		"####" "#" 0 A_SetScale(Scale.X+(frandom(-0.05,0.05)), Scale.Y+(frandom(-0.05,0.05)));
-		"####" "#" 0 A_SetTranslucent(frandom(1.0,0.7));
+		"####" "#" 0 A_SetScale(Scale.X+(FRandom[Splash](-0.05,0.05)), Scale.Y+(FRandom[Splash](-0.05,0.05)));
+		"####" "#" 0 A_SetTranslucent(FRandom[Splash](1.0,0.7));
 	Death:
 		"####" "#" 0 A_FadeOut(0.1,FTF_REMOVE);
 		"####" "#" 6 A_SetScale(Scale.X+0.05, Scale.Y+0.05);

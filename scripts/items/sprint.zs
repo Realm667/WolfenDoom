@@ -125,7 +125,7 @@ class BoASprinting : Inventory
 			// Don't use stamina if stamina check is disabled or if Totale Macht/Berserk is active
 			if (!boa_sprintswitch && !owner.FindInventory("BerserkToken"))
 			{
-				stamina.amount -= Random(1, 3); //more stamina to use
+				stamina.amount -= Random[Stamina](1, 3); //more stamina to use
 			}
 		}
 		else
@@ -134,7 +134,7 @@ class BoASprinting : Inventory
 			{
 				cooldown--;
 				stamina.amount = min(stamina.maxamount, stamina.amount + 1);
-				staminarecoverytimeout = level.time + Random(1, 3); //recovery is more fast
+				staminarecoverytimeout = level.time + Random[Stamina](1, 3); //recovery is more fast
 			}
 		}
 

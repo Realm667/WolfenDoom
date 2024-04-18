@@ -60,12 +60,12 @@ class Sten : NaziWeapon //Rate of fire: ~500 rounds/min - Wikipedia
 		STEN A 0 A_JumpIfInventory("StenLoaded",1,1);
 		Goto Dryfire;
 		STEN A 0 A_StartSound("sten/fire", CHAN_WEAPON);
-		STEN A 0 A_SpawnItemEx("Casing9mm",12,-20,32,8,random(-2,2),random(0,4),random(-55,-80),SXF_NOCHECKPOSITION);
+		STEN A 0 A_SpawnItemEx("Casing9mm",12,-20,32,8, Random[Weapon](-2,2), Random[Weapon](0,4), Random[Weapon](-55,-80),SXF_NOCHECKPOSITION);
 		STEN A 0 A_AlertMonsters(384); // buffed a bit --N00b
-		STEN B 1 A_FireProjectile("StenTracer",frandom(-1.5,1.5),1,0,0,0,frandom(-1.0,1.0));
+		STEN B 1 A_FireProjectile("StenTracer", FRandom[Weapon](-1.5,1.5),1,0,0,0, FRandom[Weapon](-1.0,1.0));
 		STEN B 1 Offset(0,40) A_SetPitch(pitch-(0.5*boa_recoilamount));
 		STEN B 0 A_JumpIf(waterlevel > 0,2);
-		STEN B 0 A_FireProjectile("ChainSmokeSpawner",0,0,0,random(-4,4),0,0);
+		STEN B 0 A_FireProjectile("ChainSmokeSpawner",0,0,0, Random[Weapon](-4,4),0,0);
 		STEN A 1 Offset(0,34);
 		TNT1 A 0 A_Refire;
 		Goto Ready;
@@ -73,11 +73,11 @@ class Sten : NaziWeapon //Rate of fire: ~500 rounds/min - Wikipedia
 		STEN A 0 A_JumpIfInventory("StenLoaded",1,1);
 		Goto Dryfire;
 		STEN A 0 A_StartSound("sten/fire", CHAN_WEAPON);
-		STEN A 0 A_SpawnItemEx("Casing9mm",12,-20,32,8,random(-2,2),random(0,4),random(-55,-80),SXF_NOCHECKPOSITION);
+		STEN A 0 A_SpawnItemEx("Casing9mm",12,-20,32,8, Random[Weapon](-2,2), Random[Weapon](0,4), Random[Weapon](-55,-80),SXF_NOCHECKPOSITION);
 		STEN A 0 A_AlertMonsters;
-		STEN B 1 Offset(0,36) A_FireProjectile("StenTracer",frandom(-1.5,1.5),1,0,0,0,frandom(-1.0,1.0));
+		STEN B 1 Offset(0,36) A_FireProjectile("StenTracer", FRandom[Weapon](-1.5,1.5),1,0,0,0, FRandom[Weapon](-1.0,1.0));
 		STEN B 0 A_JumpIf(waterlevel > 0,2);
-		STEN B 0 A_FireProjectile("ChainSmokeSpawner",0,0,0,random(-4,4),0,0);
+		STEN B 0 A_FireProjectile("ChainSmokeSpawner",0,0,0, Random[Weapon](-4,4),0,0);
 		STEN B 1 Offset(0,40) A_SetPitch(pitch-(0.5*boa_recoilamount));
 		STEN A 1 Offset(0,34);
 		TNT1 A 0 A_Refire;
@@ -86,13 +86,13 @@ class Sten : NaziWeapon //Rate of fire: ~500 rounds/min - Wikipedia
 		STEN A 0 A_JumpIfInventory("StenLoaded",1,1);
 		Goto Dryfire;
 		STEN A 0 A_StartSound("sten/fire", CHAN_WEAPON);
-		STEN A 0 A_SpawnItemEx("Casing9mm",12,-20,32,8,random(-2,2),random(0,4),random(-55,-80),SXF_NOCHECKPOSITION);
+		STEN A 0 A_SpawnItemEx("Casing9mm",12,-20,32,8, Random[Weapon](-2,2), Random[Weapon](0,4), Random[Weapon](-55,-80),SXF_NOCHECKPOSITION);
 		STEN A 0 A_AlertMonsters(384);
 		STEN A 0 A_TakeInventory("StenLoaded",1,TIF_NOTAKEINFINITE); // take the round manually (see ammotypes) --N00b
-		STEN B 1 A_FireProjectile("StenTracer",frandom(-1.5,1.5),0,0,0,0,frandom(-1.0,1.0));
+		STEN B 1 A_FireProjectile("StenTracer", FRandom[Weapon](-1.5,1.5),0,0,0,0, FRandom[Weapon](-1.0,1.0));
 		STEN B 1 Offset(0,40) A_SetPitch(pitch-(0.5*boa_recoilamount));
 		STEN B 0 A_JumpIf(waterlevel > 0,2);
-		STEN B 0 A_FireProjectile("ChainSmokeSpawner",0,0,0,random(-4,4),0,0);
+		STEN B 0 A_FireProjectile("ChainSmokeSpawner",0,0,0, Random[Weapon](-4,4),0,0);
 		STEN A 1 Offset(0,34);
 		STEN A 3; // balance the DPS --N00b
 		Goto Ready;

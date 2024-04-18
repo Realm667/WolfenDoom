@@ -414,8 +414,8 @@ class BigFlaskSpawner : SwitchableDecoration
 		Stop;
 	Death:
 		TNT1 A 0 A_StartSound("GLASS5");
-		"####" AAA 0 A_SpawnItemEx("Debris_GlassShard_Medium", 0, 0, 0, random(1,3), random(1,3), random(1,3), random(0,360), SXF_CLIENTSIDE);
-		"####" AAAAAAAAA 0 A_SpawnItemEx("Debris_GlassShard_Small", 0, 0, 0, random(1,3), random(1,3), random(1,3), random(0,360), SXF_CLIENTSIDE);
+		"####" AAA 0 A_SpawnItemEx("Debris_GlassShard_Medium", 0, 0, 0, Random[Debris](1,3), Random[Debris](1,3), Random[Debris](1,3), Random[Debris](0,360), SXF_CLIENTSIDE);
+		"####" AAAAAAAAA 0 A_SpawnItemEx("Debris_GlassShard_Small", 0, 0, 0, Random[Debris](1,3), Random[Debris](1,3), Random[Debris](1,3), Random[Debris](0,360), SXF_CLIENTSIDE);
 		"####" A 0 A_UnsetSolid;
 		Stop;
 	}
@@ -598,9 +598,9 @@ class PetriSpawner : BigFlaskSpawner
 		DJPD F -1;
 		Stop;
 	Death:
-		TNT1 A 0 { A_Scream(); A_StartSound("GLASS5", CHAN_AUTO, 0, frandom(0.3,0.6), ATTN_NORM); }
-		"####" AAA 0 A_SpawnItemEx("Debris_GlassShard_Medium", 0, 0, 0, random(1,3), random(1,3), random(1,3), random(0,360), SXF_CLIENTSIDE);
-		"####" AAAAAAAAA 0 A_SpawnItemEx("Debris_GlassShard_Small", 0, 0, 0, random(1,3), random(1,3), random(1,3), random(0,360), SXF_CLIENTSIDE);
+		TNT1 A 0 { A_Scream(); A_StartSound("GLASS5", CHAN_AUTO, 0, FRandom[Scenery](0.3,0.6), ATTN_NORM); }
+		"####" AAA 0 A_SpawnItemEx("Debris_GlassShard_Medium", 0, 0, 0, Random[Debris](1,3), Random[Debris](1,3), Random[Debris](1,3), Random[Debris](0,360), SXF_CLIENTSIDE);
+		"####" AAAAAAAAA 0 A_SpawnItemEx("Debris_GlassShard_Small", 0, 0, 0, Random[Debris](1,3), Random[Debris](1,3), Random[Debris](1,3), Random[Debris](0,360), SXF_CLIENTSIDE);
 		"####" A 0 A_UnsetSolid;
 		Stop;
 	}
@@ -633,9 +633,9 @@ class PetriDish_Green: Actor
 		DJPD A -1;
 		Stop;
 	Death:
-		TNT1 A 0 { A_Scream(); A_StartSound("GLASS5", CHAN_AUTO, 0, frandom(0.2,0.4), ATTN_NORM); }
-		"####" AAA 0 A_SpawnItemEx("Debris_GlassShard_Medium", 0, 0, 0, random(1,3), random(1,3), random(1,3), random(0,360), SXF_CLIENTSIDE);
-		"####" AAAAA 0 A_SpawnItemEx("Debris_GlassShard_Small", 0, 0, 0, random(1,3), random(1,3), random(1,3), random(0,360), SXF_CLIENTSIDE);
+		TNT1 A 0 { A_Scream(); A_StartSound("GLASS5", CHAN_AUTO, 0, FRandom[Scenery](0.2,0.4), ATTN_NORM); }
+		"####" AAA 0 A_SpawnItemEx("Debris_GlassShard_Medium", 0, 0, 0, Random[Debris](1,3), Random[Debris](1,3), Random[Debris](1,3), Random[Debris](0,360), SXF_CLIENTSIDE);
+		"####" AAAAA 0 A_SpawnItemEx("Debris_GlassShard_Small", 0, 0, 0, Random[Debris](1,3), Random[Debris](1,3), Random[Debris](1,3), Random[Debris](0,360), SXF_CLIENTSIDE);
 		"####" A 0 A_StartSound("METALBRK", CHAN_AUTO, 0, frandom (0.2,0.4), ATTN_NORM);
 		"####" A 0 A_SpawnItemEx("MetalFrags");
 		DJPD I -1 A_UnsetSolid;
@@ -686,9 +686,9 @@ class MagnifySpawner : BigFlaskSpawner
 		DJPD H -1;
 		Stop;
 	Death:
-		TNT1 A 0 { A_Scream(); A_StartSound("GLASS5", CHAN_AUTO, 0, frandom(0.2,0.4), ATTN_NORM); }
-		"####" AA 0 A_SpawnItemEx("Debris_GlassShard_Medium", 0, 0, 0, random(1,3), random(1,3), random(1,3), random(0,360), SXF_CLIENTSIDE);
-		"####" AA 0 A_SpawnItemEx("Debris_GlassShard_Small", 0, 0, 0, random(1,3), random(1,3), random(1,3), random(0,360), SXF_CLIENTSIDE);
+		TNT1 A 0 { A_Scream(); A_StartSound("GLASS5", CHAN_AUTO, 0, FRandom[Scenery](0.2,0.4), ATTN_NORM); }
+		"####" AA 0 A_SpawnItemEx("Debris_GlassShard_Medium", 0, 0, 0, Random[Debris](1,3), Random[Debris](1,3), Random[Debris](1,3), Random[Debris](0,360), SXF_CLIENTSIDE);
+		"####" AA 0 A_SpawnItemEx("Debris_GlassShard_Small", 0, 0, 0, Random[Debris](1,3), Random[Debris](1,3), Random[Debris](1,3), Random[Debris](0,360), SXF_CLIENTSIDE);
 		"####" A 0 A_StartSound("METALBRK", CHAN_AUTO, 0, frandom (0.3,0.5), ATTN_NORM);
 		"####" A 0 A_SpawnItemEx("MetalFrags");
 		DJPD I -1 A_UnsetSolid;
@@ -775,13 +775,13 @@ class BrainLab1: Actor
 	States
 	{
 	Spawn:
-		BRNS A -1 NODELAY A_SetScale(Scale.X * RandomPick(-1, 1), Scale.Y);
+		BRNS A -1 NODELAY A_SetScale(Scale.X * RandomPick[Scenery](-1, 1), Scale.Y);
 		Stop;
 	Death:
-		TNT1 A 0 A_StartSound("GLASS5", CHAN_AUTO, 0, frandom(0.5,1.0), ATTN_NORM);
-		"####" AA 0 A_SpawnItemEx("Debris_GlassShard_Large", 0, 0, 0, random(1,3), random(1,3), random(1,3), random(0,360), SXF_CLIENTSIDE);
-		"####" AAAA 0 A_SpawnItemEx("Debris_GlassShard_Medium", 0, 0, 0, random(1,3), random(1,3), random(1,3), random(0,360), SXF_CLIENTSIDE);
-		"####" AAAAAAAA 0 A_SpawnItemEx("Debris_GlassShard_Small", 0, 0, 0, random(1,3), random(1,3), random(1,3), random(0,360), SXF_CLIENTSIDE);
+		TNT1 A 0 A_StartSound("GLASS5", CHAN_AUTO, 0, FRandom[Scenery](0.5,1.0), ATTN_NORM);
+		"####" AA 0 A_SpawnItemEx("Debris_GlassShard_Large", 0, 0, 0, Random[Debris](1,3), Random[Debris](1,3), Random[Debris](1,3), Random[Debris](0,360), SXF_CLIENTSIDE);
+		"####" AAAA 0 A_SpawnItemEx("Debris_GlassShard_Medium", 0, 0, 0, Random[Debris](1,3), Random[Debris](1,3), Random[Debris](1,3), Random[Debris](0,360), SXF_CLIENTSIDE);
+		"####" AAAAAAAA 0 A_SpawnItemEx("Debris_GlassShard_Small", 0, 0, 0, Random[Debris](1,3), Random[Debris](1,3), Random[Debris](1,3), Random[Debris](0,360), SXF_CLIENTSIDE);
 		Stop;
 	}
 }
@@ -795,7 +795,7 @@ class BrainLab2 : BrainLab1
 	States
 	{
 	Spawn:
-		BRNS B -1 NODELAY A_SetScale(Scale.X * RandomPick(-1, 1), Scale.Y);
+		BRNS B -1 NODELAY A_SetScale(Scale.X * RandomPick[Scenery](-1, 1), Scale.Y);
 		Goto Super::Spawn;
 	}
 }
@@ -809,7 +809,7 @@ class BrainLab3 : BrainLab1
 	States
 	{
 	Spawn:
-		BRNS C -1 NODELAY A_SetScale(Scale.X * RandomPick(-1, 1), Scale.Y);
+		BRNS C -1 NODELAY A_SetScale(Scale.X * RandomPick[Scenery](-1, 1), Scale.Y);
 		Goto Super::Spawn;
 	}
 }

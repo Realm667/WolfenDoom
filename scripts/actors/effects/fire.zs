@@ -60,7 +60,7 @@ class FireSpawner : HeatEffectGiver
 			if (bDormant || SpawnFlags & MTF_DORMANT) { Deactivate(null); }
 			else { Activate(null); }
 
-			tics += Random(0, 35);
+			tics += Random[Effect](0, 35);
 		}
 
 		A_SetSize(Radius * scale.x + 32, Height * scale.y + 32);
@@ -79,7 +79,7 @@ class FireSpawner : HeatEffectGiver
 			tics += 5 - switchcvar.GetInt();  // Set tics according to the cvar
 		}
 
-		int spawntype = RandomPick(3, 2, 1, 1, 1, 1, 1); // Replicates the random spawns of the old A_Jump calls... Embers, smoke, or flame
+		int spawntype = RandomPick[Fire](3, 2, 1, 1, 1, 1, 1); // Replicates the random spawns of the old A_Jump calls... Embers, smoke, or flame
 
 		if (!suffix.length()) { suffix = "Small"; }
 
@@ -184,10 +184,10 @@ class FlameBase : ParticleBase
 	{
 		Super.PostBeginPlay();
 
-		Thrust(FRandom(thrustmin, thrustmax), Random(0, 359));
-		vel.z = FRandom(thrustminz, thrustmaxz) / 4; // Divide desired vel.z by 4 because ThrustThingZ divides by 4 internally, and I want to use the same input numbers as the original code.
+		Thrust(FRandom[Fire](thrustmin, thrustmax), Random[Effect](0, 359));
+		vel.z = FRandom[Fire](thrustminz, thrustmaxz) / 4; // Divide desired vel.z by 4 because ThrustThingZ divides by 4 internally, and I want to use the same input numbers as the original code.
 
-		int spr = GetSpriteIndex("FLM" .. Random(1, 6));
+		int spr = GetSpriteIndex("FLM" .. Random[Effect](1, 6));
 		if (spr != -1) { sprite = spr; }
 	}
 }
@@ -278,8 +278,8 @@ class FireSmokeBase : ParticleBase
 	{
 		Super.PostBeginPlay();
 
-		Thrust(FRandom(thrustmin, thrustmax), Random(0, 359));
-		vel.z = FRandom(thrustminz, thrustmaxz) / 4; // Divide desired vel.z by 4 because ThrustThingZ divides by 4 internally, and I want to use the same input numbers as the original code.
+		Thrust(FRandom[Fire](thrustmin, thrustmax), Random[Effect](0, 359));
+		vel.z = FRandom[Fire](thrustminz, thrustmaxz) / 4; // Divide desired vel.z by 4 because ThrustThingZ divides by 4 internally, and I want to use the same input numbers as the original code.
 	}
 }
 
@@ -370,8 +370,8 @@ class EmberBase : ParticleBase
 	{
 		Super.PostBeginPlay();
 
-		Thrust(FRandom(thrustmin, thrustmax), Random(0, 359));
-		vel.z = FRandom(thrustminz, thrustmaxz) / 4;
+		Thrust(FRandom[Fire](thrustmin, thrustmax), Random[Effect](0, 359));
+		vel.z = FRandom[Fire](thrustminz, thrustmaxz) / 4;
 
 		tics = delay;
 	}
@@ -446,13 +446,13 @@ class BarrelFireSpawner : EffectSpawner
 			TNT1 A 1 SpawnEffect();
 			TNT1 A 1 SpawnEffect();
 			TNT1 A 1 SpawnEffect();
-			TNT1 A 1 A_Explode(Random(1, 2), 8, 0);
+			TNT1 A 1 A_Explode(Random[Fire](1, 2), 8, 0);
 			TNT1 A 0 {
 				count++;
 
 				if (count > 6)
 				{
-					if (Random() < 192) { Deactivate(self); }
+					if (Random[Fire]() < 192) { Deactivate(self); }
 					else { count = 0; }
 				}
 			}
@@ -463,8 +463,8 @@ class BarrelFireSpawner : EffectSpawner
 	{
 		Super.PostBeginPlay();
 
-		A_StartSound("SFX/FireStart", CHAN_7, 0, FRandom(0.4, 0.8), ATTN_STATIC);
-		A_StartSound("SFX/FireLoop1", CHAN_6, CHANF_LOOPING, FRandom(0.2, 0.4), ATTN_STATIC);
+		A_StartSound("SFX/FireStart", CHAN_7, 0, FRandom[Fire](0.4, 0.8), ATTN_STATIC);
+		A_StartSound("SFX/FireLoop1", CHAN_6, CHANF_LOOPING, FRandom[Fire](0.2, 0.4), ATTN_STATIC);
 	}
 
 	override void Deactivate(Actor activator)
@@ -482,12 +482,12 @@ class BarrelFireSpawner : EffectSpawner
 		bool spawned;
 		Actor mo;
 
-		if (count == 0 && Random(0, 7) == 0) // 1 in 8 chance of spawning embers on the first loop
+		if (count == 0 && Random[Effect](0, 7) == 0) // 1 in 8 chance of spawning embers on the first loop
 		{
 			A_SpawnItemEx("Ember_Small");
 			A_SpawnItemEx("Ember_Medium");
 			A_SpawnItemEx("Ember_Small");
-			A_Explode(Random(1, 2), 8, 0);
+			A_Explode(Random[Fire](1, 2), 8, 0);
 		}
 		else
 		{
@@ -522,8 +522,8 @@ class ZFlame1A : FlameBase
 	{
 		Super.PostBeginPlay();
 
-		Thrust(FRandom(thrustmin, thrustmax), Random(0, 359));
-		vel.z = FRandom(thrustminz, thrustmaxz) / 4;
+		Thrust(FRandom[Fire](thrustmin, thrustmax), Random[Effect](0, 359));
+		vel.z = FRandom[Fire](thrustminz, thrustmaxz) / 4;
 	}
 }
 

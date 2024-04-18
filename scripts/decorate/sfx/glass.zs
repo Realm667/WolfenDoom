@@ -30,7 +30,7 @@ class BOD_GlassShardSpawner : GlassJunk replaces GlassJunk //just needed for the
 	{
 	Spawn:
 		TNT1 A 1 A_Scream;
-		TNT1 AAAAAAAAA 0 A_SpawnItemEx("BOD_GlassShard", random(-32,32), random(-32,32), random(-32,32), frandom(0.5,1.0), frandom(0.5,1.0), frandom(0.5,1.0), random(0,360));
+		TNT1 AAAAAAAAA 0 A_SpawnItemEx("BOD_GlassShard", Random[Debris](-32,32), Random[Debris](-32,32), Random[Debris](-32,32), FRandom[Debris](0.5,1.0), FRandom[Debris](0.5,1.0), FRandom[Debris](0.5,1.0), Random[Debris](0,360));
 		Stop;
 	}
 }
@@ -58,7 +58,7 @@ class BOD_GlassShard : GlassShard
 	States
 	{
 	Spawn:
-		SHAR A 0 NODELAY A_SetScale(frandom(0.3,0.8), frandom(0.3,0.8));
+		SHAR A 0 NODELAY A_SetScale(FRandom[Debris](0.3,0.8), FRandom[Debris](0.3,0.8));
 	LetsShard:
 		SHAR ABCDE 4;
 		Loop;
@@ -106,7 +106,7 @@ class BOD_GlassShardActivatable : SwitchableDecoration
 		TNT1 A -1;
 		Loop;
 	Active:
-		TNT1 AAAAAAAAAAAAAAAAAAAAAAAAA 0 A_SpawnItemEx("BOD_GlassShard", 0, random(-Args[1], Args[1]), random(0, Args[0]), frandom(-0.8,0.8), frandom(1.0,3.0), frandom(0.1,0.5), 0, 0, 0);
+		TNT1 AAAAAAAAAAAAAAAAAAAAAAAAA 0 A_SpawnItemEx("BOD_GlassShard", 0, Random[Debris](-Args[1], Args[1]), Random[Debris](0, Args[0]), FRandom[Debris](-0.8,0.8), FRandom[Debris](1.0,3.0), FRandom[Debris](0.1,0.5), 0, 0, 0);
 		TNT1 A 0 A_StartSound("world/glassbreak");
 		Stop;
 	}

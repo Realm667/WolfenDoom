@@ -87,12 +87,12 @@ class Kar98k : NaziWeapon
 		Goto Dryfire;
 		KAR9 A 0 A_AlertMonsters;
 		KAR9 A 0 A_StartSound("mauser/fire", CHAN_WEAPON);
-		KAR9 A 0 A_SpawnItemEx("MauserRifleCasing",12,-20,32,8,random(-2,2),random(0,4),random(-55,-80),SXF_NOCHECKPOSITION);
+		KAR9 A 0 A_SpawnItemEx("MauserRifleCasing",12,-20,32,8, Random[Weapon](-2,2), Random[Weapon](0,4), Random[Weapon](-55,-80),SXF_NOCHECKPOSITION);
 		KAR9 A 0 A_JumpIfInventory("SniperZoom", 1, "ScopedFire");
 		KAR9 A 0 A_GunFlash;
 		KAR9 A 2 A_FireProjectile("Kar98kTracer");
 		KAR9 A 0 A_JumpIf(waterlevel > 0,2);
-		KAR9 A 0 A_FireProjectile("ShotSmokeSpawner",0,0,0,random(-4,4),0,0);
+		KAR9 A 0 A_FireProjectile("ShotSmokeSpawner",0,0,0, Random[Weapon](-4,4),0,0);
 		KAR9 A 2 Offset(0,40) A_SetPitch(pitch-(4.0*boa_recoilamount));
 		KAR9 A 1 Offset(0,36) A_SetPitch(pitch-(2.0*boa_recoilamount));
 		KAR9 B 1 Offset(0,32)A_SetPitch(pitch+(1.0*boa_recoilamount));
@@ -110,7 +110,7 @@ class Kar98k : NaziWeapon
 		SCO1 A 2 A_FireProjectile("Kar98kTracer2");
 		SCO1 A 0 A_JumpIf(height<=30,"ScopedFireLowRecoil");
 		SCO1 A 0 A_JumpIf(waterlevel > 0,2);
-		SCO1 A 0 A_FireProjectile("ShotSmokeSpawner",0,0,0,random(-4,4),0,0);
+		SCO1 A 0 A_FireProjectile("ShotSmokeSpawner",0,0,0, Random[Weapon](-4,4),0,0);
 		SCO1 A 2 A_SetPitch(pitch-(4.0*boa_recoilamount));
 		SCO1 A 1 A_SetPitch(pitch-(2.0*boa_recoilamount));
 		SCO1 A 1 A_SetPitch(pitch+(1.0*boa_recoilamount));
@@ -121,7 +121,7 @@ class Kar98k : NaziWeapon
 		Goto Ready;
 	ScopedFireLowRecoil:
 		SCO1 A 0 A_JumpIf(waterlevel > 0,2);
-		SCO1 A 0 A_FireProjectile("ShotSmokeSpawner",0,0,0,random(-4,4),0,0);
+		SCO1 A 0 A_FireProjectile("ShotSmokeSpawner",0,0,0, Random[Weapon](-4,4),0,0);
 		SCO1 A 2 A_SetPitch(pitch-(2.0*boa_recoilamount));
 		SCO1 A 1 A_SetPitch(pitch-(1.0*boa_recoilamount));
 		SCO1 A 1 A_SetPitch(pitch+(0.5*boa_recoilamount));

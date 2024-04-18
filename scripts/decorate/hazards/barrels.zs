@@ -119,7 +119,7 @@ class GoodieBarrel1 : TNTBarrel1
 		Death:
 			TNT1 A 0 A_Scream;
 			BARL A 2 A_SpawnItemEx("BarrelFrags");
-			TNT1 A 0 A_SpawnItemEx("PowerPlantSmokePuff", random(-3,3), random(-3,3), 0, 0, 0, 3);
+			TNT1 A 0 A_SpawnItemEx("PowerPlantSmokePuff", Random[Smoke](-3,3), Random[Smoke](-3,3), 0, 0, 0, 3);
 			TNT1 A 0 A_NoBlocking(false); // DropItems handled in the BarrelSpawner actor - so that you can override drops via arg0str
 			Stop;
 	}
@@ -190,26 +190,26 @@ class GoodieBarrel1 : TNTBarrel1
 				switch (maxindex)
 				{
 					case Health:
-						user_spawnamount = Random(10, 30);
+						user_spawnamount = Random[Barrel](10, 30);
 						break;
 					case Shells:
-						user_spawnamount = Random(12, 16);
+						user_spawnamount = Random[Barrel](12, 16);
 						break;
 					case Bullets:
-						user_spawnamount = Random(24, 32);
+						user_spawnamount = Random[Barrel](24, 32);
 						break;
 					case Rifle:
-						user_spawnamount = Random(15, 20);
+						user_spawnamount = Random[Barrel](15, 20);
 						break;
 					case Grenades:
-						user_spawnamount = Random(1, 3);
+						user_spawnamount = Random[Barrel](1, 3);
 						break;
 					case Nothing:
 					default:
 						if (maxcount == ammoitems.Size()) // Spawn gold if you are at full health and full ammo capacity for all of the types given via the barrel
 						{
 							user_spawntype = "CoinItem";
-							user_spawnamount = Random(5, 25);
+							user_spawnamount = Random[Barrel](5, 25);
 						}
 						else
 						{

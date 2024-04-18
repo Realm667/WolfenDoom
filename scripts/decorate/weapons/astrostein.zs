@@ -383,12 +383,12 @@ class AstroChaingun : NaziAstroWeapon
 		ASCG D 0 A_AlertMonsters;
 		ASCG D 0 A_StartSound("astrochaingun/fire", CHAN_WEAPON);
 		ASCG D 0 A_TakeInventory("AstroChaingunLoaded",1,TIF_NOTAKEINFINITE);
-		ASCG D 4 A_FireProjectile("AstroTracerPlayer",frandom(-1.0,1.0),0,0,0,0,frandom(-1.0,1.0));
+		ASCG D 4 A_FireProjectile("AstroTracerPlayer", FRandom[Weapon](-1.0,1.0),0,0,0,0, FRandom[Weapon](-1.0,1.0));
 		ASCG D 0 A_JumpIfInventory("AstroChaingunLoaded",1,1);
 		Goto Ready;
 		ASCG D 0 A_StartSound("astrochaingun/fire", CHAN_WEAPON);
 		ASCG E 0 A_TakeInventory("AstroChaingunLoaded",1,TIF_NOTAKEINFINITE);
-		ASCG E 4 A_FireProjectile("AstroTracerPlayer",frandom(-1.0,1.0),0,0,0,0,frandom(-1.0,1.0));
+		ASCG E 4 A_FireProjectile("AstroTracerPlayer", FRandom[Weapon](-1.0,1.0),0,0,0,0, FRandom[Weapon](-1.0,1.0));
 		ASCG D 0 A_ReFire;
 		Goto Ready;
 	AltFire:
@@ -397,12 +397,12 @@ class AstroChaingun : NaziAstroWeapon
 		ASCG D 0 A_AlertMonsters;
 		ASCG D 0 A_StartSound("astrochaingun/fire", CHAN_WEAPON);
 		ASCG D 0 A_TakeInventory("AstroChaingunLoaded",1,TIF_NOTAKEINFINITE);
-		ASCG D 6 A_FireProjectile("AstroTracerPlayer",frandom(-0.2,0.2),0,0,0,0,frandom(-0.2,0.2));
+		ASCG D 6 A_FireProjectile("AstroTracerPlayer", FRandom[Weapon](-0.2,0.2),0,0,0,0, FRandom[Weapon](-0.2,0.2));
 		ASCG D 0 A_JumpIfInventory("AstroChaingunLoaded",1,1);
 		Goto Ready;
 		ASCG D 0 A_StartSound("astrochaingun/fire", CHAN_WEAPON);
 		ASCG E 0 A_TakeInventory("AstroChaingunLoaded",1,TIF_NOTAKEINFINITE);
-		ASCG E 6 A_FireProjectile("AstroTracerPlayer",frandom(-0.2,0.2),0,0,0,0,frandom(-0.2,0.2));
+		ASCG E 6 A_FireProjectile("AstroTracerPlayer", FRandom[Weapon](-0.2,0.2),0,0,0,0, FRandom[Weapon](-0.2,0.2));
 		ASCG D 0 A_ReFire;
 		Goto Ready;
 	Reload:
@@ -536,7 +536,7 @@ class AstrosteinMelee : NaziAstroWeapon
 		REZG CD 4 A_WeaponReady;
 		Loop;
 	Fire:
-		REZG AAABBB 1 { if (frandom(0.0, 1.0) < 0.667) { A_Saw("weapons/rezfull","weapons/rezhit",1,"ElektroshockerPuff"); } }
+		REZG AAABBB 1 { if (FRandom[Weapon](0.0, 1.0) < 0.667) { A_Saw("weapons/rezfull","weapons/rezhit",1,"ElektroshockerPuff"); } }
 		REZG B 0 A_ReFire;
 		Goto Ready;
 	Spawn:
@@ -563,7 +563,7 @@ class ElektroshockerPuff : BulletPuff
 	{
 		Spawn:
 		Melee:
-			TNT1 AAAAA 0 A_SpawnItemEx("SparkG", 0, 0, 0, random(1,2), random(1,2), random(1,2), random(1,360), SXF_CLIENTSIDE);
+			TNT1 AAAAA 0 A_SpawnItemEx("SparkG", 0, 0, 0, Random[Spark](1,2), Random[Spark](1,2), Random[Spark](1,2), Random[Spark](1,360), SXF_CLIENTSIDE);
 			TNT1 A 0 {
 				A_SpawnItemEx("SparkFlareG");
 				A_SpawnItemEx("ZScorchSmall");
@@ -633,7 +633,7 @@ class AstroLuger : NaziAstroWeapon //quite the same code from Luger P08 - ozy81
 		PLPI A 0 A_StartSound("astrochaingun/fire", CHAN_WEAPON);
 		PLPI A 0 A_AlertMonsters;
 		PLPI A 0 A_TakeInventory("AstroPistolLoaded",1,TIF_NOTAKEINFINITE);
-		PLPI B 1 A_FireProjectile("AstroTracerPlayer",0,0,0,0,0,frandom(-0.2,0.2));
+		PLPI B 1 A_FireProjectile("AstroTracerPlayer",0,0,0,0,0, FRandom[Weapon](-0.2,0.2));
 		PLPI B 1;
 		PLPI B 1 Offset(0,36) A_SetPitch(pitch-(0.2*boa_recoilamount));
 		PLPI B 1 Offset(0,41) A_CheckReload;

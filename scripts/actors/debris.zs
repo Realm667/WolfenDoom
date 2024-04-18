@@ -81,7 +81,7 @@ class Debris : SceneryBase
 			{
 				mound.master = self;
 				mound.frame = clamp(moundstyle, 0, 2);
-				mound.angle = Random(1, 360);
+				mound.angle = Random[Debris](1, 360);
 
 				if (bWasCulled)
 				{
@@ -116,7 +116,7 @@ class Debris : SceneryBase
 
 						if (pr < 1)
 						{
-							amt = Random(int(-pr * scale.x), amt);
+							amt = Random[Debris](int(-pr * scale.x), amt);
 							pr = 255;
 						}
 
@@ -140,10 +140,10 @@ class Debris : SceneryBase
 
 		for (int c = 0; c < amt; c++)
 		{
-			if (Random() < probability)
+			if (Random[Debris]() < probability)
 			{
-				double spawnangle = Random(0, 359);
-				double spawndist = mindistance + FRandom(0, distance - mindistance);
+				double spawnangle = Random[Debris](0, 359);
+				double spawndist = mindistance + FRandom[Debris](0, distance - mindistance);
 			
 				Vector2 spawnpos = AngleToVector(spawnangle, spawndist);
 
@@ -159,19 +159,19 @@ class Debris : SceneryBase
 					mo.master = self;
 					if (DebrisBase(mo))
 					{
- 						if (DebrisBase(mo).doscale) { mo.scale = FRandom(0.25, 1.5) * mo.scale; }
+ 						if (DebrisBase(mo).doscale) { mo.scale = FRandom[Debris](0.25, 1.5) * mo.scale; }
 					}
 
 					if (!(mo is "DebrisBase"))
 					{
 						mo.bRollSprite = true;
-						mo.pitch = FRandom(-15, -atan(Height / spawndist)); // Match the average height of the spawned items to the height of the pile
-						mo.roll = Random(-30, 30);
-						mo.angle = mo.AngleTo(self) + Random(-35, 35);
+						mo.pitch = FRandom[Debris](-15, -atan(Height / spawndist)); // Match the average height of the spawned items to the height of the pile
+						mo.roll = Random[Debris](-30, 30);
+						mo.angle = mo.AngleTo(self) + Random[Debris](-35, 35);
 						mo.SetOrigin((mo.pos.xy, floorz), false);
 						if (!boa_debriscullstyle) { mo.master = null; }
 					
-						if (Random() < 128 && mo.FindState("Death")) { mo.SetStateLabel("Death"); }
+						if (Random[Debris]() < 128 && mo.FindState("Death")) { mo.SetStateLabel("Death"); }
 					}
 
 					if (bWasCulled)
@@ -226,7 +226,7 @@ class DebrisBase : StaticActor
 		if (!bWasCulled)
 		{
 			if (user_variant) { frame = user_variant; }
-			else { frame = Random(0, variants - 1); }
+			else { frame = Random[Debris](0, variants - 1); }
 
 			maxscale = 1.5;
 
@@ -234,9 +234,9 @@ class DebrisBase : StaticActor
 			{
 				double dist = Distance2D(master);
 
-				pitch = -atan((master.pos.z + master.Height - pos.z) / dist) + FRandom(-5, 15);
-				roll = Random(-30, 30);
-				angle = AngleTo(master) + Random(-35, 35);
+				pitch = -atan((master.pos.z + master.Height - pos.z) / dist) + FRandom[Debris](-5, 15);
+				roll = Random[Debris](-30, 30);
+				angle = AngleTo(master) + Random[Debris](-35, 35);
 
 				maxscale = (dist * 2.5) / (Radius * scale.x);
 			}
@@ -354,7 +354,7 @@ class DebrisPipe : DebrisBase
 	{
 		Super.PostBeginPlay();
 
-		if (!bWasCulled) { scale *= FRandom(0.5, maxscale); }
+		if (!bWasCulled) { scale *= FRandom[Debris](0.5, maxscale); }
 	}
 }
 
@@ -375,8 +375,8 @@ class DebrisBeam : DebrisBase
 
 		if (!bWasCulled)
 		{
-			scale.x *= FRandom(0.75, maxscale);
-			scale.y *= FRandom(0.5, maxscale);
+			scale.x *= FRandom[Debris](0.75, maxscale);
+			scale.y *= FRandom[Debris](0.5, maxscale);
 		}
 	}
 }
@@ -396,7 +396,7 @@ class DebrisGirder : DebrisBase
 	{
 		Super.PostBeginPlay();
 
-		if (!bWasCulled) { scale *= FRandom(0.5, min(maxscale, 2.5)); }
+		if (!bWasCulled) { scale *= FRandom[Debris](0.5, min(maxscale, 2.5)); }
 	}
 }
 

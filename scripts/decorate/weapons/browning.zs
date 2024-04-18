@@ -79,11 +79,11 @@ class Browning5 : NaziWeapon
 		BA5G A 0 A_JumpIfInventory("Browning5Loaded",1,1);
 		Goto Dryfire;
 		BA5G A 0 A_StartSound("browning/fire", CHAN_WEAPON);
-		BA5G A 0 A_SpawnItemEx("ShotgunCasing",12,-20,32,8,random(-2,2),random(0,4),random(-55,-80),SXF_NOCHECKPOSITION);
-		BA5G AAAAAAAAAA 0 A_FireProjectile("AutoShotgunTracer",frandom(-4.0,4.0),0,0,0,0,frandom(-3,3));
+		BA5G A 0 A_SpawnItemEx("ShotgunCasing",12,-20,32,8, Random[Weapon](-2,2), Random[Weapon](0,4), Random[Weapon](-55,-80),SXF_NOCHECKPOSITION);
+		BA5G AAAAAAAAAA 0 A_FireProjectile("AutoShotgunTracer", FRandom[Weapon](-4.0,4.0),0,0,0,0, FRandom[Weapon](-3,3));
 		BA5G A 0 A_TakeInventory("Browning5Loaded",1,TIF_NOTAKEINFINITE);
 		BA5G A 0 A_JumpIf(waterlevel > 0,2);
-		BA5G A 0 A_FireProjectile("ShotSmokeSpawner",0,0,0,random(-4,4),0,0);
+		BA5G A 0 A_FireProjectile("ShotSmokeSpawner",0,0,0, Random[Weapon](-4,4),0,0);
 		BA5G A 0 A_AlertMonsters;
 		BA5G A 1 A_GunFlash;
 		BA5G A 1 Offset(0,42) A_SetPitch(pitch-(4.0*boa_recoilamount));

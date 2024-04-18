@@ -43,8 +43,8 @@ class UWLightGenerator1 : EffectSpawner
 	Active:
 		TNT1 A 1 A_CheckSight("Unsighted");
 		TNT1 A 0 { if (CheckRange(boa_sfxlod, true)) { SetStateLabel("Active"); } }
-		"####" A 1 A_SpawnItemEx("UWaterLShooter",0,0,0,random(-32,32),random(-32,32),random(-32,0),random(0,32),160);
-		"####" A 1 A_SpawnItemEx("UWaterLShooter",0,0,0,random(-32,32),random(-32,32),random(-32,0),random(0,32),160);
+		"####" A 1 A_SpawnItemEx("UWaterLShooter",0,0,0, Random[Underwater](-32,32), Random[Underwater](-32,32), Random[Underwater](-32,0), Random[Underwater](0,32),160);
+		"####" A 1 A_SpawnItemEx("UWaterLShooter",0,0,0, Random[Underwater](-32,32), Random[Underwater](-32,32), Random[Underwater](-32,0), Random[Underwater](0,32),160);
 		Loop;
 	Unsighted:
 		TNT1 A 1;
@@ -72,8 +72,8 @@ class UWLightGenerator2 : UWLightGenerator1
 	Active:
 		TNT1 A 1 A_CheckSight("Unsighted");
 		TNT1 A 0 { if (CheckRange(boa_sfxlod, true)) { SetStateLabel("Active"); } }
-		"####" A 1 A_SpawnItemEx("ULavaLShooter",0,0,0,random(-32,32),random(-32,32),random(-32,0),random(0,32),160);
-		"####" A 1 A_SpawnItemEx("ULavaLShooter",0,0,0,random(-32,32),random(-32,32),random(-32,0),random(0,32),160);
+		"####" A 1 A_SpawnItemEx("ULavaLShooter",0,0,0, Random[Underwater](-32,32), Random[Underwater](-32,32), Random[Underwater](-32,0), Random[Underwater](0,32),160);
+		"####" A 1 A_SpawnItemEx("ULavaLShooter",0,0,0, Random[Underwater](-32,32), Random[Underwater](-32,32), Random[Underwater](-32,0), Random[Underwater](0,32),160);
 		Loop;
 	EndSpawn:
 		TNT1 A 1;
@@ -94,8 +94,8 @@ class UWLightGenerator3 : UWLightGenerator1
 	Active:
 		TNT1 A 1 A_CheckSight("Unsighted");
 		TNT1 A 0 { if (CheckRange(boa_sfxlod, true)) { SetStateLabel("Active"); } }
-		"####" A 1 A_SpawnItemEx("UGoreLShooter",0,0,0,random(-32,32),random(-32,32),random(-32,0),random(0,32),160);
-		"####" A 1 A_SpawnItemEx("UGoreLShooter",0,0,0,random(-32,32),random(-32,32),random(-32,0),random(0,32),160);
+		"####" A 1 A_SpawnItemEx("UGoreLShooter",0,0,0, Random[Underwater](-32,32), Random[Underwater](-32,32), Random[Underwater](-32,0), Random[Underwater](0,32),160);
+		"####" A 1 A_SpawnItemEx("UGoreLShooter",0,0,0, Random[Underwater](-32,32), Random[Underwater](-32,32), Random[Underwater](-32,0), Random[Underwater](0,32),160);
 		Loop;
 	EndSpawn:
 		TNT1 A 1;
@@ -116,8 +116,8 @@ class UWLightGenerator4 : UWLightGenerator1
 	Active:
 		TNT1 A 1 A_CheckSight("Unsighted");
 		TNT1 A 0 { if (CheckRange(boa_sfxlod, true)) { SetStateLabel("Active"); } }
-		"####" A 1 A_SpawnItemEx("UHazardLShooter",0,0,0,random(-32,32),random(-32,32),random(-32,0),random(0,32),160);
-		"####" A 1 A_SpawnItemEx("UHazardLShooter",0,0,0,random(-32,32),random(-32,32),random(-32,0),random(0,32),160);
+		"####" A 1 A_SpawnItemEx("UHazardLShooter",0,0,0, Random[Underwater](-32,32), Random[Underwater](-32,32), Random[Underwater](-32,0), Random[Underwater](0,32),160);
+		"####" A 1 A_SpawnItemEx("UHazardLShooter",0,0,0, Random[Underwater](-32,32), Random[Underwater](-32,32), Random[Underwater](-32,0), Random[Underwater](0,32),160);
 		Loop;
 	EndSpawn:
 		TNT1 A 1;

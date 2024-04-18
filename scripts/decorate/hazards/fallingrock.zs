@@ -55,14 +55,14 @@ class FallingRock1: Actor
 		Goto Spawn+1;
 	Death:
 		"####" A 2;
-		TNT1 A 0 A_SpawnProjectile("FallingRockFrac1",0,random(-2,2),0,2,CMF_AIMDIRECTION|CMF_BADPITCH);
-		"####" A 0 A_SpawnProjectile("FallingRockFrac2",0,random(-4,4),45,2,CMF_AIMDIRECTION|CMF_BADPITCH);
-		"####" A 0 A_SpawnProjectile("FallingRockFrac3",0,random(-8,8),90,2,CMF_AIMDIRECTION|CMF_BADPITCH);
-		"####" A 0 A_SpawnProjectile("FallingRockFrac1",0,random(-2,2),135,2,CMF_AIMDIRECTION|CMF_BADPITCH);
-		"####" A 0 A_SpawnProjectile("FallingRockFrac2",0,random(-4,4),180,2,CMF_AIMDIRECTION|CMF_BADPITCH);
-		"####" A 1 A_SpawnProjectile("FallingRockFrac3",0,random(-8,8),225,2,CMF_AIMDIRECTION|CMF_BADPITCH);
-		"####" A 0 A_SpawnProjectile("FallingRockFrac1",0,random(-2,2),270,2,CMF_AIMDIRECTION|CMF_BADPITCH);
-		"####" A 0 A_SpawnProjectile("FallingRockFrac2",0,random(-4,4),315,2,CMF_AIMDIRECTION|CMF_BADPITCH);
+		TNT1 A 0 A_SpawnProjectile("FallingRockFrac1",0,random[Rock](-2,2),0,2,CMF_AIMDIRECTION|CMF_BADPITCH);
+		"####" A 0 A_SpawnProjectile("FallingRockFrac2",0,random[Rock](-4,4),45,2,CMF_AIMDIRECTION|CMF_BADPITCH);
+		"####" A 0 A_SpawnProjectile("FallingRockFrac3",0,random[Rock](-8,8),90,2,CMF_AIMDIRECTION|CMF_BADPITCH);
+		"####" A 0 A_SpawnProjectile("FallingRockFrac1",0,random[Rock](-2,2),135,2,CMF_AIMDIRECTION|CMF_BADPITCH);
+		"####" A 0 A_SpawnProjectile("FallingRockFrac2",0,random[Rock](-4,4),180,2,CMF_AIMDIRECTION|CMF_BADPITCH);
+		"####" A 1 A_SpawnProjectile("FallingRockFrac3",0,random[Rock](-8,8),225,2,CMF_AIMDIRECTION|CMF_BADPITCH);
+		"####" A 0 A_SpawnProjectile("FallingRockFrac1",0,random[Rock](-2,2),270,2,CMF_AIMDIRECTION|CMF_BADPITCH);
+		"####" A 0 A_SpawnProjectile("FallingRockFrac2",0,random[Rock](-4,4),315,2,CMF_AIMDIRECTION|CMF_BADPITCH);
 		Stop;
 	}
 }
@@ -85,7 +85,7 @@ class FallingRockFrac1: Actor
 		Radius 4;
 		Height 4;
 		Speed 12;
-		DamageFunction (random(0,1));
+		DamageFunction (Random[Rocks](0,1));
 		Projectile;
 		+ROLLSPRITE
 		BounceType "Doom";
@@ -174,12 +174,12 @@ class FallingMetal1 : FallingRock1
 		Loop;
 	Death:
 		"####" "#" 2;
-		TNT1 A 0 A_SpawnItemEx("FallingMetlFrac1", random(2,-2), random(2,-2), random(0,4), random(1,3), random(1,3), random(1,3), random(0,360), SXF_CLIENTSIDE);
-		"####" A 0 A_SpawnItemEx("FallingMetlFrac2", random(2,-2), random(2,-2), random(0,4), random(1,3), random(1,3), random(1,3), random(0,360), SXF_CLIENTSIDE);
-		"####" A 0 A_SpawnItemEx("FallingMetlFrac1", random(2,-2), random(2,-2), random(0,4), random(1,3), random(1,3), random(1,3), random(0,360), SXF_CLIENTSIDE);
-		"####" A 0 A_SpawnItemEx("FallingMetlFrac2", random(2,-2), random(2,-2), random(0,4), random(1,3), random(1,3), random(1,3), random(0,360), SXF_CLIENTSIDE);
-		"####" A 0 A_SpawnItemEx("FallingMetlFrac1", random(2,-2), random(2,-2), random(0,4), random(1,3), random(1,3), random(1,3), random(0,360), SXF_CLIENTSIDE);
-		"####" A 1 A_SpawnItemEx("FallingMetlFrac2", random(2,-2), random(2,-2), random(0,4), random(1,3), random(1,3), random(1,3), random(0,360), SXF_CLIENTSIDE);
+		TNT1 A 0 A_SpawnItemEx("FallingMetlFrac1", Random[Debris](2,-2), Random[Debris](2,-2), Random[Debris](0,4), Random[Debris](1,3), Random[Debris](1,3), Random[Debris](1,3), Random[Debris](0,360), SXF_CLIENTSIDE);
+		"####" A 0 A_SpawnItemEx("FallingMetlFrac2", Random[Debris](2,-2), Random[Debris](2,-2), Random[Debris](0,4), Random[Debris](1,3), Random[Debris](1,3), Random[Debris](1,3), Random[Debris](0,360), SXF_CLIENTSIDE);
+		"####" A 0 A_SpawnItemEx("FallingMetlFrac1", Random[Debris](2,-2), Random[Debris](2,-2), Random[Debris](0,4), Random[Debris](1,3), Random[Debris](1,3), Random[Debris](1,3), Random[Debris](0,360), SXF_CLIENTSIDE);
+		"####" A 0 A_SpawnItemEx("FallingMetlFrac2", Random[Debris](2,-2), Random[Debris](2,-2), Random[Debris](0,4), Random[Debris](1,3), Random[Debris](1,3), Random[Debris](1,3), Random[Debris](0,360), SXF_CLIENTSIDE);
+		"####" A 0 A_SpawnItemEx("FallingMetlFrac1", Random[Debris](2,-2), Random[Debris](2,-2), Random[Debris](0,4), Random[Debris](1,3), Random[Debris](1,3), Random[Debris](1,3), Random[Debris](0,360), SXF_CLIENTSIDE);
+		"####" A 1 A_SpawnItemEx("FallingMetlFrac2", Random[Debris](2,-2), Random[Debris](2,-2), Random[Debris](0,4), Random[Debris](1,3), Random[Debris](1,3), Random[Debris](1,3), Random[Debris](0,360), SXF_CLIENTSIDE);
 		Stop;
 	}
 }
@@ -362,7 +362,7 @@ class FallingMetlFrac1 : FallingRockFrac1
 		"####" G 1 A_SetRoll(roll+8, SPF_INTERPOLATE,0);
 		Loop;
 	Death:
-		"####" "#" 1 A_SetScale(Scale.X * RandomPick(-1, 1), Scale.Y / 2);
+		"####" "#" 1 A_SetScale(Scale.X * RandomPick[Rocks](-1, 1), Scale.Y / 2);
 		"####" "#" 300;
 		"####" "#" 6 A_FadeOut;
 		Wait;

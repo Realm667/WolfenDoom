@@ -515,7 +515,7 @@ class CKPoisonSlug : CKBaseEnemy
 
 	void DoSlime()
 	{
-		if (Random() > 16) { return; }
+		if (Random[Keen]() > 16) { return; }
 
 		A_StartSound("ckeen/slugpoo");
 		Actor slime = Spawn("CKPoisonSlugPoison", pos);
@@ -888,7 +888,7 @@ class CKPCKFSign1 : CKExitSign1
 	States
 	{
 	Spawn:
-		PCK1 BBAA 1 A_SetTics(random(4,8));
+		PCK1 BBAA 1 A_SetTics(Random[Keen](4,8));
 		Loop;
 	}
 }

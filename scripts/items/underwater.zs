@@ -42,8 +42,8 @@ class BoAUnderwater : CustomInventory
 		{
 			if(owner.waterlevel >= 3 && boa_bubbleswitch) //check also stored cvar for custom tweaks
 			{
-				Actor bubble = Spawn("PlayerBubble", owner.pos + (Random(4, 8), 0, Random(48, 52)));
-				if (bubble) { bubble.angle = Random(0, 359); }
+				Actor bubble = Spawn("PlayerBubble", owner.pos + (Random[Underwater](4, 8), 0, Random[Underwater](48, 52)));
+				if (bubble) { bubble.angle = Random[Underwater](0, 359); }
 			}
 		}
 
@@ -58,7 +58,7 @@ class BoAUnderwater : CustomInventory
 				//  Note:  Should really just be a local sound, but local sounds apparently can't be stopped with A_StopSound,
 				//  so the "underwtr" sound is set up with a 8-16 unit log attenuation in SNDINFO to get a similar effect...
 				owner.A_StartSound("underwtr", 10, CHANF_LOOP, 0.25, ATTN_NORM);
-				underwatertimer = Random(90, 127);
+				underwatertimer = Random[Underwater](90, 127);
 			}
 			else if (owner.waterlevel < 3 && oldwaterlevel >= 3)
 			{

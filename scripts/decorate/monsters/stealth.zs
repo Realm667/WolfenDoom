@@ -104,7 +104,7 @@ class MGTurretStealth : MGTurret
 	{
 	Missile: //This 'turret' fires and reloads like an MP40 Guard
 		"####" A 5 { A_FaceTarget(); A_StartSound("nazi/mp40", CHAN_WEAPON); }
-		"####" B 4 A_SpawnProjectile("EnemySMGTracer",24,4,random(-8,8));
+		"####" B 4 A_SpawnProjectile("EnemySMGTracer",24,4, Random[Tracer](-8,8));
 		"####" A 0 {user_count++; if(user_count > 39) {user_count = 0; return ResolveState("Reload");} return ResolveState(null);}
 		"####" C 2 A_MonsterRefire(10, "See");
 		Loop;

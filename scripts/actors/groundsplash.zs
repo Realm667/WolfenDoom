@@ -44,7 +44,7 @@ class SplashParticleBase : SimpleActor
 	override void PostBeginPlay()
 	{
 		Super.PostBeginPlay();
-		Roll = frandom(0.0, 360.0);
+		Roll = FRandom[Splash](0.0, 360.0);
 	}
 
 	void A_CheckGround()
@@ -76,7 +76,7 @@ class SoilSplashParticle : SplashParticleBase
 		// Apply gravity and add roll
 		if (!Level.isFrozen())
 		{
-			Roll += frandom(1.0, 3.0);
+			Roll += FRandom[Splash](1.0, 3.0);
 			Vel.Z -= GetGravity();
 		}
 	}
@@ -112,7 +112,7 @@ class SandSplashParticle : SplashParticleBase
 	Flight:
 		"####" "#" 1 {
 			Scale *= 1.0625;
-			Roll += frandom(1.0, 3.0);
+			Roll += FRandom[Splash](1.0, 3.0);
 			A_FadeOut(0.03125, FTF_REMOVE);
 		}
 		Loop;
@@ -163,8 +163,8 @@ class GroundSplashBase : Actor
 
 	virtual void SetParticleVelocity(Actor particle, double radius, double endradius, double pangle, double angleDiff, int curHeight = 0)
 	{
-		particle.VelFromAngle(radius, pangle + frandom(-angleDiff / 2, angleDiff / 2));
-		particle.Vel.Z = ((curHeight + 1) * 3) * cos(60 * (radius / endradius)) + frandom(-1.0, 1.0);
+		particle.VelFromAngle(radius, pangle + FRandom[Splash](-angleDiff / 2, angleDiff / 2));
+		particle.Vel.Z = ((curHeight + 1) * 3) * cos(60 * (radius / endradius)) + FRandom[Splash](-1.0, 1.0);
 	}
 
 	// Spawn an alternative ground splash
@@ -284,7 +284,7 @@ class SandGroundSplashSmall : GroundSplashBase
 
 	override void SetParticleVelocity(Actor particle, double radius, double endradius, double pangle, double angleDiff, int curHeight)
 	{
-		particle.Vel3DFromAngle(3, pangle + frandom(-angleDiff / 2, angleDiff / 2), -1);
+		particle.Vel3DFromAngle(3, pangle + FRandom[Splash](-angleDiff / 2, angleDiff / 2), -1);
 	}
 }
 

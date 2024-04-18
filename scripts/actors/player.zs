@@ -159,14 +159,14 @@ class BoAPlayer : PlayerPawn
 		"####" # 0 A_Jump(256, "SpawnLoop");
 	Pain.Numbness:
 		"####" G 0 {
-			A_GiveInventory("CurseNumbness", Random(25, 50));
-			A_GiveInventory("BlurShaderControl", Random(25, 50));
+			A_GiveInventory("CurseNumbness", Random[Effect](25, 50));
+			A_GiveInventory("BlurShaderControl", Random[Effect](25, 50));
 		}
 		"####" # 0 A_Jump(256, "Pain");
 	Pain.Electric:
 		"####" G 0 {
-			A_SetBlend("White", FRandom(3.25, 7.25), Random(1, 4));
-			A_GiveInventory("BlurShaderControl", Random(5, 10));
+			A_SetBlend("White", FRandom[Lightning](3.25, 7.25), Random[Effect](1, 4));
+			A_GiveInventory("BlurShaderControl", Random[Effect](5, 10));
 		}
 	Pain:
 		"####" G 0 ACS_NamedExecuteWithResult("PlayerFlinch", flinchfactor);
@@ -182,7 +182,7 @@ class BoAPlayer : PlayerPawn
 		"####" G 0 A_StartSound("astrostein/guard_death");
 		"####" G 5 A_PlayerScream();
 		"####" G 0 A_NoBlocking;
-		"####" G 0 A_SpawnItemEx("BaseLineSpawner", random(16, -16), random(16, -16), random(0, 8), 0, 0, random(1,3), 0, 129, 0);
+		"####" G 0 A_SpawnItemEx("BaseLineSpawner", Random[Effect](16, -16), Random[Effect](16, -16), Random[Effect](0, 8), 0, 0, Random[Effect](1,3), 0, 129, 0);
 		"####" GGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGG 1 A_FadeOut(0.02,0);
 		TNT1 A -1 A_SetTranslucent(1);
 		Stop;
@@ -196,16 +196,16 @@ class BoAPlayer : PlayerPawn
 		"####" N -1;
 		Stop;
 	Death.Fire:
-		"####" # 0 {sprite = GetSpriteIndex(Random() < 128 ? "BURN" : "NRUB");}
+		"####" # 0 {sprite = GetSpriteIndex(Random[Effect]() < 128 ? "BURN" : "NRUB");}
 		"####" A 5 Bright Light("ITBURNS1") { A_Wander(); }
-		"####" BC 5 Bright Light("ITBURNS1") { A_Wander(); CinderSpawner.SpawnCinder(self); A_SpawnItemEx("BodySmoke", random(-3,3), random(-3,3), random(0,56), 0, 0, frandom(0.2,1.0)); }
+		"####" BC 5 Bright Light("ITBURNS1") { A_Wander(); CinderSpawner.SpawnCinder(self); A_SpawnItemEx("BodySmoke", Random[Smoke](-3,3), Random[Smoke](-3,3), Random[Smoke](0,56), 0, 0, FRandom[Smoke](0.2,1.0)); }
 		"####" D 5 Bright Light("ITBURNS1") { A_Wander(); A_StartSound("death/burning"); }
-		"####" E 5 Bright Light("ITBURNS1") { A_Wander(); CinderSpawner.SpawnCinder(self); A_SpawnItemEx("BodySmoke", random(-3,3), random(-3,3), random(0,56), 0, 0, frandom(0.2,1.0)); }
-		"####" FABCD 5 Bright Light("ITBURNS2") { A_Wander(); CinderSpawner.SpawnCinder(self); A_SpawnItemEx("BodySmoke", random(-3,3), random(-3,3), random(0,56), 0, 0, frandom(0.2,1.0)); }
+		"####" E 5 Bright Light("ITBURNS1") { A_Wander(); CinderSpawner.SpawnCinder(self); A_SpawnItemEx("BodySmoke", Random[Smoke](-3,3), Random[Smoke](-3,3), Random[Smoke](0,56), 0, 0, FRandom[Smoke](0.2,1.0)); }
+		"####" FABCD 5 Bright Light("ITBURNS2") { A_Wander(); CinderSpawner.SpawnCinder(self); A_SpawnItemEx("BodySmoke", Random[Smoke](-3,3), Random[Smoke](-3,3), Random[Smoke](0,56), 0, 0, FRandom[Smoke](0.2,1.0)); }
 		"####" EFAG 5 Bright Light("ITBURNS3") A_Wander();
 		"####" H 5 Bright Light("ITBURNS3") A_Wander();
-		"####" IJK 5 Bright Light("ITBURNS2") { CinderSpawner.SpawnCinder(self, p: (frandom(-8,8),frandom(-8,8),frandom(0,16))); A_SpawnItemEx("BodySmoke", random(-3,3), random(-3,3), random(0,56), 0, 0, frandom(0.2,1.0)); }
-		"####" LMN 5 Bright Light("ITBURNS1") { CinderSpawner.SpawnCinder(self, p: (frandom(-8,8),frandom(-8,8),frandom(0,8))); A_SpawnItemEx("BodySmoke", random(-3,3), random(-3,3), random(0,56), 0, 0, frandom(0.2,1.0)); }
+		"####" IJK 5 Bright Light("ITBURNS2") { CinderSpawner.SpawnCinder(self, p: (FRandom[Cinder](-8,8), FRandom[Cinder](-8,8), FRandom[Cinder](0,16))); A_SpawnItemEx("BodySmoke", Random[Smoke](-3,3), Random[Smoke](-3,3), Random[Smoke](0,56), 0, 0, FRandom[Smoke](0.2,1.0)); }
+		"####" LMN 5 Bright Light("ITBURNS1") { CinderSpawner.SpawnCinder(self, p: (FRandom[Cinder](-8,8), FRandom[Cinder](-8,8), FRandom[Cinder](0,8))); A_SpawnItemEx("BodySmoke", Random[Smoke](-3,3), Random[Smoke](-3,3), Random[Smoke](0,56), 0, 0, FRandom[Smoke](0.2,1.0)); }
 		"####" A 0 A_SpawnItemEx("BodySmokeSpawner", 0, 0, 0, 0, 0, 0, 0, SXF_SETMASTER);
 	Death.Fire.Smoke:
 		"####" O 0 A_Jump(32,"Death.Fire.End");
@@ -218,15 +218,15 @@ class BoAPlayer : PlayerPawn
 		"####" O -1;
 		Stop;
 	Death.Electric:
-		"####" # 0 {sprite = GetSpriteIndex(Random() < 128 ? "FIZZ" : "ZZIF");}
+		"####" # 0 {sprite = GetSpriteIndex(Random[Effect]() < 128 ? "FIZZ" : "ZZIF");}
 		"####" # 0 A_RadiusGive("BlurShaderControl", 192, RGF_PLAYERS | RGF_GIVESELF, 80);
 		"####" A 5 Bright Light("TPortNormal");
-		"####" BA 5 Bright Light("TPortNormal") A_SpawnItemEx("BodySmoke", random(-3,3), random(-3,3), random(0,56), 0, 0, frandom(0.2,1.0));
-		"####" B 5 Bright Light("TPortNormal") { A_StartSound("death/burning"); A_SpawnItemEx("BodySmoke", random(-3,3), random(-3,3), random(0,56), 0, 0, frandom(0.2,1.0)); }
-		"####" AABAB 5 Bright Light("TPortNormal") A_SpawnItemEx("BodySmoke", random(-3,3), random(-3,3), random(0,56), 0, 0, frandom(0.2,1.0));
+		"####" BA 5 Bright Light("TPortNormal") A_SpawnItemEx("BodySmoke", Random[Smoke](-3,3), Random[Smoke](-3,3), Random[Smoke](0,56), 0, 0, FRandom[Smoke](0.2,1.0));
+		"####" B 5 Bright Light("TPortNormal") { A_StartSound("death/burning"); A_SpawnItemEx("BodySmoke", Random[Smoke](-3,3), Random[Smoke](-3,3), Random[Smoke](0,56), 0, 0, FRandom[Smoke](0.2,1.0)); }
+		"####" AABAB 5 Bright Light("TPortNormal") A_SpawnItemEx("BodySmoke", Random[Smoke](-3,3), Random[Smoke](-3,3), Random[Smoke](0,56), 0, 0, FRandom[Smoke](0.2,1.0));
 		"####" C 7 Light("TPortNormal");
-		"####" DE 6 Light("TPortNormal") A_SpawnItemEx("BodySmoke", random(-3,3), random(-3,3), random(0,56), 0, 0, frandom(0.2,1.0));
-		"####" FG 5 A_SpawnItemEx("BodySmoke", random(-3,3), random(-3,3), random(0,56), 0, 0, frandom(0.2,1.0));
+		"####" DE 6 Light("TPortNormal") A_SpawnItemEx("BodySmoke", Random[Smoke](-3,3), Random[Smoke](-3,3), Random[Smoke](0,56), 0, 0, FRandom[Smoke](0.2,1.0));
+		"####" FG 5 A_SpawnItemEx("BodySmoke", Random[Smoke](-3,3), Random[Smoke](-3,3), Random[Smoke](0,56), 0, 0, FRandom[Smoke](0.2,1.0));
 		"####" A 0 A_SpawnItemEx("BodySmokeSpawner", 0, 0, 0, 0, 0, 0, 0, SXF_SETMASTER);
 	Death.Electric.Smoke:
 		"####" H 0 A_Jump(32,"Death.Electric.End");
@@ -1488,7 +1488,7 @@ class FireBrandEffect : PlayerEffect
 			TNT1 A 4 NODELAY Light("ITBURNSOC1");
 			TNT1 A 4 Light("ITBURNSOC2");
 		SpawnLoop:
-			TNT1 A 4 Light("ITBURNSOC3") A_SetTics(Random(1, 8));
+			TNT1 A 4 Light("ITBURNSOC3") A_SetTics(Random[Effect](1, 8));
 			Loop;
 	}
 }

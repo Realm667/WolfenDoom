@@ -41,7 +41,7 @@ class FireExtinguisher : ExplosiveBarrel
 		Stop;
 	Death:
 		"####" A 0 A_SpawnItemEx("GeneralExplosion_Medium",0,0,32);
-		"####" AAAAAA 0 A_SpawnItemEx("Debris_Metal1", random(0,8), random(0,8), random(16,32), random(1,3), random(1,3), random(1,3), random(0,360), SXF_CLIENTSIDE);
+		"####" AAAAAA 0 A_SpawnItemEx("Debris_Metal1", Random[Debris](0,8), Random[Debris](0,8), Random[Debris](16,32), Random[Debris](1,3), Random[Debris](1,3), Random[Debris](1,3), Random[Debris](0,360), SXF_CLIENTSIDE);
 		"####" A 6 A_Scream;
 		Stop;
 	}
@@ -66,7 +66,7 @@ class GasBottle : FireExtinguisher
 		"####" A 3 A_Jump(64,2);
 		"####" A 3;
 		"####" A 0 A_SpawnItemEx("GeneralExplosion_Medium");
-		"####" AAAAAA 0 A_SpawnItemEx("Debris_Metal1", random(0,8), random(0,8), random(16,32), random(1,3), random(1,3), random(1,3), random(0,360), SXF_CLIENTSIDE);
+		"####" AAAAAA 0 A_SpawnItemEx("Debris_Metal1", Random[Debris](0,8), Random[Debris](0,8), Random[Debris](16,32), Random[Debris](1,3), Random[Debris](1,3), Random[Debris](1,3), Random[Debris](0,360), SXF_CLIENTSIDE);
 		"####" A 6 A_Scream;
 		Stop;
 	}
@@ -123,7 +123,7 @@ class FlakShellHE : GasBottle
 		"####" A 3;
 		"####" A 0 A_SpawnItemEx("GeneralExplosion_Large");
 		"####" A 0 A_Explode(64, 320); // HE effect
-		"####" AAAAAAAAAAAAAA 0 A_SpawnItemEx("Debris_Metal1", random(0,8), random(0,8), random(16,32), random(1,3), random(1,3), random(1,3), random(0,360), SXF_CLIENTSIDE);
+		"####" AAAAAAAAAAAAAA 0 A_SpawnItemEx("Debris_Metal1", Random[Debris](0,8), Random[Debris](0,8), Random[Debris](16,32), Random[Debris](1,3), Random[Debris](1,3), Random[Debris](1,3), Random[Debris](0,360), SXF_CLIENTSIDE);
 		"####" A 6 A_Scream;
 		Stop;
 	}

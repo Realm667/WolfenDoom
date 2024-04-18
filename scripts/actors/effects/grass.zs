@@ -39,8 +39,8 @@ class Grass1 : GrassBase
 	{
 		Super.PostBeginPlay();
 
-		scale *= FRandom(0.9, 1.1);
-		scale.x *= RandomPick(-1, 1);
+		scale *= FRandom[Grass](0.9, 1.1);
+		scale.x *= RandomPick[Grass](-1, 1);
 	}
 }
 
@@ -209,18 +209,18 @@ class NiceBush1 : Grass1
 	{
 		A_UnSetSolid();
 		A_StartSound("GRASBRKS", CHAN_AUTO, 0, frandom (0.5,0.8), ATTN_NORM);
-		A_SpawnItemEx("Debris_LeafY", random(0,4), random(0,8), random(0,24), random(1,3), random(1,3), random(1,3), random(0,360), SXF_CLIENTSIDE);
-		A_SpawnItemEx("Debris_LeafW", random(0,4), random(0,8), random(0,24), random(1,3), random(1,3), random(1,3), random(0,360), SXF_CLIENTSIDE);
-		A_SpawnItemEx("Debris_LeafR", random(0,4), random(0,8), random(0,24), random(1,3), random(1,3), random(1,3), random(0,360), SXF_CLIENTSIDE);
+		A_SpawnItemEx("Debris_LeafY", Random[Grass](0,4), Random[Grass](0,8), Random[Grass](0,24), Random[Grass](1,3), Random[Grass](1,3), Random[Grass](1,3), Random[Grass](0,360), SXF_CLIENTSIDE);
+		A_SpawnItemEx("Debris_LeafW", Random[Grass](0,4), Random[Grass](0,8), Random[Grass](0,24), Random[Grass](1,3), Random[Grass](1,3), Random[Grass](1,3), Random[Grass](0,360), SXF_CLIENTSIDE);
+		A_SpawnItemEx("Debris_LeafR", Random[Grass](0,4), Random[Grass](0,8), Random[Grass](0,24), Random[Grass](1,3), Random[Grass](1,3), Random[Grass](1,3), Random[Grass](0,360), SXF_CLIENTSIDE);
 		if (fragments) { A_SpawnItemEx(fragments); }
 	}
 
 	virtual void PickVariant()
 	{
-		int spr = GetSpriteIndex("BUS" .. Random(1, 2));
+		int spr = GetSpriteIndex("BUS" .. Random[Grass](1, 2));
 		if (spr != -1) { sprite = spr; }
 
-		frame = Random(0, 3);
+		frame = Random[Grass](0, 3);
 	}
 
 	override void PostBeginPlay()
@@ -229,8 +229,8 @@ class NiceBush1 : Grass1
 
 		PickVariant();
 
-		scale *= FRandom(0.9, 1.1);
-		scale.x *= RandomPick(-1, 1);
+		scale *= FRandom[Grass](0.9, 1.1);
+		scale.x *= RandomPick[Grass](-1, 1);
 	}
 }
 
@@ -253,14 +253,14 @@ class NiceBush2 : NiceBush1
 	{
 		A_UnSetSolid();
 		A_StartSound("GRASBRKS", CHAN_AUTO, 0, frandom (0.5,0.8), ATTN_NORM);
-		A_SpawnItemEx("Debris_LeafY", random(0,4), random(0,8), random(0,24), random(1,3), random(1,3), random(1,3), random(0,360), SXF_CLIENTSIDE);
-		A_SpawnItemEx("Debris_LeafB", random(0,4), random(0,8), random(0,24), random(1,3), random(1,3), random(1,3), random(0,360), SXF_CLIENTSIDE);
+		A_SpawnItemEx("Debris_LeafY", Random[Grass](0,4), Random[Grass](0,8), Random[Grass](0,24), Random[Grass](1,3), Random[Grass](1,3), Random[Grass](1,3), Random[Grass](0,360), SXF_CLIENTSIDE);
+		A_SpawnItemEx("Debris_LeafB", Random[Grass](0,4), Random[Grass](0,8), Random[Grass](0,24), Random[Grass](1,3), Random[Grass](1,3), Random[Grass](1,3), Random[Grass](0,360), SXF_CLIENTSIDE);
 		if (fragments) { A_SpawnItemEx(fragments); }
 	}
 
 	override void PickVariant()
 	{
-		frame = Random(0, 3);
+		frame = Random[Grass](0, 3);
 	}
 }
 
@@ -284,13 +284,13 @@ class NiceBush3 : NiceBush1
 	{
 		A_UnSetSolid();
 		A_StartSound("GRASBRKS", CHAN_AUTO, 0, frandom (0.5,0.8), ATTN_NORM);
-		A_SpawnItemEx("Debris_LeafR", random(0,4), random(0,8), random(0,24), random(1,3), random(1,3), random(1,3), random(0,360), SXF_CLIENTSIDE);
+		A_SpawnItemEx("Debris_LeafR", Random[Grass](0,4), Random[Grass](0,8), Random[Grass](0,24), Random[Grass](1,3), Random[Grass](1,3), Random[Grass](1,3), Random[Grass](0,360), SXF_CLIENTSIDE);
 		if (fragments) { A_SpawnItemEx(fragments); }
 	}
 
 	override void PickVariant()
 	{
-		frame = Random(0, 3);
+		frame = Random[Grass](0, 3);
 	}
 }
 
@@ -313,13 +313,13 @@ class NiceBush4 : NiceBush1
 	{
 		A_UnSetSolid();
 		A_StartSound("GRASBRKS", CHAN_AUTO, 0, frandom (0.5,0.8), ATTN_NORM);
-		A_SpawnItemEx("Debris_LeafY", random(0,4), random(0,8), random(0,24), random(1,3), random(1,3), random(1,3), random(0,360), SXF_CLIENTSIDE);
+		A_SpawnItemEx("Debris_LeafY", Random[Grass](0,4), Random[Grass](0,8), Random[Grass](0,24), Random[Grass](1,3), Random[Grass](1,3), Random[Grass](1,3), Random[Grass](0,360), SXF_CLIENTSIDE);
 		if (fragments) { A_SpawnItemEx(fragments); }
 	}
 
 	override void PickVariant()
 	{
-		frame = Random(0, 3);
+		frame = Random[Grass](0, 3);
 	}
 }
 
@@ -343,13 +343,13 @@ class NiceBush5 : NiceBush1
 	{
 		A_UnSetSolid();
 		A_StartSound("GRASBRKS", CHAN_AUTO, 0, frandom (0.5,0.8), ATTN_NORM);
-		A_SpawnItemEx("Debris_LeafB", random(0,4), random(0,8), random(0,24), random(1,3), random(1,3), random(1,3), random(0,360), SXF_CLIENTSIDE);
+		A_SpawnItemEx("Debris_LeafB", Random[Grass](0,4), Random[Grass](0,8), Random[Grass](0,24), Random[Grass](1,3), Random[Grass](1,3), Random[Grass](1,3), Random[Grass](0,360), SXF_CLIENTSIDE);
 		if (fragments) { A_SpawnItemEx(fragments); }
 	}
 
 	override void PickVariant()
 	{
-		frame = Random(0, 3);
+		frame = Random[Grass](0, 3);
 	}
 }
 
@@ -372,13 +372,13 @@ class NiceBush6 : NiceBush1
 	{
 		A_UnSetSolid();
 		A_StartSound("GRASBRKS", CHAN_AUTO, 0, frandom (0.5,0.8), ATTN_NORM);
-		A_SpawnItemEx("Debris_Leaf", random(0,4), random(0,8), random(0,24), random(1,3), random(1,3), random(1,3), random(0,360), SXF_CLIENTSIDE);
+		A_SpawnItemEx("Debris_Leaf", Random[Grass](0,4), Random[Grass](0,8), Random[Grass](0,24), Random[Grass](1,3), Random[Grass](1,3), Random[Grass](1,3), Random[Grass](0,360), SXF_CLIENTSIDE);
 		if (fragments) { A_SpawnItemEx(fragments); }
 	}
 
 	override void PickVariant()
 	{
-		frame = Random(0, 3);
+		frame = Random[Grass](0, 3);
 	}
 }
 
@@ -406,14 +406,14 @@ class NiceBush7 : NiceBush1
 	{
 		A_UnSetSolid();
 		A_StartSound("GRASBRKS", CHAN_AUTO, 0, frandom (0.5,0.8), ATTN_NORM);
-		A_SpawnItemEx("Debris_LeafY", random(0,4), random(0,8), random(0,24), random(1,3), random(1,3), random(1,3), random(0,360), SXF_CLIENTSIDE);
-		A_SpawnItemEx("Debris_LeafW", random(0,4), random(0,8), random(0,24), random(1,3), random(1,3), random(1,3), random(0,360), SXF_CLIENTSIDE);
+		A_SpawnItemEx("Debris_LeafY", Random[Grass](0,4), Random[Grass](0,8), Random[Grass](0,24), Random[Grass](1,3), Random[Grass](1,3), Random[Grass](1,3), Random[Grass](0,360), SXF_CLIENTSIDE);
+		A_SpawnItemEx("Debris_LeafW", Random[Grass](0,4), Random[Grass](0,8), Random[Grass](0,24), Random[Grass](1,3), Random[Grass](1,3), Random[Grass](1,3), Random[Grass](0,360), SXF_CLIENTSIDE);
 		if (fragments) { A_SpawnItemEx(fragments); }
 	}
 
 	override void PickVariant()
 	{
-		frame = Random(0, 3);
+		frame = Random[Grass](0, 3);
 	}
 }
 
@@ -475,7 +475,7 @@ class Flower1 : Grass1
 	{
 		A_UnSetSolid();
 		A_StartSound("GRASBRKS", CHAN_AUTO, 0, frandom (0.5,0.8), ATTN_NORM);
-		for (int i = 0; i < 4; i++) { A_SpawnItemEx("Debris_LeafY", random(0,4), random(0,8), random(0,24), random(1,3), random(1,3), random(1,3), random(0,360), SXF_CLIENTSIDE); }
+		for (int i = 0; i < 4; i++) { A_SpawnItemEx("Debris_LeafY", Random[Grass](0,4), Random[Grass](0,8), Random[Grass](0,24), Random[Grass](1,3), Random[Grass](1,3), Random[Grass](1,3), Random[Grass](0,360), SXF_CLIENTSIDE); }
 		if (fragments) { A_SpawnItemEx(fragments); }
 	}
 
@@ -483,8 +483,8 @@ class Flower1 : Grass1
 	{
 		GrassBase.PostBeginPlay();
 
-		scale *= FRandom(0.8, 1.1);
-		scale.x *= RandomPick(-1, 1);
+		scale *= FRandom[Grass](0.8, 1.1);
+		scale.x *= RandomPick[Grass](-1, 1);
 	}
 }
 
@@ -507,7 +507,7 @@ class Flower2 : Flower1
 	{
 		A_UnSetSolid();
 		A_StartSound("GRASBRKS", CHAN_AUTO, 0, frandom (0.5,0.8), ATTN_NORM);
-		for (int i = 0; i < 4; i++) { A_SpawnItemEx("Debris_LeafW", random(0,4), random(0,8), random(0,24), random(1,3), random(1,3), random(1,3), random(0,360), SXF_CLIENTSIDE); }
+		for (int i = 0; i < 4; i++) { A_SpawnItemEx("Debris_LeafW", Random[Grass](0,4), Random[Grass](0,8), Random[Grass](0,24), Random[Grass](1,3), Random[Grass](1,3), Random[Grass](1,3), Random[Grass](0,360), SXF_CLIENTSIDE); }
 		if (fragments) { A_SpawnItemEx(fragments); }
 	}
 }
@@ -555,7 +555,7 @@ class Rose1 : Flower1
 	{
 		A_UnSetSolid();
 		A_StartSound("GRASBRKS", CHAN_AUTO, 0, frandom (0.5,0.8), ATTN_NORM);
-		for (int i = 0; i < 4; i++) { A_SpawnItemEx("Debris_LeafR", random(0,4), random(0,8), random(0,24), random(1,3), random(1,3), random(1,3), random(0,360), SXF_CLIENTSIDE); }
+		for (int i = 0; i < 4; i++) { A_SpawnItemEx("Debris_LeafR", Random[Grass](0,4), Random[Grass](0,8), Random[Grass](0,24), Random[Grass](1,3), Random[Grass](1,3), Random[Grass](1,3), Random[Grass](0,360), SXF_CLIENTSIDE); }
 		if (fragments) { A_SpawnItemEx(fragments); }
 	}
 }
@@ -579,7 +579,7 @@ class Rose2 : Flower1
 	{
 		A_UnSetSolid();
 		A_StartSound("GRASBRKS", CHAN_AUTO, 0, frandom (0.5,0.8), ATTN_NORM);
-		for (int i = 0; i < 4; i++) { A_SpawnItemEx("Debris_LeafY", random(0,4), random(0,8), random(0,24), random(1,3), random(1,3), random(1,3), random(0,360), SXF_CLIENTSIDE); }
+		for (int i = 0; i < 4; i++) { A_SpawnItemEx("Debris_LeafY", Random[Grass](0,4), Random[Grass](0,8), Random[Grass](0,24), Random[Grass](1,3), Random[Grass](1,3), Random[Grass](1,3), Random[Grass](0,360), SXF_CLIENTSIDE); }
 		if (fragments) { A_SpawnItemEx(fragments); }
 	}
 }
@@ -603,7 +603,7 @@ class Rose3 : Flower1
 	{
 		A_UnSetSolid();
 		A_StartSound("GRASBRKS", CHAN_AUTO, 0, frandom (0.5,0.8), ATTN_NORM);
-		for (int i = 0; i < 4; i++) { A_SpawnItemEx("Debris_LeafB", random(0,4), random(0,8), random(0,24), random(1,3), random(1,3), random(1,3), random(0,360), SXF_CLIENTSIDE); }
+		for (int i = 0; i < 4; i++) { A_SpawnItemEx("Debris_LeafB", Random[Grass](0,4), Random[Grass](0,8), Random[Grass](0,24), Random[Grass](1,3), Random[Grass](1,3), Random[Grass](1,3), Random[Grass](0,360), SXF_CLIENTSIDE); }
 		if (fragments) { A_SpawnItemEx(fragments); }
 	}
 }

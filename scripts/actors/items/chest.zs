@@ -223,7 +223,7 @@ class BoASupplyChest : Actor
 			}
 			else // Pick a random offset from center of the actor
 			{
-				offset = (FRandom(-d, d), FRandom(-w, w));
+				offset = (FRandom[Chest](-d, d), FRandom[Chest](-w, w));
 			}
 
 			// Rotate the coordinates to align them with the chest's angle.

@@ -53,13 +53,13 @@ Class LightningPuff : Actor
 
 	void A_SpawnSparks()
 	{
-		if (Random(0, 6)) { return; }
+		if (Random[Lightning](0, 6)) { return; }
 
-		for (int s = 1; s < Random(2, 5); s++)
+		for (int s = 1; s < Random[Lightning](2, 5); s++)
 		{
 			// Spawn random white or yellow sparks
-	 		Actor mo = A_SpawnProjectile(String.Format("Spark%c", RandomPick("W", "Y")), -1, 0, Random(-45, 45), CMF_AIMDIRECTION, 270 - pitch + FRandom(-45, 45));
-			if (mo) { mo.scale *= FRandom(0.5, 1.0); }
+	 		Actor mo = A_SpawnProjectile(String.Format("Spark%c", RandomPick[Spark]("W", "Y")), -1, 0, Random[Lightning](-45, 45), CMF_AIMDIRECTION, 270 - pitch + FRandom[Lightning](-45, 45));
+			if (mo) { mo.scale *= FRandom[Lightning](0.5, 1.0); }
 		}
 	}
 }
@@ -164,7 +164,7 @@ Class LightningBeam : Actor
 		if (master) { origin = master; }
 		else { origin = self; }
 
-		Choke = random(ChokeMin, ChokeMax);
+		Choke = Random[Lightning](ChokeMin, ChokeMax);
 
 		StepDistance = Random[steps](5, 7) * stepfactor;
 
@@ -208,7 +208,7 @@ Class LightningBeam : Actor
 		let def = GetDefaultByType(trailclass);
 		if (!def) { return; }
 
-		if (master && master.radius && def.damage) { master.A_CustomBulletAttack(angle - master.angle, 0, 1, def ? int(def.Damage) : Random(0, 1), MovingTrailBeam(def) ? MovingTrailBeam(def).puff : "LightningPuff", master.radius * 4, CBAF_AIMFACING | CBAF_EXPLICITANGLE); }
+		if (master && master.radius && def.damage) { master.A_CustomBulletAttack(angle - master.angle, 0, 1, def ? int(def.Damage) : Random[Lightning](0, 1), MovingTrailBeam(def) ? MovingTrailBeam(def).puff : "LightningPuff", master.radius * 4, CBAF_AIMFACING | CBAF_EXPLICITANGLE); }
 
 		Actor prev;
 
@@ -252,7 +252,7 @@ Class LightningBeam : Actor
 				}
 				else if (CurDistance < (MaxDistance - StepDistance * 3))
 				{
-					Choke = Random(ChokeMin, ChokeMax);
+					Choke = Random[Lightning](ChokeMin, ChokeMax);
 				}
 
 				// Spawn a split from the main beam
@@ -261,8 +261,8 @@ Class LightningBeam : Actor
 					t = Spawn(GetClass(), pos + (RotateVector((cos(pitch), 0), angle), -sin(pitch)));
 					if (t) {
 						t.master = master;
-						t.pitch = FRandom(pitch - PitchRandom, pitch + PitchRandom);
-						t.angle = FRandom(angle - AngleRandom, angle + AngleRandom);
+						t.pitch = FRandom[Lightning](pitch - PitchRandom, pitch + PitchRandom);
+						t.angle = FRandom[Lightning](angle - AngleRandom, angle + AngleRandom);
 						t.tracer = tracer;
 						LightningBeam(t).AimPoint = AimPoint;
 						LightningBeam(t).MaxDistance = 32;
@@ -351,7 +351,7 @@ Class LightningBeam : Actor
 	{
 		for (Actor mo = cur.thinglist; mo != null; mo = mo.snext)
 		{
-			if (mo.waterlevel > 0 && mo.bShootable) { mo.DamageMobj(self, self, damage > 0 ? damage : Random(0, 2), "Electric"); }
+			if (mo.waterlevel > 0 && mo.bShootable) { mo.DamageMobj(self, self, damage > 0 ? damage : Random[Lightning](0, 2), "Electric"); }
 		}
 	}
 
@@ -421,7 +421,7 @@ Class LightningBeam2 : LightningBeam
 			origin = master;
 		}
 
-		Choke = random(ChokeMin, ChokeMax);
+		Choke = Random[Lightning](ChokeMin, ChokeMax);
 
 		StepDistance = Random[steps](1, 2) * stepfactor;
 
@@ -699,7 +699,7 @@ Class MovingTrailBeam : Actor
 				{
 					// If we passed a double in for damage amount, fudge the actual damage to get closer to that number on average
 					int part = int((damage - dmg) * 100);
-					dmg = dmg + !!(Random(0, 100) < part);
+					dmg = dmg + !!(Random[Lightning](0, 100) < part);
 				}
 
 				// Used to make all individual bolt segments leave decals and cause damage

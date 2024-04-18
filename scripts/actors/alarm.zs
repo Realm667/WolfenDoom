@@ -226,7 +226,7 @@ class AlarmPanel : SwitchableDecoration
 				for (int s = 1; s < 17; s++)
 				{
 					// Spawn 16 random orange, white, or yellow sparks
-			 		A_SpawnProjectile(String.Format("Spark%c", RandomPick("O", "W", "Y")), 40 + Random(-12, 12), Random(-16, 16), 0, CMF_AIMDIRECTION | CMF_BADPITCH, Random(157,203));
+			 		A_SpawnProjectile(String.Format("Spark%c", RandomPick[Spark]("O", "W", "Y")), 40 + Random[Alarm](-12, 12), Random[Alarm](-16, 16), 0, CMF_AIMDIRECTION | CMF_BADPITCH, Random[Alarm](157,203));
 				}
 			}
 			ALRM # -1;
@@ -449,7 +449,7 @@ class AlarmSpawner : ActorSpawner
 					}
 				}
 
-				if (Base(guard)) { Base(guard).despawntime = Random(35 * 30, 35 * 120); } //  Wait 30 seconds to 2 minutes before there's a chance to disappear
+				if (Base(guard)) { Base(guard).despawntime = Random[Alarm](35 * 30, 35 * 120); } //  Wait 30 seconds to 2 minutes before there's a chance to disappear
 
 				Spawns.Push(guard);
 			}

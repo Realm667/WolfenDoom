@@ -70,7 +70,7 @@ class LaserShooter : EffectSpawner
 
 		range = max(range, beamdistance + 512);
 
-		interval = Random(0, 35);
+		interval = Random[Laser](0, 35);
 
 		if (bDormant || SpawnFlags & MTF_DORMANT) { Deactivate(null); }
 		else { Activate(null); }
@@ -152,7 +152,7 @@ class LaserShooterNF : LaserShooter
 
 		if (flare2)
 		{
-			flare2.frame = Random(0, 5);
+			flare2.frame = Random[Laser](0, 5);
 			flare2.alpha = flare2.Default.alpha * alpha;
 		}
 	}
@@ -295,7 +295,7 @@ class Laser : Actor
 
 			beam.pitch = origin.pitch - 90;
 			beam.angle = origin.angle;
-			beam.scale.x = FRandom(0.5, 0.75);
+			beam.scale.x = FRandom[Laser](0.5, 0.75);
 			beam.scale.y = dist * 2.225;
 			beam.alpha = beam.Default.alpha * alpha;
 		}
@@ -313,7 +313,7 @@ class Laser : Actor
 		{
 			flare.SetXYZ(traceresults.HitPos);
 
-			flare.frame = Random(0, 5);
+			flare.frame = Random[Laser](0, 5);
 			flare.alpha = flare.Default.alpha * alpha;
 			flare.angle = flare.AngleTo(origin);
 		}
@@ -340,7 +340,7 @@ class Laser : Actor
 					{
 						puff.master = origin;
 						puff.angle = origin.AngleTo(puff);
-						if (drawdecal && !Random(0, 16)) { puff.A_SprayDecal("LaserBeamScorch", 24.0); }
+						if (drawdecal && !Random[Laser](0, 16)) { puff.A_SprayDecal("LaserBeamScorch", 24.0); }
 						puff.angle = puff.AngleTo(origin);
 					}
 				}
@@ -517,7 +517,7 @@ class BigLaserFlare : EffectSpawner
 
 		if (!master) { Destroy(); }
 
-		frame = Random(0, 5);
+		frame = Random[Laser](0, 5);
 	}
 
 	override void PostBeginPlay()
@@ -533,9 +533,9 @@ class BigLaserFlare : EffectSpawner
 
 		Super.SpawnEffect();
 
-		A_SpawnitemEx("SparkFlareW",FRandom(0, 2), FRandom(-2, 2), FRandom(-2, 2), FRandom(-2, 2), FRandom(-2, 2), FRandom(-2, 2), 0, SXF_ISTRACER | SXF_SETMASTER | SXF_NOCHECKPOSITION);
-		A_SpawnItemEx("LaserSpark", FRandom(0, 4), FRandom(-4, 4), FRandom(-4, 4), FRandom(-2, 2), FRandom(-2, 2), FRandom(-2, 2));
-		A_SpawnItemEx("LaserSmoke", FRandom(0, 4), FRandom(-4, 4), FRandom(-4, 4), 0, 0, FRandom(2.5, 3.5));
+		A_SpawnitemEx("SparkFlareW", FRandom[Spark](0, 2), FRandom[Spark](-2, 2), FRandom[Spark](-2, 2), FRandom[Spark](-2, 2), FRandom[Spark](-2, 2), FRandom[Spark](-2, 2), 0, SXF_ISTRACER | SXF_SETMASTER | SXF_NOCHECKPOSITION);
+		A_SpawnItemEx("LaserSpark", FRandom[Spark](0, 4), FRandom[Spark](-4, 4), FRandom[Spark](-4, 4), FRandom[Spark](-2, 2), FRandom[Spark](-2, 2), FRandom[Spark](-2, 2));
+		A_SpawnItemEx("LaserSmoke", FRandom[Spark](0, 4), FRandom[Spark](-4, 4), FRandom[Spark](-4, 4), 0, 0, FRandom[Spark](2.5, 3.5));
 	}
 }
 
@@ -620,10 +620,10 @@ class LaserSmoke : PuffSmoke
 	{
 		Super.PostBeginPlay();
 
-		scale.x *= FRandom(0.7, 1.0);
-		scale.y *= FRandom(0.7, 1.0);
+		scale.x *= FRandom[Smoke](0.7, 1.0);
+		scale.y *= FRandom[Smoke](0.7, 1.0);
 
-		int spr = GetSpriteIndex("GRM" .. Random(1, 3));
+		int spr = GetSpriteIndex("GRM" .. Random[Laser](1, 3));
 		if (spr != -1) { sprite = spr; }
 	}
 }
@@ -649,7 +649,7 @@ class LaserPuff : Actor
 			}
 			AMRK A 2 {
 				// Spawn random spark
-		 		A_SpawnProjectile(String.Format("Spark%c", RandomPick("W", "Y")), 0, 0, 0, CMF_AIMDIRECTION, Random(-157, -203));
+		 		A_SpawnProjectile(String.Format("Spark%c", RandomPick[Spark]("W", "Y")), 0, 0, 0, CMF_AIMDIRECTION, Random[Laser](-157, -203));
 			}
 			Stop;
 	}

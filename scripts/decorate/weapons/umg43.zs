@@ -71,25 +71,25 @@ class UMG43 : NaziWeapon
 		UMGG A 0 A_GunFlash("Flash1A");
 		UMGG A 0 A_SetPitch(pitch-(0.34*boa_recoilamount));
 		UMGG A 0 A_StartSound("chaingun/fire", CHAN_WEAPON);
-		UMGG A 0 A_SpawnItemEx("Casing9mm",12,-20,32,8,random(-2,2),random(0,4),random(-55,-80),SXF_NOCHECKPOSITION);
-		UMGG E 1 Offset(0,34) A_FireProjectile("ChaingunTracer",frandom(-5.0,5.0),1,0,0,0,frandom(-3.0,3.0));
+		UMGG A 0 A_SpawnItemEx("Casing9mm",12,-20,32,8, Random[Weapon](-2,2), Random[Weapon](0,4), Random[Weapon](-55,-80),SXF_NOCHECKPOSITION);
+		UMGG E 1 Offset(0,34) A_FireProjectile("ChaingunTracer", FRandom[Weapon](-5.0,5.0),1,0,0,0, FRandom[Weapon](-3.0,3.0));
 		UMGG E 0 A_SetPitch(pitch-(0.34*boa_recoilamount));
 		UMGG E 0 A_JumpIf(waterlevel > 0,2);
-		UMGG E 0 A_FireProjectile("ChainSmokeSpawner",0,0,0,random(-4,4),0,0);
-		UMGG E 0 A_SpawnItemEx("Casing9mm",12,-20,32,8,random(-2,2),random(0,4),random(-55,-80),SXF_NOCHECKPOSITION);
-		UMGG F 1 Offset(0,36) A_FireProjectile("ChaingunTracer",frandom(-5,5),1,0,0,0,frandom(-3,3));
+		UMGG E 0 A_FireProjectile("ChainSmokeSpawner",0,0,0, Random[Weapon](-4,4),0,0);
+		UMGG E 0 A_SpawnItemEx("Casing9mm",12,-20,32,8, Random[Weapon](-2,2), Random[Weapon](0,4), Random[Weapon](-55,-80),SXF_NOCHECKPOSITION);
+		UMGG F 1 Offset(0,36) A_FireProjectile("ChaingunTracer", FRandom[Weapon](-5,5),1,0,0,0, FRandom[Weapon](-3,3));
 		UMGG F 0 A_GunFlash("Flash2A");
 		UMGG F 0 A_SetPitch(pitch-(0.34*boa_recoilamount));
 		UMGG F 0 A_JumpIf(waterlevel > 0,2);
-		UMGG F 0 A_FireProjectile("ChainSmokeSpawner",0,0,0,random(-4,4),0,0);
+		UMGG F 0 A_FireProjectile("ChainSmokeSpawner",0,0,0, Random[Weapon](-4,4),0,0);
 		UMGG F 0 A_StartSound("chaingun/fire", CHAN_WEAPON);
-		UMGG F 0 A_SpawnItemEx("Casing9mm",12,-20,32,8,random(-2,2),random(0,4),random(-55,-80),SXF_NOCHECKPOSITION);
-		UMGG G 1 Offset(0,37) A_FireProjectile("ChaingunTracer",frandom(-5.0,5.0),1,0,0,0,frandom(-3.0,3.0));
+		UMGG F 0 A_SpawnItemEx("Casing9mm",12,-20,32,8, Random[Weapon](-2,2), Random[Weapon](0,4), Random[Weapon](-55,-80),SXF_NOCHECKPOSITION);
+		UMGG G 1 Offset(0,37) A_FireProjectile("ChaingunTracer", FRandom[Weapon](-5.0,5.0),1,0,0,0, FRandom[Weapon](-3.0,3.0));
 		UMGG G 0 A_SetPitch(pitch-(0.34*boa_recoilamount));
 		UMGG G 0 A_JumpIf(waterlevel > 0,2);
-		UMGG G 0 A_FireProjectile("ChainSmokeSpawner",0,0,0,random(-4,4),0,0);
-		UMGG G 0 A_SpawnItemEx("Casing9mm",12,-20,32,8,random(-2,2),random(0,4),random(-55,-80),SXF_NOCHECKPOSITION);
-		UMGG H 1 Offset(0,35) A_FireProjectile("ChaingunTracer",frandom(-5,5),1,0,0,0,frandom(-3,3));
+		UMGG G 0 A_FireProjectile("ChainSmokeSpawner",0,0,0, Random[Weapon](-4,4),0,0);
+		UMGG G 0 A_SpawnItemEx("Casing9mm",12,-20,32,8, Random[Weapon](-2,2), Random[Weapon](0,4), Random[Weapon](-55,-80),SXF_NOCHECKPOSITION);
+		UMGG H 1 Offset(0,35) A_FireProjectile("ChaingunTracer", FRandom[Weapon](-5,5),1,0,0,0, FRandom[Weapon](-3,3));
 		UMGG E 1 A_Refire;
 		Goto FireFinish;
 	Flash1A:
@@ -112,25 +112,25 @@ class UMG43 : NaziWeapon
 		UMGG A 0 A_GunFlash("AltFlash1");
 		UMGG E 0 A_SetPitch(pitch-0.3*(boa_recoilamount));
 		UMGG A 0 A_StartSound("chaingun/altfire", CHAN_WEAPON);
-		UMGG AA 0 A_SpawnItemEx("Casing9mm",12,-20,32,8,random(-2,2),random(0,4),random(-55,-80),SXF_NOCHECKPOSITION);
+		UMGG AA 0 A_SpawnItemEx("Casing9mm",12,-20,32,8, Random[Weapon](-2,2), Random[Weapon](0,4), Random[Weapon](-55,-80),SXF_NOCHECKPOSITION);
 		UMGG E 1 {
-			A_FireProjectile("ChaingunTracer",frandom(-0.5,0.5),1,-2.0,0.0,0,frandom(-0.5,0.5));
-			A_FireProjectile("ChaingunTracer",frandom(-0.5,0.5),0,2.0,0.0,0,frandom(-0.5,0.5));
+			A_FireProjectile("ChaingunTracer", FRandom[Weapon](-0.5,0.5),1,-2.0,0.0,0, FRandom[Weapon](-0.5,0.5));
+			A_FireProjectile("ChaingunTracer", FRandom[Weapon](-0.5,0.5),0,2.0,0.0,0, FRandom[Weapon](-0.5,0.5));
 		}
 		UMGG E 0 A_JumpIf(waterlevel > 0,2);
-		UMGG E 0 A_FireProjectile("ChainSmokeSpawner",0,0,0,random(-4,4),0,0);
+		UMGG E 0 A_FireProjectile("ChainSmokeSpawner",0,0,0, Random[Weapon](-4,4),0,0);
 		UMGG E 2;
 		UMGG A 3;
 		UMGG A 0 A_GunFlash("AltFlash2");
 		UMGG A 0 A_SetPitch(pitch-0.6*(boa_recoilamount));
 		UMGG A 0 A_StartSound("chaingun/altfire", CHAN_WEAPON);
-		UMGG AA 0 A_SpawnItemEx("Casing9mm",12,-20,32,8,random(-2,2),random(0,4),random(-55,-80),SXF_NOCHECKPOSITION);
+		UMGG AA 0 A_SpawnItemEx("Casing9mm",12,-20,32,8, Random[Weapon](-2,2), Random[Weapon](0,4), Random[Weapon](-55,-80),SXF_NOCHECKPOSITION);
 		UMGG I 1 {
-			A_FireProjectile("ChaingunTracer",frandom(-0.5,0.5),0,0.0,2.0,0,frandom(-0.5,0.5));
-			A_FireProjectile("ChaingunTracer",frandom(-0.5,0.5),0,0.0,-2.0,0,frandom(-0.5,0.5));
+			A_FireProjectile("ChaingunTracer", FRandom[Weapon](-0.5,0.5),0,0.0,2.0,0, FRandom[Weapon](-0.5,0.5));
+			A_FireProjectile("ChaingunTracer", FRandom[Weapon](-0.5,0.5),0,0.0,-2.0,0, FRandom[Weapon](-0.5,0.5));
 		}
 		UMGG I 0 A_JumpIf(waterlevel > 0,2);
-		UMGG I 0 A_FireProjectile("ChainSmokeSpawner",0,0,0,random(-4,4),0,0);
+		UMGG I 0 A_FireProjectile("ChainSmokeSpawner",0,0,0, Random[Weapon](-4,4),0,0);
 		UMGG I 2;
 		UMGG A 3;
 		UMGG E 1 A_Refire;

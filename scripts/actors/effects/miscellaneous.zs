@@ -239,8 +239,8 @@ class TornadoSegment : Actor
 
 	override void PostBeginPlay()
 	{
-		angle = Random(0, 359);
-		timeoffset = Random(1, 360);
+		angle = Random[Tornado](0, 359);
+		timeoffset = Random[Tornado](1, 360);
 		frame = skinframe;
 		SpawnPoint = pos;
 
@@ -284,18 +284,18 @@ class TornadoSegment : Actor
 		{
 			if (dust)
 			{
-				Actor cloud = Spawn(dust, (SpawnPoint.xy + (Random(-radius, radius), Random(-radius, radius)), floorz));
-				if (cloud) { cloud.scale *= FRandom(0.5, 1.2); }
+				Actor cloud = Spawn(dust, (SpawnPoint.xy + (Random[Tornado](-radius, radius), Random[Tornado](-radius, radius)), floorz));
+				if (cloud) { cloud.scale *= FRandom[Tornado](0.5, 1.2); }
 			}
 
 			if (lightning)
 			{
-				Actor l = Spawn(lightning, pos + (Random(-radius, radius), Random(-radius, radius), 0));
+				Actor l = Spawn(lightning, pos + (Random[Tornado](-radius, radius), Random[Tornado](-radius, radius), 0));
 				if (l)
 				{
 					l.master = self;
-					l.angle = Random(0, 359);
-					l.pitch = Random(0, 359);
+					l.angle = Random[Tornado](0, 359);
+					l.pitch = Random[Tornado](0, 359);
 					LightningBeam(l).maxdistance = 256 * scale.x;
 				}
 			}
@@ -371,12 +371,12 @@ class ExplosionSphere : Actor
 					spark.A_SetRenderStyle(alpha, STYLE_AddShaded);
 					spark.SetShade(fillcolor);
 					spark.bMissile = true;
-					spark.A_SetTics(Random(30, 280));
-					spark.scale *= FRandom(0.125, 0.5);
-					spark.alpha *= FRandom(0.25, 1.0);
-					spark.speed = FRandom(1, 32);
-					spark.angle = FRandom(0, 359);
-					spark.pitch = FRandom(-30, 0);
+					spark.A_SetTics(Random[Spark](30, 280));
+					spark.scale *= FRandom[Spark](0.125, 0.5);
+					spark.alpha *= FRandom[Spark](0.25, 1.0);
+					spark.speed = FRandom[Spark](1, 32);
+					spark.angle = FRandom[Spark](0, 359);
+					spark.pitch = FRandom[Spark](-30, 0);
 
 					spark.Vel3DFromAngle(spark.speed, spark.angle, spark.pitch);
 
@@ -594,7 +594,7 @@ class BloodPool2 : ParticleBase
 
 	override void PostBeginPlay()
 	{
-		angle = FRandom(0.0, 360.0);
+		angle = FRandom[Gibs](0.0, 360.0);
 		CheckWaterLevel();
 
 		Super.PostBeginPlay();
@@ -604,7 +604,7 @@ class BloodPool2 : ParticleBase
 	{
 		if (waterlevel)
 		{
-			A_SpawnItemEx("BloodFog", 0, 0, 0, FRandom(-2.0, 2.0), FRandom(-2.0, 2.0), 0, 0, SXF_TRANSFERTRANSLATION);
+			A_SpawnItemEx("BloodFog", 0, 0, 0, FRandom[Gibs](-2.0, 2.0), FRandom[Gibs](-2.0, 2.0), 0, 0, SXF_TRANSFERTRANSLATION);
 
 			Destroy();
 		}
@@ -640,8 +640,8 @@ class PeePool : BloodPool2
 	override void PostBeginPlay()
 	{
 		// Random pool size and clarity
-		maxsize = FRandom(0.5, 0.8);
-		alpha *= FRandom(0.75, 1.25);
+		maxsize = FRandom[Gibs](0.5, 0.8);
+		alpha *= FRandom[Gibs](0.75, 1.25);
 
 		Super.PostBeginPlay();
 	}

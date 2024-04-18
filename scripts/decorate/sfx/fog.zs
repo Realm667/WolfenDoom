@@ -48,15 +48,15 @@ class FogCloud_Generator : SwitchableDecoration
 	Active:
 		TNT1 A 0 A_JumpIf(ARGS[0]!=0,"MaperInput");
 		TNT1 A 0 A_Jump(128,1,2);
-		TNT1 A 0 A_SpawnItemEx("FogCloud_V1", random(random(-96, 96), random(-64, 64)), 0, random(0, random(32, 48)), 0, 0, 0, random(0, 360), SXF_NOCHECKPOSITION | SXF_CLIENTSIDE | SXF_SETMASTER, 129, tid);
-		TNT1 A 0 A_SpawnItemEx("FogCloud_V2", random(random(-96, 96), random(-64, 64)), 0, random(0, random(32, 48)), 0, 0, 0, random(0, 360), SXF_NOCHECKPOSITION | SXF_CLIENTSIDE | SXF_SETMASTER, 129, tid);
-		TNT1 A 0 A_SpawnItemEx("FogCloud_V3", random(random(-96, 96), random(-64, 64)), 0, random(0, random(32, 48)), 0, 0, 0, random(0, 360), SXF_NOCHECKPOSITION | SXF_CLIENTSIDE | SXF_SETMASTER, 129, tid);
+		TNT1 A 0 A_SpawnItemEx("FogCloud_V1", Random[Smoke](Random[Smoke](-96, 96), Random[Smoke](-64, 64)), 0, Random[Smoke](0, Random[Smoke](32, 48)), 0, 0, 0, Random[Smoke](0, 360), SXF_NOCHECKPOSITION | SXF_CLIENTSIDE | SXF_SETMASTER, 129, tid);
+		TNT1 A 0 A_SpawnItemEx("FogCloud_V2", Random[Smoke](Random[Smoke](-96, 96), Random[Smoke](-64, 64)), 0, Random[Smoke](0, Random[Smoke](32, 48)), 0, 0, 0, Random[Smoke](0, 360), SXF_NOCHECKPOSITION | SXF_CLIENTSIDE | SXF_SETMASTER, 129, tid);
+		TNT1 A 0 A_SpawnItemEx("FogCloud_V3", Random[Smoke](Random[Smoke](-96, 96), Random[Smoke](-64, 64)), 0, Random[Smoke](0, Random[Smoke](32, 48)), 0, 0, 0, Random[Smoke](0, 360), SXF_NOCHECKPOSITION | SXF_CLIENTSIDE | SXF_SETMASTER, 129, tid);
 		Stop;
 	MaperInput:
 		TNT1 A 0 A_Jump(128,1,2);
-		TNT1 A 0 A_SpawnItemEx("FogCloud_V1", random(-ARGS[0],ARGS[0]), 0, random(0, random(32, 48)), 0, 0, 0, random(0, 360), SXF_NOCHECKPOSITION | SXF_CLIENTSIDE | SXF_SETMASTER, 129, tid);
-		TNT1 A 0 A_SpawnItemEx("FogCloud_V2", random(-ARGS[0],ARGS[0]), 0, random(0, random(32, 48)), 0, 0, 0, random(0, 360), SXF_NOCHECKPOSITION | SXF_CLIENTSIDE | SXF_SETMASTER, 129, tid);
-		TNT1 A 0 A_SpawnItemEx("FogCloud_V3", random(-ARGS[0],ARGS[0]), 0, random(0, random(32, 48)), 0, 0, 0, random(0, 360), SXF_NOCHECKPOSITION | SXF_CLIENTSIDE | SXF_SETMASTER, 129, tid);
+		TNT1 A 0 A_SpawnItemEx("FogCloud_V1", Random[Smoke](-ARGS[0],ARGS[0]), 0, Random[Smoke](0, Random[Smoke](32, 48)), 0, 0, 0, Random[Smoke](0, 360), SXF_NOCHECKPOSITION | SXF_CLIENTSIDE | SXF_SETMASTER, 129, tid);
+		TNT1 A 0 A_SpawnItemEx("FogCloud_V2", Random[Smoke](-ARGS[0],ARGS[0]), 0, Random[Smoke](0, Random[Smoke](32, 48)), 0, 0, 0, Random[Smoke](0, 360), SXF_NOCHECKPOSITION | SXF_CLIENTSIDE | SXF_SETMASTER, 129, tid);
+		TNT1 A 0 A_SpawnItemEx("FogCloud_V3", Random[Smoke](-ARGS[0],ARGS[0]), 0, Random[Smoke](0, Random[Smoke](32, 48)), 0, 0, 0, Random[Smoke](0, 360), SXF_NOCHECKPOSITION | SXF_CLIENTSIDE | SXF_SETMASTER, 129, tid);
 		Stop;
 	Inactive:
 	EndSpawn:
@@ -80,7 +80,7 @@ class FogCloud_V1: Actor
 	States
 	{
 	Spawn:
-		TNT1 A 0 NODELAY A_SetScale(frandom(2,2.25));
+		TNT1 A 0 NODELAY A_SetScale(FRandom[Smoke](2,2.25));
 		TNT1 A 0 A_Jump(256,1,2,3,4);
 		AWCF ABCD 0 A_Jump(256,"Coolness");
 	Coolness:
@@ -147,15 +147,15 @@ class ZyklonFogCloud_Generator : FogCloud_Generator
 	Active:
 		TNT1 A 0 A_JumpIf(ARGS[0]!=0,"MaperInput");
 		TNT1 A 0 A_Jump(128,1,2);
-		TNT1 A 0 A_SpawnItemEx("ZyklonFogCloud_V1", random(random(-96, 96), random(-64, 64)), 0, random(0, random(32, 48)), 0, 0, 0, random(0, 360), SXF_NOCHECKPOSITION | SXF_CLIENTSIDE | SXF_SETMASTER, 129, tid);
-		TNT1 A 0 A_SpawnItemEx("ZyklonFogCloud_V2", random(random(-96, 96), random(-64, 64)), 0, random(0, random(32, 48)), 0, 0, 0, random(0, 360), SXF_NOCHECKPOSITION | SXF_CLIENTSIDE | SXF_SETMASTER, 129, tid);
-		TNT1 A 0 A_SpawnItemEx("ZyklonFogCloud_V3", random(random(-96, 96), random(-64, 64)), 0, random(0, random(32, 48)), 0, 0, 0, random(0, 360), SXF_NOCHECKPOSITION | SXF_CLIENTSIDE | SXF_SETMASTER, 129, tid);
+		TNT1 A 0 A_SpawnItemEx("ZyklonFogCloud_V1", Random[Smoke](Random[Smoke](-96, 96), Random[Smoke](-64, 64)), 0, Random[Smoke](0, Random[Smoke](32, 48)), 0, 0, 0, Random[Smoke](0, 360), SXF_NOCHECKPOSITION | SXF_CLIENTSIDE | SXF_SETMASTER, 129, tid);
+		TNT1 A 0 A_SpawnItemEx("ZyklonFogCloud_V2", Random[Smoke](Random[Smoke](-96, 96), Random[Smoke](-64, 64)), 0, Random[Smoke](0, Random[Smoke](32, 48)), 0, 0, 0, Random[Smoke](0, 360), SXF_NOCHECKPOSITION | SXF_CLIENTSIDE | SXF_SETMASTER, 129, tid);
+		TNT1 A 0 A_SpawnItemEx("ZyklonFogCloud_V3", Random[Smoke](Random[Smoke](-96, 96), Random[Smoke](-64, 64)), 0, Random[Smoke](0, Random[Smoke](32, 48)), 0, 0, 0, Random[Smoke](0, 360), SXF_NOCHECKPOSITION | SXF_CLIENTSIDE | SXF_SETMASTER, 129, tid);
 		Stop;
 	MaperInput:
 		TNT1 A 0 A_Jump(128,1,2);
-		TNT1 A 0 A_SpawnItemEx("ZyklonFogCloud_V1", random(-ARGS[0],ARGS[0]), 0, random(0, random(32, 48)), 0, 0, 0, random(0, 360), SXF_NOCHECKPOSITION | SXF_CLIENTSIDE | SXF_SETMASTER, 129, tid);
-		TNT1 A 0 A_SpawnItemEx("ZyklonFogCloud_V2", random(-ARGS[0],ARGS[0]), 0, random(0, random(32, 48)), 0, 0, 0, random(0, 360), SXF_NOCHECKPOSITION | SXF_CLIENTSIDE | SXF_SETMASTER, 129, tid);
-		TNT1 A 0 A_SpawnItemEx("ZyklonFogCloud_V3", random(-ARGS[0],ARGS[0]), 0, random(0, random(32, 48)), 0, 0, 0, random(0, 360), SXF_NOCHECKPOSITION | SXF_CLIENTSIDE | SXF_SETMASTER, 129, tid);
+		TNT1 A 0 A_SpawnItemEx("ZyklonFogCloud_V1", Random[Smoke](-ARGS[0],ARGS[0]), 0, Random[Smoke](0, Random[Smoke](32, 48)), 0, 0, 0, Random[Smoke](0, 360), SXF_NOCHECKPOSITION | SXF_CLIENTSIDE | SXF_SETMASTER, 129, tid);
+		TNT1 A 0 A_SpawnItemEx("ZyklonFogCloud_V2", Random[Smoke](-ARGS[0],ARGS[0]), 0, Random[Smoke](0, Random[Smoke](32, 48)), 0, 0, 0, Random[Smoke](0, 360), SXF_NOCHECKPOSITION | SXF_CLIENTSIDE | SXF_SETMASTER, 129, tid);
+		TNT1 A 0 A_SpawnItemEx("ZyklonFogCloud_V3", Random[Smoke](-ARGS[0],ARGS[0]), 0, Random[Smoke](0, Random[Smoke](32, 48)), 0, 0, 0, Random[Smoke](0, 360), SXF_NOCHECKPOSITION | SXF_CLIENTSIDE | SXF_SETMASTER, 129, tid);
 		Stop;
 	Inactive:
 	EndSpawn:
@@ -169,7 +169,7 @@ class ZyklonFogCloud_V1 : FogCloud_V1
 	States
 	{
 	Spawn:
-		TNT1 A 0 NODELAY A_SetScale(frandom(2,2.25));
+		TNT1 A 0 NODELAY A_SetScale(FRandom[Smoke](2,2.25));
 		TNT1 A 0 A_Jump(256,1,2,3,4);
 		AWCF EFGH 0 A_Jump(256,"Coolness");
 	Coolness:

@@ -57,7 +57,7 @@ class Tiltable : Actor
 			}
 		}
 
-		if (abs(leveltilt) >= min(mass, 1000) / 1000.0 * Random(20, 45)) // 45 degrees is the max for *not* sliding - so everything will slide at least some at this point
+		if (abs(leveltilt) >= min(mass, 1000) / 1000.0 * Random[Tilt](20, 45)) // 45 degrees is the max for *not* sliding - so everything will slide at least some at this point
 		{
 			bNoGravity = leveltilt != 0;
 			bSolid = True;
@@ -81,7 +81,7 @@ class Tiltable : Actor
 
 			if (pos != oldpos)
 			{
-				angle += Random(-1, 1) * vel.Length();
+				angle += Random[Tilt](-1, 1) * vel.Length();
 			}
 
 			if (abs(spawnheight - pos.z) >= 8) { falling = true; }
@@ -90,7 +90,7 @@ class Tiltable : Actor
 				health > 0 &&
 				(
 					(falling && pos.z == floorz) || 
-					(pos == oldpos && vel.Length() != oldvel && vel.Length() > FRandom(1.0, 2.0) * 100 / min(Mass, 500))
+					(pos == oldpos && vel.Length() != oldvel && vel.Length() > FRandom[Tilt](1.0, 2.0) * 100 / min(Mass, 500))
 				)
 			)
 			{

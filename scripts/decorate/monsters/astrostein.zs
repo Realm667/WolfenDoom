@@ -41,10 +41,10 @@ class AstroRobotSeekerBall : AstroDroneBall
 	{
 	Spawn:
 		ROBP A 0 NODELAY A_Jump(2,"PreciseLoop");
-		"####" AB 4 A_SeekerMissile(8, random(15,30));
+		"####" AB 4 A_SeekerMissile(8, Random[Seeker](15,30));
 		Loop;
 	PreciseLoop:
-		"####" AB 4 A_SeekerMissile(8, random(60,90), SMF_PRECISE);
+		"####" AB 4 A_SeekerMissile(8, Random[Seeker](60,90), SMF_PRECISE);
 		Loop;
 	}
 }
@@ -76,11 +76,11 @@ class Destroyed_AstroSuite: Actor
 		Stop;
 	Death:
 		ROB1 O 1 {A_StartSound("astrostein/explosion", CHAN_AUTO, 0, 1.0, 0.1); A_SpawnItemEx("AstrosteinExplosion_Decorative", 0, 0, 40); A_NoBlocking();}
-		"####" OO 0 A_SpawnItemEx("Debris_AstroSuite", random(8,40), random(16,44), random(32,48), random(1,3), random(1,3), random(1,3), random(0,360), SXF_CLIENTSIDE);
-		"####" OOO 0 A_SpawnItemEx("Debris_AstroSuite", random(16,56), random(32,56), random(56,64), random(1,3), random(1,3), random(1,3), random(0,360), SXF_CLIENTSIDE);
-		"####" OOOO 0 A_SpawnItemEx("Debris_AstroSuite", random(32,64), random(64,80), random(16,32), random(1,3), random(1,3), random(1,3), random(0,360), SXF_CLIENTSIDE);
-		"####" OOOOO 0 A_SpawnItemEx("Debris_MetalJunk", random(0,8), random(0,16), random(0,48), random(1,3), random(1,3), random(1,3), random(0,360), SXF_CLIENTSIDE);
-		"####" OOOOOOO 0 A_SpawnItemEx("Debris_MetalJunk", random(16,32), random(32,48), random(64,80), random(1,3), random(1,3), random(1,3), random(0,360), SXF_CLIENTSIDE);
+		"####" OO 0 A_SpawnItemEx("Debris_AstroSuite", Random[Debris](8,40), Random[Debris](16,44), Random[Debris](32,48), Random[Debris](1,3), Random[Debris](1,3), Random[Debris](1,3), Random[Debris](0,360), SXF_CLIENTSIDE);
+		"####" OOO 0 A_SpawnItemEx("Debris_AstroSuite", Random[Debris](16,56), Random[Debris](32,56), Random[Debris](56,64), Random[Debris](1,3), Random[Debris](1,3), Random[Debris](1,3), Random[Debris](0,360), SXF_CLIENTSIDE);
+		"####" OOOO 0 A_SpawnItemEx("Debris_AstroSuite", Random[Debris](32,64), Random[Debris](64,80), Random[Debris](16,32), Random[Debris](1,3), Random[Debris](1,3), Random[Debris](1,3), Random[Debris](0,360), SXF_CLIENTSIDE);
+		"####" OOOOO 0 A_SpawnItemEx("Debris_MetalJunk", Random[Debris](0,8), Random[Debris](0,16), Random[Debris](0,48), Random[Debris](1,3), Random[Debris](1,3), Random[Debris](1,3), Random[Debris](0,360), SXF_CLIENTSIDE);
+		"####" OOOOOOO 0 A_SpawnItemEx("Debris_MetalJunk", Random[Debris](16,32), Random[Debris](32,48), Random[Debris](64,80), Random[Debris](1,3), Random[Debris](1,3), Random[Debris](1,3), Random[Debris](0,360), SXF_CLIENTSIDE);
 		Stop;
 	}
 }
@@ -99,11 +99,11 @@ class Destroyed_AstroRobot : Destroyed_AstroSuite
 		Stop;
 	Death:
 		ROB2 O 1 {A_StartSound("astrostein/explosion", CHAN_AUTO, 0, 1.0, 0.1); A_SpawnItemEx("AstrosteinExplosion_Decorative", 0, 0, 40); A_NoBlocking();}
-		"####" OO 0 A_SpawnItemEx("Debris_AstroRobot", random(8,40), random(16,44), random(32,48), random(1,3), random(1,3), random(1,3), random(0,360), SXF_CLIENTSIDE);
-		"####" OOO 0 A_SpawnItemEx("Debris_AstroRobot", random(16,56), random(32,56), random(56,64), random(1,3), random(1,3), random(1,3), random(0,360), SXF_CLIENTSIDE);
-		"####" OOOO 0 A_SpawnItemEx("Debris_AstroRobot", random(32,64), random(64,80), random(16,32), random(1,3), random(1,3), random(1,3), random(0,360), SXF_CLIENTSIDE);
-		"####" OOOOO 0 A_SpawnItemEx("Debris_MetalJunk", random(0,8), random(0,16), random(0,48), random(1,3), random(1,3), random(1,3), random(0,360), SXF_CLIENTSIDE);
-		"####" OOOOOOO 0 A_SpawnItemEx("Debris_MetalJunk", random(16,32), random(32,48), random(64,80), random(1,3), random(1,3), random(1,3), random(0,360), SXF_CLIENTSIDE);
+		"####" OO 0 A_SpawnItemEx("Debris_AstroRobot", Random[Debris](8,40), Random[Debris](16,44), Random[Debris](32,48), Random[Debris](1,3), Random[Debris](1,3), Random[Debris](1,3), Random[Debris](0,360), SXF_CLIENTSIDE);
+		"####" OOO 0 A_SpawnItemEx("Debris_AstroRobot", Random[Debris](16,56), Random[Debris](32,56), Random[Debris](56,64), Random[Debris](1,3), Random[Debris](1,3), Random[Debris](1,3), Random[Debris](0,360), SXF_CLIENTSIDE);
+		"####" OOOO 0 A_SpawnItemEx("Debris_AstroRobot", Random[Debris](32,64), Random[Debris](64,80), Random[Debris](16,32), Random[Debris](1,3), Random[Debris](1,3), Random[Debris](1,3), Random[Debris](0,360), SXF_CLIENTSIDE);
+		"####" OOOOO 0 A_SpawnItemEx("Debris_MetalJunk", Random[Debris](0,8), Random[Debris](0,16), Random[Debris](0,48), Random[Debris](1,3), Random[Debris](1,3), Random[Debris](1,3), Random[Debris](0,360), SXF_CLIENTSIDE);
+		"####" OOOOOOO 0 A_SpawnItemEx("Debris_MetalJunk", Random[Debris](16,32), Random[Debris](32,48), Random[Debris](64,80), Random[Debris](1,3), Random[Debris](1,3), Random[Debris](1,3), Random[Debris](0,360), SXF_CLIENTSIDE);
 		Stop;
 	}
 }
@@ -156,7 +156,7 @@ class TeleportFog_Astro : TeleportFog replaces TeleportFog
 	States
 	{
 	Spawn:
-		TNT1 AAAAAAAAAAAAAAAAAAAA 1 A_SpawnItemEx("BaseLine", random(16, -16), random(16, -16), random(0, 16), 0, 0, random(1,3), 0, 129, 0);
+		TNT1 AAAAAAAAAAAAAAAAAAAA 1 A_SpawnItemEx("BaseLine", Random[Effect](16, -16), Random[Effect](16, -16), Random[Effect](0, 16), 0, 0, Random[Effect](1,3), 0, 129, 0);
 		Stop;
 	}
 }
@@ -166,7 +166,7 @@ class TeleportFog_AstroLarge : TeleportFog_Astro
 	States
 	{
 	Spawn:
-		TNT1 AAAAAAAAAAAAAAAAAAAA 1 A_SpawnItemEx("BaseLineXL", random(512, -512), random(512, -512), random(128, -128), 0, 0, random(1,3), 0, 129, 0);
+		TNT1 AAAAAAAAAAAAAAAAAAAA 1 A_SpawnItemEx("BaseLineXL", Random[Effect](512, -512), Random[Effect](512, -512), Random[Effect](128, -128), 0, 0, Random[Effect](1,3), 0, 129, 0);
 		Stop;
 	}
 }
@@ -202,7 +202,7 @@ class AstroGuard : Guard
 	Missile.Aimed:
 		"####" E 5 A_FaceTarget;
 		"####" F 0 A_StartSound("astrochaingun/fire");
-		"####" F 8 LIGHT("ASTROFIRE") A_SpawnProjectile("EnemyAstroTracer",48,1,random(-8,8));
+		"####" F 8 LIGHT("ASTROFIRE") A_SpawnProjectile("EnemyAstroTracer",48,1, Random[Tracer](-8,8));
 		"####" E 8 A_Jump(256,"See");
 		Stop;
 	Pain:
@@ -240,13 +240,13 @@ class AstroGuard2 : AstroGuard
 	Missile:
 		"####" E 5 A_FaceTarget;
 		"####" F 0 A_StartSound("astrochaingun/fire");
-		"####" F 8 LIGHT("ASTROFIRE") A_SpawnProjectile("EnemyAstroTracer",48,1,random(-8,8));
+		"####" F 8 LIGHT("ASTROFIRE") A_SpawnProjectile("EnemyAstroTracer",48,1, Random[Tracer](-8,8));
 		"####" E 5 A_FaceTarget;
 		"####" F 0 A_StartSound("astrochaingun/fire");
-		"####" F 8 LIGHT("ASTROFIRE") A_SpawnProjectile("EnemyAstroTracer",48,1,random(-8,8));
+		"####" F 8 LIGHT("ASTROFIRE") A_SpawnProjectile("EnemyAstroTracer",48,1, Random[Tracer](-8,8));
 		"####" E 5 A_FaceTarget;
 		"####" F 0 A_StartSound("astrochaingun/fire");
-		"####" F 8 LIGHT("ASTROFIRE") A_SpawnProjectile("EnemyAstroTracer",48,1,random(-8,8));
+		"####" F 8 LIGHT("ASTROFIRE") A_SpawnProjectile("EnemyAstroTracer",48,1, Random[Tracer](-8,8));
 		"####" E 8 A_Jump(256,"See");
 		Stop;
 	}
@@ -276,7 +276,7 @@ class AstroCommando : AstroGuard
 	Missile.Aimed:
 		"####" F 5 A_FaceTarget;
 		"####" G 0 A_StartSound("astrochaingun/fire");
-		"####" G 8 LIGHT("ASTROFIRE") A_SpawnProjectile("EnemyAstroTracer",48,1,random(-8,8));
+		"####" G 8 LIGHT("ASTROFIRE") A_SpawnProjectile("EnemyAstroTracer",48,1, Random[Tracer](-8,8));
 		"####" F 5 A_MonsterRefire(30,"See");
 		Goto Missile+1;
 	Pain:
@@ -310,7 +310,7 @@ class AstroOfficer : AstroGuard
 	Missile.Aimed:
 		"####" G 5 A_FaceTarget;
 		"####" G 0 A_StartSound("astrochaingun/fire");
-		"####" E 8 LIGHT("ASTROFIRE") A_SpawnProjectile("EnemyAstroTracer",32,1,random(-8,8));
+		"####" E 8 LIGHT("ASTROFIRE") A_SpawnProjectile("EnemyAstroTracer",32,1, Random[Tracer](-8,8));
 		"####" F 5 A_MonsterRefire(30,"See");
 		"####" E 8 A_Jump(256,"See");
 		Stop;
@@ -344,16 +344,16 @@ class AstroElite : AstroGuard
 	Missile.Aimed:
 		"####" G 8 A_FaceTarget;
 		"####" H 0 A_StartSound("astrochaingun/fire", CHAN_WEAPON);
-		"####" H 3 LIGHT("ASTROFIRE") A_SpawnProjectile("EnemyAstroTracer",48,1,random(-8,8));
+		"####" H 3 LIGHT("ASTROFIRE") A_SpawnProjectile("EnemyAstroTracer",48,1, Random[Tracer](-8,8));
 		"####" G 2 A_FaceTarget;
 		"####" H 0 A_StartSound("astrochaingun/fire", CHAN_WEAPON);
-		"####" H 3 LIGHT("ASTROFIRE") A_SpawnProjectile("EnemyAstroTracer",48,1,random(-4,4));
+		"####" H 3 LIGHT("ASTROFIRE") A_SpawnProjectile("EnemyAstroTracer",48,1, Random[Tracer](-4,4));
 		"####" G 2 A_FaceTarget;
 		"####" H 0 A_StartSound("astrochaingun/fire", CHAN_WEAPON);
-		"####" H 3 LIGHT("ASTROFIRE") A_SpawnProjectile("EnemyAstroTracer",48,1,random(-8,8));
+		"####" H 3 LIGHT("ASTROFIRE") A_SpawnProjectile("EnemyAstroTracer",48,1, Random[Tracer](-8,8));
 		"####" G 2 A_FaceTarget;
 		"####" H 0 A_StartSound("astrochaingun/fire", CHAN_WEAPON);
-		"####" H 3 LIGHT("ASTROFIRE") A_SpawnProjectile("EnemyAstroTracer",48,1,random(-4,4));
+		"####" H 3 LIGHT("ASTROFIRE") A_SpawnProjectile("EnemyAstroTracer",48,1, Random[Tracer](-4,4));
 		Goto See;
 	Pain:
 		"####" I 6 A_NaziPain(256);
@@ -410,10 +410,10 @@ class AstroSuiteGuard : AstroGuard
 		Missile.Aimed:
 			"####" EF 6 A_FaceTarget;
 			"####" F 0 A_StartSound("astrochaingun/fire");
-			"####" G 0 A_SpawnProjectile("EnemyAstroTracer",48,-10,random(-8,4));
-			"####" G 0 A_SpawnProjectile("EnemyAstroTracer",40,-10,random(-8,4));
-			"####" G 0 A_SpawnProjectile("EnemyAstroTracer",40,10,random(4,-8));
-			"####" G 6 LIGHT("ASTROFIRE") A_SpawnProjectile("EnemyAstroTracer",48,10,random(4,-8));
+			"####" G 0 A_SpawnProjectile("EnemyAstroTracer",48,-10, Random[Tracer](-8,4));
+			"####" G 0 A_SpawnProjectile("EnemyAstroTracer",40,-10, Random[Tracer](-8,4));
+			"####" G 0 A_SpawnProjectile("EnemyAstroTracer",40,10, Random[Tracer](4,-8));
+			"####" G 6 LIGHT("ASTROFIRE") A_SpawnProjectile("EnemyAstroTracer",48,10, Random[Tracer](4,-8));
 			"####" E 8 A_Jump(256,"See");
 			Stop;
 		Pain:
@@ -427,7 +427,7 @@ class AstroSuiteGuard : AstroGuard
 		Disintegrate:
 			"####" I 0 A_StartSound("astrostein/guard_death");
 			"####" I 0 A_Scream;
-			"####" IIIIIJJJJJKKKKKLLLLLMMMMMNNNNNOOOOO 1 A_SpawnItemEx("BaseLine", random(16, -16), random(16, -16), random(0, 8), 0, 0, random(1,3), 0, 129, 0);
+			"####" IIIIIJJJJJKKKKKLLLLLMMMMMNNNNNOOOOO 1 A_SpawnItemEx("BaseLine", Random[Effect](16, -16), Random[Effect](16, -16), Random[Effect](0, 8), 0, 0, Random[Effect](1,3), 0, 129, 0);
 			"####" O 1 A_SpawnItemEx("AstroSuiteDropper", 0, 0, 0);
 			Stop;
 	}
@@ -457,7 +457,7 @@ class AstroScientist : AstroGuard
 	Missile.Aimed:
 		"####" F 5 A_FaceTarget;
 		"####" O 0 A_StartSound("astrochaingun/fire");
-		"####" O 8 LIGHT("ASTROFIRE") A_SpawnProjectile("EnemyAstroTracer",48,1,random(-8,8));
+		"####" O 8 LIGHT("ASTROFIRE") A_SpawnProjectile("EnemyAstroTracer",48,1, Random[Tracer](-8,8));
 		"####" E 8 A_Jump(256,"See");
 		Stop;
 	}
@@ -504,7 +504,7 @@ class AstroDrone : Nazi
 	Missile:
 	Missile.Aimed:
 		DRON EG 5 A_FaceTarget;
-		"####" E 5 A_SpawnProjectile("AstroDroneBall",54,1,random(-8,8));
+		"####" E 5 A_SpawnProjectile("AstroDroneBall",54,1, Random[Drone](-8,8));
 		Goto See;
 	Pain:
 	Pain.Dagger:
@@ -554,7 +554,7 @@ class AstroTurret : MGTurret
 	Missile.Aimed:
 		"####" A 5 A_FaceTarget;
 		"####" B 0 A_StartSound("astrochaingun/fire");
-		"####" C 3 LIGHT("ASTROFIRE") A_SpawnProjectile("EnemyAstroTracer",4,0,random(-8,8));
+		"####" C 3 LIGHT("ASTROFIRE") A_SpawnProjectile("EnemyAstroTracer",4,0, Random[Tracer](-8,8));
 		"####" B 3 A_MonsterRefire(40,"See");
 		"####" B 0 A_FaceTarget;
 		Goto Missile+1;
@@ -638,8 +638,8 @@ class AstroCyborg1 : NaziBoss
 	Missile:
 	Missile.Aimed:
 		CYB1 G 10 A_FaceTarget;
-		"####" H 0 A_ArcProjectile("AstroRocket",32,-32,random(-8,8),0,0,AAPTR_TARGET,0,22);
-		"####" H 2 A_ArcProjectile("AstroRocket",32, 32,random(-8,8),0,0,AAPTR_TARGET,0,22);
+		"####" H 0 A_ArcProjectile("AstroRocket",32,-32, Random[Rocket](-8,8),0,0,AAPTR_TARGET,0,22);
+		"####" H 2 A_ArcProjectile("AstroRocket",32, 32, Random[Rocket](-8,8),0,0,AAPTR_TARGET,0,22);
 		Goto See;
 	Pain:
 	Pain.Dagger:
@@ -649,7 +649,7 @@ class AstroCyborg1 : NaziBoss
 	Death:
 		CYB1 J 8 A_Scream;
 		"####" J 0 A_NoBlocking;
-		"####" "#" 0 A_SpawnItemEx("BaseLine", random(32, -32), random(32, -32), random(0, 24), 0, 0, random(1,3), 0, 129, 0);
+		"####" "#" 0 A_SpawnItemEx("BaseLine", Random[Effect](32, -32), Random[Effect](32, -32), Random[Effect](0, 24), 0, 0, Random[Effect](1,3), 0, 129, 0);
 		"####" "#" 1 A_FadeOut(0.05);
 		Goto Death+2;
 	}
@@ -708,23 +708,23 @@ class AstroCyborg2 : AstroCyborg1
 	Missile:
 	Missile.Aimed:
 		CYB2 E 10 A_FaceTarget;
-		"####" F 0 A_SpawnProjectile("AstroDroneBall",54,-32,random(-16,16), CMF_AIMDIRECTION|CMF_BADPITCH, random(-8,8));
-		"####" F 3 A_SpawnProjectile("AstroDroneBall",54, 32,random(-16,16), CMF_AIMDIRECTION|CMF_BADPITCH, random(-8,8));
+		"####" F 0 A_SpawnProjectile("AstroDroneBall",54,-32, Random[Drone](-16,16), CMF_AIMDIRECTION|CMF_BADPITCH, Random[Drone](-8,8));
+		"####" F 3 A_SpawnProjectile("AstroDroneBall",54, 32, Random[Drone](-16,16), CMF_AIMDIRECTION|CMF_BADPITCH, Random[Drone](-8,8));
 		"####" E 3 A_FaceTarget;
-		"####" F 0 A_SpawnProjectile("AstroDroneBall",54,-32,random(-16,16), CMF_AIMDIRECTION|CMF_BADPITCH, random(-8,8));
-		"####" F 3 A_SpawnProjectile("AstroDroneBall",54, 32,random(-16,16), CMF_AIMDIRECTION|CMF_BADPITCH, random(-8,8));
+		"####" F 0 A_SpawnProjectile("AstroDroneBall",54,-32, Random[Drone](-16,16), CMF_AIMDIRECTION|CMF_BADPITCH, Random[Drone](-8,8));
+		"####" F 3 A_SpawnProjectile("AstroDroneBall",54, 32, Random[Drone](-16,16), CMF_AIMDIRECTION|CMF_BADPITCH, Random[Drone](-8,8));
 		"####" E 3 A_FaceTarget;
-		"####" F 0 A_SpawnProjectile("AstroDroneBall",54,-32,random(-16,16), CMF_AIMDIRECTION|CMF_BADPITCH, random(-8,8));
-		"####" F 3 A_SpawnProjectile("AstroDroneBall",54, 32,random(-16,16), CMF_AIMDIRECTION|CMF_BADPITCH, random(-8,8));
+		"####" F 0 A_SpawnProjectile("AstroDroneBall",54,-32, Random[Drone](-16,16), CMF_AIMDIRECTION|CMF_BADPITCH, Random[Drone](-8,8));
+		"####" F 3 A_SpawnProjectile("AstroDroneBall",54, 32, Random[Drone](-16,16), CMF_AIMDIRECTION|CMF_BADPITCH, Random[Drone](-8,8));
 		"####" E 3 A_FaceTarget;
-		"####" F 0 A_SpawnProjectile("AstroDroneBall",54,-32,random(-16,16), CMF_AIMDIRECTION|CMF_BADPITCH, random(-8,8));
-		"####" F 3 A_SpawnProjectile("AstroDroneBall",54, 32,random(-16,16), CMF_AIMDIRECTION|CMF_BADPITCH, random(-8,8));
+		"####" F 0 A_SpawnProjectile("AstroDroneBall",54,-32, Random[Drone](-16,16), CMF_AIMDIRECTION|CMF_BADPITCH, Random[Drone](-8,8));
+		"####" F 3 A_SpawnProjectile("AstroDroneBall",54, 32, Random[Drone](-16,16), CMF_AIMDIRECTION|CMF_BADPITCH, Random[Drone](-8,8));
 		"####" E 3 A_FaceTarget;
-		"####" F 0 A_SpawnProjectile("AstroDroneBall",54,-32,random(-16,16), CMF_AIMDIRECTION|CMF_BADPITCH, random(-8,8));
-		"####" F 3 A_SpawnProjectile("AstroDroneBall",54, 32,random(-16,16), CMF_AIMDIRECTION|CMF_BADPITCH, random(-8,8));
+		"####" F 0 A_SpawnProjectile("AstroDroneBall",54,-32, Random[Drone](-16,16), CMF_AIMDIRECTION|CMF_BADPITCH, Random[Drone](-8,8));
+		"####" F 3 A_SpawnProjectile("AstroDroneBall",54, 32, Random[Drone](-16,16), CMF_AIMDIRECTION|CMF_BADPITCH, Random[Drone](-8,8));
 		"####" E 3 A_FaceTarget;
-		"####" F 0 A_SpawnProjectile("AstroDroneBall",54,-32,random(-16,16), CMF_AIMDIRECTION|CMF_BADPITCH, random(-8,8));
-		"####" F 3 A_SpawnProjectile("AstroDroneBall",54, 32,random(-16,16), CMF_AIMDIRECTION|CMF_BADPITCH, random(-8,8));
+		"####" F 0 A_SpawnProjectile("AstroDroneBall",54,-32, Random[Drone](-16,16), CMF_AIMDIRECTION|CMF_BADPITCH, Random[Drone](-8,8));
+		"####" F 3 A_SpawnProjectile("AstroDroneBall",54, 32, Random[Drone](-16,16), CMF_AIMDIRECTION|CMF_BADPITCH, Random[Drone](-8,8));
 		"####" E 3 A_FaceTarget;
 		Goto See;
 	Pain:
@@ -766,16 +766,16 @@ class AstroRobot : AstroCyborg1
 	Missile.Aimed:
 		ROB2 HG 5 A_FaceTarget;
 		"####" G 0 A_Jump(128, "Missile2","Missile3");
-		"####" F 0 A_SpawnProjectile("AstroRobotSeekerBall",64,-36,random(-8,8));
-		"####" F 5 A_SpawnProjectile("AstroRobotSeekerBall",64,36,random(-8,8));
+		"####" F 0 A_SpawnProjectile("AstroRobotSeekerBall",64,-36, Random[Seeker](-8,8));
+		"####" F 5 A_SpawnProjectile("AstroRobotSeekerBall",64,36, Random[Seeker](-8,8));
 		Goto See;
 	Missile2:
-		"####" F 5 A_SpawnProjectile("AstroRobotSeekerBall",64,-36,random(-8,8));
+		"####" F 5 A_SpawnProjectile("AstroRobotSeekerBall",64,-36, Random[Seeker](-8,8));
 		Goto See;
 	Missile3:
 		"####" F 0 A_StartSound("astrochaingun/fire");
-		"####" F 0 A_SpawnProjectile("EnemyAstroTracer",64,-36,random(-8,8));
-		"####" F 8 LIGHT("ASTROFIRE") A_SpawnProjectile("EnemyAstroTracer",64,36,random(-8,8));
+		"####" F 0 A_SpawnProjectile("EnemyAstroTracer",64,-36, Random[Tracer](-8,8));
+		"####" F 8 LIGHT("ASTROFIRE") A_SpawnProjectile("EnemyAstroTracer",64,36, Random[Tracer](-8,8));
 		Goto See;
 	Pain:
 	Pain.Dagger:
@@ -847,14 +847,14 @@ class AstroUrsel : AstroCyborg1
 			Goto See;
 		Missile:
 		Missile.Aimed:
-			URSE E 0 { loopcount = RandomPick(5, 5, 5, 5, 1, 1, 3, 1); } // Replicates distribution of original Jump logic
+			URSE E 0 { loopcount = RandomPick[Boss](5, 5, 5, 5, 1, 1, 3, 1); } // Replicates distribution of original Jump logic
 		Missile.FireLoop:
 			URSE E 5 {
 				if (loopcount != 4) { A_FaceTarget(); } // Original code didn't face target on 4th shot of 5-shot bursts
 				A_StartSound("astrochaingun/fire");
 			}
-			URSE F 4 LIGHT("ASTROFIRE") A_SpawnProjectile("EnemyAstroTracer",40,10,random(2,-2));
-			URSE G 4 LIGHT("ASTROFIRE") A_SpawnProjectile("EnemyAstroTracer",40,4,random(2,-2));
+			URSE F 4 LIGHT("ASTROFIRE") A_SpawnProjectile("EnemyAstroTracer",40,10, Random[Tracer](2,-2));
+			URSE G 4 LIGHT("ASTROFIRE") A_SpawnProjectile("EnemyAstroTracer",40,4, Random[Tracer](2,-2));
 			URSE E 0 { if (loopcount-- <= 0) { SetStateLabel("See"); }; } // If we've fired the desired number of times, go back to See
 			Goto Missile.FireLoop; // Otherwise, fire again
 		Pain:
@@ -869,7 +869,7 @@ class AstroUrsel : AstroCyborg1
 			}
 		DeathFade:
 			URSE H 1 {
-				A_SpawnItemEx("BaseLine", random(32, -32), random(32, -32), random(0, 24), 0, 0, random(1,3), 0, 129, 0);
+				A_SpawnItemEx("BaseLine", Random[Effect](32, -32), Random[Effect](32, -32), Random[Effect](0, 24), 0, 0, Random[Effect](1,3), 0, 129, 0);
 				A_FadeOut(0.05);
 			}
 			Loop;

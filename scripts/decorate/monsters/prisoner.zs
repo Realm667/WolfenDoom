@@ -85,7 +85,7 @@ class PrisonerFree : DirtyDarren
 		"####" ONMLKJ 5;
 		Goto See;
 	CapturedDarren:
-		FREE O random(105,175);
+		FREE O Random(105,175);
 		"####" P 35;
 		Loop;
 	ShootCapturedDarren: // Length is 27 tics
@@ -109,7 +109,7 @@ class PrisonerFree : DirtyDarren
 	Fire:
 		"####" H 5 LIGHT("NAZIFIRE") {
 			A_StartSound("g43/fire");
-			A_SpawnProjectile("ThompsonTracer", 32, 0, Random(-8, 8));
+			A_SpawnProjectile("ThompsonTracer", 32, 0, Random[Ryan](-8, 8));
 		}
 		"####" G 15;
 		"####" F -1;
@@ -151,7 +151,7 @@ class HealingParticle: Actor
 	States
 	{
 	Spawn:
-		HELX A 0 NODELAY A_SetScale(frandom(0.2, 0.6));
+		HELX A 0 NODELAY A_SetScale(FRandom[Effect](0.2, 0.6));
 		"####" AAAAAAAAAA 1 A_FadeIn(0.07);
 		"####" AAAAAAAAAA 8 A_FadeOut(0.08);
 	Death:
@@ -196,7 +196,7 @@ class PrisonerEnemyBoss : DirtyDarren
 		"####" F 0 A_StartSound("misc/health_pkup");
 		"####" F 0 A_GiveInventory("PrisonerMedikitCounter", 1);
 		"####" F 0 A_GiveInventory("Health", 500);
-		"####" FFFFFFFFFF 2 A_SpawnItemEx("HealingParticle", random(10,-10), random(10,-10), random(16,64), 0, 0, random(1, 2), 0);
+		"####" FFFFFFFFFF 2 A_SpawnItemEx("HealingParticle", Random[Ryan](10,-10), Random[Ryan](10,-10), Random[Ryan](16,64), 0, 0, Random[Ryan](1, 2), 0);
 	See:
 		"####" "#" 0 { user_incombat = TRUE; } //mxd
 	SeeLoop:
@@ -225,35 +225,35 @@ class PrisonerEnemyBoss : DirtyDarren
 		"####" A 0 A_Jump(192, "MP40");
 	Grenade:
 		"####" F 16 A_FaceTarget;
-		"####" F 10 A_ArcProjectile("HandGrenade",40,4,random(-8,8));
+		"####" F 10 A_ArcProjectile("HandGrenade",40,4, Random[Ryan](-8,8));
 		Goto See;
 	MP40:
 		"####" FG 5 A_FaceTarget;
 		"####" H 0 A_StartSound("nazi/mp40", CHAN_WEAPON);
-		"####" H 2 LIGHT("NAZIFIRE") A_SpawnProjectile("EnemySMGTracer",50,4,random(-8,8));
-		"####" H 0 A_SpawnItemEx("Casing9mm", 8,0,40, random(3,4), random(-1,1), random(2,4), random(-55,-80),SXF_NOCHECKPOSITION);
+		"####" H 2 LIGHT("NAZIFIRE") A_SpawnProjectile("EnemySMGTracer",50,4, Random[Ryan](-8,8));
+		"####" H 0 A_SpawnItemEx("Casing9mm", 8,0,40, Random[Ryan](3,4), Random[Ryan](-1,1), Random[Ryan](2,4), Random[Ryan](-55,-80),SXF_NOCHECKPOSITION);
 		"####" G 2 A_FaceTarget;
 		"####" H 0 A_StartSound("nazi/mp40", CHAN_WEAPON);
-		"####" H 2 LIGHT("NAZIFIRE") A_SpawnProjectile("EnemySMGTracer",50,4,random(-8,8));
-		"####" H 0 A_SpawnItemEx("Casing9mm", 8,0,40, random(3,4), random(-1,1), random(2,4), random(-55,-80),SXF_NOCHECKPOSITION);
+		"####" H 2 LIGHT("NAZIFIRE") A_SpawnProjectile("EnemySMGTracer",50,4, Random[Ryan](-8,8));
+		"####" H 0 A_SpawnItemEx("Casing9mm", 8,0,40, Random[Ryan](3,4), Random[Ryan](-1,1), Random[Ryan](2,4), Random[Ryan](-55,-80),SXF_NOCHECKPOSITION);
 		"####" G 2 A_FaceTarget;
 		"####" H 0 A_StartSound("nazi/mp40", CHAN_WEAPON);
-		"####" H 2 LIGHT("NAZIFIRE") A_SpawnProjectile("EnemySMGTracer",50,4,random(-8,8));
-		"####" H 0 A_SpawnItemEx("Casing9mm", 8,0,40, random(3,4), random(-1,1), random(2,4), random(-55,-80),SXF_NOCHECKPOSITION);
+		"####" H 2 LIGHT("NAZIFIRE") A_SpawnProjectile("EnemySMGTracer",50,4, Random[Ryan](-8,8));
+		"####" H 0 A_SpawnItemEx("Casing9mm", 8,0,40, Random[Ryan](3,4), Random[Ryan](-1,1), Random[Ryan](2,4), Random[Ryan](-55,-80),SXF_NOCHECKPOSITION);
 		"####" G 2 A_FaceTarget;
 		"####" H 0 A_StartSound("nazi/mp40", CHAN_WEAPON);
-		"####" H 2 LIGHT("NAZIFIRE") A_SpawnProjectile("EnemySMGTracer",50,4,random(-8,8));
-		"####" H 0 A_SpawnItemEx("Casing9mm", 8,0,40, random(3,4), random(-1,1), random(2,4), random(-55,-80),SXF_NOCHECKPOSITION);
+		"####" H 2 LIGHT("NAZIFIRE") A_SpawnProjectile("EnemySMGTracer",50,4, Random[Ryan](-8,8));
+		"####" H 0 A_SpawnItemEx("Casing9mm", 8,0,40, Random[Ryan](3,4), Random[Ryan](-1,1), Random[Ryan](2,4), Random[Ryan](-55,-80),SXF_NOCHECKPOSITION);
 		"####" G 2 A_FaceTarget;
 		"####" H 0 A_StartSound("nazi/mp40", CHAN_WEAPON);
-		"####" H 2 LIGHT("NAZIFIRE") A_SpawnProjectile("EnemySMGTracer",50,4,random(-8,8));
-		"####" G 2 A_SpawnItemEx("Casing9mm", 8,0,40, random(3,4), random(-1,1), random(2,4), random(-55,-80),SXF_NOCHECKPOSITION);
+		"####" H 2 LIGHT("NAZIFIRE") A_SpawnProjectile("EnemySMGTracer",50,4, Random[Ryan](-8,8));
+		"####" G 2 A_SpawnItemEx("Casing9mm", 8,0,40, Random[Ryan](3,4), Random[Ryan](-1,1), Random[Ryan](2,4), Random[Ryan](-55,-80),SXF_NOCHECKPOSITION);
 		"####" G 0 {user_count++; if(user_count > 39) {user_count = 0; return ResolveState("Reload");} return ResolveState(null);}
 		Goto See;
 	Reload:
 		"####" F 0 {bNoPain = TRUE;}
 		"####" F 30 A_StartSound("mp40/reload", CHAN_WEAPON);
-		"####" F 0 A_SpawnItemEx("Casing9mm", 8,0,40, random(3,4), random(-1,1), random(2,4), random(-55,-80),SXF_NOCHECKPOSITION);
+		"####" F 0 A_SpawnItemEx("Casing9mm", 8,0,40, Random[Ryan](3,4), Random[Ryan](-1,1), Random[Ryan](2,4), Random[Ryan](-55,-80),SXF_NOCHECKPOSITION);
 		"####" F 0 {bNoPain = FALSE;}
 		"####" "#" 0 A_Jump(256, "See");
 	Death:
@@ -273,7 +273,7 @@ class PrisonerEnemyBoss : DirtyDarren
 		"####" I 6 A_NaziPain;
 		"####" I 0 A_Jump(64, "See");
 		"####" F 3 A_FaceTarget;
-		"####" F 10 A_ArcProjectile("HandGrenade",40,4,random(-8,8));
+		"####" F 10 A_ArcProjectile("HandGrenade",40,4, Random[Ryan](-8,8));
 		Goto See;
 	Raise:
 		"####" NMLKJ 5;
@@ -313,7 +313,7 @@ class PrisonerEnemyBoss_End : ZombieStandard
 		"####" F 0 A_StartSound("misc/health_pkup");
 		"####" F 0 A_GiveInventory("PrisonerMedikitCounter", 1);
 		"####" F 0 A_GiveInventory("Health", 500);
-		"####" FFFFFFFFFF 2 A_SpawnItemEx("HealingParticle", random(10,-10), random(10,-10), random(16,64), 0, 0, random(1, 2), 0);
+		"####" FFFFFFFFFF 2 A_SpawnItemEx("HealingParticle", Random[Ryan](10,-10), Random[Ryan](10,-10), Random[Ryan](16,64), 0, 0, Random[Ryan](1, 2), 0);
 	See:
 		"####" "#" 0 { user_incombat = TRUE; } //mxd
 	SeeLoop:
@@ -344,29 +344,29 @@ class PrisonerEnemyBoss_End : ZombieStandard
 		"####" F 0 A_Jump(128, "OccultFire");
 		"####" F 0 A_Jump(128, "ZyklonFire");
 		"####" F 16 A_FaceTarget;
-		"####" F 10 A_ArcProjectile("HandGrenade",40,4,random(-8,8), CMF_OFFSETPITCH|CMF_BADPITCH, random(0,16));
+		"####" F 10 A_ArcProjectile("HandGrenade",40,4, Random[Ryan](-8,8), CMF_OFFSETPITCH|CMF_BADPITCH, Random[Ryan](0,16));
 		Goto See;
 	Luger:
 		"####" FG 5 A_FaceTarget;
 		"####" H 0 A_StartSound("nazi/mp40", CHAN_WEAPON);
-		"####" H 2 LIGHT("NAZIFIRE") A_SpawnProjectile("EnemySMGTracer",50,4,random(-8,8));
-		"####" H 0 A_SpawnItemEx("Casing9mm", 8,0,40, random(3,4), random(-1,1), random(2,4), random(-55,-80),SXF_NOCHECKPOSITION);
+		"####" H 2 LIGHT("NAZIFIRE") A_SpawnProjectile("EnemySMGTracer",50,4, Random[Ryan](-8,8));
+		"####" H 0 A_SpawnItemEx("Casing9mm", 8,0,40, Random[Ryan](3,4), Random[Ryan](-1,1), Random[Ryan](2,4), Random[Ryan](-55,-80),SXF_NOCHECKPOSITION);
 		"####" G 2 A_FaceTarget;
 		"####" H 0 A_StartSound("nazi/mp40", CHAN_WEAPON);
-		"####" H 2 LIGHT("NAZIFIRE") A_SpawnProjectile("EnemySMGTracer",50,4,random(-8,8));
-		"####" H 0 A_SpawnItemEx("Casing9mm", 8,0,40, random(3,4), random(-1,1), random(2,4), random(-55,-80),SXF_NOCHECKPOSITION);
+		"####" H 2 LIGHT("NAZIFIRE") A_SpawnProjectile("EnemySMGTracer",50,4, Random[Ryan](-8,8));
+		"####" H 0 A_SpawnItemEx("Casing9mm", 8,0,40, Random[Ryan](3,4), Random[Ryan](-1,1), Random[Ryan](2,4), Random[Ryan](-55,-80),SXF_NOCHECKPOSITION);
 		"####" G 2 A_FaceTarget;
 		"####" H 0 A_StartSound("nazi/mp40", CHAN_WEAPON);
-		"####" H 2 LIGHT("NAZIFIRE") A_SpawnProjectile("EnemySMGTracer",50,4,random(-8,8));
-		"####" H 0 A_SpawnItemEx("Casing9mm", 8,0,40, random(3,4), random(-1,1), random(2,4), random(-55,-80),SXF_NOCHECKPOSITION);
+		"####" H 2 LIGHT("NAZIFIRE") A_SpawnProjectile("EnemySMGTracer",50,4, Random[Ryan](-8,8));
+		"####" H 0 A_SpawnItemEx("Casing9mm", 8,0,40, Random[Ryan](3,4), Random[Ryan](-1,1), Random[Ryan](2,4), Random[Ryan](-55,-80),SXF_NOCHECKPOSITION);
 		"####" G 2 A_FaceTarget;
 		"####" H 0 A_StartSound("nazi/mp40", CHAN_WEAPON);
-		"####" H 2 LIGHT("NAZIFIRE") A_SpawnProjectile("EnemySMGTracer",50,4,random(-8,8));
-		"####" H 0 A_SpawnItemEx("Casing9mm", 8,0,40, random(3,4), random(-1,1), random(2,4), random(-55,-80),SXF_NOCHECKPOSITION);
+		"####" H 2 LIGHT("NAZIFIRE") A_SpawnProjectile("EnemySMGTracer",50,4, Random[Ryan](-8,8));
+		"####" H 0 A_SpawnItemEx("Casing9mm", 8,0,40, Random[Ryan](3,4), Random[Ryan](-1,1), Random[Ryan](2,4), Random[Ryan](-55,-80),SXF_NOCHECKPOSITION);
 		"####" G 2 A_FaceTarget;
 		"####" H 0 A_StartSound("nazi/mp40", CHAN_WEAPON);
-		"####" H 2 LIGHT("NAZIFIRE") A_SpawnProjectile("EnemySMGTracer",50,4,random(-8,8));
-		"####" G 2 A_SpawnItemEx("Casing9mm", 8,0,40, random(3,4), random(-1,1), random(2,4), random(-55,-80),SXF_NOCHECKPOSITION);
+		"####" H 2 LIGHT("NAZIFIRE") A_SpawnProjectile("EnemySMGTracer",50,4, Random[Ryan](-8,8));
+		"####" G 2 A_SpawnItemEx("Casing9mm", 8,0,40, Random[Ryan](3,4), Random[Ryan](-1,1), Random[Ryan](2,4), Random[Ryan](-55,-80),SXF_NOCHECKPOSITION);
 		"####" G 0 {user_count++; if(user_count > 39) {user_count = 0; return ResolveState("Reload");} return ResolveState(null);}
 		Goto See;
 	OccultFire:
@@ -386,7 +386,7 @@ class PrisonerEnemyBoss_End : ZombieStandard
 	Reload:
 		"####" F 0 {bNoPain = TRUE;}
 		"####" F 30 A_StartSound("mp40/reload", CHAN_WEAPON);
-		"####" F 0 A_SpawnItemEx("Casing9mm", 8,0,40, random(3,4), random(-1,1), random(2,4), random(-55,-80),SXF_NOCHECKPOSITION);
+		"####" F 0 A_SpawnItemEx("Casing9mm", 8,0,40, Random[Ryan](3,4), Random[Ryan](-1,1), Random[Ryan](2,4), Random[Ryan](-55,-80),SXF_NOCHECKPOSITION);
 		"####" F 0 {bNoPain = FALSE;}
 		"####" "#" 0 A_Jump(256, "See");
 	Death:

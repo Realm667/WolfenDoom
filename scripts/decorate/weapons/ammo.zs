@@ -39,7 +39,7 @@ class Ammo9mm : Ammo
 	States
 	{
 	Spawn:
-		MCLP A -1 NODELAY A_SetScale(Scale.X * RandomPick(-1, 1), Scale.Y);
+		MCLP A -1 NODELAY A_SetScale(Scale.X * RandomPick[Ammo](-1, 1), Scale.Y);
 		Stop;
 	}
 
@@ -88,7 +88,7 @@ class Ammo12Gauge : Ammo
 	States
 	{
 	Spawn:
-		SHEL A -1 NODELAY A_SetScale(Scale.X * RandomPick(-1, 1), Scale.Y);
+		SHEL A -1 NODELAY A_SetScale(Scale.X * RandomPick[Ammo](-1, 1), Scale.Y);
 		Stop;
 	}
 
@@ -139,7 +139,7 @@ class MauserAmmo : Ammo
 	States
 	{
 	Spawn:
-		792A A -1 NODELAY A_SetScale(Scale.X * RandomPick(-1, 1), Scale.Y);
+		792A A -1 NODELAY A_SetScale(Scale.X * RandomPick[Ammo](-1, 1), Scale.Y);
 		Stop;
 	}
 

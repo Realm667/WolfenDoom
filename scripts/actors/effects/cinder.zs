@@ -54,10 +54,10 @@ class CinderSpawner : EffectSpawner
 	{
 		Super.SpawnEffect();
 
-		if (Random(0, 255) < args[4]) { return; }
+		if (Random[Cinder](0, 255) < args[4]) { return; }
 
 		int i = Random[CinderSpawner](0, SPAWN_POINTS_PER_SPAWNER - 1);
-		double speed = frandom(args[2], args[3]);
+		double speed = FRandom[Cinder](args[2], args[3]);
 		Vector3 vel = ZScriptTools.GetTraceDirection(spawnPoints[i].angle, spawnPoints[i].pitch) * speed;
 
 		FSpawnParticleParams particleInfo;
@@ -83,17 +83,17 @@ class CinderSpawner : EffectSpawner
 		for (int i = 0; i < SPAWN_POINTS_PER_SPAWNER; i++) {
 			do { // So that "continue" can be used to try again
 				Vector3 offset = (
-					frandom(-args[0],args[0]),
-					frandom(-args[0],args[0]),
-					random(0,args[1]));
+					FRandom[Cinder](-args[0],args[0]),
+					FRandom[Cinder](-args[0],args[0]),
+					Random[Cinder](0,args[1]));
 				Vector3 vel = (
-					frandom(args[2],args[3]),
+					FRandom[Cinder](args[2],args[3]),
 					0,
-					frandom(-args[2],args[2]));
+					FRandom[Cinder](-args[2],args[2]));
 
 				// Rotate vel
 				{
-					double angle = Angle + frandom(-4, 4);
+					double angle = Angle + FRandom[Cinder](-4, 4);
 					double c = cos(angle);
 					double s = sin(angle);
 					double speed = vel.x;
@@ -132,18 +132,18 @@ class CinderSpawner : EffectSpawner
 
 	static void SpawnCinder(Actor a, Vector3 p = (4,64,1024), Vector3 v = (4,64,1024), double halfang = 180, int failchance = 160)
 	{
-		if (Random(0, 255) < failchance) { return; }
+		if (Random[Cinder](0, 255) < failchance) { return; }
 		// GZDoom allows neither non-constant default parameters nor constant vectors.
-		if (p == (4,64,1024)) { p = (frandom(-8,8),frandom(-8,8),frandom(0,32)); }
-		if (v == (4,64,1024)) { v = (1,0,frandom(1,3)); }
+		if (p == (4,64,1024)) { p = (FRandom[Cinder](-8,8), FRandom[Cinder](-8,8), FRandom[Cinder](0,32)); }
+		if (v == (4,64,1024)) { v = (1,0, FRandom[Cinder](1,3)); }
 		a.A_SpawnParticleEx(
 			/*color1*/ "FFFFFF",
 			/*texture*/ TexMan.CheckForTexture("EMBRA0"),
 			/*style*/ STYLE_Add,
 			/*flags*/ SPF_FULLBRIGHT | SPF_RELATIVE,
-			/*lifetime*/ 8 * (16 + Random(0, 8)),
-			/*size*/ frandom(3, 6),
-			/*angle*/ frandom(-halfang, halfang),
+			/*lifetime*/ 8 * (16 + Random[Cinder](0, 8)),
+			/*size*/ FRandom[Cinder](3, 6),
+			/*angle*/ FRandom[Cinder](-halfang, halfang),
 			/*posoff*/ p.x, p.y, p.z,
 			/*vel*/ v.x, v.y, v.z,
 			/*acc*/ 0, 0, 0,
@@ -177,13 +177,13 @@ class CinderSpawnerSky : SnowSpawner
 	{
 		EffectSpawner.SpawnEffect();
 
-		if (Random(0, 255) < Args[1]) { return; }
+		if (Random[Cinder](0, 255) < Args[1]) { return; }
 
 		TextureID cinder = TexMan.CheckForTexture("EMBRA0", TexMan.Type_Sprite);
 		double psize = 2.56; // Max of sprite width and height * FloatingCinder scale
 
 		int index = Random[SnowSpawner](0, SPAWN_POINTS_PER_SPAWNER - 1);
-		Vector3 vel = ZScriptTools.GetTraceDirection(spawnPoints[index].angle, spawnPoints[index].pitch) * FRandom(1, 3);
+		Vector3 vel = ZScriptTools.GetTraceDirection(spawnPoints[index].angle, spawnPoints[index].pitch) * FRandom[Cinder](1, 3);
 		int lifetime = int(floor(spawnPoints[index].Distance / vel.Length())) + 2; // fall into floor
 
 		FSpawnParticleParams particleInfo;
@@ -232,8 +232,8 @@ class FloatingCinder : ParticleBase
 	{
 		Super.PostBeginPlay();
 
-		scale.x = scale.y = FRandom(0.03, 0.06);
-		tics = 8 * (16 + Random(0, 8)); // Not quite what the previous A_Jump logic did, but similar
+		scale.x = scale.y = FRandom[Cinder](0.03, 0.06);
+		tics = 8 * (16 + Random[Cinder](0, 8)); // Not quite what the previous A_Jump logic did, but similar
 	}
 }
 

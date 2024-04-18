@@ -624,7 +624,7 @@ class SmallBush1 : TreesBase
 	States
 	{
 	Spawn:
-		BUSN A -1 NODELAY A_SetScale(Scale.X * RandomPick(-1.0, 1.0), Scale.Y);
+		BUSN A -1 NODELAY A_SetScale(Scale.X * RandomPick[Scenery](-1.0, 1.0), Scale.Y);
 		Stop;
 	}
 }
@@ -640,7 +640,7 @@ class SmallBush2 : SmallBush1
 	States
 	{
 	Spawn:
-		BUSN B -1 NODELAY A_SetScale(Scale.X * RandomPick(-1.0, 1.0), Scale.Y);
+		BUSN B -1 NODELAY A_SetScale(Scale.X * RandomPick[Scenery](-1.0, 1.0), Scale.Y);
 		Stop;
 	}
 }
@@ -656,7 +656,7 @@ class Bush : SmallBush1
 	States
 	{
 	Spawn:
-		BUSH A -1 NODELAY A_SetScale(Scale.X * RandomPick(-1.0, 1.0), Scale.Y);
+		BUSH A -1 NODELAY A_SetScale(Scale.X * RandomPick[Scenery](-1.0, 1.0), Scale.Y);
 		Stop;
 	}
 }
@@ -678,12 +678,12 @@ class BigBush : SmallBush1
 	States
 	{
 	Spawn:
-		BUSZ A -1 NODELAY A_SetScale(Scale.X * RandomPick(-1.0, 1.0), Scale.Y);
+		BUSZ A -1 NODELAY A_SetScale(Scale.X * RandomPick[Scenery](-1.0, 1.0), Scale.Y);
 		Stop;
 	Death:
 		"####" "#" 0 A_UnSetSolid;
 		"####" "#" 0 A_StartSound("GRASBRKS", CHAN_AUTO, 0, frandom (0.5,0.8), ATTN_NORM);
-		"####" "####" 0 A_SpawnItemEx("Debris_Leaf", random(0,4), random(0,8), random(0,24), random(1,3), random(1,3), random(1,3), random(0,360), SXF_CLIENTSIDE);
+		"####" "####" 0 A_SpawnItemEx("Debris_Leaf", Random[Debris](0,4), Random[Debris](0,8), Random[Debris](0,24), Random[Debris](1,3), Random[Debris](1,3), Random[Debris](1,3), Random[Debris](0,360), SXF_CLIENTSIDE);
 		"####" "#" 2 A_SpawnItemEx("GrassFrags");
 		BUSZ B -1;
 		Stop;
@@ -727,8 +727,8 @@ class RandomRye : FlattenableProp
 		RYE_ F 0;
 		Goto Setup;
 	Setup:
-		"####" "#" 0 A_SetScale(Scale.X * frandom(0.85, 1.1), Scale.Y * frandom(0.85, 1.1));
-		"####" "#" -1 A_SetScale(Scale.X * RandomPick(-1.0, 1.0), Scale.Y);
+		"####" "#" 0 A_SetScale(Scale.X * FRandom[Scenery](0.85, 1.1), Scale.Y * FRandom[Scenery](0.85, 1.1));
+		"####" "#" -1 A_SetScale(Scale.X * RandomPick[Scenery](-1.0, 1.0), Scale.Y);
 		Stop;
 	}
 }

@@ -49,15 +49,15 @@ class ROfficer : Guard
 	Missile.Aimed:
 		"####" F 4 A_FaceTarget;
 		"####" G 0 A_StartSound("urss/tokarev", CHAN_WEAPON);
-		"####" G 6 LIGHT("NAZIFIRE") A_SpawnProjectile("REnemyPistolTracer",52,1,random(-4,4));
-		"####" F 5 A_SpawnItemEx("Casing9mm", 1,0,54, random(3,4), random(-1,1), random(2,4), random(-55,-80),SXF_NOCHECKPOSITION);
+		"####" G 6 LIGHT("NAZIFIRE") A_SpawnProjectile("REnemyPistolTracer",52,1, Random[Tracer](-4,4));
+		"####" F 5 A_SpawnItemEx("Casing9mm", 1,0,54, Random[Russians](3,4), Random[Russians](-1,1), Random[Russians](2,4), Random[Russians](-55,-80),SXF_NOCHECKPOSITION);
 		"####" F 0 {user_count++; if(user_count > 7) {user_count = 0; return ResolveState("Reload");} return ResolveState(null);}
 		"####" F 0 A_Jump(256,"See");
 		Stop;
 	Reload:
 		"####" E 0 {bNoPain = TRUE;}
 		"####" E 25 A_StartSound("urss/tokarelo", CHAN_ITEM, 0, frandom (0.3,0.6), ATTN_NORM);
-		"####" E 0 A_SpawnItemEx("Casing9mm", 1, 0, 56, random(3,4), random(-1,1), random(2,4), random(-55,-80),SXF_NOCHECKPOSITION);
+		"####" E 0 A_SpawnItemEx("Casing9mm", 1, 0, 56, Random[Russians](3,4), Random[Russians](-1,1), Random[Russians](2,4), Random[Russians](-55,-80),SXF_NOCHECKPOSITION);
 		"####" E 0 {bNoPain = FALSE;}
 		"####" "#" 0 A_Jump(256, "See");
 	Death.Rifle:
@@ -100,12 +100,12 @@ class RPPSHGuard1 : MP40Guard
 	Missile.Aimed:
 		"####" E 3 A_FaceTarget;
 		"####" F 0 A_StartSound("urss/ppsh", CHAN_WEAPON);
-		"####" F 3 LIGHT("NAZIFIRE") A_SpawnProjectile("REnemySMGTracer",40,4,random(-8,8));
-		"####" F 0 A_SpawnItemEx("Casing9mm", 6,0,42, random(3,4), random(-1,1), random(2,4), random(-55,-80),SXF_NOCHECKPOSITION);
+		"####" F 3 LIGHT("NAZIFIRE") A_SpawnProjectile("REnemySMGTracer",40,4, Random[Tracer](-8,8));
+		"####" F 0 A_SpawnItemEx("Casing9mm", 6,0,42, Random[Russians](3,4), Random[Russians](-1,1), Random[Russians](2,4), Random[Russians](-55,-80),SXF_NOCHECKPOSITION);
 		"####" E 2 A_FaceTarget;
 		"####" G 0 A_StartSound("urss/ppsh", CHAN_WEAPON);
-		"####" G 3 LIGHT("NAZIFIRE") A_SpawnProjectile("REnemySMGTracer",40,4,random(-12,12));
-		"####" G 0 A_SpawnItemEx("Casing9mm", 6,0,42, random(3,4), random(-1,1), random(2,4), random(-55,-80),SXF_NOCHECKPOSITION);
+		"####" G 3 LIGHT("NAZIFIRE") A_SpawnProjectile("REnemySMGTracer",40,4, Random[Tracer](-12,12));
+		"####" G 0 A_SpawnItemEx("Casing9mm", 6,0,42, Random[Russians](3,4), Random[Russians](-1,1), Random[Russians](2,4), Random[Russians](-55,-80),SXF_NOCHECKPOSITION);
 		"####" E 0 {user_count++; if(user_count > 15) {user_count = 0; return ResolveState("Reload");} return ResolveState(null);}
 		"####" E 3 A_MonsterRefire(32,"See");
 		"####" E 0 A_FaceTarget;
@@ -113,7 +113,7 @@ class RPPSHGuard1 : MP40Guard
 	Reload:
 		NKVF E 0 {bNoPain = TRUE;}
 		"####" E 40 A_StartSound("urss/ppshrelo", CHAN_WEAPON);
-		"####" E 0 A_SpawnItemEx("Casing9mm", 6,0,42, random(3,4), random(-1,1), random(2,4), random(-55,-80),SXF_NOCHECKPOSITION);
+		"####" E 0 A_SpawnItemEx("Casing9mm", 6,0,42, Random[Russians](3,4), Random[Russians](-1,1), Random[Russians](2,4), Random[Russians](-55,-80),SXF_NOCHECKPOSITION);
 		"####" E 0 {bNoPain = FALSE;}
 		Goto See;
 	Death.Rifle:
@@ -143,7 +143,7 @@ class RPPSHGuard2 : RPPSHGuard1
 	Reload:
 		NKVP E 0 {bNoPain = TRUE;}
 		"####" E 40 A_StartSound("urss/ppshrelo", CHAN_WEAPON);
-		"####" E 0 A_SpawnItemEx("Casing9mm", 6,0,42, random(3,4), random(-1,1), random(2,4), random(-55,-80),SXF_NOCHECKPOSITION);
+		"####" E 0 A_SpawnItemEx("Casing9mm", 6,0,42, Random[Russians](3,4), Random[Russians](-1,1), Random[Russians](2,4), Random[Russians](-55,-80),SXF_NOCHECKPOSITION);
 		"####" E 0 {bNoPain = FALSE;}
 		Goto See;
 	}
@@ -164,7 +164,7 @@ class RPPSHGuard3 : RPPSHGuard1
 	Reload:
 		NKVT E 0 {bNoPain = TRUE;}
 		"####" E 30 A_StartSound("urss/ppshrelo", CHAN_WEAPON);
-		"####" E 0 A_SpawnItemEx("Casing9mm", 6,0,42, random(3,4), random(-1,1), random(2,4), random(-55,-80),SXF_NOCHECKPOSITION);
+		"####" E 0 A_SpawnItemEx("Casing9mm", 6,0,42, Random[Russians](3,4), Random[Russians](-1,1), Random[Russians](2,4), Random[Russians](-55,-80),SXF_NOCHECKPOSITION);
 		"####" E 0 {bNoPain = FALSE;}
 		Goto See;
 	}
@@ -188,15 +188,15 @@ class RDragunovGuard : RPPSHGuard1
 	Missile.Aimed:
 		"####" F 10 A_FaceTarget;
 		"####" G 0 A_StartSound("urss/dragunov", CHAN_WEAPON);
-		"####" G 8 LIGHT("NAZIFIRE") A_SpawnProjectile("REnemyRifleTracer",40,8,random(-1,1));
-		"####" G 0 A_SpawnItemEx("MauserRifleCasing", 8,0,42, random(3,4), random(-1,1), random(2,4), random(-55,-80),SXF_NOCHECKPOSITION);
+		"####" G 8 LIGHT("NAZIFIRE") A_SpawnProjectile("REnemyRifleTracer",40,8, Random[Tracer](-1,1));
+		"####" G 0 A_SpawnItemEx("MauserRifleCasing", 8,0,42, Random[Russians](3,4), Random[Russians](-1,1), Random[Russians](2,4), Random[Russians](-55,-80),SXF_NOCHECKPOSITION);
 		"####" F 8;
 		"####" F 0 {user_count++; if(user_count > 9) {user_count = 0; return ResolveState("Reload");} return ResolveState(null);}
 		Goto See;
 	Reload:
 		NKVR E 0 {bNoPain = TRUE;}
 		"####" E 45 A_StartSound("urss/dragrelo", CHAN_ITEM, 0, frandom (0.6,0.9), ATTN_NORM);
-		"####" E 0 A_SpawnItemEx("MauserRifleCasing", 8,0,42, random(3,4), random(-1,1), random(2,4), random(-55,-80),SXF_NOCHECKPOSITION);
+		"####" E 0 A_SpawnItemEx("MauserRifleCasing", 8,0,42, Random[Russians](3,4), Random[Russians](-1,1), Random[Russians](2,4), Random[Russians](-55,-80),SXF_NOCHECKPOSITION);
 		"####" E 0 {bNoPain = FALSE;}
 		Goto See;
 	}

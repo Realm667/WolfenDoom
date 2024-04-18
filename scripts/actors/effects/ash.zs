@@ -46,23 +46,23 @@ class AshSpawner : EffectSpawner
 	override void SpawnEffect()
 	{
 		Super.SpawnEffect();
-		int i = Random(0, 3);
+		int i = Random[Cinder](0, 3);
 		double zoffset = 0;
 		if (manager) { zoffset = min(manager.particlez - pos.z, 0); }
-		if (Random(0, 255) < Args[4]) { return; }
+		if (Random[Ash](0, 255) < Args[4]) { return; }
 		A_SpawnParticleEx(
 			ashcolors[i], // color1
 			TexMan.CheckForTexture("ASHXA0"), // texture
 			STYLE_Shaded, // style
 			SPF_RELATIVE | SPF_ROLL, // flags
 			250 * 2, // lifetime
-			frandom(6, 12), // size
-			angle + frandom(0.0, 1.0), // angle
-			frandom(-args[0], args[0]), frandom(-args[0], args[0]), min(Args[1], zoffset), // pos xyz
-			frandom(0.0, 0.2), 0, 0, // vel xyz
-			0, 0, -frandom(0.1, 0.3), // acc xyz
+			FRandom[Ash](6, 12), // size
+			angle + FRandom[Ash](0.0, 1.0), // angle
+			FRandom[Ash](-args[0], args[0]), FRandom[Ash](-args[0], args[0]), min(Args[1], zoffset), // pos xyz
+			FRandom[Ash](0.0, 0.2), 0, 0, // vel xyz
+			0, 0, -FRandom[Ash](0.1, 0.3), // acc xyz
 			fadestepf: 0.0,
-			rollvel: random(0, 1) ? 1 : -1
+			rollvel: Random[Cinder](0, 1) ? 1 : -1
 		);
 	}
 }
@@ -102,10 +102,10 @@ class FloatingAshLight : ParticleBase
 	{
 		Super.PostBeginPlay();
 
-		gravity = FRandom(0.1, 0.3);
-		scale.x = scale.y = FRandom(0.09, 0.12);
+		gravity = FRandom[Ash](0.1, 0.3);
+		scale.x = scale.y = FRandom[Ash](0.09, 0.12);
 
-		if (Random(0, 1)) { SetStateLabel("Spawn1"); }
+		if (Random[Ash](0, 1)) { SetStateLabel("Spawn1"); }
 		else { SetStateLabel("Spawn2"); }
 	}
 }

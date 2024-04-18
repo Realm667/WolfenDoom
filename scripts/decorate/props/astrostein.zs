@@ -49,8 +49,8 @@ class BarrelFuture: Actor
 		"####" A 0 A_UnSetSolid;
 		"####" A 0 A_StartSound("METALBRK", CHAN_AUTO, 0, frandom (0.5,0.8), ATTN_NORM);
 		"####" B 0 A_SpawnItemEx("MetalFrags");
-		"####" BBBBBB 0 A_SpawnItemEx("Debris_Astro", random(0,16), random(0,16), random(0,56), random(1,3), random(1,3), random(1,3), random(0,360), SXF_CLIENTSIDE);
-		"####" BBBBBB 3 A_SpawnItemEx("SparkB", random(0,16), random(0,16), random(0,56), 0, frandom(-1.0,1.0), frandom(-1.0,1.0), random(0,360), SXF_CLIENTSIDE);
+		"####" BBBBBB 0 A_SpawnItemEx("Debris_Astro", Random[Debris](0,16), Random[Debris](0,16), Random[Debris](0,56), Random[Debris](1,3), Random[Debris](1,3), Random[Debris](1,3), Random[Debris](0,360), SXF_CLIENTSIDE);
+		"####" BBBBBB 3 A_SpawnItemEx("SparkB", Random[Spark](0,16), Random[Spark](0,16), Random[Spark](0,56), 0, FRandom[Spark](-1.0,1.0), FRandom[Spark](-1.0,1.0), Random[Spark](0,360), SXF_CLIENTSIDE);
 		"####" B -1;
 		Stop;
 	}
@@ -74,7 +74,7 @@ class BarrelFutureExploding : ExplosiveBarrel
 		Loop;
 	Death:
 		"####" A 0 A_SpawnItemEx("AstrosteinExplosion_Medium",0,0,32);
-		"####" AAAAAA 0 A_SpawnItemEx("Debris_Trash", random(0,16), random(0,16), random(0,56), random(1,3), random(1,3), random(1,3), random(0,360), SXF_CLIENTSIDE);
+		"####" AAAAAA 0 A_SpawnItemEx("Debris_Trash", Random[Debris](0,16), Random[Debris](0,16), Random[Debris](0,56), Random[Debris](1,3), Random[Debris](1,3), Random[Debris](1,3), Random[Debris](0,360), SXF_CLIENTSIDE);
 		"####" A 6 A_Scream;
 		BARF E -1;
 		Stop;

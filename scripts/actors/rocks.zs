@@ -37,7 +37,7 @@ class RockSpawner : SceneryBase
 	{
 		Super.PostBeginPlay();
 
-		if (args[0] == 0) { frame = Random(0, 2); } // If first arg was left as zero, pick a random frame (0, 1, 2 == A, B, C)
+		if (args[0] == 0) { frame = Random[Rocks](0, 2); } // If first arg was left as zero, pick a random frame (0, 1, 2 == A, B, C)
 		else { frame = args[0] - 1; } // Otherwise set the chose frame
 
 		bNoGravity = bSolid = !args[1];

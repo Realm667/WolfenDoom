@@ -92,9 +92,9 @@ class Soul : StackableInventory
 			else
 			{
 				// Give minor random initial velocity
-				vel.x = FRandom(-2.0, 2.0);
-				vel.y = FRandom(-2.0, 2.0);
-				vel.z = FRandom(-2.0, 0.1);
+				vel.x = FRandom[Soul](-2.0, 2.0);
+				vel.y = FRandom[Soul](-2.0, 2.0);
+				vel.z = FRandom[Soul](-2.0, 0.1);
 
 				A_AttachLight("Glow", DynamicLight.PointLight, 0x78FF73, 24, 0, DynamicLight.LF_ATTENUATE, (0.0, 0.0, 32.0));
 			}

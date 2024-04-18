@@ -75,7 +75,7 @@ class StreetBin : StreetBase
 	Death:
 		TNT1 A 0 A_UnSetSolid;
 		"####" A 0 A_StartSound("METALBRK");
-		"####" AAAAAA 0 A_SpawnItemEx("Debris_Trash", random(0,16), random(0,16), random(0,56), random(1,3), random(1,3), random(1,3), random(0,360), SXF_CLIENTSIDE);
+		"####" AAAAAA 0 A_SpawnItemEx("Debris_Trash", Random[Debris](0,16), Random[Debris](0,16), Random[Debris](0,56), Random[Debris](1,3), Random[Debris](1,3), Random[Debris](1,3), Random[Debris](0,360), SXF_CLIENTSIDE);
 		SRCB E -1;
 		Stop;
 	}
@@ -96,7 +96,7 @@ class StreetBin2 : StreetBin
 	Death:
 		TNT1 A 0 A_UnSetSolid;
 		"####" A 0 A_StartSound("METALBRK");
-		"####" AAAAAA 0 A_SpawnItemEx("Debris_Trash", random(0,16), random(0,16), random(0,56), random(1,3), random(1,3), random(1,3), random(0,360), SXF_CLIENTSIDE);
+		"####" AAAAAA 0 A_SpawnItemEx("Debris_Trash", Random[Debris](0,16), Random[Debris](0,16), Random[Debris](0,56), Random[Debris](1,3), Random[Debris](1,3), Random[Debris](1,3), Random[Debris](0,360), SXF_CLIENTSIDE);
 		SSBN B -1;
 		Stop;
 	}
@@ -117,24 +117,24 @@ class BurningBarrelBoA : StreetBase
 	States
 	{
 	Spawn:
-		BBAR A 0 NODELAY A_StartSound("SFX/FireLoop1", CHAN_BODY, CHANF_LOOPING, frandom(0.4,0.8), ATTN_STATIC);
+		BBAR A 0 NODELAY A_StartSound("SFX/FireLoop1", CHAN_BODY, CHANF_LOOPING, FRandom[Scenery](0.4,0.8), ATTN_STATIC);
 		SpawnLoop:
 		TNT1 A 0 A_CheckRange(768,"NoSound");
-		TNT1 A 0 { CinderSpawner.SpawnCinder(self, p: (0,0,frandom(48,54))); }
+		TNT1 A 0 { CinderSpawner.SpawnCinder(self, p: (0,0, FRandom[Cinder](48,54))); }
 		BBAR ABCD 3;
 		Loop;
 	NoSound:
 		TNT1 A 0 A_StopSound(CHAN_BODY);
-		TNT1 A 0 { CinderSpawner.SpawnCinder(self, p: (0,0,frandom(48,54))); }
+		TNT1 A 0 { CinderSpawner.SpawnCinder(self, p: (0,0, FRandom[Cinder](48,54))); }
 		BBAR ABCD 3;
 		Goto Spawn;
 	Death:
 		TNT1 A 0 A_UnSetSolid;
 		"####" A 0 A_StopSound(CHAN_BODY);
 		"####" A 0 A_StartSound("METALBRK");
-		"####" AAAAAA 0 A_SpawnItemEx("Debris_Metal3Dark", random(0,16), random(0,16), random(0,56), random(1,3), random(1,3), random(1,3), random(0,360), SXF_CLIENTSIDE);
+		"####" AAAAAA 0 A_SpawnItemEx("Debris_Metal3Dark", Random[Debris](0,16), Random[Debris](0,16), Random[Debris](0,56), Random[Debris](1,3), Random[Debris](1,3), Random[Debris](1,3), Random[Debris](0,360), SXF_CLIENTSIDE);
 		"####" A 0 A_SpawnItemEx("KD_HL2SmokeGenerator", 0, 0, 0, 0, 0, 0, 0,SXF_CLIENTSIDE | SXF_TRANSFERSCALE);
-		"####" AAAAAA 0 A_SpawnItemEx("BarrelFireSpawner", random(8,12), random(8,12), random(0,56), 0, 0, 0, random(0,360), SXF_TRANSFERPITCH | SXF_CLIENTSIDE);
+		"####" AAAAAA 0 A_SpawnItemEx("BarrelFireSpawner", Random[Debris](8,12), Random[Debris](8,12), Random[Debris](0,56), 0, 0, 0, Random[Debris](0,360), SXF_TRANSFERPITCH | SXF_CLIENTSIDE);
 		BBAR E -1;
 		Stop;
 	}
@@ -163,8 +163,8 @@ class ScareCrow : StreetBase
 		"####" A 0 {A_StartSound("WOODBRK", CHAN_AUTO, 0, frandom (0.5,0.8), ATTN_NORM);
 								A_StartSound("GRASBRKS", CHAN_AUTO, 0, frandom (0.5,0.8), ATTN_NORM);
 								A_SpawnItemEx("GrassFrags_Dry");}
-		"####" AAAAAAAAAAAAAAAA 0 A_SpawnItemEx("Debris_Wood", random(20,40), random(0,16), random(0,48), random(1,3), random(1,3), random(1,3), random(0,360), SXF_CLIENTSIDE);
-		"####" AAAAAAAAAAAAAAAA 0 A_SpawnItemEx("Debris_Wood", random(40,60), random(0,16), random(0,48), random(1,3), random(1,3), random(1,3), random(0,360), SXF_CLIENTSIDE);
+		"####" AAAAAAAAAAAAAAAA 0 A_SpawnItemEx("Debris_Wood", Random[Debris](20,40), Random[Debris](0,16), Random[Debris](0,48), Random[Debris](1,3), Random[Debris](1,3), Random[Debris](1,3), Random[Debris](0,360), SXF_CLIENTSIDE);
+		"####" AAAAAAAAAAAAAAAA 0 A_SpawnItemEx("Debris_Wood", Random[Debris](40,60), Random[Debris](0,16), Random[Debris](0,48), Random[Debris](1,3), Random[Debris](1,3), Random[Debris](1,3), Random[Debris](0,360), SXF_CLIENTSIDE);
 		SCRW B -1;
 		Stop;
 	}
@@ -194,16 +194,16 @@ class HydrantShootable : StreetBase
 		Stop;
 	Death:
 		MDLA B 4 A_Scream;
-		"####" AAAAAAAA 0 A_SpawnItemEx("Debris_Hydrant", random(0,16), random(0,16), random(0,56), random(1,3), random(1,3), random(1,3), random(0,360), SXF_CLIENTSIDE);
+		"####" AAAAAAAA 0 A_SpawnItemEx("Debris_Hydrant", Random[Debris](0,16), Random[Debris](0,16), Random[Debris](0,56), Random[Debris](1,3), Random[Debris](1,3), Random[Debris](1,3), Random[Debris](0,360), SXF_CLIENTSIDE);
 	Water:
-		MDLA B 0 A_StartSound("hydrant/broken", CHAN_7, CHANF_LOOPING, frandom(0.8, 1.0), ATTN_NORM);
+		MDLA B 0 A_StartSound("hydrant/broken", CHAN_7, CHANF_LOOPING, FRandom[Scenery](0.8, 1.0), ATTN_NORM);
 	Broken:
 		MDLA B 0 A_CheckRange(768,"BrokenSilent");
-		"####" B 1 A_SpawnItemEx("WaterSmokePuffSmall", 0, 0, 1, (0.1)*random(0, 4), 0, (0.1)*random(8, 16), random(0, 360), 128);
+		"####" B 1 A_SpawnItemEx("WaterSmokePuffSmall", 0, 0, 1, (0.1)*Random[Smoke](0, 4), 0, (0.1)*Random[Smoke](8, 16), Random[Smoke](0, 360), 128);
 		Loop;
 	BrokenSilent:
 		MDLA B 0 A_StopSound(CHAN_7);
-		"####" B 1 A_SpawnItemEx("WaterSmokePuffSmall", 0, 0, 1, (0.1)*random(0, 4), 0, (0.1)*random(8, 16), random(0, 360), 128);
+		"####" B 1 A_SpawnItemEx("WaterSmokePuffSmall", 0, 0, 1, (0.1)*Random[Smoke](0, 4), 0, (0.1)*Random[Smoke](8, 16), Random[Smoke](0, 360), 128);
 		Goto Water;
 	}
 }

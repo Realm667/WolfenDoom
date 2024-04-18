@@ -90,7 +90,7 @@ class SoulFountain : SwitchableDecoration
 		Vector3 SpawnPoint = Pos + SpawnPointOffset;
 
 		// Spawn one of three effect actors 
-		Actor s = Spawn("FountainSoul" .. Random(0, 2), SpawnPoint, NO_REPLACE);
+		Actor s = Spawn("FountainSoul" .. Random[Soul](0, 2), SpawnPoint, NO_REPLACE);
 		if (s)
 		{
 			s.master = self;
@@ -172,7 +172,7 @@ class FountainSoul0 : SimpleActor
 	{
 		Super.PostBeginPlay();
 
-		scale *= 1.0 + FRandom(-0.7, 0.3);
+		scale *= 1.0 + FRandom[Soul](-0.7, 0.3);
 
 		A_StartSound("DSSLPU", CHAN_VOICE, 0, 0.05 * scale.x, ATTN_STATIC, 1.3 - scale.x);
 	}
@@ -240,7 +240,7 @@ class FountainSoul1 : SimpleActor
 	{
 		Super.PostBeginPlay();
 
-		scale *= 1.0 + FRandom(-0.7, 0.3);
+		scale *= 1.0 + FRandom[Soul](-0.7, 0.3);
 	}
 }
 

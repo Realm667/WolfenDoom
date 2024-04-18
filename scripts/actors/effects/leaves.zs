@@ -24,7 +24,7 @@ class LeavesSpawner : CinderSpawner
 	{
 		EffectSpawner.SpawnEffect();
 
-		A_SpawnItemEx("FloatingLeaves", random(-Args[0],Args[0]), random(-Args[0],Args[0]), random(0,Args[1]), random(Args[2],Args[3]), 0, random(-Args[2],Args[2]), random(-4, 4), 128, Args[4]);
+		A_SpawnItemEx("FloatingLeaves", Random[Leaves](-Args[0],Args[0]), Random[Leaves](-Args[0],Args[0]), Random[Leaves](0,Args[1]), Random[Leaves](Args[2],Args[3]), 0, Random[Leaves](-Args[2],Args[2]), Random[Leaves](-4, 4), 128, Args[4]);
 	}
 }
 
@@ -49,7 +49,7 @@ class LeavesSpawnerHorizontal : LeavesSpawner //ZScript version of original code
 	{
 		EffectSpawner.SpawnEffect();
 
-		A_SpawnItemEx("FloatingLeavesNoGravity", 0, random(-Args[0],Args[0]), random(0,Args[1]), random(Args[2],Args[3]), 0, 0, frandom(-4.0, 4.0), 128, Args[4]);
+		A_SpawnItemEx("FloatingLeavesNoGravity", 0, Random[Leaves](-Args[0],Args[0]), Random[Leaves](0,Args[1]), Random[Leaves](Args[2],Args[3]), 0, 0, FRandom[Leaves](-4.0, 4.0), 128, Args[4]);
 	}
 }
 
@@ -97,7 +97,7 @@ class FloatingLeaves : ParticleBase
 
 				bRollSprite = FALSE;
 
-				frame = Random(1, 8);
+				frame = Random[Leaves](1, 8);
 			}
 		DeathWait:
 			"####" "#" 1 A_FadeOut(0.06); //change this if you plan to make leaves disappear fastly or slowly
@@ -108,16 +108,16 @@ class FloatingLeaves : ParticleBase
 	{
 		Super.PostBeginPlay();
 
-		scale.x += FRandom(0.15, 0.45);
-		scale.y += FRandom(0.15, 0.45);
+		scale.x += FRandom[Leaves](0.15, 0.45);
+		scale.y += FRandom[Leaves](0.15, 0.45);
 	}
 
 	void LeafFloat()
 	{
-		gravity = FRandom(0.0525,0.0725);
-		A_SetRoll(roll + FRandom(-55.5, 55.5), SPF_INTERPOLATE);
-		angle += Random(-15, 15);
-		pitch += FRandom(-55.25, 55.25);
+		gravity = FRandom[Leaves](0.0525,0.0725);
+		A_SetRoll(roll + FRandom[Leaves](-55.5, 55.5), SPF_INTERPOLATE);
+		angle += Random[Leaves](-15, 15);
+		pitch += FRandom[Leaves](-55.25, 55.25);
 
 		if (waterlevel == 3)
 		{

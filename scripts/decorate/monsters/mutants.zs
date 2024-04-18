@@ -48,12 +48,12 @@ class Mutant : MutantStandard
 	Missile:
 		MTNT F 18 A_FaceTarget;
 		MTNT G 0 A_StartSound("walther/fire", CHAN_WEAPON);
-		MTNT G 7 LIGHT("MUTNFIRE") A_SpawnProjectile("EnemyMutantTracer",45,0,random(-1,1));
-		MTNT G 0 A_SpawnItemEx("Casing9mm", 0,0,47, RandomPick(-3, 3), random(-1,1), random(2,4), random(-55,-80),SXF_NOCHECKPOSITION);
+		MTNT G 7 LIGHT("MUTNFIRE") A_SpawnProjectile("EnemyMutantTracer",45,0, Random[Mutant](-1,1));
+		MTNT G 0 A_SpawnItemEx("Casing9mm", 0,0,47, RandomPick[Mutant](-3, 3), Random[Mutant](-1,1), Random[Mutant](2,4), Random[Mutant](-55,-80),SXF_NOCHECKPOSITION);
 		MTNT F 8 A_FaceTarget;
 		MTNT H 0 A_StartSound("walther/fire", CHAN_WEAPON);
-		MTNT H 7 LIGHT("MUTNFIRE") A_SpawnProjectile("EnemyMutantTracer",45,0,random(-1,1));
-		MTNT H 0 A_SpawnItemEx("Casing9mm", 0,0,47, RandomPick(-3, 3), random(-1,1), random(2,4), random(-55,-80),SXF_NOCHECKPOSITION);
+		MTNT H 7 LIGHT("MUTNFIRE") A_SpawnProjectile("EnemyMutantTracer",45,0, Random[Mutant](-1,1));
+		MTNT H 0 A_SpawnItemEx("Casing9mm", 0,0,47, RandomPick[Mutant](-3, 3), Random[Mutant](-1,1), Random[Mutant](2,4), Random[Mutant](-55,-80),SXF_NOCHECKPOSITION);
 		MTNT F 8 A_MonsterRefire(64,"See");
 		MTNT F 0 A_FaceTarget;
 		Goto Missile+1;
@@ -125,16 +125,16 @@ class MutantMelee : Mutant
 		"####" A 0 { return ResolveState("See"); }
 	Melee:
 		MLMT F 4 A_FaceTarget;
-		MLMT G 5 A_CustomMeleeAttack(5*random(1,5));
+		MLMT G 5 A_CustomMeleeAttack(5*Random[Mutant](1,5));
 		MLMT F 4 A_FaceTarget;
-		MLMT H 5 A_CustomMeleeAttack(5*random(1,5));
+		MLMT H 5 A_CustomMeleeAttack(5*Random[Mutant](1,5));
 		Goto See;
 	Missile:
 		MLMT Q 8 A_FaceTarget;
 		MLMT RS 4 A_FaceTarget;
-		MLMT T 4 A_SpawnProjectile("FlyingCleaver",43,8,random(-2,2));
+		MLMT T 4 A_SpawnProjectile("FlyingCleaver",43,8, Random[Mutant](-2,2));
 		MLMT UV 4 A_FaceTarget;
-		MLMT W 4 A_SpawnProjectile("FlyingCleaver",43,-8,random(-2,2));
+		MLMT W 4 A_SpawnProjectile("FlyingCleaver",43,-8, Random[Mutant](-2,2));
 		MLMT XY 8 A_FaceTarget;
 		MLMT Q 4 A_FaceTarget;
 		Goto See;
@@ -161,11 +161,11 @@ class SuperMutant : Mutant
 	Missile:
 		SUPM F 6 A_FaceTarget;
 		SUPM G 0 A_StartSound("supaproj/fire", CHAN_WEAPON);
-		SUPM G 4 LIGHT("MUTNFIRE") A_SpawnProjectile("MutantBounceBall",40,random(-22,-20),random(-1,1));
+		SUPM G 4 LIGHT("MUTNFIRE") A_SpawnProjectile("MutantBounceBall",40, Random[Mutant](-22,-20), Random[Mutant](-1,1));
 		SUPM G 0 {user_count++; if(user_count > 3) {user_count = 0; return ResolveState("See.MutantFasterAlt");} return ResolveState(null);}
 		SUPM F 5 A_FaceTarget;
 		SUPM P 0 A_StartSound("supaproj/fire", CHAN_WEAPON);
-		SUPM P 4 LIGHT("MUTNFIRE") A_SpawnProjectile("MutantBounceBall",40,random(18,20),random(-1,1));
+		SUPM P 4 LIGHT("MUTNFIRE") A_SpawnProjectile("MutantBounceBall",40, Random[Mutant](18,20), Random[Mutant](-1,1));
 		SUPM P 0 {user_count++; if(user_count > 3) {user_count = 0; return ResolveState("See.MutantFasterAlt");} return ResolveState(null);}
 		SUPM H 5 A_MonsterRefire(15,"See");
 		SUPM H 0 A_FaceTarget;
@@ -196,9 +196,9 @@ class BigMutant1 : Mutant
 		Goto See.MutantFaster;
 	Melee:
 		MTB1 E 4 A_FaceTarget;
-		MTB1 P 5 A_CustomMeleeAttack(8*random(1,5),"Cleaver/Crash","DSPFWOOD");
+		MTB1 P 5 A_CustomMeleeAttack(8*Random[Mutant](1,5),"Cleaver/Crash","DSPFWOOD");
 		MTB1 E 4 A_FaceTarget;
-		MTB1 Q 5 A_CustomMeleeAttack(8*random(1,5),"Cleaver/Crash","DSPFWOOD");
+		MTB1 Q 5 A_CustomMeleeAttack(8*Random[Mutant](1,5),"Cleaver/Crash","DSPFWOOD");
 		Goto See;
 	Missile:
 		MTB1 E 0 A_Jump(128,"Missile2");
@@ -207,55 +207,55 @@ class BigMutant1 : Mutant
 		MTB1 E 7 A_FaceTarget;
 		MTB1 F 0 A_StartSound("chaingun/fire", CHAN_WEAPON);
 		MTB1 F 2 LIGHT("MUTNFIRE") A_SpawnProjectile("EnemyMutantTracer", 62, 0, -4, 0);
-		MTB1 F 2 A_SpawnItemEx("Casing9mm", 0,0,54, RandomPick(-3, 3), random(-1,1), random(2,4), random(-55,-80),SXF_NOCHECKPOSITION);
+		MTB1 F 2 A_SpawnItemEx("Casing9mm", 0,0,54, RandomPick[Mutant](-3, 3), Random[Mutant](-1,1), Random[Mutant](2,4), Random[Mutant](-55,-80),SXF_NOCHECKPOSITION);
 		MTB1 F 0 A_StartSound("chaingun/fire", CHAN_WEAPON);
 		MTB1 F 2 LIGHT("MUTNFIRE") A_SpawnProjectile("EnemyMutantTracer", 62, 0, 0, 0);
-		MTB1 F 2 A_SpawnItemEx("Casing9mm", 0,0,54, RandomPick(-3, 3), random(-1,1), random(2,4), random(-55,-80),SXF_NOCHECKPOSITION);
+		MTB1 F 2 A_SpawnItemEx("Casing9mm", 0,0,54, RandomPick[Mutant](-3, 3), Random[Mutant](-1,1), Random[Mutant](2,4), Random[Mutant](-55,-80),SXF_NOCHECKPOSITION);
 		MTB1 F 0 A_StartSound("chaingun/fire", CHAN_WEAPON);
 		MTB1 F 2 LIGHT("MUTNFIRE") A_SpawnProjectile("EnemyMutantTracer", 62, 0, 4, 0);
-		MTB1 F 2 A_SpawnItemEx("Casing9mm", 0,0,54, RandomPick(-3, 3), random(-1,1), random(2,4), random(-55,-80),SXF_NOCHECKPOSITION);
+		MTB1 F 2 A_SpawnItemEx("Casing9mm", 0,0,54, RandomPick[Mutant](-3, 3), Random[Mutant](-1,1), Random[Mutant](2,4), Random[Mutant](-55,-80),SXF_NOCHECKPOSITION);
 		MTB1 F 0 A_StartSound("chaingun/fire", CHAN_WEAPON);
 		MTB1 F 2 LIGHT("MUTNFIRE") A_SpawnProjectile("EnemyMutantTracer", 62, 0, 8, 0);
-		MTB1 F 2 A_SpawnItemEx("Casing9mm", 0,0,54, RandomPick(-3, 3), random(-1,1), random(2,4), random(-55,-80),SXF_NOCHECKPOSITION);
+		MTB1 F 2 A_SpawnItemEx("Casing9mm", 0,0,54, RandomPick[Mutant](-3, 3), Random[Mutant](-1,1), Random[Mutant](2,4), Random[Mutant](-55,-80),SXF_NOCHECKPOSITION);
 		MTB1 F 0 A_StartSound("chaingun/fire", CHAN_WEAPON);
 		MTB1 F 2 LIGHT("MUTNFIRE") A_SpawnProjectile("EnemyMutantTracer", 62, 0, 12, 0);
-		MTB1 F 2 A_SpawnItemEx("Casing9mm", 0,0,54, RandomPick(-3, 3), random(-1,1), random(2,4), random(-55,-80),SXF_NOCHECKPOSITION);
+		MTB1 F 2 A_SpawnItemEx("Casing9mm", 0,0,54, RandomPick[Mutant](-3, 3), Random[Mutant](-1,1), Random[Mutant](2,4), Random[Mutant](-55,-80),SXF_NOCHECKPOSITION);
 		MTB1 F 0 A_StartSound("chaingun/fire", CHAN_WEAPON);
 		MTB1 F 2 LIGHT("MUTNFIRE") A_SpawnProjectile("EnemyMutantTracer", 62, 0, 16, 0);
-		MTB1 F 2 A_SpawnItemEx("Casing9mm", 0,0,54, RandomPick(-3, 3), random(-1,1), random(2,4), random(-55,-80),SXF_NOCHECKPOSITION);
+		MTB1 F 2 A_SpawnItemEx("Casing9mm", 0,0,54, RandomPick[Mutant](-3, 3), Random[Mutant](-1,1), Random[Mutant](2,4), Random[Mutant](-55,-80),SXF_NOCHECKPOSITION);
 		Goto See;
 	Missile2:
 		MTB1 E 3;
 		MTB1 E 7 A_FaceTarget;
 		MTB1 G 0 A_StartSound("chaingun/fire", CHAN_WEAPON);
 		MTB1 G 2 LIGHT("MUTNFIRE") A_SpawnProjectile("EnemyMutantTracer", 62, 0, 4, 0);
-		MTB1 G 2 A_SpawnItemEx("Casing9mm", 0,0,54, RandomPick(-3, 3), random(-1,1), random(2,4), random(-55,-80),SXF_NOCHECKPOSITION);
+		MTB1 G 2 A_SpawnItemEx("Casing9mm", 0,0,54, RandomPick[Mutant](-3, 3), Random[Mutant](-1,1), Random[Mutant](2,4), Random[Mutant](-55,-80),SXF_NOCHECKPOSITION);
 		MTB1 G 0 A_StartSound("chaingun/fire", CHAN_WEAPON);
 		MTB1 G 2 LIGHT("MUTNFIRE") A_SpawnProjectile("EnemyMutantTracer", 62, 0, 0, 0);
-		MTB1 G 2 A_SpawnItemEx("Casing9mm", 0,0,54, RandomPick(-3, 3), random(-1,1), random(2,4), random(-55,-80),SXF_NOCHECKPOSITION);
+		MTB1 G 2 A_SpawnItemEx("Casing9mm", 0,0,54, RandomPick[Mutant](-3, 3), Random[Mutant](-1,1), Random[Mutant](2,4), Random[Mutant](-55,-80),SXF_NOCHECKPOSITION);
 		MTB1 G 0 A_StartSound("chaingun/fire", CHAN_WEAPON);
 		MTB1 G 2 LIGHT("MUTNFIRE") A_SpawnProjectile("EnemyMutantTracer", 62, 0, -4, 0);
-		MTB1 G 2 A_SpawnItemEx("Casing9mm", 0,0,54, RandomPick(-3, 3), random(-1,1), random(2,4), random(-55,-80),SXF_NOCHECKPOSITION);
+		MTB1 G 2 A_SpawnItemEx("Casing9mm", 0,0,54, RandomPick[Mutant](-3, 3), Random[Mutant](-1,1), Random[Mutant](2,4), Random[Mutant](-55,-80),SXF_NOCHECKPOSITION);
 		MTB1 G 0 A_StartSound("chaingun/fire", CHAN_WEAPON);
 		MTB1 G 2 LIGHT("MUTNFIRE") A_SpawnProjectile("EnemyMutantTracer", 62, 0, -8, 0);
-		MTB1 G 2 A_SpawnItemEx("Casing9mm", 0,0,54, RandomPick(-3, 3), random(-1,1), random(2,4), random(-55,-80),SXF_NOCHECKPOSITION);
+		MTB1 G 2 A_SpawnItemEx("Casing9mm", 0,0,54, RandomPick[Mutant](-3, 3), Random[Mutant](-1,1), Random[Mutant](2,4), Random[Mutant](-55,-80),SXF_NOCHECKPOSITION);
 		MTB1 G 0 A_StartSound("chaingun/fire", CHAN_WEAPON);
 		MTB1 G 2 LIGHT("MUTNFIRE") A_SpawnProjectile("EnemyMutantTracer", 62, 0, -12, 0);
-		MTB1 G 2 A_SpawnItemEx("Casing9mm", 0,0,54, RandomPick(-3, 3), random(-1,1), random(2,4), random(-55,-80),SXF_NOCHECKPOSITION);
+		MTB1 G 2 A_SpawnItemEx("Casing9mm", 0,0,54, RandomPick[Mutant](-3, 3), Random[Mutant](-1,1), Random[Mutant](2,4), Random[Mutant](-55,-80),SXF_NOCHECKPOSITION);
 		MTB1 G 0 A_StartSound("chaingun/fire", CHAN_WEAPON);
 		MTB1 G 2 LIGHT("MUTNFIRE") A_SpawnProjectile("EnemyMutantTracer", 62, 0, -16, 0);
-		MTB1 G 2 A_SpawnItemEx("Casing9mm", 0,0,54, RandomPick(-3, 3), random(-1,1), random(2,4), random(-55,-80),SXF_NOCHECKPOSITION);
+		MTB1 G 2 A_SpawnItemEx("Casing9mm", 0,0,54, RandomPick[Mutant](-3, 3), Random[Mutant](-1,1), Random[Mutant](2,4), Random[Mutant](-55,-80),SXF_NOCHECKPOSITION);
 		Goto See;
 	Missile3:
 		MTB1 E 4;
 		MTB1 E 10 A_FaceTarget;
 		MTB1 F 0 A_StartSound("chaingun/fire", CHAN_WEAPON);
-		MTB1 FFF 0 LIGHT("MUTNFIRE") A_SpawnProjectile("EnemyMutantTracer",64,0,frandom(-4,4));
-		MTB1 FFF 0 A_SpawnItemEx("Casing9mm", 0,0,54, RandomPick(-3, 3), random(-1,1), random(2,4), random(-55,-80),SXF_NOCHECKPOSITION);
+		MTB1 FFF 0 LIGHT("MUTNFIRE") A_SpawnProjectile("EnemyMutantTracer",64,0, FRandom[Mutant](-4,4));
+		MTB1 FFF 0 A_SpawnItemEx("Casing9mm", 0,0,54, RandomPick[Mutant](-3, 3), Random[Mutant](-1,1), Random[Mutant](2,4), Random[Mutant](-55,-80),SXF_NOCHECKPOSITION);
 		MTB1 EG 3 A_FaceTarget;
 		MTB1 G 0 A_StartSound("chaingun/fire", CHAN_WEAPON);
-		MTB1 GGG 0 LIGHT("MUTNFIRE") A_SpawnProjectile("EnemyMutantTracer",64,0,frandom(-4,4));
-		MTB1 GGG 0 A_SpawnItemEx("Casing9mm", 0,0,54, RandomPick(-3, 3), random(-1,1), random(2,4), random(-55,-80),SXF_NOCHECKPOSITION);
+		MTB1 GGG 0 LIGHT("MUTNFIRE") A_SpawnProjectile("EnemyMutantTracer",64,0, FRandom[Mutant](-4,4));
+		MTB1 GGG 0 A_SpawnItemEx("Casing9mm", 0,0,54, RandomPick[Mutant](-3, 3), Random[Mutant](-1,1), Random[Mutant](2,4), Random[Mutant](-55,-80),SXF_NOCHECKPOSITION);
 		MTB1 EF 3 A_FaceTarget;
 		Goto See;
 	Death:
@@ -308,23 +308,23 @@ class BigMutant2 : BigMutant1
 		Goto Look;
 	Melee:
 		MTB2 E 4 A_FaceTarget;
-		MTB2 P 5 A_CustomMeleeAttack(8*random(1,5),"Cleaver/Crash","DSPFWOOD");
+		MTB2 P 5 A_CustomMeleeAttack(8*Random[Mutant](1,5),"Cleaver/Crash","DSPFWOOD");
 		MTB2 E 4 A_FaceTarget;
-		MTB2 Q 5 A_CustomMeleeAttack(8*random(1,5),"Cleaver/Crash","DSPFWOOD");
+		MTB2 Q 5 A_CustomMeleeAttack(8*Random[Mutant](1,5),"Cleaver/Crash","DSPFWOOD");
 		Goto See;
 	Missile:
 		MTB2 E 20 A_FaceTarget;
 		MTB2 E 0 A_Jump(96,"Missile2");
 		MTB2 E 0 A_Jump(192,"Missile3");
-		MTB2 F 6 A_SpawnProjectile("MutantRocket",62,0,random(-8,-16));
+		MTB2 F 6 A_SpawnProjectile("MutantRocket",62,0, Random[Mutant](-8,-16));
 		MTB2 E 8 A_FaceTarget;
 		Goto See;
 	Missile2:
-		MTB2 G 8 A_SpawnProjectile("MutantRocket",62,0,random(8,16));
+		MTB2 G 8 A_SpawnProjectile("MutantRocket",62,0, Random[Mutant](8,16));
 		MTB2 E 20 A_FaceTarget;
 		Goto See;
 	Missile3:
-		MTB2 F 0 A_SpawnProjectile("MutantRocket", 62,0,random(-8,-16));
+		MTB2 F 0 A_SpawnProjectile("MutantRocket", 62,0, Random[Mutant](-8,-16));
 		MTB2 F 0;
 		MTB2 G 8 A_SpawnProjectile("MutantRocket", 62,0, 0);
 		MTB2 E 20 A_FaceTarget;
@@ -377,39 +377,39 @@ class UberMutant : Mutant
 		"####" G 0 {bNoRadiusDMG = TRUE;}
 		Goto See;
 	Missile2:
-		UBMU G 4 LIGHT("MUTNROCK") A_SpawnProjectile("MutantRocket",44,0,random(8,16));
+		UBMU G 4 LIGHT("MUTNROCK") A_SpawnProjectile("MutantRocket",44,0, Random[Mutant](8,16));
 		UBMU EF 5 A_FaceTarget;
 		UBMU G 4 LIGHT("MUTNROCK") A_SpawnProjectile("MutantRocket",44,0,0);
 		"####" G 0 {bNoRadiusDMG = TRUE;}
 		Goto See;
 	Missile3:
-		UBMU G 0 LIGHT("MUTNROCK") A_SpawnProjectile("MutantRocket",44,0,random(-8,-16));
+		UBMU G 0 LIGHT("MUTNROCK") A_SpawnProjectile("MutantRocket",44,0, Random[Mutant](-8,-16));
 		UBMU G 0 LIGHT("MUTNROCK") A_SpawnProjectile("MutantRocket",44,0, 0);
-		UBMU G 5 LIGHT("MUTNROCK") A_SpawnProjectile("MutantRocket",44,0,random(8,16));
+		UBMU G 5 LIGHT("MUTNROCK") A_SpawnProjectile("MutantRocket",44,0, Random[Mutant](8,16));
 		UBMU EF 5 A_FaceTarget;
 		"####" F 0 {bNoRadiusDMG = TRUE;}
 		Goto See;
 	Chaingun:
 		UBMU G 0 A_FaceTarget;
 		UBMU G 0 A_StartSound("chaingun/fire", CHAN_WEAPON);
-		UBMU G 0 A_SpawnProjectile("EnemyMutantTracer",44,0,random(-1,1));
-		UBMU G 0 A_SpawnProjectile("EnemyMutantTracer",44,0,random(-4,4));
-		UBMU GG 0 A_SpawnItemEx("Casing9mm", 0,0,46, RandomPick(-8, 8), random(-1,1), random(2,4), random(-55,-80),SXF_NOCHECKPOSITION);
+		UBMU G 0 A_SpawnProjectile("EnemyMutantTracer",44,0, Random[Mutant](-1,1));
+		UBMU G 0 A_SpawnProjectile("EnemyMutantTracer",44,0, Random[Mutant](-4,4));
+		UBMU GG 0 A_SpawnItemEx("Casing9mm", 0,0,46, RandomPick[Mutant](-8, 8), Random[Mutant](-1,1), Random[Mutant](2,4), Random[Mutant](-55,-80),SXF_NOCHECKPOSITION);
 		UBMU G 3 LIGHT("MUTNFIRE");
 		UBMU G 0 A_StartSound("chaingun/fire", CHAN_WEAPON);
-		UBMU G 0 A_SpawnProjectile("EnemyMutantTracer",44,0,random(-1,1));
-		UBMU G 0 A_SpawnProjectile("EnemyMutantTracer",44,0,random(-4,4));
-		UBMU GG 0 A_SpawnItemEx("Casing9mm", 0,0,46, RandomPick(-8, 8), random(-1,1), random(2,4), random(-55,-80),SXF_NOCHECKPOSITION);
+		UBMU G 0 A_SpawnProjectile("EnemyMutantTracer",44,0, Random[Mutant](-1,1));
+		UBMU G 0 A_SpawnProjectile("EnemyMutantTracer",44,0, Random[Mutant](-4,4));
+		UBMU GG 0 A_SpawnItemEx("Casing9mm", 0,0,46, RandomPick[Mutant](-8, 8), Random[Mutant](-1,1), Random[Mutant](2,4), Random[Mutant](-55,-80),SXF_NOCHECKPOSITION);
 		UBMU G 3 LIGHT("MUTNFIRE");
 		UBMU G 0 A_StartSound("chaingun/fire", CHAN_WEAPON);
-		UBMU G 0 A_SpawnProjectile("EnemyMutantTracer",44,0,random(-1,1));
-		UBMU G 0 A_SpawnProjectile("EnemyMutantTracer",44,0,random(-4,4));
-		UBMU GG 0 A_SpawnItemEx("Casing9mm", 0,0,46, RandomPick(-8, 8), random(-1,1), random(2,4), random(-55,-80),SXF_NOCHECKPOSITION);
+		UBMU G 0 A_SpawnProjectile("EnemyMutantTracer",44,0, Random[Mutant](-1,1));
+		UBMU G 0 A_SpawnProjectile("EnemyMutantTracer",44,0, Random[Mutant](-4,4));
+		UBMU GG 0 A_SpawnItemEx("Casing9mm", 0,0,46, RandomPick[Mutant](-8, 8), Random[Mutant](-1,1), Random[Mutant](2,4), Random[Mutant](-55,-80),SXF_NOCHECKPOSITION);
 		UBMU G 3 LIGHT("MUTNFIRE");
 		UBMU G 0 A_StartSound("chaingun/fire", CHAN_WEAPON);
-		UBMU G 0 A_SpawnProjectile("EnemyMutantTracer",44,0,random(-1,1));
-		UBMU G 0 A_SpawnProjectile("EnemyMutantTracer",44,0,random(-4,4));
-		UBMU GG 0 A_SpawnItemEx("Casing9mm", 0,0,46, RandomPick(-8, 8), random(-1,1), random(2,4), random(-55,-80),SXF_NOCHECKPOSITION);
+		UBMU G 0 A_SpawnProjectile("EnemyMutantTracer",44,0, Random[Mutant](-1,1));
+		UBMU G 0 A_SpawnProjectile("EnemyMutantTracer",44,0, Random[Mutant](-4,4));
+		UBMU GG 0 A_SpawnItemEx("Casing9mm", 0,0,46, RandomPick[Mutant](-8, 8), Random[Mutant](-1,1), Random[Mutant](2,4), Random[Mutant](-55,-80),SXF_NOCHECKPOSITION);
 		UBMU G 3 LIGHT("MUTNFIRE");
 		UBMU G 4 A_MonsterRefire(20,"See");
 		"####" G 0 {bNoRadiusDMG = TRUE;}

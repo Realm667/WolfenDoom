@@ -36,7 +36,7 @@ class Ink1: SceneryBase
 	States
 	{
 	Spawn:
-		INKY A -1 NODELAY A_SetScale(Scale.X * RandomPick(-1, 1), Scale.Y);
+		INKY A -1 NODELAY A_SetScale(Scale.X * RandomPick[Scenery](-1, 1), Scale.Y);
 		Stop;
 	}
 }
@@ -50,7 +50,7 @@ class Ink2 : Ink1
 	States
 	{
 	Spawn:
-		INKY B -1 NODELAY A_SetScale(Scale.X * RandomPick(-1, 1), Scale.Y);
+		INKY B -1 NODELAY A_SetScale(Scale.X * RandomPick[Scenery](-1, 1), Scale.Y);
 		Stop;
 	}
 }
@@ -64,7 +64,7 @@ class Ink3 : Ink1
 	States
 	{
 	Spawn:
-		INKY C -1 NODELAY A_SetScale(Scale.X * RandomPick(-1, 1), Scale.Y);
+		INKY C -1 NODELAY A_SetScale(Scale.X * RandomPick[Scenery](-1, 1), Scale.Y);
 		Stop;
 	}
 }
@@ -78,7 +78,7 @@ class Ink4 : Ink1
 	States
 	{
 	Spawn:
-		INKY D -1 NODELAY A_SetScale(Scale.X * RandomPick(-1, 1), Scale.Y);
+		INKY D -1 NODELAY A_SetScale(Scale.X * RandomPick[Scenery](-1, 1), Scale.Y);
 		Stop;
 	}
 }
@@ -92,7 +92,7 @@ class Ink5 : Ink1
 	States
 	{
 	Spawn:
-		INKY E -1 NODELAY A_SetScale(Scale.X * RandomPick(-1, 1), Scale.Y);
+		INKY E -1 NODELAY A_SetScale(Scale.X * RandomPick[Scenery](-1, 1), Scale.Y);
 		Stop;
 	}
 }
@@ -106,7 +106,7 @@ class Ink6 : Ink1
 	States
 	{
 	Spawn:
-		PENS A -1 NODELAY A_SetScale(Scale.X * RandomPick(-1, 1), Scale.Y);
+		PENS A -1 NODELAY A_SetScale(Scale.X * RandomPick[Scenery](-1, 1), Scale.Y);
 		Stop;
 	}
 }
@@ -138,10 +138,10 @@ class MonsterStatue: SceneryBase
 		TNT1 A 0 A_UnSetSolid;
 		"####" A 0 A_StartSound("misc/SRCRK2", CHAN_AUTO, 0, frandom (0.3,0.5), ATTN_NORM);
 		"####" A 0 A_SpawnItemEx("KD_HL2SmokeGenerator", 0, 0, 0, 0, 0, 0, 0,SXF_CLIENTSIDE | SXF_TRANSFERSCALE);
-		"####" AAAAAAAAAAAAAAAA 0 A_SpawnItemEx("Debris_Statue4", random(32,96), random(16,64), random(24,32), random(2,4), random(2,4), random(2,4), random(0,360), SXF_CLIENTSIDE);
-		"####" AAAAAAAAAAAAA 0 A_SpawnItemEx("Debris_Statue4", random(32,96), random(16,64), random(24,32), random(2,4), random(2,4), random(2,4), random(0,360), SXF_CLIENTSIDE);
-		"####" AAAAAAAAAA 0 A_SpawnItemEx("Debris_Statue4", random(32,96), random(16,64), random(24,32), random(2,4), random(2,4), random(2,4), random(0,360), SXF_CLIENTSIDE);
-		"####" AAAAAAA 0 A_SpawnItemEx("Debris_Statue4", random(32,96), random(16,64), random(24,32), random(2,4), random(2,4), random(2,4), random(0,360), SXF_CLIENTSIDE);
+		"####" AAAAAAAAAAAAAAAA 0 A_SpawnItemEx("Debris_Statue4", Random[Debris](32,96), Random[Debris](16,64), Random[Debris](24,32), Random[Debris](2,4), Random[Debris](2,4), Random[Debris](2,4), Random[Debris](0,360), SXF_CLIENTSIDE);
+		"####" AAAAAAAAAAAAA 0 A_SpawnItemEx("Debris_Statue4", Random[Debris](32,96), Random[Debris](16,64), Random[Debris](24,32), Random[Debris](2,4), Random[Debris](2,4), Random[Debris](2,4), Random[Debris](0,360), SXF_CLIENTSIDE);
+		"####" AAAAAAAAAA 0 A_SpawnItemEx("Debris_Statue4", Random[Debris](32,96), Random[Debris](16,64), Random[Debris](24,32), Random[Debris](2,4), Random[Debris](2,4), Random[Debris](2,4), Random[Debris](0,360), SXF_CLIENTSIDE);
+		"####" AAAAAAA 0 A_SpawnItemEx("Debris_Statue4", Random[Debris](32,96), Random[Debris](16,64), Random[Debris](24,32), Random[Debris](2,4), Random[Debris](2,4), Random[Debris](2,4), Random[Debris](0,360), SXF_CLIENTSIDE);
 		WSTA C -1;
 		Stop;
 	}
@@ -188,10 +188,10 @@ class BronzeStatueA : SwitchableDecoration
 		TNT1 A 0 A_UnSetSolid;
 		"####" A 0 A_StartSound("misc/SRCRK2", CHAN_AUTO, 0, frandom (0.3,0.5), ATTN_NORM);
 		"####" A 0 A_SpawnItemEx("KD_HL2SmokeGenerator", 0, 0, 0, 0, 0, 0, 0,SXF_CLIENTSIDE | SXF_TRANSFERSCALE);
-		"####" AAAAAAAAAAAAAAAA 0 A_SpawnItemEx("Debris_Statue1", random(32,96), random(16,64), random(24,32), random(2,4), random(2,4), random(2,4), random(0,360), SXF_CLIENTSIDE);
-		"####" AAAAAAAAAAAAA 0 A_SpawnItemEx("Debris_Statue1", random(32,96), random(16,64), random(24,32), random(2,4), random(2,4), random(2,4), random(0,360), SXF_CLIENTSIDE);
-		"####" AAAAAAAAAA 0 A_SpawnItemEx("Debris_Statue1", random(32,96), random(16,64), random(24,32), random(2,4), random(2,4), random(2,4), random(0,360), SXF_CLIENTSIDE);
-		"####" AAAAAAA 0 A_SpawnItemEx("Debris_Statue1", random(32,96), random(16,64), random(24,32), random(2,4), random(2,4), random(2,4), random(0,360), SXF_CLIENTSIDE);
+		"####" AAAAAAAAAAAAAAAA 0 A_SpawnItemEx("Debris_Statue1", Random[Debris](32,96), Random[Debris](16,64), Random[Debris](24,32), Random[Debris](2,4), Random[Debris](2,4), Random[Debris](2,4), Random[Debris](0,360), SXF_CLIENTSIDE);
+		"####" AAAAAAAAAAAAA 0 A_SpawnItemEx("Debris_Statue1", Random[Debris](32,96), Random[Debris](16,64), Random[Debris](24,32), Random[Debris](2,4), Random[Debris](2,4), Random[Debris](2,4), Random[Debris](0,360), SXF_CLIENTSIDE);
+		"####" AAAAAAAAAA 0 A_SpawnItemEx("Debris_Statue1", Random[Debris](32,96), Random[Debris](16,64), Random[Debris](24,32), Random[Debris](2,4), Random[Debris](2,4), Random[Debris](2,4), Random[Debris](0,360), SXF_CLIENTSIDE);
+		"####" AAAAAAA 0 A_SpawnItemEx("Debris_Statue1", Random[Debris](32,96), Random[Debris](16,64), Random[Debris](24,32), Random[Debris](2,4), Random[Debris](2,4), Random[Debris](2,4), Random[Debris](0,360), SXF_CLIENTSIDE);
 		BRNZ G -1;
 		Stop;
 	Inactive:
@@ -216,10 +216,10 @@ class BronzeStatueB : BronzeStatueA
 		TNT1 A 0 A_UnSetSolid;
 		"####" A 0 A_StartSound("misc/SRCRK2", CHAN_AUTO, 0, frandom (0.5,0.8), ATTN_NORM);
 		"####" A 0 A_SpawnItemEx("KD_HL2SmokeGenerator", 0, 0, 0, 0, 0, 0, 0,SXF_CLIENTSIDE | SXF_TRANSFERSCALE);
-		"####" AAAAAAAAAAAAAAAA 0 A_SpawnItemEx("Debris_Statue1", random(32,96), random(16,64), random(24,32), random(2,4), random(2,4), random(2,4), random(0,360), SXF_CLIENTSIDE);
-		"####" AAAAAAAAAAAAA 0 A_SpawnItemEx("Debris_Statue1", random(32,96), random(16,64), random(24,32), random(2,4), random(2,4), random(2,4), random(0,360), SXF_CLIENTSIDE);
-		"####" AAAAAAAAAA 0 A_SpawnItemEx("Debris_Statue1", random(32,96), random(16,64), random(24,32), random(2,4), random(2,4), random(2,4), random(0,360), SXF_CLIENTSIDE);
-		"####" AAAAAAA 0 A_SpawnItemEx("Debris_Statue1", random(32,96), random(16,64), random(24,32), random(2,4), random(2,4), random(2,4), random(0,360), SXF_CLIENTSIDE);
+		"####" AAAAAAAAAAAAAAAA 0 A_SpawnItemEx("Debris_Statue1", Random[Debris](32,96), Random[Debris](16,64), Random[Debris](24,32), Random[Debris](2,4), Random[Debris](2,4), Random[Debris](2,4), Random[Debris](0,360), SXF_CLIENTSIDE);
+		"####" AAAAAAAAAAAAA 0 A_SpawnItemEx("Debris_Statue1", Random[Debris](32,96), Random[Debris](16,64), Random[Debris](24,32), Random[Debris](2,4), Random[Debris](2,4), Random[Debris](2,4), Random[Debris](0,360), SXF_CLIENTSIDE);
+		"####" AAAAAAAAAA 0 A_SpawnItemEx("Debris_Statue1", Random[Debris](32,96), Random[Debris](16,64), Random[Debris](24,32), Random[Debris](2,4), Random[Debris](2,4), Random[Debris](2,4), Random[Debris](0,360), SXF_CLIENTSIDE);
+		"####" AAAAAAA 0 A_SpawnItemEx("Debris_Statue1", Random[Debris](32,96), Random[Debris](16,64), Random[Debris](24,32), Random[Debris](2,4), Random[Debris](2,4), Random[Debris](2,4), Random[Debris](0,360), SXF_CLIENTSIDE);
 		BRNZ H -1;
 		Stop;
 	Inactive:
@@ -244,10 +244,10 @@ class BronzeStatueC : BronzeStatueA
 		TNT1 A 0 A_UnSetSolid;
 		"####" A 0 A_StartSound("misc/SRCRK2", CHAN_AUTO, 0, frandom (0.5,0.8), ATTN_NORM);
 		"####" A 0 A_SpawnItemEx("KD_HL2SmokeGenerator", 0, 0, 0, 0, 0, 0, 0,SXF_CLIENTSIDE | SXF_TRANSFERSCALE);
-		"####" AAAAAAAAAAAAAAAA 0 A_SpawnItemEx("Debris_Statue2", random(32,96), random(16,64), random(24,32), random(2,4), random(2,4), random(2,4), random(0,360), SXF_CLIENTSIDE);
-		"####" AAAAAAAAAAAAA 0 A_SpawnItemEx("Debris_Statue2", random(32,96), random(16,64), random(24,32), random(2,4), random(2,4), random(2,4), random(0,360), SXF_CLIENTSIDE);
-		"####" AAAAAAAAAA 0 A_SpawnItemEx("Debris_Statue2", random(32,96), random(16,64), random(24,32), random(2,4), random(2,4), random(2,4), random(0,360), SXF_CLIENTSIDE);
-		"####" AAAAAAA 0 A_SpawnItemEx("Debris_Statue2", random(32,96), random(16,64), random(24,32), random(2,4), random(2,4), random(2,4), random(0,360), SXF_CLIENTSIDE);
+		"####" AAAAAAAAAAAAAAAA 0 A_SpawnItemEx("Debris_Statue2", Random[Debris](32,96), Random[Debris](16,64), Random[Debris](24,32), Random[Debris](2,4), Random[Debris](2,4), Random[Debris](2,4), Random[Debris](0,360), SXF_CLIENTSIDE);
+		"####" AAAAAAAAAAAAA 0 A_SpawnItemEx("Debris_Statue2", Random[Debris](32,96), Random[Debris](16,64), Random[Debris](24,32), Random[Debris](2,4), Random[Debris](2,4), Random[Debris](2,4), Random[Debris](0,360), SXF_CLIENTSIDE);
+		"####" AAAAAAAAAA 0 A_SpawnItemEx("Debris_Statue2", Random[Debris](32,96), Random[Debris](16,64), Random[Debris](24,32), Random[Debris](2,4), Random[Debris](2,4), Random[Debris](2,4), Random[Debris](0,360), SXF_CLIENTSIDE);
+		"####" AAAAAAA 0 A_SpawnItemEx("Debris_Statue2", Random[Debris](32,96), Random[Debris](16,64), Random[Debris](24,32), Random[Debris](2,4), Random[Debris](2,4), Random[Debris](2,4), Random[Debris](0,360), SXF_CLIENTSIDE);
 		BRNZ I -1;
 		Stop;
 	Inactive:
@@ -272,10 +272,10 @@ class BronzeStatueD : BronzeStatueA
 		TNT1 A 0 A_UnSetSolid;
 		"####" A 0 A_StartSound("misc/SRCRK2", CHAN_AUTO, 0, frandom (0.5,0.8), ATTN_NORM);
 		"####" A 0 A_SpawnItemEx("KD_HL2SmokeGenerator", 0, 0, 0, 0, 0, 0, 0,SXF_CLIENTSIDE | SXF_TRANSFERSCALE);
-		"####" AAAAAAAAAAAAAAAA 0 A_SpawnItemEx("Debris_Statue2", random(32,96), random(16,64), random(24,32), random(2,4), random(2,4), random(2,4), random(0,360), SXF_CLIENTSIDE);
-		"####" AAAAAAAAAAAAA 0 A_SpawnItemEx("Debris_Statue2", random(32,96), random(16,64), random(24,32), random(2,4), random(2,4), random(2,4), random(0,360), SXF_CLIENTSIDE);
-		"####" AAAAAAAAAA 0 A_SpawnItemEx("Debris_Statue2", random(32,96), random(16,64), random(24,32), random(2,4), random(2,4), random(2,4), random(0,360), SXF_CLIENTSIDE);
-		"####" AAAAAAA 0 A_SpawnItemEx("Debris_Statue2", random(32,96), random(16,64), random(24,32), random(2,4), random(2,4), random(2,4), random(0,360), SXF_CLIENTSIDE);
+		"####" AAAAAAAAAAAAAAAA 0 A_SpawnItemEx("Debris_Statue2", Random[Debris](32,96), Random[Debris](16,64), Random[Debris](24,32), Random[Debris](2,4), Random[Debris](2,4), Random[Debris](2,4), Random[Debris](0,360), SXF_CLIENTSIDE);
+		"####" AAAAAAAAAAAAA 0 A_SpawnItemEx("Debris_Statue2", Random[Debris](32,96), Random[Debris](16,64), Random[Debris](24,32), Random[Debris](2,4), Random[Debris](2,4), Random[Debris](2,4), Random[Debris](0,360), SXF_CLIENTSIDE);
+		"####" AAAAAAAAAA 0 A_SpawnItemEx("Debris_Statue2", Random[Debris](32,96), Random[Debris](16,64), Random[Debris](24,32), Random[Debris](2,4), Random[Debris](2,4), Random[Debris](2,4), Random[Debris](0,360), SXF_CLIENTSIDE);
+		"####" AAAAAAA 0 A_SpawnItemEx("Debris_Statue2", Random[Debris](32,96), Random[Debris](16,64), Random[Debris](24,32), Random[Debris](2,4), Random[Debris](2,4), Random[Debris](2,4), Random[Debris](0,360), SXF_CLIENTSIDE);
 		BRNZ J -1;
 		Stop;
 	Inactive:
@@ -300,10 +300,10 @@ class BronzeStatueE : BronzeStatueA
 		TNT1 A 0 A_UnSetSolid;
 		"####" A 0 A_StartSound("misc/SRCRK2", CHAN_AUTO, 0, frandom (0.5,0.8), ATTN_NORM);
 		"####" A 0 A_SpawnItemEx("KD_HL2SmokeGenerator", 0, 0, 0, 0, 0, 0, 0,SXF_CLIENTSIDE | SXF_TRANSFERSCALE);
-		"####" AAAAAAAAAAAAAAAA 0 A_SpawnItemEx("Debris_Statue3", random(32,96), random(16,64), random(24,32), random(2,4), random(2,4), random(2,4), random(0,360), SXF_CLIENTSIDE);
-		"####" AAAAAAAAAAAAA 0 A_SpawnItemEx("Debris_Statue3", random(32,96), random(16,64), random(24,32), random(2,4), random(2,4), random(2,4), random(0,360), SXF_CLIENTSIDE);
-		"####" AAAAAAAAAA 0 A_SpawnItemEx("Debris_Statue3", random(32,96), random(16,64), random(24,32), random(2,4), random(2,4), random(2,4), random(0,360), SXF_CLIENTSIDE);
-		"####" AAAAAAA 0 A_SpawnItemEx("Debris_Statue3", random(32,96), random(16,64), random(24,32), random(2,4), random(2,4), random(2,4), random(0,360), SXF_CLIENTSIDE);
+		"####" AAAAAAAAAAAAAAAA 0 A_SpawnItemEx("Debris_Statue3", Random[Debris](32,96), Random[Debris](16,64), Random[Debris](24,32), Random[Debris](2,4), Random[Debris](2,4), Random[Debris](2,4), Random[Debris](0,360), SXF_CLIENTSIDE);
+		"####" AAAAAAAAAAAAA 0 A_SpawnItemEx("Debris_Statue3", Random[Debris](32,96), Random[Debris](16,64), Random[Debris](24,32), Random[Debris](2,4), Random[Debris](2,4), Random[Debris](2,4), Random[Debris](0,360), SXF_CLIENTSIDE);
+		"####" AAAAAAAAAA 0 A_SpawnItemEx("Debris_Statue3", Random[Debris](32,96), Random[Debris](16,64), Random[Debris](24,32), Random[Debris](2,4), Random[Debris](2,4), Random[Debris](2,4), Random[Debris](0,360), SXF_CLIENTSIDE);
+		"####" AAAAAAA 0 A_SpawnItemEx("Debris_Statue3", Random[Debris](32,96), Random[Debris](16,64), Random[Debris](24,32), Random[Debris](2,4), Random[Debris](2,4), Random[Debris](2,4), Random[Debris](0,360), SXF_CLIENTSIDE);
 		BRNZ K -1;
 		Stop;
 	Inactive:
@@ -328,10 +328,10 @@ class BronzeStatueF : BronzeStatueA
 		TNT1 A 0 A_UnSetSolid;
 		"####" A 0 A_StartSound("misc/SRCRK2", CHAN_AUTO, 0, frandom (0.5,0.8), ATTN_NORM);
 		"####" A 0 A_SpawnItemEx("KD_HL2SmokeGenerator", 0, 0, 0, 0, 0, 0, 0,SXF_CLIENTSIDE | SXF_TRANSFERSCALE);
-		"####" AAAAAAAAAAAAAAAA 0 A_SpawnItemEx("Debris_Statue3", random(32,96), random(16,64), random(24,32), random(2,4), random(2,4), random(2,4), random(0,360), SXF_CLIENTSIDE);
-		"####" AAAAAAAAAAAAA 0 A_SpawnItemEx("Debris_Statue3", random(32,96), random(16,64), random(24,32), random(2,4), random(2,4), random(2,4), random(0,360), SXF_CLIENTSIDE);
-		"####" AAAAAAAAAA 0 A_SpawnItemEx("Debris_Statue3", random(32,96), random(16,64), random(24,32), random(2,4), random(2,4), random(2,4), random(0,360), SXF_CLIENTSIDE);
-		"####" AAAAAAA 0 A_SpawnItemEx("Debris_Statue3", random(32,96), random(16,64), random(24,32), random(2,4), random(2,4), random(2,4), random(0,360), SXF_CLIENTSIDE);
+		"####" AAAAAAAAAAAAAAAA 0 A_SpawnItemEx("Debris_Statue3", Random[Debris](32,96), Random[Debris](16,64), Random[Debris](24,32), Random[Debris](2,4), Random[Debris](2,4), Random[Debris](2,4), Random[Debris](0,360), SXF_CLIENTSIDE);
+		"####" AAAAAAAAAAAAA 0 A_SpawnItemEx("Debris_Statue3", Random[Debris](32,96), Random[Debris](16,64), Random[Debris](24,32), Random[Debris](2,4), Random[Debris](2,4), Random[Debris](2,4), Random[Debris](0,360), SXF_CLIENTSIDE);
+		"####" AAAAAAAAAA 0 A_SpawnItemEx("Debris_Statue3", Random[Debris](32,96), Random[Debris](16,64), Random[Debris](24,32), Random[Debris](2,4), Random[Debris](2,4), Random[Debris](2,4), Random[Debris](0,360), SXF_CLIENTSIDE);
+		"####" AAAAAAA 0 A_SpawnItemEx("Debris_Statue3", Random[Debris](32,96), Random[Debris](16,64), Random[Debris](24,32), Random[Debris](2,4), Random[Debris](2,4), Random[Debris](2,4), Random[Debris](0,360), SXF_CLIENTSIDE);
 		BRNZ L -1;
 		Stop;
 	Inactive:
@@ -382,10 +382,10 @@ class Denkmal : BronzeStatueA
 		TNT1 A 0 A_UnSetSolid;
 		"####" A 0 A_StartSound("misc/SRCRK2", CHAN_AUTO, 0, frandom (0.5,0.8), ATTN_NORM);
 		"####" A 0 A_SpawnItemEx("KD_HL2SmokeGenerator", 0, 0, 0, 0, 0, 0, 0,SXF_CLIENTSIDE | SXF_TRANSFERSCALE);
-		"####" AAAAAAAAAAAAAAAA 0 A_SpawnItemEx("Debris_Statue3", random(32,96), random(16,64), random(24,32), random(2,4), random(2,4), random(2,4), random(0,360), SXF_CLIENTSIDE);
-		"####" AAAAAAAAAAAAA 0 A_SpawnItemEx("Debris_Statue3", random(32,96), random(16,64), random(24,32), random(2,4), random(2,4), random(2,4), random(0,360), SXF_CLIENTSIDE);
-		"####" AAAAAAAAAA 0 A_SpawnItemEx("Debris_Statue3", random(32,96), random(16,64), random(24,32), random(2,4), random(2,4), random(2,4), random(0,360), SXF_CLIENTSIDE);
-		"####" AAAAAAA 0 A_SpawnItemEx("Debris_Statue3", random(32,96), random(16,64), random(24,32), random(2,4), random(2,4), random(2,4), random(0,360), SXF_CLIENTSIDE);
+		"####" AAAAAAAAAAAAAAAA 0 A_SpawnItemEx("Debris_Statue3", Random[Debris](32,96), Random[Debris](16,64), Random[Debris](24,32), Random[Debris](2,4), Random[Debris](2,4), Random[Debris](2,4), Random[Debris](0,360), SXF_CLIENTSIDE);
+		"####" AAAAAAAAAAAAA 0 A_SpawnItemEx("Debris_Statue3", Random[Debris](32,96), Random[Debris](16,64), Random[Debris](24,32), Random[Debris](2,4), Random[Debris](2,4), Random[Debris](2,4), Random[Debris](0,360), SXF_CLIENTSIDE);
+		"####" AAAAAAAAAA 0 A_SpawnItemEx("Debris_Statue3", Random[Debris](32,96), Random[Debris](16,64), Random[Debris](24,32), Random[Debris](2,4), Random[Debris](2,4), Random[Debris](2,4), Random[Debris](0,360), SXF_CLIENTSIDE);
+		"####" AAAAAAA 0 A_SpawnItemEx("Debris_Statue3", Random[Debris](32,96), Random[Debris](16,64), Random[Debris](24,32), Random[Debris](2,4), Random[Debris](2,4), Random[Debris](2,4), Random[Debris](0,360), SXF_CLIENTSIDE);
 		DNML C -1;
 		Stop;
 	Inactive:
@@ -411,10 +411,10 @@ class Denkmal2 : Denkmal
 		TNT1 A 0 A_UnSetSolid;
 		"####" A 0 A_StartSound("misc/SRCRK2", CHAN_AUTO, 0, frandom (0.5,0.8), ATTN_NORM);
 		"####" A 0 A_SpawnItemEx("KD_HL2SmokeGenerator", 0, 0, 0, 0, 0, 0, 0,SXF_CLIENTSIDE | SXF_TRANSFERSCALE);
-		"####" AAAAAAAAAAAAAAAA 0 A_SpawnItemEx("Debris_Statue2", random(32,96), random(16,64), random(24,32), random(2,4), random(2,4), random(2,4), random(0,360), SXF_CLIENTSIDE);
-		"####" AAAAAAAAAAAAA 0 A_SpawnItemEx("Debris_Statue2", random(32,96), random(16,64), random(24,32), random(2,4), random(2,4), random(2,4), random(0,360), SXF_CLIENTSIDE);
-		"####" AAAAAAAAAA 0 A_SpawnItemEx("Debris_Statue2", random(32,96), random(16,64), random(24,32), random(2,4), random(2,4), random(2,4), random(0,360), SXF_CLIENTSIDE);
-		"####" AAAAAAA 0 A_SpawnItemEx("Debris_Statue2", random(32,96), random(16,64), random(24,32), random(2,4), random(2,4), random(2,4), random(0,360), SXF_CLIENTSIDE);
+		"####" AAAAAAAAAAAAAAAA 0 A_SpawnItemEx("Debris_Statue2", Random[Debris](32,96), Random[Debris](16,64), Random[Debris](24,32), Random[Debris](2,4), Random[Debris](2,4), Random[Debris](2,4), Random[Debris](0,360), SXF_CLIENTSIDE);
+		"####" AAAAAAAAAAAAA 0 A_SpawnItemEx("Debris_Statue2", Random[Debris](32,96), Random[Debris](16,64), Random[Debris](24,32), Random[Debris](2,4), Random[Debris](2,4), Random[Debris](2,4), Random[Debris](0,360), SXF_CLIENTSIDE);
+		"####" AAAAAAAAAA 0 A_SpawnItemEx("Debris_Statue2", Random[Debris](32,96), Random[Debris](16,64), Random[Debris](24,32), Random[Debris](2,4), Random[Debris](2,4), Random[Debris](2,4), Random[Debris](0,360), SXF_CLIENTSIDE);
+		"####" AAAAAAA 0 A_SpawnItemEx("Debris_Statue2", Random[Debris](32,96), Random[Debris](16,64), Random[Debris](24,32), Random[Debris](2,4), Random[Debris](2,4), Random[Debris](2,4), Random[Debris](0,360), SXF_CLIENTSIDE);
 		DNML D -1;
 		Stop;
 	Inactive:

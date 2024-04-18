@@ -91,7 +91,7 @@ class NaziMedic : NaziStandard
 
 				A_CheckForPlayer();
 
-				Speed = bFrightened ? FRandom(4,6) : Default.Speed;
+				Speed = bFrightened ? FRandom[Medic](4,6) : Default.Speed;
 			}
 			"####" AAAAAA 1 A_WanderGoal(0, 512);
 			"####" # 0 A_PlayStepSound();
@@ -114,7 +114,7 @@ class NaziMedic : NaziStandard
 								frightener.target.player
 							)
 						) && 
-						Random(0, 32) == 0
+						Random[Medic](0, 32) == 0
 					)
 					{
 						// Randomly surrender if the player was the frightener
@@ -134,7 +134,7 @@ class NaziMedic : NaziStandard
 		Heal.Loop:
 			"####" E 15;
 			"####" F 5;
-			"####" EEEEE 3 { if (goal) { goal.A_SpawnItemEx("HealingParticle", random(10,-10), random(10,-10), random(16,64), 0, 0, random(1, 2), 0); } } // Spawn healing particles as the actor is ressurected
+			"####" EEEEE 3 { if (goal) { goal.A_SpawnItemEx("HealingParticle", Random[Medic](10,-10), Random[Medic](10,-10), Random[Medic](16,64), 0, 0, Random[Medic](1, 2), 0); } } // Spawn healing particles as the actor is ressurected
 			"####" E 0 {
 				if (healloopcount > 0) {
 					healloopcount--;
@@ -155,12 +155,12 @@ class NaziMedic : NaziStandard
 				bIsMonster = false; // Keep these from being re-killed by the massacre/kill monsters cheat
 			}
 		Death.Surrender:
-			"####" F 1 A_SetTics(Random(35, 70));
+			"####" F 1 A_SetTics(Random[Medic](35, 70));
 			"####" BA 6;
 		Death.SurrenderLoop:
-			"####" A 1 A_SetTics(Random(35, 70));
+			"####" A 1 A_SetTics(Random[Medic](35, 70));
 			"####" BC 6;
-			"####" DEDED 1 A_SetTics(Random(48, 96));
+			"####" DEDED 1 A_SetTics(Random[Medic](48, 96));
 			"####" CB 6;
 			Loop;
 		Death.StandingSurrender:
@@ -194,7 +194,7 @@ class NaziMedic : NaziStandard
 		// Run away from any player that's close by
 		if (p)
 		{
-			if ((!bFrightened && Random(0, 255) < 16) || jump) { A_StartSound("Nazi1/Sighted", CHAN_ITEM); }
+			if ((!bFrightened && Random[Medic](0, 255) < 16) || jump) { A_StartSound("Nazi1/Sighted", CHAN_ITEM); }
 			Speed = Default.Speed * 2;
 
 			if (p.player && Distance3D(p) < 512 + radius)
@@ -202,7 +202,7 @@ class NaziMedic : NaziStandard
 				target = p;
 				body = null;
 				goal = null;
-				frighttimeout = 35 + Random(0, 14) * 5;
+				frighttimeout = 35 + Random[Medic](0, 14) * 5;
 				frightener = target;
 			}
 

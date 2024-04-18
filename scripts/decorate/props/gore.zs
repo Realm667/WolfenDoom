@@ -101,8 +101,8 @@ class HungBodyMov : HungBody
 	States
 	{
 	Spawn:
-		HUNG BCCCCDDEEFFEEDDDCCBBB 1 A_SetTics (random(2,5));
-		HUNG A 1 A_SetTics (random(80,160));
+		HUNG BCCCCDDEEFFEEDDDCCBBB 1 A_SetTics (Random[Gore](2,5));
+		HUNG A 1 A_SetTics (Random[Gore](80,160));
 		Loop;
 	}
 }
@@ -176,12 +176,12 @@ class DeadBody: SceneryBase
 		BODY E -1;
 		Stop;
 	Breathing:
-		BODY E 1 A_SetTics(Random(40,80));
-		"####" F 1 A_SetTics(Random(8,16));
-		"####" G 1 A_SetTics(Random(8,16));
-		"####" H 1 A_SetTics(Random(8,16));
-		"####" G 1 A_SetTics(Random(8,16));
-		"####" F 1 A_SetTics(Random(8,16));
+		BODY E 1 A_SetTics(Random[Gore](40,80));
+		"####" F 1 A_SetTics(Random[Gore](8,16));
+		"####" G 1 A_SetTics(Random[Gore](8,16));
+		"####" H 1 A_SetTics(Random[Gore](8,16));
+		"####" G 1 A_SetTics(Random[Gore](8,16));
+		"####" F 1 A_SetTics(Random[Gore](8,16));
 		Loop;
 	}
 }
@@ -693,7 +693,7 @@ class PrisonerMaleHang1 : HungBody
 		HAN1 E -1;
 		Stop;
 	Swinging:
-		HAN1 A 1 A_SetTics(Random(80,160));
+		HAN1 A 1 A_SetTics(Random[Gore](80,160));
 		HAN1 F 8;
 		HAN1 G 8;
 		HAN1 F 8;
@@ -722,7 +722,7 @@ class PrisonerMaleHang2 : HungBody
 		HAN2 E -1;
 		Stop;
 	Swinging:
-		HAN2 A 1 A_SetTics(Random(80,160));
+		HAN2 A 1 A_SetTics(Random[Gore](80,160));
 		HAN2 F 8;
 		HAN2 G 8;
 		HAN2 F 8;
@@ -751,7 +751,7 @@ class PrisonerMaleHang3 : HungBody
 		HAN3 E -1;
 		Stop;
 	Swinging:
-		HAN3 A 1 A_SetTics(Random(80,160));
+		HAN3 A 1 A_SetTics(Random[Gore](80,160));
 		HAN3 F 8;
 		HAN3 G 8;
 		HAN3 F 8;
@@ -880,30 +880,30 @@ class CobwebNest : CobwebBody
 		Stop;
 	Death:
 		COBW D 1 A_UnSetSolid;
-		COBW DDDD 0 A_SpawnItemEx("Debris_Web", frandom(-32.0,32.0), frandom(-16.0,16.0), frandom(-4.0,-8.0), frandom(-1.0,-2.0), -1, -1, random(0,360), SXF_CLIENTSIDE | SXF_NOCHECKPOSITION);
-		COBW DDD 0 A_SpawnItemEx("Debris_Web", frandom(-32.0,32.0), frandom(-16.0,16.0), frandom(-4.0,-8.0), frandom(-1.0,-2.0), -1, -1, random(0,360), SXF_CLIENTSIDE | SXF_NOCHECKPOSITION);
-		COBW DD 0 A_SpawnItemEx("Debris_Web", frandom(-32.0,32.0), frandom(-16.0,16.0), frandom(-4.0,-8.0), frandom(-1.0,-2.0), -1, -1, random(0,360), SXF_CLIENTSIDE | SXF_NOCHECKPOSITION);
+		COBW DDDD 0 A_SpawnItemEx("Debris_Web", FRandom[Spider](-32.0,32.0), FRandom[Spider](-16.0,16.0), FRandom[Spider](-4.0,-8.0), FRandom[Spider](-1.0,-2.0), -1, -1, Random[Spider](0,360), SXF_CLIENTSIDE | SXF_NOCHECKPOSITION);
+		COBW DDD 0 A_SpawnItemEx("Debris_Web", FRandom[Spider](-32.0,32.0), FRandom[Spider](-16.0,16.0), FRandom[Spider](-4.0,-8.0), FRandom[Spider](-1.0,-2.0), -1, -1, Random[Spider](0,360), SXF_CLIENTSIDE | SXF_NOCHECKPOSITION);
+		COBW DD 0 A_SpawnItemEx("Debris_Web", FRandom[Spider](-32.0,32.0), FRandom[Spider](-16.0,16.0), FRandom[Spider](-4.0,-8.0), FRandom[Spider](-1.0,-2.0), -1, -1, Random[Spider](0,360), SXF_CLIENTSIDE | SXF_NOCHECKPOSITION);
 		COBW D 1 A_Jump(128,"Death1","Death2","Death3");
 	Death1:
-		COBW D 1 A_SpawnItemEx("MiniSpiderNest",frandom(-24.0,24.0),frandom(-16.0,16.0),frandom(-4.0,-16.0),0 ,0 ,0 ,random(0,360), SXF_SETMASTER | SXF_CLIENTSIDE, 0, tid);
-		COBW D 0 A_SpawnItemEx("MiniSpiderNest",frandom(-24.0,24.0),frandom(-16.0,16.0),frandom(-4.0,-16.0),0 ,0 ,0 ,random(0,360), SXF_SETMASTER | SXF_CLIENTSIDE, 0, tid);
-		COBW D 0 A_SpawnItemEx("MiniSpiderNest",frandom(-24.0,24.0),frandom(-16.0,16.0),frandom(-4.0,-16.0),0 ,0 ,0 ,random(0,360), SXF_SETMASTER | SXF_CLIENTSIDE, 0, tid);
-		COBW D 0 A_SpawnItemEx("MiniSpiderNest",frandom(-24.0,24.0),frandom(-16.0,16.0),frandom(-4.0,-16.0),0 ,0 ,0 ,random(0,360), SXF_SETMASTER | SXF_CLIENTSIDE, 0, tid);
-		COBW D 0 A_SpawnItemEx("MiniSpiderNest",frandom(-24.0,24.0),frandom(-16.0,16.0),frandom(-4.0,-16.0),0 ,0 ,0 ,random(0,360), SXF_SETMASTER | SXF_CLIENTSIDE, 0, tid);
+		COBW D 1 A_SpawnItemEx("MiniSpiderNest", FRandom[Spider](-24.0,24.0), FRandom[Spider](-16.0,16.0), FRandom[Spider](-4.0,-16.0),0 ,0 ,0 , Random[Spider](0,360), SXF_SETMASTER | SXF_CLIENTSIDE, 0, tid);
+		COBW D 0 A_SpawnItemEx("MiniSpiderNest", FRandom[Spider](-24.0,24.0), FRandom[Spider](-16.0,16.0), FRandom[Spider](-4.0,-16.0),0 ,0 ,0 , Random[Spider](0,360), SXF_SETMASTER | SXF_CLIENTSIDE, 0, tid);
+		COBW D 0 A_SpawnItemEx("MiniSpiderNest", FRandom[Spider](-24.0,24.0), FRandom[Spider](-16.0,16.0), FRandom[Spider](-4.0,-16.0),0 ,0 ,0 , Random[Spider](0,360), SXF_SETMASTER | SXF_CLIENTSIDE, 0, tid);
+		COBW D 0 A_SpawnItemEx("MiniSpiderNest", FRandom[Spider](-24.0,24.0), FRandom[Spider](-16.0,16.0), FRandom[Spider](-4.0,-16.0),0 ,0 ,0 , Random[Spider](0,360), SXF_SETMASTER | SXF_CLIENTSIDE, 0, tid);
+		COBW D 0 A_SpawnItemEx("MiniSpiderNest", FRandom[Spider](-24.0,24.0), FRandom[Spider](-16.0,16.0), FRandom[Spider](-4.0,-16.0),0 ,0 ,0 , Random[Spider](0,360), SXF_SETMASTER | SXF_CLIENTSIDE, 0, tid);
 		COBW D -1;
 		Stop;
 	Death2:
-		COBW D 1 A_SpawnItemEx("BigSpiderNest",frandom(-24.0,24.0),frandom(-16.0,16.0),frandom(-4.0,-16.0),0 ,0 ,0 ,random(0,360), SXF_SETMASTER | SXF_CLIENTSIDE, 0, tid);
-		COBW D 0 A_SpawnItemEx("BigSpiderNest",frandom(-24.0,24.0),frandom(-16.0,16.0),frandom(-4.0,-16.0),0 ,0 ,0 ,random(0,360), SXF_SETMASTER | SXF_CLIENTSIDE, 0, tid);
-		COBW D 0 A_SpawnItemEx("BigSpiderNest",frandom(-24.0,24.0),frandom(-16.0,16.0),frandom(-4.0,-16.0),0 ,0 ,0 ,random(0,360), SXF_SETMASTER | SXF_CLIENTSIDE, 0, tid);
+		COBW D 1 A_SpawnItemEx("BigSpiderNest", FRandom[Spider](-24.0,24.0), FRandom[Spider](-16.0,16.0), FRandom[Spider](-4.0,-16.0),0 ,0 ,0 , Random[Spider](0,360), SXF_SETMASTER | SXF_CLIENTSIDE, 0, tid);
+		COBW D 0 A_SpawnItemEx("BigSpiderNest", FRandom[Spider](-24.0,24.0), FRandom[Spider](-16.0,16.0), FRandom[Spider](-4.0,-16.0),0 ,0 ,0 , Random[Spider](0,360), SXF_SETMASTER | SXF_CLIENTSIDE, 0, tid);
+		COBW D 0 A_SpawnItemEx("BigSpiderNest", FRandom[Spider](-24.0,24.0), FRandom[Spider](-16.0,16.0), FRandom[Spider](-4.0,-16.0),0 ,0 ,0 , Random[Spider](0,360), SXF_SETMASTER | SXF_CLIENTSIDE, 0, tid);
 		COBW D -1;
 		Stop;
 	Death3:
-		COBW D 1 A_SpawnItemEx("MiniSpiderNest",frandom(-24.0,24.0),frandom(-16.0,16.0),frandom(-4.0,-16.0),0 ,0 ,0 ,random(0,360), SXF_SETMASTER | SXF_CLIENTSIDE, 0, tid);
-		COBW D 0 A_SpawnItemEx("BigSpiderNest",frandom(-24.0,24.0),frandom(-16.0,16.0),frandom(-4.0,-16.0),0 ,0 ,0 ,random(0,360), SXF_SETMASTER | SXF_CLIENTSIDE, 0, tid);
-		COBW D 0 A_SpawnItemEx("MiniSpiderNest",frandom(-24.0,24.0),frandom(-16.0,16.0),frandom(-4.0,-16.0),0 ,0 ,0 ,random(0,360), SXF_SETMASTER | SXF_CLIENTSIDE, 0, tid);
-		COBW D 0 A_SpawnItemEx("BigSpiderNest",frandom(-24.0,24.0),frandom(-16.0,16.0),frandom(-4.0,-16.0),0 ,0 ,0 ,random(0,360), SXF_SETMASTER | SXF_CLIENTSIDE, 0, tid);
-		COBW D 0 A_SpawnItemEx("MiniSpiderNest",frandom(-24.0,24.0),frandom(-16.0,16.0),frandom(-4.0,-16.0),0 ,0 ,0 ,random(0,360), SXF_SETMASTER | SXF_CLIENTSIDE, 0, tid);
+		COBW D 1 A_SpawnItemEx("MiniSpiderNest", FRandom[Spider](-24.0,24.0), FRandom[Spider](-16.0,16.0), FRandom[Spider](-4.0,-16.0),0 ,0 ,0 , Random[Spider](0,360), SXF_SETMASTER | SXF_CLIENTSIDE, 0, tid);
+		COBW D 0 A_SpawnItemEx("BigSpiderNest", FRandom[Spider](-24.0,24.0), FRandom[Spider](-16.0,16.0), FRandom[Spider](-4.0,-16.0),0 ,0 ,0 , Random[Spider](0,360), SXF_SETMASTER | SXF_CLIENTSIDE, 0, tid);
+		COBW D 0 A_SpawnItemEx("MiniSpiderNest", FRandom[Spider](-24.0,24.0), FRandom[Spider](-16.0,16.0), FRandom[Spider](-4.0,-16.0),0 ,0 ,0 , Random[Spider](0,360), SXF_SETMASTER | SXF_CLIENTSIDE, 0, tid);
+		COBW D 0 A_SpawnItemEx("BigSpiderNest", FRandom[Spider](-24.0,24.0), FRandom[Spider](-16.0,16.0), FRandom[Spider](-4.0,-16.0),0 ,0 ,0 , Random[Spider](0,360), SXF_SETMASTER | SXF_CLIENTSIDE, 0, tid);
+		COBW D 0 A_SpawnItemEx("MiniSpiderNest", FRandom[Spider](-24.0,24.0), FRandom[Spider](-16.0,16.0), FRandom[Spider](-4.0,-16.0),0 ,0 ,0 , Random[Spider](0,360), SXF_SETMASTER | SXF_CLIENTSIDE, 0, tid);
 		COBW D -1;
 		Stop;
 	}

@@ -97,7 +97,7 @@ class CeilingFan : Obstacle3d
 			blades.pitch = pitch;
 			blades.roll = roll;
 			blades.scale = scale;
-			blades.angle = Random(0, 359);
+			blades.angle = Random[Fan](0, 359);
 		}
 
 		Super.PostBeginPlay();
@@ -571,9 +571,9 @@ class RadioModern: SceneryBase
 		"####" B 0 A_StartSound("tesla/loop", CHAN_AUTO, CHANF_LOOPING, 1.0);
 		"####" B 0 A_UnSetSolid;
 		"####" B 0 A_SpawnItemEx("KD_HL2SmokeGenerator", 0, 0, 0, 0, 0, 0, 0, SXF_CLIENTSIDE | SXF_TRANSFERSCALE);
-		"####" BBBBBB 3 A_SpawnItemEx("SparkB", Scale.X*24, frandom(-12.0,12.0), Scale.Y*12, 0, frandom(-1.0,1.0), frandom(-1.0,1.0), random(0,360), SXF_CLIENTSIDE);
+		"####" BBBBBB 3 A_SpawnItemEx("SparkB", Scale.X*24, FRandom[Spark](-12.0,12.0), Scale.Y*12, 0, FRandom[Spark](-1.0,1.0), FRandom[Spark](-1.0,1.0), Random[Spark](0,360), SXF_CLIENTSIDE);
 		"####" B 0 A_StopSound(CHAN_AUTO);
-		"####" BBBBBB 3 A_SpawnItemEx("SparkW", Scale.X*24, frandom(-12.0,12.0), Scale.Y*12, 0, frandom(-1.0,1.0), frandom(-1.0,1.0), random(0,360), SXF_CLIENTSIDE);
+		"####" BBBBBB 3 A_SpawnItemEx("SparkW", Scale.X*24, FRandom[Spark](-12.0,12.0), Scale.Y*12, 0, FRandom[Spark](-1.0,1.0), FRandom[Spark](-1.0,1.0), Random[Spark](0,360), SXF_CLIENTSIDE);
 		"####" B -1;
 		Stop;
 	}
@@ -606,9 +606,9 @@ class RTCWParlor : InteractionBase
 		"####" B 0 {bUseSpecial = FALSE;}
 		"####" B 0 A_UnSetSolid;
 		"####" B 0 A_SpawnItemEx("KD_HL2SmokeGenerator", 0, 0, 0, 0, 0, 0, 0, SXF_CLIENTSIDE | SXF_TRANSFERSCALE);
-		"####" BBBBBB 3 A_SpawnItemEx("SparkR", Scale.X*24, frandom(-8.0,8.0), Scale.Y*8, 0, frandom(-1.0,1.0), frandom(-1.0,1.0), random(0,360), SXF_CLIENTSIDE);
+		"####" BBBBBB 3 A_SpawnItemEx("SparkR", Scale.X*24, FRandom[Spark](-8.0,8.0), Scale.Y*8, 0, FRandom[Spark](-1.0,1.0), FRandom[Spark](-1.0,1.0), Random[Spark](0,360), SXF_CLIENTSIDE);
 		"####" B 0 A_StopSound(CHAN_6);
-		"####" BBBBBB 3 A_SpawnItemEx("SparkR", Scale.X*24, frandom(-8.0,8.0), Scale.Y*8, 0, frandom(-1.0,1.0), frandom(-1.0,1.0), random(0,360), SXF_CLIENTSIDE);
+		"####" BBBBBB 3 A_SpawnItemEx("SparkR", Scale.X*24, FRandom[Spark](-8.0,8.0), Scale.Y*8, 0, FRandom[Spark](-1.0,1.0), FRandom[Spark](-1.0,1.0), Random[Spark](0,360), SXF_CLIENTSIDE);
 		"####" B -1;
 		Stop;
 	}
@@ -672,9 +672,9 @@ class RTCWGramo : InteractionBase
 		"####" A 0 {bUseSpecial = FALSE;}
 		"####" A 0 A_UnSetSolid;
 		"####" A 0 A_SpawnItemEx("KD_HL2SmokeGenerator", 0, 0, 0, 0, 0, 0, 0, SXF_CLIENTSIDE | SXF_TRANSFERSCALE);
-		"####" AAAAAA 3 A_SpawnItemEx("SparkY", Scale.X*24, frandom(-16.0,16.0), Scale.Y*16, 0, frandom(-1.0,1.0), frandom(-1.0,1.0), random(0,360), SXF_CLIENTSIDE);
+		"####" AAAAAA 3 A_SpawnItemEx("SparkY", Scale.X*24, FRandom[Spark](-16.0,16.0), Scale.Y*16, 0, FRandom[Spark](-1.0,1.0), FRandom[Spark](-1.0,1.0), Random[Spark](0,360), SXF_CLIENTSIDE);
 		"####" A 0 A_StopSound(CHAN_6);
-		"####" AAAAAA 3 A_SpawnItemEx("SparkB", Scale.X*24, frandom(-16.0,16.0), Scale.Y*16, 0, frandom(-1.0,1.0), frandom(-1.0,1.0), random(0,360), SXF_CLIENTSIDE);
+		"####" AAAAAA 3 A_SpawnItemEx("SparkB", Scale.X*24, FRandom[Spark](-16.0,16.0), Scale.Y*16, 0, FRandom[Spark](-1.0,1.0), FRandom[Spark](-1.0,1.0), Random[Spark](0,360), SXF_CLIENTSIDE);
 		"####" A -1;
 		Stop;
 	}
@@ -1740,9 +1740,9 @@ class COD_RadioSimple : InteractionBase
 		"####" B 0 {bUseSpecial = FALSE;}
 		"####" B 0 A_UnSetSolid;
 		"####" B 0 A_SpawnItemEx("KD_HL2SmokeGenerator", 0, 0, 0, 0, 0, 0, 0, SXF_CLIENTSIDE | SXF_TRANSFERSCALE);
-		"####" BBBBBB 3 A_SpawnItemEx("SparkB", Scale.X*24, frandom(-8.0,8.0), Scale.Y*8, 0, frandom(-1.0,1.0), frandom(-1.0,1.0), random(0,360), SXF_CLIENTSIDE);
+		"####" BBBBBB 3 A_SpawnItemEx("SparkB", Scale.X*24, FRandom[Spark](-8.0,8.0), Scale.Y*8, 0, FRandom[Spark](-1.0,1.0), FRandom[Spark](-1.0,1.0), Random[Spark](0,360), SXF_CLIENTSIDE);
 		"####" B 0 A_StopSound(CHAN_6);
-		"####" BBBBBB 3 A_SpawnItemEx("SparkB", Scale.X*24, frandom(-8.0,8.0), Scale.Y*8, 0, frandom(-1.0,1.0), frandom(-1.0,1.0), random(0,360), SXF_CLIENTSIDE);
+		"####" BBBBBB 3 A_SpawnItemEx("SparkB", Scale.X*24, FRandom[Spark](-8.0,8.0), Scale.Y*8, 0, FRandom[Spark](-1.0,1.0), FRandom[Spark](-1.0,1.0), Random[Spark](0,360), SXF_CLIENTSIDE);
 		"####" B -1;
 		Stop;
 	}
@@ -2029,18 +2029,18 @@ class SecretUFO : SwitchableDecoration //3dRealms - no distancecheck for this
 		"####" A 35; //just wait 1 sec before spawning effects
 		"####" A 0 A_StartSound("UFOLNCH", CHAN_AUTO, 0, 1.0, ATTN_NONE);
 	ActiveLoop:
-		MDLA A 0 A_SpawnItemEx("UFOCirclePad",0,0,-8,0,0,random(1,8), SXF_SETMASTER | SXF_NOCHECKPOSITION);
+		MDLA A 0 A_SpawnItemEx("UFOCirclePad",0,0,-8,0,0,random[Pad](1,8), SXF_SETMASTER | SXF_NOCHECKPOSITION);
 		"####" A 15;
 		Loop;
 	Inactive:
 		MDLA A 0 { A_StartSound("UFOEXPL", CHAN_AUTO, 0, 1.0, ATTN_NONE); A_NoBlocking(); A_RemoveChildren(TRUE, RMVF_EVERYTHING); A_SetScale(2.0); }
-		"####" AAAAAAAAAAAAA 0 A_SpawnItemEx("Debris_Mecha3", random(-256, 256), random(-256, 256), random(16, -16), random(1, 3), random(1, 3), random(-20, 3), random(0, 360), SXF_CLIENTSIDE | SXF_TRANSFERSCALE);
-		"####" AAAAAAAAAAAAA 0 A_SpawnItemEx("Debris_Mecha4", random(-256, 256), random(-256, 256), random(16, -16), random(1, 3), random(1, 3), random(-20, 3), random(0, 360), SXF_CLIENTSIDE | SXF_TRANSFERSCALE);
-		"####" AAAAAAAAAAAAA 0 A_SpawnItemEx("Debris_AstroSuite", random(-256, 256), random(-256, 256), random(16, -16), random(1, 3), random(1, 3), random(-20, 3), random(0, 360), SXF_CLIENTSIDE | SXF_TRANSFERSCALE);
-		"####" AAAAAAAAAAAAA 0 A_SpawnItemEx("Debris_AstroRobot", random(-256, 256), random(-256, 256), random(16, -16), random(1, 3), random(1, 3), random(-20, 3), random(0, 360), SXF_CLIENTSIDE | SXF_TRANSFERSCALE);
+		"####" AAAAAAAAAAAAA 0 A_SpawnItemEx("Debris_Mecha3", Random[Debris](-256, 256), Random[Debris](-256, 256), Random[Debris](16, -16), Random[Debris](1, 3), Random[Debris](1, 3), Random[Debris](-20, 3), Random[Debris](0, 360), SXF_CLIENTSIDE | SXF_TRANSFERSCALE);
+		"####" AAAAAAAAAAAAA 0 A_SpawnItemEx("Debris_Mecha4", Random[Debris](-256, 256), Random[Debris](-256, 256), Random[Debris](16, -16), Random[Debris](1, 3), Random[Debris](1, 3), Random[Debris](-20, 3), Random[Debris](0, 360), SXF_CLIENTSIDE | SXF_TRANSFERSCALE);
+		"####" AAAAAAAAAAAAA 0 A_SpawnItemEx("Debris_AstroSuite", Random[Debris](-256, 256), Random[Debris](-256, 256), Random[Debris](16, -16), Random[Debris](1, 3), Random[Debris](1, 3), Random[Debris](-20, 3), Random[Debris](0, 360), SXF_CLIENTSIDE | SXF_TRANSFERSCALE);
+		"####" AAAAAAAAAAAAA 0 A_SpawnItemEx("Debris_AstroRobot", Random[Debris](-256, 256), Random[Debris](-256, 256), Random[Debris](16, -16), Random[Debris](1, 3), Random[Debris](1, 3), Random[Debris](-20, 3), Random[Debris](0, 360), SXF_CLIENTSIDE | SXF_TRANSFERSCALE);
 		"####" A 0 A_SetScale(5.0);
-		"####" AAAAAAAAAAAAA 0 A_SpawnItemEx("Debris_MetalJunk", random(64, 256), random(64, 256), random(16, -16), random(1, 3), random(1, 3), random(-20, 3), random(0, 360), SXF_CLIENTSIDE | SXF_TRANSFERSCALE);
-		"####" AAAAAAAAAAAAA 0 A_SpawnItemEx("Debris_Metal2", random(64, 256), random(64, 256), random(16, -16), random(1, 3), random(1, 3), random(-20, 3), random(0, 360), SXF_CLIENTSIDE | SXF_TRANSFERSCALE);
+		"####" AAAAAAAAAAAAA 0 A_SpawnItemEx("Debris_MetalJunk", Random[Debris](64, 256), Random[Debris](64, 256), Random[Debris](16, -16), Random[Debris](1, 3), Random[Debris](1, 3), Random[Debris](-20, 3), Random[Debris](0, 360), SXF_CLIENTSIDE | SXF_TRANSFERSCALE);
+		"####" AAAAAAAAAAAAA 0 A_SpawnItemEx("Debris_Metal2", Random[Debris](64, 256), Random[Debris](64, 256), Random[Debris](16, -16), Random[Debris](1, 3), Random[Debris](1, 3), Random[Debris](-20, 3), Random[Debris](0, 360), SXF_CLIENTSIDE | SXF_TRANSFERSCALE);
 		"####" A 0 { A_SetScale(1.0); A_SpawnItemEx("UFONuke", 0, 0, 0, 0, 0, 0, 0, SXF_TRANSFERPOINTERS|SXF_NOCHECKPOSITION); A_SpawnItemEx("UFOSmokePillar", 0, 0, 0, 0, 0, 0, 0, SXF_TRANSFERPOINTERS); }
 		"####" A 1 A_SpawnItemEx("UFOSmokePillar", 0, 0, -512, 0, 0, 0, 0, SXF_TRANSFERPOINTERS);
 		"####" A 10;

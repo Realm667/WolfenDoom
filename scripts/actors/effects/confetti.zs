@@ -11,8 +11,8 @@ class ConfettiSpawner : SnowSpawner
 	{
 		EffectSpawner.SpawnEffect();
 
-		if (args[2]) { A_SpawnItemEx("ConfettiParticle", random(-Args[0], Args[0]), 0, 0, frandom(-1.0, 1.0), frandom(-1.0, 1.0),frandom(-4.0, 4.0), random(0, 359), SXF_TRANSFERPITCH | SXF_CLIENTSIDE, Args[1]); }
-		else { A_SpawnItemEx("ConfettiParticle", random(-Args[0], Args[0]), random(-Args[0], Args[0]), 0, frandom(-1.0, 1.0), frandom(-1.0, 1.0), frandom(-4.0, 4.0), 0, SXF_TRANSFERPITCH | SXF_CLIENTSIDE, Args[1]); }
+		if (args[2]) { A_SpawnItemEx("ConfettiParticle", Random[Confetti](-Args[0], Args[0]), 0, 0, FRandom[Confetti](-1.0, 1.0), FRandom[Confetti](-1.0, 1.0), FRandom[Confetti](-4.0, 4.0), Random[Confetti](0, 359), SXF_TRANSFERPITCH | SXF_CLIENTSIDE, Args[1]); }
+		else { A_SpawnItemEx("ConfettiParticle", Random[Confetti](-Args[0], Args[0]), Random[Confetti](-Args[0], Args[0]), 0, FRandom[Confetti](-1.0, 1.0), FRandom[Confetti](-1.0, 1.0), FRandom[Confetti](-4.0, 4.0), 0, SXF_TRANSFERPITCH | SXF_CLIENTSIDE, Args[1]); }
 	}
 }
 
@@ -43,11 +43,11 @@ class ConfettiParticle : ParticleBase
 	{
 		Spawn:
 			CONF "#" 1 {
-				tics = Random(1, 3);
+				tics = Random[Confetti](1, 3);
 
-				A_SetRoll(roll + RandomPick(-1, 1) * FRandom(-30.5, 60.5), SPF_INTERPOLATE);
-				angle += Random(-45, 45);
-				pitch += FRandom(-95.25, 95.25);
+				A_SetRoll(roll + RandomPick[Confetti](-1, 1) * FRandom[Confetti](-30.5, 60.5), SPF_INTERPOLATE);
+				angle += Random[Confetti](-45, 45);
+				pitch += FRandom[Confetti](-95.25, 95.25);
 			}
 			Loop;
 		Death:
@@ -71,7 +71,7 @@ class ConfettiParticle : ParticleBase
 
 		boa_debrislifetime = CVar.FindCVar("boa_debrislifetime");
 
-		gravity = FRandom(0.0005, 0.0225);
-		frame = Random(0, 5);
+		gravity = FRandom[Confetti](0.0005, 0.0225);
+		frame = Random[Confetti](0, 5);
 	}
 }

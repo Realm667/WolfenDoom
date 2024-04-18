@@ -38,7 +38,7 @@ class SSUniformStatic: SceneryBase
 	States
 	{
 	Spawn:
-		SSUN A -1 NODELAY A_SetScale(Scale.X * RandomPick(-1, 1), Scale.Y);
+		SSUN A -1 NODELAY A_SetScale(Scale.X * RandomPick[Scenery](-1, 1), Scale.Y);
 		Stop;
 	}
 }
@@ -52,7 +52,7 @@ class UniformStatic : SSUniformStatic
 	States
 	{
 	Spawn:
-		SSUN B -1 NODELAY A_SetScale(Scale.X * RandomPick(-1, 1), Scale.Y);
+		SSUN B -1 NODELAY A_SetScale(Scale.X * RandomPick[Scenery](-1, 1), Scale.Y);
 		Stop;
 	}
 }
@@ -68,7 +68,7 @@ class ScientistUniformStatic : SSUniformStatic
 	States
 	{
 	Spawn:
-		HNG1 B -1 NODELAY A_SetScale(Scale.X * RandomPick(-1, 1), Scale.Y);
+		HNG1 B -1 NODELAY A_SetScale(Scale.X * RandomPick[Scenery](-1, 1), Scale.Y);
 		Stop;
 	}
 }
@@ -82,7 +82,7 @@ class FoxUniformStatic : SSUniformStatic
 	States
 	{
 	Spawn:
-		SSUN C -1 NODELAY A_SetScale(Scale.X * RandomPick(-1, 1), Scale.Y);
+		SSUN C -1 NODELAY A_SetScale(Scale.X * RandomPick[Scenery](-1, 1), Scale.Y);
 		Stop;
 	}
 }
@@ -96,7 +96,7 @@ class HitlerUniformStatic : SSUniformStatic
 	States
 	{
 	Spawn:
-		DWNF A -1 NODELAY A_SetScale(Scale.X * RandomPick(-1, 1), Scale.Y);
+		DWNF A -1 NODELAY A_SetScale(Scale.X * RandomPick[Scenery](-1, 1), Scale.Y);
 		Stop;
 	}
 }
@@ -112,7 +112,7 @@ class CoatHanger : SSUniformStatic
 	States
 	{
 	Spawn:
-		CTHN A -1 NODELAY A_SetScale(Scale.X * RandomPick(-1, 1), Scale.Y);
+		CTHN A -1 NODELAY A_SetScale(Scale.X * RandomPick[Scenery](-1, 1), Scale.Y);
 		Stop;
 	}
 }
@@ -128,9 +128,9 @@ class CoatHanger2 : CoatHanger
 	{
 	Spawn:
 		TNT1 A 0 NODELAY A_Jump(256,1,2,3);
-		CTHN B -1 A_SetScale(Scale.X * RandomPick(-1, 1), Scale.Y);
-		CTHN C -1 A_SetScale(Scale.X * RandomPick(-1, 1), Scale.Y);
-		CTHN D -1 A_SetScale(Scale.X * RandomPick(-1, 1), Scale.Y);
+		CTHN B -1 A_SetScale(Scale.X * RandomPick[Scenery](-1, 1), Scale.Y);
+		CTHN C -1 A_SetScale(Scale.X * RandomPick[Scenery](-1, 1), Scale.Y);
+		CTHN D -1 A_SetScale(Scale.X * RandomPick[Scenery](-1, 1), Scale.Y);
 		Stop;
 	}
 }
@@ -146,9 +146,9 @@ class CoatHanger3 : CoatHanger
 	{
 	Spawn:
 		TNT1 A 0 NODELAY A_Jump(256,1,2,3);
-		CTHN E -1 A_SetScale(Scale.X * RandomPick(-1, 1), Scale.Y);
-		CTHN F -1 A_SetScale(Scale.X * RandomPick(-1, 1), Scale.Y);
-		CTHN G -1 A_SetScale(Scale.X * RandomPick(-1, 1), Scale.Y);
+		CTHN E -1 A_SetScale(Scale.X * RandomPick[Scenery](-1, 1), Scale.Y);
+		CTHN F -1 A_SetScale(Scale.X * RandomPick[Scenery](-1, 1), Scale.Y);
+		CTHN G -1 A_SetScale(Scale.X * RandomPick[Scenery](-1, 1), Scale.Y);
 		Stop;
 	}
 }
@@ -164,12 +164,12 @@ class CoatHanger4 : CoatHanger
 	{
 	Spawn:
 		TNT1 A 0 NODELAY A_Jump(256,1,2,3,4,5,6);
-		CTHN H -1 A_SetScale(Scale.X * RandomPick(-1, 1), Scale.Y);
-		CTHN I -1 A_SetScale(Scale.X * RandomPick(-1, 1), Scale.Y);
-		CTHN J -1 A_SetScale(Scale.X * RandomPick(-1, 1), Scale.Y);
-		CTHN K -1 A_SetScale(Scale.X * RandomPick(-1, 1), Scale.Y);
-		CTHN L -1 A_SetScale(Scale.X * RandomPick(-1, 1), Scale.Y);
-		CTHN M -1 A_SetScale(Scale.X * RandomPick(-1, 1), Scale.Y);
+		CTHN H -1 A_SetScale(Scale.X * RandomPick[Scenery](-1, 1), Scale.Y);
+		CTHN I -1 A_SetScale(Scale.X * RandomPick[Scenery](-1, 1), Scale.Y);
+		CTHN J -1 A_SetScale(Scale.X * RandomPick[Scenery](-1, 1), Scale.Y);
+		CTHN K -1 A_SetScale(Scale.X * RandomPick[Scenery](-1, 1), Scale.Y);
+		CTHN L -1 A_SetScale(Scale.X * RandomPick[Scenery](-1, 1), Scale.Y);
+		CTHN M -1 A_SetScale(Scale.X * RandomPick[Scenery](-1, 1), Scale.Y);
 		Stop;
 	}
 }
@@ -201,7 +201,7 @@ class CoatHangerA1 : CoatHanger
 	States
 	{
 	Spawn:
-		CTHN B -1 NODELAY A_SetScale(Scale.X * RandomPick(-1, 1), Scale.Y);
+		CTHN B -1 NODELAY A_SetScale(Scale.X * RandomPick[Scenery](-1, 1), Scale.Y);
 		Stop;
 	}
 }
@@ -215,7 +215,7 @@ class CoatHangerB1 : CoatHanger
 	States
 	{
 	Spawn:
-		CTHN C -1 NODELAY A_SetScale(Scale.X * RandomPick(-1, 1), Scale.Y);
+		CTHN C -1 NODELAY A_SetScale(Scale.X * RandomPick[Scenery](-1, 1), Scale.Y);
 		Stop;
 	}
 }
@@ -229,7 +229,7 @@ class CoatHangerC1 : CoatHanger
 	States
 	{
 	Spawn:
-		CTHN D -1 NODELAY A_SetScale(Scale.X * RandomPick(-1, 1), Scale.Y);
+		CTHN D -1 NODELAY A_SetScale(Scale.X * RandomPick[Scenery](-1, 1), Scale.Y);
 		Stop;
 	}
 }
@@ -243,7 +243,7 @@ class CoatHangerA2 : CoatHanger
 	States
 	{
 	Spawn:
-		CTHN E -1 NODELAY A_SetScale(Scale.X * RandomPick(-1, 1), Scale.Y);
+		CTHN E -1 NODELAY A_SetScale(Scale.X * RandomPick[Scenery](-1, 1), Scale.Y);
 		Stop;
 	}
 }
@@ -257,7 +257,7 @@ class CoatHangerB2 : CoatHanger
 	States
 	{
 	Spawn:
-		CTHN F -1 NODELAY A_SetScale(Scale.X * RandomPick(-1, 1), Scale.Y);
+		CTHN F -1 NODELAY A_SetScale(Scale.X * RandomPick[Scenery](-1, 1), Scale.Y);
 		Stop;
 	}
 }
@@ -271,7 +271,7 @@ class CoatHangerC2 : CoatHanger
 	States
 	{
 	Spawn:
-		CTHN G -1 NODELAY A_SetScale(Scale.X * RandomPick(-1, 1), Scale.Y);
+		CTHN G -1 NODELAY A_SetScale(Scale.X * RandomPick[Scenery](-1, 1), Scale.Y);
 		Stop;
 	}
 }
@@ -285,7 +285,7 @@ class CoatHangerA3 : CoatHanger
 	States
 	{
 	Spawn:
-		CTHN H -1 A_SetScale(Scale.X * RandomPick(-1, 1), Scale.Y);
+		CTHN H -1 A_SetScale(Scale.X * RandomPick[Scenery](-1, 1), Scale.Y);
 		Stop;
 	}
 }
@@ -299,7 +299,7 @@ class CoatHangerB3 : CoatHanger
 	States
 	{
 	Spawn:
-		CTHN I -1 A_SetScale(Scale.X * RandomPick(-1, 1), Scale.Y);
+		CTHN I -1 A_SetScale(Scale.X * RandomPick[Scenery](-1, 1), Scale.Y);
 		Stop;
 	}
 }
@@ -313,7 +313,7 @@ class CoatHangerC3 : CoatHanger
 	States
 	{
 	Spawn:
-		CTHN J -1 A_SetScale(Scale.X * RandomPick(-1, 1), Scale.Y);
+		CTHN J -1 A_SetScale(Scale.X * RandomPick[Scenery](-1, 1), Scale.Y);
 		Stop;
 	}
 }
@@ -327,7 +327,7 @@ class CoatHangerD3 : CoatHanger
 	States
 	{
 	Spawn:
-		CTHN K -1 A_SetScale(Scale.X * RandomPick(-1, 1), Scale.Y);
+		CTHN K -1 A_SetScale(Scale.X * RandomPick[Scenery](-1, 1), Scale.Y);
 		Stop;
 	}
 }
@@ -341,7 +341,7 @@ class CoatHangerE3 : CoatHanger
 	States
 	{
 	Spawn:
-		CTHN L -1 A_SetScale(Scale.X * RandomPick(-1, 1), Scale.Y);
+		CTHN L -1 A_SetScale(Scale.X * RandomPick[Scenery](-1, 1), Scale.Y);
 		Stop;
 	}
 }
@@ -355,7 +355,7 @@ class CoatHangerF3 : CoatHanger
 	States
 	{
 	Spawn:
-		CTHN M -1 A_SetScale(Scale.X * RandomPick(-1, 1), Scale.Y);
+		CTHN M -1 A_SetScale(Scale.X * RandomPick[Scenery](-1, 1), Scale.Y);
 		Stop;
 	}
 }
@@ -369,7 +369,7 @@ class CoatHanger6 : CoatHanger
 	States
 	{
 	Spawn:
-		CTHN Z -1 NODELAY A_SetScale(Scale.X * RandomPick(-1, 1), Scale.Y);
+		CTHN Z -1 NODELAY A_SetScale(Scale.X * RandomPick[Scenery](-1, 1), Scale.Y);
 		Stop;
 	}
 }
@@ -384,7 +384,7 @@ class CoatHanger7A : CoatHanger
 	States
 	{
 	Spawn:
-		CTHN N -1 NODELAY A_SetScale(Scale.X * RandomPick(-1, 1), Scale.Y);
+		CTHN N -1 NODELAY A_SetScale(Scale.X * RandomPick[Scenery](-1, 1), Scale.Y);
 		Stop;
 	}
 }
@@ -399,7 +399,7 @@ class CoatHanger7B : CoatHanger
 	States
 	{
 	Spawn:
-		CTHN O -1 NODELAY A_SetScale(Scale.X * RandomPick(-1, 1), Scale.Y);
+		CTHN O -1 NODELAY A_SetScale(Scale.X * RandomPick[Scenery](-1, 1), Scale.Y);
 		Stop;
 	}
 }
@@ -414,7 +414,7 @@ class CoatHanger7C : CoatHanger
 	States
 	{
 	Spawn:
-		CTHN P -1 NODELAY A_SetScale(Scale.X * RandomPick(-1, 1), Scale.Y);
+		CTHN P -1 NODELAY A_SetScale(Scale.X * RandomPick[Scenery](-1, 1), Scale.Y);
 		Stop;
 	}
 }
@@ -452,7 +452,7 @@ class PaperBox1: SceneryBase
 	States
 	{
 	Spawn:
-		BOX1 A -1 NODELAY A_SetScale(Scale.X * RandomPick(-1, 1), Scale.Y);
+		BOX1 A -1 NODELAY A_SetScale(Scale.X * RandomPick[Scenery](-1, 1), Scale.Y);
 		Stop;
 	}
 }
@@ -467,7 +467,7 @@ class PaperBox2 : PaperBox1
 	States
 	{
 	Spawn:
-		BOX1 B -1 NODELAY A_SetScale(Scale.X * RandomPick(-1, 1), Scale.Y);
+		BOX1 B -1 NODELAY A_SetScale(Scale.X * RandomPick[Scenery](-1, 1), Scale.Y);
 		Stop;
 	}
 }
@@ -504,8 +504,8 @@ class CasinoDice : PaperBox1
 	{
 	Spawn:
 		DADO A 0 NODELAY A_Jump(256,1,2);
-		"####" A -1 A_SetScale(Scale.X * RandomPick(-1, 1), Scale.Y);
-		"####" B -1 A_SetScale(Scale.X * RandomPick(-1, 1), Scale.Y);
+		"####" A -1 A_SetScale(Scale.X * RandomPick[Scenery](-1, 1), Scale.Y);
+		"####" B -1 A_SetScale(Scale.X * RandomPick[Scenery](-1, 1), Scale.Y);
 		Stop;
 	}
 }
@@ -538,7 +538,7 @@ class BinWhite: SceneryBase
 	Death:
 		TNT1 A 0 A_UnSetSolid;
 		TNT1 A 0 A_StartSound("METALBRK", CHAN_AUTO, 0, frandom (0.5,0.8), ATTN_NORM);
-		TNT1 AAAAAA 0 A_SpawnItemEx("Debris_Bin", random(0,16), random(0,16), random(0,56), random(1,3), random(1,3), random(1,3), random(0,360), SXF_CLIENTSIDE);
+		TNT1 AAAAAA 0 A_SpawnItemEx("Debris_Bin", Random[Debris](0,16), Random[Debris](0,16), Random[Debris](0,56), Random[Debris](1,3), Random[Debris](1,3), Random[Debris](1,3), Random[Debris](0,360), SXF_CLIENTSIDE);
 		TNT1 A 2 A_SpawnItemEx("MetalFrags");
 		BINS B -1;
 		Stop;
@@ -569,7 +569,7 @@ class Plant1 : Tiltable
 	Death:
 		TNT1 A 0 A_UnSetSolid;
 		TNT1 A 0 A_StartSound("WOODBRK", CHAN_AUTO, 0, frandom (0.5,0.8), ATTN_NORM);
-		TNT1 AAAAAAAAAAAAAAAA 0 A_SpawnItemEx("Debris_Leaf", random(0,8), random(0,16), random(0,48), random(1,3), random(1,3), random(1,3), random(0,360), SXF_CLIENTSIDE);
+		TNT1 AAAAAAAAAAAAAAAA 0 A_SpawnItemEx("Debris_Leaf", Random[Debris](0,8), Random[Debris](0,16), Random[Debris](0,48), Random[Debris](1,3), Random[Debris](1,3), Random[Debris](1,3), Random[Debris](0,360), SXF_CLIENTSIDE);
 		TNT1 A 2 A_SpawnItemEx("BarrelFrags");
 		PLNT C -1;
 		Stop;
@@ -590,7 +590,7 @@ class Plant2 : Plant1
 	Death:
 		TNT1 A 0 A_UnSetSolid;
 		TNT1 A 0 A_StartSound("WOODBRK", CHAN_AUTO, 0, frandom (0.5,0.8), ATTN_NORM);
-		TNT1 AAAAAAAAAAAAAAAA 0 A_SpawnItemEx("Debris_Leaf", random(0,8), random(0,16), random(0,48), random(1,3), random(1,3), random(1,3), random(0,360), SXF_CLIENTSIDE);
+		TNT1 AAAAAAAAAAAAAAAA 0 A_SpawnItemEx("Debris_Leaf", Random[Debris](0,8), Random[Debris](0,16), Random[Debris](0,48), Random[Debris](1,3), Random[Debris](1,3), Random[Debris](1,3), Random[Debris](0,360), SXF_CLIENTSIDE);
 		TNT1 A 2 A_SpawnItemEx("BarrelFrags");
 		PLNT D -1;
 		Stop;
@@ -613,8 +613,8 @@ class Plant3 : Plant1
 	Death:
 		TNT1 A 0 A_UnSetSolid;
 		TNT1 A 0 A_StartSound("METALBRK", CHAN_AUTO, 0, frandom (0.5,0.8), ATTN_NORM);
-		TNT1 AAAAAAAAAAAAAAAA 0 A_SpawnItemEx("Debris_Leaf", random(0,8), random(0,16), random(0,48), random(1,3), random(1,3), random(1,3), random(0,360), SXF_CLIENTSIDE);
-		TNT1 AAA 0 A_SpawnItemEx("Debris_Bin", random(0,16), random(0,16), random(0,56), random(1,3), random(1,3), random(1,3), random(0,360), SXF_CLIENTSIDE);
+		TNT1 AAAAAAAAAAAAAAAA 0 A_SpawnItemEx("Debris_Leaf", Random[Debris](0,8), Random[Debris](0,16), Random[Debris](0,48), Random[Debris](1,3), Random[Debris](1,3), Random[Debris](1,3), Random[Debris](0,360), SXF_CLIENTSIDE);
+		TNT1 AAA 0 A_SpawnItemEx("Debris_Bin", Random[Debris](0,16), Random[Debris](0,16), Random[Debris](0,56), Random[Debris](1,3), Random[Debris](1,3), Random[Debris](1,3), Random[Debris](0,360), SXF_CLIENTSIDE);
 		TNT1 A 2 A_SpawnItemEx("MetalFrags");
 		Stop;
 	}
@@ -649,7 +649,7 @@ class Plant5 : Plant1
 	Death:
 		TNT1 A 0 A_UnSetSolid;
 		TNT1 A 0 A_StartSound("WOODBRK", CHAN_AUTO, 0, frandom (0.5,0.8), ATTN_NORM);
-		TNT1 AAAAAAAAAAAAAAAA 0 A_SpawnItemEx("Debris_Leaf", random(0,8), random(0,16), random(0,48), random(1,3), random(1,3), random(1,3), random(0,360), SXF_CLIENTSIDE);
+		TNT1 AAAAAAAAAAAAAAAA 0 A_SpawnItemEx("Debris_Leaf", Random[Debris](0,8), Random[Debris](0,16), Random[Debris](0,48), Random[Debris](1,3), Random[Debris](1,3), Random[Debris](1,3), Random[Debris](0,360), SXF_CLIENTSIDE);
 		TNT1 A 2 A_SpawnItemEx("BarrelFrags");
 		DJPT G -1;
 		Stop;
@@ -672,7 +672,7 @@ class Plant6 : Plant1
 	Death:
 		TNT1 A 0 A_UnSetSolid;
 		TNT1 A 0 A_StartSound("WOODBRK", CHAN_AUTO, 0, frandom (0.5,0.8), ATTN_NORM);
-		TNT1 AAAAAAAAAAAA 0 A_SpawnItemEx("Debris_Leaf", random(0,8), random(0,16), random(0,48), random(1,3), random(1,3), random(1,3), random(0,360), SXF_CLIENTSIDE);
+		TNT1 AAAAAAAAAAAA 0 A_SpawnItemEx("Debris_Leaf", Random[Debris](0,8), Random[Debris](0,16), Random[Debris](0,48), Random[Debris](1,3), Random[Debris](1,3), Random[Debris](1,3), Random[Debris](0,360), SXF_CLIENTSIDE);
 		TNT1 A 2 A_SpawnItemEx("BarrelFrags");
 		DJPT H -1;
 		Stop;
@@ -699,11 +699,11 @@ class Cup1 : Tiltable
 	States
 	{
 	Spawn:
-		CUP1 A -1 NODELAY A_SetScale(Scale.X * RandomPick(-1, 1), Scale.Y);
+		CUP1 A -1 NODELAY A_SetScale(Scale.X * RandomPick[Scenery](-1, 1), Scale.Y);
 		Stop;
 	Death:
 		TNT1 A 0 A_StartSound("GLASS5");
-		TNT1 AAAAAAAA 0 A_SpawnItemEx("Debris_GlassShard_Small", 0, 0, 0, random(1,3), random(1,3), random(1,3), random(0,360), SXF_CLIENTSIDE);
+		TNT1 AAAAAAAA 0 A_SpawnItemEx("Debris_GlassShard_Small", 0, 0, 0, Random[Debris](1,3), Random[Debris](1,3), Random[Debris](1,3), Random[Debris](0,360), SXF_CLIENTSIDE);
 		Stop;
 	}
 }
@@ -734,12 +734,12 @@ class DecoVase : Cup1
 	States
 	{
 	Spawn:
-		DJPT E -1 NODELAY A_SetScale(Scale.X * RandomPick(-1, 1), Scale.Y);
+		DJPT E -1 NODELAY A_SetScale(Scale.X * RandomPick[Scenery](-1, 1), Scale.Y);
 		Stop;
 	Death:
 		TNT1 A 0 A_Scream;
-		TNT1 AAAA 0 A_SpawnItemEx("Debris_LeafY", random(0,4), random(0,8), random(0,24), random(1,3), random(1,3), random(1,3), random(0,360), SXF_CLIENTSIDE);
-		TNT1 AAAAAAAA 0 A_SpawnItemEx("Debris_GlassShard_Small", 0, 0, 0, random(1,3), random(1,3), random(1,3), random(0,360), SXF_CLIENTSIDE);
+		TNT1 AAAA 0 A_SpawnItemEx("Debris_LeafY", Random[Debris](0,4), Random[Debris](0,8), Random[Debris](0,24), Random[Debris](1,3), Random[Debris](1,3), Random[Debris](1,3), Random[Debris](0,360), SXF_CLIENTSIDE);
+		TNT1 AAAAAAAA 0 A_SpawnItemEx("Debris_GlassShard_Small", 0, 0, 0, Random[Debris](1,3), Random[Debris](1,3), Random[Debris](1,3), Random[Debris](0,360), SXF_CLIENTSIDE);
 		Stop;
 	}
 }
@@ -758,7 +758,7 @@ class NaziPlant1 : Plant1
 	Death:
 		TNT1 A 0 A_UnSetSolid;
 		TNT1 A 0 A_StartSound("WOODBRK", CHAN_AUTO, 0, frandom (0.5,0.8), ATTN_NORM);
-		TNT1 AAAAAAAAAAAAAAAA 0 A_SpawnItemEx("Debris_Leaf", random(0,8), random(0,16), random(0,48), random(1,3), random(1,3), random(1,3), random(0,360), SXF_CLIENTSIDE);
+		TNT1 AAAAAAAAAAAAAAAA 0 A_SpawnItemEx("Debris_Leaf", Random[Debris](0,8), Random[Debris](0,16), Random[Debris](0,48), Random[Debris](1,3), Random[Debris](1,3), Random[Debris](1,3), Random[Debris](0,360), SXF_CLIENTSIDE);
 		TNT1 A 2 A_SpawnItemEx("BarrelFrags");
 		PLNT M -1;
 		Stop;
@@ -779,7 +779,7 @@ class NaziPlant2 : Plant1
 	Death:
 		TNT1 A 0 A_UnSetSolid;
 		TNT1 A 0 A_StartSound("WOODBRK", CHAN_AUTO, 0, frandom (0.5,0.8), ATTN_NORM);
-		TNT1 AAAAAAAAAAAAAAAA 0 A_SpawnItemEx("Debris_Leaf", random(0,8), random(0,16), random(0,48), random(1,3), random(1,3), random(1,3), random(0,360), SXF_CLIENTSIDE);
+		TNT1 AAAAAAAAAAAAAAAA 0 A_SpawnItemEx("Debris_Leaf", Random[Debris](0,8), Random[Debris](0,16), Random[Debris](0,48), Random[Debris](1,3), Random[Debris](1,3), Random[Debris](1,3), Random[Debris](0,360), SXF_CLIENTSIDE);
 		TNT1 A 2 A_SpawnItemEx("BarrelFrags");
 		PLNT M -1;
 		Stop;
@@ -800,7 +800,7 @@ class NaziPlant3 : Plant1
 	Death:
 		TNT1 A 0 A_UnSetSolid;
 		TNT1 A 0 A_StartSound("WOODBRK", CHAN_AUTO, 0, frandom (0.5,0.8), ATTN_NORM);
-		TNT1 AAAAAAAAAAAAAAAA 0 A_SpawnItemEx("Debris_Leaf", random(0,8), random(0,16), random(0,48), random(1,3), random(1,3), random(1,3), random(0,360), SXF_CLIENTSIDE);
+		TNT1 AAAAAAAAAAAAAAAA 0 A_SpawnItemEx("Debris_Leaf", Random[Debris](0,8), Random[Debris](0,16), Random[Debris](0,48), Random[Debris](1,3), Random[Debris](1,3), Random[Debris](1,3), Random[Debris](0,360), SXF_CLIENTSIDE);
 		TNT1 A 2 A_SpawnItemEx("BarrelFrags");
 		PLNT P -1;
 		Stop;
@@ -821,7 +821,7 @@ class NaziPlant4 : Plant1
 	Death:
 		TNT1 A 0 A_UnSetSolid;
 		TNT1 A 0 A_StartSound("WOODBRK", CHAN_AUTO, 0, frandom (0.5,0.8), ATTN_NORM);
-		TNT1 AAAAAAAAAAAAAAAA 0 A_SpawnItemEx("Debris_Leaf", random(0,8), random(0,16), random(0,48), random(1,3), random(1,3), random(1,3), random(0,360), SXF_CLIENTSIDE);
+		TNT1 AAAAAAAAAAAAAAAA 0 A_SpawnItemEx("Debris_Leaf", Random[Debris](0,8), Random[Debris](0,16), Random[Debris](0,48), Random[Debris](1,3), Random[Debris](1,3), Random[Debris](1,3), Random[Debris](0,360), SXF_CLIENTSIDE);
 		TNT1 A 2 A_SpawnItemEx("BarrelFrags");
 		PLNT P -1;
 		Stop;
@@ -842,7 +842,7 @@ class NaziPlant5 : Plant1
 	Death:
 		TNT1 A 0 A_UnSetSolid;
 		TNT1 A 0 A_StartSound("WOODBRK", CHAN_AUTO, 0, frandom (0.5,0.8), ATTN_NORM);
-		TNT1 AAAAAAAAAAAAAAAA 0 A_SpawnItemEx("Debris_Leaf", random(0,8), random(0,16), random(0,48), random(1,3), random(1,3), random(1,3), random(0,360), SXF_CLIENTSIDE);
+		TNT1 AAAAAAAAAAAAAAAA 0 A_SpawnItemEx("Debris_Leaf", Random[Debris](0,8), Random[Debris](0,16), Random[Debris](0,48), Random[Debris](1,3), Random[Debris](1,3), Random[Debris](1,3), Random[Debris](0,360), SXF_CLIENTSIDE);
 		TNT1 A 2 A_SpawnItemEx("BarrelFrags");
 		PLNT S -1;
 		Stop;
@@ -863,7 +863,7 @@ class NaziPlant6 : Plant1
 	Death:
 		TNT1 A 0 A_UnSetSolid;
 		TNT1 A 0 A_StartSound("WOODBRK", CHAN_AUTO, 0, frandom (0.5,0.8), ATTN_NORM);
-		TNT1 AAAAAAAAAAAAAAAA 0 A_SpawnItemEx("Debris_Leaf", random(0,8), random(0,16), random(0,48), random(1,3), random(1,3), random(1,3), random(0,360), SXF_CLIENTSIDE);
+		TNT1 AAAAAAAAAAAAAAAA 0 A_SpawnItemEx("Debris_Leaf", Random[Debris](0,8), Random[Debris](0,16), Random[Debris](0,48), Random[Debris](1,3), Random[Debris](1,3), Random[Debris](1,3), Random[Debris](0,360), SXF_CLIENTSIDE);
 		TNT1 A 2 A_SpawnItemEx("BarrelFrags");
 		PLNT S -1;
 		Stop;
@@ -884,7 +884,7 @@ class NaziPlant7 : Plant1
 	Death:
 		TNT1 A 0 A_UnSetSolid;
 		TNT1 A 0 A_StartSound("WOODBRK", CHAN_AUTO, 0, frandom (0.5,0.8), ATTN_NORM);
-		TNT1 AAAAAAAAAAAAAAAA 0 A_SpawnItemEx("Debris_Leaf", random(0,8), random(0,16), random(0,48), random(1,3), random(1,3), random(1,3), random(0,360), SXF_CLIENTSIDE);
+		TNT1 AAAAAAAAAAAAAAAA 0 A_SpawnItemEx("Debris_Leaf", Random[Debris](0,8), Random[Debris](0,16), Random[Debris](0,48), Random[Debris](1,3), Random[Debris](1,3), Random[Debris](1,3), Random[Debris](0,360), SXF_CLIENTSIDE);
 		TNT1 A 2 A_SpawnItemEx("BarrelFrags");
 		PLNT V -1;
 		Stop;
@@ -905,7 +905,7 @@ class NaziPlant8 : Plant1
 	Death:
 		TNT1 A 0 A_UnSetSolid;
 		TNT1 A 0 A_StartSound("WOODBRK", CHAN_AUTO, 0, frandom (0.5,0.8), ATTN_NORM);
-		TNT1 AAAAAAAAAAAAAAAA 0 A_SpawnItemEx("Debris_Leaf", random(0,8), random(0,16), random(0,48), random(1,3), random(1,3), random(1,3), random(0,360), SXF_CLIENTSIDE);
+		TNT1 AAAAAAAAAAAAAAAA 0 A_SpawnItemEx("Debris_Leaf", Random[Debris](0,8), Random[Debris](0,16), Random[Debris](0,48), Random[Debris](1,3), Random[Debris](1,3), Random[Debris](1,3), Random[Debris](0,360), SXF_CLIENTSIDE);
 		TNT1 A 2 A_SpawnItemEx("BarrelFrags");
 		PLNT V -1;
 		Stop;
@@ -1042,7 +1042,7 @@ class CasinoChips_Green: Actor //the only issue there is that we'll see some chi
 		Stop;
 	Death:
 		TNT1 A 0 A_StartSound("CHIP6");
-		"####" AAAAAA 0 A_SpawnItemEx("Debris_ChipsGreen", 0, 0, 0, random(1,3), random(1,3), random(1,3), random(0,360), SXF_CLIENTSIDE);
+		"####" AAAAAA 0 A_SpawnItemEx("Debris_ChipsGreen", 0, 0, 0, Random[Debris](1,3), Random[Debris](1,3), Random[Debris](1,3), Random[Debris](0,360), SXF_CLIENTSIDE);
 		"####" A 0 A_UnsetSolid;
 		Stop;
 	}
@@ -1066,7 +1066,7 @@ class CasinoChips_Blue : CasinoChips_Green
 		Stop;
 	Death:
 		TNT1 A 0 A_StartSound("CHIP6");
-		"####" AAAAAA 0 A_SpawnItemEx("Debris_ChipsBlue", 0, 0, 0, random(1,3), random(1,3), random(1,3), random(0,360), SXF_CLIENTSIDE);
+		"####" AAAAAA 0 A_SpawnItemEx("Debris_ChipsBlue", 0, 0, 0, Random[Debris](1,3), Random[Debris](1,3), Random[Debris](1,3), Random[Debris](0,360), SXF_CLIENTSIDE);
 		"####" A 0 A_UnsetSolid;
 		Stop;
 	}
@@ -1090,7 +1090,7 @@ class CasinoChips_Red : CasinoChips_Green
 		Stop;
 	Death:
 		TNT1 A 0 A_StartSound("CHIP6");
-		"####" AAAAAA 0 A_SpawnItemEx("Debris_ChipsRed", 0, 0, 0, random(1,3), random(1,3), random(1,3), random(0,360), SXF_CLIENTSIDE);
+		"####" AAAAAA 0 A_SpawnItemEx("Debris_ChipsRed", 0, 0, 0, Random[Debris](1,3), Random[Debris](1,3), Random[Debris](1,3), Random[Debris](0,360), SXF_CLIENTSIDE);
 		"####" A 0 A_UnsetSolid;
 		Stop;
 	}
@@ -1111,13 +1111,13 @@ class Dollar: Actor
 	States
 	{
 	Spawn:
-		MNEY A 0 NODELAY A_SetGravity(frandom(0.0525,0.0725));
+		MNEY A 0 NODELAY A_SetGravity(FRandom[Scenery](0.0525,0.0725));
 	SetSpawn:
 		"####" A 0 A_Jump(256,1,2,3);
 		"####" ABC 0 A_Jump(256,"SpawnLoop");
 	SpawnLoop:
-		"####" "#" 0 {A_SetTics(random(1,3)); A_SetRoll(roll+10.5, SPF_INTERPOLATE,0);}
-		"####" "#" 0 {A_SetTics(random(1,3)); A_SetRoll(roll-10.5, SPF_INTERPOLATE,0);}
+		"####" "#" 0 {A_SetTics(Random[Scenery](1,3)); A_SetRoll(roll+10.5, SPF_INTERPOLATE,0);}
+		"####" "#" 0 {A_SetTics(Random[Scenery](1,3)); A_SetRoll(roll-10.5, SPF_INTERPOLATE,0);}
 		Loop;
 	Death:
 		"####" A 0 A_Jump(256,1,2,3);
@@ -1142,7 +1142,7 @@ class MoneyBags : Plant1
 	States
 	{
 	Spawn:
-		MOBG A 0 NODELAY A_SetScale(Scale.X + frandom(-0.1, 0.02));
+		MOBG A 0 NODELAY A_SetScale(Scale.X + FRandom[Scenery](-0.1, 0.02));
 	SetSpawn:
 		"####" A 0 A_Jump(256,1,2,3,4);
 		"####" ABCD 0 A_Jump(256,"CompleteSpawn");
@@ -1152,9 +1152,9 @@ class MoneyBags : Plant1
 	Death:
 		TNT1 A 0 A_UnSetSolid;
 		TNT1 A 0 A_StartSound("GRASBRKS", CHAN_AUTO, 0, frandom (0.5,0.8), ATTN_NORM);
-		TNT1 AAAAAAAAAA 0 A_SpawnItemEx("Dollar", random(0,8), random(0,16), random(0,48), random(1,3), random(1,3), random(1,3), random(0,360), SXF_CLIENTSIDE);
-		TNT1 AAAAAAAA 0 A_SpawnItemEx("Dollar", random(0,8), random(0,16), random(0,48), random(1,3), random(1,3), random(1,3), random(0,360), SXF_CLIENTSIDE);
-		TNT1 AAAAAA 0 A_SpawnItemEx("Dollar", random(0,8), random(0,16), random(0,48), random(1,3), random(1,3), random(1,3), random(0,360), SXF_CLIENTSIDE);
+		TNT1 AAAAAAAAAA 0 A_SpawnItemEx("Dollar", Random[Debris](0,8), Random[Debris](0,16), Random[Debris](0,48), Random[Debris](1,3), Random[Debris](1,3), Random[Debris](1,3), Random[Debris](0,360), SXF_CLIENTSIDE);
+		TNT1 AAAAAAAA 0 A_SpawnItemEx("Dollar", Random[Debris](0,8), Random[Debris](0,16), Random[Debris](0,48), Random[Debris](1,3), Random[Debris](1,3), Random[Debris](1,3), Random[Debris](0,360), SXF_CLIENTSIDE);
+		TNT1 AAAAAA 0 A_SpawnItemEx("Dollar", Random[Debris](0,8), Random[Debris](0,16), Random[Debris](0,48), Random[Debris](1,3), Random[Debris](1,3), Random[Debris](1,3), Random[Debris](0,360), SXF_CLIENTSIDE);
 		TNT1 A 1 A_SpawnItemEx("BarrelFrags");
 		Stop;
 	}
@@ -1175,8 +1175,8 @@ class Toys_Hans : Cup1
 		Stop;
 	Death:
 		TNT1 A 0 A_Scream;
-		"####" AAAA 0 A_SpawnItemEx("Debris_ToyHans", 0, 0, 0, random(1,3), random(1,3), random(1,3), random(0,360), SXF_CLIENTSIDE);
-		"####" AAAA 0 A_SpawnItemEx("Debris_Wood", 0, 0, 0, random(1,3), random(1,3), random(1,3), random(0,360), SXF_CLIENTSIDE);
+		"####" AAAA 0 A_SpawnItemEx("Debris_ToyHans", 0, 0, 0, Random[Debris](1,3), Random[Debris](1,3), Random[Debris](1,3), Random[Debris](0,360), SXF_CLIENTSIDE);
+		"####" AAAA 0 A_SpawnItemEx("Debris_Wood", 0, 0, 0, Random[Debris](1,3), Random[Debris](1,3), Random[Debris](1,3), Random[Debris](0,360), SXF_CLIENTSIDE);
 		Stop;
 	}
 }
@@ -1194,8 +1194,8 @@ class Toys_Waffen : Toys_Hans
 		Stop;
 	Death:
 		TNT1 A 0 A_Scream;
-		"####" AAAA 0 A_SpawnItemEx("Debris_ToyWaff", 0, 0, 0, random(1,3), random(1,3), random(1,3), random(0,360), SXF_CLIENTSIDE);
-		"####" AAAA 0 A_SpawnItemEx("Debris_Wood", 0, 0, 0, random(1,3), random(1,3), random(1,3), random(0,360), SXF_CLIENTSIDE);
+		"####" AAAA 0 A_SpawnItemEx("Debris_ToyWaff", 0, 0, 0, Random[Debris](1,3), Random[Debris](1,3), Random[Debris](1,3), Random[Debris](0,360), SXF_CLIENTSIDE);
+		"####" AAAA 0 A_SpawnItemEx("Debris_Wood", 0, 0, 0, Random[Debris](1,3), Random[Debris](1,3), Random[Debris](1,3), Random[Debris](0,360), SXF_CLIENTSIDE);
 		Stop;
 	}
 }
@@ -1214,8 +1214,8 @@ class Toys_SS : Toys_Hans
 		Stop;
 	Death:
 		TNT1 A 0 A_Scream;
-		"####" A 0 A_SpawnItemEx("Debris_ToyRPG1", 0, 0, 0, random(1,3), random(1,3), random(1,3), random(0,360), SXF_CLIENTSIDE);
-		"####" AA 0 A_SpawnItemEx("Debris_Wood", 0, 0, 0, random(1,3), random(1,3), random(1,3), random(0,360), SXF_CLIENTSIDE);
+		"####" A 0 A_SpawnItemEx("Debris_ToyRPG1", 0, 0, 0, Random[Debris](1,3), Random[Debris](1,3), Random[Debris](1,3), Random[Debris](0,360), SXF_CLIENTSIDE);
+		"####" AA 0 A_SpawnItemEx("Debris_Wood", 0, 0, 0, Random[Debris](1,3), Random[Debris](1,3), Random[Debris](1,3), Random[Debris](0,360), SXF_CLIENTSIDE);
 		Stop;
 	}
 }
@@ -1234,8 +1234,8 @@ class Toys_Afrika : Toys_Hans
 		Stop;
 	Death:
 		TNT1 A 0 A_Scream;
-		"####" A 0 A_SpawnItemEx("Debris_ToyRPG2", 0, 0, 0, random(1,3), random(1,3), random(1,3), random(0,360), SXF_CLIENTSIDE);
-		"####" AA 0 A_SpawnItemEx("Debris_Wood", 0, 0, 0, random(1,3), random(1,3), random(1,3), random(0,360), SXF_CLIENTSIDE);
+		"####" A 0 A_SpawnItemEx("Debris_ToyRPG2", 0, 0, 0, Random[Debris](1,3), Random[Debris](1,3), Random[Debris](1,3), Random[Debris](0,360), SXF_CLIENTSIDE);
+		"####" AA 0 A_SpawnItemEx("Debris_Wood", 0, 0, 0, Random[Debris](1,3), Random[Debris](1,3), Random[Debris](1,3), Random[Debris](0,360), SXF_CLIENTSIDE);
 		Stop;
 	}
 }
@@ -1254,8 +1254,8 @@ class Toys_Hitler : Toys_Hans
 		Stop;
 	Death:
 		TNT1 A 0 A_Scream;
-		"####" A 0 A_SpawnItemEx("Debris_ToyRPG3", 0, 0, 0, random(1,3), random(1,3), random(1,3), random(0,360), SXF_CLIENTSIDE);
-		"####" AA 0 A_SpawnItemEx("Debris_Wood", 0, 0, 0, random(1,3), random(1,3), random(1,3), random(0,360), SXF_CLIENTSIDE);
+		"####" A 0 A_SpawnItemEx("Debris_ToyRPG3", 0, 0, 0, Random[Debris](1,3), Random[Debris](1,3), Random[Debris](1,3), Random[Debris](0,360), SXF_CLIENTSIDE);
+		"####" AA 0 A_SpawnItemEx("Debris_Wood", 0, 0, 0, Random[Debris](1,3), Random[Debris](1,3), Random[Debris](1,3), Random[Debris](0,360), SXF_CLIENTSIDE);
 		Stop;
 	}
 }
@@ -1313,7 +1313,7 @@ class CoffeeMachine : SceneryBase
 		"####" A 0 A_RemoveChildren(TRUE, RMVF_MISC);
 		"####" A 0 {bUseSpecial = FALSE;}
 		"####" A 0 A_UnSetSolid;
-		"####" AAAAAAAA 0 A_SpawnItemEx("Debris_GlassShard_Medium", random(0,4), random(0,4), random(0,24), random(1,3), random(1,3), random(1,3), random(0,360), SXF_CLIENTSIDE);
+		"####" AAAAAAAA 0 A_SpawnItemEx("Debris_GlassShard_Medium", Random[Debris](0,4), Random[Debris](0,4), Random[Debris](0,24), Random[Debris](1,3), Random[Debris](1,3), Random[Debris](1,3), Random[Debris](0,360), SXF_CLIENTSIDE);
 		CUP2 B -1;
 		Stop;
 	}
@@ -1358,7 +1358,7 @@ class WaterMachine : CoffeeMachine
 		"####" A 0 A_RemoveChildren(TRUE, RMVF_MISC);
 		"####" A 0 {bUseSpecial = FALSE;}
 		"####" A 0 A_UnSetSolid;
-		"####" AAAAAAAA 0 A_SpawnItemEx("Debris_GlassShard_Medium", random(0,4), random(0,4), random(0,24), random(1,3), random(1,3), random(1,3), random(0,360), SXF_CLIENTSIDE);
+		"####" AAAAAAAA 0 A_SpawnItemEx("Debris_GlassShard_Medium", Random[Debris](0,4), Random[Debris](0,4), Random[Debris](0,24), Random[Debris](1,3), Random[Debris](1,3), Random[Debris](1,3), Random[Debris](0,360), SXF_CLIENTSIDE);
 		MDLA B -1 A_SpawnItemEx("WaterMachineBrokenWater", 0, 0, 0, 0, 0, 0, 0, SXF_SETMASTER | SXF_CLIENTSIDE);
 		Stop;
 	}

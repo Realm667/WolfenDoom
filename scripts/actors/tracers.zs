@@ -63,7 +63,7 @@ class BulletTracer : FastProjectile
 		Death:
 		Crash:
 			TNT1 AAA 0 {
-				A_SpawnItemEx("TracerSpark", 0, 0, 0, random(-2,2), random(-2,2), random(-2,2), random(0,359)); //T667 improvements
+				A_SpawnItemEx("TracerSpark", 0, 0, 0, Random[Spark](-2,2), Random[Spark](-2,2), Random[Spark](-2,2), Random[Spark](0,359)); //T667 improvements
 			}
 			PUFF B 3 BRIGHT LIGHT("BPUFF1") {
 				// If a non-bleeding actor was hit, count the shot as successful
@@ -104,7 +104,7 @@ class BulletTracer : FastProjectile
 			trailactor.master = self;
 		}
 
-		offset = Random(0, 70);
+		offset = Random[Tracer](0, 70);
 		Actor shooter = target;
 
 		while (shooter is "KTFlare" || shooter is "TurretGun") {
@@ -380,8 +380,8 @@ class ZFlatDecal : ParticleBase
 		Super.PostBeginPlay();
 
 		// Random flip
-		scale.x *= randomFlipX ? RandomPick(1, -1) : 1;
-		scale.y *= randomFlipY ? RandomPick(1, -1) : 1;
+		scale.x *= randomFlipX ? RandomPick[Tracer](1, -1) : 1;
+		scale.y *= randomFlipY ? RandomPick[Tracer](1, -1) : 1;
 
 		// Stick to floor/ceiling
 		SecPlane plane;
@@ -436,7 +436,7 @@ class ZBulletChip : ZFlatDecal
 	Spawn:
 		TNT1 A 0 NODELAY
 		{
-			return curState + Random(1, 5);
+			return curState + Random[Tracer](1, 5);
 		}
 		CHIP ABCDE -1;
 		Stop;
@@ -502,7 +502,7 @@ class ZCrater : ZBulletChip
 	{
 		if (!TestPoints(self)) { Destroy(); }
 
-		frame = Random(5, 9);
+		frame = Random[Tracer](5, 9);
 
 		Super.PostBeginPlay();
 	}
@@ -813,7 +813,7 @@ class KTurretTracer : PlayerTracer
 
 	override void PostBeginPlay()
 	{
-		SetDamage(Random(10, 30));
+		SetDamage(Random[Tracer](10, 30));
 
 		Super.PostBeginPlay();
 	}
@@ -850,7 +850,7 @@ class KTFlare : ActorPositionable
 	{
 		Super.PostBeginPlay();
 
-		roll += Random(0, 360);
+		roll += Random[Tracer](0, 360);
 	}
 
 	override void Tick()

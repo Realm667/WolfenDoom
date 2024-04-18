@@ -142,7 +142,7 @@ class FlattenableProp : GrassBase // Tall grass/rye, etc. that can be trampled d
 		bFlatSprite = true;
 
 		if (touchtime < 5) { angle = AngleTo(toucher) + 180; }
-		if (!fallpitch) { fallpitch = Random(70, 85); }
+		if (!fallpitch) { fallpitch = Random[Flat](70, 85); }
 
 		pitch = clamp(-fallpitch + touchtime * 15, -fallpitch, 0);
 

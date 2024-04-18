@@ -39,12 +39,12 @@ class JazzJackrabbit : CommanderKeen
 	Death:
 		"####" AB 6;
 		"####" C 6 A_Scream;
-		"####" DEFGH 6 { A_SpawnItemEx("SingleCoin", 0, 0, random(4,8), frandom(0.5,1.5), frandom(0.5,1.5), frandom(1.0,4.0), random(0,360)); A_StartSound("treasure/pickup", 0, 0, 64, ATTN_IDLE, 0, frandom(-6.0, 6.0)); }
+		"####" DEFGH 6 { A_SpawnItemEx("SingleCoin", 0, 0, Random[Treasure](4,8), FRandom[Treasure](0.5,1.5), FRandom[Treasure](0.5,1.5), FRandom[Treasure](1.0,4.0), Random[Treasure](0,360)); A_StartSound("treasure/pickup", 0, 0, 64, ATTN_IDLE, 0, FRandom[Treasure](-6.0, 6.0)); }
 		"####" I 0 A_NoBlocking;
-		"####" III 2 { A_SpawnItemEx("SingleCoin", 0, 0, random(4,8), frandom(0.5,1.5), frandom(0.5,1.5), frandom(1.0,4.0), random(0,360)); A_StartSound("treasure/pickup", 0, 0, 64, ATTN_IDLE, 0, frandom(-6.0, 6.0)); }
-		"####" JJJ 2 { A_SpawnItemEx("SingleCoin", 0, 0, random(4,8), frandom(0.5,1.5), frandom(0.5,1.5), frandom(1.0,4.0), random(0,360)); A_StartSound("treasure/pickup", 0, 0, 64, ATTN_IDLE, 0, frandom(-6.0, 6.0)); }
+		"####" III 2 { A_SpawnItemEx("SingleCoin", 0, 0, Random[Treasure](4,8), FRandom[Treasure](0.5,1.5), FRandom[Treasure](0.5,1.5), FRandom[Treasure](1.0,4.0), Random[Treasure](0,360)); A_StartSound("treasure/pickup", 0, 0, 64, ATTN_IDLE, 0, FRandom[Treasure](-6.0, 6.0)); }
+		"####" JJJ 2 { A_SpawnItemEx("SingleCoin", 0, 0, Random[Treasure](4,8), FRandom[Treasure](0.5,1.5), FRandom[Treasure](0.5,1.5), FRandom[Treasure](1.0,4.0), Random[Treasure](0,360)); A_StartSound("treasure/pickup", 0, 0, 64, ATTN_IDLE, 0, FRandom[Treasure](-6.0, 6.0)); }
 		"####" K 6 A_KeenDie;
-		"####" LLLLL 4 { A_SpawnItemEx("SingleCoin", 0, 0, random(4,8), frandom(0.5,1.5), frandom(0.5,1.5), frandom(1.0,4.0), random(0,360)); A_StartSound("treasure/pickup", 0, 0, 64, ATTN_IDLE, 0, frandom(-6.0, 6.0)); }
+		"####" LLLLL 4 { A_SpawnItemEx("SingleCoin", 0, 0, Random[Treasure](4,8), FRandom[Treasure](0.5,1.5), FRandom[Treasure](0.5,1.5), FRandom[Treasure](1.0,4.0), Random[Treasure](0,360)); A_StartSound("treasure/pickup", 0, 0, 64, ATTN_IDLE, 0, FRandom[Treasure](-6.0, 6.0)); }
 		"####" L -1;
 		Stop;
 	Pain:
@@ -187,10 +187,10 @@ class BoABrain : BossBrain
 	Death: //A_BrainDie removed otherwise it will end the map --Ozy81
 		BOAR B 5 A_UnSetSolid;
 		BOAR B 100 A_BrainScream;
-		"####" BBBBBBBBBBBBBBBB 0 A_SpawnItemEx("BloodSkullCloud",random(-16,16),random(-16,16),random(24,48),random(1,2), random(1,2), random(1,2), random(0,360), SXF_CLIENTSIDE | SXF_NOCHECKPOSITION);
-		"####" BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB 0 A_SpawnItemEx("Debris_FatFlesh", random(-16,16), random(-16,16), random(24,48), random(1,3), random(1,3), random(1,3), random(0,360), SXF_CLIENTSIDE | SXF_NOCHECKPOSITION);
-		"####" BBBBBBBBBBBBBBBBBBBBBBBB 0 A_SpawnItemEx("Debris_Flesh", random(-16,16), random(-16,16), random(24,48), random(1,3), random(1,3), random(1,3), random(0,360), SXF_CLIENTSIDE | SXF_NOCHECKPOSITION);
-		"####" BBBBBBBBB 0 A_SpawnItemEx("NashGore_FlyingBlood", random(-16,16), random(-16,16), random(24,48), random(1,6), random(1,6), random(1,6), random(0,360), SXF_CLIENTSIDE | SXF_NOCHECKPOSITION);
+		"####" BBBBBBBBBBBBBBBB 0 A_SpawnItemEx("BloodSkullCloud",random[Brain](-16,16),random[Brain](-16,16),random[Brain](24,48),random[Brain](1,2), random[Brain](1,2), random[Brain](1,2), random[Brain](0,360), SXF_CLIENTSIDE | SXF_NOCHECKPOSITION);
+		"####" BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB 0 A_SpawnItemEx("Debris_FatFlesh", random[Brain](-16,16), random[Brain](-16,16), random[Brain](24,48), random[Brain](1,3), random[Brain](1,3), random[Brain](1,3), random[Brain](0,360), SXF_CLIENTSIDE | SXF_NOCHECKPOSITION);
+		"####" BBBBBBBBBBBBBBBBBBBBBBBB 0 A_SpawnItemEx("Debris_Flesh", random[Brain](-16,16), random[Brain](-16,16), random[Brain](24,48), random[Brain](1,3), random[Brain](1,3), random[Brain](1,3), random[Brain](0,360), SXF_CLIENTSIDE | SXF_NOCHECKPOSITION);
+		"####" BBBBBBBBB 0 A_SpawnItemEx("NashGore_FlyingBlood", random[Brain](-16,16), random[Brain](-16,16), random[Brain](24,48), random[Brain](1,6), random[Brain](1,6), random[Brain](1,6), random[Brain](0,360), SXF_CLIENTSIDE | SXF_NOCHECKPOSITION);
 		"####" C -1;
 		Stop;
 	}
@@ -223,7 +223,7 @@ class DSA1Pillar : Dogse
 	States
 	{
 	Spawn:
-		ROAR A -1 NODELAY A_SetScale(Scale.X * RandomPick(-1.0, 1.0), Scale.Y);
+		ROAR A -1 NODELAY A_SetScale(Scale.X * RandomPick[Scenery](-1.0, 1.0), Scale.Y);
 		Stop;
 	}
 }
@@ -240,7 +240,7 @@ class DSA1Female : Dogse
 	States
 	{
 	Spawn:
-		ARKA A 0 NODELAY A_SetScale(Scale.X * RandomPick(-1.0, 1.0), Scale.Y);
+		ARKA A 0 NODELAY A_SetScale(Scale.X * RandomPick[Scenery](-1.0, 1.0), Scale.Y);
 	Randomize:
 		ARKA A 0 A_Jump(256,"Pose1","Pose2","Pose3","Pose4","Pose5","Pose6","Pose7","Pose8","Pose9","Pose10","Pose11","Pose12");
 		Stop;
@@ -295,7 +295,7 @@ class DSA1Male : Dogse
 	States
 	{
 	Spawn:
-		ARKA B 0 NODELAY A_SetScale(Scale.X * RandomPick(-1.0, 1.0), Scale.Y);
+		ARKA B 0 NODELAY A_SetScale(Scale.X * RandomPick[Scenery](-1.0, 1.0), Scale.Y);
 	Randomize:
 		ARKA B 0 A_Jump(256,"Pose1","Pose2","Pose3","Pose4","Pose5","Pose6","Pose7","Pose8","Pose9","Pose10","Pose11","Pose12");
 		Stop;
@@ -622,7 +622,7 @@ class NaziCakeBabe : Actor
 	States
 	{
 	Spawn:
-		BAB3 A 1 A_SetTics(Random(80,160));
+		BAB3 A 1 A_SetTics(Random[Scenery](80,160));
 		"####" B 8;
 		"####" C 8;
 		"####" BD 8;
@@ -638,11 +638,11 @@ class NaziCakeBabe : Actor
 	Death:
 		"####" G 6;
 		"####" H 6 A_Scream;
-		"####" IJ 6 A_SpawnItemEx("CupCake1", random(16,-16), random(16,-16), random(4,8), frandom(2.5,4.5), frandom(2.5,4.5), frandom(1.0,4.0), random(0,360));
+		"####" IJ 6 A_SpawnItemEx("CupCake1", Random[Treasure](16,-16), Random[Treasure](16,-16), Random[Treasure](4,8), FRandom[Treasure](2.5,4.5), FRandom[Treasure](2.5,4.5), FRandom[Treasure](1.0,4.0), Random[Treasure](0,360));
 		"####" J 0 A_NoBlocking;
-		"####" J 0 A_SpawnItemEx("CupCake2", random(16,-16), random(16,-16), random(4,8), frandom(2.5,4.5), frandom(2.5,4.5), frandom(1.0,4.0), random(0,360));
-		"####" J 0 A_SpawnItemEx("CupCake3", random(16,-16), random(16,-16), random(4,8), frandom(2.5,4.5), frandom(2.5,4.5), frandom(1.0,4.0), random(0,360));
-		"####" J 0 A_SpawnItemEx("CupCake4", random(16,-16), random(16,-16), random(4,8), frandom(2.5,4.5), frandom(2.5,4.5), frandom(1.0,4.0), random(0,360));
+		"####" J 0 A_SpawnItemEx("CupCake2", Random[Treasure](16,-16), Random[Treasure](16,-16), Random[Treasure](4,8), FRandom[Treasure](2.5,4.5), FRandom[Treasure](2.5,4.5), FRandom[Treasure](1.0,4.0), Random[Treasure](0,360));
+		"####" J 0 A_SpawnItemEx("CupCake3", Random[Treasure](16,-16), Random[Treasure](16,-16), Random[Treasure](4,8), FRandom[Treasure](2.5,4.5), FRandom[Treasure](2.5,4.5), FRandom[Treasure](1.0,4.0), Random[Treasure](0,360));
+		"####" J 0 A_SpawnItemEx("CupCake4", Random[Treasure](16,-16), Random[Treasure](16,-16), Random[Treasure](4,8), FRandom[Treasure](2.5,4.5), FRandom[Treasure](2.5,4.5), FRandom[Treasure](1.0,4.0), Random[Treasure](0,360));
 		"####" K -1;
 		Stop;
 	}

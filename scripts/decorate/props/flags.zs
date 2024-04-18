@@ -45,18 +45,18 @@ class NazibannerM : SwitchableDecoration //3d actor
 	Death:
 		TNT1 A 0 A_UnSetSolid;
 		"####" A 0 A_StartSound("WOODBRK", CHAN_AUTO, 0, frandom (0.5,0.8), ATTN_NORM);
-		"####" AAAA 0 A_SpawnItemEx("Debris_FlagsR", random(0,32), random(0,16), random(24,80), random(1,2), 1, 1, random(0,360), SXF_CLIENTSIDE);
-		"####" AAAA 0 A_SpawnItemEx("Debris_FlagsR", random(0,32), random(0,16), random(24,80), random(1,2), 1, 1, random(0,360), SXF_CLIENTSIDE);
-		"####" AAAA 0 A_SpawnItemEx("Debris_FlagsR", random(0,32), random(0,16), random(24,80), random(1,2), 1, 1, random(0,360), SXF_CLIENTSIDE);
-		"####" AAAA 0 A_SpawnItemEx("Debris_FlagsR2", random(0,32), random(0,16), random(24,80), random(1,2), 1, 1, random(0,360), SXF_CLIENTSIDE);
-		"####" AAAA 0 A_SpawnItemEx("Debris_FlagsR", random(0,32), random(0,16), random(24,80), random(1,2), 1, 1, random(0,360), SXF_CLIENTSIDE);
-		"####" AAAA 0 A_SpawnItemEx("Debris_FlagsR", random(0,32), random(0,16), random(24,80), random(1,2), 1, 1, random(0,360), SXF_CLIENTSIDE);
-		"####" AAAA 0 A_SpawnItemEx("Debris_FlagsR", random(0,32), random(0,16), random(24,80), random(1,2), 1, 1, random(0,360), SXF_CLIENTSIDE);
-		"####" AAAA 0 A_SpawnItemEx("Debris_FlagsR2", random(0,32), random(0,16), random(24,80), random(1,2), 1, 1, random(0,360), SXF_CLIENTSIDE);
-		"####" AAAA 0 A_SpawnItemEx("Debris_FlagsW", random(0,32), random(0,16), random(24,80), random(1,2), 1, 1, random(0,360), SXF_CLIENTSIDE);
-		"####" AAAA 0 A_SpawnItemEx("Debris_FlagsW", random(0,32), random(0,16), random(24,80), random(1,2), 1, 1, random(0,360), SXF_CLIENTSIDE);
-		"####" AAAA 0 A_SpawnItemEx("Debris_FlagsW2", random(0,32), random(0,16), random(24,80), random(1,2), 1, 1, random(0,360), SXF_CLIENTSIDE);
-		"####" AAAA 0 A_SpawnItemEx("Debris_FlagsD", random(0,32), random(0,16), random(24,80), random(1,2), 1, 1, random(0,360), SXF_CLIENTSIDE);
+		"####" AAAA 0 A_SpawnItemEx("Debris_FlagsR", Random[Debris](0,32), Random[Debris](0,16), Random[Debris](24,80), Random[Debris](1,2), 1, 1, Random[Debris](0,360), SXF_CLIENTSIDE);
+		"####" AAAA 0 A_SpawnItemEx("Debris_FlagsR", Random[Debris](0,32), Random[Debris](0,16), Random[Debris](24,80), Random[Debris](1,2), 1, 1, Random[Debris](0,360), SXF_CLIENTSIDE);
+		"####" AAAA 0 A_SpawnItemEx("Debris_FlagsR", Random[Debris](0,32), Random[Debris](0,16), Random[Debris](24,80), Random[Debris](1,2), 1, 1, Random[Debris](0,360), SXF_CLIENTSIDE);
+		"####" AAAA 0 A_SpawnItemEx("Debris_FlagsR2", Random[Debris](0,32), Random[Debris](0,16), Random[Debris](24,80), Random[Debris](1,2), 1, 1, Random[Debris](0,360), SXF_CLIENTSIDE);
+		"####" AAAA 0 A_SpawnItemEx("Debris_FlagsR", Random[Debris](0,32), Random[Debris](0,16), Random[Debris](24,80), Random[Debris](1,2), 1, 1, Random[Debris](0,360), SXF_CLIENTSIDE);
+		"####" AAAA 0 A_SpawnItemEx("Debris_FlagsR", Random[Debris](0,32), Random[Debris](0,16), Random[Debris](24,80), Random[Debris](1,2), 1, 1, Random[Debris](0,360), SXF_CLIENTSIDE);
+		"####" AAAA 0 A_SpawnItemEx("Debris_FlagsR", Random[Debris](0,32), Random[Debris](0,16), Random[Debris](24,80), Random[Debris](1,2), 1, 1, Random[Debris](0,360), SXF_CLIENTSIDE);
+		"####" AAAA 0 A_SpawnItemEx("Debris_FlagsR2", Random[Debris](0,32), Random[Debris](0,16), Random[Debris](24,80), Random[Debris](1,2), 1, 1, Random[Debris](0,360), SXF_CLIENTSIDE);
+		"####" AAAA 0 A_SpawnItemEx("Debris_FlagsW", Random[Debris](0,32), Random[Debris](0,16), Random[Debris](24,80), Random[Debris](1,2), 1, 1, Random[Debris](0,360), SXF_CLIENTSIDE);
+		"####" AAAA 0 A_SpawnItemEx("Debris_FlagsW", Random[Debris](0,32), Random[Debris](0,16), Random[Debris](24,80), Random[Debris](1,2), 1, 1, Random[Debris](0,360), SXF_CLIENTSIDE);
+		"####" AAAA 0 A_SpawnItemEx("Debris_FlagsW2", Random[Debris](0,32), Random[Debris](0,16), Random[Debris](24,80), Random[Debris](1,2), 1, 1, Random[Debris](0,360), SXF_CLIENTSIDE);
+		"####" AAAA 0 A_SpawnItemEx("Debris_FlagsD", Random[Debris](0,32), Random[Debris](0,16), Random[Debris](24,80), Random[Debris](1,2), 1, 1, Random[Debris](0,360), SXF_CLIENTSIDE);
 		"####" A 2 A_SpawnItemEx("BarrelFrags");
 		MDLA B -1;
 		Stop;
@@ -86,18 +86,18 @@ class Reichbanner : NaziBannerM //3d actor
 	Death:
 		TNT1 A 0 A_UnSetSolid;
 		"####" A 0 A_StartSound("WOODBRK", CHAN_AUTO, 0, frandom (0.5,0.8), ATTN_NORM);
-		"####" AAAA 0 A_SpawnItemEx("Debris_FlagsR", random(0,32), random(0,16), random(24,80), random(1,2), 1, 1, random(0,360), SXF_CLIENTSIDE);
-		"####" AAAA 0 A_SpawnItemEx("Debris_FlagsR", random(0,32), random(0,16), random(24,80), random(1,2), 1, 1, random(0,360), SXF_CLIENTSIDE);
-		"####" AAAA 0 A_SpawnItemEx("Debris_FlagsR", random(0,32), random(0,16), random(24,80), random(1,2), 1, 1, random(0,360), SXF_CLIENTSIDE);
-		"####" AAAA 0 A_SpawnItemEx("Debris_FlagsR2", random(0,32), random(0,16), random(24,80), random(1,2), 1, 1, random(0,360), SXF_CLIENTSIDE);
-		"####" AAAA 0 A_SpawnItemEx("Debris_FlagsR", random(0,32), random(0,16), random(24,80), random(1,2), 1, 1, random(0,360), SXF_CLIENTSIDE);
-		"####" AAAA 0 A_SpawnItemEx("Debris_FlagsR", random(0,32), random(0,16), random(24,80), random(1,2), 1, 1, random(0,360), SXF_CLIENTSIDE);
-		"####" AAAA 0 A_SpawnItemEx("Debris_FlagsR", random(0,32), random(0,16), random(24,80), random(1,2), 1, 1, random(0,360), SXF_CLIENTSIDE);
-		"####" AAAA 0 A_SpawnItemEx("Debris_FlagsR2", random(0,32), random(0,16), random(24,80), random(1,2), 1, 1, random(0,360), SXF_CLIENTSIDE);
-		"####" AAAA 0 A_SpawnItemEx("Debris_FlagsW", random(0,32), random(0,16), random(24,80), random(1,2), 1, 1, random(0,360), SXF_CLIENTSIDE);
-		"####" AAAA 0 A_SpawnItemEx("Debris_FlagsW", random(0,32), random(0,16), random(24,80), random(1,2), 1, 1, random(0,360), SXF_CLIENTSIDE);
-		"####" AAAA 0 A_SpawnItemEx("Debris_FlagsW2", random(0,32), random(0,16), random(24,80), random(1,2), 1, 1, random(0,360), SXF_CLIENTSIDE);
-		"####" AAAA 0 A_SpawnItemEx("Debris_FlagsD", random(0,32), random(0,16), random(24,80), random(1,2), 1, 1, random(0,360), SXF_CLIENTSIDE);
+		"####" AAAA 0 A_SpawnItemEx("Debris_FlagsR", Random[Debris](0,32), Random[Debris](0,16), Random[Debris](24,80), Random[Debris](1,2), 1, 1, Random[Debris](0,360), SXF_CLIENTSIDE);
+		"####" AAAA 0 A_SpawnItemEx("Debris_FlagsR", Random[Debris](0,32), Random[Debris](0,16), Random[Debris](24,80), Random[Debris](1,2), 1, 1, Random[Debris](0,360), SXF_CLIENTSIDE);
+		"####" AAAA 0 A_SpawnItemEx("Debris_FlagsR", Random[Debris](0,32), Random[Debris](0,16), Random[Debris](24,80), Random[Debris](1,2), 1, 1, Random[Debris](0,360), SXF_CLIENTSIDE);
+		"####" AAAA 0 A_SpawnItemEx("Debris_FlagsR2", Random[Debris](0,32), Random[Debris](0,16), Random[Debris](24,80), Random[Debris](1,2), 1, 1, Random[Debris](0,360), SXF_CLIENTSIDE);
+		"####" AAAA 0 A_SpawnItemEx("Debris_FlagsR", Random[Debris](0,32), Random[Debris](0,16), Random[Debris](24,80), Random[Debris](1,2), 1, 1, Random[Debris](0,360), SXF_CLIENTSIDE);
+		"####" AAAA 0 A_SpawnItemEx("Debris_FlagsR", Random[Debris](0,32), Random[Debris](0,16), Random[Debris](24,80), Random[Debris](1,2), 1, 1, Random[Debris](0,360), SXF_CLIENTSIDE);
+		"####" AAAA 0 A_SpawnItemEx("Debris_FlagsR", Random[Debris](0,32), Random[Debris](0,16), Random[Debris](24,80), Random[Debris](1,2), 1, 1, Random[Debris](0,360), SXF_CLIENTSIDE);
+		"####" AAAA 0 A_SpawnItemEx("Debris_FlagsR2", Random[Debris](0,32), Random[Debris](0,16), Random[Debris](24,80), Random[Debris](1,2), 1, 1, Random[Debris](0,360), SXF_CLIENTSIDE);
+		"####" AAAA 0 A_SpawnItemEx("Debris_FlagsW", Random[Debris](0,32), Random[Debris](0,16), Random[Debris](24,80), Random[Debris](1,2), 1, 1, Random[Debris](0,360), SXF_CLIENTSIDE);
+		"####" AAAA 0 A_SpawnItemEx("Debris_FlagsW", Random[Debris](0,32), Random[Debris](0,16), Random[Debris](24,80), Random[Debris](1,2), 1, 1, Random[Debris](0,360), SXF_CLIENTSIDE);
+		"####" AAAA 0 A_SpawnItemEx("Debris_FlagsW2", Random[Debris](0,32), Random[Debris](0,16), Random[Debris](24,80), Random[Debris](1,2), 1, 1, Random[Debris](0,360), SXF_CLIENTSIDE);
+		"####" AAAA 0 A_SpawnItemEx("Debris_FlagsD", Random[Debris](0,32), Random[Debris](0,16), Random[Debris](24,80), Random[Debris](1,2), 1, 1, Random[Debris](0,360), SXF_CLIENTSIDE);
 		"####" A 2 A_SpawnItemEx("BarrelFrags");
 		MDLA BCDEFGHIJKLM 2;
 		MDLA P -1;
@@ -131,9 +131,9 @@ class NaziFlagS : SwitchableDecoration
 	Death:
 		TNT1 A 0 A_UnSetSolid;
 		"####" A 0 A_StartSound("WOODBRK", CHAN_AUTO, 0, frandom (0.5,0.8), ATTN_NORM);
-		"####" AAAAAA 0 A_SpawnItemEx("Debris_FlagsR2", random(0,32), random(0,16), random(2,8), random(1,2), 1, 1, random(0,360), SXF_CLIENTSIDE);
-		"####" AAAAAA 0 A_SpawnItemEx("Debris_FlagsR2", random(0,32), random(0,16), random(2,8), random(1,2), 1, 1, random(0,360), SXF_CLIENTSIDE);
-		"####" AAAAA 0 A_SpawnItemEx("Debris_FlagsW2", random(0,32), random(0,16), random(2,8), random(1,2), 1, 1, random(0,360), SXF_CLIENTSIDE);
+		"####" AAAAAA 0 A_SpawnItemEx("Debris_FlagsR2", Random[Debris](0,32), Random[Debris](0,16), Random[Debris](2,8), Random[Debris](1,2), 1, 1, Random[Debris](0,360), SXF_CLIENTSIDE);
+		"####" AAAAAA 0 A_SpawnItemEx("Debris_FlagsR2", Random[Debris](0,32), Random[Debris](0,16), Random[Debris](2,8), Random[Debris](1,2), 1, 1, Random[Debris](0,360), SXF_CLIENTSIDE);
+		"####" AAAAA 0 A_SpawnItemEx("Debris_FlagsW2", Random[Debris](0,32), Random[Debris](0,16), Random[Debris](2,8), Random[Debris](1,2), 1, 1, Random[Debris](0,360), SXF_CLIENTSIDE);
 		"####" A 2 A_SpawnItemEx("BarrelFrags");
 		FLAG D -1;
 		Stop;
@@ -160,9 +160,9 @@ class NaziFlagT : NaziFlagS
 	Death:
 		TNT1 A 0 A_UnSetSolid;
 		"####" A 0 A_StartSound("WOODBRK", CHAN_AUTO, 0, frandom (0.5,0.8), ATTN_NORM);
-		"####" AAAAAAA 0 A_SpawnItemEx("Debris_FlagsR2", random(0,32), random(0,48), random(2,8), random(1,2), 1, 1, random(0,360), SXF_CLIENTSIDE);
-		"####" AAAAAA 0 A_SpawnItemEx("Debris_FlagsR2", random(0,32), random(0,48), random(2,8), random(1,2), 1, 1, random(0,360), SXF_CLIENTSIDE);
-		"####" AAAA 0 A_SpawnItemEx("Debris_FlagsW2", random(0,32), random(0,48), random(2,8), random(1,2), 1, 1, random(0,360), SXF_CLIENTSIDE);
+		"####" AAAAAAA 0 A_SpawnItemEx("Debris_FlagsR2", Random[Debris](0,32), Random[Debris](0,48), Random[Debris](2,8), Random[Debris](1,2), 1, 1, Random[Debris](0,360), SXF_CLIENTSIDE);
+		"####" AAAAAA 0 A_SpawnItemEx("Debris_FlagsR2", Random[Debris](0,32), Random[Debris](0,48), Random[Debris](2,8), Random[Debris](1,2), 1, 1, Random[Debris](0,360), SXF_CLIENTSIDE);
+		"####" AAAA 0 A_SpawnItemEx("Debris_FlagsW2", Random[Debris](0,32), Random[Debris](0,48), Random[Debris](2,8), Random[Debris](1,2), 1, 1, Random[Debris](0,360), SXF_CLIENTSIDE);
 		"####" A 2 A_SpawnItemEx("BarrelFrags");
 		FLAG C -1;
 		Stop;
@@ -187,9 +187,9 @@ class UKFlagT : NaziFlagT
 	Death:
 		TNT1 A 0 A_UnSetSolid;
 		"####" A 0 A_StartSound("WOODBRK", CHAN_AUTO, 0, frandom (0.5,0.8), ATTN_NORM);
-		"####" AAAAAAA 0 A_SpawnItemEx("Debris_FlagsR2", random(0,32), random(0,48), random(2,8), random(1,2), 1, 1, random(0,360), SXF_CLIENTSIDE);
-		"####" AAAAAAA 0 A_SpawnItemEx("Debris_FlagsB2", random(0,32), random(0,48), random(2,8), random(1,2), 1, 1, random(0,360), SXF_CLIENTSIDE);
-		"####" AAAAA 0 A_SpawnItemEx("Debris_FlagsW2", random(0,32), random(0,48), random(2,8), random(1,2), 1, 1, random(0,360), SXF_CLIENTSIDE);
+		"####" AAAAAAA 0 A_SpawnItemEx("Debris_FlagsR2", Random[Debris](0,32), Random[Debris](0,48), Random[Debris](2,8), Random[Debris](1,2), 1, 1, Random[Debris](0,360), SXF_CLIENTSIDE);
+		"####" AAAAAAA 0 A_SpawnItemEx("Debris_FlagsB2", Random[Debris](0,32), Random[Debris](0,48), Random[Debris](2,8), Random[Debris](1,2), 1, 1, Random[Debris](0,360), SXF_CLIENTSIDE);
+		"####" AAAAA 0 A_SpawnItemEx("Debris_FlagsW2", Random[Debris](0,32), Random[Debris](0,48), Random[Debris](2,8), Random[Debris](1,2), 1, 1, Random[Debris](0,360), SXF_CLIENTSIDE);
 		"####" A 2 A_SpawnItemEx("BarrelFrags");
 		FLAG C -1;
 		Stop;
@@ -214,9 +214,9 @@ class USFlagT : NaziFlagT
 	Death:
 		TNT1 A 0 A_UnSetSolid;
 		"####" A 0 A_StartSound("WOODBRK", CHAN_AUTO, 0, frandom (0.5,0.8), ATTN_NORM);
-		"####" AAAAAA 0 A_SpawnItemEx("Debris_FlagsR2", random(0,32), random(0,48), random(2,8), random(1,2), 1, 1, random(0,360), SXF_CLIENTSIDE);
-		"####" AAAAAA 0 A_SpawnItemEx("Debris_FlagsB2", random(0,32), random(0,48), random(2,8), random(1,2), 1, 1, random(0,360), SXF_CLIENTSIDE);
-		"####" AAAAAA 0 A_SpawnItemEx("Debris_FlagsW2", random(0,32), random(0,48), random(2,8), random(1,2), 1, 1, random(0,360), SXF_CLIENTSIDE);
+		"####" AAAAAA 0 A_SpawnItemEx("Debris_FlagsR2", Random[Debris](0,32), Random[Debris](0,48), Random[Debris](2,8), Random[Debris](1,2), 1, 1, Random[Debris](0,360), SXF_CLIENTSIDE);
+		"####" AAAAAA 0 A_SpawnItemEx("Debris_FlagsB2", Random[Debris](0,32), Random[Debris](0,48), Random[Debris](2,8), Random[Debris](1,2), 1, 1, Random[Debris](0,360), SXF_CLIENTSIDE);
+		"####" AAAAAA 0 A_SpawnItemEx("Debris_FlagsW2", Random[Debris](0,32), Random[Debris](0,48), Random[Debris](2,8), Random[Debris](1,2), 1, 1, Random[Debris](0,360), SXF_CLIENTSIDE);
 		"####" A 2 A_SpawnItemEx("BarrelFrags");
 		FLAG C -1;
 		Stop;
@@ -244,9 +244,9 @@ class SSBanner : NaziFlagS
 	Death:
 		TNT1 A 0 A_UnSetSolid;
 		"####" A 0 A_StartSound("WOODBRK", CHAN_AUTO, 0, frandom (0.5,0.8), ATTN_NORM);
-		"####" AAAAAA 0 A_SpawnItemEx("Debris_FlagsD2", random(0,32), random(0,16), random(2,8), random(1,2), 1, 1, random(0,360), SXF_CLIENTSIDE);
-		"####" AAAAAA 0 A_SpawnItemEx("Debris_FlagsD2", random(0,32), random(0,16), random(2,8), random(1,2), 1, 1, random(0,360), SXF_CLIENTSIDE);
-		"####" AAAAAA 0 A_SpawnItemEx("Debris_FlagsW", random(0,32), random(0,16), random(16,48), random(1,2), 1, 1, random(0,360), SXF_CLIENTSIDE);
+		"####" AAAAAA 0 A_SpawnItemEx("Debris_FlagsD2", Random[Debris](0,32), Random[Debris](0,16), Random[Debris](2,8), Random[Debris](1,2), 1, 1, Random[Debris](0,360), SXF_CLIENTSIDE);
+		"####" AAAAAA 0 A_SpawnItemEx("Debris_FlagsD2", Random[Debris](0,32), Random[Debris](0,16), Random[Debris](2,8), Random[Debris](1,2), 1, 1, Random[Debris](0,360), SXF_CLIENTSIDE);
+		"####" AAAAAA 0 A_SpawnItemEx("Debris_FlagsW", Random[Debris](0,32), Random[Debris](0,16), Random[Debris](16,48), Random[Debris](1,2), 1, 1, Random[Debris](0,360), SXF_CLIENTSIDE);
 		"####" A 2 A_SpawnItemEx("BarrelFrags");
 		FLAG D -1;
 		Stop;
@@ -272,9 +272,9 @@ class SSBanner2 : SSBanner
 	Death:
 		TNT1 A 0 A_UnSetSolid;
 		"####" A 0 A_StartSound("WOODBRK", CHAN_AUTO, 0, frandom (0.5,0.8), ATTN_NORM);
-		"####" AAAAAA 0 A_SpawnItemEx("Debris_FlagsD2", random(0,32), random(0,16), random(2,8), random(1,2), 1, 1, random(0,360), SXF_CLIENTSIDE);
-		"####" AAAAAA 0 A_SpawnItemEx("Debris_FlagsD2", random(0,32), random(0,16), random(2,8), random(1,2), 1, 1, random(0,360), SXF_CLIENTSIDE);
-		"####" AAAAAA 0 A_SpawnItemEx("Debris_FlagsW", random(0,32), random(0,16), random(16,48), random(1,2), 1, 1, random(0,360), SXF_CLIENTSIDE);
+		"####" AAAAAA 0 A_SpawnItemEx("Debris_FlagsD2", Random[Debris](0,32), Random[Debris](0,16), Random[Debris](2,8), Random[Debris](1,2), 1, 1, Random[Debris](0,360), SXF_CLIENTSIDE);
+		"####" AAAAAA 0 A_SpawnItemEx("Debris_FlagsD2", Random[Debris](0,32), Random[Debris](0,16), Random[Debris](2,8), Random[Debris](1,2), 1, 1, Random[Debris](0,360), SXF_CLIENTSIDE);
+		"####" AAAAAA 0 A_SpawnItemEx("Debris_FlagsW", Random[Debris](0,32), Random[Debris](0,16), Random[Debris](16,48), Random[Debris](1,2), 1, 1, Random[Debris](0,360), SXF_CLIENTSIDE);
 		"####" A 2 A_SpawnItemEx("BarrelFrags");
 		FLAG D -1;
 		Stop;
@@ -305,9 +305,9 @@ class FlagWithFaces1 : NaziFlagS
 	Death:
 		TNT1 A 0 A_UnSetSolid;
 		"####" A 0 A_StartSound("WOODBRK", CHAN_AUTO, 0, frandom (0.5,0.8), ATTN_NORM);
-		"####" AAAAAA 0 A_SpawnItemEx("Debris_FlagsW2", random(0,32), random(0,16), random(2,8), random(1,2), 1, 1, random(0,360), SXF_CLIENTSIDE);
-		"####" AAAAAA 0 A_SpawnItemEx("Debris_FlagsW2", random(0,32), random(0,16), random(2,8), random(1,2), 1, 1, random(0,360), SXF_CLIENTSIDE);
-		"####" AAAAA 0 A_SpawnItemEx("Debris_FlagsW", random(0,32), random(0,16), random(2,8), random(1,2), 1, 1, random(0,360), SXF_CLIENTSIDE);
+		"####" AAAAAA 0 A_SpawnItemEx("Debris_FlagsW2", Random[Debris](0,32), Random[Debris](0,16), Random[Debris](2,8), Random[Debris](1,2), 1, 1, Random[Debris](0,360), SXF_CLIENTSIDE);
+		"####" AAAAAA 0 A_SpawnItemEx("Debris_FlagsW2", Random[Debris](0,32), Random[Debris](0,16), Random[Debris](2,8), Random[Debris](1,2), 1, 1, Random[Debris](0,360), SXF_CLIENTSIDE);
+		"####" AAAAA 0 A_SpawnItemEx("Debris_FlagsW", Random[Debris](0,32), Random[Debris](0,16), Random[Debris](2,8), Random[Debris](1,2), 1, 1, Random[Debris](0,360), SXF_CLIENTSIDE);
 		DJFG D -1;
 		Stop;
 	Inactive:
@@ -367,7 +367,7 @@ class Toys_UKFlag : Toys_Hans
 		Stop;
 	Death:
 		TNT1 A 0 A_Scream;
-		"####" AAAA 0 A_SpawnItemEx("Debris_Wood", 0, 0, 0, random(1,3), random(1,3), random(1,3), random(0,360), SXF_CLIENTSIDE);
+		"####" AAAA 0 A_SpawnItemEx("Debris_Wood", 0, 0, 0, Random[Debris](1,3), Random[Debris](1,3), Random[Debris](1,3), Random[Debris](0,360), SXF_CLIENTSIDE);
 		FLAG C -1;
 		Stop;
 	}
@@ -415,7 +415,7 @@ class Toys_NaziFlagS : Toys_UKFlag
 		Stop;
 	Death:
 		TNT1 A 0 A_Scream;
-		"####" AAAA 0 A_SpawnItemEx("Debris_Wood", 0, 0, 0, random(1,3), random(1,3), random(1,3), random(0,360), SXF_CLIENTSIDE);
+		"####" AAAA 0 A_SpawnItemEx("Debris_Wood", 0, 0, 0, Random[Debris](1,3), Random[Debris](1,3), Random[Debris](1,3), Random[Debris](0,360), SXF_CLIENTSIDE);
 		FLAG D -1;
 		Stop;
 	}

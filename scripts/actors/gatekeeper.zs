@@ -330,7 +330,7 @@ class GateLight : DynamicLight
 		{
 			if (args[LIGHT_INTENSITY] == targetradius)
 			{
-				targetradius = int((lightradius + Random(-2, 2)) * scale.x);
+				targetradius = int((lightradius + Random[GateKeeper](-2, 2)) * scale.x);
 			}
 			else
 			{
@@ -389,17 +389,17 @@ class GhostGate : GateKeeper
 			UNKN A 2 {
 				if (spawns.Size() < min(user_keyamount, 15) && swirl && !CheckSightOrRange(512))
 				{
-					tics = Random(1, 10);
+					tics = Random[GateKeeper](1, 10);
 
 					bool sp;
 					Actor mo;
 	
-					[sp, mo] = A_SpawnItemEx("CreepyEffect", Random(-linelength / 2, linelength / 2), 0, Random(16, int(64 + 32 * scale.x)), 0, 0, random(1, 2), 0, SXF_NOCHECKPOSITION | SXF_SETMASTER);
+					[sp, mo] = A_SpawnItemEx("CreepyEffect", Random[GateKeeper](-linelength / 2, linelength / 2), 0, Random[GateKeeper](16, int(64 + 32 * scale.x)), 0, 0, Random[GateKeeper](1, 2), 0, SXF_NOCHECKPOSITION | SXF_SETMASTER);
 
 					if (sp)
 					{
 						mo.alpha = 0;
-						mo.Scale *= FRandom(0.4, 0.6);
+						mo.Scale *= FRandom[GateKeeper](0.4, 0.6);
 						spawns.Push(mo);
 					}
 				}

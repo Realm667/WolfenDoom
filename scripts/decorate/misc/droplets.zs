@@ -68,12 +68,12 @@ class GibletA : ParticleBase
 	States
 	{
 	Spawn:
-		TNT1 A 0 NODELAY A_ScaleVelocity(frandom(0.5, 2.0));
-		GIBL A random(2,4)
+		TNT1 A 0 NODELAY A_ScaleVelocity(FRandom[Gibs](0.5, 2.0));
+		GIBL A Random(2,4)
 		{
-			A_SpawnItemEx("BloodDrop1",0,0,0,Vel.X,Vel.Y,Vel.Z+frandom(0,4),0,SXF_TRANSFERTRANSLATION,160);
-			A_SpawnItemEx("BloodDrop2",0,0,0,Vel.X,Vel.Y,Vel.Z+frandom(0,4),0,SXF_TRANSFERTRANSLATION,128);
-			A_SpawnItemEx("BloodDrop3",0,0,0,Vel.X,Vel.Y,Vel.Z+frandom(0,4),0,SXF_TRANSFERTRANSLATION,96);
+			A_SpawnItemEx("BloodDrop1",0,0,0,Vel.X,Vel.Y,Vel.Z+FRandom[Gibs](0,4),0,SXF_TRANSFERTRANSLATION,160);
+			A_SpawnItemEx("BloodDrop2",0,0,0,Vel.X,Vel.Y,Vel.Z+FRandom[Gibs](0,4),0,SXF_TRANSFERTRANSLATION,128);
+			A_SpawnItemEx("BloodDrop3",0,0,0,Vel.X,Vel.Y,Vel.Z+FRandom[Gibs](0,4),0,SXF_TRANSFERTRANSLATION,96);
 		}
 		Wait;
 	Death:
@@ -87,12 +87,12 @@ class GibletB : GibletA
 	States
 	{
 	Spawn:
-		TNT1 A 0 NODELAY A_ScaleVelocity(frandom(0.5, 2.0));
-		GIBL B random(2,4)
+		TNT1 A 0 NODELAY A_ScaleVelocity(FRandom[Gibs](0.5, 2.0));
+		GIBL B Random(2,4)
 		{
-			A_SpawnItemEx("BloodDrop1",0,0,0,Vel.X,Vel.Y,Vel.Z+frandom(0,4),0,SXF_TRANSFERTRANSLATION,160);
-			A_SpawnItemEx("BloodDrop2",0,0,0,Vel.X,Vel.Y,Vel.Z+frandom(0,4),0,SXF_TRANSFERTRANSLATION,128);
-			A_SpawnItemEx("BloodDrop3",0,0,0,Vel.X,Vel.Y,Vel.Z+frandom(0,4),0,SXF_TRANSFERTRANSLATION,96);
+			A_SpawnItemEx("BloodDrop1",0,0,0,Vel.X,Vel.Y,Vel.Z+FRandom[Gibs](0,4),0,SXF_TRANSFERTRANSLATION,160);
+			A_SpawnItemEx("BloodDrop2",0,0,0,Vel.X,Vel.Y,Vel.Z+FRandom[Gibs](0,4),0,SXF_TRANSFERTRANSLATION,128);
+			A_SpawnItemEx("BloodDrop3",0,0,0,Vel.X,Vel.Y,Vel.Z+FRandom[Gibs](0,4),0,SXF_TRANSFERTRANSLATION,96);
 		}
 		Wait;
 	}
@@ -103,12 +103,12 @@ class GibletC : GibletA
 	States
 	{
 	Spawn:
-		TNT1 A 0 NODELAY A_ScaleVelocity(frandom(0.5, 2.0));
-		GIBL C random(2,4)
+		TNT1 A 0 NODELAY A_ScaleVelocity(FRandom[Gibs](0.5, 2.0));
+		GIBL C Random(2,4)
 		{
-			A_SpawnItemEx("BloodDrop1",0,0,0,Vel.X,Vel.Y,Vel.Z+frandom(0,4),0,SXF_TRANSFERTRANSLATION,160);
-			A_SpawnItemEx("BloodDrop2",0,0,0,Vel.X,Vel.Y,Vel.Z+frandom(0,4),0,SXF_TRANSFERTRANSLATION,128);
-			A_SpawnItemEx("BloodDrop3",0,0,0,Vel.X,Vel.Y,Vel.Z+frandom(0,4),0,SXF_TRANSFERTRANSLATION,96);
+			A_SpawnItemEx("BloodDrop1",0,0,0,Vel.X,Vel.Y,Vel.Z+FRandom[Gibs](0,4),0,SXF_TRANSFERTRANSLATION,160);
+			A_SpawnItemEx("BloodDrop2",0,0,0,Vel.X,Vel.Y,Vel.Z+FRandom[Gibs](0,4),0,SXF_TRANSFERTRANSLATION,128);
+			A_SpawnItemEx("BloodDrop3",0,0,0,Vel.X,Vel.Y,Vel.Z+FRandom[Gibs](0,4),0,SXF_TRANSFERTRANSLATION,96);
 		}
 		Wait;
 	}
@@ -119,12 +119,12 @@ class GibletD : GibletA
 	States
 	{
 	Spawn:
-		TNT1 A 0 NODELAY A_ScaleVelocity(frandom(0.5, 2.0));
-		GIBL D random(2,4)
+		TNT1 A 0 NODELAY A_ScaleVelocity(FRandom[Gibs](0.5, 2.0));
+		GIBL D Random(2,4)
 		{
-			A_SpawnItemEx("BloodDrop1",0,0,0,Vel.X,Vel.Y,Vel.Z+frandom(0,4),0,SXF_TRANSFERTRANSLATION,160);
-			A_SpawnItemEx("BloodDrop2",0,0,0,Vel.X,Vel.Y,Vel.Z+frandom(0,4),0,SXF_TRANSFERTRANSLATION,128);
-			A_SpawnItemEx("BloodDrop3",0,0,0,Vel.X,Vel.Y,Vel.Z+frandom(0,4),0,SXF_TRANSFERTRANSLATION,96);
+			A_SpawnItemEx("BloodDrop1",0,0,0,Vel.X,Vel.Y,Vel.Z+FRandom[Gibs](0,4),0,SXF_TRANSFERTRANSLATION,160);
+			A_SpawnItemEx("BloodDrop2",0,0,0,Vel.X,Vel.Y,Vel.Z+FRandom[Gibs](0,4),0,SXF_TRANSFERTRANSLATION,128);
+			A_SpawnItemEx("BloodDrop3",0,0,0,Vel.X,Vel.Y,Vel.Z+FRandom[Gibs](0,4),0,SXF_TRANSFERTRANSLATION,96);
 		}
 		Wait;
 	}
@@ -135,12 +135,12 @@ class GibletE : GibletA
 	States
 	{
 	Spawn:
-		TNT1 A 0 NODELAY A_ScaleVelocity(frandom(0.5, 2.0));
-		GIBL E random(2,4)
+		TNT1 A 0 NODELAY A_ScaleVelocity(FRandom[Gibs](0.5, 2.0));
+		GIBL E Random(2,4)
 		{
-			A_SpawnItemEx("BloodDrop1",0,0,0,Vel.X,Vel.Y,Vel.Z+frandom(0,4),0,SXF_TRANSFERTRANSLATION,160);
-			A_SpawnItemEx("BloodDrop2",0,0,0,Vel.X,Vel.Y,Vel.Z+frandom(0,4),0,SXF_TRANSFERTRANSLATION,128);
-			A_SpawnItemEx("BloodDrop3",0,0,0,Vel.X,Vel.Y,Vel.Z+frandom(0,4),0,SXF_TRANSFERTRANSLATION,96);
+			A_SpawnItemEx("BloodDrop1",0,0,0,Vel.X,Vel.Y,Vel.Z+FRandom[Gibs](0,4),0,SXF_TRANSFERTRANSLATION,160);
+			A_SpawnItemEx("BloodDrop2",0,0,0,Vel.X,Vel.Y,Vel.Z+FRandom[Gibs](0,4),0,SXF_TRANSFERTRANSLATION,128);
+			A_SpawnItemEx("BloodDrop3",0,0,0,Vel.X,Vel.Y,Vel.Z+FRandom[Gibs](0,4),0,SXF_TRANSFERTRANSLATION,96);
 		}
 		Wait;
 	}
@@ -151,12 +151,12 @@ class GibletF : GibletA
 	States
 	{
 	Spawn:
-		TNT1 A 0 NODELAY A_ScaleVelocity(frandom(0.5, 2.0));
-		GIBL F random(2,4)
+		TNT1 A 0 NODELAY A_ScaleVelocity(FRandom[Gibs](0.5, 2.0));
+		GIBL F Random(2,4)
 		{
-			A_SpawnItemEx("BloodDrop1",0,0,0,Vel.X,Vel.Y,Vel.Z+frandom(0,4),0,SXF_TRANSFERTRANSLATION,160);
-			A_SpawnItemEx("BloodDrop2",0,0,0,Vel.X,Vel.Y,Vel.Z+frandom(0,4),0,SXF_TRANSFERTRANSLATION,128);
-			A_SpawnItemEx("BloodDrop3",0,0,0,Vel.X,Vel.Y,Vel.Z+frandom(0,4),0,SXF_TRANSFERTRANSLATION,96);
+			A_SpawnItemEx("BloodDrop1",0,0,0,Vel.X,Vel.Y,Vel.Z+FRandom[Gibs](0,4),0,SXF_TRANSFERTRANSLATION,160);
+			A_SpawnItemEx("BloodDrop2",0,0,0,Vel.X,Vel.Y,Vel.Z+FRandom[Gibs](0,4),0,SXF_TRANSFERTRANSLATION,128);
+			A_SpawnItemEx("BloodDrop3",0,0,0,Vel.X,Vel.Y,Vel.Z+FRandom[Gibs](0,4),0,SXF_TRANSFERTRANSLATION,96);
 		}
 		Wait;
 	}
@@ -167,12 +167,12 @@ class GibletG : GibletA
 	States
 	{
 	Spawn:
-		TNT1 A 0 NODELAY A_ScaleVelocity(frandom(0.5, 2.0));
-		GIBL G random(2,4)
+		TNT1 A 0 NODELAY A_ScaleVelocity(FRandom[Gibs](0.5, 2.0));
+		GIBL G Random(2,4)
 		{
-			A_SpawnItemEx("BloodDrop1",0,0,0,Vel.X,Vel.Y,Vel.Z+frandom(0,4),0,SXF_TRANSFERTRANSLATION,160);
-			A_SpawnItemEx("BloodDrop2",0,0,0,Vel.X,Vel.Y,Vel.Z+frandom(0,4),0,SXF_TRANSFERTRANSLATION,128);
-			A_SpawnItemEx("BloodDrop3",0,0,0,Vel.X,Vel.Y,Vel.Z+frandom(0,4),0,SXF_TRANSFERTRANSLATION,96);
+			A_SpawnItemEx("BloodDrop1",0,0,0,Vel.X,Vel.Y,Vel.Z+FRandom[Gibs](0,4),0,SXF_TRANSFERTRANSLATION,160);
+			A_SpawnItemEx("BloodDrop2",0,0,0,Vel.X,Vel.Y,Vel.Z+FRandom[Gibs](0,4),0,SXF_TRANSFERTRANSLATION,128);
+			A_SpawnItemEx("BloodDrop3",0,0,0,Vel.X,Vel.Y,Vel.Z+FRandom[Gibs](0,4),0,SXF_TRANSFERTRANSLATION,96);
 		}
 		Wait;
 	}
@@ -183,12 +183,12 @@ class GibletH : GibletA
 	States
 	{
 	Spawn:
-		TNT1 A 0 NODELAY A_ScaleVelocity(frandom(0.5, 2.0));
-		GIBL H random(2,4)
+		TNT1 A 0 NODELAY A_ScaleVelocity(FRandom[Gibs](0.5, 2.0));
+		GIBL H Random(2,4)
 		{
-			A_SpawnItemEx("BloodDrop1",0,0,0,Vel.X,Vel.Y,Vel.Z+frandom(0,4),0,SXF_TRANSFERTRANSLATION,160);
-			A_SpawnItemEx("BloodDrop2",0,0,0,Vel.X,Vel.Y,Vel.Z+frandom(0,4),0,SXF_TRANSFERTRANSLATION,128);
-			A_SpawnItemEx("BloodDrop3",0,0,0,Vel.X,Vel.Y,Vel.Z+frandom(0,4),0,SXF_TRANSFERTRANSLATION,96);
+			A_SpawnItemEx("BloodDrop1",0,0,0,Vel.X,Vel.Y,Vel.Z+FRandom[Gibs](0,4),0,SXF_TRANSFERTRANSLATION,160);
+			A_SpawnItemEx("BloodDrop2",0,0,0,Vel.X,Vel.Y,Vel.Z+FRandom[Gibs](0,4),0,SXF_TRANSFERTRANSLATION,128);
+			A_SpawnItemEx("BloodDrop3",0,0,0,Vel.X,Vel.Y,Vel.Z+FRandom[Gibs](0,4),0,SXF_TRANSFERTRANSLATION,96);
 		}
 		Wait;
 	}
@@ -199,12 +199,12 @@ class GibletI : GibletA
 	States
 	{
 	Spawn:
-		TNT1 A 0 NODELAY A_ScaleVelocity(frandom(0.5, 2.0));
-		GIBL I random(2,4)
+		TNT1 A 0 NODELAY A_ScaleVelocity(FRandom[Gibs](0.5, 2.0));
+		GIBL I Random(2,4)
 		{
-			A_SpawnItemEx("BloodDrop1",0,0,0,Vel.X,Vel.Y,Vel.Z+frandom(0,4),0,SXF_TRANSFERTRANSLATION,160);
-			A_SpawnItemEx("BloodDrop2",0,0,0,Vel.X,Vel.Y,Vel.Z+frandom(0,4),0,SXF_TRANSFERTRANSLATION,128);
-			A_SpawnItemEx("BloodDrop3",0,0,0,Vel.X,Vel.Y,Vel.Z+frandom(0,4),0,SXF_TRANSFERTRANSLATION,96);
+			A_SpawnItemEx("BloodDrop1",0,0,0,Vel.X,Vel.Y,Vel.Z+FRandom[Gibs](0,4),0,SXF_TRANSFERTRANSLATION,160);
+			A_SpawnItemEx("BloodDrop2",0,0,0,Vel.X,Vel.Y,Vel.Z+FRandom[Gibs](0,4),0,SXF_TRANSFERTRANSLATION,128);
+			A_SpawnItemEx("BloodDrop3",0,0,0,Vel.X,Vel.Y,Vel.Z+FRandom[Gibs](0,4),0,SXF_TRANSFERTRANSLATION,96);
 		}
 		Wait;
 	}
@@ -215,12 +215,12 @@ class GibletJ : GibletA
 	States
 	{
 	Spawn:
-		TNT1 A 0 NODELAY A_ScaleVelocity(frandom(0.5, 2.0));
-		GIBL J random(2,4)
+		TNT1 A 0 NODELAY A_ScaleVelocity(FRandom[Gibs](0.5, 2.0));
+		GIBL J Random(2,4)
 		{
-			A_SpawnItemEx("BloodDrop1",0,0,0,Vel.X,Vel.Y,Vel.Z+frandom(0,4),0,SXF_TRANSFERTRANSLATION,160);
-			A_SpawnItemEx("BloodDrop2",0,0,0,Vel.X,Vel.Y,Vel.Z+frandom(0,4),0,SXF_TRANSFERTRANSLATION,128);
-			A_SpawnItemEx("BloodDrop3",0,0,0,Vel.X,Vel.Y,Vel.Z+frandom(0,4),0,SXF_TRANSFERTRANSLATION,96);
+			A_SpawnItemEx("BloodDrop1",0,0,0,Vel.X,Vel.Y,Vel.Z+FRandom[Gibs](0,4),0,SXF_TRANSFERTRANSLATION,160);
+			A_SpawnItemEx("BloodDrop2",0,0,0,Vel.X,Vel.Y,Vel.Z+FRandom[Gibs](0,4),0,SXF_TRANSFERTRANSLATION,128);
+			A_SpawnItemEx("BloodDrop3",0,0,0,Vel.X,Vel.Y,Vel.Z+FRandom[Gibs](0,4),0,SXF_TRANSFERTRANSLATION,96);
 		}
 		Wait;
 	}
@@ -231,12 +231,12 @@ class GibletK : GibletA
 	States
 	{
 	Spawn:
-		TNT1 A 0 NODELAY A_ScaleVelocity(frandom(0.5, 2.0));
-		GIBL K random(2,4)
+		TNT1 A 0 NODELAY A_ScaleVelocity(FRandom[Gibs](0.5, 2.0));
+		GIBL K Random(2,4)
 		{
-			A_SpawnItemEx("BloodDrop1",0,0,0,Vel.X,Vel.Y,Vel.Z+frandom(0,4),0,SXF_TRANSFERTRANSLATION,160);
-			A_SpawnItemEx("BloodDrop2",0,0,0,Vel.X,Vel.Y,Vel.Z+frandom(0,4),0,SXF_TRANSFERTRANSLATION,128);
-			A_SpawnItemEx("BloodDrop3",0,0,0,Vel.X,Vel.Y,Vel.Z+frandom(0,4),0,SXF_TRANSFERTRANSLATION,96);
+			A_SpawnItemEx("BloodDrop1",0,0,0,Vel.X,Vel.Y,Vel.Z+FRandom[Gibs](0,4),0,SXF_TRANSFERTRANSLATION,160);
+			A_SpawnItemEx("BloodDrop2",0,0,0,Vel.X,Vel.Y,Vel.Z+FRandom[Gibs](0,4),0,SXF_TRANSFERTRANSLATION,128);
+			A_SpawnItemEx("BloodDrop3",0,0,0,Vel.X,Vel.Y,Vel.Z+FRandom[Gibs](0,4),0,SXF_TRANSFERTRANSLATION,96);
 		}
 		Wait;
 	}
@@ -247,12 +247,12 @@ class GibletL : GibletA
 	States
 	{
 	Spawn:
-		TNT1 A 0 NODELAY A_ScaleVelocity(frandom(0.5, 2.0));
-		GIBL L random(2,4)
+		TNT1 A 0 NODELAY A_ScaleVelocity(FRandom[Gibs](0.5, 2.0));
+		GIBL L Random(2,4)
 		{
-			A_SpawnItemEx("BloodDrop1",0,0,0,Vel.X,Vel.Y,Vel.Z+frandom(0,4),0,SXF_TRANSFERTRANSLATION,160);
-			A_SpawnItemEx("BloodDrop2",0,0,0,Vel.X,Vel.Y,Vel.Z+frandom(0,4),0,SXF_TRANSFERTRANSLATION,128);
-			A_SpawnItemEx("BloodDrop3",0,0,0,Vel.X,Vel.Y,Vel.Z+frandom(0,4),0,SXF_TRANSFERTRANSLATION,96);
+			A_SpawnItemEx("BloodDrop1",0,0,0,Vel.X,Vel.Y,Vel.Z+FRandom[Gibs](0,4),0,SXF_TRANSFERTRANSLATION,160);
+			A_SpawnItemEx("BloodDrop2",0,0,0,Vel.X,Vel.Y,Vel.Z+FRandom[Gibs](0,4),0,SXF_TRANSFERTRANSLATION,128);
+			A_SpawnItemEx("BloodDrop3",0,0,0,Vel.X,Vel.Y,Vel.Z+FRandom[Gibs](0,4),0,SXF_TRANSFERTRANSLATION,96);
 		}
 		Wait;
 	}
@@ -263,12 +263,12 @@ class GibletM : GibletA
 	States
 	{
 	Spawn:
-		TNT1 A 0 NODELAY A_ScaleVelocity(frandom(0.5, 2.0));
-		GIBL M random(2,4)
+		TNT1 A 0 NODELAY A_ScaleVelocity(FRandom[Gibs](0.5, 2.0));
+		GIBL M Random(2,4)
 		{
-			A_SpawnItemEx("BloodDrop1",0,0,0,Vel.X,Vel.Y,Vel.Z+frandom(0,4),0,SXF_TRANSFERTRANSLATION,160);
-			A_SpawnItemEx("BloodDrop2",0,0,0,Vel.X,Vel.Y,Vel.Z+frandom(0,4),0,SXF_TRANSFERTRANSLATION,128);
-			A_SpawnItemEx("BloodDrop3",0,0,0,Vel.X,Vel.Y,Vel.Z+frandom(0,4),0,SXF_TRANSFERTRANSLATION,96);
+			A_SpawnItemEx("BloodDrop1",0,0,0,Vel.X,Vel.Y,Vel.Z+FRandom[Gibs](0,4),0,SXF_TRANSFERTRANSLATION,160);
+			A_SpawnItemEx("BloodDrop2",0,0,0,Vel.X,Vel.Y,Vel.Z+FRandom[Gibs](0,4),0,SXF_TRANSFERTRANSLATION,128);
+			A_SpawnItemEx("BloodDrop3",0,0,0,Vel.X,Vel.Y,Vel.Z+FRandom[Gibs](0,4),0,SXF_TRANSFERTRANSLATION,96);
 		}
 		Wait;
 	}
@@ -293,11 +293,11 @@ class RandGiblet : GibletA
 		GIBL K 0 A_Jump(256,3);
 		GIBL L 0 A_Jump(256,2);
 		GIBL M 0;
-		"----" A random(2,4)
+		"----" A Random(2,4)
 		{
-			A_SpawnItemEx("BloodDrop1",0,0,0,Vel.X,Vel.Y,Vel.Z+frandom(0,4),0,SXF_TRANSFERTRANSLATION,160);
-			A_SpawnItemEx("BloodDrop2",0,0,0,Vel.X,Vel.Y,Vel.Z+frandom(0,4),0,SXF_TRANSFERTRANSLATION,128);
-			A_SpawnItemEx("BloodDrop3",0,0,0,Vel.X,Vel.Y,Vel.Z+frandom(0,4),0,SXF_TRANSFERTRANSLATION,96);
+			A_SpawnItemEx("BloodDrop1",0,0,0,Vel.X,Vel.Y,Vel.Z+FRandom[Gibs](0,4),0,SXF_TRANSFERTRANSLATION,160);
+			A_SpawnItemEx("BloodDrop2",0,0,0,Vel.X,Vel.Y,Vel.Z+FRandom[Gibs](0,4),0,SXF_TRANSFERTRANSLATION,128);
+			A_SpawnItemEx("BloodDrop3",0,0,0,Vel.X,Vel.Y,Vel.Z+FRandom[Gibs](0,4),0,SXF_TRANSFERTRANSLATION,96);
 		}
 		Wait;
 	}
@@ -315,19 +315,19 @@ class GibSpray: Actor
 	States
 	{
 	Spawn:
-		TNT1 A 0 A_SpawnItemEx("GibletA",frandom(-4,4),frandom(-4,4),frandom(-4,4),frandom(-2,2)+Vel.X/2,frandom(-2,2)+Vel.Y/2,frandom(0,4)+Vel.Z/2,0,SXF_TRANSFERTRANSLATION);
-		TNT1 A 0 A_SpawnItemEx("GibletB",frandom(-4,4),frandom(-4,4),frandom(-4,4),frandom(-2,2)+Vel.X/2,frandom(-2,2)+Vel.Y/2,frandom(0,4)+Vel.Z/2,0,SXF_TRANSFERTRANSLATION);
-		TNT1 A 0 A_SpawnItemEx("GibletC",frandom(-4,4),frandom(-4,4),frandom(-4,4),frandom(-2,2)+Vel.X/2,frandom(-2,2)+Vel.Y/2,frandom(0,4)+Vel.Z/2,0,SXF_TRANSFERTRANSLATION);
-		TNT1 A 0 A_SpawnItemEx("GibletD",frandom(-4,4),frandom(-4,4),frandom(-4,4),frandom(-2,2)+Vel.X/2,frandom(-2,2)+Vel.Y/2,frandom(0,4)+Vel.Z/2,0,SXF_TRANSFERTRANSLATION);
-		TNT1 A 0 A_SpawnItemEx("GibletE",frandom(-4,4),frandom(-4,4),frandom(-4,4),frandom(-2,2)+Vel.X/2,frandom(-2,2)+Vel.Y/2,frandom(0,4)+Vel.Z/2,0,SXF_TRANSFERTRANSLATION);
-		TNT1 A 0 A_SpawnItemEx("GibletF",frandom(-4,4),frandom(-4,4),frandom(-4,4),frandom(-2,2)+Vel.X/2,frandom(-2,2)+Vel.Y/2,frandom(0,4)+Vel.Z/2,0,SXF_TRANSFERTRANSLATION);
-		TNT1 A 0 A_SpawnItemEx("GibletG",frandom(-4,4),frandom(-4,4),frandom(-4,4),frandom(-2,2)+Vel.X/2,frandom(-2,2)+Vel.Y/2,frandom(0,4)+Vel.Z/2,0,SXF_TRANSFERTRANSLATION);
-		TNT1 A 0 A_SpawnItemEx("GibletH",frandom(-4,4),frandom(-4,4),frandom(-4,4),frandom(-2,2)+Vel.X/2,frandom(-2,2)+Vel.Y/2,frandom(0,4)+Vel.Z/2,0,SXF_TRANSFERTRANSLATION);
-		TNT1 A 0 A_SpawnItemEx("GibletI",frandom(-4,4),frandom(-4,4),frandom(-4,4),frandom(-2,2)+Vel.X/2,frandom(-2,2)+Vel.Y/2,frandom(0,4)+Vel.Z/2,0,SXF_TRANSFERTRANSLATION);
-		TNT1 A 0 A_SpawnItemEx("GibletJ",frandom(-4,4),frandom(-4,4),frandom(-4,4),frandom(-2,2)+Vel.X/2,frandom(-2,2)+Vel.Y/2,frandom(0,4)+Vel.Z/2,0,SXF_TRANSFERTRANSLATION);
-		TNT1 A 0 A_SpawnItemEx("GibletK",frandom(-4,4),frandom(-4,4),frandom(-4,4),frandom(-2,2)+Vel.X/2,frandom(-2,2)+Vel.Y/2,frandom(0,4)+Vel.Z/2,0,SXF_TRANSFERTRANSLATION);
-		TNT1 A 0 A_SpawnItemEx("GibletL",frandom(-4,4),frandom(-4,4),frandom(-4,4),frandom(-2,2)+Vel.X/2,frandom(-2,2)+Vel.Y/2,frandom(0,4)+Vel.Z/2,0,SXF_TRANSFERTRANSLATION);
-		TNT1 A 0 A_SpawnItemEx("GibletM",frandom(-4,4),frandom(-4,4),frandom(-4,4),frandom(-2,2)+Vel.X/2,frandom(-2,2)+Vel.Y/2,frandom(0,4)+Vel.Z/2,0,SXF_TRANSFERTRANSLATION);
+		TNT1 A 0 A_SpawnItemEx("GibletA", FRandom[Gibs](-4,4), FRandom[Gibs](-4,4), FRandom[Gibs](-4,4), FRandom[Gibs](-2,2)+Vel.X/2, FRandom[Gibs](-2,2)+Vel.Y/2, FRandom[Gibs](0,4)+Vel.Z/2,0,SXF_TRANSFERTRANSLATION);
+		TNT1 A 0 A_SpawnItemEx("GibletB", FRandom[Gibs](-4,4), FRandom[Gibs](-4,4), FRandom[Gibs](-4,4), FRandom[Gibs](-2,2)+Vel.X/2, FRandom[Gibs](-2,2)+Vel.Y/2, FRandom[Gibs](0,4)+Vel.Z/2,0,SXF_TRANSFERTRANSLATION);
+		TNT1 A 0 A_SpawnItemEx("GibletC", FRandom[Gibs](-4,4), FRandom[Gibs](-4,4), FRandom[Gibs](-4,4), FRandom[Gibs](-2,2)+Vel.X/2, FRandom[Gibs](-2,2)+Vel.Y/2, FRandom[Gibs](0,4)+Vel.Z/2,0,SXF_TRANSFERTRANSLATION);
+		TNT1 A 0 A_SpawnItemEx("GibletD", FRandom[Gibs](-4,4), FRandom[Gibs](-4,4), FRandom[Gibs](-4,4), FRandom[Gibs](-2,2)+Vel.X/2, FRandom[Gibs](-2,2)+Vel.Y/2, FRandom[Gibs](0,4)+Vel.Z/2,0,SXF_TRANSFERTRANSLATION);
+		TNT1 A 0 A_SpawnItemEx("GibletE", FRandom[Gibs](-4,4), FRandom[Gibs](-4,4), FRandom[Gibs](-4,4), FRandom[Gibs](-2,2)+Vel.X/2, FRandom[Gibs](-2,2)+Vel.Y/2, FRandom[Gibs](0,4)+Vel.Z/2,0,SXF_TRANSFERTRANSLATION);
+		TNT1 A 0 A_SpawnItemEx("GibletF", FRandom[Gibs](-4,4), FRandom[Gibs](-4,4), FRandom[Gibs](-4,4), FRandom[Gibs](-2,2)+Vel.X/2, FRandom[Gibs](-2,2)+Vel.Y/2, FRandom[Gibs](0,4)+Vel.Z/2,0,SXF_TRANSFERTRANSLATION);
+		TNT1 A 0 A_SpawnItemEx("GibletG", FRandom[Gibs](-4,4), FRandom[Gibs](-4,4), FRandom[Gibs](-4,4), FRandom[Gibs](-2,2)+Vel.X/2, FRandom[Gibs](-2,2)+Vel.Y/2, FRandom[Gibs](0,4)+Vel.Z/2,0,SXF_TRANSFERTRANSLATION);
+		TNT1 A 0 A_SpawnItemEx("GibletH", FRandom[Gibs](-4,4), FRandom[Gibs](-4,4), FRandom[Gibs](-4,4), FRandom[Gibs](-2,2)+Vel.X/2, FRandom[Gibs](-2,2)+Vel.Y/2, FRandom[Gibs](0,4)+Vel.Z/2,0,SXF_TRANSFERTRANSLATION);
+		TNT1 A 0 A_SpawnItemEx("GibletI", FRandom[Gibs](-4,4), FRandom[Gibs](-4,4), FRandom[Gibs](-4,4), FRandom[Gibs](-2,2)+Vel.X/2, FRandom[Gibs](-2,2)+Vel.Y/2, FRandom[Gibs](0,4)+Vel.Z/2,0,SXF_TRANSFERTRANSLATION);
+		TNT1 A 0 A_SpawnItemEx("GibletJ", FRandom[Gibs](-4,4), FRandom[Gibs](-4,4), FRandom[Gibs](-4,4), FRandom[Gibs](-2,2)+Vel.X/2, FRandom[Gibs](-2,2)+Vel.Y/2, FRandom[Gibs](0,4)+Vel.Z/2,0,SXF_TRANSFERTRANSLATION);
+		TNT1 A 0 A_SpawnItemEx("GibletK", FRandom[Gibs](-4,4), FRandom[Gibs](-4,4), FRandom[Gibs](-4,4), FRandom[Gibs](-2,2)+Vel.X/2, FRandom[Gibs](-2,2)+Vel.Y/2, FRandom[Gibs](0,4)+Vel.Z/2,0,SXF_TRANSFERTRANSLATION);
+		TNT1 A 0 A_SpawnItemEx("GibletL", FRandom[Gibs](-4,4), FRandom[Gibs](-4,4), FRandom[Gibs](-4,4), FRandom[Gibs](-2,2)+Vel.X/2, FRandom[Gibs](-2,2)+Vel.Y/2, FRandom[Gibs](0,4)+Vel.Z/2,0,SXF_TRANSFERTRANSLATION);
+		TNT1 A 0 A_SpawnItemEx("GibletM", FRandom[Gibs](-4,4), FRandom[Gibs](-4,4), FRandom[Gibs](-4,4), FRandom[Gibs](-2,2)+Vel.X/2, FRandom[Gibs](-2,2)+Vel.Y/2, FRandom[Gibs](0,4)+Vel.Z/2,0,SXF_TRANSFERTRANSLATION);
 		Stop;
 	}
 }
@@ -374,12 +374,12 @@ class BloodDrop1 : ParticleBase
 		Loop;
 	Death:
 		TNT1 A 0 {bWindThrust = FALSE;}
-		TNT1 AA 0 A_SpawnItemEx("BloodDrop3",0,0,4,frandom(-1.5,1.5),frandom(-1.5,1.5),frandom(0.0,0.5),0,SXF_TRANSFERTRANSLATION, 128);
-		TNT1 A 0 A_SpawnItemEx("BloodDrop2",0,0,4,frandom(-1.5,1.5),frandom(-1.5,1.5),frandom(0.0,0.5),0,SXF_TRANSFERTRANSLATION, 128);
+		TNT1 AA 0 A_SpawnItemEx("BloodDrop3",0,0,4, FRandom[Gibs](-1.5,1.5), FRandom[Gibs](-1.5,1.5), FRandom[Gibs](0.0,0.5),0,SXF_TRANSFERTRANSLATION, 128);
+		TNT1 A 0 A_SpawnItemEx("BloodDrop2",0,0,4, FRandom[Gibs](-1.5,1.5), FRandom[Gibs](-1.5,1.5), FRandom[Gibs](0.0,0.5),0,SXF_TRANSFERTRANSLATION, 128);
 		TNT1 A 0 A_JumpIf(ceilingz - Pos.Z < 8.0, "Ceil");
 		TNT1 A 0 A_JumpIf(Pos.Z > floorz + 8.0, "Goodbye");
 		TNT1 A 0 A_JumpIf(CallACS("LiquidCheck"),"Fog");
-		TNT1 A 0 A_SetAngle(frandom(0.0,360.0));
+		TNT1 A 0 A_SetAngle(FRandom[Gibs](0.0,360.0));
 		TNT1 A 0 A_Jump(128, 2);
 		SPLT F 1 A_SetScale(1.2 * boa_blood_size,0.1);
 		Goto Splat;
@@ -388,7 +388,7 @@ class BloodDrop1 : ParticleBase
 		"####" "#" 1 A_SetScale(1.7 * boa_blood_size,0.1);
 		"####" "#" 1 A_SetScale(2.4 * boa_blood_size,0.1);
 		"####" "#" 1 A_SetScale(3.3 * boa_blood_size,0.1);
-		"####" "#" 1 A_SetScale(frandom(4.66,6.0) * boa_blood_size,0.1);
+		"####" "#" 1 A_SetScale(FRandom[Gibs](4.66,6.0) * boa_blood_size,0.1);
 		"####" "#" 0 A_QueueCorpse;
 		"####" "#" -1;
 	Underwater:
@@ -417,12 +417,12 @@ class DecoDroplet : BloodDrop1
 	{
 	Death:
 		TNT1 A 0 {bWindThrust = FALSE;}
-		TNT1 AA 0 A_SpawnItemEx("DecoDrop3",0,0,4,frandom(-1.5,1.5),frandom(-1.5,1.5),frandom(0.0,0.5),0,SXF_TRANSFERTRANSLATION, 128);
-		TNT1 A 0 A_SpawnItemEx("DecoDrop2",0,0,4,frandom(-1.5,1.5),frandom(-1.5,1.5),frandom(0.0,0.5),0,SXF_TRANSFERTRANSLATION, 128);
+		TNT1 AA 0 A_SpawnItemEx("DecoDrop3",0,0,4, FRandom[Gibs](-1.5,1.5), FRandom[Gibs](-1.5,1.5), FRandom[Gibs](0.0,0.5),0,SXF_TRANSFERTRANSLATION, 128);
+		TNT1 A 0 A_SpawnItemEx("DecoDrop2",0,0,4, FRandom[Gibs](-1.5,1.5), FRandom[Gibs](-1.5,1.5), FRandom[Gibs](0.0,0.5),0,SXF_TRANSFERTRANSLATION, 128);
 		SPLT A 1;
 		TNT1 A 0 A_JumpIf(Pos.Z > floorz + 8.0, "Goodbye");
 		TNT1 A 0 A_JumpIf(CallACS("LiquidCheck"),"Fog");
-		TNT1 A 0 A_SetAngle(frandom(0.0,360.0));
+		TNT1 A 0 A_SetAngle(FRandom[Gibs](0.0,360.0));
 		TNT1 A 0 A_Jump(128, 2);
 		SPLT F 1 A_SetScale(1.2 * boa_blood_size,0.1);
 		Goto Splat;
@@ -431,7 +431,7 @@ class DecoDroplet : BloodDrop1
 		"####" "#" 1 A_SetScale(1.7 * boa_blood_size,0.1);
 		"####" "#" 1 A_SetScale(2.4 * boa_blood_size,0.1);
 		"####" "#" 1 A_SetScale(3.3 * boa_blood_size,0.1);
-		"####" "#" 1 A_SetScale(frandom(4.66,6.0) * boa_blood_size,0.1);
+		"####" "#" 1 A_SetScale(FRandom[Gibs](4.66,6.0) * boa_blood_size,0.1);
 		"####" "#" 0 A_QueueCorpse;
 		Goto Cleanup;
 	Fog:
@@ -466,11 +466,11 @@ class BloodDrop2 : BloodDrop1
 		Loop;
 	Death:
 		TNT1 A 0 {bWindThrust = FALSE;}
-		TNT1 AA 0 A_SpawnItemEx("BloodDrop3",0,0,4,frandom(-1.0,1.0),frandom(-1.0,1.0),frandom(0.0,0.5),0,SXF_TRANSFERTRANSLATION, 128);
+		TNT1 AA 0 A_SpawnItemEx("BloodDrop3",0,0,4, FRandom[Gibs](-1.0,1.0), FRandom[Gibs](-1.0,1.0), FRandom[Gibs](0.0,0.5),0,SXF_TRANSFERTRANSLATION, 128);
 		TNT1 A 0 A_JumpIf(ceilingz - Pos.Z < 6.0, "Ceil");
 		TNT1 A 0 A_JumpIf(Pos.Z > floorz + 8.0, "Goodbye");
 		TNT1 A 0 A_JumpIf(CallACS("LiquidCheck"),"Fog");
-		TNT1 A 0 A_SetAngle(frandom(0.0,360.0));
+		TNT1 A 0 A_SetAngle(FRandom[Gibs](0.0,360.0));
 		TNT1 A 0 A_Jump(128, 2);
 		SPLT F 1 A_SetScale(0.69 * boa_blood_size,0.1);
 		Goto Splat;
@@ -479,7 +479,7 @@ class BloodDrop2 : BloodDrop1
 		"####" "#" 1 A_SetScale(0.97 * boa_blood_size,0.1);
 		"####" "#" 1 A_SetScale(1.36 * boa_blood_size,0.1);
 		"####" "#" 1 A_SetScale(1.9 * boa_blood_size,0.1);
-		"####" "#" 1 A_SetScale(frandom(2.66,4.0) * boa_blood_size,0.1);
+		"####" "#" 1 A_SetScale(FRandom[Gibs](2.66,4.0) * boa_blood_size,0.1);
 		"####" "#" 0 A_QueueCorpse;
 		"####" "#" -1;
 	Underwater:
@@ -506,12 +506,12 @@ class DecoDrop2 : BloodDrop2
 	{
 	Death:
 		TNT1 A 0 {bWindThrust = FALSE;}
-		TNT1 AA 0 A_SpawnItemEx("DecoDrop3",0,0,4,frandom(-1.0,1.0),frandom(-1.0,1.0),frandom(0.0,0.5),0,SXF_TRANSFERTRANSLATION, 128);
+		TNT1 AA 0 A_SpawnItemEx("DecoDrop3",0,0,4, FRandom[Gibs](-1.0,1.0), FRandom[Gibs](-1.0,1.0), FRandom[Gibs](0.0,0.5),0,SXF_TRANSFERTRANSLATION, 128);
 		SPLT A 1;
 		TNT1 A 0 A_JumpIf(Pos.Z > floorz + 8.0, "Goodbye");
 		TNT1 A 0 A_JumpIf(CallACS("LiquidCheck"),"Fog");
 
-		TNT1 A 0 A_SetAngle(frandom(0.0,360.0));
+		TNT1 A 0 A_SetAngle(FRandom[Gibs](0.0,360.0));
 		TNT1 A 0 A_Jump(128, 2);
 		SPLT F 1 A_SetScale(0.69 * boa_blood_size,0.1);
 		Goto Splat;
@@ -520,7 +520,7 @@ class DecoDrop2 : BloodDrop2
 		"####" "#" 1 A_SetScale(0.97 * boa_blood_size,0.1);
 		"####" "#" 1 A_SetScale(1.36 * boa_blood_size,0.1);
 		"####" "#" 1 A_SetScale(1.9 * boa_blood_size,0.1);
-		"####" "#" 1 A_SetScale(frandom(2.66,4.0) * boa_blood_size,0.1);
+		"####" "#" 1 A_SetScale(FRandom[Gibs](2.66,4.0) * boa_blood_size,0.1);
 		"####" "#" 0 A_QueueCorpse;
 		Goto Cleanup;
 	Fog:
@@ -559,7 +559,7 @@ class BloodDrop3 : BloodDrop1
 		TNT1 A 0 A_JumpIf(ceilingz - Pos.Z < 4.0, "Ceil");
 		TNT1 A 0 A_JumpIf(Pos.Z > floorz + 8.0, "Goodbye");
 		TNT1 A 0 A_JumpIf(CallACS("LiquidCheck"),"Fog");
-		TNT1 A 0 A_SetAngle(frandom(0.0,360.0));
+		TNT1 A 0 A_SetAngle(FRandom[Gibs](0.0,360.0));
 		TNT1 A 0 A_Jump(128, 2);
 		SPLT F 1 A_SetScale(0.17 * boa_blood_size,0.1);
 		Goto Splat;
@@ -568,7 +568,7 @@ class BloodDrop3 : BloodDrop1
 		"####" "#" 1 A_SetScale(0.24 * boa_blood_size,0.1);
 		"####" "#" 1 A_SetScale(0.34 * boa_blood_size,0.1);
 		"####" "#" 1 A_SetScale(0.47 * boa_blood_size,0.1);
-		"####" "#" 1 A_SetScale(frandom(0.66,2.0) * boa_blood_size,0.1);
+		"####" "#" 1 A_SetScale(FRandom[Gibs](0.66,2.0) * boa_blood_size,0.1);
 		"####" "#" 0 A_QueueCorpse;
 		"####" "#" -1;
 	Underwater:
@@ -598,7 +598,7 @@ class DecoDrop3 : BloodDrop3
 		SPLT A 1;
 		TNT1 A 0 A_JumpIf(Pos.Z > floorz + 8.0, "Goodbye");
 		TNT1 A 0 A_JumpIf(CallACS("LiquidCheck"),"Fog");
-		TNT1 A 0 A_SetAngle(frandom(0.0,360.0));
+		TNT1 A 0 A_SetAngle(FRandom[Gibs](0.0,360.0));
 		TNT1 A 0 A_Jump(128, 2);
 		SPLT F 1 A_SetScale(0.17 * boa_blood_size,0.1);
 		Goto Splat;
@@ -607,7 +607,7 @@ class DecoDrop3 : BloodDrop3
 		"####" "#" 1 A_SetScale(0.24 * boa_blood_size,0.1);
 		"####" "#" 1 A_SetScale(0.34 * boa_blood_size,0.1);
 		"####" "#" 1 A_SetScale(0.47 * boa_blood_size,0.1);
-		"####" "#" 1 A_SetScale(frandom(0.66,2.0) * boa_blood_size,0.1);
+		"####" "#" 1 A_SetScale(FRandom[Gibs](0.66,2.0) * boa_blood_size,0.1);
 		"####" "#" 0 A_QueueCorpse;
 		Goto Cleanup;
 	Fog:
@@ -674,11 +674,11 @@ class BloodHitPuff: Actor
 	Spawn:
 		TNT1 A 0 NODELAY
 		{
-			user_force = (int) (frandom(6.0,12.0));
-			user_angmom = (int) (frandom(-4.5,4.5));
-			A_SetPitch(frandom(-45.0,90.0));
+			user_force = (int) (FRandom[Gibs](6.0,12.0));
+			user_angmom = (int) (FRandom[Gibs](-4.5,4.5));
+			A_SetPitch(FRandom[Gibs](-45.0,90.0));
 			A_StartSound("blood/hit",0,0,0.3);
-			Scale.X *= randompick(1,-1);
+			Scale.X *= RandomPick[Gibs](1,-1);
 		}
 		BLPF AABBCCDDEE 1
 		{
@@ -708,11 +708,11 @@ class BloodHitPuffMid : BloodHitPuff
 	Spawn:
 		TNT1 A 0 NODELAY
 		{
-			user_force = (int) (frandom(6.0,12.0));
-			user_angmom = (int) (frandom(-6.0,6.0));
-			A_SetPitch(frandom(-45.0,90.0));
+			user_force = (int) (FRandom[Gibs](6.0,12.0));
+			user_angmom = (int) (FRandom[Gibs](-6.0,6.0));
+			A_SetPitch(FRandom[Gibs](-45.0,90.0));
 			A_StartSound("blood/hit",0,0,0.2);
-			Scale.X *= randompick(1,-1);
+			Scale.X *= RandomPick[Gibs](1,-1);
 		}
 		BLPF AABBCCDDEE 1
 		{
@@ -740,11 +740,11 @@ class BloodHitPuffSmall : BloodHitPuff
 	Spawn:
 		TNT1 A 0 NODELAY
 		{
-			user_force = (int) (frandom(6.0,12.0));
-			user_angmom = (int) (frandom(-9.0,9.0));
-			A_SetPitch(frandom(-45.0,90.0));
+			user_force = (int) (FRandom[Gibs](6.0,12.0));
+			user_angmom = (int) (FRandom[Gibs](-9.0,9.0));
+			A_SetPitch(FRandom[Gibs](-45.0,90.0));
 			A_StartSound("blood/hit",0,0,0.1);
-			Scale.X *= randompick(1,-1);
+			Scale.X *= RandomPick[Gibs](1,-1);
 		}
 		BLPF AABBCCDDEE 1
 		{
@@ -978,12 +978,12 @@ class CeilDripper : ParticleBase
 		TNT1 A 0 A_QueueCorpse;
 		SPLT F 0 A_Jump(128, 2);
 		SPLT G 0;
-		"####" "#" 0 A_SetAngle(frandom(0.0,360.0));
+		"####" "#" 0 A_SetAngle(FRandom[Gibs](0.0,360.0));
 		"####" "#" 1 A_SetScale(1.3 * boa_blood_size,1);
 		"####" "#" 1 A_SetScale(1.82 * boa_blood_size,1);
 		"####" "#" 1 A_SetScale(2.55 * boa_blood_size,1);
 		"####" "#" 1 A_SetScale(3.57 * boa_blood_size,1);
-		"####" "#" 1 A_SetScale(frandom(5.0,6.0) * boa_blood_size,1);
+		"####" "#" 1 A_SetScale(FRandom[Gibs](5.0,6.0) * boa_blood_size,1);
 		Goto Drippy;
 	Drippy:
 		"####" "######" 1 A_Warp(AAPTR_DEFAULT,0,0,ceilingz - Pos.Z - 1);
@@ -1007,12 +1007,12 @@ class CeilDrip2 : CeilDripper
 		TNT1 A 0 A_QueueCorpse;
 		SPLT F 0 A_Jump(128, 2);
 		SPLT G 0;
-		"####" "#" 0 A_SetAngle(frandom(0.0,360.0));
+		"####" "#" 0 A_SetAngle(FRandom[Gibs](0.0,360.0));
 		"####" "#" 1 A_SetScale(0.78 * boa_blood_size,1);
 		"####" "#" 1 A_SetScale(1.09 * boa_blood_size,1);
 		"####" "#" 1 A_SetScale(1.53 * boa_blood_size,1);
 		"####" "#" 1 A_SetScale(2.14 * boa_blood_size,1);
-		"####" "#" 1 A_SetScale(frandom(3.0,4.0) * boa_blood_size,1);
+		"####" "#" 1 A_SetScale(FRandom[Gibs](3.0,4.0) * boa_blood_size,1);
 		Goto Drippy;
 	Drippy:
 		"####" "#########" 1 A_Warp(AAPTR_DEFAULT,0,0,ceilingz - Pos.Z - 1);
@@ -1036,12 +1036,12 @@ class CeilDrip3 : CeilDripper
 		TNT1 A 0 A_QueueCorpse;
 		SPLT F 0 A_Jump(128, 2);
 		SPLT G 0;
-		"####" "#" 0 A_SetAngle(frandom(0.0,360.0));
+		"####" "#" 0 A_SetAngle(FRandom[Gibs](0.0,360.0));
 		"####" "#" 1 A_SetScale(0.26 * boa_blood_size,1);
 		"####" "#" 1 A_SetScale(0.36 * boa_blood_size,1);
 		"####" "#" 1 A_SetScale(0.51 * boa_blood_size,1);
 		"####" "#" 1 A_SetScale(0.71 * boa_blood_size,1);
-		"####" "#" 1 A_SetScale(frandom(1.0,2.0) * boa_blood_size,1);
+		"####" "#" 1 A_SetScale(FRandom[Gibs](1.0,2.0) * boa_blood_size,1);
 		Goto Drippy;
 	Drippy:
 		"####" "############" 1 A_Warp(AAPTR_DEFAULT,0,0,ceilingz - Pos.Z - 1);
@@ -1080,10 +1080,10 @@ class BloodFog : ParticleBase
 		TNT1 A 0 NODELAY A_QueueCorpse;
 		TNT1 A 0
 		{
-			user_size = frandom(0.05,0.1);
-			angle = frandom(0,360);
+			user_size = FRandom[Gibs](0.05,0.1);
+			angle = FRandom[Gibs](0,360);
 			user_angle = angle;
-			user_rot = frandom(-1.8,1.8);
+			user_rot = FRandom[Gibs](-1.8,1.8);
 		}
 		Goto Pool;
 	Pool:
@@ -1120,10 +1120,10 @@ class DecoFog : BloodFog
 		TNT1 A 0;
 		TNT1 A 0
 		{
-			user_size = frandom(0.05,0.1);
-			angle = frandom(0,360);
+			user_size = FRandom[Gibs](0.05,0.1);
+			angle = FRandom[Gibs](0,360);
 			user_angle = angle;
-			user_rot = frandom(-1.8,1.8);
+			user_rot = FRandom[Gibs](-1.8,1.8);
 		}
 		Goto Pool;
 	Pool:
@@ -1160,10 +1160,10 @@ class BloodFog2 : BloodFog
 		TNT1 A 0 NODELAY A_QueueCorpse;
 		TNT1 A 0
 		{
-			user_size = frandom(0.025,0.05);
-			angle = frandom(0,360);
+			user_size = FRandom[Gibs](0.025,0.05);
+			angle = FRandom[Gibs](0,360);
 			user_angle = angle;
-			user_rot = frandom(-1.8,1.8);
+			user_rot = FRandom[Gibs](-1.8,1.8);
 		}
 		Goto Pool;
 	Pool:
@@ -1200,10 +1200,10 @@ class DecoFog2 : BloodFog2
 		TNT1 A 0;
 		TNT1 A 0
 		{
-			user_size = frandom(0.025,0.05);
-			angle = frandom(0,360);
+			user_size = FRandom[Gibs](0.025,0.05);
+			angle = FRandom[Gibs](0,360);
 			user_angle = angle;
-			user_rot = frandom(-1.8,1.8);
+			user_rot = FRandom[Gibs](-1.8,1.8);
 		}
 		Goto Pool;
 	Pool:
@@ -1240,10 +1240,10 @@ class BloodFog3 : BloodFog
 		TNT1 A 0 NODELAY A_QueueCorpse;
 		TNT1 A 0
 		{
-			user_size = frandom(0.0125,0.025);
-			angle = frandom(0,360);
+			user_size = FRandom[Gibs](0.0125,0.025);
+			angle = FRandom[Gibs](0,360);
 			user_angle = angle;
-			user_rot = frandom(-1.8,1.8);
+			user_rot = FRandom[Gibs](-1.8,1.8);
 		}
 		Goto Pool;
 	Pool:
@@ -1280,10 +1280,10 @@ class DecoFog3 : BloodFog3
 		TNT1 A 0;
 		TNT1 A 0
 		{
-			user_size = frandom(0.0125,0.025);
-			angle = frandom(0,360);
+			user_size = FRandom[Gibs](0.0125,0.025);
+			angle = FRandom[Gibs](0,360);
 			user_angle = angle;
-			user_rot = frandom(-1.8,1.8);
+			user_rot = FRandom[Gibs](-1.8,1.8);
 		}
 		Goto Pool;
 	Pool:
@@ -1334,7 +1334,7 @@ class UWBloodFog : ParticleBase
 	States
 	{
 	Spawn:
-		HITB A 1 NODELAY A_ChangeVelocity(frandom(-2.0,2.0),frandom(-2.0,2.0),frandom(-2.0,2.0));
+		HITB A 1 NODELAY A_ChangeVelocity(FRandom[Gibs](-2.0,2.0), FRandom[Gibs](-2.0,2.0), FRandom[Gibs](-2.0,2.0));
 		HITB A 1 A_SetScale(Scale.X + 0.05);
 		HITB A 1;
 		HITB A 1 A_SetScale(Scale.X + 0.25);

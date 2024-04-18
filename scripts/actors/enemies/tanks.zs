@@ -359,7 +359,7 @@ class TankBase : VehicleBase
 		if (!user_static) { A_StartSound(idlesound, CHAN_6, CHANF_LOOPING, 0.25); }
 		else { ClearCounters(); }
 
-		targettimeout = Random(0, 35);
+		targettimeout = Random[Tank](0, 35);
 		// Disable intercepting missiles on lower skill levels
 		intercept = G_SkillPropertyInt(SKILLP_ACSReturn) > 2;
 		InterceptTarget = Spawn("TankInterceptTarget", Pos, ALLOW_REPLACE);
@@ -388,8 +388,8 @@ class TankBase : VehicleBase
 
 			for (int i = 0; i < 30; i++)
 			{
-				A_SpawnItemEx(TankTreadsBase(treads).debris, random(88, 96), random(88, 96), random(88, 112), random(1, 3), random(1, 3), random(1, 3), random(0, 360), SXF_CLIENTSIDE);
-				A_SpawnItemEx("Debris_GlassShard_Large", random(88, 96), random(88, 96), random(96, 128), random(1, 3), random(1, 3), random(1, 3), random(0, 360), SXF_CLIENTSIDE);
+				A_SpawnItemEx(TankTreadsBase(treads).debris, Random[Debris](88, 96), Random[Debris](88, 96), Random[Debris](88, 112), Random[Debris](1, 3), Random[Debris](1, 3), Random[Debris](1, 3), Random[Debris](0, 360), SXF_CLIENTSIDE);
+				A_SpawnItemEx("Debris_GlassShard_Large", Random[Debris](88, 96), Random[Debris](88, 96), Random[Debris](96, 128), Random[Debris](1, 3), Random[Debris](1, 3), Random[Debris](1, 3), Random[Debris](0, 360), SXF_CLIENTSIDE);
 			}
 
 			TankTreadsBase(treads).DoDeath();
@@ -708,7 +708,7 @@ class TankBase : VehicleBase
 			if (wheeled || !BlockingMobj)
 			{
 				speed *= -0.5;
-				if (speed < 0) { reversetimeout = int((15 + Random(0, 35)) * Default.Speed); }
+				if (speed < 0) { reversetimeout = int((15 + Random[Tank](0, 35)) * Default.Speed); }
 				else { reversetimeout = 0; }
 			}
 		}
@@ -1342,7 +1342,7 @@ class TankDeadBase : Base
 	States
 	{
 	Spawn:
-		MDLA A 12 A_SpawnProjectile("TankSmoke",58,0,random(0,360),2,random(70,130));
+		MDLA A 12 A_SpawnProjectile("TankSmoke",58,0,random[Tank](0,360),2,random[Tank](70,130));
 		Loop;
 	}
 }
@@ -1449,7 +1449,7 @@ class FriendlySherman : TankBase
 			if (missilecount > 1)
 			{
 				missilecount = 0;
-				missiletimeout = 35 * Random(3, 5);
+				missiletimeout = 35 * Random[Tank](3, 5);
 			}
 			else
 			{
@@ -1473,7 +1473,7 @@ class FriendlySherman : TankBase
 		// Smoke
 		origin.A_SpawnProjectile("TurrSmokeSpawner", 0, flags: CMF_AIMDIRECTION | CMF_ABSOLUTEANGLE);
 		// Projectile
-		Actor mo = A_SpawnProjectile(FrontGunProjectile, 0, 0, origin.angle + Random(-2, 2), CMF_AIMDIRECTION | CMF_ABSOLUTEANGLE, Random(-2, 2));
+		Actor mo = A_SpawnProjectile(FrontGunProjectile, 0, 0, origin.angle + Random[Tank](-2, 2), CMF_AIMDIRECTION | CMF_ABSOLUTEANGLE, Random[Tank](-2, 2));
 
 		if (mo)
 		{
@@ -1482,10 +1482,10 @@ class FriendlySherman : TankBase
 		}
 
 		bulletcount++;
-		if (bulletcount > 50 + Random(0, 25))
+		if (bulletcount > 50 + Random[Tank](0, 25))
 		{
 			bulletcount = 0;
-			bullettimeout = 40 + Random(0, 35);
+			bullettimeout = 40 + Random[Tank](0, 35);
 		}
 		else
 		{
@@ -1572,11 +1572,11 @@ class SSTank1 : TankBase
 			if (missilecount > 1)
 			{
 				missilecount = 0;
-				missiletimeout = 35 * Random(3, 5);
+				missiletimeout = 35 * Random[Tank](3, 5);
 			}
 			else
 			{
-				missiletimeout = Random() < 96 ? 38 : 24; // 38 tics between shots about 40% of the time.  Otherwise, 24 tics between shots
+				missiletimeout = Random[Tank]() < 96 ? 38 : 24; // 38 tics between shots about 40% of the time.  Otherwise, 24 tics between shots
 			}
 		}
 	}
@@ -1598,7 +1598,7 @@ class SSTank1 : TankBase
 		// Smoke
 		origin.A_SpawnProjectile("TurrSmokeSpawner", 0, flags: CMF_ABSOLUTEPITCH);
 		// Projectile
-		Actor mo = A_SpawnProjectile(FrontGunProjectile, 0, 0, random(-4, 4), CMF_ABSOLUTEPITCH, max(-gunpitch, 0));
+		Actor mo = A_SpawnProjectile(FrontGunProjectile, 0, 0, Random[Tank](-4, 4), CMF_ABSOLUTEPITCH, max(-gunpitch, 0));
 
 		if (mo)
 		{
@@ -1610,7 +1610,7 @@ class SSTank1 : TankBase
 		if (bulletcount > 75)
 		{
 			bulletcount = 0;
-			bullettimeout = 35 * Random(2, 5); // 2-5 seconds between long bursts
+			bullettimeout = 35 * Random[Tank](2, 5); // 2-5 seconds between long bursts
 		}
 		else
 		{
@@ -1722,7 +1722,7 @@ class SSTank2 : TankBase
 		// Smoke
 		origin.A_SpawnProjectile("TurrSmokeSpawner", 0, flags: CMF_AIMDIRECTION | CMF_ABSOLUTEANGLE);
 		// Projectile
-		Actor mo = origin.A_SpawnProjectile(FrontGunProjectile, 0, 0, origin.angle + random(-4, 4), CMF_AIMDIRECTION | CMF_ABSOLUTEANGLE, origin.pitch);
+		Actor mo = origin.A_SpawnProjectile(FrontGunProjectile, 0, 0, origin.angle + Random[Tank](-4, 4), CMF_AIMDIRECTION | CMF_ABSOLUTEANGLE, origin.pitch);
 
 		if (mo)
 		{
@@ -1733,7 +1733,7 @@ class SSTank2 : TankBase
 		if (bulletcount > 45)
 		{
 			bulletcount = 0;
-			bullettimeout = 35 * Random(2, 5); // 2-5 seconds between long bursts
+			bullettimeout = 35 * Random[Tank](2, 5); // 2-5 seconds between long bursts
 		}
 		else
 		{
@@ -1803,7 +1803,7 @@ class SSTank3 : TankBase
 			mo.target = self;
 
 			missilecount++;
-			missiletimeout = 40 + Random(0, 5) * 15;
+			missiletimeout = 40 + Random[Tank](0, 5) * 15;
 		}
 	}
 
@@ -1898,7 +1898,7 @@ class SSTank4 : TankBase
 		// Smoke
 		origin.A_SpawnProjectile("TurrSmokeSpawner", 0, flags: CMF_AIMDIRECTION | CMF_ABSOLUTEANGLE);
 		// Projectile
-		Actor mo = origin.A_SpawnProjectile(TurretProjectile, 0, 0, origin.angle + random(-4, 4), CMF_AIMDIRECTION | CMF_ABSOLUTEANGLE, origin.pitch);
+		Actor mo = origin.A_SpawnProjectile(TurretProjectile, 0, 0, origin.angle + Random[Tank](-4, 4), CMF_AIMDIRECTION | CMF_ABSOLUTEANGLE, origin.pitch);
 
 		if (mo) { mo.target = self; }
 
@@ -1906,8 +1906,8 @@ class SSTank4 : TankBase
 		if (missilecount > 45)
 		{
 			missilecount = 0;
-			turrettimeout = 35 * Random(2, 5); // 2-5 seconds between long bursts
-			chasetimeout = 35 + 5 * Random(0, 14); // 1-2 seconds between movements - so you can have back-to-back firing sometimes
+			turrettimeout = 35 * Random[Tank](2, 5); // 2-5 seconds between long bursts
+			chasetimeout = 35 + 5 * Random[Tank](0, 14); // 1-2 seconds between movements - so you can have back-to-back firing sometimes
 		}
 		else
 		{
@@ -1993,7 +1993,7 @@ class T34Tank : TankBase
 			if (missilecount > 1)
 			{
 				missilecount = 0;
-				missiletimeout = 35 * Random(3, 5);
+				missiletimeout = 35 * Random[Tank](3, 5);
 			}
 			else
 			{
@@ -2019,7 +2019,7 @@ class T34Tank : TankBase
 		// Smoke
 		origin.A_SpawnProjectile("TurrSmokeSpawner", 0, flags: CMF_ABSOLUTEPITCH | CMF_ABSOLUTEANGLE);
 		// Projectile
-		Actor mo = origin.A_SpawnProjectile(FrontGunProjectile, 0, 0, origin.angle + random(-4, 4), CMF_ABSOLUTEPITCH | CMF_ABSOLUTEANGLE, clamp(origin.pitch, -5, 5));
+		Actor mo = origin.A_SpawnProjectile(FrontGunProjectile, 0, 0, origin.angle + Random[Tank](-4, 4), CMF_ABSOLUTEPITCH | CMF_ABSOLUTEANGLE, clamp(origin.pitch, -5, 5));
 
 		if (mo)
 		{
@@ -2031,7 +2031,7 @@ class T34Tank : TankBase
 		if (bulletcount > 75)
 		{
 			bulletcount = 0;
-			bullettimeout = 35 * Random(2, 5); // 2-5 seconds between long bursts
+			bullettimeout = 35 * Random[Tank](2, 5); // 2-5 seconds between long bursts
 		}
 		else
 		{

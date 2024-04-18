@@ -112,15 +112,15 @@ class SteamSpawner : EffectSpawner
 		double sizestep = 3.328; // (0.013 / 2. * 512.)
 		double rollvel = 2.5; // (boashaders.txt:L1993)
 
-		if ((!args[1] || Random(0, 255) < freq))
+		if ((!args[1] || Random[Smoke](0, 255) < freq))
 		{
 			if (args[1] && !args[3]) { A_StartSound(snd, 10, sndflags, 1.0); } // Each burst plays a sound on spawn
 
 			if (args[0] < 3) // Original directional spawns
 			{
-				velx = args[0] < 2 ? 0.1 * Random(0, 4) : 0.1 * Random(35, 40);
-				velz = args[0] < 2 ? (args[0] == 1 ? -1 : 1) * 0.1 * Random(35, 40) : 0.1 * Random(-5, 5);
-				ang = args[0] < 2 ? Random(0, 360) : Random(-8, 8);
+				velx = args[0] < 2 ? 0.1 * Random[Smoke](0, 4) : 0.1 * Random[Smoke](35, 40);
+				velz = args[0] < 2 ? (args[0] == 1 ? -1 : 1) * 0.1 * Random[Smoke](35, 40) : 0.1 * Random[Smoke](-5, 5);
+				ang = args[0] < 2 ? Random[Smoke](0, 360) : Random[Smoke](-8, 8);
 
 				// bool sp;
 				// [sp, mo] = A_SpawnItemEx(particle, 0, 0, zoffset, velx, 0, velz, ang, SXF_CLIENTSIDE);
@@ -138,7 +138,7 @@ class SteamSpawner : EffectSpawner
 					startalpha, // startalphaf
 					fadestep, // fadestepf (0.04 / 2.)
 					sizestep, // sizestep (0.013 / 2. * 512)
-					frandom(0., 360.), // startroll
+					FRandom[Smoke](0., 360.), // startroll
 					rollvel, // rollvel (boashaders.txt:L1993)
 					0.0 // rollacc
 				);
@@ -149,10 +149,10 @@ class SteamSpawner : EffectSpawner
 				if (mo)
 				{
 					mo.alpha *= scale.x;
-					mo.SetOrigin(pos + (FRandom(-2, 2), FRandom(-2, 2), FRandom(-2, 2)), false);
-					mo.Vel3DFromAngle(0.1 * Random(35, 40) * scale.x, angle, pitch);
+					mo.SetOrigin(pos + (FRandom[Smoke](-2, 2), FRandom[Smoke](-2, 2), FRandom[Smoke](-2, 2)), false);
+					mo.Vel3DFromAngle(0.1 * Random[Smoke](35, 40) * scale.x, angle, pitch);
 				} */
-				Vector3 vel = ZScriptTools.GetTraceDirection(angle, pitch) * (0.1 * Random(35, 40) * scale.x);
+				Vector3 vel = ZScriptTools.GetTraceDirection(angle, pitch) * (0.1 * Random[Smoke](35, 40) * scale.x);
 				A_SpawnParticleEx(
 					"FFFFFF", // color1
 					particle, // texture
@@ -161,13 +161,13 @@ class SteamSpawner : EffectSpawner
 					lifetime, // lifetime
 					size, // size (512 * 0.65)
 					0.0, // angle
-					FRandom(-2, 2), FRandom(-2, 2), FRandom(-2, 2), // xyz off
+					FRandom[Smoke](-2, 2), FRandom[Smoke](-2, 2), FRandom[Smoke](-2, 2), // xyz off
 					vel.x, vel.y, vel.z, // vel xyz
 					0, 0, 0, // accel xyz
 					startalpha, // startalphaf
 					fadestep, // fadestepf (0.04 / 2.)
 					sizestep, // sizestep (0.013 / 2. * 512)
-					frandom(0., 360.), // startroll
+					FRandom[Smoke](0., 360.), // startroll
 					rollvel, // rollvel (boashaders.txt:L1993)
 					0.0 // rollacc
 				);
@@ -208,7 +208,7 @@ class SteamParticle : ParticleBase
 	{
 		Super.PostBeginPlay();
 
-		roll = Random(1, 360);
+		roll = Random[Smoke](1, 360);
 	}
 }
 
@@ -225,7 +225,7 @@ class ZyklonBSteamSpawner : SteamSpawner
 	{
 		EffectSpawner.SpawnEffect();
 
-		if ((!args[1] || Random(0, 255) < freq))
+		if ((!args[1] || Random[Smoke](0, 255) < freq))
 		{
 			if (args[1] && !args[3]) { A_StartSound(snd, 10, sndflags, 1.0); } // Each burst plays a sound on spawn
 
@@ -233,9 +233,9 @@ class ZyklonBSteamSpawner : SteamSpawner
 
 			if (args[0] < 3) // Original directional spawns
 			{
-				velx = args[0] < 2 ? 0.1 * Random(0, 4) : 0.1 * Random(35, 40);
-				velz = args[0] < 2 ? (args[0] == 1 ? -1 : 1) * 0.1 * Random(35, 40) : 0.1 * Random(-5, 5);
-				ang = args[0] < 2 ? Random(0, 360) : Random(-8, 8);
+				velx = args[0] < 2 ? 0.1 * Random[Smoke](0, 4) : 0.1 * Random[Smoke](35, 40);
+				velz = args[0] < 2 ? (args[0] == 1 ? -1 : 1) * 0.1 * Random[Smoke](35, 40) : 0.1 * Random[Smoke](-5, 5);
+				ang = args[0] < 2 ? Random[Smoke](0, 360) : Random[Smoke](-8, 8);
 
 				bool sp;
 				[sp, mo] = A_SpawnItemEx(particle, 0, 0, zoffset, velx, 0, velz, ang, 128);
@@ -246,8 +246,8 @@ class ZyklonBSteamSpawner : SteamSpawner
 				if (mo)
 				{
 					mo.alpha *= scale.x;
-					mo.SetOrigin(pos + (FRandom(-2, 2), FRandom(-2, 2), FRandom(-2, 2)), false);
-					mo.Vel3DFromAngle(0.1 * Random(35, 40) * scale.x, angle, pitch);
+					mo.SetOrigin(pos + (FRandom[Smoke](-2, 2), FRandom[Smoke](-2, 2), FRandom[Smoke](-2, 2)), false);
+					mo.Vel3DFromAngle(0.1 * Random[Smoke](35, 40) * scale.x, angle, pitch);
 				}
 			}
 
@@ -263,7 +263,7 @@ class ZyklonBSteamParticle : SteamParticle
 	{
 		Height 16;
 		Radius 8;
-		DamageFunction (random(1,8));
+		DamageFunction (Random[Smoke](1,8));
 		PoisonDamage 4;
 		DamageType "UndeadPoisonAmbience";
 		Projectile;

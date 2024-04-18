@@ -428,6 +428,6 @@ class Ribbon : CompassItem
 	override void PostBeginPlay()
 	{
 		Super.PostBeginPlay();
-		angle = Random(0, 359);
+		angle = Random[Treasure](0, 359);
 	}
 }

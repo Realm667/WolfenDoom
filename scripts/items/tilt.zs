@@ -141,8 +141,8 @@ class BoATilt : CustomInventory
 			{
 				// vary the angle a little
 				deathTiltAngle = -90.f;
-				deathTiltAngle += FRandom(-45.f, 45.f);
-				deathTiltAngle *= RandomPick(-1, 1);
+				deathTiltAngle += FRandom[Tilt](-45.f, 45.f);
+				deathTiltAngle *= RandomPick[Tilt](-1, 1);
 			}
 
 			if (deathTiltOsc < 22.5)

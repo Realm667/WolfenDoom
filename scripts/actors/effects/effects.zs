@@ -598,7 +598,7 @@ class EffectSpawner : SwitchableDecoration
 			else { Activate(null); }
 		}
 
-		tics += Random(0, 35);
+		tics += Random[Effect](0, 35);
 	}
 
 	override void Activate(Actor activator)
@@ -867,7 +867,7 @@ class ParticleBase : SimpleActor // Use for non-interactive effects actors only!
 		Super.PostBeginPlay();
 
 		// Set the initial check at a random tick so they don't all check at once...
-		checktimer = Random(0, 35);
+		checktimer = Random[Effect](0, 35);
 	}
 
 	override void Tick()

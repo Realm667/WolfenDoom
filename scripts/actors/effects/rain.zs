@@ -72,7 +72,7 @@ class RainSpawner : EffectSpawner
 		double zoffset = 0;
 		if (manager) { zoffset = min(manager.particlez - pos.z, 0); }
 
-		A_SpawnItemEx(raindrop, Random(-Args[0], Args[0]), Random(-Args[0], Args[0]), -2 + zoffset, Args[4], 0, -(args[3] ? 20 : 40) + (Args[4] / 2), 0, SXF_TRANSFERPITCH | SXF_CLIENTSIDE, Args[1]);
+		A_SpawnItemEx(raindrop, Random[Rain](-Args[0], Args[0]), Random[Rain](-Args[0], Args[0]), -2 + zoffset, Args[4], 0, -(args[3] ? 20 : 40) + (Args[4] / 2), 0, SXF_TRANSFERPITCH | SXF_CLIENTSIDE, Args[1]);
 	}
 }
 
@@ -103,7 +103,7 @@ class RainDropShort : ParticleBase
 		Death:
 			RNDR A 0 {
 				Scale = (0.10, 0.10);
-				alpha = FRandom(0.8, 0.2);
+				alpha = FRandom[Rain](0.8, 0.2);
 			}
 		RainDeath:
 			"####" A 1 {
@@ -118,9 +118,9 @@ class RainDropShort : ParticleBase
 	{
 		Super.PostBeginPlay();
 
-		Scale.x += FRandom(-0.05, 0.05);
-		Scale.y += FRandom(-0.05, 0.05);
-		alpha = FRandom(0.7, 0.4);
+		Scale.x += FRandom[Rain](-0.05, 0.05);
+		Scale.y += FRandom[Rain](-0.05, 0.05);
+		alpha = FRandom[Rain](0.7, 0.4);
 	}
 
 	override void Tick()

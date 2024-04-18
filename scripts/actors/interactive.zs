@@ -65,8 +65,8 @@ class Debris_Vent_FloorCeiling : SwitchableDecoration
 				if (level.time > 5) { S_StartSound("DSMETDST", CHAN_AUTO, 0, 0.5, ATTN_NORM); }
 
 				for (int i = 0; i < 4; i++) {
-					A_SpawnItemEx("Debris_Trash", 0, random(-32,32), random(0,64), random(-3,3), random(0,2), random(-1,4), 0, SXF_CLIENTSIDE);
-					A_SpawnItemEx("Debris_Trash2", 0, random(-32,32), random(0,64), random(-3,3), random(0,2), random(-1,4), 0, SXF_CLIENTSIDE);
+					A_SpawnItemEx("Debris_Trash", 0, Random[Debris](-32,32), Random[Debris](0,64), Random[Debris](-3,3), Random[Debris](0,2), Random[Debris](-1,4), 0, SXF_CLIENTSIDE);
+					A_SpawnItemEx("Debris_Trash2", 0, Random[Debris](-32,32), Random[Debris](0,64), Random[Debris](-3,3), Random[Debris](0,2), Random[Debris](-1,4), 0, SXF_CLIENTSIDE);
 				}
 
 				bNoInteraction = True;
@@ -106,10 +106,10 @@ class Debris_Wood_FloorCeiling : Debris_Vent_FloorCeiling
 				if (level.time > 5) { S_StartSound("WOODBRK", CHAN_AUTO, 0, 0.5, ATTN_NORM); }
 
 				for (int i = 0; i < 4; i++) {
-					A_SpawnItemEx("Debris_Wood", 0, random(-32,32), random(0,64), random(-3,3), random(0,2), random(-1,4), 0, SXF_CLIENTSIDE);
-					A_SpawnItemEx("Debris_Wood", 0, random(-32,32), random(0,64), random(-3,3), random(0,2), random(-1,4), 0, SXF_CLIENTSIDE);
-					A_SpawnItemEx("Debris_Wood", 0, random(-32,32), random(0,64), random(-3,3), random(0,2), random(-1,4), 0, SXF_CLIENTSIDE);
-					A_SpawnItemEx("Debris_Wood", 0, random(-32,32), random(0,64), random(-3,3), random(0,2), random(-1,4), 0, SXF_CLIENTSIDE);
+					A_SpawnItemEx("Debris_Wood", 0, Random[Debris](-32,32), Random[Debris](0,64), Random[Debris](-3,3), Random[Debris](0,2), Random[Debris](-1,4), 0, SXF_CLIENTSIDE);
+					A_SpawnItemEx("Debris_Wood", 0, Random[Debris](-32,32), Random[Debris](0,64), Random[Debris](-3,3), Random[Debris](0,2), Random[Debris](-1,4), 0, SXF_CLIENTSIDE);
+					A_SpawnItemEx("Debris_Wood", 0, Random[Debris](-32,32), Random[Debris](0,64), Random[Debris](-3,3), Random[Debris](0,2), Random[Debris](-1,4), 0, SXF_CLIENTSIDE);
+					A_SpawnItemEx("Debris_Wood", 0, Random[Debris](-32,32), Random[Debris](0,64), Random[Debris](-3,3), Random[Debris](0,2), Random[Debris](-1,4), 0, SXF_CLIENTSIDE);
 				}
 
 				bNoInteraction = True;
@@ -142,10 +142,10 @@ class Debris_Wood_FloorCeiling2 : Debris_Vent_FloorCeiling
 				if (level.time > 5) { S_StartSound("WOODBRK", CHAN_AUTO, 0, 0.5, ATTN_NORM); }
 
 				for (int i = 0; i < 4; i++) {
-					A_SpawnItemEx("Debris_Wood", 0, random(-32,32), random(0,64), random(-3,3), random(0,2), random(-1,4), 0, SXF_CLIENTSIDE);
-					A_SpawnItemEx("Debris_Wood", 0, random(-32,32), random(0,64), random(-3,3), random(0,2), random(-1,4), 0, SXF_CLIENTSIDE);
-					A_SpawnItemEx("Debris_Wood", 0, random(-32,32), random(0,64), random(-3,3), random(0,2), random(-1,4), 0, SXF_CLIENTSIDE);
-					A_SpawnItemEx("Debris_Wood", 0, random(-32,32), random(0,64), random(-3,3), random(0,2), random(-1,4), 0, SXF_CLIENTSIDE);
+					A_SpawnItemEx("Debris_Wood", 0, Random[Debris](-32,32), Random[Debris](0,64), Random[Debris](-3,3), Random[Debris](0,2), Random[Debris](-1,4), 0, SXF_CLIENTSIDE);
+					A_SpawnItemEx("Debris_Wood", 0, Random[Debris](-32,32), Random[Debris](0,64), Random[Debris](-3,3), Random[Debris](0,2), Random[Debris](-1,4), 0, SXF_CLIENTSIDE);
+					A_SpawnItemEx("Debris_Wood", 0, Random[Debris](-32,32), Random[Debris](0,64), Random[Debris](-3,3), Random[Debris](0,2), Random[Debris](-1,4), 0, SXF_CLIENTSIDE);
+					A_SpawnItemEx("Debris_Wood", 0, Random[Debris](-32,32), Random[Debris](0,64), Random[Debris](-3,3), Random[Debris](0,2), Random[Debris](-1,4), 0, SXF_CLIENTSIDE);
 				}
 
 				bNoInteraction = True;
@@ -204,8 +204,8 @@ class TrainingTarget : SwitchableDecoration
 		Death:
 			TARG B 0 { A_SpawnItemEx("PowerPlantSmokePuffSmall", 0, 0, 32, 0, 0, 0, 0, 0);
 				for (int i = 0; i < 4; i++) {
-					A_SpawnItemEx("Debris_FlagsW", 0, random(-32,32), random(0,64), random(-3,3), random(0,2), random(-1,4), 0, SXF_CLIENTSIDE);
-					A_SpawnItemEx("Debris_FlagsW", 0, random(-32,32), random(0,64), random(-3,3), random(0,2), random(-1,4), 0, SXF_CLIENTSIDE);
+					A_SpawnItemEx("Debris_FlagsW", 0, Random[Debris](-32,32), Random[Debris](0,64), Random[Debris](-3,3), Random[Debris](0,2), Random[Debris](-1,4), 0, SXF_CLIENTSIDE);
+					A_SpawnItemEx("Debris_FlagsW", 0, Random[Debris](-32,32), Random[Debris](0,64), Random[Debris](-3,3), Random[Debris](0,2), Random[Debris](-1,4), 0, SXF_CLIENTSIDE);
 				}
 
 				bNoInteraction = True;
@@ -275,8 +275,8 @@ class ManholeCover3D : Debris_Vent_FloorCeiling
 				if (level.time > 5) { S_StartSound("DSMETDST", CHAN_AUTO, 0, 0.5, ATTN_NORM); }
 
 				for (int i = 0; i < 4; i++) {
-					A_SpawnItemEx("Debris_Trash", 0, random(-32,32), random(0,64), random(-3,3), random(0,2), random(-1,4), 0, SXF_CLIENTSIDE);
-					A_SpawnItemEx("Debris_Trash2", 0, random(-32,32), random(0,64), random(-3,3), random(0,2), random(-1,4), 0, SXF_CLIENTSIDE);
+					A_SpawnItemEx("Debris_Trash", 0, Random[Debris](-32,32), Random[Debris](0,64), Random[Debris](-3,3), Random[Debris](0,2), Random[Debris](-1,4), 0, SXF_CLIENTSIDE);
+					A_SpawnItemEx("Debris_Trash2", 0, Random[Debris](-32,32), Random[Debris](0,64), Random[Debris](-3,3), Random[Debris](0,2), Random[Debris](-1,4), 0, SXF_CLIENTSIDE);
 				}
 
 				bNoInteraction = True;
@@ -351,7 +351,7 @@ class StatueBreakable : Actor
 					item.bSolid = item.Default.bSolid;
 					item.bShootable = item.Default.bShootable;
 
-					item.angle = tiltangle + Random(70, 110) * RandomPick(-1, 1);
+					item.angle = tiltangle + Random[Statue](70, 110) * RandomPick[Statue](-1, 1);
 					item.pitch = 75;
 					item.roll = 0;
 					item.bFlatSprite = item.Default.bFlatSprite;
@@ -359,7 +359,7 @@ class StatueBreakable : Actor
 
 					item.scale = item.Default.scale;
 
-					item.SetOrigin((item.pos.xy + RotateVector((Default.Radius + Random(0, 16), 0), item.angle), item.floorz), true);
+					item.SetOrigin((item.pos.xy + RotateVector((Default.Radius + Random[Statue](0, 16), 0), item.angle), item.floorz), true);
 
 					item = null;
 				}
@@ -374,9 +374,9 @@ class StatueBreakable : Actor
 					Actor mo = Spawn("DebrisChunk", centerpoint);
 					if (mo)
 					{
-						DebrisChunk(mo).user_variant = RandomPick(12, 13, 14);
-						mo.angle = Random(0, 359);
-						mo.VelFromAngle(Random(2, 6), mo.angle);
+						DebrisChunk(mo).user_variant = RandomPick[Debris](12, 13, 14);
+						mo.angle = Random[Debris](0, 359);
+						mo.VelFromAngle(Random[Debris](2, 6), mo.angle);
 					}
 				}
 
@@ -1166,7 +1166,7 @@ mixin class GiveBuoyancy
 	{
 		if (!user_buoyancy) { return; }
 
-		if (offset == 0) { offset = Random(-64, 64); }
+		if (offset == 0) { offset = Random[Floater](-64, 64); }
 
 		bool iswater;
 		double waterheight;

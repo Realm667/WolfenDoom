@@ -83,17 +83,17 @@ class CloudSpawner : EffectSpawner
 	override void SpawnEffect()
 	{
 		Super.SpawnEffect();
-		if (Random(0, 255) < Args[2]) { return; }
+		if (Random[Clouds](0, 255) < Args[2]) { return; }
 
-		TextureID cloud = TexMan.CheckForTexture(cloudsprites[2 * i + Random(0, 1)]);
+		TextureID cloud = TexMan.CheckForTexture(cloudsprites[2 * i + Random[Clouds](0, 1)]);
 
-		double spawnAngle = Actor.deltaangle(-angle, frandom(-6, 6));
-		Vector2 spawnPos = (frandom(args[0]*2,-args[0]*2), frandom(args[0]*2,-args[0]*2)); // relative
+		double spawnAngle = Actor.deltaangle(-angle, FRandom[Clouds](-6, 6));
+		Vector2 spawnPos = (FRandom[Clouds](args[0]*2,-args[0]*2), FRandom[Clouds](args[0]*2,-args[0]*2)); // relative
 		spawnPos = Actor.RotateVector(spawnPos, spawnAngle); // relative
-		double spawnZ = frandom(0, args[1]);
+		double spawnZ = FRandom[Clouds](0, args[1]);
 		Vector3 particlePos = Vec3Offset(spawnPos.X, spawnPos.Y, spawnZ); // absolute
 
-		double particleSpeed = frandom(minspeed, maxspeed);
+		double particleSpeed = FRandom[Clouds](minspeed, maxspeed);
 		Vector3 traceDirection;
 		traceDirection.XY = Actor.AngleToVector(spawnAngle, 1);
 		Vector3 particleVel = traceDirection * particleSpeed;
@@ -101,7 +101,7 @@ class CloudSpawner : EffectSpawner
 		Sector spawnSector = Level.PointInSector(particlePos.XY);
 		BoASolidSurfaceFinderTracer surfFinder = new("BoASolidSurfaceFinderTracer");
 		surfFinder.Trace(particlePos, spawnSector, traceDirection, 10000.0, TRACE_HitSky);
-		int lifetime = surfFinder.results.Distance / particleSpeed;
+		int lifetime = int(surfFinder.results.Distance / particleSpeed);
 
 		FSpawnParticleParams particleInfo;
 		particleInfo.color1 = "FFFFFF";
@@ -118,7 +118,7 @@ class CloudSpawner : EffectSpawner
 
 		particleInfo.startalpha = 0.5;
 
-		particleInfo.rollvel = frandom(1.3, 2.0);
+		particleInfo.rollvel = FRandom[Clouds](1.3, 2.0);
 
 		Level.SpawnParticle(particleInfo);
 	}

@@ -109,7 +109,7 @@ class Nebelwerfer3D : Base //MaxED
 		TNT1 A 0 A_StartSound("weapons/explode", CHAN_AUTO, 0, 1.0, ATTN_NORM);
 		"####" A 0 A_Scream;
 		"####" A 0 A_NoBlocking;
-		"####" AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 0 A_SpawnItemEx("Debris_Tank", random(64,112), random(64,112), random(128,144), random(1,3), random(1,3), random(1,3), random(0,360), SXF_CLIENTSIDE);
+		"####" AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 0 A_SpawnItemEx("Debris_Tank", Random[Debris](64,112), Random[Debris](64,112), Random[Debris](128,144), Random[Debris](1,3), Random[Debris](1,3), Random[Debris](1,3), Random[Debris](0,360), SXF_CLIENTSIDE);
 		"####" A 0 A_SpawnItemEx("Nuke",0,0,5,0,0,0,0,SXF_TRANSFERPOINTERS|SXF_NOCHECKPOSITION);
 		"####" A 1 A_SpawnItemEx("KaBoomer",0,0,0,0,0,0,0,SXF_TRANSFERPOINTERS);
 		TNT1 A 5 A_SpawnItemEx("Nebelwerfer3D_Destroyed");
@@ -138,7 +138,7 @@ class Nebelwerfer3D_Destroyed: SceneryBase //Ozy81
 	States
 	{
 	Spawn:
-		MDLA B 8 A_SpawnProjectile("DarkSmoke2",32,0,random(0,360),CMF_AIMDIRECTION|CMF_BADPITCH,random(70,130));
+		MDLA B 8 A_SpawnProjectile("DarkSmoke2",32,0,random[Smoke](0,360),CMF_AIMDIRECTION|CMF_BADPITCH,random[Smoke](70,130));
 		Loop;
 	}
 }
@@ -205,10 +205,10 @@ class FlakVierling3D : SwitchableDecoration
 		MDLA B 0 {bDormant = TRUE;} //update manually on GZDB
 		MDLA B 0 A_StartSound("weapons/explode", CHAN_AUTO, 0, 1.0, ATTN_NORM);
 		MDLA B 0 A_Scream;
-		MDLA BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB 0 A_SpawnItemEx("Debris_Tank", random(64,112), random(64,112), random(128,144), random(1,3), random(1,3), random(1,3), random(0,360), SXF_CLIENTSIDE);
+		MDLA BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB 0 A_SpawnItemEx("Debris_Tank", Random[Debris](64,112), Random[Debris](64,112), Random[Debris](128,144), Random[Debris](1,3), Random[Debris](1,3), Random[Debris](1,3), Random[Debris](0,360), SXF_CLIENTSIDE);
 		MDLA B 1 A_SpawnItemEx("Nuke",0,0,5,0,0,0,0,SXF_TRANSFERPOINTERS|SXF_NOCHECKPOSITION);
 	Destroyed:
-		MDLA B 8 A_SpawnProjectile("DarkSmoke2",32,0,random(0,360),CMF_AIMDIRECTION|CMF_BADPITCH,random(70,130));
+		MDLA B 8 A_SpawnProjectile("DarkSmoke2",32,0,random[Smoke](0,360),CMF_AIMDIRECTION|CMF_BADPITCH,random[Smoke](70,130));
 		Loop;
 	NonSolid: //Needed for Intromap - ozy81
 		MDLA A 0 A_UnsetSolid;
@@ -249,10 +249,10 @@ class FlakVierling3D_War: SceneryBase
 		Death:
 			MDLA B 0 A_StartSound("weapons/explode", CHAN_AUTO, 0, 1.0, ATTN_NORM);
 			MDLA B 0 A_Scream;
-			MDLA BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB 0 A_SpawnItemEx("Debris_Tank", random(64,112), random(64,112), random(128,144), random(1,3), random(1,3), random(1,3), random(0,360), SXF_CLIENTSIDE);
+			MDLA BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB 0 A_SpawnItemEx("Debris_Tank", random[Debris](64,112), random[Debris](64,112), random[Debris](128,144), random[Debris](1,3), random[Debris](1,3), random[Debris](1,3), random[Debris](0,360), SXF_CLIENTSIDE);
 			MDLA B 1 A_SpawnItemEx("Nuke",0,0,5,0,0,0,0,SXF_TRANSFERPOINTERS|SXF_NOCHECKPOSITION);
 		Destroyed:
-			MDLA B 8 A_SpawnProjectile("DarkSmoke2",32,0,random(0,360),CMF_AIMDIRECTION|CMF_BADPITCH,random(70,130));
+			MDLA B 8 A_SpawnProjectile("DarkSmoke2",32,0,random[Smoke](0,360),CMF_AIMDIRECTION|CMF_BADPITCH,random[Smoke](70,130));
 			Loop;
 	}
 }

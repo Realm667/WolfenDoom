@@ -50,7 +50,7 @@ class Wall_CampMalePrisoner: Actor
 		CHGM K -1;
 		Stop;
 	Moving:
-		CHGM B 1 A_SetTics(Random(80,160));
+		CHGM B 1 A_SetTics(Random[Scenery](80,160));
 		"####" C 8;
 		"####" D 8;
 		"####" C 8;
@@ -97,7 +97,7 @@ class Wall_CampFemalePrisoner : Wall_CampMalePrisoner
 		CHGF G -1;
 		Stop;
 	Moving:
-		CHGF H 1 A_SetTics(Random(80,160));
+		CHGF H 1 A_SetTics(Random[Scenery](80,160));
 		"####" I 8;
 		"####" J 8;
 		"####" I 8;
@@ -128,7 +128,7 @@ class Wall_CivilianMale1 : Wall_CampMalePrisoner
 		CIV1 M -1;
 		Stop;
 	Moving:
-		CIV1 A 1 A_SetTics(Random(80,160));
+		CIV1 A 1 A_SetTics(Random[Scenery](80,160));
 		"####" B 8;
 		"####" C 8;
 		"####" B 8;
@@ -159,7 +159,7 @@ class Wall_CivilianMale2 : Wall_CampMalePrisoner
 		CIV2 M -1;
 		Stop;
 	Moving:
-		CIV2 A 1 A_SetTics(Random(80,160));
+		CIV2 A 1 A_SetTics(Random[Scenery](80,160));
 		"####" B 8;
 		"####" C 8;
 		"####" B 8;
@@ -190,7 +190,7 @@ class Wall_CivilianMale3 : Wall_CampMalePrisoner
 		CIV3 M -1;
 		Stop;
 	Moving:
-		CIV3 A 1 A_SetTics(Random(80,160));
+		CIV3 A 1 A_SetTics(Random[Scenery](80,160));
 		"####" B 8;
 		"####" C 8;
 		"####" B 8;
@@ -215,7 +215,7 @@ class Wall_CivilianMale4 : Wall_CampMalePrisoner
 		CIV4 A 1 A_JumpIfHealthLower(40,"Bleeding");
 		Loop;
 	Bleeding:
-		CIV4 B 1 A_SetTics(Random(80,160));
+		CIV4 B 1 A_SetTics(Random[Scenery](80,160));
 		"####" C 8;
 		"####" D 8;
 		"####" B 8;
@@ -252,7 +252,7 @@ class CraterGrass : FlatBase
 	States
 	{
 	Spawn:
-		KRAT A -1 NODELAY A_SetScale(Scale.X * RandomPick(-1, 1), Scale.Y);
+		KRAT A -1 NODELAY A_SetScale(Scale.X * RandomPick[Scenery](-1, 1), Scale.Y);
 		Stop;
 	}
 }
@@ -266,7 +266,7 @@ class CraterSnow : CraterGrass
 	States
 	{
 	Spawn:
-		KRAT B -1 NODELAY A_SetScale(Scale.X * RandomPick(-1, 1), Scale.Y);
+		KRAT B -1 NODELAY A_SetScale(Scale.X * RandomPick[Scenery](-1, 1), Scale.Y);
 		Stop;
 	}
 }
@@ -280,7 +280,7 @@ class CraterDirt : CraterGrass
 	States
 	{
 	Spawn:
-		KRAT C -1 NODELAY A_SetScale(Scale.X * RandomPick(-1, 1), Scale.Y);
+		KRAT C -1 NODELAY A_SetScale(Scale.X * RandomPick[Scenery](-1, 1), Scale.Y);
 		Stop;
 	}
 }
@@ -294,7 +294,7 @@ class CraterConcrete : CraterGrass
 	States
 	{
 	Spawn:
-		KRAT E -1 NODELAY A_SetScale(Scale.X * RandomPick(-1, 1), Scale.Y);
+		KRAT E -1 NODELAY A_SetScale(Scale.X * RandomPick[Scenery](-1, 1), Scale.Y);
 		Stop;
 	}
 }
@@ -308,7 +308,7 @@ class SnowPile1 : CraterGrass
 	States
 	{
 	Spawn:
-		KRAT D -1 NODELAY A_SetScale(Scale.X * RandomPick(-1, 1), Scale.Y);
+		KRAT D -1 NODELAY A_SetScale(Scale.X * RandomPick[Scenery](-1, 1), Scale.Y);
 		Stop;
 	}
 }
@@ -324,7 +324,7 @@ class StainedGlassLight : CraterGrass
 	States
 	{
 	Spawn:
-		STGL Z -1 NODELAY A_SetScale(Scale.X * RandomPick(-1, 1), Scale.Y);
+		STGL Z -1 NODELAY A_SetScale(Scale.X * RandomPick[Scenery](-1, 1), Scale.Y);
 		Stop;
 	}
 }

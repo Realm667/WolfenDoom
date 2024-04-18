@@ -60,7 +60,7 @@ class LugerTracer : PlayerTracer
 	Default
 	{
 	ProjectileKickback 60;
-	DamageFunction (random(3,17));
+	DamageFunction (Random[Tracer](3,17));
 	Speed 100;
 	}
 }
@@ -70,7 +70,7 @@ class WaltherTracer : LugerTracer
 {
 	Default
 	{
-	DamageFunction (random(6,18));
+	DamageFunction (Random[Tracer](6,18));
 	Speed 90;
 	}
 }
@@ -80,7 +80,7 @@ class ShotgunTracer : PlayerTracer
 	Default
 	{
 	Scale .3;
-	DamageFunction (random(5,15));
+	DamageFunction (Random[Tracer](5,15));
 	DamageType "Pellet";
 	+BULLETTRACER.NORICOCHET
 	}
@@ -93,13 +93,13 @@ class MP40Tracer : PlayerTracer
 {
 	Default
 	{
-	DamageFunction (random(9,14));
+	DamageFunction (Random[Tracer](9,14));
 	Speed 90;
 	}
 }
 
 //Muzzle velocity: 1,001 ft/s (305 m/s) - Wikipedia
-class StenTracer : PlayerTracer { Default { DamageFunction (random(9,14)); } }
+class StenTracer : PlayerTracer { Default { DamageFunction (Random[Tracer](9,14)); } }
 
 //Muzzle velocity: 935 ft/s (285 m/s) - Wikipedia
 class ThompsonTracer : PlayerTracer
@@ -107,7 +107,7 @@ class ThompsonTracer : PlayerTracer
 	Default
 	{
 	ProjectileKickback 100;
-	DamageFunction (random(14,18));
+	DamageFunction (Random[Tracer](14,18));
 	Speed 120;
 	}
 }
@@ -118,21 +118,21 @@ class Kar98kTracer : PlayerTracer
 	Default
 	{
 	ProjectileKickback 100;
-	DamageFunction (random(40,65));
+	DamageFunction (Random[Tracer](40,65));
 	Speed 180;
 	Obituary "$OBMAUSER";
 	DamageType "Rifle";
 	}
 }
 
-class Kar98kTracer2 : Kar98kTracer { Default { DamageFunction (random(60,85)); } }
+class Kar98kTracer2 : Kar98kTracer { Default { DamageFunction (Random[Tracer](60,85)); } }
 
 //Muzzle velocity: 2,448-2,546 ft/s (746-776 m/s) - Wikipedia
 class G43Tracer : Kar98kTracer
 {
 	Default
 	{
-	DamageFunction (random(26,55));
+	DamageFunction (Random[Tracer](26,55));
 	Speed 150;
 	Obituary "$OBG43";
 	DamageType "Rifle";
@@ -143,7 +143,7 @@ class ChaingunTracer : PlayerTracer
 {
 	Default
 	{
-	DamageFunction (random(11,15));
+	DamageFunction (Random[Tracer](11,15));
 	Speed 90;
 	DamageType "Rifle";
 	}
@@ -316,7 +316,7 @@ class AstroTracer : BulletTracer
 		Death:
 		Crash:
 			TNT1 AAAAA 0 {
-				A_SpawnItemEx("SparkG", 0, 0, 0, random(-2,2), random(-2,2), random(-2,2), random(0,359), SXF_CLIENTSIDE); //T667 improvements
+				A_SpawnItemEx("SparkG", 0, 0, 0, Random[Spark](-2,2), Random[Spark](-2,2), Random[Spark](-2,2), Random[Spark](0,359), SXF_CLIENTSIDE); //T667 improvements
 			}
 			TNT1 A 8 {
 				// If a non-bleeding actor was hit, count the shot as successful
@@ -331,7 +331,7 @@ class AstroTracer : BulletTracer
 			Stop;
 		XDeath:
 			TNT1 AAAAA 0 {
-				A_SpawnItemEx("SparkG", 0, 0, 0, random(-2,2), random(-2,2), random(-2,2), random(0,359), SXF_CLIENTSIDE); //T667 improvements
+				A_SpawnItemEx("SparkG", 0, 0, 0, Random[Spark](-2,2), Random[Spark](-2,2), Random[Spark](-2,2), Random[Spark](0,359), SXF_CLIENTSIDE); //T667 improvements
 			}
 			TNT1 A 1 {
 				// If a bleeding actor was hit, count the shot as successful
@@ -345,7 +345,7 @@ class AstroTracer : BulletTracer
 	}
 }
 
-class EnemyAstroTracer : AstroTracer { Default { DamageFunction (random(2,4)); } }
+class EnemyAstroTracer : AstroTracer { Default { DamageFunction (Random[Tracer](2,4)); } }
 
 class AstroWhizzer : Whizzer
 {
@@ -363,7 +363,7 @@ class AstroTracerPlayer : AstroTracer
 	Default
 	{
 		ProjectileKickback 60;
-		DamageFunction (random(3,17));
+		DamageFunction (Random[Tracer](3,17));
 		Speed 100;
 	}
 }
@@ -386,7 +386,7 @@ class ProtoTracer : BulletTracer
 		Death:
 		Crash:
 			TNT1 AAAAA 0 {
-				A_SpawnItemEx("SparkR", 0, 0, 0, random(-2,2), random(-2,2), random(-2,2), random(0,359), SXF_CLIENTSIDE); //T667 improvements
+				A_SpawnItemEx("SparkR", 0, 0, 0, Random[Spark](-2,2), Random[Spark](-2,2), Random[Spark](-2,2), Random[Spark](0,359), SXF_CLIENTSIDE); //T667 improvements
 			}
 			TNT1 A 8 {
 				// If a non-bleeding actor was hit, count the shot as successful
@@ -401,7 +401,7 @@ class ProtoTracer : BulletTracer
 			Stop;
 		XDeath:
 			TNT1 AAAAA 0 {
-				A_SpawnItemEx("SparkR", 0, 0, 0, random(-2,2), random(-2,2), random(-2,2), random(0,359), SXF_CLIENTSIDE); //T667 improvements
+				A_SpawnItemEx("SparkR", 0, 0, 0, Random[Spark](-2,2), Random[Spark](-2,2), Random[Spark](-2,2), Random[Spark](0,359), SXF_CLIENTSIDE); //T667 improvements
 			}
 			TNT1 A 1 {
 				// If a bleeding actor was hit, count the shot as successful
@@ -415,7 +415,7 @@ class ProtoTracer : BulletTracer
 	}
 }
 
-class EnemyProtoTracer : ProtoTracer { Default { DamageFunction (random(1,3)); } }
+class EnemyProtoTracer : ProtoTracer { Default { DamageFunction (Random[Tracer](1,3)); } }
 class ProtoTrail: TracerTrail { Default { TracerTrail.FadeRate 0.0; } } // Don't fade the laser beams
 
 /////////////////////////////////////////////////////////////
@@ -423,17 +423,17 @@ class ProtoTrail: TracerTrail { Default { TracerTrail.FadeRate 0.0; } } // Don't
 /////////////////////////////////////////////////////////////
 
 // Enemy tracer variants for Normal mode.
-class EnemyChaingunTracer : BulletTracer 			{Default { DamageFunction (random(6,8)); } }
-class EnemyChaingunTracer2 : BulletTracer 			{Default { Scale 2.0; DamageFunction (random(6,8)); } }
-class EnemyMutantTracer : MutantTracer				{Default { DamageFunction (random(2,4)); } }
-class EnemyPistolTracer : BulletTracer				{Default { DamageFunction (random(4,8)); } }
-class EnemyRifleTracer : BulletTracer				{Default { DamageFunction (random(15,30)); } }
-class EnemySMGTracer : BulletTracer					{Default { DamageFunction (random(6,7)); } }
-class EnemyShotgunTracer : BulletTracer 			{Default { DamageFunction (random(3,7)); } }
-class EnemyStGTracer : BulletTracer					{Default { DamageFunction (random(7,8)); } }
-class REnemyPistolTracer : BulletTracer				{Default { +THRUSPECIES DamageFunction (random(4,8)); Species "Player"; } }
-class REnemyRifleTracer : BulletTracer				{Default { +THRUSPECIES DamageFunction (random(15,30)); Species "Player"; } }
-class REnemySMGTracer : BulletTracer				{Default { +THRUSPECIES DamageFunction (random(6,7)); Species "Player"; } }
+class EnemyChaingunTracer : BulletTracer 			{Default { DamageFunction (Random[Tracer](6,8)); } }
+class EnemyChaingunTracer2 : BulletTracer 			{Default { Scale 2.0; DamageFunction (Random[Tracer](6,8)); } }
+class EnemyMutantTracer : MutantTracer				{Default { DamageFunction (Random[Tracer](2,4)); } }
+class EnemyPistolTracer : BulletTracer				{Default { DamageFunction (Random[Tracer](4,8)); } }
+class EnemyRifleTracer : BulletTracer				{Default { DamageFunction (Random[Tracer](15,30)); } }
+class EnemySMGTracer : BulletTracer					{Default { DamageFunction (Random[Tracer](6,7)); } }
+class EnemyShotgunTracer : BulletTracer 			{Default { DamageFunction (Random[Tracer](3,7)); } }
+class EnemyStGTracer : BulletTracer					{Default { DamageFunction (Random[Tracer](7,8)); } }
+class REnemyPistolTracer : BulletTracer				{Default { +THRUSPECIES DamageFunction (Random[Tracer](4,8)); Species "Player"; } }
+class REnemyRifleTracer : BulletTracer				{Default { +THRUSPECIES DamageFunction (Random[Tracer](15,30)); Species "Player"; } }
+class REnemySMGTracer : BulletTracer				{Default { +THRUSPECIES DamageFunction (Random[Tracer](6,7)); Species "Player"; } }
 
 // Enemy tracer variants for Baby mode
 class BabyEnemyAstroTracer : EnemyAstroTracer		{Default { Speed 30; FastSpeed 35; Gravity 3; } }

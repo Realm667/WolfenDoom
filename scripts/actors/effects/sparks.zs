@@ -71,7 +71,7 @@ class SparkBase : ParticleBase
 			SetShade(sparkcolor);
 		}
 
-		Speed = FRandom(0.25, 4.0); 
+		Speed = FRandom[Spark](0.25, 4.0); 
 
 		// If it has a target (was fired as a projectile), set velocity directly, 
 		// not just speed, since A_SpawnProjectile automatically sets the spark 
@@ -199,7 +199,7 @@ class FlareBase : ParticleBase
 			A_AttachLight("flarelight", DynamicLight.PointLight , flarecolor, 12.0, 0.0, DYNAMICLIGHT.LF_ATTENUATE);
 		}
 
-		frame = Random(0, 5);
+		frame = Random[Spark](0, 5);
 	}
 }
 
@@ -298,7 +298,7 @@ class SparkSpawnerBase : EffectSpawner
 		Spawn:
 			TNT1 A 0;
 			TNT1 A 10;
-			TNT1 A 0 { if (args[2] == 0 && Random(0, 255) < args[1] / 16) { SetStateLabel("Active"); return; } }
+			TNT1 A 0 { if (args[2] == 0 && Random[Spark](0, 255) < args[1] / 16) { SetStateLabel("Active"); return; } }
 			Loop;
 		Active:
 			TNT1 A 1 SpawnFlare();
@@ -345,9 +345,9 @@ class SparkSpawnerBase : EffectSpawner
 
 		for (int s = 0; s < 32 - delay; s++)
 		{
-			if (args[0] == 0) { A_SpawnProjectile(sparktype,0,0,random(0,360),CMF_AIMDIRECTION,random(-67,-113)); } // Up
-			else if (args[0] == 1) { A_SpawnProjectile(sparktype,0,0,random(0,360),CMF_AIMDIRECTION,random(67,113)); } // Down
-			else { A_SpawnProjectile(sparktype,0,0,random(-23,23),CMF_AIMDIRECTION,random(-157,-203)); } // Ahead
+			if (args[0] == 0) { A_SpawnProjectile(sparktype,0,0,random[Sparks](0,360),CMF_AIMDIRECTION,random[Sparks](-67,-113)); } // Up
+			else if (args[0] == 1) { A_SpawnProjectile(sparktype,0,0,random[Sparks](0,360),CMF_AIMDIRECTION,random[Sparks](67,113)); } // Down
+			else { A_SpawnProjectile(sparktype,0,0,random[Sparks](-23,23),CMF_AIMDIRECTION,random[Sparks](-157,-203)); } // Ahead
 		}
 
 		if (args[2] > 0) { Deactivate(self); }
@@ -453,7 +453,7 @@ class AstroDroneBall : Actor
 	{
 		if (curState && manager) { tics = curState.tics + manager.GetDelay(0, 0, self); }
 
-		A_SpawnItemEx("SparkG", 0, 0, 0, random(1,2), random(1,2), random(1,2), random(1,360), SXF_CLIENTSIDE);
+		A_SpawnItemEx("SparkG", 0, 0, 0, Random[Spark](1,2), Random[Spark](1,2), Random[Spark](1,2), Random[Spark](1,360), SXF_CLIENTSIDE);
 	}
 }
 
@@ -512,6 +512,6 @@ class AstroRocket : Actor
 	{
 		if (curState && manager) { tics = curState.tics + manager.GetDelay(0, 0, self); }
 
-		A_SpawnItemEx("SparkG", 0, 0, 0, random(1,2), random(1,2), random(1,2), random(1,360), SXF_CLIENTSIDE);
+		A_SpawnItemEx("SparkG", 0, 0, 0, Random[Spark](1,2), Random[Spark](1,2), Random[Spark](1,2), Random[Spark](1,360), SXF_CLIENTSIDE);
 	}
 }

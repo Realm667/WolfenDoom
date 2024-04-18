@@ -211,7 +211,7 @@ class NemesisZyklonBall : GroundedMissile
 		ZBAL A 0 A_SpawnZClouds;
 		Loop;
 	Death:
-		ZBLX A 2 LIGHT("ZYKFLMW2") A_Explode(random(16,24), 128, 0, fulldamagedistance: 64);
+		ZBLX A 2 LIGHT("ZYKFLMW2") A_Explode(Random[Boss](16,24), 128, 0, fulldamagedistance: 64);
 		ZBLX BCDEFGHIJK 2 LIGHT("ZYKFLMW2");
 		Stop;
 	}
@@ -278,10 +278,10 @@ class RENemesis : NaziBoss
 	Melee:
 		NEMS A 3;
 		NEMS H 4 A_StartSound("nemesis/swing", CHAN_WEAPON);
-		NEMS I 12 A_CustomMeleeAttack(random(20,30), "nemesis/melee");
+		NEMS I 12 A_CustomMeleeAttack(Random[Boss](20,30), "nemesis/melee");
 		NEMS A 3 A_JumpIfTargetOutsideMeleeRange("See");
 		NEMS J 4 A_StartSound("nemesis/swing", CHAN_WEAPON);
-		NEMS K 12 A_CustomMeleeAttack(random(20,30), "nemesis/melee");
+		NEMS K 12 A_CustomMeleeAttack(Random[Boss](20,30), "nemesis/melee");
 		Goto See;
 	Pain:
 		NEMS L 10;

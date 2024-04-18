@@ -71,9 +71,9 @@ class Bubble : ParticleBase
 			}
 		}
 
-		if (Random() < 32) // Randomly move slightly on x/y axis
+		if (Random[Bubble]() < 32) // Randomly move slightly on x/y axis
 		{
-			angle = Random(0, 360);
+			angle = Random[Bubble](0, 360);
 			vel.xy = RotateVector((-0.1, 0), angle);
 		}
 
@@ -87,6 +87,6 @@ class PlayerBubble : Bubble
 	{
 		Super.PostBeginPlay();
 
-		vel.z += FRandom(1.0, 3.0);
+		vel.z += FRandom[Bubble](1.0, 3.0);
 	}
 }

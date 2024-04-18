@@ -60,7 +60,7 @@ class Nail: Actor
 		Radius 4;
 		Height 8;
 		Speed 44;
-		DamageFunction (4 * random(1,8));
+		DamageFunction (4 * Random[Boom](1,8));
 		Scale 0.5;
 		+BLOODSPLATTER
 		SeeSound "NailFlight";
@@ -126,7 +126,7 @@ class BossDagger : Nail
 	Default
 	{
 		Speed 32;
-		DamageFunction (3*random(1,8));
+		DamageFunction (3*Random[Effect](1,8));
 		Scale 1.0;
 		-BRIGHT
 	}
@@ -208,7 +208,7 @@ class IceDart : FastProjectile
 		Height 8;
 		Speed 32;
 		Scale 1.1;
-		DamageFunction (random(5,8));
+		DamageFunction (Random[Effect](5,8));
 		DamageType "IceWater";
 		Projectile;
 		+BLOODSPLATTER
@@ -230,8 +230,8 @@ class IceDart : FastProjectile
 	XDeath:
 		"####" B 0 {A_StartSound("IceHit"); A_RadiusGive("SlowFreeze", 48, RGF_PLAYERS | RGF_CUBE, 1);}
 	Death:
-		ICEX AAAAAAAA 0 A_SpawnItemEx("Smoke_Small", 0, 0, 0, random(10, 30)*0.1, 0, random(0, 10)*0.1, random(0,360), SXF_CLIENTSIDE|SXF_NOCHECKPOSITION);
-		"####" AAAA 0 A_SpawnItemEx("Smoke_Medium", 0, 0, 0, random(10, 30)*0.04, 0, random(0, 10)*0.04, random(0,360), SXF_CLIENTSIDE|SXF_NOCHECKPOSITION);
+		ICEX AAAAAAAA 0 A_SpawnItemEx("Smoke_Small", 0, 0, 0, Random[Smoke](10, 30)*0.1, 0, Random[Smoke](0, 10)*0.1, Random[Smoke](0,360), SXF_CLIENTSIDE|SXF_NOCHECKPOSITION);
+		"####" AAAA 0 A_SpawnItemEx("Smoke_Medium", 0, 0, 0, Random[Smoke](10, 30)*0.04, 0, Random[Smoke](0, 10)*0.04, Random[Smoke](0,360), SXF_CLIENTSIDE|SXF_NOCHECKPOSITION);
 		"####" ABCDEFGHIJKLMA 1 {A_SetRenderStyle(0.5,STYLE_Add); A_SetScale(0.5); A_FadeOut(0.1);}
 		Stop;
 	}

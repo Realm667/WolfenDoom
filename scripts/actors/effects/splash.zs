@@ -69,7 +69,7 @@ class WaterSplashGeneratorNormal : EffectSpawner
 		// boashaders.txt:L2060-L2082
 		static const double rolls[] = { 2.0, 3.0, 2.5, 3.5 };
 
-		int variant = random(0, 3);
+		int variant = Random[Splash](0, 3);
 
 		TextureID splash = TexMan.CheckForTexture(String.Format("WTS%cA0", 0x41 + variant));
 
@@ -80,13 +80,13 @@ class WaterSplashGeneratorNormal : EffectSpawner
 			SPF_RELATIVE | SPF_ROLL, // flags
 			32, // lifetime (0.8 / 0.025)
 			153.6, // size (0.3 * 512.)
-			FRandom(0.0, 360.0), // angle
+			FRandom[Splash](0.0, 360.0), // angle
 			0.0, // xoff
 			0.0, // yoff
 			0.0, // zoff
-			Random(0, 1), // velx
+			Random[Splash](0, 1), // velx
 			0.0, // vely
-			FRandom(1.0, 2.0), // velz
+			FRandom[Splash](1.0, 2.0), // velz
 			0.0, // accelx
 			0.0, // accely
 			0.0, // accelz (-NOGRAVITY does not work for SimpleActors and particle actors)
@@ -135,9 +135,9 @@ class WaterSplashObject: ParticleBase
 
 	override void PostBeginPlay()
 	{
-		vel = (RotateVector((Random(0, 1), 0), FRandom(0.0, 360.0)), FRandom(1.0, 2.0));
+		vel = (RotateVector((Random[Splash](0, 1), 0), FRandom[Splash](0.0, 360.0)), FRandom[Splash](1.0, 2.0));
 
-		int newsprite = GetSpriteIndex(String.Format("WTS%c", Random(65, 68)));
+		int newsprite = GetSpriteIndex(String.Format("WTS%c", Random[Splash](65, 68)));
 		if (newsprite > 0) { sprite = newsprite; }
 
 		Super.PostBeginPlay();
@@ -161,8 +161,8 @@ class WaterSplashCloud : ParticleBase
 	{
 	Spawn:
 		WTFG A 0 NODELAY;
-		"####" A 0 ThrustThingZ(0,random(1,4),0,0);
-		"####" A 0 ThrustThing(random(0,255),random(0,1),0,0);
+		"####" A 0 ThrustThingZ(0,random[Splash](1,4),0,0);
+		"####" A 0 ThrustThing(Random[Splash](0,255),random[Splash](0,1),0,0);
 		"####" AAAAAAAAA 2 A_FadeIn(.03);
 		"####" A 2 A_SetScale(Scale.X+0.01, Scale.Y+0.01);
 		"####" A 0 A_FadeOut(.03,FTF_REMOVE);
@@ -204,7 +204,7 @@ class WaterSplashGeneratorNormalLooping : WaterSplashGeneratorNormal
 			// boashaders.txt:L2060-L2082
 			static const double rolls[] = { 2.0, 3.0, 2.5, 3.5 };
 
-			int variant = random(0, 3);
+			int variant = Random[Splash](0, 3);
 
 			TextureID splash = TexMan.CheckForTexture(String.Format("WTS%cA0", 0x41 + variant));
 
@@ -215,13 +215,13 @@ class WaterSplashGeneratorNormalLooping : WaterSplashGeneratorNormal
 				SPF_RELATIVE | SPF_ROLL, // flags
 				32, // lifetime (0.8 / 0.025)
 				153.6, // size (0.3 * 512.)
-				FRandom(0.0, 360.0), // angle
+				FRandom[Splash](0.0, 360.0), // angle
 				0.0, // xoff
 				0.0, // yoff
 				0.0, // zoff
-				Random(0, 1), // velx
+				Random[Splash](0, 1), // velx
 				0.0, // vely
-				FRandom(1.0, 2.0), // velz
+				FRandom[Splash](1.0, 2.0), // velz
 				0.0, // accelx
 				0.0, // accely
 				0.0, // accelz (-NOGRAVITY does not work for SimpleActors and particle actors)
@@ -233,6 +233,6 @@ class WaterSplashGeneratorNormalLooping : WaterSplashGeneratorNormal
 				0.0 // rollacc
 			);
 		}
-		else { A_SpawnItemEx("WaterSplashCloud", Random(-8, 8), Random(-8, 8), Random(0, 16), 0, 0, 0, 0, SPLASHES_FLAGS); }
+		else { A_SpawnItemEx("WaterSplashCloud", Random[Splash](-8, 8), Random[Splash](-8, 8), Random[Splash](0, 16), 0, 0, 0, 0, SPLASHES_FLAGS); }
 	}
 }

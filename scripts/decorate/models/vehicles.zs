@@ -693,7 +693,7 @@ class COD_USJeep : Obstacle3d
 	Damaged:
 		MDLA B 0 A_UnsetSolid;
 	DmgLoop:
-		MDLA B 8 A_SpawnProjectile("DarkSmoke2",32,0,random(0,360),CMF_AIMDIRECTION|CMF_BADPITCH,random(70,130));
+		MDLA B 8 A_SpawnProjectile("DarkSmoke2",32,0, Random[Smoke](0,360),CMF_AIMDIRECTION|CMF_BADPITCH, Random[Smoke](70,130));
 		Loop;
 	}
 }
@@ -780,10 +780,10 @@ class CODOmahaBoat : FlakVierling3D
 		MDLA B 0 A_StartSound("weapons/explode", CHAN_AUTO, 0, 1.0, ATTN_NORM);
 		MDLA B 0 A_Scream;
 		MDLA B 0 A_NoBlocking;
-		MDLA BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB 0 A_SpawnItemEx("Debris_Tank", random(64,112), random(64,112), random(128,144), random(1,3), random(1,3), random(1,3), random(0,360), SXF_CLIENTSIDE);
+		MDLA BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB 0 A_SpawnItemEx("Debris_Tank", Random[Debris](64,112), Random[Debris](64,112), Random[Debris](128,144), Random[Debris](1,3), Random[Debris](1,3), Random[Debris](1,3), Random[Debris](0,360), SXF_CLIENTSIDE);
 		MDLA B 1 A_SpawnItemEx("Nuke",0,0,5,0,0,0,0,SXF_TRANSFERPOINTERS|SXF_NOCHECKPOSITION);
 	Destroyed:
-		MDLA B 8 A_SpawnProjectile("DarkSmoke2",32,0,random(0,360),CMF_AIMDIRECTION|CMF_BADPITCH,random(70,130));
+		MDLA B 8 A_SpawnProjectile("DarkSmoke2",32,0, Random[Smoke](0,360),CMF_AIMDIRECTION|CMF_BADPITCH, Random[Smoke](70,130));
 		Loop;
 	}
 }
@@ -805,7 +805,7 @@ class CODPTBoat : COD_USJeep
 	Damaged:
 		MDLA B 0 A_UnsetSolid;
 	DmgLoop:
-		MDLA B 8 A_SpawnProjectile("DarkSmoke2",32,0,random(0,360),CMF_AIMDIRECTION|CMF_BADPITCH,random(70,130));
+		MDLA B 8 A_SpawnProjectile("DarkSmoke2",32,0, Random[Smoke](0,360),CMF_AIMDIRECTION|CMF_BADPITCH, Random[Smoke](70,130));
 		Loop;
 	}
 }
@@ -840,18 +840,18 @@ class CODStuka : ModelBase //no distancecheck for this one due it is used on C2M
 		MDLA B -1;
 		Stop;
 	Crashed:
-		MDLA B 8 A_SpawnProjectile("DarkSmoke2",Scale.X*8,0,random(0,360),CMF_AIMDIRECTION|CMF_BADPITCH,random(70,130));
+		MDLA B 8 A_SpawnProjectile("DarkSmoke2",Scale.X*8,0, Random[Smoke](0,360),CMF_AIMDIRECTION|CMF_BADPITCH, Random[Smoke](70,130));
 		Loop;
 	Boom: //this is used mainly for c2m4 - ozy81
 		TNT1 A 0 A_StartSound("weapons/explode", CHAN_AUTO, 0, 1.0, ATTN_NORM);
 		"####" A 0 A_Scream;
 		"####" A 0 A_NoBlocking;
 		"####" A 0 A_UnSetSolid;
-		"####" AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 0 A_SpawnItemEx("Debris_Tank", random(64,112), random(64,112), random(128,144), random(1,3), random(1,3), random(1,3), random(0,360), SXF_CLIENTSIDE);
+		"####" AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 0 A_SpawnItemEx("Debris_Tank", Random[Debris](64,112), Random[Debris](64,112), Random[Debris](128,144), Random[Debris](1,3), Random[Debris](1,3), Random[Debris](1,3), Random[Debris](0,360), SXF_CLIENTSIDE);
 		"####" A 0 A_SpawnItemEx("Nuke",0,0,5,0,0,0,0,SXF_TRANSFERPOINTERS|SXF_NOCHECKPOSITION);
 		"####" A 1 A_SpawnItemEx("KaBoomer",0,0,0,0,0,0,0,SXF_TRANSFERPOINTERS);
 		Dead:
-		MDLA B 8 A_SpawnProjectile("DarkSmoke3",Scale.X*8,0,random(0,360),CMF_AIMDIRECTION|CMF_BADPITCH,random(70,130));
+		MDLA B 8 A_SpawnProjectile("DarkSmoke3",Scale.X*8,0, Random[Smoke](0,360),CMF_AIMDIRECTION|CMF_BADPITCH, Random[Smoke](70,130));
 		Loop;
 	}
 }
@@ -876,7 +876,7 @@ class CODStukaF : Furniture_End3d
 	States
 	{
 	Spawn:
-		MDLA A 8 A_SpawnProjectile("DarkSmoke2",Scale.X*8,0,random(0,360),CMF_AIMDIRECTION|CMF_BADPITCH,random(70,130));
+		MDLA A 8 A_SpawnProjectile("DarkSmoke2",Scale.X*8,0, Random[Smoke](0,360),CMF_AIMDIRECTION|CMF_BADPITCH, Random[Smoke](70,130));
 		Loop;
 	}
 }

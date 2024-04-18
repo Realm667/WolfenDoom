@@ -63,9 +63,9 @@ class Luger9mm : NaziWeapon
 		LUGG A 0 A_GunFlash;
 		LUGG A 0 A_SetPitch(pitch-(0.2*boa_recoilamount));
 		LUGG A 0 A_JumpIf(waterlevel > 0,2);
-		LUGG A 0 A_FireProjectile("PistolSmokeSpawner",0,0,0,random(-4,4),0,0);
+		LUGG A 0 A_FireProjectile("PistolSmokeSpawner",0,0,0, Random[Weapon](-4,4),0,0);
 		LUGG A 0 A_StartSound("luger/fire", CHAN_WEAPON);
-		LUGG A 0 A_SpawnItemEx("Casing9mm",12,-20,32,8,random(-2,2),random(0,4),random(-55,-80),SXF_NOCHECKPOSITION);
+		LUGG A 0 A_SpawnItemEx("Casing9mm",12,-20,32,8, Random[Weapon](-2,2), Random[Weapon](0,4), Random[Weapon](-55,-80),SXF_NOCHECKPOSITION);
 		LUGG A 0 A_AlertMonsters;
 		LUGG G 1 A_FireProjectile("LugerTracer");
 		LUGG B 1;

@@ -59,10 +59,10 @@ class Debris_Trash : Debris_Base
 		SRCB B 0 NODELAY A_Jump(256,1,2,3,4);
 		"####" BCDF 0 A_Jump(256,"SpawnLoop","SpawnLoop2");
 	SpawnLoop:
-		"####" "#" 1 {A_SetRoll(roll + frandom(-5.0, 5.0), SPF_INTERPOLATE); A_SetAngle(angle + random(-15, 15)); A_SetPitch(pitch + frandom(-30.25, 30.25)); A_JumpIf(waterlevel == 3, "AdjustMass");}
+		"####" "#" 1 {A_SetRoll(roll + FRandom[Debris](-5.0, 5.0), SPF_INTERPOLATE); A_SetAngle(angle + Random[Debris](-15, 15)); A_SetPitch(pitch + FRandom[Debris](-30.25, 30.25)); A_JumpIf(waterlevel == 3, "AdjustMass");}
 		Loop;
 	SpawnLoop2:
-		"####" "#" 1 {A_SetRoll(roll - frandom(-5.0, 5.0), SPF_INTERPOLATE); A_SetAngle(angle - random(-15, 15)); A_SetPitch(pitch - frandom(-30.25, 30.25)); A_JumpIf(waterlevel == 3, "AdjustMass");}
+		"####" "#" 1 {A_SetRoll(roll - FRandom[Debris](-5.0, 5.0), SPF_INTERPOLATE); A_SetAngle(angle - Random[Debris](-15, 15)); A_SetPitch(pitch - FRandom[Debris](-30.25, 30.25)); A_JumpIf(waterlevel == 3, "AdjustMass");}
 		Loop;
 	AdjustMass: //mxd
 		"####" "#" 0 A_SetMass(400);
@@ -90,10 +90,10 @@ class Debris_Hydrant : Debris_Trash
 		HDBR A 0 NODELAY A_Jump(256,1,2,3,4);
 		"####" ABCD 0 A_Jump(256,"SpawnLoop","SpawnLoop2");
 	SpawnLoop:
-		"####" "#" 1 {A_SetRoll(roll + frandom(-5.0, 5.0), SPF_INTERPOLATE); A_SetAngle(angle + random(-15, 15)); A_SetPitch(pitch + frandom(-30.25, 30.25)); A_JumpIf(waterlevel == 3, "AdjustMass");}
+		"####" "#" 1 {A_SetRoll(roll + FRandom[Debris](-5.0, 5.0), SPF_INTERPOLATE); A_SetAngle(angle + Random[Debris](-15, 15)); A_SetPitch(pitch + FRandom[Debris](-30.25, 30.25)); A_JumpIf(waterlevel == 3, "AdjustMass");}
 		Loop;
 	SpawnLoop2:
-		"####" "#" 1 {A_SetRoll(roll - frandom(-5.0, 5.0), SPF_INTERPOLATE); A_SetAngle(angle - random(-15, 15)); A_SetPitch(pitch - frandom(-30.25, 30.25)); A_JumpIf(waterlevel == 3, "AdjustMass");}
+		"####" "#" 1 {A_SetRoll(roll - FRandom[Debris](-5.0, 5.0), SPF_INTERPOLATE); A_SetAngle(angle - Random[Debris](-15, 15)); A_SetPitch(pitch - FRandom[Debris](-30.25, 30.25)); A_JumpIf(waterlevel == 3, "AdjustMass");}
 		Loop;
 	AdjustMass: //mxd
 		"####" "#" 0 A_SetMass(400);
@@ -124,10 +124,10 @@ class Debris_MetalJunk : Debris_Base
 		MTLJ B 0 NODELAY A_Jump(256,1,2,3,4);
 		"####" BCEL 0 A_Jump(256,"SpawnLoop","SpawnLoop2");
 	SpawnLoop:
-		"####" "#" 1 {A_SetRoll(roll + frandom(-5.0, 5.0), SPF_INTERPOLATE); A_SetAngle(angle + random(-15, 15)); A_SetPitch(pitch + frandom(-30.25, 30.25)); A_JumpIf(waterlevel == 3, "AdjustMass");}
+		"####" "#" 1 {A_SetRoll(roll + FRandom[Debris](-5.0, 5.0), SPF_INTERPOLATE); A_SetAngle(angle + Random[Debris](-15, 15)); A_SetPitch(pitch + FRandom[Debris](-30.25, 30.25)); A_JumpIf(waterlevel == 3, "AdjustMass");}
 		Loop;
 	SpawnLoop2:
-		"####" "#" 1 {A_SetRoll(roll - frandom(-5.0, 5.0), SPF_INTERPOLATE); A_SetAngle(angle - random(-15, 15)); A_SetPitch(pitch - frandom(-30.25, 30.25)); A_JumpIf(waterlevel == 3, "AdjustMass");}
+		"####" "#" 1 {A_SetRoll(roll - FRandom[Debris](-5.0, 5.0), SPF_INTERPOLATE); A_SetAngle(angle - Random[Debris](-15, 15)); A_SetPitch(pitch - FRandom[Debris](-30.25, 30.25)); A_JumpIf(waterlevel == 3, "AdjustMass");}
 		Loop;
 	AdjustMass: //mxd
 		"####" "#" 0 A_SetMass(450);
@@ -160,19 +160,19 @@ class Debris_Statue1 : Debris_Base
 	Spawn:
 		SRB1 A 0 NODELAY A_Jump(256,"Set1","Set2","Set3","Set4","Set5");
 	Set1:
-		SRB1 A 1 {A_SetRoll(roll + frandom(-5.0, 5.0), SPF_INTERPOLATE); A_SetAngle(angle + random(-15, 15)); A_SetPitch(pitch + frandom(-30.25, 30.25)); A_JumpIf(waterlevel == 3, "AdjustMass");}
+		SRB1 A 1 {A_SetRoll(roll + FRandom[Debris](-5.0, 5.0), SPF_INTERPOLATE); A_SetAngle(angle + Random[Debris](-15, 15)); A_SetPitch(pitch + FRandom[Debris](-30.25, 30.25)); A_JumpIf(waterlevel == 3, "AdjustMass");}
 		Loop;
 	Set2:
-		SRB2 A 1 {A_SetRoll(roll - frandom(-5.0, 5.0), SPF_INTERPOLATE); A_SetAngle(angle - random(-15, 15)); A_SetPitch(pitch - frandom(-30.25, 30.25)); A_JumpIf(waterlevel == 3, "AdjustMass");}
+		SRB2 A 1 {A_SetRoll(roll - FRandom[Debris](-5.0, 5.0), SPF_INTERPOLATE); A_SetAngle(angle - Random[Debris](-15, 15)); A_SetPitch(pitch - FRandom[Debris](-30.25, 30.25)); A_JumpIf(waterlevel == 3, "AdjustMass");}
 		Loop;
 	Set3:
-		SRB3 A 1 {A_SetRoll(roll + frandom(-5.0, 5.0), SPF_INTERPOLATE); A_SetAngle(angle + random(-15, 15)); A_SetPitch(pitch + frandom(-30.25, 30.25)); A_JumpIf(waterlevel == 3, "AdjustMass");}
+		SRB3 A 1 {A_SetRoll(roll + FRandom[Debris](-5.0, 5.0), SPF_INTERPOLATE); A_SetAngle(angle + Random[Debris](-15, 15)); A_SetPitch(pitch + FRandom[Debris](-30.25, 30.25)); A_JumpIf(waterlevel == 3, "AdjustMass");}
 		Loop;
 	Set4:
-		SRB4 A 1 {A_SetRoll(roll - frandom(-5.0, 5.0), SPF_INTERPOLATE); A_SetAngle(angle - random(-15, 15)); A_SetPitch(pitch - frandom(-30.25, 30.25)); A_JumpIf(waterlevel == 3, "AdjustMass");}
+		SRB4 A 1 {A_SetRoll(roll - FRandom[Debris](-5.0, 5.0), SPF_INTERPOLATE); A_SetAngle(angle - Random[Debris](-15, 15)); A_SetPitch(pitch - FRandom[Debris](-30.25, 30.25)); A_JumpIf(waterlevel == 3, "AdjustMass");}
 		Loop;
 	Set5:
-		SRB5 A 1 {A_SetRoll(roll + frandom(-5.0, 5.0), SPF_INTERPOLATE); A_SetAngle(angle + random(-15, 15)); A_SetPitch(pitch + frandom(-30.25, 30.25)); A_JumpIf(waterlevel == 3, "AdjustMass");}
+		SRB5 A 1 {A_SetRoll(roll + FRandom[Debris](-5.0, 5.0), SPF_INTERPOLATE); A_SetAngle(angle + Random[Debris](-15, 15)); A_SetPitch(pitch + FRandom[Debris](-30.25, 30.25)); A_JumpIf(waterlevel == 3, "AdjustMass");}
 		Loop;
 	AdjustMass: //mxd
 		"####" "#" 0 A_SetMass(450);
@@ -197,19 +197,19 @@ class Debris_Statue2 : Debris_Statue1
 	Spawn:
 		SRG1 A 0 NODELAY A_Jump(256,"Set1","Set2","Set3","Set4","Set5");
 	Set1:
-		SRG1 A 1 {A_SetRoll(roll + frandom(-5.0, 5.0), SPF_INTERPOLATE); A_SetAngle(angle + random(-15, 15)); A_SetPitch(pitch + frandom(-30.25, 30.25)); A_JumpIf(waterlevel == 3, "AdjustMass");}
+		SRG1 A 1 {A_SetRoll(roll + FRandom[Debris](-5.0, 5.0), SPF_INTERPOLATE); A_SetAngle(angle + Random[Debris](-15, 15)); A_SetPitch(pitch + FRandom[Debris](-30.25, 30.25)); A_JumpIf(waterlevel == 3, "AdjustMass");}
 		Loop;
 	Set2:
-		SRG2 A 1 {A_SetRoll(roll - frandom(-5.0, 5.0), SPF_INTERPOLATE); A_SetAngle(angle - random(-15, 15)); A_SetPitch(pitch - frandom(-30.25, 30.25)); A_JumpIf(waterlevel == 3, "AdjustMass");}
+		SRG2 A 1 {A_SetRoll(roll - FRandom[Debris](-5.0, 5.0), SPF_INTERPOLATE); A_SetAngle(angle - Random[Debris](-15, 15)); A_SetPitch(pitch - FRandom[Debris](-30.25, 30.25)); A_JumpIf(waterlevel == 3, "AdjustMass");}
 		Loop;
 	Set3:
-		SRG3 A 1 {A_SetRoll(roll + frandom(-5.0, 5.0), SPF_INTERPOLATE); A_SetAngle(angle + random(-15, 15)); A_SetPitch(pitch + frandom(-30.25, 30.25)); A_JumpIf(waterlevel == 3, "AdjustMass");}
+		SRG3 A 1 {A_SetRoll(roll + FRandom[Debris](-5.0, 5.0), SPF_INTERPOLATE); A_SetAngle(angle + Random[Debris](-15, 15)); A_SetPitch(pitch + FRandom[Debris](-30.25, 30.25)); A_JumpIf(waterlevel == 3, "AdjustMass");}
 		Loop;
 	Set4:
-		SRG4 A 1 {A_SetRoll(roll - frandom(-5.0, 5.0), SPF_INTERPOLATE); A_SetAngle(angle - random(-15, 15)); A_SetPitch(pitch - frandom(-30.25, 30.25)); A_JumpIf(waterlevel == 3, "AdjustMass");}
+		SRG4 A 1 {A_SetRoll(roll - FRandom[Debris](-5.0, 5.0), SPF_INTERPOLATE); A_SetAngle(angle - Random[Debris](-15, 15)); A_SetPitch(pitch - FRandom[Debris](-30.25, 30.25)); A_JumpIf(waterlevel == 3, "AdjustMass");}
 		Loop;
 	Set5:
-		SRG5 A 1 {A_SetRoll(roll + frandom(-5.0, 5.0), SPF_INTERPOLATE); A_SetAngle(angle + random(-15, 15)); A_SetPitch(pitch + frandom(-30.25, 30.25)); A_JumpIf(waterlevel == 3, "AdjustMass");}
+		SRG5 A 1 {A_SetRoll(roll + FRandom[Debris](-5.0, 5.0), SPF_INTERPOLATE); A_SetAngle(angle + Random[Debris](-15, 15)); A_SetPitch(pitch + FRandom[Debris](-30.25, 30.25)); A_JumpIf(waterlevel == 3, "AdjustMass");}
 		Loop;
 	AdjustMass: //mxd
 		"####" "#" 0 A_SetMass(450);
@@ -234,19 +234,19 @@ class Debris_Statue3 : Debris_Statue1
 	Spawn:
 		SRS1 A 0 NODELAY A_Jump(256,"Set1","Set2","Set3","Set4","Set5");
 	Set1:
-		SRS1 A 1 {A_SetRoll(roll + frandom(-5.0, 5.0), SPF_INTERPOLATE); A_SetAngle(angle + random(-15, 15)); A_SetPitch(pitch + frandom(-30.25, 30.25)); A_JumpIf(waterlevel == 3, "AdjustMass");}
+		SRS1 A 1 {A_SetRoll(roll + FRandom[Debris](-5.0, 5.0), SPF_INTERPOLATE); A_SetAngle(angle + Random[Debris](-15, 15)); A_SetPitch(pitch + FRandom[Debris](-30.25, 30.25)); A_JumpIf(waterlevel == 3, "AdjustMass");}
 		Loop;
 	Set2:
-		SRS2 A 1 {A_SetRoll(roll - frandom(-5.0, 5.0), SPF_INTERPOLATE); A_SetAngle(angle - random(-15, 15)); A_SetPitch(pitch - frandom(-30.25, 30.25)); A_JumpIf(waterlevel == 3, "AdjustMass");}
+		SRS2 A 1 {A_SetRoll(roll - FRandom[Debris](-5.0, 5.0), SPF_INTERPOLATE); A_SetAngle(angle - Random[Debris](-15, 15)); A_SetPitch(pitch - FRandom[Debris](-30.25, 30.25)); A_JumpIf(waterlevel == 3, "AdjustMass");}
 		Loop;
 	Set3:
-		SRS3 A 1 {A_SetRoll(roll + frandom(-5.0, 5.0), SPF_INTERPOLATE); A_SetAngle(angle + random(-15, 15)); A_SetPitch(pitch + frandom(-30.25, 30.25)); A_JumpIf(waterlevel == 3, "AdjustMass");}
+		SRS3 A 1 {A_SetRoll(roll + FRandom[Debris](-5.0, 5.0), SPF_INTERPOLATE); A_SetAngle(angle + Random[Debris](-15, 15)); A_SetPitch(pitch + FRandom[Debris](-30.25, 30.25)); A_JumpIf(waterlevel == 3, "AdjustMass");}
 		Loop;
 	Set4:
-		SRS4 A 1 {A_SetRoll(roll - frandom(-5.0, 5.0), SPF_INTERPOLATE); A_SetAngle(angle - random(-15, 15)); A_SetPitch(pitch - frandom(-30.25, 30.25)); A_JumpIf(waterlevel == 3, "AdjustMass");}
+		SRS4 A 1 {A_SetRoll(roll - FRandom[Debris](-5.0, 5.0), SPF_INTERPOLATE); A_SetAngle(angle - Random[Debris](-15, 15)); A_SetPitch(pitch - FRandom[Debris](-30.25, 30.25)); A_JumpIf(waterlevel == 3, "AdjustMass");}
 		Loop;
 	Set5:
-		SRS5 A 1 {A_SetRoll(roll + frandom(-5.0, 5.0), SPF_INTERPOLATE); A_SetAngle(angle + random(-15, 15)); A_SetPitch(pitch + frandom(-30.25, 30.25)); A_JumpIf(waterlevel == 3, "AdjustMass");}
+		SRS5 A 1 {A_SetRoll(roll + FRandom[Debris](-5.0, 5.0), SPF_INTERPOLATE); A_SetAngle(angle + Random[Debris](-15, 15)); A_SetPitch(pitch + FRandom[Debris](-30.25, 30.25)); A_JumpIf(waterlevel == 3, "AdjustMass");}
 		Loop;
 	AdjustMass: //mxd
 		"####" "#" 0 A_SetMass(450);
@@ -271,19 +271,19 @@ class Debris_Statue4 : Debris_Statue1
 	Spawn:
 		SRW1 A 0 NODELAY A_Jump(256,"Set1","Set2","Set3","Set4","Set5");
 	Set1:
-		SRW1 A 1 {A_SetRoll(roll + frandom(-5.0, 5.0), SPF_INTERPOLATE); A_SetAngle(angle + random(-15, 15)); A_SetPitch(pitch + frandom(-30.25, 30.25)); A_JumpIf(waterlevel == 3, "AdjustMass");}
+		SRW1 A 1 {A_SetRoll(roll + FRandom[Debris](-5.0, 5.0), SPF_INTERPOLATE); A_SetAngle(angle + Random[Debris](-15, 15)); A_SetPitch(pitch + FRandom[Debris](-30.25, 30.25)); A_JumpIf(waterlevel == 3, "AdjustMass");}
 		Loop;
 	Set2:
-		SRW2 A 1 {A_SetRoll(roll - frandom(-5.0, 5.0), SPF_INTERPOLATE); A_SetAngle(angle - random(-15, 15)); A_SetPitch(pitch - frandom(-30.25, 30.25)); A_JumpIf(waterlevel == 3, "AdjustMass");}
+		SRW2 A 1 {A_SetRoll(roll - FRandom[Debris](-5.0, 5.0), SPF_INTERPOLATE); A_SetAngle(angle - Random[Debris](-15, 15)); A_SetPitch(pitch - FRandom[Debris](-30.25, 30.25)); A_JumpIf(waterlevel == 3, "AdjustMass");}
 		Loop;
 	Set3:
-		SRW3 A 1 {A_SetRoll(roll + frandom(-5.0, 5.0), SPF_INTERPOLATE); A_SetAngle(angle + random(-15, 15)); A_SetPitch(pitch + frandom(-30.25, 30.25)); A_JumpIf(waterlevel == 3, "AdjustMass");}
+		SRW3 A 1 {A_SetRoll(roll + FRandom[Debris](-5.0, 5.0), SPF_INTERPOLATE); A_SetAngle(angle + Random[Debris](-15, 15)); A_SetPitch(pitch + FRandom[Debris](-30.25, 30.25)); A_JumpIf(waterlevel == 3, "AdjustMass");}
 		Loop;
 	Set4:
-		SRW4 A 1 {A_SetRoll(roll - frandom(-5.0, 5.0), SPF_INTERPOLATE); A_SetAngle(angle - random(-15, 15)); A_SetPitch(pitch - frandom(-30.25, 30.25)); A_JumpIf(waterlevel == 3, "AdjustMass");}
+		SRW4 A 1 {A_SetRoll(roll - FRandom[Debris](-5.0, 5.0), SPF_INTERPOLATE); A_SetAngle(angle - Random[Debris](-15, 15)); A_SetPitch(pitch - FRandom[Debris](-30.25, 30.25)); A_JumpIf(waterlevel == 3, "AdjustMass");}
 		Loop;
 	Set5:
-		SRW5 A 1 {A_SetRoll(roll + frandom(-5.0, 5.0), SPF_INTERPOLATE); A_SetAngle(angle + random(-15, 15)); A_SetPitch(pitch + frandom(-30.25, 30.25)); A_JumpIf(waterlevel == 3, "AdjustMass");}
+		SRW5 A 1 {A_SetRoll(roll + FRandom[Debris](-5.0, 5.0), SPF_INTERPOLATE); A_SetAngle(angle + Random[Debris](-15, 15)); A_SetPitch(pitch + FRandom[Debris](-30.25, 30.25)); A_JumpIf(waterlevel == 3, "AdjustMass");}
 		Loop;
 	AdjustMass: //mxd
 		"####" "#" 0 A_SetMass(450);
@@ -314,10 +314,10 @@ class Debris_Wood : Debris_Base
 		SCDB A 0 NODELAY A_Jump(256,1,2,3,4);
 		"####" ABCD 0 A_Jump(256,"SpawnLoop","SpawnLoop2");
 	SpawnLoop:
-		"####" "#" 1 {A_SetRoll(roll + frandom(-5.0, 5.0), SPF_INTERPOLATE); A_SetAngle(angle + random(-15, 15)); A_SetPitch(pitch + frandom(-5.25, 5.25)); A_JumpIf(waterlevel == 3, "AdjustMass");}
+		"####" "#" 1 {A_SetRoll(roll + FRandom[Debris](-5.0, 5.0), SPF_INTERPOLATE); A_SetAngle(angle + Random[Debris](-15, 15)); A_SetPitch(pitch + FRandom[Debris](-5.25, 5.25)); A_JumpIf(waterlevel == 3, "AdjustMass");}
 		Loop;
 	SpawnLoop2:
-		"####" "#" 1 {A_SetRoll(roll - frandom(-5.0, 5.0), SPF_INTERPOLATE); A_SetAngle(angle - random(-15, 15)); A_SetPitch(pitch - frandom(-5.25, 5.25)); A_JumpIf(waterlevel == 3, "AdjustMass");}
+		"####" "#" 1 {A_SetRoll(roll - FRandom[Debris](-5.0, 5.0), SPF_INTERPOLATE); A_SetAngle(angle - Random[Debris](-15, 15)); A_SetPitch(pitch - FRandom[Debris](-5.25, 5.25)); A_JumpIf(waterlevel == 3, "AdjustMass");}
 		Loop;
 	AdjustMass: //mxd
 		"####" "#" 0 A_SetMass(400);
@@ -348,10 +348,10 @@ class Debris_ToyHans : Debris_Base
 		TOYD A 0 NODELAY A_Jump(256,1,2,3,4);
 		"####" ABCD 0 A_Jump(256,"SpawnLoop","SpawnLoop2");
 	SpawnLoop:
-		"####" "#" 1 {A_SetRoll(roll + frandom(-5.0, 5.0), SPF_INTERPOLATE); A_SetAngle(angle + random(-15, 15)); A_SetPitch(pitch + frandom(-5.25, 5.25)); A_JumpIf(waterlevel == 3, "AdjustMass");}
+		"####" "#" 1 {A_SetRoll(roll + FRandom[Debris](-5.0, 5.0), SPF_INTERPOLATE); A_SetAngle(angle + Random[Debris](-15, 15)); A_SetPitch(pitch + FRandom[Debris](-5.25, 5.25)); A_JumpIf(waterlevel == 3, "AdjustMass");}
 		Loop;
 	SpawnLoop2:
-		"####" "#" 1 {A_SetRoll(roll - frandom(-5.0, 5.0), SPF_INTERPOLATE); A_SetAngle(angle - random(-15, 15)); A_SetPitch(pitch - frandom(-5.25, 5.25)); A_JumpIf(waterlevel == 3, "AdjustMass");}
+		"####" "#" 1 {A_SetRoll(roll - FRandom[Debris](-5.0, 5.0), SPF_INTERPOLATE); A_SetAngle(angle - Random[Debris](-15, 15)); A_SetPitch(pitch - FRandom[Debris](-5.25, 5.25)); A_JumpIf(waterlevel == 3, "AdjustMass");}
 		Loop;
 	AdjustMass: //mxd
 		"####" "#" 0 A_SetMass(400);
@@ -377,10 +377,10 @@ class Debris_ToyWaff : Debris_ToyHans
 		TOYD E 0 NODELAY A_Jump(256,1,2,3,4);
 		"####" EFGH 0 A_Jump(256,"SpawnLoop","SpawnLoop2");
 	SpawnLoop:
-		"####" "#" 1 {A_SetRoll(roll + frandom(-5.0, 5.0), SPF_INTERPOLATE); A_SetAngle(angle + random(-15, 15)); A_SetPitch(pitch + frandom(-5.25, 5.25)); A_JumpIf(waterlevel == 3, "AdjustMass");}
+		"####" "#" 1 {A_SetRoll(roll + FRandom[Debris](-5.0, 5.0), SPF_INTERPOLATE); A_SetAngle(angle + Random[Debris](-15, 15)); A_SetPitch(pitch + FRandom[Debris](-5.25, 5.25)); A_JumpIf(waterlevel == 3, "AdjustMass");}
 		Loop;
 	SpawnLoop2:
-		"####" "#" 1 {A_SetRoll(roll - frandom(-5.0, 5.0), SPF_INTERPOLATE); A_SetAngle(angle - random(-15, 15)); A_SetPitch(pitch - frandom(-5.25, 5.25)); A_JumpIf(waterlevel == 3, "AdjustMass");}
+		"####" "#" 1 {A_SetRoll(roll - FRandom[Debris](-5.0, 5.0), SPF_INTERPOLATE); A_SetAngle(angle - Random[Debris](-15, 15)); A_SetPitch(pitch - FRandom[Debris](-5.25, 5.25)); A_JumpIf(waterlevel == 3, "AdjustMass");}
 		Loop;
 	AdjustMass: //mxd
 		"####" "#" 0 A_SetMass(400);
@@ -410,10 +410,10 @@ class Debris_ToyRPG1 : Debris_ToyHans
 		TOYD I 0 NODELAY;
 		"####" I 0 A_Jump(256,"SpawnLoop","SpawnLoop2");
 	SpawnLoop:
-		"####" "#" 1 {A_SetRoll(roll + frandom(-5.0, 5.0), SPF_INTERPOLATE); A_SetAngle(angle + random(-15, 15)); A_SetPitch(pitch + frandom(-5.25, 5.25)); A_JumpIf(waterlevel == 3, "AdjustMass");}
+		"####" "#" 1 {A_SetRoll(roll + FRandom[Debris](-5.0, 5.0), SPF_INTERPOLATE); A_SetAngle(angle + Random[Debris](-15, 15)); A_SetPitch(pitch + FRandom[Debris](-5.25, 5.25)); A_JumpIf(waterlevel == 3, "AdjustMass");}
 		Loop;
 	SpawnLoop2:
-		"####" "#" 1 {A_SetRoll(roll - frandom(-5.0, 5.0), SPF_INTERPOLATE); A_SetAngle(angle - random(-15, 15)); A_SetPitch(pitch - frandom(-5.25, 5.25)); A_JumpIf(waterlevel == 3, "AdjustMass");}
+		"####" "#" 1 {A_SetRoll(roll - FRandom[Debris](-5.0, 5.0), SPF_INTERPOLATE); A_SetAngle(angle - Random[Debris](-15, 15)); A_SetPitch(pitch - FRandom[Debris](-5.25, 5.25)); A_JumpIf(waterlevel == 3, "AdjustMass");}
 		Loop;
 	AdjustMass: //mxd
 		"####" "#" 0 A_SetMass(200);
@@ -443,10 +443,10 @@ class Debris_ToyRPG2 : Debris_ToyHans
 		TOYD J 0 NODELAY;
 		"####" J 0 A_Jump(256,"SpawnLoop","SpawnLoop2");
 	SpawnLoop:
-		"####" "#" 1 {A_SetRoll(roll + frandom(-5.0, 5.0), SPF_INTERPOLATE); A_SetAngle(angle + random(-15, 15)); A_SetPitch(pitch + frandom(-5.25, 5.25)); A_JumpIf(waterlevel == 3, "AdjustMass");}
+		"####" "#" 1 {A_SetRoll(roll + FRandom[Debris](-5.0, 5.0), SPF_INTERPOLATE); A_SetAngle(angle + Random[Debris](-15, 15)); A_SetPitch(pitch + FRandom[Debris](-5.25, 5.25)); A_JumpIf(waterlevel == 3, "AdjustMass");}
 		Loop;
 	SpawnLoop2:
-		"####" "#" 1 {A_SetRoll(roll - frandom(-5.0, 5.0), SPF_INTERPOLATE); A_SetAngle(angle - random(-15, 15)); A_SetPitch(pitch - frandom(-5.25, 5.25)); A_JumpIf(waterlevel == 3, "AdjustMass");}
+		"####" "#" 1 {A_SetRoll(roll - FRandom[Debris](-5.0, 5.0), SPF_INTERPOLATE); A_SetAngle(angle - Random[Debris](-15, 15)); A_SetPitch(pitch - FRandom[Debris](-5.25, 5.25)); A_JumpIf(waterlevel == 3, "AdjustMass");}
 		Loop;
 	AdjustMass: //mxd
 		"####" "#" 0 A_SetMass(200);
@@ -476,10 +476,10 @@ class Debris_ToyRPG3 : Debris_ToyHans
 		TOYD K 0 NODELAY;
 		"####" K 0 A_Jump(256,"SpawnLoop","SpawnLoop2");
 	SpawnLoop:
-		"####" "#" 1 {A_SetRoll(roll + frandom(-5.0, 5.0), SPF_INTERPOLATE); A_SetAngle(angle + random(-15, 15)); A_SetPitch(pitch + frandom(-5.25, 5.25)); A_JumpIf(waterlevel == 3, "AdjustMass");}
+		"####" "#" 1 {A_SetRoll(roll + FRandom[Debris](-5.0, 5.0), SPF_INTERPOLATE); A_SetAngle(angle + Random[Debris](-15, 15)); A_SetPitch(pitch + FRandom[Debris](-5.25, 5.25)); A_JumpIf(waterlevel == 3, "AdjustMass");}
 		Loop;
 	SpawnLoop2:
-		"####" "#" 1 {A_SetRoll(roll - frandom(-5.0, 5.0), SPF_INTERPOLATE); A_SetAngle(angle - random(-15, 15)); A_SetPitch(pitch - frandom(-5.25, 5.25)); A_JumpIf(waterlevel == 3, "AdjustMass");}
+		"####" "#" 1 {A_SetRoll(roll - FRandom[Debris](-5.0, 5.0), SPF_INTERPOLATE); A_SetAngle(angle - Random[Debris](-15, 15)); A_SetPitch(pitch - FRandom[Debris](-5.25, 5.25)); A_JumpIf(waterlevel == 3, "AdjustMass");}
 		Loop;
 	AdjustMass: //mxd
 		"####" "#" 0 A_SetMass(200);
@@ -509,10 +509,10 @@ class Debris_Astro : Debris_Base
 		ASTD A 0 NODELAY A_Jump(256,1,2);
 		"####" AB 0 A_Jump(256,"SpawnLoop","SpawnLoop2");
 	SpawnLoop:
-		"####" "#" 1 {A_SetRoll(roll + frandom(-5.0, 5.0), SPF_INTERPOLATE); A_SetAngle(angle + random(-15, 15)); A_SetPitch(pitch + frandom(-5.25, 5.25)); A_JumpIf(waterlevel == 3, "AdjustMass");}
+		"####" "#" 1 {A_SetRoll(roll + FRandom[Debris](-5.0, 5.0), SPF_INTERPOLATE); A_SetAngle(angle + Random[Debris](-15, 15)); A_SetPitch(pitch + FRandom[Debris](-5.25, 5.25)); A_JumpIf(waterlevel == 3, "AdjustMass");}
 		Loop;
 	SpawnLoop2:
-		"####" "#" 1 {A_SetRoll(roll - frandom(-5.0, 5.0), SPF_INTERPOLATE); A_SetAngle(angle - random(-15, 15)); A_SetPitch(pitch - frandom(-5.25, 5.25)); A_JumpIf(waterlevel == 3, "AdjustMass");}
+		"####" "#" 1 {A_SetRoll(roll - FRandom[Debris](-5.0, 5.0), SPF_INTERPOLATE); A_SetAngle(angle - Random[Debris](-15, 15)); A_SetPitch(pitch - FRandom[Debris](-5.25, 5.25)); A_JumpIf(waterlevel == 3, "AdjustMass");}
 		Loop;
 	AdjustMass: //mxd
 		"####" "#" 0 A_SetMass(400);
@@ -815,7 +815,7 @@ class Debris_Flesh : Debris_Base
 		"####" "#" 0 A_StartSound("flesh/stop", CHAN_AUTO, 0, frandom (0.2,0.5), ATTN_NORM);
 		"####" "#" 1 A_SetTics(35*boa_debrislifetime);
 		Death1Wait:
-		"####" "#" 1 A_SetScale(Scale.X * RandomPick(-1, 1), Scale.Y / 2); //let's flat it
+		"####" "#" 1 A_SetScale(Scale.X * RandomPick[Debris](-1, 1), Scale.Y / 2); //let's flat it
 		"####" "#" 1 A_FadeOut(0.1);
 		Wait;
 	}
@@ -835,7 +835,7 @@ class Debris_Flesh2 : Debris_Flesh
 		"####" "#" 0 A_StartSound("flesh/stop", CHAN_AUTO, 0, frandom (0.1,0.3), ATTN_NORM);
 		"####" "#" 1 A_SetTics(35*boa_debrislifetime);
 		Death1Wait:
-		"####" "#" 1 A_SetScale(Scale.X * RandomPick(-1, 1), Scale.Y / 2); //let's flat it
+		"####" "#" 1 A_SetScale(Scale.X * RandomPick[Debris](-1, 1), Scale.Y / 2); //let's flat it
 		"####" "#" 1 A_FadeOut(0.1);
 		Wait;
 	}
@@ -851,7 +851,7 @@ class Debris_FatFlesh : Debris_Flesh
 	States
 	{
 	Spawn:
-		BUTC UVW 2 NODELAY { A_JumpIf(waterlevel == 3, "AdjustMass"); A_SpawnItemEx("NashGore_FlyingBlood", random(-2,2), random(-2,2), random(-2,2), random(1,3), random(1,3), random(1,3), angle, SXF_TRANSFERTRANSLATION|SXF_USEBLOODCOLOR|SXF_TRANSFERROLL); }
+		BUTC UVW 2 NODELAY { A_JumpIf(waterlevel == 3, "AdjustMass"); A_SpawnItemEx("NashGore_FlyingBlood", Random[Debris](-2,2), Random[Debris](-2,2), Random[Debris](-2,2), Random[Debris](1,3), Random[Debris](1,3), Random[Debris](1,3), angle, SXF_TRANSFERTRANSLATION|SXF_USEBLOODCOLOR|SXF_TRANSFERROLL); }
 		Loop;
 	}
 }
@@ -888,7 +888,7 @@ class Debris_Bread : Debris_Base
 		"####" "#" 0 A_StopSound(CHAN_ITEM);
 		"####" "#" 1 A_SetTics(35*boa_debrislifetime);
 		Death1Wait:
-		"####" "#" 1 A_SetScale(Scale.X * RandomPick(-1, 1), Scale.Y / 2); //let's flat it
+		"####" "#" 1 A_SetScale(Scale.X * RandomPick[Debris](-1, 1), Scale.Y / 2); //let's flat it
 		"####" "#" 1 A_FadeOut(0.1);
 		Wait;
 	}
@@ -907,7 +907,7 @@ class Debris_Leaf : Feather //inheritances with Ravens actor
 	States
 	{
 	Spawn:
-		PLNT EFGHIJ 3 NODELAY {A_SetRoll(roll + frandom(-5.0, 5.0), SPF_INTERPOLATE); A_SetAngle(angle + random(-15, 15)); A_SetPitch(pitch + frandom(-5.25, 5.25)); A_JumpIf(waterlevel == 3, "AdjustMass");}
+		PLNT EFGHIJ 3 NODELAY {A_SetRoll(roll + FRandom[Debris](-5.0, 5.0), SPF_INTERPOLATE); A_SetAngle(angle + Random[Debris](-15, 15)); A_SetPitch(pitch + FRandom[Debris](-5.25, 5.25)); A_JumpIf(waterlevel == 3, "AdjustMass");}
 		Loop;
 	AdjustMass: //mxd
 		"####" "#" 0 A_SetMass(350);
@@ -1169,8 +1169,8 @@ class HeadGibsRing: Actor
 	States
 	{
 	Spawn:
-		GIBL A 0 A_SpawnItemEx("HeadGibs",0,0,54,frandom(0.1, 6.0) * RandomPick(-1, 1), frandom(0.1, 6.0) * RandomPick(-1, 1), frandom(0.0, 6.0),user_gibs, NASHGORE_BLOODFLAGS1, 64);
-		GIBL A 0 A_SpawnItemEx("NashGore_FlyingBlood", 0, 0, 54, frandom(0.1, 6.0) * RandomPick(-1, 1), frandom(0.1, 6.0) * RandomPick(-1, 1), frandom(0.0, 6.0), user_gibs, NASHGORE_BLOODFLAGS1, 64);
+		GIBL A 0 A_SpawnItemEx("HeadGibs",0,0,54, FRandom[Gibs](0.1, 6.0) * RandomPick[Debris](-1, 1), FRandom[Debris](0.1, 6.0) * RandomPick[Debris](-1, 1), FRandom[Debris](0.0, 6.0),user_gibs, NASHGORE_BLOODFLAGS1, 64);
+		GIBL A 0 A_SpawnItemEx("NashGore_FlyingBlood", 0, 0, 54, FRandom[Debris](0.1, 6.0) * RandomPick[Debris](-1, 1), FRandom[Debris](0.1, 6.0) * RandomPick[Debris](-1, 1), FRandom[Debris](0.0, 6.0), user_gibs, NASHGORE_BLOODFLAGS1, 64);
 		GIBL A 0 { user_gibs = user_gibs+45; }
 		GIBL A 0 A_JumpIf(user_gibs==360,1);
 		Loop;
@@ -1184,7 +1184,7 @@ class ThroatSpill : HeadGibsRing
 	States
 	{
 	Spawn:
-		GIBL A 0 A_SpawnItemEx("NashGore_FlyingBlood", 0, 0, 24, frandom(0.1, 6.0) * RandomPick(-1, 1), frandom(0.1, 6.0) * RandomPick(-1, 1), frandom(0.0, 6.0), user_gibs, NASHGORE_BLOODFLAGS1, 64);
+		GIBL A 0 A_SpawnItemEx("NashGore_FlyingBlood", 0, 0, 24, FRandom[Debris](0.1, 6.0) * RandomPick[Debris](-1, 1), FRandom[Debris](0.1, 6.0) * RandomPick[Debris](-1, 1), FRandom[Debris](0.0, 6.0), user_gibs, NASHGORE_BLOODFLAGS1, 64);
 		GIBL A 0 { user_gibs = user_gibs+20; }
 		GIBL A 0 A_JumpIf(user_gibs==1080,1);
 		Loop;
@@ -1201,10 +1201,10 @@ class Debris_Bone : Bones_Base //no skull
 		ZBON A 0 NODELAY A_Jump(256,1,2,3,4,5,6,7);
 		"####" ABCDEFG 0 A_Jump(256,"SpawnLoop","SpawnLoop2");
 	SpawnLoop:
-		"####" "#" 1 {A_SetRoll(roll+random(15,30), SPF_INTERPOLATE); A_JumpIf(waterlevel == 3, "AdjustMass");}
+		"####" "#" 1 {A_SetRoll(roll+Random[Debris](15,30), SPF_INTERPOLATE); A_JumpIf(waterlevel == 3, "AdjustMass");}
 		Loop;
 	SpawnLoop2:
-		"####" "#" 1 {A_SetRoll(roll-random(15,30), SPF_INTERPOLATE); A_JumpIf(waterlevel == 3, "AdjustMass");}
+		"####" "#" 1 {A_SetRoll(roll-Random[Debris](15,30), SPF_INTERPOLATE); A_JumpIf(waterlevel == 3, "AdjustMass");}
 		Loop;
 	AdjustMass: //mxd
 		"####" "#" 0 A_SetMass(750);
@@ -1227,7 +1227,7 @@ class Debris_Skull : Bones_Base
 	States
 	{
 	Spawn:
-		ZBON H 1 {A_SetRoll(roll-random(15,30), SPF_INTERPOLATE); A_JumpIf(waterlevel == 3, "AdjustMass");}
+		ZBON H 1 {A_SetRoll(roll-Random[Debris](15,30), SPF_INTERPOLATE); A_JumpIf(waterlevel == 3, "AdjustMass");}
 		Loop;
 	AdjustMass:
 		"####" H 0 A_SetMass(750);
@@ -1256,7 +1256,7 @@ class Debris_FatAxe : Debris_Bone
 	States
 	{
 	Spawn:
-		BRUN X 1 A_SetRoll(roll-random(15,30), SPF_INTERPOLATE);
+		BRUN X 1 A_SetRoll(roll-Random[Debris](15,30), SPF_INTERPOLATE);
 		Loop;
 	Death:
 		BRUN X 0 {A_SetRoll(0); bRollCenter = FALSE; bRollSprite = FALSE; bBounceOnActors = FALSE; bFlatSprite = TRUE;}
@@ -1278,7 +1278,7 @@ class Debris_FatShield : Debris_Bone
 	States
 	{
 	Spawn:
-		BRUN Z 1 A_SetRoll(roll+random(15,30), SPF_INTERPOLATE);
+		BRUN Z 1 A_SetRoll(roll+Random[Debris](15,30), SPF_INTERPOLATE);
 		Loop;
 	Death:
 		BRUN Z 0 {A_SetRoll(0); bRollCenter = FALSE; bRollSprite = FALSE; bBounceOnActors = FALSE; bFlatSprite = TRUE;}
@@ -1298,7 +1298,7 @@ class Debris_FatHelm : Debris_Bone
 	States
 	{
 	Spawn:
-		BRUN Y 1 A_SetRoll(roll-random(15,30), SPF_INTERPOLATE);
+		BRUN Y 1 A_SetRoll(roll-Random[Debris](15,30), SPF_INTERPOLATE);
 		Loop;
 	Death:
 		BRUN Y 0 {A_SetRoll(0); bRollCenter = FALSE; bRollSprite = FALSE; bBounceOnActors = FALSE;}
@@ -1318,7 +1318,7 @@ class Debris_SSHelm : Debris_Bone
 	States
 	{
 	Spawn:
-		STND J 1 A_SetRoll(roll-random(15,30), SPF_INTERPOLATE);
+		STND J 1 A_SetRoll(roll-Random[Debris](15,30), SPF_INTERPOLATE);
 		Loop;
 	Death:
 		STND J 0 {A_SetRoll(0); bRollCenter = FALSE; bRollSprite = FALSE; bBounceOnActors = FALSE;}
@@ -1334,7 +1334,7 @@ class Debris_SSHelm2 : Debris_SSHelm
 	States
 	{
 	Spawn:
-		STND K 1 A_SetRoll(roll-random(15,30), SPF_INTERPOLATE);
+		STND K 1 A_SetRoll(roll-Random[Debris](15,30), SPF_INTERPOLATE);
 		Loop;
 	Death:
 		STND K 0 {A_SetRoll(0); bRollCenter = FALSE; bRollSprite = FALSE; bBounceOnActors = FALSE;}
@@ -1354,7 +1354,7 @@ class Debris_Batton : Debris_Bone
 	States
 	{
 	Spawn:
-		BNAV K 1 A_SetRoll(roll+random(15,30), SPF_INTERPOLATE);
+		BNAV K 1 A_SetRoll(roll+Random[Debris](15,30), SPF_INTERPOLATE);
 		Loop;
 	Death:
 		BNAV K 0 {A_SetRoll(0); bRollCenter = FALSE; bRollSprite = FALSE; bBounceOnActors = FALSE;}
@@ -1370,7 +1370,7 @@ class Debris_Batton2 : Debris_Batton
 	States
 	{
 	Spawn:
-		BNAV K 1 A_SetRoll(roll+random(15,30), SPF_INTERPOLATE);
+		BNAV K 1 A_SetRoll(roll+Random[Debris](15,30), SPF_INTERPOLATE);
 		Loop;
 	Death:
 		BNAV K 0 {A_SetRoll(0); bRollCenter = FALSE; bRollSprite = FALSE; bBounceOnActors = FALSE;}
@@ -1391,7 +1391,7 @@ class HitlerChaingun : Debris_FatAxe
 	States
 	{
 	Spawn:
-		SHI1 X 1 A_SetRoll(roll-random(15,30), SPF_INTERPOLATE);
+		SHI1 X 1 A_SetRoll(roll-Random[Debris](15,30), SPF_INTERPOLATE);
 		Loop;
 	Death:
 		SHI1 X 0 {A_SetRoll(0); bRollCenter = FALSE; bRollSprite = FALSE; bBounceOnActors = FALSE;}
@@ -1411,7 +1411,7 @@ class Debris_Loper : Debris_Skull
 	States
 	{
 	Spawn:
-		LOPR O 1 {A_SetRoll(roll-random(7,15), SPF_INTERPOLATE); A_JumpIf(waterlevel == 3, "AdjustMass");}
+		LOPR O 1 {A_SetRoll(roll-Random[Debris](7,15), SPF_INTERPOLATE); A_JumpIf(waterlevel == 3, "AdjustMass");}
 		Loop;
 	AdjustMass:
 		"####" O 0 A_SetMass(750);
@@ -1444,35 +1444,35 @@ class Debris_Mecha : Debris_MetalJunk
 		DMCH A 0 NODELAY A_Jump(256,"Set1","Set2","Set3","Set4","Set5","Set6","Set7","Set8");
 		DMCH A 0 A_Jump(256,"Set1");
 		Set1:
-		"####" A 0 A_SpawnItemEx("SparkY",0,0,random(32,128),0,random(-1,1),random(-1,1),random(0,360),SXF_ABSOLUTEPOSITION | SXF_CLIENTSIDE,random(157,203));
+		"####" A 0 A_SpawnItemEx("SparkY",0,0, Random[Spark](32,128),0, Random[Spark](-1,1), Random[Spark](-1,1), Random[Spark](0,360),SXF_ABSOLUTEPOSITION | SXF_CLIENTSIDE, Random[Spark](157,203));
 		"####" A 1 {A_SetRoll(roll + 25, SPF_INTERPOLATE); A_JumpIf(waterlevel == 3, "AdjustMass");}
 		Loop;
 		Set2:
-		"####" B 0 A_SpawnItemEx("SparkY",0,0,random(32,128),0,random(-1,1),random(-1,1),random(0,360),SXF_ABSOLUTEPOSITION | SXF_CLIENTSIDE,random(157,203));
+		"####" B 0 A_SpawnItemEx("SparkY",0,0, Random[Spark](32,128),0, Random[Spark](-1,1), Random[Spark](-1,1), Random[Spark](0,360),SXF_ABSOLUTEPOSITION | SXF_CLIENTSIDE, Random[Spark](157,203));
 		"####" B 1 {A_SetRoll(roll - 25, SPF_INTERPOLATE); A_JumpIf(waterlevel == 3, "AdjustMass");}
 		Loop;
 		Set3:
-		"####" C 0 A_SpawnItemEx("SparkR",0,0,random(32,128),0,random(-1,1),random(-1,1),random(0,360),SXF_ABSOLUTEPOSITION | SXF_CLIENTSIDE,random(157,203));
+		"####" C 0 A_SpawnItemEx("SparkR",0,0, Random[Spark](32,128),0, Random[Spark](-1,1), Random[Spark](-1,1), Random[Spark](0,360),SXF_ABSOLUTEPOSITION | SXF_CLIENTSIDE, Random[Spark](157,203));
 		"####" C 1 {A_SetRoll(roll + 30, SPF_INTERPOLATE); A_JumpIf(waterlevel == 3, "AdjustMass");}
 		Loop;
 		Set4:
-		"####" D 0 A_SpawnItemEx("SparkY",0,0,random(32,128),0,random(-1,1),random(-1,1),random(0,360),SXF_ABSOLUTEPOSITION | SXF_CLIENTSIDE,random(157,203));
+		"####" D 0 A_SpawnItemEx("SparkY",0,0, Random[Spark](32,128),0, Random[Spark](-1,1), Random[Spark](-1,1), Random[Spark](0,360),SXF_ABSOLUTEPOSITION | SXF_CLIENTSIDE, Random[Spark](157,203));
 		"####" D 1 {A_SetRoll(roll - 30, SPF_INTERPOLATE); A_JumpIf(waterlevel == 3, "AdjustMass");}
 		Loop;
 		Set5:
-		"####" E 0 A_SpawnItemEx("SparkY",0,0,random(32,128),0,random(-1,1),random(-1,1),random(0,360),SXF_ABSOLUTEPOSITION | SXF_CLIENTSIDE,random(157,203));
+		"####" E 0 A_SpawnItemEx("SparkY",0,0, Random[Spark](32,128),0, Random[Spark](-1,1), Random[Spark](-1,1), Random[Spark](0,360),SXF_ABSOLUTEPOSITION | SXF_CLIENTSIDE, Random[Spark](157,203));
 		"####" E 1 {A_SetRoll(roll + 35, SPF_INTERPOLATE); A_JumpIf(waterlevel == 3, "AdjustMass");}
 		Loop;
 		Set6:
-		"####" F 0 A_SpawnItemEx("SparkR",0,0,random(32,128),0,random(-1,1),random(-1,1),random(0,360),SXF_ABSOLUTEPOSITION | SXF_CLIENTSIDE,random(157,203));
+		"####" F 0 A_SpawnItemEx("SparkR",0,0, Random[Spark](32,128),0, Random[Spark](-1,1), Random[Spark](-1,1), Random[Spark](0,360),SXF_ABSOLUTEPOSITION | SXF_CLIENTSIDE, Random[Spark](157,203));
 		"####" F 1 {A_SetRoll(roll - 35, SPF_INTERPOLATE); A_JumpIf(waterlevel == 3, "AdjustMass");}
 		Loop;
 		Set7:
-		"####" G 0 A_SpawnItemEx("SparkY",0,0,random(32,128),0,random(-1,1),random(-1,1),random(0,360),SXF_ABSOLUTEPOSITION | SXF_CLIENTSIDE,random(157,203));
+		"####" G 0 A_SpawnItemEx("SparkY",0,0, Random[Spark](32,128),0, Random[Spark](-1,1), Random[Spark](-1,1), Random[Spark](0,360),SXF_ABSOLUTEPOSITION | SXF_CLIENTSIDE, Random[Spark](157,203));
 		"####" G 1 {A_SetRoll(roll + 40, SPF_INTERPOLATE); A_JumpIf(waterlevel == 3, "AdjustMass");}
 		Loop;
 		Set8:
-		"####" H 0 A_SpawnItemEx("SparkY",0,0,random(32,128),0,random(-1,1),random(-1,1),random(0,360),SXF_ABSOLUTEPOSITION | SXF_CLIENTSIDE,random(157,203));
+		"####" H 0 A_SpawnItemEx("SparkY",0,0, Random[Spark](32,128),0, Random[Spark](-1,1), Random[Spark](-1,1), Random[Spark](0,360),SXF_ABSOLUTEPOSITION | SXF_CLIENTSIDE, Random[Spark](157,203));
 		"####" H 1 {A_SetRoll(roll - 40, SPF_INTERPOLATE); A_JumpIf(waterlevel == 3, "AdjustMass");}
 		Loop;
 	AdjustMass:
@@ -1590,27 +1590,27 @@ class Debris_AstroSuite : Debris_MetalJunk
 	Spawn:
 		ROB1 P 0 NODELAY A_Jump(256,"Set1","Set2","Set3","Set4","Set5","Set6");
 		Set1:
-		"####" P 0 A_SpawnItemEx("SparkY",0,0,random(32,128),0,random(-1,1),random(-1,1),random(0,360),SXF_ABSOLUTEPOSITION | SXF_CLIENTSIDE,random(157,203));
+		"####" P 0 A_SpawnItemEx("SparkY",0,0, Random[Spark](32,128),0, Random[Spark](-1,1), Random[Spark](-1,1), Random[Spark](0,360),SXF_ABSOLUTEPOSITION | SXF_CLIENTSIDE, Random[Spark](157,203));
 		"####" P 1 {A_SetRoll(roll + 25, SPF_INTERPOLATE); A_JumpIf(waterlevel == 3, "AdjustMass");}
 		Loop;
 		Set2:
-		"####" Q 0 A_SpawnItemEx("SparkY",0,0,random(32,128),0,random(-1,1),random(-1,1),random(0,360),SXF_ABSOLUTEPOSITION | SXF_CLIENTSIDE,random(157,203));
+		"####" Q 0 A_SpawnItemEx("SparkY",0,0, Random[Spark](32,128),0, Random[Spark](-1,1), Random[Spark](-1,1), Random[Spark](0,360),SXF_ABSOLUTEPOSITION | SXF_CLIENTSIDE, Random[Spark](157,203));
 		"####" Q 1 {A_SetRoll(roll - 25, SPF_INTERPOLATE); A_JumpIf(waterlevel == 3, "AdjustMass");}
 		Loop;
 		Set3:
-		"####" R 0 A_SpawnItemEx("SparkR",0,0,random(32,128),0,random(-1,1),random(-1,1),random(0,360),SXF_ABSOLUTEPOSITION | SXF_CLIENTSIDE,random(157,203));
+		"####" R 0 A_SpawnItemEx("SparkR",0,0, Random[Spark](32,128),0, Random[Spark](-1,1), Random[Spark](-1,1), Random[Spark](0,360),SXF_ABSOLUTEPOSITION | SXF_CLIENTSIDE, Random[Spark](157,203));
 		"####" R 1 {A_SetRoll(roll + 30, SPF_INTERPOLATE); A_JumpIf(waterlevel == 3, "AdjustMass");}
 		Loop;
 		Set4:
-		"####" S 0 A_SpawnItemEx("SparkY",0,0,random(32,128),0,random(-1,1),random(-1,1),random(0,360),SXF_ABSOLUTEPOSITION | SXF_CLIENTSIDE,random(157,203));
+		"####" S 0 A_SpawnItemEx("SparkY",0,0, Random[Spark](32,128),0, Random[Spark](-1,1), Random[Spark](-1,1), Random[Spark](0,360),SXF_ABSOLUTEPOSITION | SXF_CLIENTSIDE, Random[Spark](157,203));
 		"####" S 1 {A_SetRoll(roll - 30, SPF_INTERPOLATE); A_JumpIf(waterlevel == 3, "AdjustMass");}
 		Loop;
 		Set5:
-		"####" T 0 A_SpawnItemEx("SparkY",0,0,random(32,128),0,random(-1,1),random(-1,1),random(0,360),SXF_ABSOLUTEPOSITION | SXF_CLIENTSIDE,random(157,203));
+		"####" T 0 A_SpawnItemEx("SparkY",0,0, Random[Spark](32,128),0, Random[Spark](-1,1), Random[Spark](-1,1), Random[Spark](0,360),SXF_ABSOLUTEPOSITION | SXF_CLIENTSIDE, Random[Spark](157,203));
 		"####" T 1 {A_SetRoll(roll + 35, SPF_INTERPOLATE); A_JumpIf(waterlevel == 3, "AdjustMass");}
 		Loop;
 		Set6:
-		"####" U 0 A_SpawnItemEx("SparkR",0,0,random(32,128),0,random(-1,1),random(-1,1),random(0,360),SXF_ABSOLUTEPOSITION | SXF_CLIENTSIDE,random(157,203));
+		"####" U 0 A_SpawnItemEx("SparkR",0,0, Random[Spark](32,128),0, Random[Spark](-1,1), Random[Spark](-1,1), Random[Spark](0,360),SXF_ABSOLUTEPOSITION | SXF_CLIENTSIDE, Random[Spark](157,203));
 		"####" U 1 {A_SetRoll(roll - 35, SPF_INTERPOLATE); A_JumpIf(waterlevel == 3, "AdjustMass");}
 		Loop;
 	AdjustMass:
@@ -1636,27 +1636,27 @@ class Debris_AstroRobot : Debris_AstroSuite
 	Spawn:
 		ROB2 P 0 NODELAY A_Jump(256,"Set1","Set2","Set3","Set4","Set5","Set6");
 		Set1:
-		"####" P 0 A_SpawnItemEx("SparkY",0,0,random(32,128),0,random(-1,1),random(-1,1),random(0,360),SXF_ABSOLUTEPOSITION | SXF_CLIENTSIDE,random(157,203));
+		"####" P 0 A_SpawnItemEx("SparkY",0,0, Random[Spark](32,128),0, Random[Spark](-1,1), Random[Spark](-1,1), Random[Spark](0,360),SXF_ABSOLUTEPOSITION | SXF_CLIENTSIDE, Random[Spark](157,203));
 		"####" P 1 {A_SetRoll(roll + 25, SPF_INTERPOLATE); A_JumpIf(waterlevel == 3, "AdjustMass");}
 		Loop;
 		Set2:
-		"####" Q 0 A_SpawnItemEx("SparkY",0,0,random(32,128),0,random(-1,1),random(-1,1),random(0,360),SXF_ABSOLUTEPOSITION | SXF_CLIENTSIDE,random(157,203));
+		"####" Q 0 A_SpawnItemEx("SparkY",0,0, Random[Spark](32,128),0, Random[Spark](-1,1), Random[Spark](-1,1), Random[Spark](0,360),SXF_ABSOLUTEPOSITION | SXF_CLIENTSIDE, Random[Spark](157,203));
 		"####" Q 1 {A_SetRoll(roll - 25, SPF_INTERPOLATE); A_JumpIf(waterlevel == 3, "AdjustMass");}
 		Loop;
 		Set3:
-		"####" R 0 A_SpawnItemEx("SparkR",0,0,random(32,128),0,random(-1,1),random(-1,1),random(0,360),SXF_ABSOLUTEPOSITION | SXF_CLIENTSIDE,random(157,203));
+		"####" R 0 A_SpawnItemEx("SparkR",0,0, Random[Spark](32,128),0, Random[Spark](-1,1), Random[Spark](-1,1), Random[Spark](0,360),SXF_ABSOLUTEPOSITION | SXF_CLIENTSIDE, Random[Spark](157,203));
 		"####" R 1 {A_SetRoll(roll + 30, SPF_INTERPOLATE); A_JumpIf(waterlevel == 3, "AdjustMass");}
 		Loop;
 		Set4:
-		"####" S 0 A_SpawnItemEx("SparkY",0,0,random(32,128),0,random(-1,1),random(-1,1),random(0,360),SXF_ABSOLUTEPOSITION | SXF_CLIENTSIDE,random(157,203));
+		"####" S 0 A_SpawnItemEx("SparkY",0,0, Random[Spark](32,128),0, Random[Spark](-1,1), Random[Spark](-1,1), Random[Spark](0,360),SXF_ABSOLUTEPOSITION | SXF_CLIENTSIDE, Random[Spark](157,203));
 		"####" S 1 {A_SetRoll(roll - 30, SPF_INTERPOLATE); A_JumpIf(waterlevel == 3, "AdjustMass");}
 		Loop;
 		Set5:
-		"####" T 0 A_SpawnItemEx("SparkY",0,0,random(32,128),0,random(-1,1),random(-1,1),random(0,360),SXF_ABSOLUTEPOSITION | SXF_CLIENTSIDE,random(157,203));
+		"####" T 0 A_SpawnItemEx("SparkY",0,0, Random[Spark](32,128),0, Random[Spark](-1,1), Random[Spark](-1,1), Random[Spark](0,360),SXF_ABSOLUTEPOSITION | SXF_CLIENTSIDE, Random[Spark](157,203));
 		"####" T 1 {A_SetRoll(roll + 35, SPF_INTERPOLATE); A_JumpIf(waterlevel == 3, "AdjustMass");}
 		Loop;
 		Set6:
-		"####" U 0 A_SpawnItemEx("SparkR",0,0,random(32,128),0,random(-1,1),random(-1,1),random(0,360),SXF_ABSOLUTEPOSITION | SXF_CLIENTSIDE,random(157,203));
+		"####" U 0 A_SpawnItemEx("SparkR",0,0, Random[Spark](32,128),0, Random[Spark](-1,1), Random[Spark](-1,1), Random[Spark](0,360),SXF_ABSOLUTEPOSITION | SXF_CLIENTSIDE, Random[Spark](157,203));
 		"####" U 1 {A_SetRoll(roll - 35, SPF_INTERPOLATE); A_JumpIf(waterlevel == 3, "AdjustMass");}
 		Loop;
 	AdjustMass:
@@ -1700,7 +1700,7 @@ class Debris_Tank: Actor
 	{
 	Spawn:
 		BRKP AB 0 NODELAY A_JumpIf(waterlevel == 3, "AdjustMass"); //mxd
-		BRKP AB 2 A_SetScale(Scale.X+frandom(-0.1,0.1),Scale.Y+frandom(-0.1,0.1));
+		BRKP AB 2 A_SetScale(Scale.X+FRandom[Debris](-0.1,0.1),Scale.Y+FRandom[Debris](-0.1,0.1));
 		Loop;
 	AdjustMass: //mxd
 		"####" "#" 0 A_SetMass(500);
@@ -1735,7 +1735,7 @@ class Debris_Tank2 : Debris_Tank
 	{
 	Spawn:
 		MDB1 ABCD 0 NODELAY A_JumpIf(waterlevel == 3, "AdjustMass"); //mxd
-		MDB1 ABCD 2 A_SetScale(Scale.X+frandom(-0.1,0.1),Scale.Y+frandom(-0.1,0.1));
+		MDB1 ABCD 2 A_SetScale(Scale.X+FRandom[Debris](-0.1,0.1),Scale.Y+FRandom[Debris](-0.1,0.1));
 		Loop;
 	AdjustMass: //mxd
 		"####" "#" 0 A_SetMass(500);
@@ -1818,8 +1818,8 @@ class Debris_Vent : SwitchableDecoration
 	Active:
 		TNT1 A 0 A_SpawnItemEx("PowerPlantSmokePuffSmall", 0, 0, 32, 0, 0, 0, 0, 0);
 		TNT1 A 0 A_StartSound("DSMETDST", CHAN_AUTO, 0, 0.5, ATTN_NORM);
-		TNT1 AAAA 0 A_SpawnItemEx("Debris_Trash", 0, random(-32,32), random(0,64), random(-3,3), random(0,2), random(-1,4), 0, SXF_CLIENTSIDE);
-		TNT1 AAAA 0 A_SpawnItemEx("Debris_Trash2", 0, random(-32,32), random(0,64), random(-3,3), random(0,2), random(-1,4), 0, SXF_CLIENTSIDE);
+		TNT1 AAAA 0 A_SpawnItemEx("Debris_Trash", 0, Random[Debris](-32,32), Random[Debris](0,64), Random[Debris](-3,3), Random[Debris](0,2), Random[Debris](-1,4), 0, SXF_CLIENTSIDE);
+		TNT1 AAAA 0 A_SpawnItemEx("Debris_Trash2", 0, Random[Debris](-32,32), Random[Debris](0,64), Random[Debris](-3,3), Random[Debris](0,2), Random[Debris](-1,4), 0, SXF_CLIENTSIDE);
 	Inactive:
 		TNT1 A 350;
 		Wait;
@@ -1838,8 +1838,8 @@ class Debris_Wood2 : Debris_Vent
 	Active:
 		TNT1 A 0 A_SpawnItemEx("PowerPlantSmokePuffSmall", 0, 0, 32, 0, 0, 0, 0, 0); //needed? - Ozy81
 		TNT1 A 0 A_StartSound("WOODBRK", CHAN_AUTO, 0, 0.5, ATTN_NORM);
-		TNT1 AAAA 0 A_SpawnItemEx("Debris_Wood", 0, random(-32,32), random(0,64), random(-3,3), random(0,2), random(-1,4), 0, SXF_CLIENTSIDE);
-		TNT1 AAAA 0 A_SpawnItemEx("Debris_Wood", 0, random(-32,32), random(0,64), random(-3,3), random(0,2), random(-1,4), 0, SXF_CLIENTSIDE);
+		TNT1 AAAA 0 A_SpawnItemEx("Debris_Wood", 0, Random[Debris](-32,32), Random[Debris](0,64), Random[Debris](-3,3), Random[Debris](0,2), Random[Debris](-1,4), 0, SXF_CLIENTSIDE);
+		TNT1 AAAA 0 A_SpawnItemEx("Debris_Wood", 0, Random[Debris](-32,32), Random[Debris](0,64), Random[Debris](-3,3), Random[Debris](0,2), Random[Debris](-1,4), 0, SXF_CLIENTSIDE);
 	Inactive:
 		TNT1 A 350;
 		Wait;

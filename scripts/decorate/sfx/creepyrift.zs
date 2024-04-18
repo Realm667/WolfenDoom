@@ -52,22 +52,22 @@ class CreepyRiftSpawner : SwitchableDecoration
 			Wait;
 		Active:
 			TNT1 A 0 A_StartSound("creepyrift/loop", CHAN_AUTO, CHANF_LOOPING, 1.0, ATTN_NONE);
-			TNT1 A 0 A_SpawnItemEx("DamnedSoulSpawner", 0, 0, 0, 0, 0, 0, random(0,360), FLAGS_CREEPY2, 128);
-			TNT1 A 0 A_SpawnItemEx("DamnedSoulSpawner", 0, 0, 0, 0, 0, 0, random(0,360), FLAGS_CREEPY2, 128);
-			TNT1 A 0 A_SpawnItemEx("DamnedSoulSpawner", 0, 0, 0, 0, 0, 0, random(0,360), FLAGS_CREEPY2, 128);
-			TNT1 A 0 A_SpawnItemEx("DamnedSoulSpawner", 0, 0, 0, 0, 0, 0, random(0,360), FLAGS_CREEPY2, 128);
-			TNT1 A 0 A_SpawnItemEx("DamnedSoulSpawner", 0, 0, 0, 0, 0, 0, random(0,360), FLAGS_CREEPY2, 128);
-			TNT1 A 0 A_SpawnItemEx("DamnedSoulSpawner", 0, 0, 0, 0, 0, 0, random(0,360), FLAGS_CREEPY2, 128);
-			TNT1 A 0 A_SpawnItemEx("DamnedSoulSpawner", 0, 0, 0, 0, 0, 0, random(0,360), FLAGS_CREEPY2, 128);
-			TNT1 A 0 A_SpawnItemEx("DamnedSoulSpawner", 0, 0, 0, 0, 0, 0, random(0,360), FLAGS_CREEPY2, 128);
-			TNT1 A 0 A_SpawnItemEx("CreepyGhost", 0, 0, 0, 0, 0, 0, random(0,360), FLAGS_CREEPY2, 128);
-			TNT1 A 0 A_SpawnItemEx("CreepyGhost", 0, 0, 0, 0, 0, 0, random(0,360), FLAGS_CREEPY2, 128);
-			TNT1 A 0 A_SpawnItemEx("CreepyGhost", 0, 0, 0, 0, 0, 0, random(0,360), FLAGS_CREEPY2, 128);
-			TNT1 A 0 A_SpawnItemEx("CreepyGhost", 0, 0, 0, 0, 0, 0, random(0,360), FLAGS_CREEPY2, 128);
-			TNT1 A 0 A_SpawnItemEx("CreepyGhost", 0, 0, 0, 0, 0, 0, random(0,360), FLAGS_CREEPY2, 128);
-			TNT1 A 0 A_SpawnItemEx("CreepyGhost", 0, 0, 0, 0, 0, 0, random(0,360), FLAGS_CREEPY2, 128);
-			TNT1 A 0 A_SpawnItemEx("CreepyGhost", 0, 0, 0, 0, 0, 0, random(0,360), FLAGS_CREEPY2, 128);
-			TNT1 A 0 A_SpawnItemEx("CreepyGhost", 0, 0, 0, 0, 0, 0, random(0,360), FLAGS_CREEPY2, 128);
+			TNT1 A 0 A_SpawnItemEx("DamnedSoulSpawner", 0, 0, 0, 0, 0, 0, Random[Creepy](0,360), FLAGS_CREEPY2, 128);
+			TNT1 A 0 A_SpawnItemEx("DamnedSoulSpawner", 0, 0, 0, 0, 0, 0, Random[Creepy](0,360), FLAGS_CREEPY2, 128);
+			TNT1 A 0 A_SpawnItemEx("DamnedSoulSpawner", 0, 0, 0, 0, 0, 0, Random[Creepy](0,360), FLAGS_CREEPY2, 128);
+			TNT1 A 0 A_SpawnItemEx("DamnedSoulSpawner", 0, 0, 0, 0, 0, 0, Random[Creepy](0,360), FLAGS_CREEPY2, 128);
+			TNT1 A 0 A_SpawnItemEx("DamnedSoulSpawner", 0, 0, 0, 0, 0, 0, Random[Creepy](0,360), FLAGS_CREEPY2, 128);
+			TNT1 A 0 A_SpawnItemEx("DamnedSoulSpawner", 0, 0, 0, 0, 0, 0, Random[Creepy](0,360), FLAGS_CREEPY2, 128);
+			TNT1 A 0 A_SpawnItemEx("DamnedSoulSpawner", 0, 0, 0, 0, 0, 0, Random[Creepy](0,360), FLAGS_CREEPY2, 128);
+			TNT1 A 0 A_SpawnItemEx("DamnedSoulSpawner", 0, 0, 0, 0, 0, 0, Random[Creepy](0,360), FLAGS_CREEPY2, 128);
+			TNT1 A 0 A_SpawnItemEx("CreepyGhost", 0, 0, 0, 0, 0, 0, Random[Creepy](0,360), FLAGS_CREEPY2, 128);
+			TNT1 A 0 A_SpawnItemEx("CreepyGhost", 0, 0, 0, 0, 0, 0, Random[Creepy](0,360), FLAGS_CREEPY2, 128);
+			TNT1 A 0 A_SpawnItemEx("CreepyGhost", 0, 0, 0, 0, 0, 0, Random[Creepy](0,360), FLAGS_CREEPY2, 128);
+			TNT1 A 0 A_SpawnItemEx("CreepyGhost", 0, 0, 0, 0, 0, 0, Random[Creepy](0,360), FLAGS_CREEPY2, 128);
+			TNT1 A 0 A_SpawnItemEx("CreepyGhost", 0, 0, 0, 0, 0, 0, Random[Creepy](0,360), FLAGS_CREEPY2, 128);
+			TNT1 A 0 A_SpawnItemEx("CreepyGhost", 0, 0, 0, 0, 0, 0, Random[Creepy](0,360), FLAGS_CREEPY2, 128);
+			TNT1 A 0 A_SpawnItemEx("CreepyGhost", 0, 0, 0, 0, 0, 0, Random[Creepy](0,360), FLAGS_CREEPY2, 128);
+			TNT1 A 0 A_SpawnItemEx("CreepyGhost", 0, 0, 0, 0, 0, 0, Random[Creepy](0,360), FLAGS_CREEPY2, 128);
 			SpawnLoop:
 			TNT1 A 0 A_SpawnItemEx("CreepyCloudSpawner", 0, 0, 30, 0, 0, 0, 0, 128);
 			TNT1 A 2 A_Look;
@@ -81,59 +81,59 @@ class CreepyRiftSpawner : SwitchableDecoration
 			TNT1 A 2;
 			TNT1 A 0 A_SpawnItemEx("CreepyCloudSpawner", 0, 0, 30, 0, 0, 0, 0, 128);
 			TNT1 A 0 A_Jump(200, 4);
-			TNT1 A 0 A_SpawnItemEx("CreepyGhost", random(-128, 128), 0, 0, 0, 0, random(1,4), Random(0, 360), FLAGS_CREEPY, 128);
-			TNT1 A 2 A_SpawnItemEx("CreepyGhost", 0, 0, 0, 0, 0, 0, random(0,360), FLAGS_CREEPY2, 128);
+			TNT1 A 0 A_SpawnItemEx("CreepyGhost", Random[Creepy](-128, 128), 0, 0, 0, 0, Random[Creepy](1,4), Random[Creepy](0, 360), FLAGS_CREEPY, 128);
+			TNT1 A 2 A_SpawnItemEx("CreepyGhost", 0, 0, 0, 0, 0, 0, Random[Creepy](0,360), FLAGS_CREEPY2, 128);
 			Goto See;
 			TNT1 A 0 A_Jump(128, 2);
 			TNT1 A 0 A_SpawnItemEx("CreepyCloudSpawner", 0, 0, 30, 0, 0, 0, 0, 128);
 			Goto See;
 			TNT1 A 0 A_SpawnItemEx("CreepyCloudSpawner", 0, 0, 30, 0, 0, 0, 0, 128);
-			TNT1 A 0 A_SpawnItemEx("CreepyGhost", random(-128, 128), 0, 0, 0, 0, random(1,4), Random(0, 360), FLAGS_CREEPY, 128);
-			TNT1 A 0 A_SpawnItemEx("CreepyGhost", random(-128, 128), 0, 0, 0, 0, random(1,4), Random(0, 360), FLAGS_CREEPY, 128);
-			TNT1 A 0 A_SpawnItemEx("CreepyGhost", random(-128, 128), 0, 0, 0, 0, random(1,4), Random(0, 360), FLAGS_CREEPY, 128);
-			TNT1 A 2 A_SpawnItemEx("CreepyGhost", 0, 0, 0, 0, 0, 0, random(0,360), FLAGS_CREEPY2, 128);
+			TNT1 A 0 A_SpawnItemEx("CreepyGhost", Random[Creepy](-128, 128), 0, 0, 0, 0, Random[Creepy](1,4), Random[Creepy](0, 360), FLAGS_CREEPY, 128);
+			TNT1 A 0 A_SpawnItemEx("CreepyGhost", Random[Creepy](-128, 128), 0, 0, 0, 0, Random[Creepy](1,4), Random[Creepy](0, 360), FLAGS_CREEPY, 128);
+			TNT1 A 0 A_SpawnItemEx("CreepyGhost", Random[Creepy](-128, 128), 0, 0, 0, 0, Random[Creepy](1,4), Random[Creepy](0, 360), FLAGS_CREEPY, 128);
+			TNT1 A 2 A_SpawnItemEx("CreepyGhost", 0, 0, 0, 0, 0, 0, Random[Creepy](0,360), FLAGS_CREEPY2, 128);
 			TNT1 A 0 A_SpawnItemEx("CreepyCloudSpawner", 0, 0, 30, 0, 0, 0, 0, 128);
 			TNT1 A 2;
 			TNT1 A 0 A_SpawnItemEx("CreepyCloudSpawner", 0, 0, 30, 0, 0, 0, 0, 128);
-			TNT1 A 0 A_SpawnItemEx("CreepyGhost", random(-128, 128), 0, 0, 0, 0, random(1,4), Random(0, 360), FLAGS_CREEPY, 128);
-			TNT1 A 0 A_SpawnItemEx("CreepyGhost", random(-128, 128), 0, 0, 0, 0, random(1,4), Random(0, 360), FLAGS_CREEPY, 128);
-			TNT1 A 0 A_SpawnItemEx("CreepyGhost", random(-128, 128), 0, 0, 0, 0, random(1,4), Random(0, 360), FLAGS_CREEPY, 128);
-			TNT1 A 2 A_SpawnItemEx("CreepyGhost", 0, 0, 0, 0, 0, 0, random(0,360), FLAGS_CREEPY2, 128);
+			TNT1 A 0 A_SpawnItemEx("CreepyGhost", Random[Creepy](-128, 128), 0, 0, 0, 0, Random[Creepy](1,4), Random[Creepy](0, 360), FLAGS_CREEPY, 128);
+			TNT1 A 0 A_SpawnItemEx("CreepyGhost", Random[Creepy](-128, 128), 0, 0, 0, 0, Random[Creepy](1,4), Random[Creepy](0, 360), FLAGS_CREEPY, 128);
+			TNT1 A 0 A_SpawnItemEx("CreepyGhost", Random[Creepy](-128, 128), 0, 0, 0, 0, Random[Creepy](1,4), Random[Creepy](0, 360), FLAGS_CREEPY, 128);
+			TNT1 A 2 A_SpawnItemEx("CreepyGhost", 0, 0, 0, 0, 0, 0, Random[Creepy](0,360), FLAGS_CREEPY2, 128);
 			TNT1 A 0 A_SpawnItemEx("CreepyCloudSpawner", 0, 0, 30, 0, 0, 0, 0, 128);
 			TNT1 A 2;
 			TNT1 A 0 A_SpawnItemEx("CreepyCloudSpawner", 0, 0, 30, 0, 0, 0, 0, 128);
-			TNT1 A 0 A_SpawnItemEx("CreepyGhost", random(-128, 128), 0, 0, 0, 0, random(1,4), Random(0, 360), FLAGS_CREEPY, 128);
-			TNT1 A 0 A_SpawnItemEx("CreepyGhost", random(-128, 128), 0, 0, 0, 0, random(1,4), Random(0, 360), FLAGS_CREEPY, 128);
-			TNT1 A 0 A_SpawnItemEx("CreepyGhost", random(-128, 128), 0, 0, 0, 0, random(1,4), Random(0, 360), FLAGS_CREEPY, 128);
-			TNT1 A 2 A_SpawnItemEx("CreepyGhost", 0, 0, 0, 0, 0, 0, random(0,360), FLAGS_CREEPY2, 128);
+			TNT1 A 0 A_SpawnItemEx("CreepyGhost", Random[Creepy](-128, 128), 0, 0, 0, 0, Random[Creepy](1,4), Random[Creepy](0, 360), FLAGS_CREEPY, 128);
+			TNT1 A 0 A_SpawnItemEx("CreepyGhost", Random[Creepy](-128, 128), 0, 0, 0, 0, Random[Creepy](1,4), Random[Creepy](0, 360), FLAGS_CREEPY, 128);
+			TNT1 A 0 A_SpawnItemEx("CreepyGhost", Random[Creepy](-128, 128), 0, 0, 0, 0, Random[Creepy](1,4), Random[Creepy](0, 360), FLAGS_CREEPY, 128);
+			TNT1 A 2 A_SpawnItemEx("CreepyGhost", 0, 0, 0, 0, 0, 0, Random[Creepy](0,360), FLAGS_CREEPY2, 128);
 			TNT1 A 0 A_SpawnItemEx("CreepyCloudSpawner", 0, 0, 30, 0, 0, 0, 0, 128);
 			TNT1 A 2;
 			TNT1 A 0 A_SpawnItemEx("CreepyCloudSpawner", 0, 0, 30, 0, 0, 0, 0, 128);
-			TNT1 A 0 A_SpawnItemEx("CreepyGhost", random(-128, 128), 0, 0, 0, 0, random(1,4), Random(0, 360), FLAGS_CREEPY, 128);
-			TNT1 A 0 A_SpawnItemEx("CreepyGhost", random(-128, 128), 0, 0, 0, 0, random(1,4), Random(0, 360), FLAGS_CREEPY, 128);
-			TNT1 A 0 A_SpawnItemEx("CreepyGhost", random(-128, 128), 0, 0, 0, 0, random(1,4), Random(0, 360), FLAGS_CREEPY, 128);
-			TNT1 A 2 A_SpawnItemEx("CreepyGhost", 0, 0, 0, 0, 0, 0, random(0,360), FLAGS_CREEPY2, 128);
+			TNT1 A 0 A_SpawnItemEx("CreepyGhost", Random[Creepy](-128, 128), 0, 0, 0, 0, Random[Creepy](1,4), Random[Creepy](0, 360), FLAGS_CREEPY, 128);
+			TNT1 A 0 A_SpawnItemEx("CreepyGhost", Random[Creepy](-128, 128), 0, 0, 0, 0, Random[Creepy](1,4), Random[Creepy](0, 360), FLAGS_CREEPY, 128);
+			TNT1 A 0 A_SpawnItemEx("CreepyGhost", Random[Creepy](-128, 128), 0, 0, 0, 0, Random[Creepy](1,4), Random[Creepy](0, 360), FLAGS_CREEPY, 128);
+			TNT1 A 2 A_SpawnItemEx("CreepyGhost", 0, 0, 0, 0, 0, 0, Random[Creepy](0,360), FLAGS_CREEPY2, 128);
 			TNT1 A 0 A_SpawnItemEx("CreepyCloudSpawner", 0, 0, 30, 0, 0, 0, 0, 128);
 			TNT1 A 2;
 			TNT1 A 0 A_SpawnItemEx("CreepyCloudSpawner", 0, 0, 30, 0, 0, 0, 0, 128);
-			TNT1 A 0 A_SpawnItemEx("CreepyGhost", random(-128, 128), 0, 0, 0, 0, random(1,4), Random(0, 360), FLAGS_CREEPY, 128);
-			TNT1 A 0 A_SpawnItemEx("CreepyGhost", random(-128, 128), 0, 0, 0, 0, random(1,4), Random(0, 360), FLAGS_CREEPY, 128);
-			TNT1 A 0 A_SpawnItemEx("CreepyGhost", random(-128, 128), 0, 0, 0, 0, random(1,4), Random(0, 360), FLAGS_CREEPY, 128);
-			TNT1 A 2 A_SpawnItemEx("CreepyGhost", 0, 0, 0, 0, 0, 0, random(0,360), FLAGS_CREEPY2, 128);
+			TNT1 A 0 A_SpawnItemEx("CreepyGhost", Random[Creepy](-128, 128), 0, 0, 0, 0, Random[Creepy](1,4), Random[Creepy](0, 360), FLAGS_CREEPY, 128);
+			TNT1 A 0 A_SpawnItemEx("CreepyGhost", Random[Creepy](-128, 128), 0, 0, 0, 0, Random[Creepy](1,4), Random[Creepy](0, 360), FLAGS_CREEPY, 128);
+			TNT1 A 0 A_SpawnItemEx("CreepyGhost", Random[Creepy](-128, 128), 0, 0, 0, 0, Random[Creepy](1,4), Random[Creepy](0, 360), FLAGS_CREEPY, 128);
+			TNT1 A 2 A_SpawnItemEx("CreepyGhost", 0, 0, 0, 0, 0, 0, Random[Creepy](0,360), FLAGS_CREEPY2, 128);
 			TNT1 A 0 A_SpawnItemEx("CreepyCloudSpawner", 0, 0, 30, 0, 0, 0, 0, 128);
 			TNT1 A 2;
 			TNT1 A 0 A_SpawnItemEx("CreepyCloudSpawner", 0, 0, 30, 0, 0, 0, 0, 128);
-			TNT1 A 0 A_SpawnItemEx("CreepyGhost", random(-128, 128), 0, 0, 0, 0, random(1,4), Random(0, 360), FLAGS_CREEPY, 128);
-			TNT1 A 0 A_SpawnItemEx("CreepyGhost", random(-128, 128), 0, 0, 0, 0, random(1,4), Random(0, 360), FLAGS_CREEPY, 128);
-			TNT1 A 0 A_SpawnItemEx("CreepyGhost", random(-128, 128), 0, 0, 0, 0, random(1,4), Random(0, 360), FLAGS_CREEPY, 128);
-			TNT1 A 2 A_SpawnItemEx("CreepyGhost", 0, 0, 0, 0, 0, 0, random(0,360), FLAGS_CREEPY2, 128);
+			TNT1 A 0 A_SpawnItemEx("CreepyGhost", Random[Creepy](-128, 128), 0, 0, 0, 0, Random[Creepy](1,4), Random[Creepy](0, 360), FLAGS_CREEPY, 128);
+			TNT1 A 0 A_SpawnItemEx("CreepyGhost", Random[Creepy](-128, 128), 0, 0, 0, 0, Random[Creepy](1,4), Random[Creepy](0, 360), FLAGS_CREEPY, 128);
+			TNT1 A 0 A_SpawnItemEx("CreepyGhost", Random[Creepy](-128, 128), 0, 0, 0, 0, Random[Creepy](1,4), Random[Creepy](0, 360), FLAGS_CREEPY, 128);
+			TNT1 A 2 A_SpawnItemEx("CreepyGhost", 0, 0, 0, 0, 0, 0, Random[Creepy](0,360), FLAGS_CREEPY2, 128);
 			TNT1 A 0 A_SpawnItemEx("CreepyCloudSpawner", 0, 0, 30, 0, 0, 0, 0, 128);
 			TNT1 A 2;
 			TNT1 A 0 A_SpawnItemEx("CreepyCloudSpawner", 0, 0, 30, 0, 0, 0, 0, 128);
-			TNT1 A 0 A_SpawnItemEx("CreepyGhost", random(-128, 128), 0, 0, 0, 0, random(1,4), Random(0, 360), FLAGS_CREEPY, 128);
-			TNT1 A 0 A_SpawnItemEx("CreepyGhost", random(-128, 128), 0, 0, 0, 0, random(1,4), Random(0, 360), FLAGS_CREEPY, 128);
-			TNT1 A 0 A_SpawnItemEx("CreepyGhost", random(-128, 128), 0, 0, 0, 0, random(1,4), Random(0, 360), FLAGS_CREEPY, 128);
-			TNT1 A 2 A_SpawnItemEx("CreepyGhost", 0, 0, 0, 0, 0, 0, random(0,360), FLAGS_CREEPY2, 128);
+			TNT1 A 0 A_SpawnItemEx("CreepyGhost", Random[Creepy](-128, 128), 0, 0, 0, 0, Random[Creepy](1,4), Random[Creepy](0, 360), FLAGS_CREEPY, 128);
+			TNT1 A 0 A_SpawnItemEx("CreepyGhost", Random[Creepy](-128, 128), 0, 0, 0, 0, Random[Creepy](1,4), Random[Creepy](0, 360), FLAGS_CREEPY, 128);
+			TNT1 A 0 A_SpawnItemEx("CreepyGhost", Random[Creepy](-128, 128), 0, 0, 0, 0, Random[Creepy](1,4), Random[Creepy](0, 360), FLAGS_CREEPY, 128);
+			TNT1 A 2 A_SpawnItemEx("CreepyGhost", 0, 0, 0, 0, 0, 0, Random[Creepy](0,360), FLAGS_CREEPY2, 128);
 			TNT1 A 0 A_SpawnItemEx("CreepyCloudSpawner", 0, 0, 30, 0, 0, 0, 0, 128);
 			TNT1 A 2;
 			Goto See;
@@ -196,7 +196,7 @@ class CreepyCloudSpawner: Actor
 		{
 		Spawn:
 			TNT1 A 0;
-			TNT1 A 1 A_SpawnItemEx("CreepyCloud", 0, 0, 0, random(-4, 4), random(-4, 4), random(-2, 2));
+			TNT1 A 1 A_SpawnItemEx("CreepyCloud", 0, 0, 0, Random[Creepy](-4, 4), Random[Creepy](-4, 4), Random[Creepy](-2, 2));
 			Stop;
 		}
 }
@@ -240,7 +240,7 @@ class DamnedSoulSpawner: Actor
 		Active:
 			TNT1 A 0;
 			TNT1 A 0;
-			TNT1 A 6 A_SpawnItemEx("DamnedSoul", random (-192, 192), 0, 0, 0, 0, random(1,6), random (0, 360), SXF_NOCHECKPOSITION | SXF_CLIENTSIDE, random(64,128));
+			TNT1 A 6 A_SpawnItemEx("DamnedSoul", random (-192, 192), 0, 0, 0, 0, Random[Creepy](1,6), random (0, 360), SXF_NOCHECKPOSITION | SXF_CLIENTSIDE, Random[Creepy](64,128));
 			Loop;
 		Inactive:
 			TNT1 A 1;
@@ -266,7 +266,7 @@ class DamnedSoul : SimpleActor
 	States
 		{
 		Spawn:
-			HADE D 0 NODELAY A_SetScale(Scale.X + frandom(-0.7, 0.3));
+			HADE D 0 NODELAY A_SetScale(Scale.X + FRandom[Scenery](-0.7, 0.3));
 			"####" D 0 A_StartSound ("creepy/moans");
 		FadeIn:
 			"####" D 1 A_SetTranslucent (alpha+0.03, 1);

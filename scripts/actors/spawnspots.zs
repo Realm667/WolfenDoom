@@ -698,8 +698,8 @@ class BatSwarmSpawner : Base
 				if (b)
 				{
 					b.target = target;
-					b.vel.xy = RotateVector((FRandom(-1.0, 1.0), 0), Random(1, 360));
-					b.vel.z = FRandom(-1.0, 1.0);
+					b.vel.xy = RotateVector((FRandom[Bats](-1.0, 1.0), 0), Random[Bats](1, 360));
+					b.vel.z = FRandom[Bats](-1.0, 1.0);
 					count--;
 				}
 

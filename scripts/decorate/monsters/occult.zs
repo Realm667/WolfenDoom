@@ -54,20 +54,20 @@ class BloodSkull : Base
 	{
 	Spawn:
 		SWBS AA 4 A_LookThroughDisguise;
-		TNT1 A 0 A_SpawnItemEx("SkullBloodDrip",random(-2,2),random(-2,2),0,0,0,0,0,0);
+		TNT1 A 0 A_SpawnItemEx("SkullBloodDrip", Random[Occult](-2,2), Random[Occult](-2,2),0,0,0,0,0,0);
 		Loop;
 	See:
 		SWBS A 1 A_Chase;
 		SWBS AAA 1 A_Chase(null,null);
 		SWBS A 1 A_Chase;
 		SWBS AAA 1 A_Chase(null,null);
-		TNT1 A 0 A_SpawnItemEx("SkullBloodDrip",random(0,4),random(-2,2),0,0,0,0,0,0);
+		TNT1 A 0 A_SpawnItemEx("SkullBloodDrip", Random[Occult](0,4), Random[Occult](-2,2),0,0,0,0,0,0);
 		Loop;
 	Missile:
 		SWBS A 2 A_FaceTarget;
 		SWBS B 2 A_SpawnProjectile("BloodSpit",12,0,0,0,0);
 		SWBS BA 2;
-		TNT1 A 0 A_SpawnItemEx("SkullBloodDrip",random(-2,2),random(-2,2),0,0,0,0,0,0);
+		TNT1 A 0 A_SpawnItemEx("SkullBloodDrip", Random[Occult](-2,2), Random[Occult](-2,2),0,0,0,0,0,0);
 		Goto See;
 	Pain:
 		SWBS A 2 A_Pain;
@@ -78,7 +78,7 @@ class BloodSkull : Base
 		SWBS D 5 A_Scream;
 		TNT1 A 0 A_SetTranslucent(0.8,0);
 		SWBS EF 4;
-		"####" AAAAAAAA 0 A_SpawnItemEx("BloodSkullCloud",random(-16,16),random(-16,16),random(-24,24),0,0,0.3,0,128);
+		"####" AAAAAAAA 0 A_SpawnItemEx("BloodSkullCloud", Random[Occult](-16,16), Random[Occult](-16,16), Random[Occult](-24,24),0,0,0.3,0,128);
 		SWBS GH 2;
 		Stop;
 	}
@@ -110,20 +110,20 @@ class ZyklonSkull : BloodSkull
 	{
 	Spawn:
 		ZWBZ AA 4 A_LookThroughDisguise;
-		TNT1 A 0 A_SpawnItemEx("ZSkullBloodDrip",random(-2,2),random(-2,2),0,0,0,0,0,0);
+		TNT1 A 0 A_SpawnItemEx("ZSkullBloodDrip", Random[Occult](-2,2), Random[Occult](-2,2),0,0,0,0,0,0);
 		Loop;
 	See:
 		ZWBZ A 1 A_Chase;
 		ZWBZ AAA 1 A_Chase(null,null);
 		ZWBZ A 1 A_Chase;
 		ZWBZ AAA 1 A_Chase(null,null);
-		TNT1 A 0 A_SpawnItemEx("ZSkullBloodDrip",random(0,4),random(-2,2),0,0,0,0,0,0);
+		TNT1 A 0 A_SpawnItemEx("ZSkullBloodDrip", Random[Occult](0,4), Random[Occult](-2,2),0,0,0,0,0,0);
 		Loop;
 	Missile:
 		ZWBZ A 2 A_FaceTarget;
 		ZWBZ B 2 A_SpawnProjectile("ZBloodSpit",12,0,0,0,0);
 		ZWBZ BA 2;
-		TNT1 A 0 A_SpawnItemEx("ZSkullBloodDrip",random(-2,2),random(-2,2),0,0,0,0,0,0);
+		TNT1 A 0 A_SpawnItemEx("ZSkullBloodDrip", Random[Occult](-2,2), Random[Occult](-2,2),0,0,0,0,0,0);
 		Goto See;
 	Pain:
 		ZWBZ A 2 A_Pain;
@@ -133,7 +133,7 @@ class ZyklonSkull : BloodSkull
 		ZWBZ C 6 A_NoBlocking;
 		ZWBZ D 5 A_Scream;
 		ZWBZ EF 4;
-		"####" AAAAAAAA 0 A_SpawnItemEx("ZyklonZCloud4",random(-4,4),random(-4,4),random(-4,4),0,0,0.3,0);
+		"####" AAAAAAAA 0 A_SpawnItemEx("ZyklonZCloud4", Random[Occult](-4,4), Random[Occult](-4,4), Random[Occult](-4,4),0,0,0.3,0);
 		ZWBZ GH 2;
 		Stop;
 	}
@@ -172,8 +172,8 @@ class WereWaffenSS : WaffenSS
 	Missile:
 		WOFF EF 4 A_FaceTarget;
 		"####" G 0 A_StartSound("nazi/stg44", CHAN_WEAPON, 0, frandom (0.6,0.9), ATTN_NORM);
-		"####" G 2 A_SpawnProjectile("EnemyStGTracer",38,6,random(-4,4));
-		"####" G 0 A_SpawnItemEx("MauserRifleCasing", 8,0,40, random(3,4), random(-1,1), random(2,4), random(-55,-80),SXF_NOCHECKPOSITION);
+		"####" G 2 A_SpawnProjectile("EnemyStGTracer",38,6, Random[Occult](-4,4));
+		"####" G 0 A_SpawnItemEx("MauserRifleCasing", 8,0,40, Random[Occult](3,4), Random[Occult](-1,1), Random[Occult](2,4), Random[Occult](-55,-80),SXF_NOCHECKPOSITION);
 		"####" G 0 {user_count++; if(user_count > 39) {user_count = 0; return ResolveState("Reload");} return ResolveState(null);}
 		"####" F 2 A_MonsterRefire(96,"See");
 		"####" F 0 A_FaceTarget;
@@ -181,7 +181,7 @@ class WereWaffenSS : WaffenSS
 	Reload:
 		WOFF E 0 {bNoPain = TRUE;}
 		"####" E 20 A_StartSound("sten/reload", CHAN_ITEM, 0, frandom (0.6,0.9), ATTN_NORM);
-		"####" E 0 A_SpawnItemEx("MauserRifleCasing", 8,0,40, random(3,4), random(-1,1), random(2,4), random(-55,-80),SXF_NOCHECKPOSITION);
+		"####" E 0 A_SpawnItemEx("MauserRifleCasing", 8,0,40, Random[Occult](3,4), Random[Occult](-1,1), Random[Occult](2,4), Random[Occult](-55,-80),SXF_NOCHECKPOSITION);
 		"####" E 0 {bNoPain = FALSE;}
 		Goto See;
 	Death.Front:
@@ -460,10 +460,10 @@ class NaziGeist : Geist
 		"####" B 1 BRIGHT A_SetTranslucent(1.0);
 		"####" CD 4 BRIGHT A_FaceTarget;
 		"####" A 0 A_Jump(64,3);
-		"####" A 4 BRIGHT {A_SpawnAtGoal("CreepyRaise", random(10,-10), random(10,-10), 32, 0, 0, 0, 0); A_PainAttack("Geist",random(0,360),PAF_NOSKULLATTACK | PAF_NOTARGET,6);}
+		"####" A 4 BRIGHT {A_SpawnAtGoal("CreepyRaise", Random[Occult](10,-10), Random[Occult](10,-10), 32, 0, 0, 0, 0); A_PainAttack("Geist", Random[Occult](0,360),PAF_NOSKULLATTACK | PAF_NOTARGET,6);}
 		"####" A 0 A_Jump(128,3);
-		"####" A 0 {A_SpawnAtGoal("CreepyRaise", random(10,-10), random(10,-10), 32, 0, 0, 0, 0); A_PainAttack("Geist",random(0,360),PAF_NOSKULLATTACK | PAF_NOTARGET,4);}
-		"####" A 4 BRIGHT {A_SpawnAtGoal("CreepyRaise", random(10,-10), random(10,-10), 32, 0, 0, 0, 0); A_PainAttack("Geist",random(0,360),PAF_NOSKULLATTACK | PAF_NOTARGET,2);}
+		"####" A 0 {A_SpawnAtGoal("CreepyRaise", Random[Occult](10,-10), Random[Occult](10,-10), 32, 0, 0, 0, 0); A_PainAttack("Geist", Random[Occult](0,360),PAF_NOSKULLATTACK | PAF_NOTARGET,4);}
+		"####" A 4 BRIGHT {A_SpawnAtGoal("CreepyRaise", Random[Occult](10,-10), Random[Occult](10,-10), 32, 0, 0, 0, 0); A_PainAttack("Geist", Random[Occult](0,360),PAF_NOSKULLATTACK | PAF_NOTARGET,2);}
 		"####" B 3 BRIGHT;
 		"####" BCCCC 1 BRIGHT A_Fadeout(0.1);
 		"####" D 4 BRIGHT;
@@ -480,7 +480,7 @@ class NaziGeist : Geist
 		"####" E 6 A_Scream;
 		"####" F 5;
 		"####" G 4 A_NoBlocking;
-		"####" G 0 A_SpawnItemEx("Stahlhelm",0,8,64,frandom(0.1,-0.1),frandom(0.1,-0.1),frandom(0.1,-0.1),0,SXF_NOCHECKPOSITION);
+		"####" G 0 A_SpawnItemEx("Stahlhelm",0,8,64, FRandom[Occult](0.1,-0.1), FRandom[Occult](0.1,-0.1), FRandom[Occult](0.1,-0.1),0,SXF_NOCHECKPOSITION);
 		Stop;
 	}
 }
@@ -626,15 +626,15 @@ class SSTemplar : Guard
 		"####" F 4 A_FaceTarget;
 		"####" G 0 A_StartSound("sstemplar/shoot", CHAN_6);
 		"####" G 0 {user_count++; if(user_count > 11) {user_count = 0; return ResolveState("Reload");} return ResolveState(null);}
-		"####" G 0 A_SpawnProjectile("EnemyShotgunTracer",48,-8,random(-2,2));
-		"####" G 0 A_SpawnItemEx("ShotgunCasing", 16,0,60, random(3,4), random(-1,1), random(4,6), random(-55,-80),SXF_NOCHECKPOSITION);
+		"####" G 0 A_SpawnProjectile("EnemyShotgunTracer",48,-8, Random[Tracer](-2,2));
+		"####" G 0 A_SpawnItemEx("ShotgunCasing", 16,0,60, Random[Occult](3,4), Random[Occult](-1,1), Random[Occult](4,6), Random[Occult](-55,-80),SXF_NOCHECKPOSITION);
 		"####" G 4 LIGHT("PRIESTF");
 		"####" F 2 A_MonsterRefire(15,"See");
 		"####" F 8 A_FaceTarget;
 		"####" G 0 A_StartSound("sstemplar/shoot", CHAN_7);
 		"####" G 0 {user_count++; if(user_count > 11) {user_count = 0; return ResolveState("Reload");} return ResolveState(null);}
-		"####" G 0 A_SpawnProjectile("EnemyShotgunTracer",48,-8,random(-2,2));
-		"####" G 0 A_SpawnItemEx("ShotgunCasing", 16,0,60, random(3,4), random(-1,1), random(4,6), random(-55,-80),SXF_NOCHECKPOSITION);
+		"####" G 0 A_SpawnProjectile("EnemyShotgunTracer",48,-8, Random[Tracer](-2,2));
+		"####" G 0 A_SpawnItemEx("ShotgunCasing", 16,0,60, Random[Occult](3,4), Random[Occult](-1,1), Random[Occult](4,6), Random[Occult](-55,-80),SXF_NOCHECKPOSITION);
 		"####" G 4 LIGHT("PRIESTF");
 		"####" F 8;
 		Goto See;
@@ -644,9 +644,9 @@ class SSTemplar : Guard
 	Reload: //ozy81
 		SSCT F 0 {bNoPain = TRUE;}
 		"####" F 8 A_StartSound("browning/cock", CHAN_WEAPON, 0, frandom (0.6,0.8), ATTN_NORM);
-		"####" F 0 A_SpawnItemEx("ShotgunCasing", 16,0,60, random(3,4), random(-1,1), random(4,6), random(-55,-80),SXF_NOCHECKPOSITION);
+		"####" F 0 A_SpawnItemEx("ShotgunCasing", 16,0,60, Random[Occult](3,4), Random[Occult](-1,1), Random[Occult](4,6), Random[Occult](-55,-80),SXF_NOCHECKPOSITION);
 		"####" F 8 A_StartSound("browning/cock", CHAN_WEAPON, 0, frandom (0.6,0.8), ATTN_NORM);
-		"####" F 0 A_SpawnItemEx("ShotgunCasing", 12,0,54, random(3,4), random(-1,1), random(4,6), random(55,80),SXF_NOCHECKPOSITION);
+		"####" F 0 A_SpawnItemEx("ShotgunCasing", 12,0,54, Random[Occult](3,4), Random[Occult](-1,1), Random[Occult](4,6), Random[Occult](55,80),SXF_NOCHECKPOSITION);
 		"####" F 0 {bNoPain = FALSE;}
 		Goto See;
 	Death.Rifle:

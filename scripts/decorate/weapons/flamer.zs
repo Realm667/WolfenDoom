@@ -131,7 +131,7 @@ class Pyrolight : NaziWeapon
 			FFTR F 1 Offset(-3,52);
 			FFTR F 1 Offset(-3,53);
 			FFTR F 1 Offset(-3,55);
-			FFTR F 1 Offset(-3,56) A_SpawnItemEx("PyroCasing",-12,8,32,8,random(-2,2),random(0,4),random(55,80),SXF_NOCHECKPOSITION);
+			FFTR F 1 Offset(-3,56) A_SpawnItemEx("PyroCasing",-12,8,32,8, Random[Weapon](-2,2), Random[Weapon](0,4), Random[Weapon](55,80),SXF_NOCHECKPOSITION);
 		ReloadLoop:
 			FFTR B 0 A_TakeInventory(invoker.AmmoType2,1,TIF_NOTAKEINFINITE);
 			FFTR B 0 A_GiveInventory(invoker.AmmoType1);
@@ -232,7 +232,7 @@ class Flamebolt : GrenadeBase
 		Speed 25;
 		Scale 0.1;
 		Alpha 0.9;
-		DamageFunction (Random(1, 4));
+		DamageFunction (Random[WEapon](1, 4));
 		DamageType "Fire";
 		Decal "Scorch";
 		Obituary "$OBPYRO";
@@ -282,14 +282,14 @@ class Flamebolt : GrenadeBase
 	{
 		manager = ParticleManager.GetManager();
 
-		sprite = GetSpriteIndex("FLM" .. Random(1, 4));
+		sprite = GetSpriteIndex("FLM" .. Random[WEapon](1, 4));
 
 		Super.PostBeginPlay();
 	}
 
 	virtual void SpawnSmoke()
 	{
-		Spawn("FlamerSmoke" .. Random(1, 3), pos);
+		Spawn("FlamerSmoke" .. Random[WEapon](1, 3), pos);
 	}
 
 	virtual void SpawnFlame()
@@ -323,7 +323,7 @@ class Flameball : Flamebolt
 				if (manager) { maxsparks = int(maxsparks * manager.particlescaling); }
 				for (int s = 0; s < maxsparks; s++)
 				{
-					A_SpawnItemEx("TracerSpark", random(-32,32), random(-32,32), random(-32,32), random(-2,2), random(-2,2), random(-2,2), random(0,359));
+					A_SpawnItemEx("TracerSpark", Random[WEapon](-32,32), Random[WEapon](-32,32), Random[WEapon](-32,32), Random[WEapon](-2,2), Random[WEapon](-2,2), Random[WEapon](-2,2), Random[WEapon](0,359));
 				}
 
 				A_RadiusGive("HeatShaderControl", radius+64, RGF_PLAYERS | RGF_GIVESELF, 64);
@@ -336,7 +336,7 @@ class Flameball : Flamebolt
 			"####" A 0 {
 				SpawnSmoke();
 				SpawnFlame();
-				if (Random() > 192) { SpawnFlame(); }
+				if (Random[WEapon]() > 192) { SpawnFlame(); }
 			}
 			Loop;
 		Death:
@@ -351,7 +351,7 @@ class Flameball : Flamebolt
 				if (manager) { maxsparks = int(maxsparks * manager.particlescaling); }
 				for (int s = 0; s < maxsparks; s++)
 				{
-					A_SpawnItemEx("TracerSpark", random(-32,32), random(-32,32), random(-32,32), random(-4,4), random(-4,4), random(-4,4), random(0,359));
+					A_SpawnItemEx("TracerSpark", Random[WEapon](-32,32), Random[WEapon](-32,32), Random[WEapon](-32,32), Random[WEapon](-4,4), Random[WEapon](-4,4), Random[WEapon](-4,4), Random[WEapon](0,359));
 				}
 
 				A_Explode(96, 128);
@@ -376,7 +376,7 @@ class Flameball_Neb : Flameball
 			"####" A 0 {
 				for (int t = 0; t < 40; t++)
 				{
-					A_SpawnitemEx("ClusterBomb_Debris", 0, 0, 8, random(2,16), random(2,16), random(2,16), random(0,359), 0, 0);
+					A_SpawnitemEx("ClusterBomb_Debris", 0, 0, 8, Random[WEapon](2,16), Random[WEapon](2,16), Random[WEapon](2,16), Random[WEapon](0,359), 0, 0);
 				}
 			}
 			Goto Super::Death;
@@ -422,8 +422,8 @@ class FlamerSmoke1: ParticleBase
 			return;
 		}
 
-		vel.z = FRandom(0.5, 1.5);
-		vel.xy = RotateVector((Random(0, 1), 0), Random(0, 359));
+		vel.z = FRandom[Weapon](0.5, 1.5);
+		vel.xy = RotateVector((Random[WEapon](0, 1), 0), Random[WEapon](0, 359));
 
 		Super.PostBeginPlay();
 	}

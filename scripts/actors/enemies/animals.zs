@@ -81,7 +81,7 @@ class Rottweiler : Nazi
 			Loop;
 		Melee:
 			"####" EF 2 Fast A_FaceTarget;
-			"####" G 8 Fast A_CustomMeleeAttack(random(1,8)*3,"dog/attack","dog/attack");
+			"####" G 8 Fast A_CustomMeleeAttack(Random[Nazi](1,8)*3,"dog/attack","dog/attack");
 			"####" FE 4 Fast;
 			Goto See;
 		Pain:
@@ -120,7 +120,7 @@ class GermanShepherd : Rottweiler
 			Goto Look;
 		Melee:
 			"####" EF 2 Fast A_FaceTarget;
-			"####" G 8 Fast A_CustomMeleeAttack(random(1,4)*3,"dog/attack","dog/attack");
+			"####" G 8 Fast A_CustomMeleeAttack(Random[Nazi](1,4)*3,"dog/attack","dog/attack");
 			"####" FE 4 Fast;
 			Goto See;
 	}
@@ -143,7 +143,7 @@ class Doberman : Rottweiler
 			Goto Look;
 		Melee:
 			"####" EF 2 Fast A_FaceTarget;
-			"####" G 8 Fast A_CustomMeleeAttack(random(1,6)*3,"dog/attack","dog/attack");
+			"####" G 8 Fast A_CustomMeleeAttack(Random[Nazi](1,6)*3,"dog/attack","dog/attack");
 			"####" FE 4 Fast;
 			Goto See;
 	}
@@ -199,7 +199,7 @@ class BatFamiliar : BatBase
 		Melee:
 			"####" A 3 A_FaceTarget;
 			"####" A 0 A_Jump(64,"Missed");
-			"####" B 3 A_CustomMeleeAttack(Random(1, 4), "batfam/idle", "", "Pest");
+			"####" B 3 A_CustomMeleeAttack(Random[Bat](1, 4), "batfam/idle", "", "Pest");
 			"####" CB 3 A_FaceTarget;
 			Goto See;
 		Missed: //here in order to avoid looping attacks, so the critter is less threatening
@@ -295,7 +295,7 @@ class RatFamiliar : Base
 		Melee:
 			MOUS A 3 A_FaceTarget;
 			"####" A 0 A_Jump(64,"Missed");
-			"####" B 3 A_CustomMeleeAttack(Random(1, 2), "batfam/idle", "", "Pest");
+			"####" B 3 A_CustomMeleeAttack(Random[Bat](1, 2), "batfam/idle", "", "Pest");
 			"####" BB 3 A_FaceTarget;
 			Goto See;
 		Missed: //here in order to avoid looping attacks, so the critter is less threatening
@@ -368,7 +368,7 @@ class BigSpider : Base
 	States
 	{
 		Spawn:
-			GAYS A 0 NODELAY A_SetScale(Scale.X + frandom(-0.1, 0.05));
+			GAYS A 0 NODELAY A_SetScale(Scale.X + FRandom[Scorpion](-0.1, 0.05));
 			Goto Idle;
 		Idle:
 			GAYS A 10 A_LookThroughDisguise();
@@ -378,15 +378,15 @@ class BigSpider : Base
 			"####" AABB 2 A_Chase;
 			"####" B 0 A_StartSound("spider1/walk", CHAN_AUTO, 0, 0.4);
 			"####" CCDD 2 A_Chase;
-			"####" A 0 A_JumpIf(random(1, 24) == 1, "TryJump");
+			"####" A 0 A_JumpIf(Random[Spider](1, 24) == 1, "TryJump");
 			Loop;
 		TryJump:
 			GAYS A 0 A_CheckFloor("Jump"); //don't jump if mid-air
 			Goto See;
 		Jump:
 			GAYS A 0 A_FaceTarget;
-			"####" A 0 ThrustThing((int) (angle*256/360), random(8, 12), 0, 0);
-			"####" A 0 ThrustThingZ(0, random(30, 50), 0, 1);
+			"####" A 0 ThrustThing((int) (angle*256/360), Random[Spider](8, 12), 0, 0);
+			"####" A 0 ThrustThingZ(0, Random[Spider](30, 50), 0, 1);
 			"####" A 0 A_StartSound("spider1/jump", CHAN_AUTO, 0, 0.2);
 			"####" E 15;
 			Goto See;
@@ -439,7 +439,7 @@ class MiniSpider : BigSpider
 	{
 		Melee:
 			GAYS A 4 A_FaceTarget;
-			"####" E 4 A_CustomMeleeAttack(Random(0, 1), "spider1/melee", "", "Pest", TRUE);
+			"####" E 4 A_CustomMeleeAttack(Random[Spider](0, 1), "spider1/melee", "", "Pest", TRUE);
 			"####" E 9 A_FaceTarget;
 			Goto See;
 	}
@@ -462,7 +462,7 @@ class Scorpion : Base
 		Mass 20;
 		Speed 6;
 		Health 20;
-		DamageFunction (random(1,8)); //jumpattacks
+		DamageFunction (Random[Scorpion](1,8)); //jumpattacks
 		MeleeRange 16;
 		MaxTargetRange 112;
 		MaxStepHeight 16;
@@ -494,7 +494,7 @@ class Scorpion : Base
 		Melee:
 			TNT1 A 0 A_FaceTarget;
 			SCRP A 0 A_Jump(64,"Procrastinate");
-			SCRP AB 6 A_CustomMeleeAttack(2*random(1,4),"scorpion/attacks","scorpion/attacks");
+			SCRP AB 6 A_CustomMeleeAttack(2*Random[Scorpion](1,4),"scorpion/attacks","scorpion/attacks");
 			Goto See;
 		Missile:
 			SCRP AB 4 A_FaceTarget;
@@ -506,8 +506,8 @@ class Scorpion : Base
 			TNT1 A 0 A_CheckFloor("Jump"); //don't jump if mid-air
 			Goto See;
 		Jump:
-			TNT1 A 0 ThrustThing((int) (angle*256/360),random(4,6),0,0);
-			SCRP C 15 ThrustThingZ(0,random(30,40),0,1);
+			TNT1 A 0 ThrustThing((int) (angle*256/360),random[Scorpion](4,6),0,0);
+			SCRP C 15 ThrustThingZ(0,random[Scorpion](30,40),0,1);
 			Goto See;
 		Procrastinate:
 			SCRP "#" 35;
@@ -515,7 +515,7 @@ class Scorpion : Base
 			Goto See;
 		Death:
 			TNT1 A 0 A_ScreamAndUnblock;
-			TNT1 AAAAAAAA 0 A_SpawnItemEx("ScorpionChunk",0,0,4,random(-2,2),random(-2,2),random(5,10),random(0,256),0,100);
+			TNT1 AAAAAAAA 0 A_SpawnItemEx("ScorpionChunk",0,0,4,random[Scorpion](-2,2),random[Scorpion](-2,2),random[Scorpion](5,10),random[Scorpion](0,256),0,100);
 			Stop;
 	}
 }
@@ -537,7 +537,7 @@ class ScorpionBig : Base
 		MaxStepHeight 32;
 		MaxDropOffHeight 256;
 		PainChance 235;
-		DamageFunction (2 * random(1,8)); //jumpattacks
+		DamageFunction (2 * Random[Scorpion](1,8)); //jumpattacks
 		Monster;
 		+DONTMORPH
 		+FLOORCLIP
@@ -569,7 +569,7 @@ class ScorpionBig : Base
 			Loop;
 		Melee:
 			TNT1 A 0 A_FaceTarget;
-			SCR2 AB 6 A_CustomMeleeAttack(3*random(1,4),"scorpion/attacks","scorpion/attacks");
+			SCR2 AB 6 A_CustomMeleeAttack(3*Random[Scorpion](1,4),"scorpion/attacks","scorpion/attacks");
 			Goto See;
 		Missile:
 			SCR2 A 0 A_Jump(256,"Spit","Sting","Reach");
@@ -592,8 +592,8 @@ class ScorpionBig : Base
 			TNT1 A 0 A_CheckFloor("Jump"); //don't jump if mid-air
 			Goto See;
 		Jump:
-			TNT1 A 0 ThrustThing((int) (angle*256/360),random(4,6),0,0);
-			TNT1 A 0 ThrustThingZ(0,random(30,40),0,1);
+			TNT1 A 0 ThrustThing((int) (angle*256/360),random[Scorpion](4,6),0,0);
+			TNT1 A 0 ThrustThingZ(0,random[Scorpion](30,40),0,1);
 			SCR2 C 15 A_StartSound("scorpion/fall", CHAN_AUTO, 0, 1.5);
 			Goto See;
 		Pain:
@@ -601,7 +601,7 @@ class ScorpionBig : Base
 			Goto See;
 		Death:
 			TNT1 A 0 A_ScreamAndUnblock;
-			TNT1 AAAAAAAA 0 A_SpawnItemEx("BigScorpionChunk",0,0,4,random(-2,2),random(-2,2),random(5,10),random(0,256),0,100);
+			TNT1 AAAAAAAA 0 A_SpawnItemEx("BigScorpionChunk",0,0,4,random[Scorpion](-2,2),random[Scorpion](-2,2),random[Scorpion](5,10),random[Scorpion](0,256),0,100);
 			Stop;
 	}
 }
@@ -621,7 +621,7 @@ class ScorpionMK : ScorpionBig
 		MeleeRange 64;
 		MaxStepHeight 64;
 		PainChance 195;
-		DamageFunction (3 * random(1,8)); //jumpattacks
+		DamageFunction (3 * Random[Scorpion](1,8)); //jumpattacks
 		Obituary "$SCORPMK"; //but doesn't get applied as expected
 		DamageFactor "Electric", 1.2; //rayden
 		DamageFactor "Fire", 0.0; //himself
@@ -645,7 +645,7 @@ class ScorpionMK : ScorpionBig
 			Loop;
 		Melee:
 			TNT1 A 0 A_FaceTarget;
-			SCRP AB 6 A_CustomMeleeAttack(3*random(1,4),"scorpion/attacks","scorpion/attacks");
+			SCRP AB 6 A_CustomMeleeAttack(3* Random[Scorpion](1,4),"scorpion/attacks","scorpion/attacks");
 			Goto See;
 		Missile:
 			SCRP A 0 A_Jump(256,"Flame","Harpoon","Harpoon","Reach"); //more chances for harpoon, doesn't spit instead flames
@@ -656,7 +656,7 @@ class ScorpionMK : ScorpionBig
 		Harpoon: //probably require distinct attack to trigger proper obituary
 			SCRP AB 4 A_FaceTarget;
 			SCRP B 0 A_StartSound("scorpion/mk", CHAN_ITEM, 0, 1.5);
-			SCRP B 4 A_SpawnProjectile("Harpoon",48,0,frandom(-2,2),CMF_AIMDIRECTION);
+			SCRP B 4 A_SpawnProjectile("Harpoon",48,0, FRandom[Scorpion](-2,2),CMF_AIMDIRECTION);
 			Goto See;
 		Reach:
 			SCRP A 0 A_JumpIfCloser(224,2);
@@ -669,8 +669,8 @@ class ScorpionMK : ScorpionBig
 			TNT1 A 0 A_CheckFloor("Jump"); //don't jump if mid-air
 			Goto See;
 		Jump:
-			TNT1 A 0 ThrustThing((int) (angle*256/360),random(4,6),0,0);
-			TNT1 A 0 ThrustThingZ(0,random(60,80),0,1);
+			TNT1 A 0 ThrustThing((int) (angle*256/360), Random[Scorpion](4,6),0,0);
+			TNT1 A 0 ThrustThingZ(0, Random[Scorpion](60,80),0,1);
 			SCRP C 15 A_StartSound("scorpion/fall", CHAN_AUTO, 0, 1.5);
 			Goto See;
 		Pain:
@@ -678,7 +678,7 @@ class ScorpionMK : ScorpionBig
 			Goto See;
 		Death:
 			TNT1 A 0 A_ScreamAndUnblock;
-			TNT1 AAAAAAAA 0 A_SpawnItemEx("MKScorpionChunk",0,0,4,random(-2,2),random(-2,2),random(5,10),random(0,256),0,100);
+			TNT1 AAAAAAAA 0 A_SpawnItemEx("MKScorpionChunk",0,0,4, Random[Scorpion](-2,2), Random[Scorpion](-2,2), Random[Scorpion](5,10), Random[Scorpion](0,256),0,100);
 			Stop;
 	}
 }
@@ -699,7 +699,7 @@ class Shark : Base
 		Mass 120;
 		Speed 2.5;
 		FloatSpeed 1;
-		DamageFunction (random(1,4)*3);
+		DamageFunction (Random[Shark](1,4)*3);
 		Monster;
 		-CASTSPRITESHADOW  //needed for shadows
 		-CANPUSHWALLS
@@ -751,16 +751,16 @@ class Shark : Base
 			Loop;
 		Missile:
 			"####" A 10;
-			"####" A 8 A_JumpAttack(20, frandom(0.5, 0.75), JAF_PRECISE | JAF_INTERCEPT);
+			"####" A 8 A_JumpAttack(20, FRandom[Shark](0.5, 0.75), JAF_PRECISE | JAF_INTERCEPT);
 			"####" A 0 A_Jump(256, "See");
 		Melee:
 			"####" A 10 A_FaceTarget;
-			"####" F 8 A_CustomMeleeAttack(random(1,5)*5,"Chomp","Swipe");
+			"####" F 8 A_CustomMeleeAttack(Random[Shark](1,5)*5,"Chomp","Swipe");
 			"####" A 10;
 			"####" A 0 A_Jump(256, "See");
 		Death:
 			"####" A 0 A_Scream;
-			"####" AAAAAAAA 0 A_SpawnProjectile("Gibs1",random(20,40),0,random(0,360),CMF_AIMDIRECTION|CMF_BADPITCH,random(-100,100));
+			"####" AAAAAAAA 0 A_SpawnProjectile("Gibs1", Random[Shark](20,40),0, Random[Shark](0,360),CMF_AIMDIRECTION|CMF_BADPITCH,random[Shark](-100,100));
 			Stop;
 	}
 }
@@ -782,7 +782,7 @@ class LaserShark : Shark
 			Goto Look;
 		Missile:
 			"####" BC 10 A_FaceTarget(0, 0, FAF_MIDDLE);
-			"####" EEEEEEEEEEEEEEE 1 A_FireLaser(Random(0, 1), "tesla/loop", 12, 0, 0.8);
+			"####" EEEEEEEEEEEEEEE 1 A_FireLaser(Random[Shark](0, 1), "tesla/loop", 12, 0, 0.8);
 			"####" B 2 A_StopLaser;
 			"####" B 2 A_FaceTarget;
 			"####" A 0 A_Jump(256, "See");

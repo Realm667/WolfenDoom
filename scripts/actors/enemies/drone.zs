@@ -74,7 +74,7 @@ Class ProtoDrone : Nazi //ozy81
 			"####" A 0
 			{
 				A_LookEx(LOF_NOSEESOUND);
-				if (Random(0, 2) == 0) { PlayActiveSound(); }
+				if (Random[Drone](0, 2) == 0) { PlayActiveSound(); }
 			}
 			Loop;
 		Melee:
@@ -85,10 +85,10 @@ Class ProtoDrone : Nazi //ozy81
 				A_StopLaser();
 			}
 			"####" B 0 A_StartSound("astrochaingun/fire", CHAN_WEAPON);
-			"####" CDE 8 LIGHT("PROTOFIRE") A_SpawnProjectile("EnemyProtoTracer",Scale.X*2,Scale.Y*-16,random(-12,12));
+			"####" CDE 8 LIGHT("PROTOFIRE") A_SpawnProjectile("EnemyProtoTracer",Scale.X*2,Scale.Y*-16,random[Drone](-12,12));
 			"####" B 5 A_FaceTarget();
 			"####" B 0 A_StartSound("astrochaingun/fire", CHAN_WEAPON);
-			"####" CDE 8 LIGHT("PROTOFIRE") A_SpawnProjectile("EnemyProtoTracer",Scale.X*2,Scale.Y*-16,random(-12,12));
+			"####" CDE 8 LIGHT("PROTOFIRE") A_SpawnProjectile("EnemyProtoTracer",Scale.X*2,Scale.Y*-16,random[Drone](-12,12));
 			Goto See;
 		Melee2:
 			"####" N 5
@@ -99,14 +99,14 @@ Class ProtoDrone : Nazi //ozy81
 			"####" N 0 A_Jump(128,2);
 			"####" N 1 ThrustThing(int(Angle*256/360-192), 8, 1, 0);
 			"####" N 0 A_StartSound("chaingun/fire", CHAN_WEAPON);
-			"####" FGHI 2 LIGHT("NAZIFIRE") A_SpawnProjectile("EnemyPistolTracer",Scale.X*2,Scale.Y*16,random(-24,24));
-			"####" I 0 A_SpawnItemEx("Casing9mm", Scale.X*2, Scale.Y*16, random(-2,2), RandomPick(-3, 3), random(-1,1), random(2,4), random(-55,-80),SXF_NOCHECKPOSITION);
+			"####" FGHI 2 LIGHT("NAZIFIRE") A_SpawnProjectile("EnemyPistolTracer",Scale.X*2,Scale.Y*16,random[Drone](-24,24));
+			"####" I 0 A_SpawnItemEx("Casing9mm", Scale.X*2, Scale.Y*16, Random[Drone](-2,2), RandomPick[Drone](-3, 3), Random[Drone](-1,1), Random[Drone](2,4), Random[Drone](-55,-80),SXF_NOCHECKPOSITION);
 			"####" N 5 A_FaceTarget();
 			"####" N 0 A_Jump(128,2);
 			"####" N 1 ThrustThing(int(Angle*256/360-192), 8, 1, 0);
 			"####" N 0 A_StartSound("chaingun/fire", CHAN_WEAPON);
-			"####" FGHI 2 LIGHT("NAZIFIRE") A_SpawnProjectile("EnemyPistolTracer",Scale.X*2,Scale.Y*16,random(-24,24));
-			"####" I 0 A_SpawnItemEx("Casing9mm", Scale.X*2, Scale.Y*16, random(-2,2), RandomPick(-3, 3), random(-1,1), random(2,4), random(-55,-80),SXF_NOCHECKPOSITION);
+			"####" FGHI 2 LIGHT("NAZIFIRE") A_SpawnProjectile("EnemyPistolTracer",Scale.X*2,Scale.Y*16,random[Drone](-24,24));
+			"####" I 0 A_SpawnItemEx("Casing9mm", Scale.X*2, Scale.Y*16, Random[Drone](-2,2), RandomPick[Drone](-3, 3), Random[Drone](-1,1), Random[Drone](2,4), Random[Drone](-55,-80),SXF_NOCHECKPOSITION);
 			Goto See;
 		Missile:
 			PROT A 10 {
@@ -139,9 +139,9 @@ Class ProtoDrone : Nazi //ozy81
 				A_SpawnItemEx("ProtoExplosion_Medium", 0, 0, 48);
 				A_NoBlocking();
 			}
-			"####" TTTTTTTTTTTT 0 A_SpawnItemEx("Debris_MetalJunk", random(0,8), random(0,16), random(0,48), random(1,3), random(1,3), random(1,3), random(0,360), SXF_CLIENTSIDE);
-			"####" TTTTTTTTTTTT 0 A_SpawnItemEx("Debris_MetalJunk", random(8,16), random(16,32), random(48,64), random(1,3), random(1,3), random(1,3), random(0,360), SXF_CLIENTSIDE);
-			"####" TTTTTTTTTTTT 0 A_SpawnItemEx("Debris_MetalJunk", random(16,32), random(32,48), random(64,80), random(1,3), random(1,3), random(1,3), random(0,360), SXF_CLIENTSIDE);
+			"####" TTTTTTTTTTTT 0 A_SpawnItemEx("Debris_MetalJunk", Random[Debris](0,8), Random[Debris](0,16), Random[Debris](0,48), Random[Debris](1,3), Random[Debris](1,3), Random[Debris](1,3), Random[Debris](0,360), SXF_CLIENTSIDE);
+			"####" TTTTTTTTTTTT 0 A_SpawnItemEx("Debris_MetalJunk", Random[Debris](8,16), Random[Debris](16,32), Random[Debris](48,64), Random[Debris](1,3), Random[Debris](1,3), Random[Debris](1,3), Random[Debris](0,360), SXF_CLIENTSIDE);
+			"####" TTTTTTTTTTTT 0 A_SpawnItemEx("Debris_MetalJunk", Random[Debris](16,32), Random[Debris](32,48), Random[Debris](64,80), Random[Debris](1,3), Random[Debris](1,3), Random[Debris](1,3), Random[Debris](0,360), SXF_CLIENTSIDE);
 			"####" U 3;
 			Stop;
 	}

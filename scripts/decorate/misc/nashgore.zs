@@ -93,9 +93,9 @@ class NashGore_Blood : Blood replaces Blood
 	Spawn:
 		TNT1 A 0 NODELAY A_SpawnItem("NashGore_DoomBlood", 0, 0, 0, 1);
 	SpawnDone:
-		TNT1 A 0 A_SpawnItemEx("NashGore_FlyingBlood", 0, 0, 0, frandom(0.1, 6.0) * RandomPick(-1, 1), frandom(0.1, 6.0) * RandomPick(-1, 1), frandom(0.0, 6.0), 0, NASHGORE_BLOODFLAGS1, 64);
-		TNT1 AA 0 A_SpawnItemEx("NashGore_SplatMaker", 0, 0, 0, frandom(-5, 5), frandom(-5, 5), frandom(0, 5), random(0, 360), NASHGORE_BLOODFLAGS2);
-		TNT1 AA 4 A_SpawnItemEx("NashGore_BloodSplasher", 0, 0, 0, frandom(-2.0, 2.0), frandom(-2.0, 2.0), frandom(1.0, 2.0), random(0, 360), NASHGORE_BLOODFLAGS1, 128);
+		TNT1 A 0 A_SpawnItemEx("NashGore_FlyingBlood", 0, 0, 0, FRandom[Gore](0.1, 6.0) * RandomPick[Gore](-1, 1), FRandom[Gore](0.1, 6.0) * RandomPick[Gore](-1, 1), FRandom[Gore](0.0, 6.0), 0, NASHGORE_BLOODFLAGS1, 64);
+		TNT1 AA 0 A_SpawnItemEx("NashGore_SplatMaker", 0, 0, 0, FRandom[Gore](-5, 5), FRandom[Gore](-5, 5), FRandom[Gore](0, 5), Random[Gore](0, 360), NASHGORE_BLOODFLAGS2);
+		TNT1 AA 4 A_SpawnItemEx("NashGore_BloodSplasher", 0, 0, 0, FRandom[Gore](-2.0, 2.0), FRandom[Gore](-2.0, 2.0), FRandom[Gore](1.0, 2.0), Random[Gore](0, 360), NASHGORE_BLOODFLAGS1, 128);
 		Stop;
 	}
 }
@@ -144,8 +144,8 @@ class NashGore_FlyingBlood : NashGore_BloodBase
 			TNT1 A 0 A_StartSound("bloodsplat");
 			TNT1 A 0 A_SpawnItem("NashGore_BloodSplash", 0, 0, 0, 1);
 		BloodSplasher:
-			TNT1 A 0 A_SpawnItemEx("NashGore_BloodSpot", 0, 0, 0, 0, 0, 0, frandom(0, 360), 7, 128);
-			TNT1 AAAAA 1 A_SpawnItemEx("NashGore_BloodSplasher", 0, 0, 0, frandom(-2.0, 2.0), frandom(-2.0, 2.0), frandom(1.0, 2.0), random(0, 360), NASHGORE_BLOODFLAGS1, 150);
+			TNT1 A 0 A_SpawnItemEx("NashGore_BloodSpot", 0, 0, 0, 0, 0, 0, FRandom[Gore](0, 360), 7, 128);
+			TNT1 AAAAA 1 A_SpawnItemEx("NashGore_BloodSplasher", 0, 0, 0, FRandom[Gore](-2.0, 2.0), FRandom[Gore](-2.0, 2.0), FRandom[Gore](1.0, 2.0), Random[Gore](0, 360), NASHGORE_BLOODFLAGS1, 150);
 			Stop;
 	}
 
@@ -197,7 +197,7 @@ class NashGore_BloodSplasher : NashGore_BloodBase
 		Loop;
 	Crash:
 		TNT1 A 0 A_SpawnItem("NashGore_BloodSplash", 0, 0, 0, 1);
-		TNT1 A 0 A_SpawnItemEx("NashGore_BloodSpot", 0, 0, 0, 0, 0, 0, random(0, 360), NASHGORE_BLOODFLAGS3, 200);
+		TNT1 A 0 A_SpawnItemEx("NashGore_BloodSpot", 0, 0, 0, 0, 0, 0, Random[Gore](0, 360), NASHGORE_BLOODFLAGS3, 200);
 		Stop;
 	}
 }
@@ -327,9 +327,9 @@ class ZombieBlood : NashGore_Blood
 	Spawn:
 		TNT1 A 0 NODELAY A_SpawnItem("Zombie_DoomBlood", 0, 0, 0, 1);
 	SpawnDone:
-		TNT1 A 0 A_SpawnItemEx("Zombie_FlyingBlood", 0, 0, 0, frandom(0.1, 6.0) * RandomPick(-1, 1), frandom(0.1, 6.0) * RandomPick(-1, 1), frandom(0.0, 6.0), 0, NASHGORE_BLOODFLAGS1, 64);
-		TNT1 AA 0 A_SpawnItemEx("Zombie_SplatMaker", 0, 0, 0, frandom(-5, 5), frandom(-5, 5), frandom(0, 5), random(0, 360), NASHGORE_BLOODFLAGS2);
-		TNT1 AA 4 A_SpawnItemEx("Zombie_BloodSplasher", 0, 0, 0, frandom(-2.0, 2.0), frandom(-2.0, 2.0), frandom(1.0, 2.0), random(0, 360), NASHGORE_BLOODFLAGS1, 128);
+		TNT1 A 0 A_SpawnItemEx("Zombie_FlyingBlood", 0, 0, 0, FRandom[Gore](0.1, 6.0) * RandomPick[Gore](-1, 1), FRandom[Gore](0.1, 6.0) * RandomPick[Gore](-1, 1), FRandom[Gore](0.0, 6.0), 0, NASHGORE_BLOODFLAGS1, 64);
+		TNT1 AA 0 A_SpawnItemEx("Zombie_SplatMaker", 0, 0, 0, FRandom[Gore](-5, 5), FRandom[Gore](-5, 5), FRandom[Gore](0, 5), Random[Gore](0, 360), NASHGORE_BLOODFLAGS2);
+		TNT1 AA 4 A_SpawnItemEx("Zombie_BloodSplasher", 0, 0, 0, FRandom[Gore](-2.0, 2.0), FRandom[Gore](-2.0, 2.0), FRandom[Gore](1.0, 2.0), Random[Gore](0, 360), NASHGORE_BLOODFLAGS1, 128);
 		Stop;
 	}
 }
@@ -375,8 +375,8 @@ class Zombie_FlyingBlood : NashGore_FlyingBlood
 			TNT1 A 0 A_StartSound("bloodsplat");
 			TNT1 A 0 A_SpawnItem("Zombie_BloodSplash", 0, 0, 0, 1);
 		BloodSplasher:
-			TNT1 A 0 A_SpawnItemEx("Zombie_BloodSpot", 0, 0, 0, 0, 0, 0, frandom(0, 360), 7, 128);
-			TNT1 AAAAA 1 A_SpawnItemEx("Zombie_BloodSplasher", 0, 0, 0, frandom(-2.0, 2.0), frandom(-2.0, 2.0), frandom(1.0, 2.0), random(0, 360), NASHGORE_BLOODFLAGS1, 150);
+			TNT1 A 0 A_SpawnItemEx("Zombie_BloodSpot", 0, 0, 0, 0, 0, 0, FRandom[Gore](0, 360), 7, 128);
+			TNT1 AAAAA 1 A_SpawnItemEx("Zombie_BloodSplasher", 0, 0, 0, FRandom[Gore](-2.0, 2.0), FRandom[Gore](-2.0, 2.0), FRandom[Gore](1.0, 2.0), Random[Gore](0, 360), NASHGORE_BLOODFLAGS1, 150);
 			Stop;
 	}
 }
@@ -408,7 +408,7 @@ class Zombie_BloodSplasher : NashGore_BloodSplasher
 		Loop;
 	Crash:
 		TNT1 A 0 A_SpawnItem("Zombie_BloodSplash", 0, 0, 0, 1);
-		TNT1 A 0 A_SpawnItemEx("Zombie_BloodSpot", 0, 0, 0, 0, 0, 0, random(0, 360), NASHGORE_BLOODFLAGS3, 200);
+		TNT1 A 0 A_SpawnItemEx("Zombie_BloodSpot", 0, 0, 0, 0, 0, 0, Random[Gore](0, 360), NASHGORE_BLOODFLAGS3, 200);
 		Stop;
 	}
 }
@@ -426,19 +426,19 @@ class Zombie_BloodSpot : NashGore_BloodSpot
 		TNT1 A 0 A_SpawnItem("Zombie_BloodSplash", 0, 0, 0, 1);
 		TNT1 A 0 A_Jump(256, "BloodSpot1", "BloodSpot2", "BloodSpot3", "BloodSpot4");
 	BloodSpot1:
-		ZSPT AEI 1 A_SetTics(random(24,35));
+		ZSPT AEI 1 A_SetTics(Random[Gore](24,35));
 		"####" M 0 A_SetTics(35*boa_bloodlifetime);
 		"####" "#" 0 A_Jump(256, "FadeOut");
 	BloodSpot2:
-		ZSPT BFJ 1 A_SetTics(random(24,35));
+		ZSPT BFJ 1 A_SetTics(Random[Gore](24,35));
 		"####" N 0 A_SetTics(35*boa_bloodlifetime);
 		"####" "#" 0 A_Jump(256, "FadeOut");
 	BloodSpot3:
-		ZSPT CGK 1 A_SetTics(random(24,35));
+		ZSPT CGK 1 A_SetTics(Random[Gore](24,35));
 		"####" O 0 A_SetTics(35*boa_bloodlifetime);
 		"####" "#" 0 A_Jump(256, "FadeOut");
 	BloodSpot4:
-		ZSPT DHL 1 A_SetTics(random(24,35));
+		ZSPT DHL 1 A_SetTics(Random[Gore](24,35));
 		"####" P 0 A_SetTics(35*boa_bloodlifetime);
 		"####" "#" 0 A_Jump(256, "FadeOut");
 	FadeOut:

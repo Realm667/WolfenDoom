@@ -39,8 +39,8 @@ class ScreenLabelItem : Thinker
 
 	override void PostBeginPlay()
 	{
-		animationinterval = Random(1, 8);
-		interval = Random(1, 105);
+		animationinterval = Random[ScreenLabel](1, 8);
+		interval = Random[ScreenLabel](1, 105);
 
 		Super.PostBeginPlay();
 	}
@@ -67,7 +67,7 @@ class ScreenLabelItem : Thinker
 			if (!mo) { Destroy(); }
 			else
 			{
-				if (!animationinterval) { animationinterval = Random(1, 8); } //  Wait between 1 and 8 seconds before glinting
+				if (!animationinterval) { animationinterval = Random[ScreenLabel](1, 8); } //  Wait between 1 and 8 seconds before glinting
 				int frame = ((mo.GetAge() + interval) % (35 * animationinterval)) / 3;
 				switch (frame)
 				{

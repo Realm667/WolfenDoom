@@ -124,7 +124,7 @@ class PlacedMine : Mine
 				Spawn("KD_HL2SmokeGenerator", pos);
 				Spawn("KD_HL2SparkGenerator", pos);
 
-				for (int i = 0; i < 20; ++i) { A_SpawnItemEx("ClusterBomb_Debris", 0, 0, 8, random(2,16), random(2,16), random(2,16), random(0,359), 0, 0); }
+				for (int i = 0; i < 20; ++i) { A_SpawnItemEx("ClusterBomb_Debris", 0, 0, 8, Random[Debris](2,16), Random[Debris](2,16), Random[Debris](2,16), Random[Debris](0,359), 0, 0); }
 
 				Radius_Quake(10,10,0,16,0);
 			}
@@ -183,12 +183,12 @@ class UnderwaterMine : Mine
 		TNT1 A 0 A_SpawnItemEx("GeneralExplosion_Medium",0,0,64);
 		UWMI H 12 A_Scream;
 	Shock:
-		UWMI H 0 A_SpawnProjectile("Bubble",random(64,76),0,user_theta,2);
+		UWMI H 0 A_SpawnProjectile("Bubble",random[Mine](64,76),0,user_theta,2);
 		"####" H 0 { user_theta = user_theta+20; }
 		"####" H 0 A_JumpIf(user_theta==360,1);
 		Loop;
 		"####" H 1 A_RemoveTarget(RMVF_EVERYTHING, "UnderwaterMineChain");
-		UWMI A 0 A_SetScale(Scale.X * RandomPick(-1, 1), Scale.Y);
+		UWMI A 0 A_SetScale(Scale.X * RandomPick[Boom](-1, 1), Scale.Y);
 		"####" ABCDE 6;
 		"####" F -1;
 		Stop;

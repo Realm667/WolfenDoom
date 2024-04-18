@@ -220,7 +220,7 @@ class PanzerRocket : GrenadeBase
 	{
 	Spawn:
 		MNSS A 1 BRIGHT LIGHT("BOAFLMW2") NODELAY A_StartSound("panzer/fly", CHAN_VOICE, CHANF_LOOPING, 1.0);
-		MNSS A 1 BRIGHT LIGHT("BOAFLMW2") A_SpawnItemEx("RocketFlame",random(-1,1),0,random(-1,1));
+		MNSS A 1 BRIGHT LIGHT("BOAFLMW2") A_SpawnItemEx("RocketFlame", Random[Weapon](-1,1),0, Random[Weapon](-1,1));
 		Wait;
 	Death:
 		EXP1 A 0 A_SpawnGroundSplash;
@@ -228,7 +228,7 @@ class PanzerRocket : GrenadeBase
 		EXP1 A 0 A_StopSound(CHAN_VOICE);
 		EXP1 A 0 A_StartSound("panzer/explode", CHAN_VOICE, 0, 1.0, ATTN_NORM);
 		EXP1 A 0 { A_Explode(192); A_SpawnItemEx("ZScorch"); } //if we define fulldamagedistance on A_Explode, damage STARTS from that value and not INSIDE it
-		TNT1 AAAAAAAAAAAAAAAAAAAAAAAAAAA 0 A_SpawnItemEx("TracerSpark_Longlive", 0, 0, 0, random(-5,5), random(-5,5), random(-5,5), random(0,359)); //T667 improvements
+		TNT1 AAAAAAAAAAAAAAAAAAAAAAAAAAA 0 A_SpawnItemEx("TracerSpark_Longlive", 0, 0, 0, Random[Weapon](-5,5), Random[Weapon](-5,5), Random[Weapon](-5,5), Random[Weapon](0,359)); //T667 improvements
 		TNT1 A 0 A_SpawnItemEx("PanzerNuke",0,0,0,0,0,0,0,SXF_TRANSFERPOINTERS|SXF_NOCHECKPOSITION);
 		TNT1 A 8 A_SpawnItemEx("GeneralExplosion_Large",56,0,32);
 		EXP1 A 2 BRIGHT LIGHT("BOAFLMW2") A_Quake(9,15,0,1024,"");
@@ -244,7 +244,7 @@ class EnemyPanzerRocket : PanzerRocket
 	DamageType "Rocket2";
 	Speed 20;
 	FastSpeed 25;
-	DamageFunction (random(35,55));
+	DamageFunction (Random[Weapon](35,55));
 	}
 	States
 	{
@@ -254,7 +254,7 @@ class EnemyPanzerRocket : PanzerRocket
 		EXP1 A 0 A_StopSound(CHAN_VOICE);
 		EXP1 A 0 A_StartSound("panzer/explode", CHAN_VOICE, 0, 1.0, ATTN_NORM);
 		EXP1 A 0 { A_Explode(0, 192, 0, TRUE, 320); A_SpawnItemEx("ZScorch"); } //this is different so panzerguards doesn't die if they shot right down their feet
-		TNT1 AAAAAAAAAAAAAAAAAAAAAAAAAAA 0 A_SpawnItemEx("TracerSpark_Longlive", 0, 0, 0, random(-5,5), random(-5,5), random(-5,5), random(0,359)); //T667 improvements
+		TNT1 AAAAAAAAAAAAAAAAAAAAAAAAAAA 0 A_SpawnItemEx("TracerSpark_Longlive", 0, 0, 0, Random[Weapon](-5,5), Random[Weapon](-5,5), Random[Weapon](-5,5), Random[Weapon](0,359)); //T667 improvements
 		TNT1 A 0 A_SpawnItemEx("PanzerNuke",0,0,0,0,0,0,0,SXF_TRANSFERPOINTERS|SXF_NOCHECKPOSITION);
 		TNT1 A 8 A_SpawnItemEx("GeneralExplosion_NazisL",56,0,32);
 		EXP1 A 2 BRIGHT LIGHT("BOAFLMW2") A_Quake(9,15,0,1024,"");
@@ -263,8 +263,8 @@ class EnemyPanzerRocket : PanzerRocket
 	}
 }
 
-class BabyEnemyPanzerRocket : EnemyPanzerRocket	{ Default { Speed 15; FastSpeed 20; DamageFunction (random(25,40)); } }
-class HardEnemyPanzerRocket : EnemyPanzerRocket	{ Default { Speed 25; FastSpeed 30; DamageFunction (random(45,65)); } }
+class BabyEnemyPanzerRocket : EnemyPanzerRocket	{ Default { Speed 15; FastSpeed 20; DamageFunction (Random[Weapon](25,40)); } }
+class HardEnemyPanzerRocket : EnemyPanzerRocket	{ Default { Speed 25; FastSpeed 30; DamageFunction (Random[Weapon](45,65)); } }
 
 class PanzerBoom : EnemyPanzerRocket
 {
@@ -281,7 +281,7 @@ class PanzerBoom : EnemyPanzerRocket
 		EXP1 A 0 A_StopSound(CHAN_VOICE);
 		EXP1 A 0 A_StartSound("panzer/explode", CHAN_VOICE, 0, 1.0, ATTN_NORM);
 		EXP1 A 0 A_Explode(0, 144, 0, TRUE, 256);
-		TNT1 AAAAAAAAAAAAAAAAAAAAAAAAAAA 0 A_SpawnItemEx("TracerSpark_Longlive", 0, 0, 0, random(-5,5), random(-5,5), random(-5,5), random(0,359)); //T667 improvements
+		TNT1 AAAAAAAAAAAAAAAAAAAAAAAAAAA 0 A_SpawnItemEx("TracerSpark_Longlive", 0, 0, 0, Random[Weapon](-5,5), Random[Weapon](-5,5), Random[Weapon](-5,5), Random[Weapon](0,359)); //T667 improvements
 		TNT1 A 0 A_SpawnItemEx("PanzerNuke",0,0,0,0,0,0,0,SXF_TRANSFERPOINTERS|SXF_NOCHECKPOSITION);
 		TNT1 A 8 A_SpawnItemEx("GeneralExplosion_Large",56,0,32);
 		EXP1 A 2 BRIGHT LIGHT("BOAFLMW2") A_Quake(9,15,0,1024,"");

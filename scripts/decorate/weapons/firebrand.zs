@@ -90,7 +90,7 @@ class SwordPuff: Actor
 		TNT1 A 1;
 		Stop;
 	Crash:
-		"####" AAAA 0 A_SpawnItemEx("TracerSpark", 0, 0, 0, random(-2,1), random(-2,1), random(-2,1), random(0,359)); //T667 improvements
+		"####" AAAA 0 A_SpawnItemEx("TracerSpark", 0, 0, 0, Random[Spark](-2,1), Random[Spark](-2,1), Random[Spark](-2,1), Random[Spark](0,359)); //T667 improvements
 		"####" A 1 A_AlertMonsters;
 		Stop;
 	}

@@ -403,7 +403,7 @@ class Chandelier1Switchable : LightBaseARGs
 	Active:
 		MDLA A 0 {bDormant = FALSE;}
 	Spawn:
-		MDLA A 0 NODELAY A_StartSound("FIRE_SMALL", CHAN_BODY, CHANF_LOOPING, frandom(0.2,0.4) - args[0]);
+		MDLA A 0 NODELAY A_StartSound("FIRE_SMALL", CHAN_BODY, CHANF_LOOPING, FRandom[Scenery](0.2,0.4) - args[0]);
 	ActiveFlames: //ozy. let's apply these nice flames on candles first - coords be damned
 		MDLA A 0 {
 		A_SpawnItemEx("Flame_Tall3d", Scale.X*1, 	Scale.Y*33, 	Scale.X+Scale.Y*14, 0, 0, 0, 0, SXF_SETMASTER | SXF_CLIENTSIDE, 0, tid);
@@ -436,7 +436,7 @@ class Chandelier2Switchable : Chandelier1Switchable
 	Active:
 		MDLA A 0 {bDormant = FALSE;}
 	Spawn:
-		MDLA A 0 NODELAY A_StartSound("FIRE_SMALL", CHAN_BODY, CHANF_LOOPING, frandom(0.2,0.4) - args[0]);
+		MDLA A 0 NODELAY A_StartSound("FIRE_SMALL", CHAN_BODY, CHANF_LOOPING, FRandom[Scenery](0.2,0.4) - args[0]);
 	ActiveFlames:
 		MDLA A 0 {
 		A_SpawnItemEx("Flame_Normal3d", Scale.X*0, Scale.Y*26, 	Scale.X+Scale.Y*10, 0, 0, 0, 0, SXF_SETMASTER | SXF_CLIENTSIDE, 0, tid);
@@ -488,7 +488,7 @@ class Chandelier1SwitchableNH : LightBaseARGs2
 	Active:
 		MDLA A 0 {bDormant = FALSE;}
 	Spawn:
-		MDLA A 0 NODELAY A_StartSound("FIRE_SMALL", CHAN_BODY, CHANF_LOOPING, frandom(0.2,0.4) - args[0]);
+		MDLA A 0 NODELAY A_StartSound("FIRE_SMALL", CHAN_BODY, CHANF_LOOPING, FRandom[Scenery](0.2,0.4) - args[0]);
 	ActiveFlames: //ozy. let's apply these nice flames on candles first - coords be damned
 		MDLA A 0 {
 		A_SpawnItemEx("Flame_Tall3d", Scale.X*1, 	Scale.Y*33, 	Scale.X+Scale.Y*14, 0, 0, 0, 0, SXF_SETMASTER | SXF_CLIENTSIDE, 0, tid);
@@ -521,7 +521,7 @@ class Chandelier2SwitchableNH : Chandelier1SwitchableNH
 	Active:
 		MDLA A 0 {bDormant = FALSE;}
 	Spawn:
-		MDLA A 0 NODELAY A_StartSound("FIRE_SMALL", CHAN_BODY, CHANF_LOOPING, frandom(0.2,0.4) - args[0]);
+		MDLA A 0 NODELAY A_StartSound("FIRE_SMALL", CHAN_BODY, CHANF_LOOPING, FRandom[Scenery](0.2,0.4) - args[0]);
 	ActiveFlames:
 		MDLA A 0 {
 		A_SpawnItemEx("Flame_Normal3d", Scale.X*0, Scale.Y*26, 	Scale.X+Scale.Y*10, 0, 0, 0, 0, SXF_SETMASTER | SXF_CLIENTSIDE, 0, tid);
@@ -849,7 +849,7 @@ class Flame_Normal3d : SceneryBase
 	{
 	Spawn:
 		TNT1 A 0 A_Jump(235,2); //cindeeeeeeeeeeeeeerz! Yes, I love them - ozy
-		TNT1 A 0 { CinderSpawner.SpawnCinder(self, p: (0,0,frandom(0,2))); }
+		TNT1 A 0 { CinderSpawner.SpawnCinder(self, p: (0,0, FRandom[Cinder](0,2))); }
 		TNT1 A 0 A_Jump(128,"Flames2","Flames3","Flames4");
 		3DFR ABCDEFGHIJ 2 LIGHT ("3DFLAME_N");
 		Loop;
@@ -875,7 +875,7 @@ class Flame_Short3d : Flame_Normal3d
 	{
 	Spawn:
 		TNT1 A 0 A_Jump(250,2);
-		TNT1 A 0 { CinderSpawner.SpawnCinder(self, p: (0,0,frandom(0,2))); }
+		TNT1 A 0 { CinderSpawner.SpawnCinder(self, p: (0,0, FRandom[Cinder](0,2))); }
 		TNT1 A 0 A_Jump(128,"Flames2","Flames3","Flames4");
 		3DFR ABCDEFGHIJ 2 LIGHT ("3DFLAME_S");
 		Loop;
@@ -901,7 +901,7 @@ class Flame_Tall3d : Flame_Normal3d
 	{
 	Spawn:
 		TNT1 A 0 A_Jump(215,2);
-		TNT1 A 0 { CinderSpawner.SpawnCinder(self, p: (0,0,frandom(0,2))); }
+		TNT1 A 0 { CinderSpawner.SpawnCinder(self, p: (0,0, FRandom[Cinder](0,2))); }
 		TNT1 A 0 A_Jump(128,"Flames2","Flames3","Flames4");
 		3DFR ABCDEFGHIJ 2 LIGHT ("3DFLAME_T");
 		Loop;
@@ -927,7 +927,7 @@ class Flame_Lamp3d : Flame_Normal3d
 	{
 	Spawn:
 		TNT1 A 0 A_Jump(250,2);
-		TNT1 A 0 { CinderSpawner.SpawnCinder(self, p: (0,0,frandom(0,2))); }
+		TNT1 A 0 { CinderSpawner.SpawnCinder(self, p: (0,0, FRandom[Cinder](0,2))); }
 		TNT1 A 0 A_Jump(128,"Flames2","Flames3","Flames4");
 		3DFR ABCDEFGHIJ 2 LIGHT ("3DFLAME_L");
 		Loop;
@@ -1530,9 +1530,9 @@ class LightBulb : SceneryBase
 		Stop;
 	Death:
 		TNT1 A 0 A_UnSetSolid;
-		"####" AAAA 0 A_SpawnItemEx("Debris_GlassShard_Small", 0, 0, 0, random(1,3), random(1,3), random(1,3), random(0,360), SXF_CLIENTSIDE);
+		"####" AAAA 0 A_SpawnItemEx("Debris_GlassShard_Small", 0, 0, 0, Random[Debris](1,3), Random[Debris](1,3), Random[Debris](1,3), Random[Debris](0,360), SXF_CLIENTSIDE);
 		"####" A 0 A_StartSound("GLASS5");
-		MDLA CCCCCC 3 A_SpawnItemEx("SparkB", 0, 0, 0, 0, frandom(-1.0,1.0), frandom(-1.0,1.0), random(0,360), SXF_CLIENTSIDE);
+		MDLA CCCCCC 3 A_SpawnItemEx("SparkB", 0, 0, 0, 0, FRandom[Spark](-1.0,1.0), FRandom[Spark](-1.0,1.0), Random[Spark](0,360), SXF_CLIENTSIDE);
 		MDLA C -1;
 		Stop;
 	}
@@ -1860,7 +1860,7 @@ class TableLightS : TableLightM
 	Spawn:
 		TLIT B 0 NODELAY {
 		if (args[0] ==0 | args[0] >=6)
-			{ frame = RandomPick(1, 3, 4, 5);} // For frame numbers, 0 = A, 1 = B, 2 = C, etc...  So this picks frame B, D, E, or F.
+			{ frame = RandomPick[Scenery](1, 3, 4, 5);} // For frame numbers, 0 = A, 1 = B, 2 = C, etc...  So this picks frame B, D, E, or F.
 		if (args[0] ==1)
 			{ frame = 1; }
 		if (args[0] ==2)
@@ -1892,7 +1892,7 @@ class TableLightS2 : TableLightM
 	Spawn:
 		TLIT K 0 NODELAY {
 		if (args[0] ==0 | args[0] >=5)
-			{ frame = RandomPick(10, 11, 12, 13);} // This picks frame K, L, M, or N.
+			{ frame = RandomPick[Scenery](10, 11, 12, 13);} // This picks frame K, L, M, or N.
 		if (args[0] ==1)
 			{ frame = 10; }
 		if (args[0] ==2)
@@ -2112,7 +2112,7 @@ class FBowlFire: SceneryBase
 	States
 	{
 	Spawn:
-		TNT1 A 0 { CinderSpawner.SpawnCinder(self, p: (0,0,frandom(0,2))); }
+		TNT1 A 0 { CinderSpawner.SpawnCinder(self, p: (0,0, FRandom[Cinder](0,2))); }
 		"####" A 16 A_Explode(8, (int) (Radius), 0, FALSE, (int) (Radius));
 		Loop;
 	}
@@ -2185,7 +2185,7 @@ class FBarrel1 : SceneryBase
 			return ResolveState("On");
 		}
 	On:
-		"####" A 0 { CinderSpawner.SpawnCinder(self, p: (0,0,frandom(48,54))); }
+		"####" A 0 { CinderSpawner.SpawnCinder(self, p: (0,0, FRandom[Cinder](48,54))); }
 	FireLoop:
 		"####" ABCD 3 LIGHT("BOAEBRL1");
 		Loop;

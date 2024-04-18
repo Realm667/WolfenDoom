@@ -179,7 +179,7 @@ class CKBaseEnemy : Actor
 
 		if (initial)
 		{
-			if (stunframes > 1) { frame += Random(0, stunframes - 1); } // Pick a random frame within set range
+			if (stunframes > 1) { frame += Random[Keen](0, stunframes - 1); } // Pick a random frame within set range
 			stuncounter = stuntime;
 			A_SetSize(Default.Radius, 0);
 			bNotAutoAimed = true;
@@ -244,7 +244,7 @@ class CKBaseEnemy : Actor
 				if (angle != AngleTo(target)) { angle = AngleTo(target); }
 				else { angle += 180; }
 			}
-			else { angle = Random(0, 359); }
+			else { angle = Random[Keen](0, 359); }
 
 			counter = 0;
 		}
@@ -590,7 +590,7 @@ class KeenPlayer : PlayerPawn
 			KEEN H 10
 			{
 				A_PlayerScream();
-				vel = (FRandom(-5.0, 5.0), FRandom(-5.0, 5.0), FRandom(1.0, 5.0));
+				vel = (FRandom[Keen](-5.0, 5.0), FRandom[Keen](-5.0, 5.0), FRandom[Keen](1.0, 5.0));
 			}
 			KEEN I 70;
 			KEEN I -1;
@@ -1189,7 +1189,7 @@ class CKPlatformFalling : CKPlatform
 	override void PostBeginPlay()
 	{
 		SpawnPoint = pos;
-		synchoffset = Random(0, 19);
+		synchoffset = Random[Keen](0, 19);
 
 		Super.PostBeginPlay();
 	}
@@ -1562,7 +1562,7 @@ class CKLick : CKBaseEnemy
 
 			if (blocked)
 			{
-				angle += Random(-115, -245);
+				angle += Random[Keen](-115, -245);
 				turncounter = 35;
 			}
 
@@ -1656,7 +1656,7 @@ class CKWormouth : CKBaseEnemy
 
 		double dist = target ? Distance2D(target) - target.radius * 1.4 : 0;
 
-		if (target && dist < 128 && Random() < 6) // Range is ~48 in original code
+		if (target && dist < 128 && Random[Keen]() < 6) // Range is ~48 in original code
 		{
 			vel.xy *= 0;
 			SetStateLabel("LookAround");
@@ -1671,7 +1671,7 @@ class CKWormouth : CKBaseEnemy
 
 		bool blocked = BlockingLine || BlockingMobj || !CheckMove(pos.xy + RotateVector((Speed, 0), angle), PCM_DROPOFF | PCM_NOLINES);
 
-		if (blocked) { angle += Random(-115, -245); }
+		if (blocked) { angle += Random[Keen](-115, -245); }
 
 		vel.xy = RotateVector((Speed, 0), angle);
 	}
@@ -1852,7 +1852,7 @@ class CKSmirky : CKBaseEnemy
 			if (!blocked && goal && IsVisible(goal, true)) { angle = AngleTo(goal); }
 			else
 			{
-				angle = Random(0, 359);
+				angle = Random[Keen](0, 359);
 				teleportcounter++;
 			}
 
@@ -2058,7 +2058,7 @@ class CKDopefish : CKBaseEnemy
 				vel.z = 0;
 
 				// Use alternate frame...  C is original-style sprite, E has schoolfish between teeth
-				if (Random() < 128) { frame = 4; }
+				if (Random[Keen]() < 128) { frame = 4; }
 			}
 			CKDF A 1 // Bite!
 			{
@@ -2124,11 +2124,11 @@ class CKDopefish : CKBaseEnemy
 
 			if (!turncounter)
 			{
-				angle += Random(-115, -245);
+				angle += Random[Keen](-115, -245);
 				turncounter = 70;
 			}
 
-			zdir = Random(-1, 1);
+			zdir = Random[Keen](-1, 1);
 		}
 		else if (target && IsVisible(target, true))
 		{
@@ -2207,8 +2207,8 @@ class CKSchoolfish : CKBaseEnemy
 
 	override void PostBeginPlay()
 	{
-		swimoffset = Random(-32, 32);
-		turncounter = Random(0, 35);
+		swimoffset = Random[Keen](-32, 32);
+		turncounter = Random[Keen](0, 35);
 
 		Super.PostBeginPlay();
 	}
@@ -2227,18 +2227,18 @@ class CKSchoolfish : CKBaseEnemy
 		{
 			if (!turncounter)
 			{
-				angle += Random(-115, -245);
+				angle += Random[Keen](-115, -245);
 				turncounter = 70;
 			}
 
-			zdir = Random(-1, 1);
-			swimoffset = Random(-32, 32);
+			zdir = Random[Keen](-1, 1);
+			swimoffset = Random[Keen](-32, 32);
 		}
 		else if (target && IsVisible(target, true))
 		{
 			if (!turncounter)
 			{
-				angle = AngleTo(target) + Random(-45, 45);
+				angle = AngleTo(target) + Random[Keen](-45, 45);
 				turncounter = 70;
 			}
 
@@ -2575,7 +2575,7 @@ class CKBirdEgg : CKBaseEnemy
 				if (shell)
 				{
 					shell.frame = 4;
-					shell.vel.xy = RotateVector((-7, 0), Random(0, 359));
+					shell.vel.xy = RotateVector((-7, 0), Random[Keen](0, 359));
 					shell.vel.z = 10;
 					shell = null;
 				}
@@ -2584,7 +2584,7 @@ class CKBirdEgg : CKBaseEnemy
 				if (shell)
 				{
 					shell.frame = 5;
-					shell.vel.xy = RotateVector((7, 0), Random(0, 359));
+					shell.vel.xy = RotateVector((7, 0), Random[Keen](0, 359));
 					shell.vel.z = 10;
 					shell = null;
 				}
@@ -2592,7 +2592,7 @@ class CKBirdEgg : CKBaseEnemy
 				shell = Spawn("CKBirdEggShellBit", pos);
 				if (shell)
 				{
-					shell.frame = random(6,7);
+					shell.frame = Random[Keen](6,7);
 					shell.vel.z = 14;
 					shell = null;
 				}
@@ -2705,10 +2705,10 @@ class CKBird : CKBaseEnemy
 		{
 			if (!turncounter)
 			{
-				angle += Random(90, 270);
+				angle += Random[Keen](90, 270);
 				turncounter = 35;
 
-				zdir = Random(-1, 1);
+				zdir = Random[Keen](-1, 1);
 			}
 		}
 		else if (target && IsVisible(target, true))
@@ -3193,9 +3193,9 @@ class CKBounder : CKBaseEnemy
 			{
 				counter2 = 0;
 
-				if (Random() < 200)
+				if (Random[Keen]() < 200)
 				{
-					angle = Random(0, 359);
+					angle = Random[Keen](0, 359);
 					vel.xy = RotateVector((Speed, 0), angle);
 				}
 			}
@@ -3264,10 +3264,10 @@ class CKFoot : CKBaseEnemy
 	{
 		Super.PostBeginPlay();
 
-		Spawn("CKFootSmoke", pos + (Random(0, 32), 0, Random(0, 32)));
-		Spawn("CKFootSmoke", pos + (-Random(0, 32), 0, Random(0, 32)));
-		Spawn("CKFootSmoke", pos + (0, Random(0, 32), Random(0, 32)));
-		Spawn("CKFootSmoke", pos + (0, -Random(0, 32), Random(0, 32)));
+		Spawn("CKFootSmoke", pos + (Random[Keen](0, 32), 0, Random[Keen](0, 32)));
+		Spawn("CKFootSmoke", pos + (-Random[Keen](0, 32), 0, Random[Keen](0, 32)));
+		Spawn("CKFootSmoke", pos + (0, Random[Keen](0, 32), Random[Keen](0, 32)));
+		Spawn("CKFootSmoke", pos + (0, -Random[Keen](0, 32), Random[Keen](0, 32)));
 	}
 }
 
@@ -3343,20 +3343,20 @@ class CKBerkeloid : CKBaseEnemy
 
 		if (!target) { return; }
 
-		if (Random() < 10)
+		if (Random[Keen]() < 10)
 		{
 			A_Face(target);
 			turncounter = 35;
 		}
 
-		if (Random() < 2) { SetState(AttackState); }
-		else if (Random() < 20 && Distance3D(target) < 256) { SetState(AttackState); }
+		if (Random[Keen]() < 2) { SetState(AttackState); }
+		else if (Random[Keen]() < 20 && Distance3D(target) < 256) { SetState(AttackState); }
 
 		bool blocked = BlockingLine || BlockingMobj || !CheckMove(pos.xy + RotateVector((Speed, 0), angle), PCM_DROPOFF | PCM_NOLINES);
 
 		if (blocked)
 		{
-			angle += Random(-115, -245);
+			angle += Random[Keen](-115, -245);
 			turncounter = 35;
 		}
 
@@ -3457,7 +3457,7 @@ class CKSkyPest : CKBaseEnemy
 			{
 				zdir = 1;
 				zheightcounter = 35;
-				angle = Random(0, 359);
+				angle = Random[Keen](0, 359);
 				vel.z = 8.0;
 			}
 			Goto See;
@@ -3468,7 +3468,7 @@ class CKSkyPest : CKBaseEnemy
 
 	override void PostBeginPlay()
 	{
-		zdir = RandomPick(-1, 1);
+		zdir = RandomPick[Keen](-1, 1);
 
 		Super.PostBeginPlay();
 	}
@@ -3492,7 +3492,7 @@ class CKSkyPest : CKBaseEnemy
 
 		if (blocked || !turncounter)
 		{
-			angle += RandomPick(-90, 90, 180);
+			angle += RandomPick[Keen](-90, 90, 180);
 			turncounter = 20;
 		}
 
