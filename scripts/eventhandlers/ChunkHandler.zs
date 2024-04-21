@@ -208,7 +208,7 @@ class ChunkHandler : EventHandler
 		// presence of other players)
 		for (int p = 0; p < MAXPLAYERS; p++)
 		{
-			if (!playeringame[p]) { continue; } // Only process if player is in the game
+			if (!playeringame[p] || !players[p].camera) { continue; } // Only process if player is in the game
 
 			// Convert player position to a chunk offset
 			int chunkx, chunky;
