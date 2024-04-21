@@ -336,10 +336,18 @@ class SparkSpawnerBase : EffectSpawner
 		if (manager)
 		{
 			delay = manager.GetDelay(chunkx, chunky);
-
-			if (manager.effectmanager && manager.effectmanager.effectblocks[chunkx][chunky])
+			
+			if (manager.effectmanager)
 			{
-				delay = int(2 * delay * manager.effectmanager.effectblocks[chunkx][chunky].cullinterval);
+				if (manager.effectmanager.handler)
+				{
+					EffectChunk chunk = manager.effectmanager.handler.GetChunk(pos.xy);
+
+					if (chunk)
+					{
+						delay = int(2 * delay * chunk.range);
+					}
+				}
 			}
 		}
 

@@ -629,7 +629,7 @@ class StrobeEmitter : Actor
 			bool forceculled;
 
 			[interval, forceculled] = manager.Culled(pos.xy);
-			if (forceculled || interval > range * 1.5 / 512.0) { return; }
+			if (forceculled || interval > range * 1.5 / CHUNKSIZE) { return; }
 		}
 		else if (CheckSightOrRange(range * 1.5)) { return; }
 

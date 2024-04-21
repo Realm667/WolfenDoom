@@ -957,7 +957,7 @@ class Base : Actor
 		if (manager)
 		{
 			int cullinterval = manager.Culled(pos.xy);
-			if (cullinterval > 8 || cullinterval == -1) { Thinker.Tick(); return; }
+			if (cullinterval > 8 || cullinterval == MAXINTERVAL) { Thinker.Tick(); return; }
 			else if (cullinterval > 6) { Super.Tick(); return; }
 		}
 		else { manager = EffectsManager.GetManager(); }
@@ -1806,7 +1806,7 @@ class Nazi : Base
 		Disintegration.FadeLoop:
 			"####" "#" 1 {
 				int chunkx, chunky;
-				[chunkx, chunky] = EffectBlock.GetBlock(pos.x, pos.y);
+				[chunkx, chunky] = EffectChunk.GetChunk(pos.x, pos.y);
 				if (!pmanager || level.time % max(1, pmanager.GetDelay(chunkx, chunky)) == 0) { A_SpawnItemEx("BaseLine", FRandom[Gibs](0.8 * radius, -0.8 * radius), FRandom[Gibs](0.8 * radius, -0.8 * radius), FRandom[Gibs](0, 8), 0, 0, FRandom[Gibs](1, 3), 0, 129, 0); }
 				A_FadeOut(0.02);
 			}
@@ -2894,7 +2894,7 @@ class Nazi : Base
 		if (manager)
 		{
 			int cullinterval = manager.Culled(pos.xy);
-			if (cullinterval > 8 || cullinterval == -1) { Thinker.Tick(); return; }
+			if (cullinterval > 8 || cullinterval == MAXINTERVAL) { Thinker.Tick(); return; }
 			else if (cullinterval > 6) { Actor.Tick(); return; }
 			else if (cullinterval > 4) { Super.Tick(); return; }
 		}

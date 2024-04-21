@@ -160,22 +160,19 @@ class ParticleManager : EventHandler
 
 		if (origin)
 		{
-			[chunkx, chunky] = EffectBlock.GetBlock(origin.pos.x, origin.pos.y);
+			[chunkx, chunky] = EffectChunk.GetChunk(origin.pos.x, origin.pos.y);
 		}
 
-		if (effectmanager && effectmanager.effectblocks[chunkx][chunky])
+		if (effectmanager && effectmanager.handler)
 		{
-			double interval = effectmanager.effectblocks[chunkx][chunky].cullinterval;
+			EffectChunk chunk = EffectChunk.FindChunk(chunkx, chunky, effectmanager.handler.chunks);
+			if (chunk.range < 2) { return 0; }
 
-			if (interval > 1)
-			{
-				int maxinterval = clamp(boa_cullrange, 1024, 8192) / CHUNKSIZE;
-				double delayfactor = interval / maxinterval;
-				delayfactor = delayfactor ** 2 * interval;
+			int maxinterval = clamp(boa_cullrange, 1024, 8192) / CHUNKSIZE;
+			double delayfactor = chunk.range / maxinterval;
+			delayfactor = delayfactor ** 2 * chunk.range;
 
-				return int(tickdelay * delayfactor);
-			}
-			else {return 0; }
+			return int(tickdelay * delayfactor);
 		}
 
 		return tickdelay;

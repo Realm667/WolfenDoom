@@ -47,15 +47,15 @@ class FireSpawner : HeatEffectGiver
 	override void PostBeginPlay()
 	{
 		suffix = suffixes[args[0]];
-		
+
+		manager = ParticleManager.GetManager();
+
 		if (args[0] < 3) { EffectSpawner.PostBeginPlay(); } // Skip the standard EffectGiver PostBeginPlay, because that sets the actor's size to the full height of the sector
 		else // For extra-large flames, just run necessary initialization without adding the spawner to the effects manager queue...  Assume it's a major set piece that shouldn't disappear across the map.
 		{
 			SwitchableDecoration.PostBeginPlay();
 
 			if (switchvar.length()) { switchcvar = CVar.FindCVar(switchvar); }
-
-			manager = ParticleManager.GetManager();
 
 			if (bDormant || SpawnFlags & MTF_DORMANT) { Deactivate(null); }
 			else { Activate(null); }
