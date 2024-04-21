@@ -130,7 +130,7 @@ class AlertLight : CullActorBase
 
 		Super.PostBeginPlay();
 
-		if (!bWasCulled) { EffectsManager.Add(self, checkRadius * 2, EffectsManager.FORCE_TID); } // Spawn the actor back in at twice its radius
+		if (!bWasCulled) { bDontCull = EffectsManager.Add(self, checkRadius * 2, EffectsManager.FORCE_TID); } // Spawn the actor back in at twice its radius
 	}
 
 	void A_AddVisibility(Actor lighttarget = null, int minlight = 0)

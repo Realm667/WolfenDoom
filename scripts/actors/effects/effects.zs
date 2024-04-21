@@ -78,7 +78,7 @@ class EffectsManager : Thinker
 		return true;
 	}
 
-	static void Add(Actor effect, double range = -1, int force = 0)
+	static bool Add(Actor effect, double range = -1, int force = 0)
 	{
 		bool cancull = EffectsManager.CanBeCulled(effect, force);
 
@@ -89,13 +89,15 @@ class EffectsManager : Thinker
 				CullActorBase(effect).bDontCull = true;
 			}
 
-			return;
+			return false;
 		}
 
 		EffectsManager manager = EffectsManager.GetManager();
-		if (!manager) { return; }
+		if (!manager) { return false; }
 
 		manager.AddEffect(effect, range);
+
+		return true;
 	}
 
 	static void Remove(Actor effect)
@@ -671,7 +673,7 @@ class SceneryBase : CullActorBase
 	override void PostBeginPlay()
 	{
 		Super.PostBeginPlay();
-		if (!bDontCull && !bWasCulled) { EffectsManager.Add(self, boa_scenelod, EffectsManager.FORCE_SOLID); }
+		if (!bDontCull && !bWasCulled) { bDontCull = EffectsManager.Add(self, boa_scenelod, EffectsManager.FORCE_SOLID); }
 	}
 }
 
@@ -683,7 +685,7 @@ class TreesBase : CullActorBase
 	{
 		Super.PostBeginPlay();
 		origPitch = pitch;
-		if (!bDontCull && !bWasCulled) { EffectsManager.Add(self, boa_treeslod, EffectsManager.FORCE_SOLID | EffectsManager.FORCE_TID); }
+		if (!bDontCull && !bWasCulled) { bDontCull = EffectsManager.Add(self, boa_treeslod, EffectsManager.FORCE_SOLID | EffectsManager.FORCE_TID); }
 	}
 
 	void A_3DPitchFix()
