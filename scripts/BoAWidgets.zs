@@ -2420,6 +2420,7 @@ class AutomapWidget : Widget
 	override bool IsVisible()
 	{
 		if (
+			!player.mo.FindInventory("CutsceneEnabled") &&
 			automapactive
 		) { return true; }
 		
