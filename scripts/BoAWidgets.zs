@@ -587,7 +587,6 @@ class CountWidget : Widget
 			{
 				partime = String.Format("\c[Gold]%s", partime);
 				paralpha *= 0.5 + sin(deltatics * clamp(400.0 / delta, 5.0, 15.0)) / 2;
-				console.printfex(print_nonotify, "%f", paralpha);
 			}
 
 			if (delta < 60)
