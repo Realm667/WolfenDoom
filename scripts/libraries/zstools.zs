@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020 Talon1024, Username-N00b-is-not-available, AFADoomer
+ * Copyright (c) 2020-2024 Talon1024, Username-N00b-is-not-available, AFADoomer
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
