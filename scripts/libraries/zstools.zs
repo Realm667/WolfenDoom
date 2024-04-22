@@ -632,6 +632,67 @@ class ZScriptTools
 			}
 		}
 	}
+
+	// Retrieves the best palette color match for the passed-in RGB color
+	// Modified from gzdoom/src/common/utility/palette.cpp
+	static int BestPaletteColor(Color clr)
+	{
+		int bestcolor = 0;
+		int bestdist = 257 * 257 + 257 * 257 + 257 * 257;
+
+		for (int p = 0; p < 255; p++)
+		{
+			Color palentry = Screen.PaletteColor(p);
+			int x = clr.r - palentry.r;
+			int y = clr.g - palentry.g;
+			int z = clr.b - palentry.b;
+			int dist = x * x + y * y + z * z;
+			if (dist < bestdist)
+			{
+				if (dist == 0) { return p; }
+
+				bestdist = dist;
+				bestcolor = p;
+			}
+		}
+		return bestcolor;
+	}
+
+	// Returns the best text color code match for the passed-in RGB color
+	// Modified from gzdoom/src/common/utility/palette.cpp
+	static String BestTextColor(Color clr)
+	{
+		static const Color textcolors[] = { 0xCC3333, 0xD2B48C, 0xCCCCCC, 0x00CC00, 0x996633, 0xFFCC00, 0xFF5566, 0x9999FF, 0xFFAA00, 0xDFDFDF, 0xEEEE33, -1, 0x000000, 0x33EEFF, 0xFFCC99, 0xD1D8A8, 0x008C00, 0x800000, 0x663333, 0x9966CC, 0x808080, 0x00DDDD, 0x7C7C98, 0xD57604, 0x506CFC, 0x236773 };
+		int bestcolor = 0;
+		int bestdist = 257 * 257 + 257 * 257 + 257 * 257;
+
+		for (int p = 0; p < 26; p++)
+		{
+			Color palentry = textcolors[p];
+			int x = clr.r - palentry.r;
+			int y = clr.g - palentry.g;
+			int z = clr.b - palentry.b;
+			int dist = x * x + y * y + z * z;
+			if (dist < bestdist)
+			{
+				if (dist == 0) { return String.Format("%c", 0x41 + p); }
+
+				bestdist = dist;
+				bestcolor = p;
+			}
+		}
+
+		return String.Format("%c", 0x41 + bestcolor);
+	}
+
+	// Get the item owner's color, match it to a close text color, then print
+	// the pickup message with the colored name prepended
+	static String OwnedMessage(Actor owner, String msg)
+	{
+		if (!owner || !owner.player || owner.player == players[consoleplayer]) { return StringTable.Localize(msg); }
+
+		return "\034" .. ZScriptTools.BestTextColor(owner.player.GetDisplayColor()) .. owner.player.GetUserName() .. ":\034L " .. StringTable.Localize(msg);
+	}
 }
 
 // Separate class for this because it has to be a thinker, unfortunately.

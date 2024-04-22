@@ -101,7 +101,7 @@ class CompassItem : PuzzleItem
 		{
 			bAutoActivate = false;
 			pickup = Inventory.TryPickup(p);
-			String msg = "\034+" .. toucher.player.GetUserName() .. ":\034L " .. StringTable.Localize(PickupMessage());
+			String msg = ZScriptTools.OwnedMessage(toucher, PickupMessage());
 			PrintPickupMessage(p.CheckLocalView(), msg);
 		}
 		else

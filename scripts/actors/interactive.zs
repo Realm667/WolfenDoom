@@ -719,7 +719,7 @@ class InteractiveItem : PuzzleItem
 			{
 				bAutoActivate = false;
 				Inventory.TryPickup(p);
-				String msg = "\034+" .. user.player.GetUserName() .. ":\034L " .. StringTable.Localize(PickupMessage());
+				String msg = ZScriptTools.OwnedMessage(user, PickupMessage());
 				PrintPickupMessage(p.CheckLocalView(), msg);
 				S_StartSound(PickupSound, CHAN_ITEM, CHANF_UI | CHANF_NOSTOP, 0.5);
 			}

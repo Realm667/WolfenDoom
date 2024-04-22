@@ -28,6 +28,22 @@ class KeyBase : Key
 		//$Color 13
 		Scale 0.07;
 	}
+
+	override bool TryPickup(in out Actor toucher)
+	{
+		if (Inventory.TryPickup(toucher))
+		{
+			if (multiplayer && !deathmatch) { ShareItemWithPlayers(toucher); }
+			return true;
+		}
+
+		return false;
+	}
+
+	override String PickupMessage()
+	{
+		return ZScriptTools.OwnedMessage(owner, PickupMsg);
+	}
 }
 
 class BoABlueKey : KeyBase
