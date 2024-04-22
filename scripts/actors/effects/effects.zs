@@ -272,7 +272,7 @@ class EffectsManager : Thinker
 
 		for (int p = 0; p < MAXPLAYERS; p++)
 		{
-			if (!playeringame[p]) { continue; }
+			if (!playeringame[p] || !players[p].camera) { continue; }
 
 			Array<EffectChunk> chunks;
 			handler.GetChunksInRadius(players[p].camera.pos.xy, range + CHUNKSIZE * 4, chunks);
