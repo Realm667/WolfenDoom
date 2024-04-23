@@ -661,31 +661,33 @@ class ZScriptTools
 		return bestcolor;
 	}
 
-	// Returns the best text color code match for the passed-in RGB color
+	// Returns the best text color match for the passed-in RGB color
 	// Modified from gzdoom/src/common/utility/palette.cpp
 	static String BestTextColor(Color clr)
 	{
-		static const Color textcolors[] = { 0xCC3333, 0xD2B48C, 0xCCCCCC, 0x00CC00, 0x996633, 0xFFCC00, 0xFF5566, 0x9999FF, 0xFFAA00, 0xDFDFDF, 0xEEEE33, -1, 0x000000, 0x33EEFF, 0xFFCC99, 0xD1D8A8, 0x008C00, 0x800000, 0x663333, 0x9966CC, 0x808080, 0x00DDDD, 0x7C7C98, 0xD57604, 0x506CFC, 0x236773 };
+		MiscellaneousDataHandler data = MiscellaneousDataHandler(StaticEventHandler.Find("MiscellaneousDataHandler"));
+		if (!data) { return "L"; }
+
 		int bestcolor = 0;
 		int bestdist = 257 * 257 + 257 * 257 + 257 * 257;
 
-		for (int p = 0; p < 26; p++)
+		for (int p = 0; p < data.textcolordata.children.Size(); p++)
 		{
-			Color palentry = textcolors[p];
+			Color palentry = ZScriptTools.HexStringToInt(data.textcolordata.children[p].value);
 			int x = clr.r - palentry.r;
 			int y = clr.g - palentry.g;
 			int z = clr.b - palentry.b;
 			int dist = x * x + y * y + z * z;
 			if (dist < bestdist)
 			{
-				if (dist == 0) { return String.Format("%c", 0x41 + p); }
+				if (dist == 0) { return String.Format("[%s]", data.textcolordata.children[p].keyname); }
 
 				bestdist = dist;
 				bestcolor = p;
 			}
 		}
 
-		return String.Format("%c", 0x41 + bestcolor);
+		return String.Format("[%s]", data.textcolordata.children[bestcolor].keyname);
 	}
 
 	// Get the item owner's color, match it to a close text color, then print
@@ -695,6 +697,24 @@ class ZScriptTools
 		if (!owner || !owner.player || owner.player == players[consoleplayer]) { return StringTable.Localize(msg); }
 
 		return "\034" .. ZScriptTools.BestTextColor(owner.player.GetDisplayColor()) .. owner.player.GetUserName() .. ":\034L " .. StringTable.Localize(msg);
+	}
+
+	static int HexStringToInt(String input)
+	{
+		int len = input.length();
+		int output = 0;
+
+		input = input.MakeUpper();
+
+		for (int i = 0; i < len; i++)
+		{
+			int c = input.ByteAt(len - 1 - i);
+
+			if (c >= 0x30 && c <= 0x39) { output += (c - 0x30) * int(0x10 ** i); }
+			else if (c >= 0x41 && c <= 0x46) { output += (c - 0x37) * int(0x10 ** i); }
+		}
+
+		return output;
 	}
 }
 

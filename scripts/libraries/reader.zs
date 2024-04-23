@@ -71,20 +71,31 @@ class ParsedValue
 
 class FileReader
 {
-	static ParsedValue Parse(String path)
+	static ParsedValue Parse(String path, bool allinstances = false)
 	{
 		ParsedValue root = new("ParsedValue");
-		ParseString(ReadLump(path), root);
+
+		if (!allinstances)
+		{
+			ParseString(ReadLump(path), root);
+		}
+		else
+		{
+			// Ideally this would use FileSystem.GetNumEntries(), but that's not exposed to ZScript,
+			// so I'm arbitrarily using 15 as the number of files to check...
+			for (int i = 15; i >= 0; i--)
+			{
+				int lump = Wads.CheckNumForName(path, 0, i, true);
+				if (lump > -1) { ParseString(Wads.ReadLump(lump), root); }
+			}
+		}
 
 		return root;
 	}
 
 	static String ReadLump(String lumpname)
 	{
-		int lump = -1;
-
-		lump = Wads.CheckNumForFullName(lumpname);
-
+		int lump = Wads.CheckNumForFullName(lumpname);
 		if (lump > -1) { return Wads.ReadLump(lump); }
 
 		return "";
@@ -151,7 +162,26 @@ class FileReader
 					break;
 				case 125: // }
 					if (blockcomment || linecomment) { break; }
-					if (ZScriptTools.Trim(token).length()) { console.printf("Missing semi-colon after %s", token); }
+					if (ZScriptTools.Trim(token).length())
+					{
+						// console.printf("Missing semi-colon after %s", token);
+						// Dump everything to the data key for later handling if semi-colons are missing
+						key = new("ParsedValue");
+						key.parent = parent;
+						Array<String> temp;
+						temp.Clear();
+
+						token.Split(temp, "=");
+						if (temp.Size())
+						{
+							key.keyname = ZScriptTools.Trim(temp[0]);
+							if (temp.Size() > 1) { key.value = ZScriptTools.Trim(temp[1]); }
+
+							if (parent) { parent.Children.Push(key); }
+						}
+
+						token = "";
+					}
 					return i;
 					break;
 				default:
@@ -196,6 +226,11 @@ class FileReader
 	static int GetInt(ParsedValue data, String path)
 	{
 		return GetString(data, path).ToInt();
+	}
+
+	static Color GetColor(ParsedValue data, String path)
+	{
+		return ZScriptTools.HexStringToInt(GetString(data, path));
 	}
 
 	static double GetDouble(ParsedValue data, String path)

@@ -196,9 +196,9 @@ class GroundSplashBase : Actor
 		// Work around issue with full path textures being parsed incorrectly by FileReader.GetString
 		textureName.Replace(".", ">");
 		// Get data from handler
-		GroundSplashDataHandler splashData = GroundSplashDataHandler(StaticEventHandler.Find("GroundSplashDataHandler"));
+		MiscellaneousDataHandler miscData = MiscellaneousDataHandler(StaticEventHandler.Find("MiscellaneousDataHandler"));
 		// Resolve splash actor class
-		String splashActorStr = FileReader.GetString(splashData.data, splashType .. "." .. textureName);
+		String splashActorStr = FileReader.GetString(miscData.splashdata, splashType .. "." .. textureName);
 		if (splashActorStr != "") {
 			class<Actor> splashActor = splashActorStr;
 			if (splashActor)

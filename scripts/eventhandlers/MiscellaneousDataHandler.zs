@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020 Talon1024
+ * Copyright (c) 2020-2024 Talon1024, AFADoomer
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -20,16 +20,39 @@
  * SOFTWARE.
 **/
 
-class GroundSplashDataHandler : StaticEventHandler
+class MiscellaneousDataHandler : StaticEventHandler
 {
-	ParsedValue data;
+	ParsedValue splashdata, textcolordata;
 
 	override void OnRegister()
 	{
-		data = FileReader.Parse("data/GroundSplashes.txt");
+		splashdata = FileReader.Parse("data/GroundSplashes.txt");
+
 		/*
-		String splashData = FileReader.DumpData(data, 1);
-		Console.Printf("Ground splash data:\n%s", splashData);
+		String groundSplashData = FileReader.DumpData(splashdata, 1);
+		Console.Printf("Ground splash data:\n%s", groundSplashData);
 		*/
+
+		// Parse defined text colors
+		textcolordata = FileReader.Parse("textcolors.txt", true);
+		for (int d = 0; d < textcolordata.children.Size(); d++)
+		{
+			Array<String> temp;
+			textcolordata.children[d].keyname.Split(temp, " ");
+			textcolordata.children[d].keyname = temp[0]; // Only store the first listed name
+
+			for (int c = 0; c < textcolordata.children[d].children.Size(); c++)
+			{
+				String colordata = textcolordata.children[d].children[c].keyname;
+
+				// Only store the 'Flat:' color for lookup - ignore text colors that don't have this defined
+				int start = colordata.IndexOf("Flat:");
+				if (start > -1)
+				{
+					int i = colordata.IndexOf("#", colordata.IndexOf("Flat:")) + 1;
+					if (i > -1) { textcolordata.children[d].value = colordata.mid(i, 6); }
+				}
+			}
+		}
 	}
 }
