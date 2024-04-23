@@ -147,7 +147,10 @@ class ZScriptTools
 		double xylen = direction.XY.Length();
 		double pitch = -asin(direction.z);
 		double signum = direction.y >= 0 ? 1 : -1;
-		double angle = signum * acos(direction.x/xylen);
+		double angle = 0.0;
+		if (xylen != 0) {
+			signum * acos(direction.x/xylen);
+		}
 		return angle, pitch;
 	}
 

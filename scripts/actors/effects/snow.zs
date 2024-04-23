@@ -4,7 +4,7 @@
 //   improved by  Ceeb & MaxED   //
 ///////////////////////////////////
 
-// See effects.zs:536 for ParticleSpawnPoint struct and SPAWN_POINTS_PER_SPAWNER
+// See effects.zs for ParticleSpawnPoint struct and SPAWN_POINTS_PER_SPAWNER
 
 class SnowSpawner : EffectSpawner
 {

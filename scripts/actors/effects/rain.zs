@@ -1,7 +1,11 @@
 // Zscript version of the DECORATE Rain Spawner by Tormentor667
 class RainSpawner : EffectSpawner
 {
-	Class<Actor> raindrop;
+	Class<Actor> rainDropClass;
+	protected int spawnIndex;
+	protected Vector3 rainDropVel;
+	protected double rainDropSpeed;
+	ParticleSpawnPoint spawnPoints[SPAWN_POINTS_PER_SPAWNER]; // 48 * 32 = 1536 bytes
 
 	Default
 	{
@@ -41,12 +45,66 @@ class RainSpawner : EffectSpawner
 			Loop;
 	}
 
+	void SetupSpawnPoints() {
+		bool circular = true;
+
+		for (int i = 0; i < SPAWN_POINTS_PER_SPAWNER; i++) {
+			do { // So that "continue" can be used to try again
+				double xoffset = Random[Rain](-Args[0], Args[0]);
+				double yoffset = circular ?
+					Random[Rain](0, 359) :
+					Random[Rain](-Args[0], Args[0]);
+
+				// Calculate absolute spawn position
+				Vector3 spawnPos = circular ?
+					// yoffset is used here as an angle
+					Vec3Angle(xoffset, yoffset, 0) :
+					Vec3Offset(xoffset, yoffset, 0);
+
+				Sector spawnSector = Level.PointInSector(spawnPos.XY);
+				if (!SnowSpawner.SpawnPointValid(spawnSector, ceilingpic)) {
+					continue;
+				}
+				spawnPos.Z = min(spawnPos.Z, spawnSector.HighestCeilingAt(spawnPos.XY) - 2.0);
+
+				// Use a hitscan to find the distance to the nearest obstacle
+				Vector3 vel = rainDropVel.Unit();
+
+				BoASolidSurfaceFinderTracer finder = new("BoASolidSurfaceFinderTracer");
+				finder.Trace(spawnPos, spawnSector, vel, 10000.0, TRACE_HitSky);
+
+				// Set up spawn point
+				spawnPoints[i].worldPos = spawnPos;
+				[spawnPoints[i].angle, spawnPoints[i].pitch] = ZScriptTools.AnglesFromDirection(vel);
+				/* // ========== Test start
+				Vector3 dirbo = ZScriptTools.GetTraceDirection(spawnPoints[i].angle, spawnPoints[i].pitch);
+				Console.Printf("dirbo: %.3f %.3f %.3f, vel: %.3f %.3f %.3f", dirbo, vel);
+				if (dirbo dot vel < 0.9375) {
+					Console.Printf("ZScriptTools.AnglesFromDirection is broken!");
+				}
+				// ========== Test end */
+				spawnPoints[i].distance = finder.Results.Distance;
+				break;
+			} while(true); // See lines 68 and 83
+		}
+	}
+
 	override void PostBeginPlay()
 	{
-		if (!args[3]) { raindrop = "RainDropLong"; }
-		else { raindrop = "RainDropShort"; }
+		rainDropClass = "RainDropShort";
+		if (!args[3]) { rainDropClass = "RainDropLong"; }
 
 		if (args[0] == 0) { args[0] = 128; }
+
+		rainDropVel = (
+			Args[4],
+			0,
+			-(args[3] ? 20 : 40) + (Args[4] / 2)
+		);
+		rainDropVel.xy = RotateVector(rainDropVel.xy, Angle);
+		rainDropSpeed = rainDropVel.Length();
+
+		SetupSpawnPoints();
 
 		Super.PostBeginPlay();
 	}
@@ -69,10 +127,17 @@ class RainSpawner : EffectSpawner
 	{
 		Super.SpawnEffect();
 
-		double zoffset = 0;
-		if (manager) { zoffset = min(manager.particlez - pos.z, 0); }
+		if (Random[Rain](0, 255) < Args[1] || !rainDropClass) {
+			return;
+		}
 
-		A_SpawnItemEx(raindrop, Random[Rain](-Args[0], Args[0]), Random[Rain](-Args[0], Args[0]), -2 + zoffset, Args[4], 0, -(args[3] ? 20 : 40) + (Args[4] / 2), 0, SXF_TRANSFERPITCH | SXF_CLIENTSIDE, Args[1]);
+		Actor raindropMobj = Spawn(rainDropClass, spawnPoints[spawnIndex].worldPos);
+		raindropMobj.Vel = rainDropVel;
+		raindropMobj.Angle = Angle;
+		raindropMobj.Pitch = Pitch;
+		raindropMobj.ReactionTime = int(ceil(spawnPoints[spawnIndex].distance / rainDropSpeed));
+		
+		spawnIndex = (spawnIndex + 1) % SPAWN_POINTS_PER_SPAWNER;
 	}
 }
 
@@ -83,6 +148,7 @@ class RainDropShort : ParticleBase
 		DistanceCheck "boa_sfxlod";
 		Height 1;
 		Radius 4;
+		ReactionTime 10; // Lifetime, calculated by RainSpawner
 		RenderStyle "Translucent";
 		Alpha 0.7;
 		+CLIENTSIDEONLY
@@ -91,6 +157,7 @@ class RainDropShort : ParticleBase
 		+MISSILE
 		+NOBLOCKMAP
 		+NOGRAVITY
+		+NOINTERACTION
 	}
 
 	States
@@ -98,7 +165,7 @@ class RainDropShort : ParticleBase
 		Spawn:
 			MDLA A 0;
 		Rainfall:
-			"####" A 4;
+			"####" A 1 A_Countdown;
 			Loop;
 		Death:
 			RNDR A 0 {
@@ -121,12 +188,6 @@ class RainDropShort : ParticleBase
 		Scale.x += FRandom[Rain](-0.05, 0.05);
 		Scale.y += FRandom[Rain](-0.05, 0.05);
 		alpha = FRandom[Rain](0.7, 0.4);
-	}
-
-	override void Tick()
-	{
-		if (waterlevel) { Destroy(); return; }
-		Super.Tick();
 	}
 }
 
