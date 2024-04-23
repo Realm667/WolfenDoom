@@ -147,12 +147,6 @@ class EffectsManager : Thinker
 		{
 			SaveEffectInfo(effect, effects[i], range);
 		}
-
-		if (effect is "CullActorBase")
-		{
-			effect.A_SetRenderStyle(0.0, STYLE_Translucent);
-			CullActorBase(effect).targetalpha = 0.0;
-		}
 	}
 
 	protected void SaveEffectInfo(Actor mo, EffectInfo info, double range = -1)
@@ -409,6 +403,7 @@ class EffectsManager : Thinker
 				{
 					CullActorBase(effect).bWasCulled = true;
 					effect.A_SetRenderStyle(0.0, STYLE_Translucent);
+					CullActorBase(effect).targetalpha = effect.Default.alpha;
 				}
 				else if (effect is "AlertLight") { AlertLight(effect).wasculled = true; }
 				else if (effect is "EffectBase") { EffectBase(effect).wasculled = true; }
@@ -422,7 +417,7 @@ class EffectsManager : Thinker
 			{
 				CullActorBase(effects[i].effect).targetalpha = 0.0;
 			}
-			else if (effects[i].effect.health <= 0) // Don't cull destroyed actors
+			else if (!effects[i].effect.bNoDamage && effects[i].effect.health <= 0) // Don't cull destroyed actors
 			{
 				effects[i] = null; // ...and stop tracking them
 			}
@@ -593,6 +588,7 @@ class CullActorBase : Actor
 	override void PostBeginPlay()
 	{
 		if (user_dontcull || !boa_culling) { bDontCull = true; }
+		targetalpha = Default.alpha;
 
 		Super.PostBeginPlay();
 	}
@@ -673,7 +669,7 @@ class SceneryBase : CullActorBase
 	override void PostBeginPlay()
 	{
 		Super.PostBeginPlay();
-		if (!bDontCull && !bWasCulled) { bDontCull = EffectsManager.Add(self, boa_scenelod, EffectsManager.FORCE_SOLID); }
+		if (!bDontCull && !bWasCulled) { EffectsManager.Add(self, boa_scenelod, EffectsManager.FORCE_SOLID); }
 	}
 }
 
@@ -685,7 +681,7 @@ class TreesBase : CullActorBase
 	{
 		Super.PostBeginPlay();
 		origPitch = pitch;
-		if (!bDontCull && !bWasCulled) { bDontCull = EffectsManager.Add(self, boa_treeslod, EffectsManager.FORCE_SOLID | EffectsManager.FORCE_TID); }
+		if (!bDontCull && !bWasCulled) { EffectsManager.Add(self, boa_treeslod, EffectsManager.FORCE_SOLID | EffectsManager.FORCE_TID); }
 	}
 
 	void A_3DPitchFix()
