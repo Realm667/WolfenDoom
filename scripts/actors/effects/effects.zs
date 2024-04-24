@@ -256,7 +256,6 @@ class EffectsManager : Thinker
 	{
 		bool ret = true;
 		int retx = 0, rety = 0;
-		int maxval = MAPMAX * 2 / CHUNKSIZE;
 
 		if (!handler) { handler = ChunkHandler.Get(); }
 		if (!handler) { return false, 0, 0; }
@@ -264,29 +263,25 @@ class EffectsManager : Thinker
 		int range = clamp(boa_cullrange, 1024, 8192);
 		int count = 0;
 
-		for (int p = 0; p < MAXPLAYERS; p++)
+		for (int p = 0; p < MAXPLAYERS && ret; p++)
 		{
 			if (!playeringame[p] || !players[p].camera) { continue; }
 
 			Array<EffectChunk> chunks;
-			handler.GetChunksInRadius(players[p].camera.pos.xy, range + CHUNKSIZE * 4, chunks);
-
-			for (int c = 0; c < chunks.Size(); c++)
+			handler.GetChunksInRadius(players[p].camera.pos.xy, range + CHUNKSIZE * players[p].camera.vel.xy.length() / (CHUNKSIZE / 64.0), chunks);
+		
+			for (int c = 0; c < chunks.Size() && ret; c++)
 			{
-				bool remove = boa_culling && (chunks[c].distance > range || !chunks[c].infov); // Force removal if outside of the cull range
+				// Force removal if outside of the cull range
+				bool remove = boa_culling && (chunks[c].distance > range || !chunks[c].infov);
 
 				// Delay culling if this chunk was force culled last time and is still outside of culling range
 				if (!recalculate && chunks[c].culled && remove) { continue; }
 
-				// Don't cull chunks that are the same distance away as last time, and force culling if our camera is 
-				// outside of our body or if we moved more than CHUNKSIZE distance in one tick (teleport or camera change)
-				if (recalculate || chunks[c].distance != range || chunks[c].culled || remove)
-				{
-					count += CullChunk(chunks[c], remove);
-				}
+				// Cull chunks
+				if (recalculate || chunks[c].culled || remove) { count += CullChunk(chunks[c], remove); }
 				
-				chunks[c].culled = remove;
-
+				// Check against the actor limit and stop processing chunks for this tick if we've exceeded the cap
 				if (boa_cullactorlimit > 0 && count > boa_cullactorlimit && !retx && !rety)
 				{
 					ret = false;
@@ -294,9 +289,9 @@ class EffectsManager : Thinker
 					rety = chunks[c].y;
 				}
 			}
-
-			if (boa_debugculling && count) { console.printf("Spawned %i actors in chunk %i, %i", count, retx, rety); }
 		}
+
+		if (boa_debugculling && count) { console.printf("Spawned %i actors in chunk %i, %i", count, retx, rety); }
 
 		return ret, retx, rety;
 	}
@@ -311,6 +306,9 @@ class EffectsManager : Thinker
 		{
 			count += CullEffect(chunk, chunk.things[i], forceremove);
 		}
+
+		// Mark the chunk as culled as appropriate
+		chunk.culled = forceremove;
 
 		return count;
 	}
@@ -355,12 +353,12 @@ class EffectsManager : Thinker
 		range = effects[i].range <= 0 ? boa_sfxlod : effects[i].range;
 		range = clamp(min(range, boa_cullrange), 1024, 8192); // Minimum range is 1024, no matter what the CVARs are set to!  boa_cullrange overrides other CVARs.
 
-		if (chunk)
+		if (!boa_culling) { inrange = true; }
+		else if (chunk)
 		{
 			dist = chunk.distance;
-			if (dist < range && chunk.infov) { inrange = true; }
+			if (dist < range && chunk.infov && abs(chunk.nearestplayer.pos.z - effects[i].position.z) <= range / 2) { inrange = true; }
 		}
-		if (!boa_culling) { inrange = true; }
 
 		if (inrange && !effects[i].ingame)
 		{
@@ -453,7 +451,7 @@ class EffectsManager : Thinker
 	{
 		for (int i = 0; i < effects.Size(); i++)
 		{
-			CullEffect(null, i);
+			CullEffect(null, i, true);
 		}
 	}
 }

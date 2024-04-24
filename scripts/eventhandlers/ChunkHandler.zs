@@ -238,7 +238,7 @@ class ChunkHandler : EventHandler
 						if (range < chunk.range)
 						{
 							chunk.range = range;
-							chunk.nearestplayer = players[p].mo;
+							chunk.nearestplayer = players[p].camera;
 						}
 
 						chunk.distance = chunk.range * CHUNKSIZE;
