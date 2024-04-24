@@ -86,8 +86,8 @@ class SkyViewPointStatic : SkyViewPoint
 //			level.sectorPortals[0].mSkybox = mo;
 //			level.sectorPortals[0].mDestination = mo.CurSector;
 
-			// Gross hack because the skybox field was made read-only to mods
-			// Spawn a skybox picker for every sky sector to change the skybox
+			// Gross hack because the skybox fields were all made read-only to mods
+			// Spawn a skybox picker and move it through every sky sector to change the skybox
 
 			if (!mo.tid) { mo.ChangeTID(level.FindUniqueTID()); }
 
@@ -95,12 +95,17 @@ class SkyViewPointStatic : SkyViewPoint
 			{
 				let sec = level.sectors[s];
 				
+				// If the sector has a sky ceiling or floor and its sky is not the same 
+				// as that of this viewpoint, then change the sector's sky
 				if (
-					sec
-					 &&
+					sec && 
 					(
 						sec.GetPortalType(sector.ceiling) == SectorPortal.TYPE_SKYVIEWPOINT ||
 						sec.GetPortalType(sector.floor) == SectorPortal.TYPE_SKYVIEWPOINT
+					) &&
+					(
+						sec.Portals[sector.ceiling] != mo.CurSector.Portals[sector.ceiling] ||
+						sec.Portals[sector.floor] != mo.CurSector.Portals[sector.floor]
 					)
 				)
 				{
