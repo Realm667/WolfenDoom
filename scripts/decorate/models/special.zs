@@ -667,6 +667,7 @@ class SlopeMe1 : Obstacle3d //Ozy81
 		DistanceCheck "boa_scenelod";
 		Radius 16;
 		Height 4;
+		Renderstyle "Translucent";
 		+NOGRAVITY
 		+CullActorBase.DONTCULL //remove in 3.1 
 	}
