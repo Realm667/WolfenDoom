@@ -716,6 +716,18 @@ class ZScriptTools
 
 		return output;
 	}
+
+	static int GetPlayerNumberFromName(String username)
+	{
+		for (int p = 0; p < MAXPLAYERS; p++)
+		{
+			if (!playeringame[p]) { continue; }
+
+			if (ZScriptTools.StripColorCodes(players[p].GetUserName()) ~== username) { return p; }
+		}
+
+		return -1;
+	}
 }
 
 // Separate class for this because it has to be a thinker, unfortunately.

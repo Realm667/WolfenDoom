@@ -168,7 +168,24 @@ class BoAStatusBar : BaseStatusBar
 
 				Log.Add(CPlayer, outline, "Notifications", printlevel, fnt);
 			}
-			else { Log.Add(CPlayer, outline, "Chat", printlevel, fnt); }
+			else
+			{
+				int colon = outline.IndexOf(":");
+
+				if (colon > -1)
+				{
+					String username = outline.Left(colon);
+					username = ZScriptTools.StripColorCodes(username);
+					int p = ZScriptTools.GetPlayerNumberFromName(username);
+
+					if (p > -1)
+					{
+						outline = String.Format("\034%s%s:\034L%s", ZScriptTools.BestTextColor(players[p].GetDisplayColor()), username, outline.Mid(colon + 1));
+					}
+				}
+
+				Log.Add(CPlayer, outline, "Chat", printlevel, fnt);
+			}
 
 			processed = true; 
 		}
