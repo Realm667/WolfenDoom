@@ -330,7 +330,7 @@ class Achievement
 {
 	String icon;
 	String title;
-	bool complete;
+	bool complete[MAXPLAYERS];
 	int value;
 	Vector2 pos;
 	Vector2 size, fullsize;
@@ -456,7 +456,7 @@ class AchievementTracker : StaticEventHandler
 					ach.icon = String.Format("ACHVMT%02i", a);
 					ach.title = String.Format("ACHIEVEMENT%i", a);
 				}
-				ach.complete = false;
+				ach.complete[consoleplayer] = false;
 				records.Push(ach);
 			}
 		}
@@ -478,23 +478,23 @@ class AchievementTracker : StaticEventHandler
 					switch (index)
 					{
 						case STAT_PLAYTIME:
-							records[STAT_PLAYTIME].complete = true;
+							records[STAT_PLAYTIME].complete[consoleplayer] = true;
 							records[STAT_PLAYTIME].value = parse[a].ToInt();
 							break;
 						case STAT_SAVES:
-							records[STAT_SAVES].complete = true;
+							records[STAT_SAVES].complete[consoleplayer] = true;
 							records[STAT_SAVES].value = parse[a].ToInt();
 							break;
 						case STAT_LIQUIDDEATH:
-							records[STAT_LIQUIDDEATH].complete = true;
+							records[STAT_LIQUIDDEATH].complete[consoleplayer] = true;
 							records[STAT_LIQUIDDEATH].value = parse[a].ToInt();
 							break;
 						case STAT_AWARDS:
-							records[STAT_AWARDS].complete = true;
+							records[STAT_AWARDS].complete[consoleplayer] = true;
 							records[STAT_AWARDS].value = parse[a].ToInt();
 							break;
 						case STAT_CARTRIDGES:
-							records[STAT_CARTRIDGES].complete = true;
+							records[STAT_CARTRIDGES].complete[consoleplayer] = true;
 							records[STAT_CARTRIDGES].value = parse[a].ToInt();
 							break;
 						default:
@@ -502,7 +502,7 @@ class AchievementTracker : StaticEventHandler
 							if (ach)
 							{
 								ach.value = parse[a].ToInt();
-								if (ach.value > 1 << 16) { ach.complete = true; } // Allow 16 bits for data 
+								if (ach.value > 1 << 16) { ach.complete[consoleplayer] = true; } // Allow 16 bits for data 
 							}
 							break;
 					}
@@ -586,7 +586,7 @@ class AchievementTracker : StaticEventHandler
 				String title = ZScriptTools.StripColorCodes(StringTable.Localize(records[a].title, false));
 				title.Replace(String.Format("%c", 0x0A), "\cC - ");
 
-				if (a < records.Size() && records[a].complete) { title = "\cJ" .. title .. " (" .. SystemTime.Format("%d %b %Y, %T", records[a].value) .. ")"; }
+				if (a < records.Size() && records[a].complete[consoleplayer]) { title = "\cJ" .. title .. " (" .. SystemTime.Format("%d %b %Y, %T", records[a].value) .. ")"; }
 				else { title = "\cR" .. title; }
 
 				console.printf(title);
@@ -604,7 +604,7 @@ class AchievementTracker : StaticEventHandler
 			// Reset all variables, up to play time...  Intentionally don't reset play time.
 			for (int a = 0; a < 59; a++)
 			{
-				records[a].complete = false;
+				records[a].complete[consoleplayer] = false;
 				records[a].value = 0;
 			}
 
@@ -683,7 +683,7 @@ class AchievementTracker : StaticEventHandler
 
 		if (a >= achievements.records.Size()) { return false; }
 
-		return achievements.records[a].complete;
+		return achievements.records[a].complete[consoleplayer];
 	}
 
 	void DoChecks(int pnum, int a)
@@ -695,25 +695,25 @@ class AchievementTracker : StaticEventHandler
 				// Reset session-based, achievements if you use 'give', 'god', 'noclip', or 'buddha' cheats
 				// This does not reset achievements that have already been accomplished, nor does it reset
 				// play time, savegame count, Keen cartridge status, or Trophy status
-				if (!records[ACH_GUNSLINGER].complete) { records[ACH_GUNSLINGER].value = pistolshots[pnum] = 0; }
-				if (!records[ACH_ASSASSIN].complete) { records[ACH_ASSASSIN].value = knifekills[pnum] = 0; }
-				if (!records[ACH_SURRENDERS].complete) { records[ACH_SURRENDERS].value = surrenders[pnum] = 0; }
-				if (!records[ACH_BOOM].complete) { records[ACH_BOOM].value = totalgrenades[pnum] = 0; }
-				if (!records[ACH_SPRINT].complete) { records[ACH_SPRINT].value = exhaustion[pnum] = 0; }
-				if (!records[ACH_ZOMBIES].complete) { records[ACH_ZOMBIES].value = zombies[pnum] = 0; }
+				if (!records[ACH_GUNSLINGER].complete[consoleplayer]) { records[ACH_GUNSLINGER].value = pistolshots[pnum] = 0; }
+				if (!records[ACH_ASSASSIN].complete[consoleplayer]) { records[ACH_ASSASSIN].value = knifekills[pnum] = 0; }
+				if (!records[ACH_SURRENDERS].complete[consoleplayer]) { records[ACH_SURRENDERS].value = surrenders[pnum] = 0; }
+				if (!records[ACH_BOOM].complete[consoleplayer]) { records[ACH_BOOM].value = totalgrenades[pnum] = 0; }
+				if (!records[ACH_SPRINT].complete[consoleplayer]) { records[ACH_SPRINT].value = exhaustion[pnum] = 0; }
+				if (!records[ACH_ZOMBIES].complete[consoleplayer]) { records[ACH_ZOMBIES].value = zombies[pnum] = 0; }
 
-				if (!records[ACH_FULLARSENAL].complete)
+				if (!records[ACH_FULLARSENAL].complete[consoleplayer])
 				{
 					for (int w = 0; w < 16; w++) { weapons[pnum][w] == false; }
 				}
 
-				if (!records[ACH_COMBATMEDIC].complete) { records[ACH_COMBATMEDIC].value = fieldkits[pnum] = 0; }
-				if (!records[ACH_TREASUREHUNTER].complete) { records[ACH_TREASUREHUNTER].value = chests[pnum] = 0; }
-				if (!records[ACH_GOLDDIGGER].complete) { records[ACH_GOLDDIGGER].value = coins[pnum] = 0; }
-				if (!records[ACH_STAYDEAD].complete) { records[ACH_STAYDEAD].value = deadwounded[pnum] = 0; }
-				if (!records[ACH_GIBEMALL].complete) { records[ACH_GIBEMALL].value = gibs[pnum] = 0; }
+				if (!records[ACH_COMBATMEDIC].complete[consoleplayer]) { records[ACH_COMBATMEDIC].value = fieldkits[pnum] = 0; }
+				if (!records[ACH_TREASUREHUNTER].complete[consoleplayer]) { records[ACH_TREASUREHUNTER].value = chests[pnum] = 0; }
+				if (!records[ACH_GOLDDIGGER].complete[consoleplayer]) { records[ACH_GOLDDIGGER].value = coins[pnum] = 0; }
+				if (!records[ACH_STAYDEAD].complete[consoleplayer]) { records[ACH_STAYDEAD].value = deadwounded[pnum] = 0; }
+				if (!records[ACH_GIBEMALL].complete[consoleplayer]) { records[ACH_GIBEMALL].value = gibs[pnum] = 0; }
 
-				UpdateRecord(pnum, a, true, records[a].complete, true);
+				UpdateRecord(pnum, a, true, records[a].complete[consoleplayer], true);
 				
 				if (self && !cheats_allowed) { self.Destroy(); } //a new handler will open on next level
 				
@@ -878,10 +878,10 @@ class AchievementTracker : StaticEventHandler
 		if (a > ACH_LASTACHIEVEMENT) { return; } // Don't let this function update STAT_ trackers
 		if (a >= records.Size()) { records.Resize(a + 1); } // Make the array bigger if it's not already big enough
 
-		if (!force && records[a].complete == complete) { return; } // Only let the player get an achievement once
+		if (!force && records[a].complete[consoleplayer] == complete) { return; } // Only let the player get an achievement once
 		else // Set the achievement as complete
 		{
-			records[a].complete = complete;
+			records[a].complete[consoleplayer] = complete;
 			if (complete) { records[a].value = time; }
 		}
 

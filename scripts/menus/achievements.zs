@@ -91,7 +91,7 @@ class AchievementSummary : BoAMenu
 		if (board) { Screen.DrawTexture(board, true, width / 2, height / 2, DTA_DestWidth, int(height * 16 / 9), DTA_DestHeight, height, DTA_CenterOffset, true); }
 
 		if (selected == -1) { selected = int(ceil(double(scrollpos) / cellheight)); }
-
+console.printfex(print_nonotify, "%i", selected);
 		int dimx = Screen.GetWidth() / 2;
 		Screen.Dim(0x0, 0.75, dimx, drawtop, drawright - dimx - int(12 * scale), drawbottom - drawtop);
 
@@ -131,11 +131,6 @@ class AchievementSummary : BoAMenu
 		ach.pos.y = max(ach.pos.y, drawtop);
 		ach.pos.y = min(ach.pos.y, drawbottom);
 
-		if (ach.size.y < cellheight && isselected)
-		{
-			if (pos.y < Screen.GetHeight() / 2) { selected++; }
-			else { selected--; }
-		}
 		if (ach.pos.y + ach.size.y <= drawtop || ach.pos.y >= drawbottom) { return; }
 
 		double bottom = pos.y + size.y;
@@ -183,13 +178,13 @@ class AchievementSummary : BoAMenu
 
 			shorttitle = shorttitle .. "...";
 		}
-		screen.DrawText(titlefont, ach.complete ? Font.CR_GOLD : Font.CR_DARKGRAY, int(pos.x + (spacing * 2 + iconwidth) * scale), int(pos.y + (size.y - titlefont.GetHeight() * titlescale) / 2), ZScriptTools.StripColorCodes(shorttitle), DTA_Alpha, alpha, DTA_ScaleX, titlescale, DTA_ScaleY, titlescale, DTA_ClipTop, drawtop, DTA_ClipBottom, drawbottom);
+		screen.DrawText(titlefont, ach.complete[consoleplayer] ? Font.CR_GOLD : Font.CR_DARKGRAY, int(pos.x + (spacing * 2 + iconwidth) * scale), int(pos.y + (size.y - titlefont.GetHeight() * titlescale) / 2), ZScriptTools.StripColorCodes(shorttitle), DTA_Alpha, alpha, DTA_ScaleX, titlescale, DTA_ScaleY, titlescale, DTA_ClipTop, drawtop, DTA_ClipBottom, drawbottom);
 
 		// Get and draw icon
 		TextureID icon = TexMan.CheckForTexture(ach.icon);
 		if (icon.IsValid())
 		{
-			screen.DrawTexture(icon, true, pos.x + (spacing / 2 + iconwidth / 2) * scale, pos.y + size.y / 2, DTA_Alpha, alpha, DTA_AlphaChannel, !ach.complete, DTA_FillColor, ach.complete ? -1 : 0xBBBBCC, DTA_DestWidth, int(iconwidth * scale), DTA_DestHeight, int(iconwidth * scale), DTA_ClipTop, drawtop, DTA_ClipBottom, drawbottom, DTA_CenterOffset, true);
+			screen.DrawTexture(icon, true, pos.x + (spacing / 2 + iconwidth / 2) * scale, pos.y + size.y / 2, DTA_Alpha, alpha, DTA_AlphaChannel, !ach.complete[consoleplayer], DTA_FillColor, ach.complete[consoleplayer] ? -1 : 0xBBBBCC, DTA_DestWidth, int(iconwidth * scale), DTA_DestHeight, int(iconwidth * scale), DTA_ClipTop, drawtop, DTA_ClipBottom, drawbottom, DTA_CenterOffset, true);
 		}
 
 		// Print the current status or completion timestamp
