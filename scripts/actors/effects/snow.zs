@@ -101,6 +101,13 @@ class SnowSpawner : EffectSpawner
 				}
 				// ========== Test end */
 				spawnPoints[i].distance = finder.Results.Distance;
+				if (finder.Results.CrossedWater) {
+					Vector3 waterPos = finder.Results.CrossedWaterPos;
+					spawnPoints[i].distance = (waterPos - spawnPos).Length();
+				} else if (finder.Results.Crossed3DWater) {
+					Vector3 waterPos = finder.Results.Crossed3DWaterPos;
+					spawnPoints[i].distance = (waterPos - spawnPos).Length();
+				}
 				break;
 			} while(true); // See lines 68 and 83
 		}

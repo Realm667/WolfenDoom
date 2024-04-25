@@ -4,7 +4,6 @@ class RainSpawner : EffectSpawner
 	Class<Actor> rainDropClass;
 	protected int spawnIndex;
 	protected Vector3 rainDropVel;
-	protected double rainDropSpeed;
 	ParticleSpawnPoint spawnPoints[SPAWN_POINTS_PER_SPAWNER]; // 48 * 32 = 1536 bytes
 
 	Default
@@ -62,9 +61,6 @@ class RainSpawner : EffectSpawner
 					Vec3Offset(xoffset, yoffset, 0);
 
 				Sector spawnSector = Level.PointInSector(spawnPos.XY);
-				if (!SnowSpawner.SpawnPointValid(spawnSector, ceilingpic)) {
-					continue;
-				}
 				spawnPos.Z = min(spawnPos.Z, spawnSector.HighestCeilingAt(spawnPos.XY) - 2.0);
 
 				// Use a hitscan to find the distance to the nearest obstacle
@@ -84,6 +80,13 @@ class RainSpawner : EffectSpawner
 				}
 				// ========== Test end */
 				spawnPoints[i].distance = finder.Results.Distance;
+				if (finder.Results.CrossedWater) {
+					Vector3 waterPos = finder.Results.CrossedWaterPos;
+					spawnPoints[i].distance = (waterPos - spawnPos).Length();
+				} else if (finder.Results.Crossed3DWater) {
+					Vector3 waterPos = finder.Results.Crossed3DWaterPos;
+					spawnPoints[i].distance = (waterPos - spawnPos).Length();
+				}
 				break;
 			} while(true); // See lines 68 and 83
 		}
@@ -102,9 +105,14 @@ class RainSpawner : EffectSpawner
 			-(args[3] ? 20 : 40) + (Args[4] / 2)
 		);
 		rainDropVel.xy = RotateVector(rainDropVel.xy, Angle);
-		rainDropSpeed = rainDropVel.Length();
+		double rainDropSpeed = rainDropVel.Length();
 
 		SetupSpawnPoints();
+		
+		for (int i = 0; i < SPAWN_POINTS_PER_SPAWNER; i++) {
+			// Set distance to time, it's less work for the CPU that way.
+			spawnPoints[i].distance = ceil(spawnPoints[i].distance / rainDropSpeed);
+		}
 
 		Super.PostBeginPlay();
 	}
@@ -135,7 +143,7 @@ class RainSpawner : EffectSpawner
 		raindropMobj.Vel = rainDropVel;
 		raindropMobj.Angle = Angle;
 		raindropMobj.Pitch = Pitch;
-		raindropMobj.ReactionTime = int(ceil(spawnPoints[spawnIndex].distance / rainDropSpeed));
+		raindropMobj.ReactionTime = int(spawnPoints[spawnIndex].distance);
 		
 		spawnIndex = (spawnIndex + 1) % SPAWN_POINTS_PER_SPAWNER;
 	}
