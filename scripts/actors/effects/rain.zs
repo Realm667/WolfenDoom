@@ -139,11 +139,15 @@ class RainSpawner : EffectSpawner
 			return;
 		}
 
-		Actor raindropMobj = Spawn(rainDropClass, spawnPoints[spawnIndex].worldPos);
+		// Adjust the z-height
+		double zoffset = 0;
+		if (curchunk) { zoffset = min(curchunk.GetPlayerZOffset() - spawnPoints[spawnIndex].worldPos.z, 0); }
+
+		Actor raindropMobj = Spawn(rainDropClass, spawnPoints[spawnIndex].worldPos + (0, 0, zoffset));
 		raindropMobj.Vel = rainDropVel;
 		raindropMobj.Angle = Angle;
 		raindropMobj.Pitch = Pitch;
-		raindropMobj.ReactionTime = int(spawnPoints[spawnIndex].distance);
+		raindropMobj.ReactionTime = int(spawnPoints[spawnIndex].distance + zoffset / rainDropVel.Length());
 		
 		spawnIndex = (spawnIndex + 1) % SPAWN_POINTS_PER_SPAWNER;
 	}

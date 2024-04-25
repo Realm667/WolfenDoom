@@ -73,6 +73,11 @@ class EffectChunk
 
 		return chunk;
 	}
+
+	double GetPlayerZOffset()
+	{
+		return maxplayerz == -0x7FFFFFFF ? 0 : maxplayerz;
+	}
 }
 
 class ChunkHandler : EventHandler
@@ -239,10 +244,10 @@ class ChunkHandler : EventHandler
 						{
 							chunk.range = range;
 							chunk.nearestplayer = players[p].camera;
+							chunk.maxplayerz = max(chunk.maxplayerz, players[p].camera.pos.z + max(192, boa_maxparticleactors));
 						}
 
 						chunk.distance = chunk.range * CHUNKSIZE;
-						chunk.maxplayerz = max(players[p].viewheight, chunk.maxplayerz);
 
 						if (c > 4)
 						{

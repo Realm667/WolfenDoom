@@ -48,7 +48,7 @@ class AshSpawner : EffectSpawner
 		Super.SpawnEffect();
 		int i = Random[Cinder](0, 3);
 		double zoffset = 0;
-		if (manager) { zoffset = min(manager.particlez - pos.z, 0); }
+		if (curchunk) { zoffset = min(curchunk.GetPlayerZOffset() - pos.z, 0); }
 		if (Random[Ash](0, 255) < Args[4]) { return; }
 		A_SpawnParticleEx(
 			ashcolors[i], // color1

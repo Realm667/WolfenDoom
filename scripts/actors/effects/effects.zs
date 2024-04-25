@@ -357,7 +357,7 @@ class EffectsManager : Thinker
 		else if (chunk)
 		{
 			dist = chunk.distance;
-			if (dist < range && chunk.infov && abs(chunk.nearestplayer.pos.z - effects[i].position.z) <= range / 2) { inrange = true; }
+			if (dist < range && chunk.infov && (effects[i].type is "EffectSpawner" || abs(chunk.nearestplayer.pos.z - effects[i].position.z) <= range / 2)) { inrange = true; }
 		}
 
 		if (inrange && !effects[i].ingame)
@@ -468,11 +468,13 @@ const SPAWN_POINTS_PER_SPAWNER = 32;
 class EffectSpawner : SwitchableDecoration
 {
 	ParticleManager manager;
+	ChunkHandler handler;
 	transient CVar switchcvar;
 	String switchvar;
 	int range;
 	bool user_unmanaged;
 	int chunkx, chunky;
+	EffectChunk curchunk;
 
 	int flags;
 
@@ -505,6 +507,8 @@ class EffectSpawner : SwitchableDecoration
 		manager = ParticleManager.GetManager();
 		if (!manager) { return; }
 
+		handler = ChunkHandler.Get();
+		if (handler) { curchunk = handler.GetChunk(pos.xy); }
 		[chunkx, chunky] = EffectChunk.GetChunk(pos.x, pos.y);
 
 		if (user_unmanaged)

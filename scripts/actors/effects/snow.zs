@@ -128,6 +128,9 @@ class SnowSpawner : EffectSpawner
 		Vector3 vel = ZScriptTools.GetTraceDirection(spawnPoints[index].angle, spawnPoints[index].pitch) * FRandom[Snow](1, 3);
 		int lifetime = int(floor(spawnPoints[index].Distance / vel.Length())) + 2; // fall into floor
 
+		double zoffset = 0;
+		if (curchunk) { zoffset = min(curchunk.GetPlayerZOffset() - spawnPoints[index].worldPos.z, 0); }
+
 		FSpawnParticleParams particleInfo;
 		particleInfo.color1 = "FFFFFF";
 		particleInfo.texture = snowflake;
@@ -135,7 +138,7 @@ class SnowSpawner : EffectSpawner
 		particleInfo.flags = 0;
 		particleInfo.lifetime = lifetime;
 		particleInfo.size = psize;
-		particleInfo.pos = spawnPoints[index].worldPos;
+		particleInfo.pos = spawnPoints[index].worldPos + (0, 0, zoffset);
 		particleInfo.vel = vel;
 		particleInfo.startalpha = 1.0;
 		Level.SpawnParticle(particleInfo);
