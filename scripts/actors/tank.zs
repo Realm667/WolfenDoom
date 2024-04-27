@@ -523,17 +523,17 @@ class TankPlayer : PlayerPawn
 			player.camera = player.mo;
 		}
 
-		if (player.usedown)
-		{
-			useholdtime++;
-			if (useholdtime == 1) { HintMessage.Init(player.mo, "TANKEXITHOLD", "+use"); }
-		}
+		if (player.usedown) { useholdtime++; }
 		else { useholdtime = 0; }
 
-		if (useholdtime >= 35)
+		if (useholdtime == 1) { HintMessage.Init(player.mo, "TANKEXITHOLD", "+use"); }
+		else if (useholdtime >= 35)
 		{
 			A_SetInventory("ShakeShaderControl", 1);
 			if (treads) {treads.usetimeout = 35; }
+
+			// Workaround for engine bug
+			PlayerPawn alt = PlayerPawn(player.mo.alternative);
 			
 			for (Inventory item = Inv; item;)
 			{
@@ -542,6 +542,9 @@ class TankPlayer : PlayerPawn
 				if (morph) { morph.Destroy(); }
 				item = next;
 			}
+
+			// Workaround for engine bug
+			WeaponSlots.SetupWeaponSlots(alt);
 		}
 	}
 
@@ -716,7 +719,7 @@ class TankMorph : PowerMorph
 		Powerup.Duration 0x7FFFFFFF;
 	}
 
-	override void InitEffect() 
+	override void InitEffect()
 	{
 		if (owner && owner.player)
 		{
@@ -904,7 +907,7 @@ class TankMorph : PowerMorph
 
 class Sherman: TankMorph
 {
-	default
+	Default
 	{
 		PowerMorph.PlayerClass "ShermanPlayer";
 	}
@@ -912,7 +915,7 @@ class Sherman: TankMorph
 
 class ShermanPlayer: TankPlayer
 {
-	default
+	Default
 	{
 		Player.MorphWeapon "Cannon75mm";
 		Player.StartItem "Cannon75mm";
@@ -930,7 +933,7 @@ class PanzerIV : TankMorph
 
 class PanzerIVPlayer: TankPlayer
 {
-	default
+	Default
 	{
 		Player.MorphWeapon "Cannon75mmKwK";
 		Player.StartItem "Cannon75mmKwK";

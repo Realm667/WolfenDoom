@@ -354,7 +354,7 @@ class EffectsManager : Thinker
 		range = clamp(min(range, boa_cullrange), 1024, 8192); // Minimum range is 1024, no matter what the CVARs are set to!  boa_cullrange overrides other CVARs.
 
 		if (!boa_culling) { inrange = true; }
-		else if (chunk)
+		else if (chunk && chunk.nearestplayer)
 		{
 			dist = chunk.distance;
 			if (dist < range && chunk.infov && (effects[i].type is "EffectSpawner" || abs(chunk.nearestplayer.pos.z - effects[i].position.z) <= range / 2)) { inrange = true; }
