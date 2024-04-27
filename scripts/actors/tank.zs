@@ -916,7 +916,6 @@ class ShermanPlayer: TankPlayer
 	{
 		Player.MorphWeapon "Cannon75mm";
 		Player.StartItem "Cannon75mm";
-		Player.WeaponSlot 1, "Cannon75mm";
 		TankPlayer.TreadsClass "US_Sherman";
 	}
 }
@@ -935,7 +934,6 @@ class PanzerIVPlayer: TankPlayer
 	{
 		Player.MorphWeapon "Cannon75mmKwK";
 		Player.StartItem "Cannon75mmKwK";
-		Player.WeaponSlot 1, "Cannon75mmKwK";
 		TankPlayer.TreadsClass "PanzerIVTreads";
 	}
 }
