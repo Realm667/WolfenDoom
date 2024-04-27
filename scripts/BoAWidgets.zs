@@ -1395,7 +1395,10 @@ class PositionWidget : Widget
 
 		// Draw player angle
 		DrawToHud.DrawText("A:", (x, y), fnt, alpha, shade:headercolor, flags:ZScriptTools.STR_TOP | ZScriptTools.STR_LEFT);
-		value = String.Format("%0.2f", player.mo.angle);
+
+		double pangle = player.mo.angle % 360;
+		if (pangle < 0) { pangle += 360; }
+		value = String.Format("%0.2f", pangle);
 		DrawToHud.DrawText(value, (x + width - fnt.StringWidth(value), y), fnt, alpha, shade:infocolor, flags:ZScriptTools.STR_TOP | ZScriptTools.STR_LEFT);
 
 		y += height;
