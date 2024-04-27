@@ -86,7 +86,7 @@ class NaziWeapon : Weapon
 					{
 						if (AimLine.special == 7) // PolyObj_DoorSwing
 						{
-							AimLine.args[1] *= 3; // Make it move fast
+							AimLine.args[1] = 64 * AimLine.args[1] / abs(AimLine.args[1]); // Make it move fast
 							AimLine.args[3] = -1; // Make it stay open forever
 						}
 
