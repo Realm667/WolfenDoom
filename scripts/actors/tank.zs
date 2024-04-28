@@ -529,6 +529,8 @@ class TankPlayer : PlayerPawn
 		if (useholdtime == 1) { HintMessage.Init(player.mo, "TANKEXITHOLD", "+use"); }
 		else if (useholdtime >= 35)
 		{
+			HintMessage.Clear("TANKEXITHOLD", 20, player);
+
 			A_SetInventory("ShakeShaderControl", 1);
 			if (treads) {treads.usetimeout = 35; }
 

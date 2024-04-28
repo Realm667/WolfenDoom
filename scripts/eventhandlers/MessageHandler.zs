@@ -77,7 +77,7 @@ class MessageBase : Thinker
 		{
 			// If a message with this name already exists, allow replacing it.
 			// Reset the ticker and set the fade-in time to zero.
-			msg = handler.FindMessage(msgname);
+			msg = handler.FindMessage(msgname, 0, mo.player);
 			if (msg)
 			{
 				msg.ticker = !!msg.ticker; // Make sure an active message is set to 1 tick; inactive is still zero
@@ -194,14 +194,14 @@ class MessageBase : Thinker
 	}
 
 	// Stop drawing the message with a specific name
-	static void Clear(String msgname, int outtime = 0)
+	static void Clear(String msgname, int outtime = 0, PlayerInfo player = null)
 	{
 		if (!msgname.length()) { return; }
 
 		let handler = MessageHandler.Get();
 		if (!handler) { return; }
 
-		MessageBase msg = handler.FindMessage(msgname);
+		MessageBase msg = handler.FindMessage(msgname, 0, player);
 		if (msg)
 		{
 			// Set up the message to fade immediately with the passed in outtime in tics
@@ -586,7 +586,7 @@ class HintMessage : MessageBase
 
 	static int Init(Actor mo, String text, String command, int priority = 64)
 	{
-		HintMessage msg = HintMessage(MessageBase.Init(mo, text, text, 20, 20, "HintMessage", priority, (multiplayer && !deathmatch) ? MSG_ALLPLAYERS : 0));
+		HintMessage msg = HintMessage(MessageBase.Init(mo, text, text, 20, 20, "HintMessage", priority, MSG_ALLOWREPLACE));
 		if (msg)
 		{
 			msg.command = command;
@@ -1141,11 +1141,17 @@ class MessageHandler : EventHandler
 	}
 
 	// Find a message with a given name
-	MessageBase FindMessage(String msgname, int start = 0)
+	MessageBase FindMessage(String msgname, int start = 0, PlayerInfo player = null)
 	{
 		for (int a = start; a < messages.Size(); a++)
 		{
-			if (messages[a].msgname == msgname) { return messages[a]; }
+			if (
+				messages[a].msgname == msgname &&
+				(
+					player == null ||
+					messages[a].player == player
+				)
+				) { return messages[a]; }
 		}
 
 		return null;
