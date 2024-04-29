@@ -77,7 +77,7 @@ class MessageBase : Thinker
 		{
 			// If a message with this name already exists, allow replacing it.
 			// Reset the ticker and set the fade-in time to zero.
-			msg = handler.FindMessage(msgname, 0, mo.player);
+			msg = handler.FindMessage(msgname, 0, (mo ? mo.player : null));
 			if (msg)
 			{
 				msg.ticker = !!msg.ticker; // Make sure an active message is set to 1 tick; inactive is still zero
