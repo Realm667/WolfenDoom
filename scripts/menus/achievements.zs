@@ -91,7 +91,7 @@ class AchievementSummary : BoAMenu
 		if (board) { Screen.DrawTexture(board, true, width / 2, height / 2, DTA_DestWidth, int(height * 16 / 9), DTA_DestHeight, height, DTA_CenterOffset, true); }
 
 		if (selected == -1) { selected = int(ceil(double(scrollpos) / cellheight)); }
-console.printfex(print_nonotify, "%i", selected);
+
 		int dimx = Screen.GetWidth() / 2;
 		Screen.Dim(0x0, 0.75, dimx, drawtop, drawright - dimx - int(12 * scale), drawbottom - drawtop);
 
