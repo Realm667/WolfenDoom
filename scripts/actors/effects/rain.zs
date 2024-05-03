@@ -4,6 +4,7 @@ class RainSpawner : EffectSpawner
 	Class<Actor> rainDropClass;
 	protected int spawnIndex;
 	protected Vector3 rainDropVel;
+	protected double spawnZoffset;
 	ParticleSpawnPoint spawnPoints[SPAWN_POINTS_PER_SPAWNER]; // 48 * 32 = 1536 bytes
 
 	Default
@@ -62,6 +63,7 @@ class RainSpawner : EffectSpawner
 
 				Sector spawnSector = Level.PointInSector(spawnPos.XY);
 				spawnPos.Z = min(spawnPos.Z, spawnSector.HighestCeilingAt(spawnPos.XY) - 2.0);
+				spawnPos.Z += spawnZoffset;
 
 				// Use a hitscan to find the distance to the nearest obstacle
 				Vector3 vel = rainDropVel.Unit();
@@ -87,6 +89,7 @@ class RainSpawner : EffectSpawner
 					Vector3 waterPos = finder.Results.Crossed3DWaterPos;
 					spawnPoints[i].distance = (waterPos - spawnPos).Length();
 				}
+				spawnPoints[i].distance = ceil(spawnPoints[i].distance / rainDropVel.Length());
 				break;
 			} while(true); // See lines 68 and 83
 		}
@@ -105,14 +108,8 @@ class RainSpawner : EffectSpawner
 			-(args[3] ? 20 : 40) + (Args[4] / 2)
 		);
 		rainDropVel.xy = RotateVector(rainDropVel.xy, Angle);
-		double rainDropSpeed = rainDropVel.Length();
 
 		SetupSpawnPoints();
-		
-		for (int i = 0; i < SPAWN_POINTS_PER_SPAWNER; i++) {
-			// Set distance to time, it's less work for the CPU that way.
-			spawnPoints[i].distance = ceil(spawnPoints[i].distance / rainDropSpeed);
-		}
 
 		Super.PostBeginPlay();
 	}
@@ -140,14 +137,18 @@ class RainSpawner : EffectSpawner
 		}
 
 		// Adjust the z-height
-		double zoffset = 0;
-		if (curchunk) { zoffset = min(curchunk.GetPlayerZOffset() - spawnPoints[spawnIndex].worldPos.z, 0); }
+		double chunkZoffset = 0;
+		if (curchunk) { chunkZoffset = min(curchunk.GetPlayerZOffset() - spawnPoints[spawnIndex].worldPos.z, 0); }
+		if (spawnZoffset != chunkZoffset) {
+			spawnZoffset = chunkZoffset;
+			SetupSpawnPoints();
+		}
 
-		Actor raindropMobj = Spawn(rainDropClass, spawnPoints[spawnIndex].worldPos + (0, 0, zoffset));
+		Actor raindropMobj = Spawn(rainDropClass, spawnPoints[spawnIndex].worldPos);
 		raindropMobj.Vel = rainDropVel;
 		raindropMobj.Angle = Angle;
 		raindropMobj.Pitch = Pitch;
-		raindropMobj.ReactionTime = int(spawnPoints[spawnIndex].distance + zoffset / rainDropVel.Length());
+		raindropMobj.ReactionTime = int(spawnPoints[spawnIndex].distance);
 		
 		spawnIndex = (spawnIndex + 1) % SPAWN_POINTS_PER_SPAWNER;
 	}

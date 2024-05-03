@@ -10,6 +10,7 @@ class SnowSpawner : EffectSpawner
 {
 	// int particleLifetime;
 	ParticleSpawnPoint spawnPoints[SPAWN_POINTS_PER_SPAWNER]; // 48 * 32 = 1536 bytes
+	double spawnZoffset;
 
 	Default
 	{
@@ -83,6 +84,7 @@ class SnowSpawner : EffectSpawner
 					continue;
 				}
 				spawnPos.Z = min(spawnPos.Z, spawnSector.HighestCeilingAt(spawnPos.XY) - 2.0);
+				spawnPos.Z += spawnZoffset;
 
 				// Use a hitscan to find the distance to the nearest obstacle
 				BoASolidSurfaceFinderTracer finder = new("BoASolidSurfaceFinderTracer");
@@ -120,16 +122,20 @@ class SnowSpawner : EffectSpawner
 		if (Random[Snow](0, 255) < Args[1]) {
 			return;
 		}
+		
+		double chunkZoffset = 0;
+		if (spawnZoffset != chunkZoffset) {
+			spawnZoffset = chunkZoffset;
+			SetupSpawnPoints();
+		}
+		int index = Random[SnowSpawner](0, SPAWN_POINTS_PER_SPAWNER - 1);
+		if (curchunk) { chunkZoffset = min(curchunk.GetPlayerZOffset() - spawnPoints[index].worldPos.z, 0); }
 
 		TextureID snowflake = TexMan.CheckForTexture("SNOWA0", TexMan.Type_Sprite);
 		double psize = 3.0; // Max of sprite width and height * SnowParticle scale
 
-		int index = Random[SnowSpawner](0, SPAWN_POINTS_PER_SPAWNER - 1);
 		Vector3 vel = ZScriptTools.GetTraceDirection(spawnPoints[index].angle, spawnPoints[index].pitch) * FRandom[Snow](1, 3);
 		int lifetime = int(floor(spawnPoints[index].Distance / vel.Length())) + 2; // fall into floor
-
-		double zoffset = 0;
-		if (curchunk) { zoffset = min(curchunk.GetPlayerZOffset() - spawnPoints[index].worldPos.z, 0); }
 
 		FSpawnParticleParams particleInfo;
 		particleInfo.color1 = "FFFFFF";
@@ -138,7 +144,7 @@ class SnowSpawner : EffectSpawner
 		particleInfo.flags = 0;
 		particleInfo.lifetime = lifetime;
 		particleInfo.size = psize;
-		particleInfo.pos = spawnPoints[index].worldPos + (0, 0, zoffset);
+		particleInfo.pos = spawnPoints[index].worldPos;
 		particleInfo.vel = vel;
 		particleInfo.startalpha = 1.0;
 		Level.SpawnParticle(particleInfo);
