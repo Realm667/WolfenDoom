@@ -81,6 +81,7 @@ class SkyboxDayNight : SkyboxMoon
 	{
 		//$Title Sun & Moon (skybox)
 		RenderStyle "Add";
+		RenderRadius 256;
 	}
 	States
 	{
