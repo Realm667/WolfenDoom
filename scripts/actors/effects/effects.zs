@@ -71,6 +71,7 @@ class EffectsManager : Thinker
 	static bool CanBeCulled(Actor effect, int force = 0)
 	{
 		if (!effect) { return false; }
+		if (effect.bMissile) { return false; }
 		if (effect is "CullActorBase" && CullActorBase(effect).culllevel > boa_culllevel) { return false; }
 		if (!(force & FORCE_TID) && (effect.tid || effect.master)) { return false; } // Don't add effects with a tid or a master, because we can't guarantee they'll be spawned back in when they are activated/deactivated
 		if (!(force & FORCE_SOLID) && (!effect.bNoDamage && effect.bSolid && !effect.bNoInteraction)) { return false; } // Only add non-solid or non-interactive objects
