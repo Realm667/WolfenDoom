@@ -669,7 +669,12 @@ class InteractiveItem : PuzzleItem
 
 		if (markertype.length() && G_SkillPropertyInt(SKILLP_ACSReturn) < 3)
 		{
-			marker = Spawn(markertype, pos);
+			Vector3 markerpos = pos;
+
+			// Offset the marker slightly if the item is rotated flush with a wall
+			if (pitch == 90 || pitch == 270) { markerpos += (RotateVector((8, 0), angle), 0); }
+
+			marker = Spawn(markertype, markerpos);
 			marker.master = self;
 		}
 
