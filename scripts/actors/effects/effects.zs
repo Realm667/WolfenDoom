@@ -213,7 +213,8 @@ class EffectsManager : Thinker
 		{
 			CullAllEffects(); // Cull everything at map start
 		}
-		else if (level.maptime > 2 && lastcull < level.time - 5)
+
+		if (level.maptime >= 2 && (!lastcull || lastcull < level.time - 5))
 		{
 			bool culled;
 			int cx, cy;
@@ -283,7 +284,7 @@ class EffectsManager : Thinker
 				if (recalculate || chunks[c].culled || remove) { count += CullChunk(chunks[c], remove); }
 				
 				// Check against the actor limit and stop processing chunks for this tick if we've exceeded the cap
-				if (boa_cullactorlimit > 0 && count > boa_cullactorlimit && !retx && !rety)
+				if (level.time > 5 && boa_cullactorlimit > 0 && count > boa_cullactorlimit && !retx && !rety)
 				{
 					ret = false;
 					retx = chunks[c].x;
@@ -401,8 +402,11 @@ class EffectsManager : Thinker
 				if (effect is "CullActorBase")
 				{
 					CullActorBase(effect).bWasCulled = true;
-					effect.A_SetRenderStyle(0.0, STYLE_Translucent);
-					CullActorBase(effect).targetalpha = effect.Default.alpha;
+					if (level.time > 5)
+					{
+						effect.A_SetRenderStyle(0.0, STYLE_Translucent);
+						CullActorBase(effect).targetalpha = effect.Default.alpha;
+					}
 				}
 				else if (effect is "AlertLight") { AlertLight(effect).wasculled = true; }
 				else if (effect is "EffectBase") { EffectBase(effect).wasculled = true; }

@@ -165,14 +165,26 @@ class ChunkHandler : EventHandler
 		}
 	}
 
+	// Get the chunks surrounding the player, sorted in order from closest to farthest
 	void GetChunksInRadius(Vector2 pos, double radius, in out Array<EffectChunk> foundchunks)
 	{
-		for (int x = int(pos.x - radius); x <= int(pos.x + radius); x += CHUNKSIZE)
+		int chunkx, chunky;
+		[chunkx, chunky] = EffectChunk.GetChunk(pos.x, pos.y);
+
+		for (int i = 0; i < int(ceil(radius / CHUNKSIZE)); i++)
 		{
-			for (int y = int(pos.y - radius); y <= int(pos.y + radius); y += CHUNKSIZE)
+			for (int x = chunkx - i; x <= chunkx + i; x++)
 			{
-				EffectChunk chunk = EffectChunk.FindChunk(x, y, chunks, false);
-				foundchunks.Push(chunk);
+				for (int y = chunky - i; y <= chunky + i; y++)
+				{
+					if (
+						(x != chunkx - i && x != chunkx + i) &&
+						(y != chunky - i && y != chunky + i)
+					) { continue; }
+
+					EffectChunk chunk = EffectChunk.FindChunk(x, y, chunks);
+					foundchunks.Push(chunk);
+				}
 			}
 		}
 	}
