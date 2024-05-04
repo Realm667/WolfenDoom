@@ -83,6 +83,9 @@ class BoAPlayer : PlayerPawn
 	AchievementTracker tracker;
 	BoAFindHitPointTracer hittracer;
 	static const int flyspeed[] = { 1 * 256, 3 * 256 };
+	Sector cursec;
+	double waterheight;
+	bool underwater;
 
 	Default
 	{
@@ -288,6 +291,14 @@ class BoAPlayer : PlayerPawn
 		}
 
 		Super.Tick();
+
+		cursec = cursector;
+		if (waterlevel)
+		{
+			[waterheight, underwater, cursec] = Buoyancy.GetWaterHeight(self);
+			floorpic = cursec.GetTexture(Sector.floor);
+			ceilingpic = cursec.GetTexture(Sector.ceiling);
+		}
 	}
 
 	override void TickPSprites()
@@ -1307,13 +1318,9 @@ class BoAPlayer : PlayerPawn
 
 		if (mod == "Pest") { AchievementTracker.CheckAchievement(PlayerNumber(), AchievementTracker.ACH_PESTS); }
 
-		double waterlevel;
-		bool underwater;
-		Sector watersector;
-		[waterlevel, underwater, watersector] = Buoyancy.GetWaterHeight(self);
 		if (underwater && (mod == "None" || mod == "Drowning"))
 		{
-			String texture = TexMan.GetName(watersector.GetTexture(Sector.ceiling)); 
+			String texture = TexMan.GetName(cursec.GetTexture(Sector.ceiling)); 
 			mod = GetTextureMod(texture, mod);
 		}
 		else if (mod == "None") { mod = GetTextureMod(TexMan.GetName(floorpic), mod); }
@@ -1331,7 +1338,7 @@ class BoAPlayer : PlayerPawn
 		Super.Die(source, inflictor, dmgflags, MeansOfDeath);
 	}
 
-	Name GetTextureMod(String texture, Name default = "None")
+	static Name GetTextureMod(String texture, Name default = "None")
 	{
 		if (texture ~== "WATR_X98") { return "MutantPoisonAmbience"; }
 		else if (

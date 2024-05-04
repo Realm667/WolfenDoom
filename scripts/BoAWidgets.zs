@@ -1960,15 +1960,22 @@ class ActiveEffectWidget : Widget
 			}
 		}
 
-		if (
-			player.mo.pos.z == player.mo.floorz && 
-			!player.mo.waterlevel &&
-			player.mo.cursector.damagetype != "" &&
-			(
-				player.mo.cursector.damagetype == "UndeadPoisonAmbience" ||
-				player.mo.cursector.damagetype == "MutantPoisonAmbience"
-			)
-		) { count++; }
+		Sector cursec = player.mo.CurSector;
+		Name mod = cursec.damagetype;
+
+		if (BoAPlayer(player.mo))
+		{
+			cursec = BoAPlayer(player.mo).cursec;
+			mod = cursec.damagetype;
+
+			if (player.mo.waterlevel && ((player.damagecount && mod == "None") || mod == "Drowning"))
+			{
+				mod = GetTextureMod(TexMan.GetName(player.mo.ceilingpic), mod);
+			}
+			else if (player.damagecount && mod == "None") { mod = GetTextureMod(TexMan.GetName(player.mo.floorpic), mod); }
+		}
+
+		if ((mod != "None" || player.LastDamageType) && player.damagecount) { count++; }
 		else if (player.poisoncount) { count++; }
 
 		if (player.hazardcount) { count++; }
@@ -1995,60 +2002,81 @@ class ActiveEffectWidget : Widget
 			}
 		}
 
-		if (
-			player.mo.pos.z == player.mo.floorz && 
-			!player.mo.waterlevel &&
-			player.mo.cursector.damagetype != "" &&
-			(
-				player.mo.cursector.damagetype == "UndeadPoisonAmbience" ||
-				player.mo.cursector.damagetype == "MutantPoisonAmbience"
-			)
-		)
+		if ((mod != "None" || player.LastDamageType) && player.damagecount)
 		{
-			DrawEffectIcon(TexMan.CheckForTexture("ICO_POIS"), 1, 1, (drawposx, drawposy), GetPoisonColor(player.mo.cursector.damagetype));
+			if (mod == "None") { mod = player.LastDamageType; }
+			DrawEffectIcon(GetDamageIcon(mod), 1, 1, (drawposx, drawposy), GetDamageColor(mod));
 			drawposx += spacing;
 		}
 		else if (player.poisoncount)
 		{
-			DrawEffectIcon(TexMan.CheckForTexture("ICO_POIS"), player.poisoncount, 100, (drawposx, drawposy), GetPoisonColor(player.poisonpaintype));
+			DrawEffectIcon(GetDamageIcon(player.poisonpaintype), player.poisoncount, 100, (drawposx, drawposy), GetDamageColor(player.poisonpaintype));
 			drawposx += spacing;
 		}
 
 		if (player.hazardcount)
 		{
-			DrawEffectIcon(TexMan.CheckForTexture("ICO_POIS"), min(1, player.hazardcount), 1, (drawposx, drawposy), GetPoisonColor(player.hazardtype));
+			DrawEffectIcon(GetDamageIcon(player.hazardtype), min(1, player.hazardcount), 1, (drawposx, drawposy), GetDamageColor(player.hazardtype));
 			drawposx += spacing;
 		}
 
 		if (player.mo.poisondurationreceived)
 		{
-			DrawEffectIcon(TexMan.CheckForTexture("ICO_POIS"), player.mo.poisondurationreceived, int(player.mo.poisonperiodreceived ? 60.0 / player.mo.poisonperiodreceived : 60.0), (drawposx, drawposy), GetPoisonColor(player.mo.poisondamagetypereceived));
+			DrawEffectIcon(GetDamageIcon(player.mo.poisondamagetypereceived), player.mo.poisondurationreceived, int(player.mo.poisonperiodreceived ? 60.0 / player.mo.poisonperiodreceived : 60.0), (drawposx, drawposy), GetDamageColor(player.mo.poisondamagetypereceived));
 			drawposx += spacing;
 		}
 
 		return size;
 	}
 
-	virtual Color GetPoisonColor(Name poisontype)
+	virtual Color GetDamageColor(Name damagetype)
 	{
-		if (poisontype == "MutantPoison" || poisontype == "MutantPoisonAmbience")
+		if (damagetype == "MutantPoison" || damagetype == "MutantPoisonAmbience")
 		{
 			return 0xFF6400C8;
 		}
-		else if (poisontype == "UndeadPoison" || poisontype == "UndeadPoisonAmbience")
+		else if (damagetype == "UndeadPoison" || damagetype == "UndeadPoisonAmbience")
 		{
 			return 0xFF005A40;
 		}
+		else if (damagetype == "IceWater" || (damagetype == "Drowning" && player.LastDamageType == "IceWater"))
+		{
+			return 0xFFDDDDDD;
+		}
+		else if (damagetype == "Laser" || damagetype == "Fire" || damagetype == "Lava" || (damagetype == "Drowning" && player.LastDamageType == "Lava"))
+		{
+			return 0xFFDD5500;
+		}
+		else if (damagetype == "Drowning")
+		{
+			return 0xFF456096;
+		}
+		else if (damagetype == "Poison" || damagetype == "PoisonCloud" || damagetype == "AstroPoison")
+		{
+			return 0xFF0A6600;
+		}
 
-		return 0x0A6600;
+		return 0xFFAAAAAA;
+	}
+	
+	virtual TextureID GetDamageIcon(Name damagetype)
+	{
+		TextureID tex;
+
+		if (damagetype == "IceWater" || (damagetype == "Drowning" && player.LastDamageType == "IceWater")) { tex = TexMan.CheckForTexture("ICO_FREZ"); }
+		else if (damagetype == "Laser" || damagetype == "Fire" || damagetype == "Lava" || (damagetype == "Drowning" && player.LastDamageType == "Lava")) { tex = TexMan.CheckForTexture("ICO_FIRE"); }
+		else if (damagetype == "Drowning") { tex = TexMan.CheckForTexture("ICO_DRWN"); }
+		else if (damagetype == "MutantPoison" || damagetype == "MutantPoisonAmbience" || damagetype == "UndeadPoison" || damagetype == "UndeadPoisonAmbience" || damagetype == "Poison" || damagetype == "PoisonCloud" || damagetype == "AstroPoison") { tex = TexMan.CheckForTexture("ICO_POIS"); }
+
+		return tex;
 	}
 
 	void DrawEffectIcon(TextureID icon, int duration, int maxduration, Vector2 pos, Color clr = 0xDDDDDD)
 	{
-		DrawToHUD.DrawTimer(duration, maxduration, clr, (pos.x, pos.y), 0.5);
-
 		if (icon.IsValid())
 		{
+			DrawToHUD.DrawTimer(duration, maxduration, clr, (pos.x, pos.y), 0.5);
+
 			Vector2 texsize = TexMan.GetScaledSize(icon);
 			if (texsize.x > iconsize || texsize.y > iconsize)
 			{
@@ -2063,10 +2091,28 @@ class ActiveEffectWidget : Widget
 					texsize.y = texsize.x;
 				}
 			}
-			else { texsize = (1.0, 1.0); }
+			else { texsize = (-1, -1); }
 
-			StatusBar.DrawTexture(icon, (pos.x, pos.y), StatusBar.DI_ITEM_CENTER, alpha * 0.85, scale:0.75 * texsize);
+			DrawToHud.DrawTexture(icon, pos, alpha * 0.85, 0.75, -1, texsize, DrawToHUD.TEX_CENTERED);
 		}
+	}
+
+	virtual Name GetTextureMod(String texture, Name default = "None")
+	{
+		if (texture ~== "WATR_X98") { return "MutantPoisonAmbience"; }
+		else if (
+			texture.Left(5) ~== "WATR_" || 
+			texture.Left(5) ~== "SLDG_" || 
+			texture.Left(6) ~== "HIACID" || 
+			texture.Left(6) ~== "HIWATR" || 
+			texture ~== "AZTC_WTR"
+		)
+		{
+			return "Drowning";
+		}
+		else if (texture.Left(5) ~== "LAVA_") { return "Lava"; }
+
+		return default;
 	}
 }
 
