@@ -129,7 +129,7 @@ class LaserShooterNF : LaserShooter
 
 	Default
 	{
-		//$Title Laserbeam Shooter, No Flares (switchable, 3 colors, 4 args)
+		//$Title Laserbeam Shooter, Flares on Both Ends (switchable, 3 colors, 4 args)
 	}
 
 	States
@@ -146,38 +146,29 @@ class LaserShooterNF : LaserShooter
 		Super.PostBeginPlay();
 	}
 
-	override void Tick()
+	override void A_FireLaser(int damage, sound snd, double zoffset, bool drawdecal, double alpha, double volume)
 	{
-		Super.Tick();
+		Super.A_FireLaser(damage, snd, zoffset, drawdecal, alpha, volume);
+
+		// Second flare actor at origin
+		if (!flare2)
+		{
+			flare2 = Spawn(flareclass, pos, ALLOW_REPLACE);
+			if (flare2) { flare2.master = beam; }
+		}
 
 		if (flare2)
 		{
 			flare2.frame = Random[Laser](0, 5);
-			flare2.alpha = flare2.Default.alpha * alpha;
+			flare2.alpha = flare2.Default.alpha * alpha;		
 		}
-	}
-
-	override void Activate(Actor activator)
-	{
-		if (!args[3]) { A_StartSound("tesla/loop", CHAN_6, CHANF_LOOPING, 0.2); }
-
-		// Second flare actor at origin
-		flare2 = Spawn(flareclass, pos, ALLOW_REPLACE);
-		if (flare2) { flare2.master = beam; }
-
-		bDormant = false;
-		SetStateLabel("Active");
 	}
 
 	override void Deactivate(Actor activator)
 	{
-		A_StopSound(CHAN_6);
-		if (beam) { beam.Destroy(); }
-		if (flare) { flare.Destroy(); }
 		if (flare2) { flare2.Destroy(); }
 
-		bDormant = true;
-		SetStateLabel("Inactive");
+		Super.Deactivate(activator);
 	}
 }
 
