@@ -207,25 +207,20 @@ class EffectsManager : Thinker
 		if (!boa_culling) { return; }
 		if (!handler) { handler = ChunkHandler.Get(); }
 
-		handler.UpdateChunks();
+		if (handler) { handler.UpdateChunks(); }
 
-		if (level.maptime == 2)
+		if (level.maptime > 1 && (!lastcull || lastcull < level.time - 5))
 		{
-			CullAllEffects(); // Cull everything at map start
-		}
+			// Cull everything at map start
+			if (level.maptime == 2) { CullAllEffects(); }
 
-		if (level.maptime >= 2 && (!lastcull || lastcull < level.time - 5))
-		{
 			bool culled;
 			int cx, cy;
 			[culled, cx, cy] = CullEffects(true);
 
-			if (boa_debugculling && !culled)
-			{
-				console.printf("Last culled: %i, %i", cx, cy);
-			}
-
 			lastcull = level.time;
+
+			if (boa_debugculling && !culled) { console.printf("Last culled: %i, %i", cx, cy); }
 		}
 	}
 
