@@ -122,6 +122,11 @@ class ParticleManager : EventHandler
 			if (!effectmanager) { effectmanager = EffectsManager.GetManager(); }
 			BulletTracer(e.thing).manager = effectmanager;
 		}
+
+		if (boa_noprojectilegravity && (e.Thing is "BulletTracer" || (e.Thing is "GrenadeBase" && e.Thing.DamageType == "Rocket")))
+		{
+			e.Thing.bNoGravity = true;
+		}
 	}
 
 	static ParticleManager GetManager()
