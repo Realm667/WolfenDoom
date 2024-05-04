@@ -300,6 +300,7 @@ class Base : Actor
 	Actor flare;
 	double dlvisibility;
 	bool step;
+	int cullinterval;
 
 	FlagDef CANSQUISH:flags, 0;
 
@@ -918,14 +919,7 @@ class Base : Actor
 
 	void A_PlayStepSound(int type = Base.Normal, double stepvolume = 1.0, double typevolume = 1.0)
 	{
-		if (manager)
-		{
-			int interval;
-			bool forceculled;
-
-			[interval, forceculled] = manager.Culled(pos.xy);
-			if (forceculled || interval > 3) { return; }
-		}
+		if (cullinterval > min(3, boa_thinkrange)) { return; }
 
 		if (pos.z == max(curSector.NextLowestFloorAt(pos.x, pos.y, pos.z), floorz)) // If on the floor
 		{
@@ -954,13 +948,11 @@ class Base : Actor
 
 	override void Tick()
 	{
-		if (manager)
-		{
-			int cullinterval = manager.Culled(pos.xy);
-			if (cullinterval > 8 || cullinterval == MAXINTERVAL) { Thinker.Tick(); return; }
-			else if (cullinterval > 6) { Super.Tick(); return; }
-		}
-		else { manager = EffectsManager.GetManager(); }
+		if (!manager) { manager = EffectsManager.GetManager(); }
+		if (manager && level.time % (1 + interval / 7) == 0) { cullinterval = manager.Culled(pos.xy); }
+
+		if (cullinterval > boa_thinkrange + 4) { return; }
+		else if (cullinterval > boa_thinkrange + 2) { Super.Tick(); return; }
 
 		if (!pmanager) { pmanager = ParticleManager.GetManager(); }
 
@@ -1144,6 +1136,13 @@ class Base : Actor
 		}
 
 		Super.Tick();
+	}
+
+	override void BeginPlay()
+	{
+		interval = Random[pollinterval](35, 140);
+
+		Super.BeginPlay();
 	}
 
 	override void PostBeginPlay()
@@ -1885,6 +1884,7 @@ class Nazi : Base
 
 	void A_NaziLook()
 	{
+		if (cullinterval > boa_thinkrange + 4) { return; }
 		if (bDormant || dodging || health <= 0) { return; }
 
 		if (level.time > 35)
@@ -1969,6 +1969,7 @@ class Nazi : Base
 
 	void A_NaziChase(statelabel melee = "None", statelabel missile = "None", int flags = 0)
 	{
+		if (cullinterval > boa_thinkrange + 4) { return; }
 		if (dodging || health <= 0) { return; }
 		if (bDormant) { SetState(SpawnState); return; } // Dormant actors should not wake up even if they're somehow placed in their See state
 
@@ -2397,7 +2398,7 @@ class Nazi : Base
 		HealState = FindState("Heal");
 		IdleState = FindState("Idle");
 
-		interval = Random[pollinterval](35, 140);
+		Super.BeginPlay();
 	}
 
 	override void PostBeginPlay()
@@ -2891,15 +2892,10 @@ class Nazi : Base
 
 	override void Tick()
 	{
-		if (manager)
-		{
-			int cullinterval = manager.Culled(pos.xy);
-			if (cullinterval > 8 || cullinterval == MAXINTERVAL) { Thinker.Tick(); return; }
-			else if (cullinterval > 6) { Actor.Tick(); return; }
-			else if (cullinterval > 4) { Super.Tick(); return; }
-		}
-		else { manager = EffectsManager.GetManager(); }
+		if (!manager) { manager = EffectsManager.GetManager(); }
+		if (manager && level.time % (1 + interval / 7) == 0) { cullinterval = manager.Culled(pos.xy); }
 
+		if (cullinterval > boa_thinkrange) { Super.Tick(); return; }
 		if (IsFrozen() || !interval) { return; }
 
 		if (wasused)
