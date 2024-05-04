@@ -604,7 +604,7 @@ class HintMessage : MessageBase
 
 	override double DrawMessage()
 	{
-		bool fullscreen = !!(flags & MSG_FULLSCREEN && screenblocks > 10);
+		bool fullscreen = !!(player.mo.FindInventory("CutsceneEnabled") || (flags & MSG_FULLSCREEN && screenblocks > 10));
 
 		Vector2 scale;
 		if (fullscreen) { scale = StatusBar.GetHUDScale(); }
@@ -661,7 +661,7 @@ class HintMessage : MessageBase
 
 		if (fullscreen)
 		{
-			pos.y -= destsize.y * handler.bottomoffset + 12;
+			pos.y -= destsize.y * handler.bottomoffset + 8;
 		}
 		else
 		{

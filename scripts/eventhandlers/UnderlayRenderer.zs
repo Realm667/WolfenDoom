@@ -159,10 +159,20 @@ class UnderlayRenderer : EventHandler
 			int height = int(Screen.GetHeight());
 			int width = int(Screen.GetWidth());
 
-			screen.DrawTexture(image, true, o.offsets.x, o.offsets.y, DTA_DestWidth, width, DTA_DestHeight, height, DTA_Alpha, drawalpha, DTA_Rotate, o.angle, DTA_AlphaChannel, alphachannel, DTA_FillColor, o.clr);
+			// Use Dim rather than actually drawing the MOVIEHUD graphic for more reliable effects
+			if (o.image ~== "MOVIEHUD")
+			{
+				int h = 46; // Cutscene letterboxing is shorter so that title text looks better
+				Screen.Dim(0x000000, drawalpha * 0.7, 0, 0, width, h);
+				Screen.Dim(0x000000, drawalpha * 0.7, 0, Screen.GetHeight() - h, width, h);
+			}
+			else
+			{
+				screen.DrawTexture(image, true, o.offsets.x, o.offsets.y, DTA_DestWidth, width, DTA_DestHeight, height, DTA_Alpha, drawalpha, DTA_Rotate, o.angle, DTA_AlphaChannel, alphachannel, DTA_FillColor, o.clr);
 			
-			// Darken the mask graphic in dark sectors by drawing it again as a black silhouette.
-			if (blackalpha && o.flags & Overlay.LightEffects) { screen.DrawTexture(image, true, o.offsets.x, o.offsets.y, DTA_DestWidth, width, DTA_DestHeight, height, DTA_Alpha, blackalpha, DTA_Rotate, o.angle, DTA_FillColor, 0); }
+				// Darken the mask graphic in dark sectors by drawing it again as a black silhouette.
+				if (blackalpha && o.flags & Overlay.LightEffects) { screen.DrawTexture(image, true, o.offsets.x, o.offsets.y, DTA_DestWidth, width, DTA_DestHeight, height, DTA_Alpha, blackalpha, DTA_Rotate, o.angle, DTA_FillColor, 0); }
+			}
 		}
 	}
 
@@ -269,10 +279,10 @@ class Overlay : Thinker
 
 class LoadScreen : StaticEventHandler
 {
-	TextureID LoadingGraphic, AltGraphic, BackgroundGraphic, FadeGraphic;
+	TextureID LoadingGraphic, AltGraphic, BackgroundGraphic;
 	transient Font fnt;
 	int loading, unloading;
-	Vector2 size, bgsize, fadesize;
+	Vector2 size, bgsize;
 	String loadstring;
 	int loaded;
 
@@ -281,11 +291,9 @@ class LoadScreen : StaticEventHandler
 		LoadingGraphic = TexMan.CheckForTexture("graphics/general/Loading.png", TexMan.Type_Any);
 		AltGraphic = TexMan.CheckForTexture("graphics/general/M_DOOM.png", TexMan.Type_Any);
 		BackgroundGraphic = TexMan.CheckForTexture("graphics/general/Loading0.png", TexMan.Type_Any);
-		FadeGraphic = TexMan.CheckForTexture("graphics/hud/general/MOVIEHUD.png", TexMan.Type_Any);
 
 		[size.x, size.y] = TexMan.GetSize(LoadingGraphic);
 		[bgsize.x, bgsize.y] = TexMan.GetSize(BackgroundGraphic);
-		[fadesize.x, fadesize.y] = TexMan.GetSize(FadeGraphic);
 
 		fnt = BigFont;
 	}
@@ -316,7 +324,7 @@ class LoadScreen : StaticEventHandler
 		if (level.levelnum >= 151 && level.levelnum <= 153) { return; }
 		if (level.time < 5) { return; }
 
-		double scale = Screen.GetHeight() / 720;
+		double scale = 1.0;
 
 		int x = int(Screen.GetWidth() - 176 * scale / 2);
 		int y = int(Screen.GetHeight() - 128 * scale / 2);
@@ -327,7 +335,10 @@ class LoadScreen : StaticEventHandler
 
 			if (!players[consoleplayer].mo.FindInventory("CutsceneEnabled")) // Only draw letterbox if there's no cutscene.
 			{
-				screen.DrawTexture(FadeGraphic, false, 0, 0, DTA_FullScreenEx, 2, DTA_Alpha, alpha / 0.6);
+				int w = Screen.GetWidth();
+				int h = 56;
+				Screen.Dim(0x000000, alpha * 0.7, 0, 0, w, h);
+				Screen.Dim(0x000000, alpha * 0.7, 0, Screen.GetHeight() - h, w, h);
 			}
 
 			screen.DrawTexture(BackgroundGraphic, true, x, y, DTA_Alpha, alpha / 0.6, DTA_CenterOffset, true, DTA_DestWidth, int(bgsize.x * scale), DTA_DestHeight, int(bgsize.y * scale));
@@ -341,7 +352,10 @@ class LoadScreen : StaticEventHandler
 
 			if (!players[consoleplayer].mo.FindInventory("CutsceneEnabled")) // Only draw letterbox and show map title if there's no cutscene.
 			{
-				screen.DrawTexture(FadeGraphic, false, 0, 0, DTA_FullScreenEx, 2, DTA_Alpha, alpha / 0.6);
+				int w = Screen.GetWidth();
+				int h = 56;
+				Screen.Dim(0x000000, alpha * 0.7, 0, 0, w, h);
+				Screen.Dim(0x000000, alpha * 0.7, 0, Screen.GetHeight() - h, w, h);
 
 				// Adjust position for screen widgets and forced hud ratio
 				int offset = 16;
