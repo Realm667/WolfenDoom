@@ -1,6 +1,15 @@
 // Standard script to set up a standard start-of-level cutscene
 script "CinematicStart" (void)
 {
+	if (GetCVar("boa_skipcinematics"))
+	{
+		ACS_NamedTerminate("CUTSCENE_START", 0);
+		ACS_NamedTerminate("CUTSCENE_TEXT", 0);
+		ACS_NamedExecute("CinematicEnd", 0, true);
+
+		Terminate;
+	}
+
 	GiveActorInventory(0, "CutsceneEnabled", 1);
 	FadeToBlack(0, 0, 70);
 	HideMap(true);
@@ -11,14 +20,14 @@ script "CinematicStart" (void)
 
 // Standard script to restore normal play after a cutscene
 // Also calls the "CUTSCENE_STOP" script to allow the local level to run actions on cutscene completion
-script "CinematicEnd" (void)
+script "CinematicEnd" (int accelerate)
 {
 	ACS_NamedTerminate("CinematicSkipCheck", 0);		
 
-	FadeToBlack(140, 70, 70);
+	if (!accelerate) { FadeToBlack(140, 70, 70); }
 	ClearMessage();
 
-	Delay(3 * 35);
+	if (!accelerate) { Delay(3 * 35); }
 
 	Overlay("MOVIEHUD", false); // Disable the two commonly used overlays automatically
 	Overlay("MOVIEHD5", false);
