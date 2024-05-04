@@ -52,74 +52,42 @@ class BaseOrb : ParticleBase
 	}
 }
 
-class GreenCirclePad: Actor
+class GreenCirclePad: EffectSpawner
 {
 	Default
 	{
-	//$Category Special Effects (BoA)
-	//$Title CirclePad (green)
-	//$Color 12
-	//$Arg0 "Nothing"
-	//$Arg0Tooltip "Does nothing"
-	//$Arg1 "Radius"
-	//$Arg1Tooltip "Controls the size of the area. 32, for example, spawns in a 64x64 diameter circle."
-	//$Arg2 "Speed"
-	//$Arg2Tooltip "Controls the speed of the rings (can also be negative if you want them to move downwards instead of upwards)"
-	-SOLID
-	+CLIENTSIDEONLY
-	+NOBLOCKMAP
-	+NOCLIP
-	+NOGRAVITY
-	+NOINTERACTION
-	+NOSECTOR
+		//$Category Special Effects (BoA)
+		//$Title CirclePad (green)
+		//$Color 12
+		//$Arg0 "Nothing"
+		//$Arg0Tooltip "Does nothing"
+		//$Arg1 "Radius"
+		//$Arg1Tooltip "Controls the size of the area. 32, for example, spawns in a 64x64 diameter circle."
+		//$Arg2 "Speed"
+		//$Arg2Tooltip "Controls the speed of the rings (can also be negative if you want them to move downwards instead of upwards)"
+		+EffectSpawner.ALLOWTICKDELAY
 	}
+
 	States
 	{
-	Spawn:
-	Active:
-		TNT1 A 0;
-		TNT1 A 0 A_CheckSightOrRange(512, "Inactive");
-		TNT1 A 0 A_SpawnItemEx("BaseOrb", Args[1], 0, 0, 0, 0, Args[2], 0, 129, 0);
-		"####" A 0 A_SpawnItemEx("BaseOrb", Args[1], 0, 0, 0, 0, Args[2], 10, 129, 0);
-		"####" A 0 A_SpawnItemEx("BaseOrb", Args[1], 0, 0, 0, 0, Args[2], 20, 129, 0);
-		"####" A 0 A_SpawnItemEx("BaseOrb", Args[1], 0, 0, 0, 0, Args[2], 30, 129, 0);
-		"####" A 0 A_SpawnItemEx("BaseOrb", Args[1], 0, 0, 0, 0, Args[2], 40, 129, 0);
-		"####" A 0 A_SpawnItemEx("BaseOrb", Args[1], 0, 0, 0, 0, Args[2], 50, 129, 0);
-		"####" A 0 A_SpawnItemEx("BaseOrb", Args[1], 0, 0, 0, 0, Args[2], 60, 129, 0);
-		"####" A 0 A_SpawnItemEx("BaseOrb", Args[1], 0, 0, 0, 0, Args[2], 70, 129, 0);
-		"####" A 0 A_SpawnItemEx("BaseOrb", Args[1], 0, 0, 0, 0, Args[2], 80, 129, 0);
-		"####" A 0 A_SpawnItemEx("BaseOrb", Args[1], 0, 0, 0, 0, Args[2], 90, 129, 0);
-		"####" A 0 A_SpawnItemEx("BaseOrb", Args[1], 0, 0, 0, 0, Args[2],100, 129, 0);
-		"####" A 0 A_SpawnItemEx("BaseOrb", Args[1], 0, 0, 0, 0, Args[2],110, 129, 0);
-		"####" A 0 A_SpawnItemEx("BaseOrb", Args[1], 0, 0, 0, 0, Args[2],120, 129, 0);
-		"####" A 0 A_SpawnItemEx("BaseOrb", Args[1], 0, 0, 0, 0, Args[2],130, 129, 0);
-		"####" A 0 A_SpawnItemEx("BaseOrb", Args[1], 0, 0, 0, 0, Args[2],140, 129, 0);
-		"####" A 0 A_SpawnItemEx("BaseOrb", Args[1], 0, 0, 0, 0, Args[2],150, 129, 0);
-		"####" A 0 A_SpawnItemEx("BaseOrb", Args[1], 0, 0, 0, 0, Args[2],160, 129, 0);
-		"####" A 0 A_SpawnItemEx("BaseOrb", Args[1], 0, 0, 0, 0, Args[2],170, 129, 0);
-		"####" A 0 A_SpawnItemEx("BaseOrb", Args[1], 0, 0, 0, 0, Args[2],180, 129, 0);
-		"####" A 0 A_SpawnItemEx("BaseOrb", Args[1], 0, 0, 0, 0, Args[2],190, 129, 0);
-		"####" A 0 A_SpawnItemEx("BaseOrb", Args[1], 0, 0, 0, 0, Args[2],200, 129, 0);
-		"####" A 0 A_SpawnItemEx("BaseOrb", Args[1], 0, 0, 0, 0, Args[2],210, 129, 0);
-		"####" A 0 A_SpawnItemEx("BaseOrb", Args[1], 0, 0, 0, 0, Args[2],220, 129, 0);
-		"####" A 0 A_SpawnItemEx("BaseOrb", Args[1], 0, 0, 0, 0, Args[2],230, 129, 0);
-		"####" A 0 A_SpawnItemEx("BaseOrb", Args[1], 0, 0, 0, 0, Args[2],240, 129, 0);
-		"####" A 0 A_SpawnItemEx("BaseOrb", Args[1], 0, 0, 0, 0, Args[2],250, 129, 0);
-		"####" A 0 A_SpawnItemEx("BaseOrb", Args[1], 0, 0, 0, 0, Args[2],260, 129, 0);
-		"####" A 0 A_SpawnItemEx("BaseOrb", Args[1], 0, 0, 0, 0, Args[2],270, 129, 0);
-		"####" A 0 A_SpawnItemEx("BaseOrb", Args[1], 0, 0, 0, 0, Args[2],280, 129, 0);
-		"####" A 0 A_SpawnItemEx("BaseOrb", Args[1], 0, 0, 0, 0, Args[2],290, 129, 0);
-		"####" A 0 A_SpawnItemEx("BaseOrb", Args[1], 0, 0, 0, 0, Args[2],310, 129, 0);
-		"####" A 0 A_SpawnItemEx("BaseOrb", Args[1], 0, 0, 0, 0, Args[2],320, 129, 0);
-		"####" A 0 A_SpawnItemEx("BaseOrb", Args[1], 0, 0, 0, 0, Args[2],330, 129, 0);
-		"####" A 0 A_SpawnItemEx("BaseOrb", Args[1], 0, 0, 0, 0, Args[2],340, 129, 0);
-		"####" A 0 A_SpawnItemEx("BaseOrb", Args[1], 0, 0, 0, 0, Args[2],350, 129, 0);
-		"####" A 4 A_SpawnItemEx("BaseOrb", Args[1], 0, 0, 0, 0, Args[2],360, 129, 0);
-		Loop;
-	Inactive:
-		TNT1 A 1;
-		TNT1 A 0 A_CheckSightOrRange(512, "Inactive");
-		Goto Active;
+		Spawn:
+			TNT1 A 0;
+		Active:
+			TNT1 A 10 SpawnEffect();
+			Loop;
+		Inactive:
+			TNT1 A 1;
+			Goto Active;
+	}
+
+	override void SpawnEffect()
+	{
+		Super.SpawnEffect();
+
+		for (int a = 0; a < 360; a += (5 + 5 * (curchunk ? curchunk.range : 1)))
+		{
+			A_SpawnItemEx("BaseOrb", Args[1], 0, 0, 0, 0, Args[2], a, SXF_TRANSFERTRANSLATION, 0);
+		}
 	}
 }
 
@@ -159,75 +127,31 @@ class OrangeCirclePad: GreenCirclePad
 	}
 }
 
-class UFOCirclePad: Actor //fixed values for SecretUFO effect
+class UFOCirclePad: EffectSpawner //fixed values for SecretUFO effect
 {
-	Default
-	{
-	-SOLID
-	+CLIENTSIDEONLY
-	+NOBLOCKMAP
-	+NOCLIP
-	+NOGRAVITY
-	+NOINTERACTION
-	+NOSECTOR
-	}
 	States
 	{
-	Spawn:
-		TNT1 A 0;
-		TNT1 A 0 A_SpawnItemEx("BaseOrb", 128, 0, 0, 0, 0, -4, 0, 129, 0);
-		"####" A 0 A_SpawnProjectile("SparkG", 0, Random[Spark](-64,64), Random[Spark](0,360), CMF_AIMDIRECTION|CMF_BADPITCH, Random[Spark](-67,-113));
-		"####" A 0 A_SpawnProjectile("SparkG", 0, Random[Spark](-64,64), Random[Spark](0,360), CMF_AIMDIRECTION|CMF_BADPITCH, Random[Spark](-67,-113));
-		"####" A 0 A_SpawnProjectile("SparkG", 0, Random[Spark](-64,64), Random[Spark](0,360), CMF_AIMDIRECTION|CMF_BADPITCH, Random[Spark](-67,-113));
-		"####" A 0 A_SpawnProjectile("SparkG", 0, Random[Spark](-64,64), Random[Spark](0,360), CMF_AIMDIRECTION|CMF_BADPITCH, Random[Spark](-67,-113));
-		"####" A 0 A_SpawnProjectile("SparkG", 0, Random[Spark](-64,64), Random[Spark](0,360), CMF_AIMDIRECTION|CMF_BADPITCH, Random[Spark](-67,-113));
-		"####" A 0 A_SpawnProjectile("SparkG", 0, Random[Spark](-64,64), Random[Spark](0,360), CMF_AIMDIRECTION|CMF_BADPITCH, Random[Spark](-67,-113));
-		"####" A 0 A_SpawnProjectile("SparkG", 0, Random[Spark](-64,64), Random[Spark](0,360), CMF_AIMDIRECTION|CMF_BADPITCH, Random[Spark](-67,-113));
-		"####" A 0 A_SpawnProjectile("SparkG", 0, Random[Spark](-64,64), Random[Spark](0,360), CMF_AIMDIRECTION|CMF_BADPITCH, Random[Spark](-67,-113));
-		"####" A 0 A_SpawnProjectile("SparkG", 0, Random[Spark](-64,64), Random[Spark](0,360), CMF_AIMDIRECTION|CMF_BADPITCH, Random[Spark](-67,-113));
-		"####" A 0 A_SpawnProjectile("SparkG", 0, Random[Spark](-64,64), Random[Spark](0,360), CMF_AIMDIRECTION|CMF_BADPITCH, Random[Spark](-67,-113));
-		"####" A 0 A_SpawnProjectile("SparkG", 0, Random[Spark](-64,64), Random[Spark](0,360), CMF_AIMDIRECTION|CMF_BADPITCH, Random[Spark](-67,-113));
-		"####" A 0 A_SpawnProjectile("SparkG", 0, Random[Spark](-64,64), Random[Spark](0,360), CMF_AIMDIRECTION|CMF_BADPITCH, Random[Spark](-67,-113));
-		"####" A 0 A_SpawnProjectile("SparkG", 0, Random[Spark](-64,64), Random[Spark](0,360), CMF_AIMDIRECTION|CMF_BADPITCH, Random[Spark](-67,-113));
-		"####" A 0 A_SpawnProjectile("SparkG", 0, Random[Spark](-64,64), Random[Spark](0,360), CMF_AIMDIRECTION|CMF_BADPITCH, Random[Spark](-67,-113));
-		"####" A 0 A_SpawnProjectile("SparkG", 0, Random[Spark](-64,64), Random[Spark](0,360), CMF_AIMDIRECTION|CMF_BADPITCH, Random[Spark](-67,-113));
-		"####" A 0 A_SpawnProjectile("SparkG", 0, Random[Spark](-64,64), Random[Spark](0,360), CMF_AIMDIRECTION|CMF_BADPITCH, Random[Spark](-67,-113));
-		"####" A 0 A_SpawnItemEx("BaseOrb", 128, 0, 0, 0, 0, -4, 10, 129, 0);
-		"####" A 0 A_SpawnItemEx("BaseOrb", 128, 0, 0, 0, 0, -4, 20, 129, 0);
-		"####" A 0 A_SpawnItemEx("BaseOrb", 128, 0, 0, 0, 0, -4, 30, 129, 0);
-		"####" A 0 A_SpawnItemEx("BaseOrb", 128, 0, 0, 0, 0, -4, 40, 129, 0);
-		"####" A 0 A_SpawnItemEx("BaseOrb", 128, 0, 0, 0, 0, -4, 50, 129, 0);
-		"####" A 0 A_SpawnItemEx("BaseOrb", 128, 0, 0, 0, 0, -4, 60, 129, 0);
-		"####" A 0 A_SpawnItemEx("BaseOrb", 128, 0, 0, 0, 0, -4, 70, 129, 0);
-		"####" A 0 A_SpawnItemEx("BaseOrb", 128, 0, 0, 0, 0, -4, 80, 129, 0);
-		"####" A 0 A_SpawnItemEx("BaseOrb", 128, 0, 0, 0, 0, -4, 90, 129, 0);
-		"####" A 0 A_SpawnItemEx("BaseOrb", 128, 0, 0, 0, 0, -4,100, 129, 0);
-		"####" A 0 A_SpawnItemEx("BaseOrb", 128, 0, 0, 0, 0, -4,110, 129, 0);
-		"####" A 0 A_SpawnItemEx("BaseOrb", 128, 0, 0, 0, 0, -4,120, 129, 0);
-		"####" A 0 A_SpawnItemEx("BaseOrb", 128, 0, 0, 0, 0, -4,130, 129, 0);
-		"####" A 0 A_SpawnItemEx("BaseOrb", 128, 0, 0, 0, 0, -4,140, 129, 0);
-		"####" A 0 A_SpawnItemEx("BaseOrb", 128, 0, 0, 0, 0, -4,150, 129, 0);
-		"####" A 0 A_SpawnItemEx("BaseOrb", 128, 0, 0, 0, 0, -4,160, 129, 0);
-		"####" A 0 A_SpawnItemEx("BaseOrb", 128, 0, 0, 0, 0, -4,170, 129, 0);
-		"####" A 0 A_SpawnItemEx("BaseOrb", 128, 0, 0, 0, 0, -4,180, 129, 0);
-		"####" A 0 A_SpawnItemEx("BaseOrb", 128, 0, 0, 0, 0, -4,190, 129, 0);
-		"####" A 0 A_SpawnItemEx("BaseOrb", 128, 0, 0, 0, 0, -4,200, 129, 0);
-		"####" A 0 A_SpawnItemEx("BaseOrb", 128, 0, 0, 0, 0, -4,210, 129, 0);
-		"####" A 0 A_SpawnItemEx("BaseOrb", 128, 0, 0, 0, 0, -4,220, 129, 0);
-		"####" A 0 A_SpawnItemEx("BaseOrb", 128, 0, 0, 0, 0, -4,230, 129, 0);
-		"####" A 0 A_SpawnItemEx("BaseOrb", 128, 0, 0, 0, 0, -4,240, 129, 0);
-		"####" A 0 A_SpawnItemEx("BaseOrb", 128, 0, 0, 0, 0, -4,250, 129, 0);
-		"####" A 0 A_SpawnItemEx("BaseOrb", 128, 0, 0, 0, 0, -4,260, 129, 0);
-		"####" A 0 A_SpawnItemEx("BaseOrb", 128, 0, 0, 0, 0, -4,270, 129, 0);
-		"####" A 0 A_SpawnItemEx("BaseOrb", 128, 0, 0, 0, 0, -4,280, 129, 0);
-		"####" A 0 A_SpawnItemEx("BaseOrb", 128, 0, 0, 0, 0, -4,290, 129, 0);
-		"####" A 0 A_SpawnItemEx("BaseOrb", 128, 0, 0, 0, 0, -4,310, 129, 0);
-		"####" A 0 A_SpawnItemEx("BaseOrb", 128, 0, 0, 0, 0, -4,320, 129, 0);
-		"####" A 0 A_SpawnItemEx("BaseOrb", 128, 0, 0, 0, 0, -4,330, 129, 0);
-		"####" A 0 A_SpawnItemEx("BaseOrb", 128, 0, 0, 0, 0, -4,340, 129, 0);
-		"####" A 0 A_SpawnItemEx("BaseOrb", 128, 0, 0, 0, 0, -4,350, 129, 0);
-		"####" A 2 A_SpawnItemEx("BaseOrb", 128, 0, 0, 0, 0, -4,360, 129, 0);
-		"####" "#" 2 A_FadeOut(0.04,FTF_REMOVE);
-		Loop;
+		Spawn:
+			TNT1 A 0;
+		Active:
+			TNT1 A 10 SpawnEffect();
+			TNT1 A 0 A_FadeOut(0.5, FTF_REMOVE);
+			Loop;
+	}
+
+	override void SpawnEffect()
+	{
+		Super.SpawnEffect();
+
+		for (int a = 0; a < 360; a += (5 + 5 * (curchunk ? curchunk.range : 1)))
+		{
+			A_SpawnItemEx("BaseOrb", 128, 0, 0, 0, 0, -4, a, SXF_TRANSFERTRANSLATION, 0);
+		}
+
+		for (int s = 0; s < 16; s += (curchunk ? curchunk.range : 1))
+		{
+			angle = Random[Spark](0, 360);
+			A_SpawnProjectile("SparkG", 0, Random[Spark](-64, 64), 0, CMF_AIMDIRECTION | CMF_BADPITCH | CMF_ABSOLUTEANGLE, Random[Spark](-67,-113));
+		}
 	}
 }
