@@ -325,6 +325,8 @@ class Base : Actor
 
 	state A_LookThroughDisguise(int flags = 0, float minseedist = 0, float Range = 0, float maxheardist = 0, double fov = 0, statelabel label = "See")
 	{
+		if (cullinterval > boa_thinkrange + 4) { return ResolveState(null); }
+
 		// Try a normal look first!
 		A_LookEx(flags, minseedist, Range, maxheardist, fov, label);
 
@@ -951,8 +953,11 @@ class Base : Actor
 		if (!manager) { manager = EffectsManager.GetManager(); }
 		if (manager && level.time % (1 + interval / 7) == 0) { cullinterval = manager.Culled(pos.xy); }
 
-		if (cullinterval > boa_thinkrange + 4) { return; }
-		else if (cullinterval > boa_thinkrange + 2) { Super.Tick(); return; }
+		if (!target || !target.player)
+		{
+			if (cullinterval > boa_thinkrange + 4) { Thinker.Tick(); return; }
+			else if (cullinterval > boa_thinkrange + 2) { Super.Tick(); return; }
+		}
 
 		if (!pmanager) { pmanager = ParticleManager.GetManager(); }
 
@@ -1969,7 +1974,7 @@ class Nazi : Base
 
 	void A_NaziChase(statelabel melee = "None", statelabel missile = "None", int flags = 0)
 	{
-		if (cullinterval > boa_thinkrange + 4) { return; }
+		if ((!target || !target.player) && cullinterval > boa_thinkrange + 4) { return; }
 		if (dodging || health <= 0) { return; }
 		if (bDormant) { SetState(SpawnState); return; } // Dormant actors should not wake up even if they're somehow placed in their See state
 
@@ -2895,7 +2900,7 @@ class Nazi : Base
 		if (!manager) { manager = EffectsManager.GetManager(); }
 		if (manager && level.time % (1 + interval / 7) == 0) { cullinterval = manager.Culled(pos.xy); }
 
-		if (cullinterval > boa_thinkrange) { Super.Tick(); return; }
+		if ((!target || !target.player) && cullinterval > boa_thinkrange) { Super.Tick(); return; }
 		if (IsFrozen() || !interval) { return; }
 
 		if (wasused)
