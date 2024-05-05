@@ -544,9 +544,6 @@ class TankPlayer : PlayerPawn
 				if (morph) { morph.Destroy(); }
 				item = next;
 			}
-
-			// Workaround for engine bug
-			WeaponSlots.SetupWeaponSlots(alt);
 		}
 	}
 
