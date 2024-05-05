@@ -534,9 +534,6 @@ class TankPlayer : PlayerPawn
 			A_SetInventory("ShakeShaderControl", 1);
 			if (treads) {treads.usetimeout = 35; }
 
-			// Workaround for engine bug
-			PlayerPawn alt = PlayerPawn(player.mo.alternative);
-			
 			for (Inventory item = Inv; item;)
 			{
 				Inventory next = item.Inv;
