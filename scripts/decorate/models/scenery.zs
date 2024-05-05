@@ -2013,6 +2013,8 @@ class Speakers_4_3d : Speakers_2_3d
 
 class SecretUFO : SwitchableDecoration //3dRealms - no distancecheck for this
 {
+	Actor circlepad;
+
 	Default
 	{
 		//$Category Models (BoA)/Scenery
@@ -2028,12 +2030,18 @@ class SecretUFO : SwitchableDecoration //3dRealms - no distancecheck for this
 	Active:
 		"####" A 35; //just wait 1 sec before spawning effects
 		"####" A 0 A_StartSound("UFOLNCH", CHAN_AUTO, 0, 1.0, ATTN_NONE);
+		MDLA A 0 {
+			circlepad = Spawn("UFOCirclePad", pos);
+			if (circlepad) { circlepad.master = self; }
+		}
 	ActiveLoop:
-		MDLA A 0 A_SpawnItemEx("UFOCirclePad",0,0,-8,0,0,random[Pad](1,8), SXF_SETMASTER | SXF_NOCHECKPOSITION);
 		"####" A 15;
 		Loop;
 	Inactive:
-		MDLA A 0 { A_StartSound("UFOEXPL", CHAN_AUTO, 0, 1.0, ATTN_NONE); A_NoBlocking(); A_RemoveChildren(TRUE, RMVF_EVERYTHING); A_SetScale(2.0); }
+		MDLA A 0 {
+			A_StartSound("UFOEXPL", CHAN_AUTO, 0, 1.0, ATTN_NONE); A_NoBlocking(); A_RemoveChildren(TRUE, RMVF_EVERYTHING); A_SetScale(2.0);
+			if (circlepad) { circlepad.Destroy(); }
+		}
 		"####" AAAAAAAAAAAAA 0 A_SpawnItemEx("Debris_Mecha3", Random[Debris](-256, 256), Random[Debris](-256, 256), Random[Debris](16, -16), Random[Debris](1, 3), Random[Debris](1, 3), Random[Debris](-20, 3), Random[Debris](0, 360), SXF_CLIENTSIDE | SXF_TRANSFERSCALE);
 		"####" AAAAAAAAAAAAA 0 A_SpawnItemEx("Debris_Mecha4", Random[Debris](-256, 256), Random[Debris](-256, 256), Random[Debris](16, -16), Random[Debris](1, 3), Random[Debris](1, 3), Random[Debris](-20, 3), Random[Debris](0, 360), SXF_CLIENTSIDE | SXF_TRANSFERSCALE);
 		"####" AAAAAAAAAAAAA 0 A_SpawnItemEx("Debris_AstroSuite", Random[Debris](-256, 256), Random[Debris](-256, 256), Random[Debris](16, -16), Random[Debris](1, 3), Random[Debris](1, 3), Random[Debris](-20, 3), Random[Debris](0, 360), SXF_CLIENTSIDE | SXF_TRANSFERSCALE);

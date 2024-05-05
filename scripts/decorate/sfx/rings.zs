@@ -52,12 +52,19 @@ class BaseOrb : ParticleBase
 	}
 }
 
-class GreenCirclePad: EffectSpawner
+class CirclePad: EffectSpawner
 {
+	int padradius;
+	int padvelz;
+	int padlife;
+
+	Property PadRadius:padradius;
+	Property PadVelZ:padvelz;
+	Property PadLifetime:padlife;
+
 	Default
 	{
 		//$Category Special Effects (BoA)
-		//$Title CirclePad (green)
 		//$Color 12
 		//$Arg0 "Nothing"
 		//$Arg0Tooltip "Does nothing"
@@ -65,93 +72,142 @@ class GreenCirclePad: EffectSpawner
 		//$Arg1Tooltip "Controls the size of the area. 32, for example, spawns in a 64x64 diameter circle."
 		//$Arg2 "Speed"
 		//$Arg2Tooltip "Controls the speed of the rings (can also be negative if you want them to move downwards instead of upwards)"
-		+EffectSpawner.ALLOWTICKDELAY
+		StencilColor "FFFFFF";
+		CirclePad.PadRadius 128;
+		CirclePad.PadVelZ 1;
+		CirclePad.PadLifetime 20;
 	}
 
 	States
 	{
 		Spawn:
-			TNT1 A 0;
+			TNT1 A 1;
 		Active:
-			TNT1 A 10 SpawnEffect();
+			TNT1 A 5 SpawnEffect();
 			Loop;
 		Inactive:
-			TNT1 A 1;
-			Goto Active;
-	}
-
-	override void SpawnEffect()
-	{
-		Super.SpawnEffect();
-
-		for (int a = 0; a < 360; a += (5 + 5 * (curchunk ? curchunk.range : 1)))
-		{
-			A_SpawnItemEx("BaseOrb", Args[1], 0, 0, 0, 0, Args[2], a, SXF_TRANSFERTRANSLATION, 0);
-		}
-	}
-}
-
-class BlueCirclePad : GreenCirclePad
-{
-	Default
-	{
-	//$Title CirclePad (blue)
-	Translation "112:127=196:207";
-	}
-}
-
-class WhiteCirclePad : GreenCirclePad
-{
-	Default
-	{
-	//$Title CirclePad (white)
-	Translation "112:127=80:111";
-	}
-}
-
-class RedCirclePad : GreenCirclePad
-{
-	Default
-	{
-	//$Title CirclePad (red)
-	Translation "112:127=176:191";
-	}
-}
-
-class OrangeCirclePad: GreenCirclePad
-{
-	Default
-	{
-	//$Title CirclePad (orange)
-	Translation "112:127=214:223";
-	}
-}
-
-class UFOCirclePad: EffectSpawner //fixed values for SecretUFO effect
-{
-	States
-	{
-		Spawn:
-			TNT1 A 0;
-		Active:
-			TNT1 A 10 SpawnEffect();
-			TNT1 A 0 A_FadeOut(0.5, FTF_REMOVE);
+			TNT1 A 5;
 			Loop;
 	}
 
+	override void BeginPlay()
+	{
+		Super.BeginPlay();
+
+		if (bDormant || flags & MTF_DORMANT) { SetStateLabel("Inactive"); }
+
+		padradius = Args[1] ? Args[1] : Default.padradius;
+		padvelz = Args[2] ? Args[2] : Default.padvelz;
+	}
+
 	override void SpawnEffect()
 	{
 		Super.SpawnEffect();
 
-		for (int a = 0; a < 360; a += (5 + 5 * (curchunk ? curchunk.range : 1)))
+		FSpawnParticleParams particleInfo;
+		particleInfo.color1 = fillcolor & 0xFFFFFF;
+		particleInfo.texture = TexMan.CheckForTexture("LRFXB0");
+		particleInfo.style = STYLE_Add;
+		particleInfo.flags = SPF_FULLBRIGHT | SPF_REPLACE;
+		particleInfo.lifetime = padlife;
+		particleInfo.size = 32;
+		particleInfo.vel = (0, 0, padvelz);
+		particleInfo.startalpha = 0.8;
+		particleInfo.fadestep = -1;
+
+		for (double a = 0; a < 360; a += min(30, 640.0 / (padradius / (curchunk ? max(1, curchunk.range) : 1))))
 		{
-			A_SpawnItemEx("BaseOrb", 128, 0, 0, 0, 0, -4, a, SXF_TRANSFERTRANSLATION, 0);
+			particleInfo.pos = pos + (RotateVector((padradius, 0), a), 0);
+			Level.SpawnParticle(particleInfo);
 		}
+	}
+}
+
+class GreenCirclePad : CirclePad
+{
+	Default
+	{
+		//$Title CirclePad (green)
+		StencilColor "67df5f";
+	}
+}
+
+class BlueCirclePad : CirclePad
+{
+	Default
+	{
+		//$Title CirclePad (blue)
+		StencilColor "20FCFC";
+	}
+}
+
+class WhiteCirclePad : CirclePad
+{
+	Default
+	{
+		//$Title CirclePad (custom color - set on Action/Tag/Misc. tab)
+	}
+}
+
+class RedCirclePad : CirclePad
+{
+	Default
+	{
+		//$Title CirclePad (red)
+		StencilColor "FF0000";
+	}
+}
+
+class OrangeCirclePad: CirclePad
+{
+	Default
+	{
+		//$Title CirclePad (orange)
+		StencilColor "FC7800";
+	}
+}
+
+class UFOCirclePad: CirclePad //fixed values for SecretUFO effect
+{
+	Default
+	{
+		+NOGRAVITY
+		StencilColor "67df5f";
+		CirclePad.PadVelZ -4;
+	}
+
+	States
+	{
+		Spawn:
+			TNT1 A 1;
+		Active:
+			TNT1 A 15 SpawnEffect();
+			Loop;
+		Inactive:
+			TNT1 A 5;
+			Loop;
+	}
+
+	override void Tick()
+	{
+		Super.Tick();
+
+		if (master) { SetXYZ(master.pos); }
+	}
+
+	override void SpawnEffect()
+	{
+		padlife = int(min(70, (pos.z - floorz) / abs(padvelz)));
+
+		Super.SpawnEffect();
 
 		for (int s = 0; s < 16; s += (curchunk ? curchunk.range : 1))
 		{
-			angle = Random[Spark](0, 360);
-			A_SpawnProjectile("SparkG", 0, Random[Spark](-64, 64), 0, CMF_AIMDIRECTION | CMF_BADPITCH | CMF_ABSOLUTEANGLE, Random[Spark](-67,-113));
+			Actor spark = Spawn("SparkG", pos + (Random[Spark](-64, 64), Random[Spark](-64, 64), Random[Spark](-32, 0)));
+			if (spark)
+			{
+				spark.Vel3DFromAngle(spark.speed, FRandom[Spark](0, 360), Random[Spark](67, 113));
+			}
 		}
 	}
 }
