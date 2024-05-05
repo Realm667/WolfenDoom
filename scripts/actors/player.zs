@@ -1381,7 +1381,7 @@ class BoAPlayer : PlayerPawn
 				saveme.Use(false);
 
 				String msg = SavingHealth(saveme).savemessage;
-				if (msg.length()) { console.printf(StringTable.Localize(msg)); }
+				if (msg.length()) { Notification.Init(player.mo, msg); }
 				player.mo.RemoveInventory(saveme);
 			}
 

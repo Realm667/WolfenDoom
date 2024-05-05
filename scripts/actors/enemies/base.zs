@@ -2293,8 +2293,8 @@ class Nazi : Base
 				Speed = Default.Speed + Random[Base](1, 2); // Walk a little faster
 				if (Distance3D(goal) < 96)
 				{
+					Notification.Init(goal.target, "$BODYFOUND", "misc/alert", MessageBase.MSG_ALLPLAYERS);
 					BecomeAlerted(goal.target);
-					Console.Printf(StringTable.Localize("$BODYFOUND"));
 				}
 			}
 		}
@@ -2558,7 +2558,7 @@ class Nazi : Base
 			{
 				if (!activationcount && (user_sneakable || !(Default.Species == "Ally" || Default.Species == "PlayerFollower"))) // If this is a non-Ally sneakable actor who isn't active yet
 				{ // Stealth kill, remove the sneakable eyes, alert a medium radius, and kill the actor
-					A_Log(StringTable.Localize("$STEALTH"));
+					Notification.Init(source, "$STEALTH");
 					A_RemoveChildren(TRUE, RMVF_EVERYTHING, "None", "Eyes");
 					A_RemoveChildren(TRUE, RMVF_EVERYTHING, "None", "AlertMarker");
 					bFriendly = False; // Force to not friendly so that they will count as a kill and be healable.
@@ -2581,7 +2581,7 @@ class Nazi : Base
 			else // Otherwise, this attack was the equivalent of Stealth Kill for non-sneakable enemies
 			{
 				user_incombat = True;
-				A_Log(StringTable.Localize("$CRITICAL"));
+				Notification.Init(source, "$CRITICAL");
 				if (self is "NaziStandard") { DeathSound = "Nazi/Gurgle"; } // Reset death sound to gurgle
 				SoundAlert(source, false, 192);
 				damage = health;

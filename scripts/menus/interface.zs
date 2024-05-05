@@ -374,7 +374,7 @@ class CombinationSafe : BoAMenu
 			int next = solution[at == solution[set] ? min(2, set + 1) : set];
 			temp.AppendFormat("\nNext Number: %i", next);
 
-			console.printf(temp);
+			console.printfex(print_nonotify, temp);
 		}
 
 		if (olddir && olddir != dir && set < 3)

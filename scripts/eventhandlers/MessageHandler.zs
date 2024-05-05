@@ -125,7 +125,8 @@ class MessageBase : Thinker
 		// Log the message to the console, emulating built-in message printing
 		if (player && text.length() && !(flags & MSG_NOLOG))
 		{
-			String logmessage = StringTable.Localize("$" .. text);
+			if (text.Left(1) == "$") { text = text.Mid(1); }
+			String logmessage = StringTable.Localize(text, false);
 
 			if (logmessage.IndexOf("[[") > -1 && logmessage.IndexOf("]]") > -1)
 			{
@@ -881,6 +882,7 @@ class CountdownMessage : MessageBase
 {
 	String bkg;
 	bool textfadein;
+	Color clr;
 
 	static int Init(Actor mo, String text = "", int clr = Font.CR_GRAY, int holdtime = 210, int intime = 35, int outtime = 35, String bkg = "HELTHBAR", String msgname = "")
 	{
@@ -890,6 +892,7 @@ class CountdownMessage : MessageBase
 		{
 			msg.time = holdtime + intime + outtime;
 			msg.bkg = bkg;
+			msg.clr = clr;
 
 			return msg.GetTime();
 		}
@@ -914,7 +917,57 @@ class CountdownMessage : MessageBase
 			DrawToHUD.DrawTexture(bgtex, (x, y), alpha);
 		}
 
-		DrawToHUD.DrawText(text, (x, y), BigFont, alpha, 1.0, destsize, Font.CR_GRAY, ZScriptTools.STR_MIDDLE | ZScriptTools.STR_CENTERED);
+		DrawToHUD.DrawText(text, (x, y), BigFont, alpha, 1.0, destsize, clr, ZScriptTools.STR_MIDDLE | ZScriptTools.STR_CENTERED);
+
+		protrusion = handler.topoffset + size.y / destsize.y;
+
+		return protrusion;
+	}
+}
+
+class Notification : CountdownMessage
+{
+	Sound snd;
+
+	static int Init(Actor mo, String text = "", Sound snd = "", int flags = 0)
+	{
+		Notification msg = Notification(MessageBase.Init(mo, "Notification", text, 20, 20, "Notification", 2, MSG_ALLOWREPLACE | flags));
+		if (msg)
+		{
+			msg.time = 145;
+			msg.bkg = "NOTIFBAR";
+			msg.clr = Font.CR_RED;
+			msg.snd = snd;
+
+			return msg.GetTime();
+		}
+
+		return 0;
+	}
+
+	override void Start()
+	{
+		if (snd) { player.mo.A_StartSound(snd, CHAN_AUTO, CHANF_DEFAULT, 0.45); }
+	}
+
+	override double DrawMessage()
+	{
+		Vector2 destsize = (640, 480);
+		Vector2 pos = (320, handler.topoffset * destsize.y + 32.0);
+
+		Vector2 hudscale = StatusBar.GetHUDScale();
+		double x = (Screen.GetWidth() / hudscale.x) / 2;
+		double y = pos.y / destsize.y * Screen.GetHeight() / hudscale.y;
+
+		TextureID bgtex = TexMan.CheckForTexture(bkg);
+		Vector2 size = (0, 0);
+		if (bgtex.IsValid())
+		{
+			size = TexMan.GetScaledSize(bgtex);
+			DrawToHUD.DrawTexture(bgtex, (x, y), alpha);
+		}
+
+		DrawToHUD.DrawText(text, (x, y), SmallFont, alpha, 1.0, destsize, clr, ZScriptTools.STR_MIDDLE | ZScriptTools.STR_CENTERED);
 
 		protrusion = handler.topoffset + size.y / destsize.y;
 
