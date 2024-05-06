@@ -25,6 +25,16 @@ class Debris : SceneryBase
 	int moundstyle;
 	bool domound;
 
+	enum ESizeClass {
+		SIZE_TINY,
+		SIZE_SMALL,
+		SIZE_MEDIUM,
+		SIZE_TALL,
+		SIZE_LARGE,
+		SIZE_HUGE,
+		SIZE_GIANT
+	}
+
 	Property MoundStyle:moundstyle;
 	Property DrawMound:domound;
 
@@ -130,6 +140,26 @@ class Debris : SceneryBase
 		}
 
 		Super.PostBeginPlay();
+	}
+	
+	virtual ESizeClass GetSizeClass() {
+		double tallness = scale.y / scale.x;
+		if (tallness >= 2.0) {
+			return SIZE_TALL;
+		}
+		double size = max(scale.x, scale.y);
+		if (size < 1.0) {
+			return SIZE_TINY;
+		} else if (size > 1.0 && size < 2.0) {
+			return SIZE_MEDIUM;
+		} else if (size >= 2.0 && size < 2.5) {
+			return SIZE_LARGE;
+		} else if (size >= 2.5 && size < 5.0) {
+			return SIZE_HUGE;
+		} else if (size >= 5.0) {
+			return SIZE_GIANT;
+		}
+		return SIZE_SMALL;
 	}
 
 	void SpawnRandom(Class<Actor> debrisclass, int probability = 255, int amt = 1, float distance = -1, float mindistance = 0)
