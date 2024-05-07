@@ -5,6 +5,7 @@ class RainSpawner : EffectSpawner
 	protected int spawnIndex;
 	protected Vector3 rainDropVel;
 	protected double spawnZoffset;
+	protected transient int updateCounter;
 	ParticleSpawnPoint spawnPoints[SPAWN_POINTS_PER_SPAWNER]; // 48 * 32 = 1536 bytes
 
 	Default
@@ -81,15 +82,16 @@ class RainSpawner : EffectSpawner
 					Console.Printf("ZScriptTools.AnglesFromDirection is broken!");
 				}
 				// ========== Test end */
-				spawnPoints[i].distance = finder.Results.Distance;
+				double dist = finder.Results.Distance;
+				double waterDist = finder.Results.Distance;
 				if (finder.Results.CrossedWater) {
 					Vector3 waterPos = finder.Results.CrossedWaterPos;
-					spawnPoints[i].distance = (waterPos - spawnPos).Length();
+					waterDist = (waterPos - spawnPos).Length();
 				} else if (finder.Results.Crossed3DWater) {
 					Vector3 waterPos = finder.Results.Crossed3DWaterPos;
-					spawnPoints[i].distance = (waterPos - spawnPos).Length();
+					waterDist = (waterPos - spawnPos).Length();
 				}
-				spawnPoints[i].distance = ceil(spawnPoints[i].distance / rainDropVel.Length());
+				spawnPoints[i].distance = ceil(min(waterDist, dist) / rainDropVel.Length());
 				break;
 			} while(true); // See lines 68 and 83
 		}
@@ -137,11 +139,15 @@ class RainSpawner : EffectSpawner
 		}
 
 		// Adjust the z-height
-		double chunkZoffset = 0;
-		if (curchunk) { chunkZoffset = min(curchunk.GetPlayerZOffset() - spawnPoints[spawnIndex].worldPos.z, 0); }
-		if (spawnZoffset != chunkZoffset) {
-			spawnZoffset = chunkZoffset;
-			SetupSpawnPoints();
+		if (++updateCounter == 3 && curchunk) {
+			updateCounter = 0;
+			double chunkZoffset = 0;
+			chunkZoffset = min(curchunk.GetPlayerZOffset() - Pos.Z, 0);
+			if (spawnZoffset != chunkZoffset) {
+				spawnZoffset = chunkZoffset;
+				// Console.Printf("spawnZoffset is now %.3f", spawnZoffset);
+				SetupSpawnPoints();
+			}
 		}
 
 		Actor raindropMobj = Spawn(rainDropClass, spawnPoints[spawnIndex].worldPos);

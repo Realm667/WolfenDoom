@@ -23,6 +23,7 @@
 const CHUNKSIZE = 512;
 const MAPMAX = 32768;
 const MAXINTERVAL = 16;
+const PRECIPOFFSET = 384.0;
 
 class EffectChunk
 {
@@ -256,7 +257,7 @@ class ChunkHandler : EventHandler
 						{
 							chunk.range = range;
 							chunk.nearestplayer = players[p].camera;
-							chunk.maxplayerz = max(chunk.maxplayerz, players[p].camera.pos.z + max(192, boa_maxparticleactors));
+							chunk.maxplayerz = max(chunk.maxplayerz, players[p].camera.pos.z) + PRECIPOFFSET;
 						}
 
 						chunk.distance = chunk.range * CHUNKSIZE;
