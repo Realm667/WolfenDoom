@@ -149,7 +149,7 @@ class ZScriptTools
 		double signum = direction.y >= 0 ? 1 : -1;
 		double angle = 0.0;
 		if (xylen != 0) {
-			signum * acos(direction.x/xylen);
+			angle = signum * acos(direction.x/xylen);
 		}
 		return angle, pitch;
 	}
