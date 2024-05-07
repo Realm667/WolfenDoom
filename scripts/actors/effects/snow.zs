@@ -10,7 +10,6 @@ class SnowSpawner : EffectSpawner
 {
 	// int particleLifetime;
 	ParticleSpawnPoint spawnPoints[SPAWN_POINTS_PER_SPAWNER]; // 48 * 32 = 1536 bytes
-	double spawnZoffset;
 
 	Default
 	{
@@ -84,7 +83,6 @@ class SnowSpawner : EffectSpawner
 					continue;
 				}
 				spawnPos.Z = min(spawnPos.Z, spawnSector.HighestCeilingAt(spawnPos.XY) - 2.0);
-				spawnPos.Z += spawnZoffset;
 
 				// Use a hitscan to find the distance to the nearest obstacle
 				BoASolidSurfaceFinderTracer finder = new("BoASolidSurfaceFinderTracer");
@@ -102,14 +100,16 @@ class SnowSpawner : EffectSpawner
 					Console.Printf("ZScriptTools.AnglesFromDirection is broken!");
 				}
 				// ========== Test end */
-				spawnPoints[i].distance = finder.Results.Distance;
+				double dist = finder.Results.Distance;
+				double waterDist = finder.Results.Distance;
 				if (finder.Results.CrossedWater) {
 					Vector3 waterPos = finder.Results.CrossedWaterPos;
-					spawnPoints[i].distance = (waterPos - spawnPos).Length();
+					waterDist = (waterPos - spawnPos).Length();
 				} else if (finder.Results.Crossed3DWater) {
 					Vector3 waterPos = finder.Results.Crossed3DWaterPos;
-					spawnPoints[i].distance = (waterPos - spawnPos).Length();
+					waterDist = (waterPos - spawnPos).Length();
 				}
+				spawnPoints[i].distance = min(dist, waterDist);
 				break;
 			} while(true); // See lines 68 and 83
 		}
@@ -122,14 +122,8 @@ class SnowSpawner : EffectSpawner
 		if (Random[Snow](0, 255) < Args[1]) {
 			return;
 		}
-		
-		double chunkZoffset = 0;
-		if (spawnZoffset != chunkZoffset) {
-			spawnZoffset = chunkZoffset;
-			SetupSpawnPoints();
-		}
+
 		int index = Random[SnowSpawner](0, SPAWN_POINTS_PER_SPAWNER - 1);
-		if (curchunk) { chunkZoffset = min(curchunk.GetPlayerZOffset() - spawnPoints[index].worldPos.z, 0); }
 
 		TextureID snowflake = TexMan.CheckForTexture("SNOWA0", TexMan.Type_Sprite);
 		double psize = 3.0; // Max of sprite width and height * SnowParticle scale
