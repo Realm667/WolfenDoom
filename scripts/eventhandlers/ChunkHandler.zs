@@ -195,7 +195,12 @@ class ChunkHandler : EventHandler
 		int chunkx, chunky;
 		[chunkx, chunky] = EffectChunk.GetChunk(pos.x, pos.y);
 
-		for (int i = 0; i < int(ceil(radius / CHUNKSIZE)); i++)
+		IterateChunks(chunkx, chunky, int(ceil(radius / CHUNKSIZE)), 0, foundchunks);
+	}
+
+	void IterateChunks(int chunkx, int chunky, int chunkradius, int radiusoffset, in out Array<EffectChunk> foundchunks, bool traverseportals = true)
+	{
+		for (int i = 0; i < chunkradius - radiusoffset; i++)
 		{
 			for (int x = chunkx - i; x <= chunkx + i; x++)
 			{
@@ -207,7 +212,16 @@ class ChunkHandler : EventHandler
 					) { continue; }
 
 					EffectChunk chunk = EffectChunk.FindChunk(x, y, chunks);
-					foundchunks.Push(chunk);
+					if (foundchunks.Find(chunk) == foundchunks.Size()) { foundchunks.Push(chunk); }
+
+					if (traverseportals && chunk.linkedchunks.Size())
+					{
+						for (int l = 0 ; l < chunk.linkedchunks.Size(); l++)
+						{
+							let linked = chunk.linkedchunks[l];
+							IterateChunks(linked.x, linked.y, chunkradius, i, foundchunks, false);
+						}
+					}
 				}
 			}
 		}
