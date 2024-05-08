@@ -33,6 +33,7 @@ class EffectChunk
 	double maxplayerz;
 	bool infov, culled;
 	Actor nearestplayer;
+	Array<EffectChunk> linkedchunks;
 
 	static int, int GetChunk(double x, double y)
 	{
@@ -148,14 +149,36 @@ class ChunkHandler : EventHandler
 		top = right = -0x7FFFFFFF;
 		bottom = left = 0x7FFFFFFF;
 
+		// Iterate through all lines in the sector to get the sector's bounding box
 		for (int l = 0; l < sec.lines.Size(); l++)
 		{
 			top = max(top, sec.lines[l].bbox[BOXTOP]);
 			right = max(right, sec.lines[l].bbox[BOXRIGHT]);
 			bottom = min(bottom, sec.lines[l].bbox[BOXBOTTOM]);
 			left = min(left, sec.lines[l].bbox[BOXLEFT]);
+
+			// If the line is a line portal, find the associated chunks of the current line and
+			// the distant end, and save the opposite side's chunks to the linkedchunks array.
+			if (sec.lines[l].isLinePortal())
+			{
+				Line origin = sec.lines[l];
+				Line dest = origin.getPortalDestination();
+				if (dest)
+				{
+					Vector2 origindir = origin.delta.Unit();
+					Vector2 destdir = dest.delta.Unit();
+					for (int l = 0; l < origin.delta.length() + CHUNKSIZE; l += CHUNKSIZE)
+					{
+						EffectChunk originchunk = EffectChunk.FindChunk(origin.v1.p.x + origindir.x * l, origin.v1.p.y + origindir.y * l, chunks, false);
+						EffectChunk destchunk = EffectChunk.FindChunk(dest.v1.p.x + destdir.x * l, dest.v1.p.y + destdir.y * l, chunks, false);
+						if (originchunk.linkedchunks.Find(destchunk) == originchunk.linkedchunks.Size()) { originchunk.linkedchunks.Push(destchunk); }
+						if (destchunk.linkedchunks.Find(originchunk) == destchunk.linkedchunks.Size()) { destchunk.linkedchunks.Push(originchunk); }
+					}
+				}
+			}
 		}
 
+		// Store all chunks that fall within the sector's bounding box
 		for (int x = int(left); x <= int(right) + CHUNKSIZE; x += CHUNKSIZE)
 		{
 			for (int y = int(bottom); y <= int(top) + CHUNKSIZE; y += CHUNKSIZE)
@@ -219,8 +242,6 @@ class ChunkHandler : EventHandler
 			chunks[e].maxplayerz = -0x7FFFFFFF;
 		}
 
-		int maxval = MAPMAX * 2 / CHUNKSIZE;
-
 		// Iterate through all possible interval values and set those values
 		// as appropriate for each player (without overwriting values set by
 		// presence of other players)
@@ -232,44 +253,68 @@ class ChunkHandler : EventHandler
 			int chunkx, chunky;
 			[chunkx, chunky] = EffectChunk.GetChunk(players[p].camera.pos.x, players[p].camera.pos.y);
 
-			for (int c = 0; c <= MAXINTERVAL; c++)
+			SetActorChunkInfo(players[p].camera, chunkx, chunky);
+		}
+	}
+
+	void SetActorChunkInfo(Actor mo, int chunkx, int chunky, int rangeoffset = 0, bool traverseportals = true)
+	{
+		int maxval = MAPMAX * 2 / CHUNKSIZE;
+
+		for (int c = 0; c <= MAXINTERVAL - rangeoffset; c++)
+		{
+			// Iterate through chunks surrounding the player
+			for (int x = chunkx - c; x <= chunkx + c; x++)
 			{
-				// Iterate through chunks surrounding the player
-				for (int x = chunkx - c; x <= chunkx + c; x++)
+				if (x < 0 || x >= maxval) { continue; }
+
+				for (int y = chunky - c; y <= chunky + c; y++)
 				{
-					if (x < 0 || x >= maxval) { continue; }
+					if (y < 0 || y >= maxval) { continue; }
 
-					for (int y = chunky - c; y <= chunky + c; y++)
+					if (
+						(x != chunkx - c && x != chunkx + c) &&
+						(y != chunky - c && y != chunky + c)
+					) { continue; }
+
+					// Find the chunk info and set the spawn info
+					EffectChunk chunk = EffectChunk.FindChunk(x, y, chunks);
+
+					int range = max(1, c - 1 + rangeoffset);
+
+					if (range < chunk.range)
 					{
-						if (y < 0 || y >= maxval) { continue; }
-
-						if (
-							(x != chunkx - c && x != chunkx + c) &&
-							(y != chunky - c && y != chunky + c)
-						) { continue; }
-
-						// Find the chunk info and set the spawn info
-						EffectChunk chunk = EffectChunk.FindChunk(x, y, chunks);
-
-						int range = max(1, c - 1);
-
-						if (range < chunk.range)
+						chunk.range = range;
+						if (mo && mo.player)
 						{
-							chunk.range = range;
-							chunk.nearestplayer = players[p].camera;
-							chunk.maxplayerz = max(chunk.maxplayerz, players[p].camera.pos.z) + PRECIPOFFSET;
+							chunk.nearestplayer = mo;
+							chunk.maxplayerz = max(chunk.maxplayerz, mo.pos.z) + PRECIPOFFSET;
 						}
+					}
 
-						chunk.distance = chunk.range * CHUNKSIZE;
+					chunk.distance = chunk.range * CHUNKSIZE;
 
-						if (c > 4)
+					// Check actor view to limit chunk load outside of FOV
+					if (c + rangeoffset > 4)
+					{
+						double actorangle = Actor.Normalize180(mo.angle);
+						double relangle = atan2(y - chunky, x - chunkx);
+
+						if (Actor.absangle(actorangle, relangle) < 80) { chunk.infov = true; }
+					}
+					else
+					{
+						chunk.infov = true;
+					
+						// If within 4 chunks, also traverse portal lines to load areas on the other side
+						// This is limited due to possibility of performance hit of recursively calling this function
+						if (traverseportals && chunk.linkedchunks.Size())
 						{
-							double playerangle = Actor.Normalize180(players[p].camera.angle);
-							double relangle = atan2(y - chunky, x - chunkx);
-
-							if (Actor.absangle(playerangle, relangle) < 80) { chunk.infov = true; }
+							for (int l = 0; l < chunk.linkedchunks.Size(); l++)
+							{
+								SetActorChunkInfo(mo, chunk.linkedchunks[l].x, chunk.linkedchunks[l].y, c + rangeoffset + 1, false);
+							}
 						}
-						else { chunk.infov = true; }
 					}
 				}
 			}
