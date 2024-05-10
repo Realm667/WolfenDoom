@@ -29,11 +29,12 @@ class EffectChunk
 {
 	Array<int> sectors;
 	Array<int> things;
-	int x, y, distance, range;
+	int x, y, distance, range, lastset;
 	double maxplayerz;
 	bool infov, culled;
 	Actor nearestplayer;
 	Array<EffectChunk> linkedchunks;
+	Vector2 pos;
 
 	static int, int GetChunk(double x, double y)
 	{
@@ -68,6 +69,7 @@ class EffectChunk
 
 		chunk.x = int(x);
 		chunk.y = int(y);
+		chunk.pos = (x * CHUNKSIZE - MAPMAX + CHUNKSIZE / 2, y * CHUNKSIZE - MAPMAX + CHUNKSIZE / 2);
 		chunk.distance = MAXINTERVAL * CHUNKSIZE;
 		chunk.range = MAXINTERVAL;
 		chunk.maxplayerz = -0x7FFFFFFF;
@@ -263,21 +265,23 @@ class ChunkHandler : EventHandler
 		{
 			if (!playeringame[p] || !players[p].camera) { continue; } // Only process if player is in the game
 
-			// Convert player position to a chunk offset
-			int chunkx, chunky;
-			[chunkx, chunky] = EffectChunk.GetChunk(players[p].camera.pos.x, players[p].camera.pos.y);
-
-			SetActorChunkInfo(players[p].camera, chunkx, chunky);
+			SetActorChunkInfo(players[p].camera);
 		}
 	}
 
-	void SetActorChunkInfo(Actor mo, int chunkx, int chunky, int rangeoffset = 0, bool traverseportals = true)
+	void SetActorChunkInfo(Actor mo, Vector2 pos = (0, 0), int rangeoffset = 0, bool traverseportals = true)
 	{
 		int maxval = MAPMAX * 2 / CHUNKSIZE;
 
+		if (!mo && pos.length() == 0) { return; }
+		if (pos.length() == 0) { pos = mo.pos.xy; }
+
+		int chunkx, chunky;
+		[chunkx, chunky] = EffectChunk.GetChunk(pos.x, pos.y);
+
 		for (int c = 0; c <= MAXINTERVAL - rangeoffset; c++)
 		{
-			// Iterate through chunks surrounding the player
+			// Iterate through chunks surrounding the target chunk
 			for (int x = chunkx - c; x <= chunkx + c; x++)
 			{
 				if (x < 0 || x >= maxval) { continue; }
@@ -293,6 +297,7 @@ class ChunkHandler : EventHandler
 
 					// Find the chunk info and set the spawn info
 					EffectChunk chunk = EffectChunk.FindChunk(x, y, chunks);
+					chunk.lastset = lastupdate;
 
 					int range = max(1, c - 1 + rangeoffset);
 
@@ -326,7 +331,8 @@ class ChunkHandler : EventHandler
 						{
 							for (int l = 0; l < chunk.linkedchunks.Size(); l++)
 							{
-								SetActorChunkInfo(mo, chunk.linkedchunks[l].x, chunk.linkedchunks[l].y, c + rangeoffset + 1, false);
+								if (chunk.linkedchunks[l].lastset == lastupdate) { continue; }
+								SetActorChunkInfo(mo, chunk.linkedchunks[l].pos, c + rangeoffset, false);
 							}
 						}
 					}
