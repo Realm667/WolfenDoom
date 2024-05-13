@@ -1,0 +1,138 @@
+//////////
+//PLAYER//
+//////////
+
+//Regular stuff
+$playersound	player	male	*death		wwdthlo
+$playersound	player	male	*xdeath		wwdthhi
+$playeralias	player	male	*pain100	lowpain
+$playeralias	player	male	*pain75		medpain
+$playeralias	player	male	*pain50		hipain
+$playeralias	player	male	*pain25		critpain
+$playeralias	player	male	*grunt		oof
+$playersound	player	male	*land		wwoof
+$playersound	player	male	*usefail	wwnoway
+
+p4-1 plpain41
+p4-2 plpain42
+p4-3 plpain43
+p4-4 plpain44
+$random lowpain { p4-1 p4-2 p4-3 p4-4 }
+
+p3-1 plpain31
+p3-2 plpain32
+p3-3 plpain33
+p3-4 plpain34
+p3-5 plpain35
+$random medpain { p3-1 p3-2 p3-3 p3-4 p3-5 }
+
+p2-1 plpain21
+p2-2 plpain22
+p2-3 plpain23
+p2-4 plpain24
+p2-5 plpain25
+p2-6 plpain26
+$random hipain { p2-1 p2-2 p2-3 p2-4 p2-5 p2-6 }
+
+p1-1 plpain11
+p1-2 plpain12
+p1-3 plpain13
+p1-4 plpain14
+p1-5 plpain15
+p1-6 plpain16
+$random critpain { p1-1 p1-2 p1-3 p1-4 p1-5 p1-6 }
+
+poof-1 ploof1
+poof-2 ploof2
+poof-3 ploof3
+poof-4 ploof4
+poof-5 ploof5
+$random oof { poof-1 poof-2 poof-3 poof-4 poof-5 }
+
+//Ryan for C3M0_B
+$playeralias	ryan	male	*death		rdthlo
+$playeralias	ryan	male	*xdeath		rdthhi
+$playeralias	ryan	male	*pain100	rlowpain
+$playeralias	ryan	male	*pain75		rmedpain
+$playeralias	ryan	male	*pain50		rhipain
+$playeralias	ryan	male	*pain25		rcritpain
+$playeralias	ryan	male	*grunt		oof
+$playersound	ryan	male	*land		wwoof
+$playersound	ryan	male	*usefail	wwnoway
+
+p1-1r rplpn01
+p1-2r rplpn02
+p1-3r rplpn03
+$random rlowpain { p1-1r p1-2r p1-3r }
+
+p2-1r rplpn04
+p2-2r rplpn05
+p2-3r rplpn06
+$random rmedpain { p2-1r p2-2r p2-3r}
+
+p3-1r rplpn07
+p3-2r rplpn08
+p3-3r rplpn09
+$random rhipain { p3-1r p3-2r p3-3r }
+
+p41-1r rplpn10
+p4-2r rplpn11
+p4-3r rplpn12
+$random rcritpain { p41-1r p4-2r p4-3r }
+
+pd-1r rplpn13
+pd-2r rplpn14
+pd-3r rplpn15
+pd-4r rplpn16
+$random rdthlo { pd-1r pd-2r pd-3r pd-4r }
+$random rdthhi { pd-1r pd-2r pd-3r pd-4r } //same?
+
+//Burning
+burndth1 burndth1
+burndth2 burndth2
+burndth3 burndth3
+burndth4 burndth4
+burndth5 burndth5
+burndth6 burndth6
+burndth7 burndth7
+burndth8 burndth8
+burndth9 burndth9
+burndtha burndtha
+burndthb burndthb
+burndthc burndthc
+$random death/burning { burndth1 burndth2 burndth3 burndth4 burndth5 burndth6 burndth7 burndth8 burndth9 burndtha burndthb burndthc }
+
+//Sprint Breathe
+player/breathing	PLAYBRTH
+player/gasmask		MASKBRTH
+
+//BJ Dead Body Falling on ground for Nash's death camera
+bjfall1	bjfall1
+bjfall2	bjfall2
+$random death/bjfall	{bjfall1 bjfall2}
+
+//Miscellaneous
+misc/achievement		"sounds/misc/achievement.ogg"
+$limit misc/achievement 1
+
+misc/alert				alert //mxd
+misc/gadget_pickup		GDPICKUP
+misc/armor_pkup			dsgetarm
+misc/armor_body			DSBARMOR
+misc/armor_head			DSHARMOR
+misc/drink				DRINK
+misc/health_pkup		dsgethlt
+misc/k_pkup				dsgetkey
+misc/objective_acc		apply
+misc/objective_add		typekey
+misc/secret				secret
+misc/typewriter			typewrit
+misc/w_pkup				dsgetwep
+misc/windmill			"sounds/props/windmill.ogg" //mxd
+
+dsammup1 dsammup1
+dsammup2 dsammup2
+$random misc/ammo_pkup	{dsammup1 dsammup2}
+
+misc/mayan_pickup	mayapick
+$rolloff world/spark 64 512 //mxd - where does this def is actually used? not defined anywhere in boa - ozy81

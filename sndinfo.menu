@@ -1,0 +1,29 @@
+//////////
+//MENUES//
+//////////
+
+menu/activate	menuopen	// Activate a new menu
+menu/backup		menucls 	// Backup to previous menu
+menu/change		menuslid	// Select new value for option
+menu/choose		menupick	// Choose a menu item
+menu/clear		menucls 	// Close top menu
+menu/cursor		menumove	// Move cursor up/down
+menu/dismiss	menupick	// Dismiss a prompt message
+menu/invalid	menuslid	// Menu not available
+menu/prompt		menuopen	// Activate a prompt "menu"
+
+$pitchshift menu/activate 0
+$pitchshift menu/backup 0
+$pitchshift menu/change 0
+$pitchshift menu/choose 0
+$pitchshift menu/clear 0
+$pitchshift menu/cursor 0
+$pitchshift menu/dismiss 0
+$pitchshift menu/invalid 0
+$pitchshift menu/prompt 0
+
+conv/cursor	convmove		// Move cursor up/down in conversation
+$pitchshift	conv/cursor	0
+
+$random menu/quit1 { scrm1 scrm2 scrm3 scrm4 scrm5 }
+$random menu/quit2 { scrm1 scrm2 scrm3 scrm4 scrm5 }

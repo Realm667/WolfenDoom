@@ -1,0 +1,347 @@
+///////////
+//WEAPONS//
+///////////
+
+//Astrostein
+astrostein/hitler_act1	ashtac01
+astrostein/hitler_act2	ashtac02
+astrostein/hitler_act3	ashtac03
+$random astrostein/hitler_act {astrostein/hitler_act1 astrostein/hitler_act2 astrostein/hitler_act3}
+$rolloff astrostein/hitler_act 1280 1600
+
+DSPAPR1 DSPAPR1
+DSPAPR2 DSPAPR2
+DSPAPR3 DSPAPR3
+$random pickup/papers {DSPAPR1 DSPAPR2 DSPAPR3}
+
+weapons/rezfull			DSREZFUL
+weapons/rezhit			DSREZHIT
+weapons/rezidle			DSREZIDL
+$pitchshift weapons/rezidle 0 //mxd
+weapons/rezup			dsrezup
+
+astrochaingun/fire		dslasgun
+astrohitflesh			astrohf
+astrolauncher/bounce	dslasgn3
+astrolauncher/explode	dslsfirx
+astrolauncher/fire		dslsfir
+astroplasmaexplode		dsasexpl
+astroricochet			astroric
+astroricochet			dsasrico
+astroshotgun/fire		dslasgn2
+astrostein/explosion	ASTEXP02
+astrowhiz				astrowz
+pickup/armorshard		AMRSHRD
+pickup/bandage 		DSBANDG
+pickup/radiopk 		DSRADPK
+pickup/mealfood 	DSFDPCK
+pickup/uniform 		DSUNIF
+pickup/item			DSITEMUP
+pickup/generic		pickup
+activate/gier		chaching
+activate/macht		SPIRDI3
+
+//Commander Keen
+ckeen/blowgun	ckblowg
+ckeen/flag		ckflag
+ckeen/gem		ckgem
+ckeen/gemuse	ckugem
+ckeen/gun		ckgun
+ckeen/hit		ckhit
+ckeen/kill		ckkill
+ckeen/klick		ckklick
+ckeen/life		cklife
+ckeen/madmushroombounce ckmadmus
+ckeen/pickup	ckpickup
+ckeen/raindrop	ckraindr
+ckeen/shoot		ckshoot
+ckeen/shothit	ckshoth
+ckeen/slugpoo	ckslugpo
+ckeen/starting	ckbegin
+ckeen/switch		ckswitch
+ckeen/lick/attack	cklickf
+ckeen/wormouth/attack	ckwormf
+ckeen/mine/explode	ckmineex
+ckeen/smirky/steal	cksmirti
+ckeen/smirky/teleport	cksmirto
+ckeen/dopefish/burp		ckdopebu
+ckeen/mimrock/bounce	ckhead
+ckeen/lindsey/touch	cklindse
+ckeen/pogo			ckpogo
+ckeen/keen_death	ckdead
+ckeen/keen_helmet	ckhead
+ckeen/keen_jump		ckjump
+ckeen/keen_land		ckland
+ckeen/keen_pain		ckpain // Modified version of the original CK stats screen appearance sound
+ckeen/noway			cknoway
+ckeen/exit			ckexit
+ckeen/message		ckmessag
+ckeen/climb			ckclimb
+ckeen/berkeloid/attack	ckberka
+ckeen/skypest/squish	ckskypsq
+ckeen/secret		cklindse
+
+//Commander Keen player class
+$playersound	keen	male	*death		ckdead
+$playersounddup	keen	male	*xdeath		*death
+$playersound	keen	male	*pain100	ckpain // Doesn't work when morphed...  A_Pain always defaults to local actor's PainSound if morphed...
+$playersounddup	keen	male	*pain75		*pain100
+$playersounddup	keen	male	*pain50		*pain100
+$playersounddup	keen	male	*pain25		*pain100
+$playersound	keen	male	*grunt		null
+$playersound	keen	male	*land		ckland
+$playersound	keen	male	*usefail	cknoway
+
+//Commander Keen floors
+ckeen/keen_step1	ckstep1
+ckeen/keen_step2	ckstep2
+$random floor/keeny		{ ckeen/keen_step1 ckeen/keen_step2 }
+$volume floor/keeny 0.5
+
+//Shell Casings
+bcase1 bcase1
+bcase2 bcase2
+bcase3 bcase3
+bcase4 bcase4
+$random bulletcasing/bounce {bcase1 bcase2 bcase3 bcase4}
+$rolloff bulletcasing/bounce 64 512
+
+scases1 scases1
+scases2 scases2
+scases3 scases3
+$random shellcasing/stop {scases1 scases2 scases3}
+
+scasesb1 scasesb1
+scasesb2 scasesb2
+$random shellcasing/bounce {scasesb1 scasesb2}
+$rolloff shellcasing/bounce 64 512
+
+//Weapon select sounds
+select/bazooka  bazoosel
+select/heavywpn hwpnsel
+select/mg       mgsel
+select/mp44     mp44sel
+select/pistol   pstlsel
+select/rifle    riflesel
+select/shotgun  shotsel
+select/smg      smgsel
+select/knife    knifesel
+select/shovel   shovlsel
+
+//Dryfire
+weapon/dryfire click
+
+//Kick
+kick/hit	KICKHIT
+
+//Knife
+knife/hit	KNHITB
+$alias knife/select select/knife
+
+knife/swing	KNSWNG
+knife/stone	KNSTON
+$random knife/random { knife/swing knife/stone }
+
+//Shovel
+shovel/impact1	dsshvi1
+shovel/impact2	dsshvi2
+$random shovel/impact {shovel/impact1 shovel/impact2}
+
+shovel/wall		dsshvi3
+$alias shovel/select select/shovel
+
+shovel/miss1	dsshvw1
+shovel/miss2	dsshvw2
+shovel/miss3	dsshvw3
+$random shovel/miss {shovel/miss1 shovel/miss2 shovel/miss3}
+
+//Luger P-08
+luger/fire		lugrfire
+luger/reload	lugrload
+$alias luger/select	select/pistol
+
+//Walther P-38
+walther/fire	waltfir
+walther/reload	loadp38
+$alias walther/select  select/pistol
+
+//M1897 Trenchgun
+shotgun/fire	SHOTFIRE
+shotgun/load	SHOTLOAD
+shotgun/pump	SHOTPUMP
+$alias shotgun/select select/shotgun
+
+//Browning Auto-5
+browning/fire	ba5fire
+browning/load	ba5load
+browning/cock	ba5cock
+$alias browning/select select/shotgun
+
+//MP-40
+mp40/fire		mp40fire
+mp40/reload		loadmp40
+$alias mp40/select select/mp44
+
+//Sten Mk-II
+sten/fire		STENFIRE
+sten/reload		STENLOAD
+sten/reload1	STENLD1
+sten/reload2	STENLD2
+$alias sten/select select/smg
+
+//Gewehr 43
+g43/fire		m1fire
+g43/reload		loadg43
+$alias g43/select select/rifle
+
+//Karabiner 98k
+mauser/fire		DSMAUS
+mauser/cock		DSMCLACK
+mauser/open		DSPOP
+mauser/insert	DSINSERT
+mauser/shut		DSCLACK
+mauser/scope	KSCOPE1
+$alias mauser/select select/rifle
+
+//Pyrolight
+flamer/fire		dsfthrow
+flamer/steam	dssteam
+flamer/napalm	THERMFIR
+flamer/reload	THERMRLD
+$alias flamer/select select/heavywpn
+
+//Nebelwerfer
+nebelwerfer/fire	dsnebsht
+nebelwerfer/xplode	dsnebxpl
+$alias nebelwerfer/select select/heavywpn
+
+//Panzerschreck
+panzer/fire			panzfire
+panzer/load			panzload
+panzer/fly			panzfly
+panzer/explode	panzexpl
+$alias panzer/select select/bazooka
+$rolloff panzer/explode 1280 4096
+
+//UMG43
+chaingun/fire		dscgun
+chaingun/start		chaingo
+chaingun/loop		chainlp
+chaingun/stop		chainstp
+chaingun/get		p_cgun
+$alias chaingun/select select/heavywpn
+
+chaingun/alt1		chnalt1
+chaingun/alt2		chnalt2
+chaingun/alt3		chnalt3
+$random chaingun/altfire {chaingun/alt1 chaingun/alt2 chaingun/alt3}
+
+grenthr1 grenthr1
+grenthr2 grenthr2
+grenthr3 grenthr3
+$random grenade/throw { grenthr1 grenthr2 grenthr3 }
+
+grenbnc1 grenbnc1
+grenbnc2 grenbnc2
+grenbnc3 grenbnc3
+grenbnc4 grenbnc4
+$random grenade/bounce { grenbnc1 grenbnc2 grenbnc3 grenbnc4 }
+
+grenexp1 grenexp1
+grenexp2 grenexp2
+grenexp3 grenexp3
+grenexp4 grenexp4
+$random grenade/explode { grenexp1 grenexp2 grenexp3 grenexp4 }
+
+grenade/pickup grenpick
+
+//Flare
+flare/light	flarlite
+flare/loop	flarloop
+$volume flare/light 0.5
+$volume flare/loop 0.5
+$limit flare/loop 5
+
+//Cluster Nailbomc
+clusterbomb/explode			NAILFIRE
+clusterbomb/debrisbounce 	NAILCLIK
+clusterbomb/fire 			NAILSHOT
+
+//Feuerbrand
+sword1 DSSWDHT1
+sword2 DSSWDHT2
+sword3 DSSWDHT3
+$random sword/hit { sword1 sword2 sword3 }
+
+swordwall1 DSSWDWAL
+swordwall2 DSSWDWL2
+swordwall3 DSSWDWL3
+swordwall4 DSSWDWL4
+$random sword/wall { swordwall1 swordwall2 swordwall3 swordwall4 }
+
+swordswing1 DSSHVW1
+swordswing2 DSSHVW2
+swordswing3 DSSHVW3
+$random sword/swing { swordswing1 swordswing2 swordswing3 }
+
+fsword1 DSFWDHT1
+fsword2 DSFWDHT2
+fsword3 DSFWDHT3
+$random flamesword/hit { fsword1 fsword2 fsword3 }
+
+sword/draw DSSWDUP
+flamesword/swing DSFWDSWG
+
+//Tesla
+tesla/kill	TESLA_KL
+tesla/fire	TESLA_LG
+tesla/alt	TESLA_SM
+tesla/hum	TESLA
+tesla/raise	TESLASEL
+
+// Electrical Arc
+$random electrical/shock { electrical/shock1 electrical/shock2 electrical/shock3 electrical/shock4 }
+electrical/shock1		elec1
+electrical/shock2		elec2
+electrical/shock3		elec3
+electrical/shock4		elec4
+$limit electrical/shock 1 512
+$volume electrical/shock 0.125
+
+// Cleaver
+DSPFWOOD	DSPFWOOD
+cleaver/crash	CLEAVER
+
+//Bullet Whizzes & Suchwise
+rico1 trceric1
+rico2 trceric2
+rico3 trceric3
+rico4 trceric4
+rico5 trceric5
+rico6 trceric6
+rico7 trceric7
+rico8 trceric8
+rico9 trceric9
+$random ricochet { rico1 rico2 rico3 rico4 rico5 rico6 rico7 rico8 rico9 }
+
+whiz1 trcefly1
+whiz2 trcefly2
+whiz3 trcefly3
+$random whiz { whiz1 whiz2 whiz3 }
+
+hitflesh1 trcehit1
+hitflesh2 trcehit2
+hitflesh3 trcehit3
+hitflesh4 trcehit4
+hitflesh5 trcehit5
+hitflesh6 trcehit6
+hitflesh7 trcehit7
+hitflesh8 trcehit8
+hitflesh9 trcehit9
+$random hitflesh { hitflesh1 hitflesh2 hitflesh3 hitflesh4 hitflesh5 hitflesh6 hitflesh7 hitflesh8 hitflesh9 }
+
+grnx1 dsbarex1
+grnx2 dsbarex2
+grnx3 dsbarex3
+grnx4 dsbarex4
+$random world/barrelboom {grnx1 grnx2 grnx3 grnx4}
