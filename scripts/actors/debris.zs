@@ -45,17 +45,15 @@ class Debris : SceneryBase
 		MaxStepHeight 48;
 		MaxDropoffHeight 48;
 		+SOLID
-		+INVISIBLE
-		+CullActorBase.DONTCULL
 		Debris.MoundStyle 0;
 		Debris.DrawMound true;
 
-		// Hijack DropItem list for ease of customization.  
-		// If the chance (second parameter) is negative, it's treated as a chance of 255, 
-		// with the value used to bound a Random(x, y) call for the amount.  So, the 
+		// Hijack DropItem list for ease of customization.
+		// If the chance (second parameter) is negative, it's treated as a chance of 255,
+		// with the value used to bound a Random(x, y) call for the amount.  So, the
 		// DebrisGirder actor here will spawn between 2 and 4 times, the pipe between 2 and 10, etc.
-		// Note that the random amount also scale with size, so if you make something with a 
-		// large radius (e.g., 64), or you scale the actor up in-editor, you'll end up with 
+		// Note that the random amount also scale with size, so if you make something with a
+		// large radius (e.g., 64), or you scale the actor up in-editor, you'll end up with
 		// that scale amount more items spawned (to fill space).
 		DropItem "DebrisGirder", -2, 4;
 		DropItem "DebrisPipe", -2, 10;
@@ -75,10 +73,10 @@ class Debris : SceneryBase
 
 	override void PostBeginPlay()
 	{
-		scale.x = scale.x * Radius / 24;
-		scale.y = scale.y * Height / 40;
+		double sizex = scale.x * Radius / 24;
+		double sizey = scale.y * Height / 40;
 
-		A_SetSize(Radius * scale.x, Height * scale.y);
+		A_SetSize(Radius * sizex, Height * sizey);
 
 		bDontCull = bDontCull || (boa_debriscullstyle > 0);
 
@@ -121,16 +119,19 @@ class Debris : SceneryBase
 
 					if (cls)
 					{
-						int amt = int(max(item.Amount, 1) * scale.x);
+						int amt = int(max(item.Amount, 1) * sizex);
 						int pr = item.probability;
 
 						if (pr < 1)
 						{
-							amt = Random[Debris](int(-pr * scale.x), amt);
+							amt = Random[Debris](int(-pr * sizex), amt);
 							pr = 255;
 						}
 
 						SpawnRandom(item.Name, pr, max(amt, 1), spread * 1.1, spread * 0.75);
+						if (developer >= 5) {
+							A_Log(TEXTCOLOR_RED .. "Spawned a " .. TEXTCOLOR_GOLD .. item.Name .. ".");
+						}
 					}
 					else if (developer) { A_Log(TEXTCOLOR_RED .. "Unknown item class ".. item.Name .." attempted to drop from a debris spawner\n"); }
 				}
@@ -139,27 +140,44 @@ class Debris : SceneryBase
 			}
 		}
 
+		ESizeClass size;
+		[size, scale] = GetSizeInfo();
+		frame = GetFrame(size);
+
 		Super.PostBeginPlay();
 	}
-	
-	virtual ESizeClass GetSizeClass() {
+
+	virtual ESizeClass, Vector2 GetSizeInfo()
+	{
 		double tallness = scale.y / scale.x;
+		Vector2 modelScale = (1.0, 1.0);
 		if (tallness >= 2.0) {
-			return SIZE_TALL;
+			modelScale = (scale.x, scale.y / tallness);
+			return SIZE_TALL, modelScale;
 		}
 		double size = max(scale.x, scale.y);
 		if (size < 1.0) {
-			return SIZE_TINY;
+			modelScale = (scale.x / 0.5, scale.y / 0.5);
+			return SIZE_TINY, modelScale;
 		} else if (size > 1.0 && size < 2.0) {
-			return SIZE_MEDIUM;
+			modelScale = (scale.x / 1.5, scale.y / 1.5);
+			return SIZE_MEDIUM, modelScale;
 		} else if (size >= 2.0 && size < 2.5) {
-			return SIZE_LARGE;
+			modelScale = (scale.x / 2.0, scale.y / 2.0);
+			return SIZE_LARGE, modelScale;
 		} else if (size >= 2.5 && size < 5.0) {
-			return SIZE_HUGE;
+			modelScale = (scale.x / 3.0, scale.y / 3.0);
+			return SIZE_HUGE, modelScale;
 		} else if (size >= 5.0) {
-			return SIZE_GIANT;
+			modelScale = (scale.x / 5.0, scale.y / 5.0);
+			return SIZE_GIANT, modelScale;
 		}
-		return SIZE_SMALL;
+		return SIZE_SMALL, modelScale;
+	}
+
+	virtual int GetFrame(ESizeClass size)
+	{	 // A = 0
+		return 0;
 	}
 
 	void SpawnRandom(Class<Actor> debrisclass, int probability = 255, int amt = 1, float distance = -1, float mindistance = 0)
@@ -479,17 +497,30 @@ class JunkPile1 : Debris
 	Default
 	{
 		//$Category Props (BoA)/Debris
-		//$Title Junk Pile (middle)
+		//$Title Junk Pile (medium)
 		Radius 25;
 		Height 20;
-		+SOLID
-		DropItem "DebrisGirder", -2, 4;
-		DropItem "DebrisPipe", -2, 10;
-		DropItem "DebrisBeam", -10, 15;
-		DropItem "DebrisBrick", -10, 15;
-		DropItem "DebrisChunk", -10, 15;
-		DropItem "DebrisBottle", 0, 2;
-		DropItem "DebrisBottle2", 0, 2;
+		DropItem "None", 0, 0;
+	}
+
+	override int GetFrame(ESizeClass size)
+	{
+		if (size == SIZE_SMALL) {
+			return Random(0, 6);
+		} else if (size == SIZE_GIANT) {
+			return 7;
+		} else if (size == SIZE_HUGE) {
+			return 8;
+		} else if (size == SIZE_LARGE) {
+			return Random(9, 15);
+		} else if (size == SIZE_MEDIUM) {
+			return 16;
+		} else if (size == SIZE_TALL) {
+			return Random(17, 20);
+		} else if (size == SIZE_TINY) {
+			return Random(21, 22);
+		}
+		return 0; // Small
 	}
 }
 
@@ -501,14 +532,25 @@ class JunkPile2 : Debris
 		//$Title Junk Pile (large)
 		Radius 28;
 		Height 28;
-		+SOLID
-		DropItem "DebrisGirder", -2, 4;
-		DropItem "DebrisPipe", -2, 10;
-		DropItem "DebrisBeam", -10, 15;
-		DropItem "DebrisBrick", -10, 15;
-		DropItem "DebrisChunk", -10, 15;
-		DropItem "DebrisBottle", 0, 2;
-		DropItem "DebrisBottle2", 0, 2;
+		DropItem "None", 0, 0;
+	}
+
+	override int GetFrame(ESizeClass size)
+	{
+		if (size == SIZE_SMALL) {
+			return Random(0, 9);
+		} else if (size == SIZE_GIANT) {
+			return Random(10, 11);
+		} else if (size == SIZE_HUGE) {
+			return Random(12, 15);
+		} else if (size == SIZE_LARGE) {
+			return Random(16, 20);
+		} else if (size == SIZE_TALL) {
+			return Random(21, 23);
+		} else if (size == SIZE_TINY) {
+			return Random(24, 25);
+		}
+		return 0; // Small
 	}
 }
 
@@ -520,19 +562,21 @@ class JunkPile3 : Debris
 		//$Title Junk Pile (small, with sprites)
 		Radius 24;
 		Height 8;
-		+SOLID
-		DropItem "DebrisGirder", -2, 4;
-		DropItem "DebrisPipe", -2, 10;
-		DropItem "DebrisBeam", -10, 15;
-		DropItem "DebrisBrick", -10, 15;
-		DropItem "DebrisChunk", -10, 15;
-		DropItem "DebrisBottle", 0, 2;
-		DropItem "DebrisBottle2", 0, 2;
 		DropItem "Radiator_Short", 128;
 		DropItem "Chair3", 64;
 		DropItem "Table8", 64;
 		DropItem "Bunk_Bed1", 64;
 		DropItem "WineBottle", 255, 5;
+	}
+
+	override int GetFrame(ESizeClass size)
+	{
+		if (size == SIZE_SMALL) {
+			return Random(0, 2);
+		} else if (size == SIZE_LARGE) {
+			return 3;
+		}
+		return 0; // Small
 	}
 }
 
@@ -545,16 +589,17 @@ class JunkPile3NoBedTab : Debris
 		Radius 24;
 		Height 8;
 		+SOLID
-		DropItem "DebrisGirder", -2, 4;
-		DropItem "DebrisPipe", -2, 10;
-		DropItem "DebrisBeam", -10, 15;
-		DropItem "DebrisBrick", -10, 15;
-		DropItem "DebrisChunk", -10, 15;
-		DropItem "DebrisBottle", 0, 2;
-		DropItem "DebrisBottle2", 0, 2;
 		DropItem "Radiator_Short", 128;
 		DropItem "Chair3", 64;
 		DropItem "WineBottle", 255, 5;
+	}
+
+	override int GetFrame(ESizeClass size)
+	{
+		if (size == SIZE_SMALL) {
+			return Random(0, 3);
+		}
+		return 0; // Small
 	}
 }
 
@@ -566,15 +611,18 @@ class JunkPile4 : Debris
 		//$Title Junk Pile (large, with corrugated sheets)
 		Radius 32;
 		Height 32;
-		+SOLID
-		DropItem "DebrisGirder", -2, 4;
-		DropItem "DebrisPipe", -2, 10;
-		DropItem "DebrisBeam", -10, 15;
-		DropItem "DebrisBrick", -10, 15;
-		DropItem "DebrisChunk", -10, 15;
-		DropItem "DebrisBottle", 0, 2;
-		DropItem "DebrisBottle2", 0, 2;
-		DropItem "DebrisCorrugated", 255, 2;
+	}
+
+	override int GetFrame(ESizeClass size)
+	{
+		if (size == SIZE_SMALL) {
+			return Random(0, 3);
+		} else if (size == SIZE_GIANT) {
+			return 4;
+		} else if (size == SIZE_HUGE) {
+			return Random(5, 6);
+		}
+		return 0; // Small
 	}
 }
 
