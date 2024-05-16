@@ -55,13 +55,6 @@ class Debris : SceneryBase
 		// Note that the random amount also scale with size, so if you make something with a
 		// large radius (e.g., 64), or you scale the actor up in-editor, you'll end up with
 		// that scale amount more items spawned (to fill space).
-		DropItem "DebrisGirder", -2, 4;
-		DropItem "DebrisPipe", -2, 10;
-		DropItem "DebrisBeam", -10, 15;
-		DropItem "DebrisBrick", -10, 15;
-		DropItem "DebrisChunk", -10, 15;
-		DropItem "DebrisBottle", 0, 2;
-		DropItem "DebrisBottle2", 0, 2;
 	}
 
 	States
@@ -129,7 +122,7 @@ class Debris : SceneryBase
 						}
 
 						SpawnRandom(item.Name, pr, max(amt, 1), spread * 1.1, spread * 0.75);
-						if (developer >= 5) {
+						if (developer) {
 							A_Log(TEXTCOLOR_RED .. "Spawned a " .. TEXTCOLOR_GOLD .. item.Name .. ".");
 						}
 					}
@@ -500,7 +493,6 @@ class JunkPile1 : Debris
 		//$Title Junk Pile (medium)
 		Radius 25;
 		Height 20;
-		DropItem "None", 0, 0;
 	}
 
 	override int GetFrame(ESizeClass size)
@@ -532,7 +524,6 @@ class JunkPile2 : Debris
 		//$Title Junk Pile (large)
 		Radius 28;
 		Height 28;
-		DropItem "None", 0, 0;
 	}
 
 	override int GetFrame(ESizeClass size)
