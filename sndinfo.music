@@ -21,10 +21,48 @@ JSCR05 JSCR05
 JSCR06 JSCR06
 $random JUMPSCARE { JSCR01 JSCR02 JSCR03 JSCR04 JSCR05 JSCR06 }
 
-ark/theme ark
-misc/chat DSRADIO // Fix for #324 - a "chat" sound needs to be defined.
+//Briefing
+DIA_SLID DIA_SLID //Dia Slide
+DIA_BEEP DIA_BEEP //Dia Beep
+RADIONOS RADIONOS //Radio Noise
 
-//Dooms related
-brain/pain	BOABOSPN
-brain/death	BOABOSDT
-vile/raise	DSEMPTY // Don't play the default archvile resurrection sound when healing...  This is hard-coded into P_Thing_Raise.
+//Radio Broadcast - Simple
+SPEECH1 SPEECH1
+$singular SPEECH1
+
+//Radio Broadcast - Parlor Radio
+HWESSL2	HWESSL2
+VIKTORIA VIKTORIA
+SPEECH2 SPEECH2
+$random radios/loops { HWESSL2 VIKTORIA SPEECH2 }
+$limit radios/loops 1
+$singular HWESSL2
+$singular VIKTORIA
+$singular SPEECH2
+
+//Russian Broadcast - Parlor Radio
+FARAWAY FARAWAY
+MOMENTS MOMENTS
+WALTZN2 WALTZN2
+$random radios2/loops { FARAWAY MOMENTS WALTZN2 }
+$limit radios2/loops 1
+$singular FARAWAY
+$singular MOMENTS
+$singular WALTZN2
+
+//Gramophone
+WALKURE	WALKURE
+WALKUR2	WALKUR2
+HWLMB HWLMB
+$singular WALKURE
+$singular WALKUR2
+$singular HWLMB
+
+//Piano
+CLAIREDL CLAIREDL
+$singular CLAIREDL
+
+//Eastereggs
+ark/theme ark
+
+misc/chat DSRADIO // Fix for #324 - a "chat" sound needs to be defined.

@@ -26,8 +26,8 @@ astrolauncher/bounce	dslasgn3
 astrolauncher/explode	dslsfirx
 astrolauncher/fire		dslsfir
 astroplasmaexplode		dsasexpl
-astroricochet			astroric
-astroricochet			dsasrico
+astroricochet			astroric //---------------------------------------------------------
+astroricochet			dsasrico //these two have same name but sounds are different - ozy81
 astroshotgun/fire		dslasgn2
 astrostein/explosion	ASTEXP02
 astrowhiz				astrowz
@@ -40,63 +40,6 @@ pickup/item			DSITEMUP
 pickup/generic		pickup
 activate/gier		chaching
 activate/macht		SPIRDI3
-
-//Commander Keen
-ckeen/blowgun	ckblowg
-ckeen/flag		ckflag
-ckeen/gem		ckgem
-ckeen/gemuse	ckugem
-ckeen/gun		ckgun
-ckeen/hit		ckhit
-ckeen/kill		ckkill
-ckeen/klick		ckklick
-ckeen/life		cklife
-ckeen/madmushroombounce ckmadmus
-ckeen/pickup	ckpickup
-ckeen/raindrop	ckraindr
-ckeen/shoot		ckshoot
-ckeen/shothit	ckshoth
-ckeen/slugpoo	ckslugpo
-ckeen/starting	ckbegin
-ckeen/switch		ckswitch
-ckeen/lick/attack	cklickf
-ckeen/wormouth/attack	ckwormf
-ckeen/mine/explode	ckmineex
-ckeen/smirky/steal	cksmirti
-ckeen/smirky/teleport	cksmirto
-ckeen/dopefish/burp		ckdopebu
-ckeen/mimrock/bounce	ckhead
-ckeen/lindsey/touch	cklindse
-ckeen/pogo			ckpogo
-ckeen/keen_death	ckdead
-ckeen/keen_helmet	ckhead
-ckeen/keen_jump		ckjump
-ckeen/keen_land		ckland
-ckeen/keen_pain		ckpain // Modified version of the original CK stats screen appearance sound
-ckeen/noway			cknoway
-ckeen/exit			ckexit
-ckeen/message		ckmessag
-ckeen/climb			ckclimb
-ckeen/berkeloid/attack	ckberka
-ckeen/skypest/squish	ckskypsq
-ckeen/secret		cklindse
-
-//Commander Keen player class
-$playersound	keen	male	*death		ckdead
-$playersounddup	keen	male	*xdeath		*death
-$playersound	keen	male	*pain100	ckpain // Doesn't work when morphed...  A_Pain always defaults to local actor's PainSound if morphed...
-$playersounddup	keen	male	*pain75		*pain100
-$playersounddup	keen	male	*pain50		*pain100
-$playersounddup	keen	male	*pain25		*pain100
-$playersound	keen	male	*grunt		null
-$playersound	keen	male	*land		ckland
-$playersound	keen	male	*usefail	cknoway
-
-//Commander Keen floors
-ckeen/keen_step1	ckstep1
-ckeen/keen_step2	ckstep2
-$random floor/keeny		{ ckeen/keen_step1 ckeen/keen_step2 }
-$volume floor/keeny 0.5
 
 //Shell Casings
 bcase1 bcase1
@@ -127,6 +70,10 @@ select/shotgun  shotsel
 select/smg      smgsel
 select/knife    knifesel
 select/shovel   shovlsel
+
+dsammup1 dsammup1
+dsammup2 dsammup2
+$random misc/ammo_pkup	{dsammup1 dsammup2}
 
 //Dryfire
 weapon/dryfire click
@@ -345,3 +292,5 @@ grnx2 dsbarex2
 grnx3 dsbarex3
 grnx4 dsbarex4
 $random world/barrelboom {grnx1 grnx2 grnx3 grnx4}
+
+misc/mayan_pickup	mayapick
