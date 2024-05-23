@@ -1,0 +1,56 @@
+//Commander Keen
+ckeen/blowgun	ckblowg
+ckeen/flag		ckflag
+ckeen/gem		ckgem
+ckeen/gemuse	ckugem
+ckeen/gun		ckgun
+ckeen/hit		ckhit
+ckeen/kill		ckkill
+ckeen/klick		ckklick
+ckeen/life		cklife
+ckeen/madmushroombounce ckmadmus
+ckeen/pickup	ckpickup
+ckeen/raindrop	ckraindr
+ckeen/shoot		ckshoot
+ckeen/shothit	ckshoth
+ckeen/slugpoo	ckslugpo
+ckeen/starting	ckbegin
+ckeen/switch		ckswitch
+ckeen/lick/attack	cklickf
+ckeen/wormouth/attack	ckwormf
+ckeen/mine/explode	ckmineex
+ckeen/smirky/steal	cksmirti
+ckeen/smirky/teleport	cksmirto
+ckeen/dopefish/burp		ckdopebu
+ckeen/mimrock/bounce	ckhead
+ckeen/lindsey/touch	cklindse
+ckeen/pogo			ckpogo
+ckeen/keen_death	ckdead
+ckeen/keen_helmet	ckhead
+ckeen/keen_jump		ckjump
+ckeen/keen_land		ckland
+ckeen/keen_pain		ckpain // Modified version of the original CK stats screen appearance sound
+ckeen/noway			cknoway
+ckeen/exit			ckexit
+ckeen/message		ckmessag
+ckeen/climb			ckclimb
+ckeen/berkeloid/attack	ckberka
+ckeen/skypest/squish	ckskypsq
+ckeen/secret		cklindse
+
+//Commander Keen floors
+ckeen/keen_step1	ckstep1
+ckeen/keen_step2	ckstep2
+$random floor/keeny		{ ckeen/keen_step1 ckeen/keen_step2 }
+$volume floor/keeny 0.5
+
+//Commander Keen player class
+$playersound	keen	male	*death		ckdead
+$playersounddup	keen	male	*xdeath		*death
+$playersound	keen	male	*pain100	ckpain // Doesn't work when morphed...  A_Pain always defaults to local actor's PainSound if morphed...
+$playersounddup	keen	male	*pain75		*pain100
+$playersounddup	keen	male	*pain50		*pain100
+$playersounddup	keen	male	*pain25		*pain100
+$playersound	keen	male	*grunt		null
+$playersound	keen	male	*land		ckland
+$playersound	keen	male	*usefail	cknoway

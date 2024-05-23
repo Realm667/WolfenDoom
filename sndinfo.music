@@ -1,0 +1,68 @@
+///////////////////
+//MUSIC AS SOUNDS//
+///////////////////
+
+C2M1_INT C2M1_INT
+C2M2_VIC C2M2_VIC
+C3M6A_I2 C3M6A_I2
+C3M6B_VM C3M6B_VM
+CMBT_HT  CMBT_HT
+CRDMP_HT CRDMP_HT
+D_INTRMP D_INTRMP //not present on sounds/music but music folder only --ozy81
+HORSTWOR HORSTWOR
+NZ_ERFUR NZ_ERFUR
+
+//Jumpscares
+JSCR01 JSCR01
+JSCR02 JSCR02
+JSCR03 JSCR03
+JSCR04 JSCR04
+JSCR05 JSCR05
+JSCR06 JSCR06
+$random JUMPSCARE { JSCR01 JSCR02 JSCR03 JSCR04 JSCR05 JSCR06 }
+
+//Briefing
+DIA_SLID DIA_SLID //Dia Slide
+DIA_BEEP DIA_BEEP //Dia Beep
+RADIONOS RADIONOS //Radio Noise
+
+//Radio Broadcast - Simple
+SPEECH1 SPEECH1
+$singular SPEECH1
+
+//Radio Broadcast - Parlor Radio
+HWESSL2	HWESSL2
+VIKTORIA VIKTORIA
+SPEECH2 SPEECH2
+$random radios/loops { HWESSL2 VIKTORIA SPEECH2 }
+$limit radios/loops 1
+$singular HWESSL2
+$singular VIKTORIA
+$singular SPEECH2
+
+//Russian Broadcast - Parlor Radio
+FARAWAY FARAWAY
+MOMENTS MOMENTS
+WALTZN2 WALTZN2
+$random radios2/loops { FARAWAY MOMENTS WALTZN2 }
+$limit radios2/loops 1
+$singular FARAWAY
+$singular MOMENTS
+$singular WALTZN2
+
+//Gramophone
+WALKURE	WALKURE
+WALKUR2	WALKUR2
+HWLMB HWLMB
+$singular WALKURE
+$singular WALKUR2
+$singular HWLMB
+
+//Piano
+CLAIREDL CLAIREDL
+$singular CLAIREDL
+
+//Eastereggs
+ark/theme ark
+
+misc/chat DSRADIO // Fix for #324 - a "chat" sound needs to be defined.
