@@ -34,7 +34,7 @@ class FireSpawner : HeatEffectGiver
 		Spawn:
 			TNT1 A 0;
 		Active:
-			TNT1 A 35; // Delay on activation is in original DECORATE
+			TNT1 A 35 { if (level.time < 5) { tics = 0; } } // Delay on activation is in original DECORATE; added code to skip the delay if this is level start
 			TNT1 A 0 {
 				StartSound();
 				A_AttachLightDef("Flicker", "FireSpawner" .. suffix);

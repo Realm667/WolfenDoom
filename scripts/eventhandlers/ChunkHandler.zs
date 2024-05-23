@@ -314,7 +314,7 @@ class ChunkHandler : EventHandler
 					chunk.distance = chunk.range * CHUNKSIZE;
 
 					// Check actor view to limit chunk load outside of FOV
-					if (c + rangeoffset > 4)
+					if (mo && c + rangeoffset > 4)
 					{
 						double actorangle = Actor.Normalize180(mo.angle);
 						double relangle = atan2(y - chunky, x - chunkx);

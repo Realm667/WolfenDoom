@@ -160,6 +160,8 @@ class ParticleManager : EventHandler
 
 	int GetDelay(int chunkx, int chunky, Actor origin = null)
 	{
+		if (!boa_culling) { return 0; }
+
 		if (!effectmanager) { effectmanager = EffectsManager.GetManager(); }
 
 		if (origin)
@@ -171,6 +173,7 @@ class ParticleManager : EventHandler
 		{
 			EffectChunk chunk = EffectChunk.FindChunk(chunkx, chunky, effectmanager.handler.chunks);
 			if (chunk.range < 2) { return 0; }
+			else if (chunk.range > maxinterval) { return 0; }
 
 			int maxinterval = clamp(boa_cullrange, 1024, 8192) / CHUNKSIZE;
 			double delayfactor = chunk.range / maxinterval;
