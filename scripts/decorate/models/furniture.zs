@@ -696,6 +696,8 @@ class HitlersDesk : MuseumBase
 	{
 		//$Category Furniture (BoA)
 		//$Title Hitler's Desk
+		Radius 24;
+		Height 8;
 		//$Color 3
 	}
 }

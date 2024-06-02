@@ -52,6 +52,7 @@ class Handrail : ModelBase
 	{
 		//$Category Models (BoA)/Scenery
 		//$Title Handrail
+		RenderRadius 56;
 		//$Color 3
 		DistanceCheck "boa_scenelod";
 		Radius 1;
@@ -1315,6 +1316,7 @@ class TrainLever3DSwitch : InteractionBase
 	{
 		//$Category Models (BoA)/Scenery
 		//$Title Train Lever, Nazi Eagle (Switchable)
+		RenderRadius 40;
 		//$Color 3
 		Height 64;
 		Radius 16;
@@ -1345,7 +1347,8 @@ class TrainLever3DSwitch1 : TrainLever3DSwitch
 {
 	Default
 	{
-		//$Title Train Lever, Red 1 (Switchable)
+	//$Title Train Lever, Red 1 (Switchable)
+	RenderRadius 40;
 	}
 }
 
@@ -1354,6 +1357,7 @@ class TrainLever3DSwitch2 : TrainLever3DSwitch
 	Default
 	{
 	//$Title Train Lever, Red 2 (Switchable)
+	RenderRadius 40;
 	}
 }
 
@@ -1362,6 +1366,7 @@ class TrainLever3DSwitch3 : TrainLever3DSwitch
 	Default
 	{
 	//$Title Train Lever, Blue 3 (Switchable)
+	RenderRadius 40;
 	}
 }
 
@@ -1370,6 +1375,7 @@ class TrainLever3DSwitch4 : TrainLever3DSwitch
 	Default
 	{
 	//$Title Train Lever, Blue 4 (Switchable)
+	RenderRadius 40;
 	}
 }
 
@@ -1378,6 +1384,7 @@ class TrainLever3DSwitch5 : TrainLever3DSwitch
 	Default
 	{
 	//$Title Train Lever, White 5 (Switchable)
+	RenderRadius 40;
 	}
 }
 
@@ -1386,6 +1393,7 @@ class TrainLever3DSwitch6 : TrainLever3DSwitch
 	Default
 	{
 	//$Title Train Lever, White 6 (Switchable)
+	RenderRadius 40;
 	}
 }
 
@@ -1394,6 +1402,7 @@ class TrainLever3DSwitch7 : TrainLever3DSwitch
 	Default
 	{
 	//$Title Train Lever, Brown 7 (Switchable)
+	RenderRadius 40;
 	}
 }
 
@@ -1402,6 +1411,7 @@ class TrainLever3DSwitch8 : TrainLever3DSwitch
 	Default
 	{
 	//$Title Train Lever, Brown 8 (Switchable)
+	RenderRadius 40;
 	}
 }
 
@@ -2019,6 +2029,7 @@ class SecretUFO : SwitchableDecoration //3dRealms - no distancecheck for this
 	{
 		//$Category Models (BoA)/Scenery
 		//$Title Secret UFO
+		RenderRadius 40;
 		//$Color 3
 		+MOVEWITHSECTOR
 	}

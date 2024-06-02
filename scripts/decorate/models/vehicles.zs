@@ -132,6 +132,7 @@ class SubmarineF : Furniture_End3d
 {	Default
 	{
 	//$Title Submarine (no lod)
+	Radius 64;
 	}
 }
 
@@ -353,7 +354,8 @@ class RTCWCar : Obstacle3d
 	//$Title Staff Car
 	//$Color 3
 	DistanceCheck "boa_scenelod";
-	Radius 32;
+	RenderRadius 128;
+	Radius 44;
 	Height 32;
 	}
 	States
@@ -465,7 +467,7 @@ class MercedesLimo : Obstacle3d
 	//$Title Mercedes Nazi Limo
 	//$Color 3
 	DistanceCheck "boa_scenelod";
-	Radius 32;
+	Radius 28;
 	Height 32;
 	}
 	States
