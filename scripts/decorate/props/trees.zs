@@ -666,6 +666,7 @@ class BigBush : SmallBush1
 	Default
 	{
 	//$Title Bush (big, rippable)
+	RenderRadius 64;
 	Height 32;
 	Health 1;
 	+SOLID
