@@ -282,6 +282,7 @@ class ParkBench : RTCWBench
 	Default
 	{
 		//$Title Park / City Street Bench A
+		RenderRadius 64;
 	}
 }
 
