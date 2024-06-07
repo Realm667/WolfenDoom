@@ -1421,6 +1421,7 @@ class CODPipe1 : MuseumBase
 	Default
 	{
 	//$Title Decorative Pipe 1
+	RenderRadius 40;
 	}
 }
 
