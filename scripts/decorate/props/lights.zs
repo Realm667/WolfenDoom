@@ -664,6 +664,8 @@ class COD_ArtDecoLight1B : COD_ArtDecoLight1A
 	Default
 	{
 	//$Title 3d Art Deco Ceiling Light (ON, SET DORMANT & ACTIVATE IT VIA ACS)
+	+MOVEWITHSECTOR
+	+RELATIVETOFLOOR
 	}
 	States
 	{
@@ -1022,6 +1024,7 @@ class CeilingLightMNC : CeilingLightM
 	{
 	//$Category Lights (BoA)/No Cones
 	//$Title 3d Ceiling Light, no cone (MIDDLE, SWITCHABLE)
+	+RELATIVETOFLOOR
 	}
 	States
 	{
