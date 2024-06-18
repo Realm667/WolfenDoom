@@ -41,7 +41,7 @@ server int boa_cullrange = 8192; // Hard culling distance - takes precedence ove
 server int boa_culllevel = 0; // Controls culling of additional actors (3d models and lights) **
 server int boa_debriscullstyle = 0; // Controls if debris items are remembered and reproduced when culled/restored (1, significant system impact), or if they are just spawned from scratch (0) **
 server int boa_cullactorlimit = 32; // Controls max number of culled actors to respawn per game tick (0 means unlimited.  Clamped internally to no less than 256) **
-server bool boa_culling = true; // Enables/disables actor culling ** // Needs menu entry, possibly launcher choice
+server bool boa_culling = false; // Enables/disables actor culling ** // Needs menu entry, possibly launcher choice
 server int boa_thinkrange = 4; // Range in 512x512 chunks beyond which actors run reduced logic
 
 // Blood (server)
