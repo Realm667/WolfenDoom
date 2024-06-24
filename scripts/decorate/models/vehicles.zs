@@ -249,6 +249,7 @@ class Junker52 : Obstacle3d
 	//$Category Models (BoA)/Planes
 	//$Title Junkers JU-52
 	//$Color 3
+	RenderRadius 256;
 	DistanceCheck "boa_scenelod";
 	Radius 128;
 	Height 64;
