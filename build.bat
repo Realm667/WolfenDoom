@@ -80,7 +80,7 @@ IF "%STDIN%" EQU "2" (
     GOTO :MainMenu
 )
 IF "%STDIN%" EQU "3" (
-    CALL :CompactProject ZIP DEFLATE 0 NORMAL
+    CALL :CompactProject ZIP COPY 0 NORMAL
     GOTO :MainMenu
 )
 IF /I "%STDIN%" EQU "X" (
@@ -446,7 +446,7 @@ REM #                 of the program that has the 'RealTime' flag.  Meaning, if 
 REM #                 notice that their normal activities will be greatly delayed until the program with 'RealTime' is completed.
 REM # ================================================================================================
 :CompactProject_Execute
-START "WolfenDoom Compile: 7Zip" /B /%4 /WAIT "%ProgramDirPath%tools\7za\7za.exe" a -t%1 -mm=%2 -mx=%3 -x@"%ProgramDirPath%tools\7za\7zExcludeListDir.txt" -xr@"%ProgramDirPath%tools\7za\7zExcludeList.txt" "%ProgramDirPath%..\%projectName%.pk3" "%ProgramDirPath%*"
+START "WolfenDoom Compile: 7Zip" /B /%4 /WAIT "%ProgramDirPath%tools\7za\7za.exe" a -t%1 -mm=%2 -mx=%3 -x@"%ProgramDirPath%tools\7za\7zExcludeListDir.txt" -xr@"%ProgramDirPath%tools\7za\7zExcludeList.txt" "%ProgramDirPath%..\%projectName%.ipk3" "%ProgramDirPath%*"
 REM Because I couldn't use the error-pipes with 'Start', we'll have to check the ExitCode in a conditional statement
 IF %ERRORLEVEL% GEQ 1 (
     CALL :CompactProject_Execute_ErrMSG %ERRORLEVEL%
@@ -512,7 +512,7 @@ REM # Documentation
 REM #     Create a new window and highlight the newly created build.
 REM # ================================================================================================
 :CompactProject_WindowsExplorer
-EXPLORER /select,"%ProgramDirPath%..\%projectName%.pk3"
+EXPLORER /select,"%ProgramDirPath%..\%projectName%.ipk3"
 EXIT /B 0
 
 
