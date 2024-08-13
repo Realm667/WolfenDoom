@@ -113,6 +113,7 @@ class Submarine : ModelBase //Ozy81
 	//$Arg0Type 11
 	//$Arg0Enum { 0 = "No"; 1 = "Yes"; }
 	DistanceCheck "boa_scenelod";
+	RenderRadius 256;
 	Radius 64;
 	Height 64;
 	-SOLID
