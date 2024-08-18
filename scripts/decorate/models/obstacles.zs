@@ -196,7 +196,7 @@ class GasDrum : Obstacle3d //MaxED
 		//$Color 3
 		DistanceCheck "boa_scenelod";
 		Radius 16;
-		Height 42;
+		Height 43;
 		-NOGRAVITY
 		ModelBase.Buoyancy 0.15;
 	}
