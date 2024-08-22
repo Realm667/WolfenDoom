@@ -683,7 +683,23 @@ class SlopeMe2 : SlopeMe1 //Ozy81
 	}
 }
 
-class ZeppelinBridge : SlopeMe1 //Ozy81
+class SlopeMe3 : Obstacle3d //Ozy81
+{
+	Default
+	{
+		//$Category Misc (BoA)
+		//$Title Slopeable Glass (clear)
+		//$Color 3
+		DistanceCheck "boa_scenelod";
+		Radius 16;
+		Height 4;
+		+NOGRAVITY
+		+CullActorBase.DONTCULL //remove in 3.1 
+	}
+}
+
+
+class ZeppelinBridge : SlopeMe3 //Ozy81 hawkwind
 {
 	Default
 	{
