@@ -2129,7 +2129,7 @@ class CBowl1 : SceneryBase
 		//$Title 2d Ceiling Fire Bowl (ON)
 		//$Color 11
 		Radius 8;
-		Height 80;
+		Height 76;
 		+NOGRAVITY
 		+SOLID
 		+SPAWNCEILING

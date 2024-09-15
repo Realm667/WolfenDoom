@@ -253,8 +253,9 @@ class PileOfSkulls: SceneryBase
 		//$Title Pile of Skulls
 		//$Color 4
 		Radius 4;
-		Height 64;
+		Height 48;
 		Scale 0.5;
+		+SOLID
 		CullActorBase.CullLevel 1;
 	}
 	States
