@@ -1171,7 +1171,7 @@ class Trolley3d : Obstacle3d
 		//$Title Trolley
 		//$Color 3
 		DistanceCheck "boa_scenelod";
-		Radius 16;
+		Radius 10;
 		Height 48;
 		+NOGRAVITY
 	}
