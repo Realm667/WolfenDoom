@@ -132,7 +132,7 @@ class MechaNaziWalking1 : MechBoss
 	Default
 	{
 	//$Category Monsters (BoA)/Mechas
-	//$Title Thor's Hammer Mecha-Nazi (Boss, Wehrmacht)
+	//$Title Thor's Hammer Mecha-Nazi (Wehrmacht)
 	//$Color 4
 	Radius 48;
 	Height 128;
@@ -146,7 +146,7 @@ class MechaNaziWalking1 : MechBoss
 	DropItem "NebAmmo", 128;
 	DropItem "NebAmmoBox", 64;
 	DropItem "GrenadePickup", 128;
-	Base.BossIcon "BOSSICO1";
+	// Base.BossIcon "BOSSICO1";
 	+BOSS
 	+NOPAIN
 	MaxStepHeight 32;
@@ -223,7 +223,7 @@ class MechaNaziWalking2 : MechaNaziWalking1
 {
 	Default
 	{
-	//$Title Thor's Hammer Mecha-Nazi (Boss, Afrika Korps)
+	//$Title Thor's Hammer Mecha-Nazi (Afrika Korps)
 	Obituary "$MECHBOSB";
 	Tag "$TAGAFRMECHA";
 	}
@@ -251,11 +251,11 @@ class MechaNaziWalking2 : MechaNaziWalking1
 	}
 }
 
-class MechaNaziWalking3 : MechaNaziWalking1 //No Wounde soldiers
+class MechaNaziWalking3 : MechaNaziWalking1 //No Wounded soldiers
 {
 	Default
 	{
-	//$Title Thor's Hammer Mecha-Nazi (Boss, Arctic)
+	//$Title Thor's Hammer Mecha-Nazi (Arctic)
 	Obituary "$MECHBOSC";
 	Tag "$TAGARCTICMECHA";
 	}
@@ -282,7 +282,7 @@ class MechaNaziWalking4 : MechaNaziWalking1
 {
 	Default
 	{
-	//$Title Thor's Hammer Mecha-Nazi (Boss, SS)
+	//$Title Thor's Hammer Mecha-Nazi (SS)
 	Obituary "$MECHBOSD";
 	Tag "$TAGSSMECHA";
 	}
@@ -314,7 +314,7 @@ class MechaNaziWalking5 : MechaNaziWalking1
 {
 	Default
 	{
-	//$Title Thor's Hammer Mecha-Nazi (Boss, Navy)
+	//$Title Thor's Hammer Mecha-Nazi (Kriegsmarine)
 	Obituary "$MECHBOSE";
 	Tag "$TAGNAVYMECHA";
 	}
