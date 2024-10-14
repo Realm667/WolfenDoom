@@ -160,6 +160,8 @@ class ParticleManager : EventHandler
 
 	int GetDelay(int chunkx, int chunky, Actor origin = null)
 	{
+		return 0;
+
 		if (!boa_culling) { return 0; }
 
 		if (!effectmanager) { effectmanager = EffectsManager.GetManager(); }

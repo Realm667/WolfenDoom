@@ -107,6 +107,8 @@ class ChunkHandler : EventHandler
 
 	static ChunkHandler Get()
 	{
+		return null;
+
 		return ChunkHandler(EventHandler.Find("ChunkHandler"));
 	}
 

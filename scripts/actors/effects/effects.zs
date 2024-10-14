@@ -204,6 +204,8 @@ class EffectsManager : Thinker
 
 	override void Tick()
 	{
+		return;
+
 		if (!boa_culling) { return; }
 		if (!handler) { handler = ChunkHandler.Get(); }
 
@@ -589,6 +591,7 @@ class CullActorBase : Actor
 
 	override void PostBeginPlay()
 	{
+		bDontCull = true;
 		if (user_dontcull || !boa_culling) { bDontCull = true; }
 		targetalpha = Default.alpha;
 
