@@ -132,6 +132,12 @@ class FuelDrumSpawner : RandomSpawner
 		}
 		return 'FuelDrum';
 	}
+
+	override void PostSpawn(Actor spawned) {
+		// This is a workaround for a bug(?) in GZDoom's RandomSpawner, which
+		// does not transfer the scale from the spawner to the spawned object.
+		spawned.scale = scale;
+	}
 }
 
 class FuelDrumFixSpawner : FuelDrumSpawner
