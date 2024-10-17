@@ -1455,7 +1455,7 @@ class Firebrand : NaziWeapon
 			}
 			else
 			{
-				Thing_Damage(0,25);
+				invoker.Owner.DamageMobj(null, null, 25, 'None', DMG_NO_ARMOR);
 				A_SetBlend("ff 00 00", .5, 15);
 			}
 		}
