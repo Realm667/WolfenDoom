@@ -1499,6 +1499,10 @@ class Firebrand : NaziWeapon
 				Thing_Damage(0,2);
 			}
 			*/
+			// Extend charge timer by 1.5 seconds
+			// See https://github.com/Realm667/WolfenDoom/issues/1473
+			FirebrandCharged chargeTimer = FirebrandCharged(FindInventory("FirebrandCharged"));
+			chargeTimer.EffectTics = min(chargeTimer.MaxEffectTics, chargeTimer.EffectTics + 50);
 		}
 		"####" KLM 1;
 		TNT1 A 20 A_WeaponReady;
