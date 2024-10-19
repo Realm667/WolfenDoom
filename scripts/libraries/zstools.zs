@@ -884,7 +884,15 @@ class BoASolidSurfaceFinderTracer : LineTracer
 	{
 		if (Results.HitType == TRACE_HitFloor || Results.HitType == TRACE_HitCeiling)
 		{
-			return TRACE_Stop;
+			// Check 3D floor hit
+			if (Results.ffloor) {
+				bool isSolid = Results.ffloor.flags & F3DFloor.FF_SOLID;
+				// Console.Printf("Hit a " .. isSolid ? "solid" : "non-solid" .. "3D floor.");
+				if (isSolid) { return TRACE_Stop; }
+				else { return TRACE_Skip; }
+			} else {
+				return TRACE_Stop;
+			}
 		}
 		else if (Results.HitType == TRACE_HitWall)
 		{

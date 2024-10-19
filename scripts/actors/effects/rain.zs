@@ -2,10 +2,10 @@
 class RainSpawner : EffectSpawner
 {
 	Class<Actor> rainDropClass;
+	protected int checkDelay;
 	protected int spawnIndex;
 	protected Vector3 rainDropVel;
-	protected double spawnZoffset;
-	protected transient int updateCounter;
+	// protected double spawnZ;
 	ParticleSpawnPoint spawnPoints[SPAWN_POINTS_PER_SPAWNER]; // 48 * 32 = 1536 bytes
 
 	Default
@@ -43,7 +43,20 @@ class RainSpawner : EffectSpawner
 			TNT1 A 0;
 		Active:
 			TNT1 A 1 SpawnEffect();
+			TNT1 A 0 {
+				// Check if seen, stop spawning raindrops if not seen.
+				if (--checkDelay == 0) {
+					checkDelay = 70;
+					return A_CheckSightOrRange(range, "NotInSight", true);
+				} else {
+					return ResolveState(null);
+				}
+			}
 			Loop;
+		NotInSight:
+			TNT1 A 70; // Needed to prevent infinite loop
+			TNT1 A 0 A_CheckSightOrRange(range, "NotInSight", true);
+			Goto Active;
 	}
 
 	void SetupSpawnPoints() {
@@ -64,16 +77,14 @@ class RainSpawner : EffectSpawner
 
 				Sector spawnSector = Level.PointInSector(spawnPos.XY);
 				spawnPos.Z = min(spawnPos.Z, spawnSector.HighestCeilingAt(spawnPos.XY) - 2.0);
-				spawnPos.Z += spawnZoffset;
 
 				// Use a hitscan to find the distance to the nearest obstacle
 				Vector3 vel = rainDropVel.Unit();
 
 				BoASolidSurfaceFinderTracer finder = new("BoASolidSurfaceFinderTracer");
-				finder.Trace(spawnPos, spawnSector, vel, 10000.0, TRACE_HitSky);
+				finder.Trace(spawnPos, spawnSector, vel, 20000.0, TRACE_HitSky);
 
 				// Set up spawn point
-				spawnPoints[i].worldPos = spawnPos;
 				[spawnPoints[i].angle, spawnPoints[i].pitch] = ZScriptTools.AnglesFromDirection(vel);
 				/* // ========== Test start
 				Vector3 dirbo = ZScriptTools.GetTraceDirection(spawnPoints[i].angle, spawnPoints[i].pitch);
@@ -82,16 +93,22 @@ class RainSpawner : EffectSpawner
 					Console.Printf("ZScriptTools.AnglesFromDirection is broken!");
 				}
 				// ========== Test end */
-				double dist = finder.Results.Distance;
-				double waterDist = finder.Results.Distance;
+				Vector3 dest = finder.Results.HitPos;
+
 				if (finder.Results.CrossedWater) {
-					Vector3 waterPos = finder.Results.CrossedWaterPos;
-					waterDist = (waterPos - spawnPos).Length();
+					dest = finder.Results.CrossedWaterPos;
 				} else if (finder.Results.Crossed3DWater) {
-					Vector3 waterPos = finder.Results.Crossed3DWaterPos;
-					waterDist = (waterPos - spawnPos).Length();
+					dest = finder.Results.Crossed3DWaterPos;
 				}
-				spawnPoints[i].distance = ceil(min(waterDist, dist) / rainDropVel.Length());
+				// Ensure spawn points are close to end spot
+				double maxDist = 384.0; // Maybe this should be a property...
+				double dist = finder.Results.Distance;
+				if (dist > maxDist) {
+					spawnPos = dest - vel * maxDist;
+					dist = maxDist;
+				}
+				spawnPoints[i].distance = ceil(dist / rainDropVel.Length());
+				spawnPoints[i].worldPos = spawnPos;
 				break;
 			} while(true); // See lines 68 and 83
 		}
@@ -112,6 +129,8 @@ class RainSpawner : EffectSpawner
 		rainDropVel.xy = RotateVector(rainDropVel.xy, Angle);
 
 		SetupSpawnPoints();
+
+		checkDelay = Random[CheckDelay](1, 70);
 
 		Super.PostBeginPlay();
 	}
@@ -138,24 +157,12 @@ class RainSpawner : EffectSpawner
 			return;
 		}
 
-		// Adjust the z-height
-		if (++updateCounter == 3 && curchunk) {
-			updateCounter = 0;
-			double chunkZoffset = 0;
-			chunkZoffset = min(curchunk.GetPlayerZOffset() - Pos.Z, 0);
-			if (spawnZoffset != chunkZoffset) {
-				spawnZoffset = chunkZoffset;
-				// Console.Printf("spawnZoffset is now %.3f", spawnZoffset);
-				SetupSpawnPoints();
-			}
-		}
-
 		Actor raindropMobj = Spawn(rainDropClass, spawnPoints[spawnIndex].worldPos);
 		raindropMobj.Vel = rainDropVel;
 		raindropMobj.Angle = Angle;
 		raindropMobj.Pitch = Pitch;
 		raindropMobj.ReactionTime = int(spawnPoints[spawnIndex].distance);
-		
+
 		spawnIndex = (spawnIndex + 1) % SPAWN_POINTS_PER_SPAWNER;
 	}
 }
@@ -177,6 +184,7 @@ class RainDropShort : ParticleBase
 		+NOBLOCKMAP
 		+NOGRAVITY
 		+NOINTERACTION
+		+NOCLIP
 	}
 
 	States
