@@ -226,7 +226,7 @@ class Table12 : Table7
 		MDLA A 0 NODELAY A_SpawnItemEx("WineBottle", Random[Debris](-8, -3), Random[Debris](-8, 8), 27, 0, 0, 0, 0, 0, 128, tid);
 		"####" A 0 A_SpawnItemEx("WineBottle", Random[Debris](3, 8), Random[Debris](-8, 8), 27, 0, 0, 0, 0, 0, 128, tid);
 		"####" A 0 A_SpawnItemEx("WineGlass", Random[Debris](8, 16), Random[Debris](-16, -8), 27, 0, 0, 0, 0, 0, 128, tid);
-		"####" A 0 A_SpawnItemEx("StackedPartyMeal", Random[Debris](-16, -18), Random[Debris](-16, -18), 24, 0, 0, 0, 0, 0, 128, tid);
+		"####" A 0 A_SpawnItemEx("StackedPartyMeal", Random[Debris](-16, -18), Random[Debris](-16, -18), 27, 0, 0, 0, 0, 0, 128, tid);
 		"####" A 0 A_SpawnItemEx("WineGlass", Random[Debris](-16, -8), Random[Debris](8, 16), 27, 0, 0, 0, 0, 0, 128, tid);
 		"####" A 0 A_SpawnItemEx("WineGlass", Random[Debris](8, 16), Random[Debris](8, 16), 27, 0, 0, 0, 0, 0, 128, tid);
 		"####" A -1;
