@@ -8,7 +8,7 @@
 
 class SnowSpawner : EffectSpawner
 {
-	// int particleLifetime;
+	protected int checkDelay;
 	ParticleSpawnPoint spawnPoints[SPAWN_POINTS_PER_SPAWNER]; // 48 * 32 = 1536 bytes
 
 	Default
@@ -43,8 +43,20 @@ class SnowSpawner : EffectSpawner
 		Spawn:
 			TNT1 A 0;
 		Active:
-			TNT1 A 6 SpawnEffect();
+			TNT1 A 6 SpawnEffect;
+			TNT1 A 0 {
+				if (--checkDelay == 0) {
+					checkDelay = 12; // check happens every 72 (6 * 12) tics
+					return A_CheckSightOrRange(range, "NotInSight", true);
+				} else {
+					return ResolveState(null);
+				}
+			}
 			Loop;
+		NotInSight:
+			TNT1 A 70;
+			TNT1 A 0 A_CheckSightOrRange(range, "NotInSight", true);
+			Goto Active;
 	}
 
 	override void PostBeginPlay()
@@ -52,7 +64,7 @@ class SnowSpawner : EffectSpawner
 		Super.PostBeginPlay();
 
 		if (!args[0]) { args[0] = 128; }
-
+		checkDelay = Random[CheckDelay](1, 12);
 		SetupSpawnPoints();
 	}
 
