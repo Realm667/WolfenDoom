@@ -655,6 +655,7 @@ class COD_SSHorch : Obstacle3d
 	//$Title Truck, Horch-1A (Nazi)
 	//$Color 3
 	DistanceCheck "boa_scenelod";
+	RenderRadius 128;
 	Radius 12;
 	Height 52;
 	}
