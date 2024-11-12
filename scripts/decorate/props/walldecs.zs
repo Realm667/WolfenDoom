@@ -304,6 +304,7 @@ class SnowPile1 : CraterGrass
 	Default
 	{
 	//$Title Snowpile Large
+	Radius 80;
 	}
 	States
 	{
