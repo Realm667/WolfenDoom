@@ -743,6 +743,7 @@ class BurnTreeSpawner : RandomSpawner
 	//$Title Trees (burnt, random spawner)
 	//$Color 3
 	//$Sprite DBURA0
+	RenderRadius 256;
 	DropItem "Tree2_Burnt";
 	DropItem "Tree3_Burnt";
 	DropItem "Tree4_Burnt";
@@ -759,6 +760,7 @@ class SummerTreeSpawner : RandomSpawner
 	//$Title Tree (Summer, random spawner)
 	//$Color 3
 	//$Sprite DTRED0
+	RenderRadius 256;
 	DropItem "Bush";
 	DropItem "Tree2";
 	DropItem "Tree3";
@@ -776,6 +778,7 @@ class WinterTreeSpawner : RandomSpawner
 	//$Title Tree (winter, random spawner)
 	//$Color 3
 	//$Sprite DTREE0
+	RenderRadius 256;
 	DropItem "WinterA";
 	DropItem "WinterB";
 	DropItem "WinterC";
