@@ -239,8 +239,9 @@ class RadioSatelite: Actor
 	Default
 	{
 	//$Category Astrostein (BoA)/Props
-	//$Title Radio Satelite
+	//$Title Radio Telescope
 	//$Color 3
+	RenderRadius 384;
 	DistanceCheck "boa_scenelod";
 	Radius 64;
 	Height 256;
