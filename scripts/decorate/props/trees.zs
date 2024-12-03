@@ -27,6 +27,7 @@ class TreeBase : TreesBase
 	{
 		Radius 16;
 		Height 128;
+		RenderRadius 384;
 	}
 	
 	States
