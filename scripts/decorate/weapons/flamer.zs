@@ -43,16 +43,11 @@ class Pyrolight : NaziWeapon
 	States
 	{
 		Ready:
-			FFTR A 1 {
-				int readyflags = 0;
-				if (
-					invoker.Owner.CheckInventory(invoker.AmmoType2, 1) && 
-					!invoker.Owner.CheckInventory(invoker.AmmoType1, GetDefaultByType(invoker.AmmoType1).MaxAmount)
-				) { readyflags |= WRF_ALLOWRELOAD; }
-				if (waterlevel >= 2) { readyflags |= WRF_NOFIRE | WRF_NOBOB; }
-
-				A_WeaponReady(readyflags);
-			}
+			// See https://github.com/Realm667/WolfenDoom/issues/1502
+			TNT1 A 0 A_JumpIfInventory(Invoker.AmmoType1, 1, 2);
+			FFTR B 1 A_FlamerReady;
+			Loop;
+			FFTR A 1 A_FlamerReady;
 			Loop;
 		Deselect:
 			FFTR A 1 A_Lower(12);
@@ -208,6 +203,17 @@ class Pyrolight : NaziWeapon
 		Spawn:
 			FLMT A -1;
 			Loop;
+	}
+
+	action void A_FlamerReady() {
+		int readyflags = 0;
+		// If weapon is not full, but we have ammo for it...
+		if (
+			invoker.Owner.CheckInventory(invoker.AmmoType2, 1) &&
+			!invoker.Owner.CheckInventory(invoker.AmmoType1, GetDefaultByType(invoker.AmmoType1).MaxAmount)
+		) { readyflags |= WRF_ALLOWRELOAD; }
+		if (waterlevel >= 2) { readyflags |= WRF_NOFIRE | WRF_NOBOB; }
+		A_WeaponReady(readyflags);
 	}
 }
 
