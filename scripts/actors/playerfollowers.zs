@@ -110,7 +110,7 @@ class PlayerFollower : Actor // Default version - for actors like prisoner with 
 		PWEAP_Shotgun // 6
 	};
 
-	Array<PathMarker> Markers;
+	Array<Actor> Markers;
 	Actor playerToChase, currentGoal;
 	Vector3 oldPlayerPos;
 
