@@ -12,12 +12,14 @@ def clean_frames(model: md3.MD3Object):
     Analyze the MD3 file animation, and if there are no changes to the
     vertex positions or tags between the first frame and the last, remove
     the excess frames.
+
+    Returns whether or not any changes were made to the model.
     """
     actually_animated = False
     num_frames = len(model.frames)
     if num_frames == 1:
         print("Not animated, doing nothing.")
-        return
+        return False
     # Analyze tags
     if model.num_tags > 0:
         frame_one_tags = model.tags[0:model.num_tags]
@@ -31,7 +33,7 @@ def clean_frames(model: md3.MD3Object):
     # It's actually animated, so do nothing.
     if actually_animated:
         print("Tags are animated. No frames removed.")
-        return
+        return False
     # Analyze each surface
     for surf in model.surfaces:
         nverts = surf.num_verts
@@ -46,7 +48,7 @@ def clean_frames(model: md3.MD3Object):
     # It's actually animated, so do nothing.
     if actually_animated:
         print("Vertices are animated. No frames removed.")
-        return
+        return False
     # Remove excess frames!
     if not actually_animated:
         removed_frames = num_frames - 1  # All MD3s have at least one frame
@@ -56,12 +58,17 @@ def clean_frames(model: md3.MD3Object):
             surf.num_frames = 1
             surf.verts = surf.verts[:surf.num_verts]
         print("Removed {removed_frames} excess frames.".format(**locals()))
+        return True
+    else:
+        return False
 
 
 def merge_surfaces(model: md3.MD3Object):
     """
     Analyze the surfaces of the model, and if there are two or more surfaces
     that share a texture, merge the two surfaces together.
+
+    Returns whether or not any changes were made to the model.
     """
     # MD3 model surfaces typically use only one texture/shader. So which
     # surfaces use which textures?
@@ -78,6 +85,7 @@ def merge_surfaces(model: md3.MD3Object):
         return texture_surfaces
     texture_surfaces = textures_for_surfaces(model)
     texture_list = [texture for texture in texture_surfaces.keys()]
+    changes = False
     # Merge the surfaces
     for texture in texture_list:
         surface_indices = texture_surfaces[texture]
@@ -131,9 +139,15 @@ def merge_surfaces(model: md3.MD3Object):
             # Re-write the surface index lists, because with less surfaces, the
             # indices for all the following surfaces will have changed.
             texture_surfaces = textures_for_surfaces(model)
+            changes = True
+    return changes
 
 
 def validate_model(model: md3.MD3Object):
+    """
+    Returns whether or not all the vertices, UVs, and triangles are of the
+    correct type.
+    """
     for sidx, surf in enumerate(model.surfaces):
         # Vertices
         verts_correct = (
@@ -147,7 +161,8 @@ def validate_model(model: md3.MD3Object):
         if not all([verts_correct, uvs_correct, tris_correct]):
             print("Surface {sidx} verts[0]:".format(**locals()), surf.verts[0])
             print("Surface {sidx} uv[0]:".format(**locals()), surf.uv[0])
-            print("Surface {sidx} triangles[0]:".format(**locals()), surf.triangles[0])
+            print("Surface {sidx} triangles[0]:".format(**locals()),
+                  surf.triangles[0])
             print("ERROR: Some types are not correct!")
             return False
         else:
@@ -166,10 +181,10 @@ def optimize_model(model_filename, options={}):
             )
             model = None
     if model is not None:
-        clean_frames(model)
-        merge_surfaces(model)
+        changes = clean_frames(model)
+        changes = changes or merge_surfaces(model)
         validate_model(model)
-        if not options.get("dry_run"):
+        if not options.get("dry_run") and changes:
             with open(model_filename, "wb") as md3f:
                 model.save(md3f, options)
 
@@ -189,4 +204,4 @@ if __name__ == "__main__":
         action="store_true"
     )
     args = parser.parse_args()
-    optimize_model(args.filename, {"dry_run": args.dry_run})
+    optimize_model(args.filename, vars(args))
