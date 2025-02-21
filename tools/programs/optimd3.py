@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 # Optimize MD3 models - merge two or more surfaces that share textures,
 # remove animation frames on static models, etc.
 import md3
