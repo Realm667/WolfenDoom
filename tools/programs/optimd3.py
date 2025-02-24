@@ -64,6 +64,28 @@ def clean_frames(model: md3.MD3Object):
         return False
 
 
+def remove_empty_surfaces(model: md3.MD3Object):
+    """
+    Analyze the surfaces of the model, and remove any "empty" surfaces which
+    have no vertices and/or triangles.
+
+    Returns whether or not any empty surfaces were found and removed.
+    """
+    empty_surfaces = []
+    for sidx, surf in enumerate(model.surfaces):
+        if len(surf.triangles) == 0 or len(surf.verts) == 0:
+            empty_surfaces.append(sidx)
+    changes = False
+    # Reverse it so that the program doesn't end up trying to remove a
+    # non-existent surface!
+    for sidx in reversed(empty_surfaces):
+        model.surfaces.pop(sidx)
+        changes = True
+    if changes:
+        print("Removed {x} empty surfaces.".format(x=len(empty_surfaces)))
+    return changes
+
+
 def merge_surfaces(model: md3.MD3Object):
     """
     Analyze the surfaces of the model, and if there are two or more surfaces
@@ -183,6 +205,7 @@ def optimize_model(model_filename, options={}):
             model = None
     if model is not None:
         changes = clean_frames(model)
+        changes = changes or remove_empty_surfaces(model)
         changes = changes or merge_surfaces(model)
         validate_model(model)
         if not options.get("dry_run") and changes:
