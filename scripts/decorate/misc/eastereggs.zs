@@ -28,6 +28,7 @@ class JazzJackrabbit : CommanderKeen
 		//$Title Jazz Jackrabbit (Easteregg)
 		//$Color 3
 		Height 128;
+		-SOLID
 		PainSound "jazz/pain";
 		DeathSound "jazz/death";
 	}
