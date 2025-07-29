@@ -517,7 +517,7 @@ class ClassicMessageBox : MessageBoxMenu
 		{
 			if (res) 
 			{
-				CallHandler(Handler);
+				Super.HandleResult(res);
 			}
 			else
 			{
