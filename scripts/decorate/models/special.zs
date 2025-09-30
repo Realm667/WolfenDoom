@@ -679,6 +679,7 @@ class SlopeMe2 : SlopeMe1 //Ozy81
 	Default
 	{
 		//$Title Slopeable Glass (checker)
+		Alpha .25;
 		+CullActorBase.DONTCULL //remove in 3.1 
 	}
 }
