@@ -134,8 +134,8 @@ class Flak38Box : GasBottle
 	Default
 	{
 		//$Title 20mm Magazine Box (shootable)
-		Height 40;
-		Radius 32;
+		Height 24;
+		Radius 26;
 		Obituary "$OBFLAK38";
 	}
 	States
