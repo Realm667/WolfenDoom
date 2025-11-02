@@ -146,7 +146,7 @@ class MechaNaziWalking1 : MechBoss
 	DropItem "NebAmmo", 128;
 	DropItem "NebAmmoBox", 64;
 	DropItem "GrenadePickup", 128;
-	// Base.BossIcon "BOSSICO1";
+	Base.BossIcon "BOSSICO1";
 	+BOSS
 	+NOPAIN
 	MaxStepHeight 32;
