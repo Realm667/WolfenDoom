@@ -93,12 +93,12 @@ class ClassicMessageBox : MessageBoxMenu
 
 	int showtics, optioncount, retval;
 
-	override void Init(Menu parent, String msg, int messagemode, bool StartSound, Name cmd)
+	override void Init(Menu parent, String msg, int messagemode, bool StartSound, Name cmd, voidptr native_handler)
 	{
 		silent = !StartSound;
 
 		// Initialize everything through the real message box code
-		Super.Init(parent, msg, messagemode, StartSound, cmd);
+		Super.Init(parent, msg, messagemode, StartSound, cmd, native_handler);
 
 		message = CleanString(msg);
 		tex = TexMan.CheckForTexture(graphic, TexMan.Type_Any);
