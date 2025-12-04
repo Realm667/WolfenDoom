@@ -7,78 +7,78 @@
 OptionMenu "OptionsMenuSimple" Protected
 {
 	Title "$SMP_OPTIONS"
-	Submenu "$SMP_PERFORMANCE","SimpleBoAPerformanceMenu"
+	//Submenu "$SMP_PERFORMANCE","SimpleBoAPerformanceMenu"
 	Submenu "$SMP_CONTROLS","SimpleBoAControlsMenu"
     Submenu "$SMP_GAMEPLAY","SimpleBoAGameplayMenu"
     Submenu "$SMP_AUDIOVIDEO","SimpleBoAAudioVideoMenu"
     Option "$OPTMNU_LANGUAGE", "language", "BoALanguageOptions"
 	Option "$OPT_DEVC","boa_devcomswitch","OnOff"
     StaticText " "
-    Submenu "$SMP_MOREOPTIONS", "OptionsMenu"
+    Submenu "$SMP_MOREOPTIONS", "BoAOptionsMenu"
 }
 
-OptionMenu "SimpleBoAPerformanceMenu"
-{
-	Title "$SMP_PERFORMANCE"
-	Submenu "$SMP_SHADERS","SimpleBoAPerformanceShaderOptions"
-	Submenu "$SMP_ACTORS","SimpleBoAPerformanceActorOptions"
-	Submenu "$SMP_EFFECTS","SimpleBoAPerformanceEffectOptions"
-	Submenu "$SMP_PARTICLES","SimpleBoAPerformanceParticleOptions"
-    Submenu "$SMP_ENGINE","SimpleBoAPerformanceEngineOptions"
-    StaticText " "
-    Submenu "$PREDOPT","BoAPredefinedOptions"
-}
+//OptionMenu "SimpleBoAPerformanceMenu"
+//{
+//	Title "$SMP_PERFORMANCE"
+//	Submenu "$SMP_SHADERS","SimpleBoAPerformanceShaderOptions"
+//	Submenu "$SMP_ACTORS","SimpleBoAPerformanceActorOptions"
+//	Submenu "$SMP_EFFECTS","SimpleBoAPerformanceEffectOptions"
+//	Submenu "$SMP_PARTICLES","SimpleBoAPerformanceParticleOptions"
+//    Submenu "$SMP_ENGINE","SimpleBoAPerformanceEngineOptions"
+//   StaticText " "
+//    Submenu "$PREDOPT","BoAPredefinedOptions"
+//}
 
-OptionMenu "SimpleBoAPerformanceShaderOptions"
-{
-	Position -15
-	Title "$SMP_SHADERS"
-	Command "$SMP_PERFORMANCE_ON","boa_s_p_shaders_ON"
-    Command "$SMP_PERFORMANCE_OFF","boa_s_p_shaders_OFF"
-    StaticText "$SMP_SHADERSDESC"
-}
+//OptionMenu "SimpleBoAPerformanceShaderOptions"
+//{
+//	Position -15
+//	Title "$SMP_SHADERS"
+//	Command "$SMP_PERFORMANCE_ON","boa_s_p_shaders_ON"
+//    Command "$SMP_PERFORMANCE_OFF","boa_s_p_shaders_OFF"
+//    StaticText "$SMP_SHADERSDESC"
+//}
 
-OptionMenu "SimpleBoAPerformanceActorOptions"
-{
-	Position -15
-	Title "$SMP_ACTORS"
-    Command "$SMP_PERFORMANCE_ON","boa_s_p_actors_ON"
-    Command "$SMP_PERFORMANCE_OFF","boa_s_p_actors_OFF"
-    StaticText "$SMP_ACTORSDESC"
-}
+//OptionMenu "SimpleBoAPerformanceActorOptions"
+//{
+//	Position -15
+//	Title "$SMP_ACTORS"
+//    Command "$SMP_PERFORMANCE_ON","boa_s_p_actors_ON"
+//   Command "$SMP_PERFORMANCE_OFF","boa_s_p_actors_OFF"
+//    StaticText "$SMP_ACTORSDESC"
+//}
 
-OptionMenu "SimpleBoAPerformanceEffectOptions"
-{
-	Position -15
-	Title "$SMP_EFFECTS"
-    StaticText "$WARNING1"
-	StaticText " "
-	Command "$SMP_PERFORMANCE_ON","boa_s_p_effects_ON"
-    Command "$SMP_PERFORMANCE_OFF","boa_s_p_effects_OFF"
-    StaticText "$SMP_EFFECTSDESC"
-}
+//OptionMenu "SimpleBoAPerformanceEffectOptions"
+//{
+//	Position -15
+//	Title "$SMP_EFFECTS"
+//    StaticText "$WARNING1"
+//	StaticText " "
+//	Command "$SMP_PERFORMANCE_ON","boa_s_p_effects_ON"
+//    Command "$SMP_PERFORMANCE_OFF","boa_s_p_effects_OFF"
+//    StaticText "$SMP_EFFECTSDESC"
+//}
 
-OptionMenu "SimpleBoAPerformanceParticleOptions"
-{
-	Position -15
-	Title "$SMP_PARTICLES"
-    StaticText "$WARNING1"
-	StaticText " "
-	Command "$SMP_PERFORMANCE_ON","boa_s_p_particles_ON"
-    Command "$SMP_PERFORMANCE_OFF","boa_s_p_particles_OFF"
-    StaticText "$SMP_PARTICLESDESC"
-}
+//OptionMenu "SimpleBoAPerformanceParticleOptions"
+//{
+//	Position -15
+//	Title "$SMP_PARTICLES"
+//   StaticText "$WARNING1"
+//	StaticText " "
+//	Command "$SMP_PERFORMANCE_ON","boa_s_p_particles_ON"
+//   Command "$SMP_PERFORMANCE_OFF","boa_s_p_particles_OFF"
+//    StaticText "$SMP_PARTICLESDESC"
+//}
 
-OptionMenu "SimpleBoAPerformanceEngineOptions"
-{
-	Position -15
-	Title "$SMP_ENGINE"
-    StaticText "$WARNING1"
-	StaticText " "
-	Command "$SMP_PERFORMANCE_ON","boa_s_p_engine_ON"
-    Command "$SMP_PERFORMANCE_OFF","boa_s_p_engine_OFF"
-    StaticText "$SMP_ENGINEDESC"
-}
+//OptionMenu "SimpleBoAPerformanceEngineOptions"
+//{
+//	Position -15
+//	Title "$SMP_ENGINE"
+//   StaticText "$WARNING1"
+//	StaticText " "
+//	Command "$SMP_PERFORMANCE_ON","boa_s_p_engine_ON"
+//    Command "$SMP_PERFORMANCE_OFF","boa_s_p_engine_OFF"
+//    StaticText "$SMP_ENGINEDESC"
+//}
 
 OptionMenu "SimpleBoAControlsMenu"
 {
@@ -174,9 +174,9 @@ OptionMenu "SimpleBoAGameplayMenu"
     Slider "$FOV","fov",80,110,2,0
 	Submenu "$SMP_CHEATS","SimpleBoAGameplayCheatsOptions"
     Option "$HUDMNU_CROSSHAIRON","crosshairon","OnOff"
-    StaticText "[HUD OPTIONS???]"
+    //StaticText "[HUD OPTIONS???]"
     //what HUD options could be added?
-    StaticText "[MISC OPTIONS???]"
+    //StaticText "[MISC OPTIONS???]"
     //what do we need from Misc. Options?
 }
 
@@ -214,10 +214,10 @@ OptionMenu "SimpleBoAAudioVideoMenu"
     Command "$VIDMNU_APPLYW", "menu_resolution_commit_changes 0"
 	Command "$VIDMNU_APPLYFS", "menu_resolution_commit_changes 1"
 
-    StaticText "[TEXTURE OPTIONS???]"
+    //StaticText "[TEXTURE OPTIONS???]"
     //do we really need to include texture options?
 
-    StaticText "[DYNAMIC LIGHTS???]"
+    //StaticText "[DYNAMIC LIGHTS???]"
     //what to include from dynamic lights?
 
     StaticText " "
