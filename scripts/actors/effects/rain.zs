@@ -101,7 +101,7 @@ class RainSpawner : EffectSpawner
 					dest = finder.Results.Crossed3DWaterPos;
 				}
 				// Ensure spawn points are close to end spot
-				double maxDist = 768; // Maybe this should be a property...
+				double maxDist = 1024.0; // Maybe this should be a property...
 				double dist = finder.Results.Distance;
 				if (dist > maxDist) {
 					spawnPos = dest - vel * maxDist;
