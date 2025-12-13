@@ -78,6 +78,8 @@ class TreasureChest : SingleCoin
 	Default
 	{
 		//$Title Treasure (Chest, 50pts)
+		Radius 12;
+		Height 20;
 		Inventory.PickupMessage "$CHEST";
 		Inventory.Amount 50;
 		Inventory.PickupSound "treasure/chest";
@@ -95,6 +97,8 @@ class TreasureChest2 : SingleCoin
 	Default
 	{
 		//$Title Treasure (Large Chest, 100pts)
+		Radius 12;
+		Height 20;
 		Scale 1.0;
 		Inventory.PickupMessage "$CHESTBIG";
 		Inventory.Amount 100;
@@ -113,6 +117,8 @@ class TreasureChest3 : SingleCoin
 	Default
 	{
 		//$Title Treasure (Chest, 25pts)
+		Radius 12;
+		Height 20;
 		Inventory.PickupMessage "$CHESTSML";
 		Inventory.Amount 25;
 		Inventory.PickupSound "treasure/chest";
