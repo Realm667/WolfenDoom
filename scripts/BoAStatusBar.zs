@@ -890,18 +890,27 @@ virtual void DrawHealthBar(String tag, int health, int maxhealth, String icon = 
 	Vector2 hudscale = Statusbar.GetHudScale();
 	Vector2 screenpos;
 
+	/*
 	double hscale = max(1.0, Screen.GetHeight() / ((200 / 10) * fontHeight));
 	double wscale = HEALTH_BAR_INTERNAL_WIDTH * hscale / SmallFont.StringWidth(nametag);
 	double scale = min(wscale, hscale);
+	*/
 
 	int width = Screen.GetWidth();
 
-	screenpos.x = width / 2 - SmallFont.StringWidth(nametag) * hudscale.X / 2;
+	screenpos.x = width / 2 +  // Start at the center
+		position.X * hudscale.X +  // Move to the left side of the health bar
+		// Center the text in the health bar
+		(barSize.X - SmallFont.StringWidth(nametag)) * hudscale.X / 2;
 	screenpos.y = (position.Y + 2) * hudscale.Y;
 
 	Vector2 textScale = hudscale;
 
-	screen.DrawText(SmallFont, Font.CR_GRAY, screenpos.x, screenpos.y, nametag, DTA_KeepRatio, true, DTA_Alpha, healthbaralpha * 0.75, DTA_ScaleX, textScale.x, DTA_ScaleY, textScale.y);
+	screen.DrawText(SmallFont, Font.CR_GRAY, screenpos.x, screenpos.y, nametag,
+		DTA_KeepRatio, true,
+		DTA_Alpha, healthbaralpha * 0.75,
+		DTA_ScaleX, textScale.x,
+		DTA_ScaleY, textScale.y);
 }
 
 virtual void DrawCrosshairHint()
