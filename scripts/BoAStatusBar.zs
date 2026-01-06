@@ -863,7 +863,13 @@ void DrawHealthBars()
 	if (healthbaralpha > 0) { DrawHealthBar(LastTag, LastHealth, LastMaxHealth, LastIcon); }
 }
 
-const HEALTH_BAR_INTERNAL_WIDTH = 152.0;
+const ICON_POS_X = -70;
+// const ICON_WIDTH = 48;
+// The number of pixels that the icon overlaps the health bar. I "calculated"
+// this by using The GIMP to make a mockup of a health bar with one of the
+// boss icons on it. Maybe I should do a less "crude" calculation? But the boss
+// icons are the only icons on the health bar.
+const ICON_OVERLAP = 20;
 
 virtual void DrawHealthBar(String tag, int health, int maxhealth, String icon = "")
 {
@@ -874,37 +880,50 @@ virtual void DrawHealthBar(String tag, int health, int maxhealth, String icon = 
 	
 	// Used some code from DrawBarAlpha, used to calculate position.
 	Vector2 initialPosition = (0, basey), position;
-	TextureID barTex = TexMan.CheckForTexture("HEALTHMX", TexMan.TYPE_MiscPatch);
-	Vector2 barSize = TexMan.GetScaledSize(barTex);
+	Vector2 barSize = TexMan.GetScaledSize(
+		TexMan.CheckForTexture("HEALTHMX", TexMan.TYPE_MiscPatch)), iconSize;
+	TextureID iconTex = TexMan.CheckForTexture(icon, TexMan.TYPE_MiscPatch);
+	bool hasIcon = false;
+	if (iconTex.IsValid()) { 
+		iconSize = TexMan.GetScaledSize(iconTex);
+		hasIcon = true;
+	}
 
 	DrawBarAlpha("HEALTHMX", "HEALTH00", health, maxhealth, (0, basey), 0, SHADER_HORZ, flags, 1.0 * healthbaralpha);
 	DrawBarAlpha("HEALTH_Y", "",         health, maxhealth, (0, basey), 0, SHADER_HORZ, flags, ((maxhealth - health) / (maxhealth * 0.25)) * healthbaralpha);
 	DrawBarAlpha("HEALTH_R", "",         health, maxhealth, (0, basey), 0, SHADER_HORZ, flags, ((maxhealth - health) / (maxhealth * 0.75)) * healthbaralpha);
-	DrawImage(icon, (-70, basey), flags, healthbaralpha, (-1, -1), (0.5, 0.5));
+	DrawImage(icon, (ICON_POS_X, basey), flags, healthbaralpha, (-1, -1), (0.5, 0.5));
 
 	[position, flags] = AdjustPosition(initialPosition, flags, barSize.x, barSize.y);
 
 	double fontHeight = mSmallFont.mFont.GetHeight();
 	String nametag = tag;
 
-	Vector2 hudscale = Statusbar.GetHudScale();
-	Vector2 screenpos;
-
-	/*
-	double hscale = max(1.0, Screen.GetHeight() / ((200 / 10) * fontHeight));
-	double wscale = HEALTH_BAR_INTERNAL_WIDTH * hscale / SmallFont.StringWidth(nametag);
-	double scale = min(wscale, hscale);
-	*/
+	Vector2 hudscale = Statusbar.GetHudScale(), screenpos, textScale = hudscale;
 
 	int width = Screen.GetWidth();
+	int nametagWidth = SmallFont.StringWidth(nametag);
+	double barWidth =  barSize.X - 4  // Account for border
+		- ICON_OVERLAP * hasIcon; // and boss icon overlap
+	double barHeight = barSize.Y - 3; // Account for border
 
-	screenpos.x = width / 2 +  // Start at the center
-		position.X * hudscale.X +  // Move to the left side of the health bar
-		// Center the text in the health bar
-		(barSize.X - SmallFont.StringWidth(nametag)) * hudscale.X / 2;
+	screenpos.x = width / 2  // Start at the center
+	// Move to the left side of the health bar, accounting for the 1px border.
+		+ (position.X + 1 + 1 * !hasIcon // 1 if hasIcon, 2 if not.
+		+ ICON_OVERLAP * hasIcon) // Account for overlap
+		* hudscale.X; // Account for scale
+	// TODO?: Better calculation of overlap between boss icon and health bar
 	screenpos.y = (position.Y + 2) * hudscale.Y;
-
-	Vector2 textScale = hudscale;
+	if (nametagWidth < barWidth) {
+		// Center the text in the health bar
+		screenpos.X += (barWidth - nametagWidth) / 2 * hudscale.X;
+	} else if (nametagWidth > barWidth) {
+		// Shrink the text to fit in the bar
+		double textScaleFactor = barWidth / nametagWidth;
+		textScale *= textScaleFactor;
+		// Move down to account for shrinkage (center within health bar)
+		screenpos.y += (barHeight - (SmallFont.GetHeight() * textScaleFactor)) / 2 * hudscale.Y;
+	}
 
 	screen.DrawText(SmallFont, Font.CR_GRAY, screenpos.x, screenpos.y, nametag,
 		DTA_KeepRatio, true,
