@@ -881,13 +881,15 @@ virtual void DrawHealthBar(String tag, int health, int maxhealth, String icon = 
 	// Used some code from DrawBarAlpha, used to calculate position.
 	Vector2 initialPosition = (0, basey), position;
 	Vector2 barSize = TexMan.GetScaledSize(
-		TexMan.CheckForTexture("HEALTHMX", TexMan.TYPE_MiscPatch)), iconSize;
+		TexMan.CheckForTexture("HEALTHMX", TexMan.TYPE_MiscPatch)); // , iconSize;
 	TextureID iconTex = TexMan.CheckForTexture(icon, TexMan.TYPE_MiscPatch);
-	bool hasIcon = false;
-	if (iconTex.IsValid()) { 
+	bool hasIcon = iconTex.IsValid();
+	/*
+	if (iconTex.IsValid()) {
 		iconSize = TexMan.GetScaledSize(iconTex);
 		hasIcon = true;
 	}
+	*/
 
 	DrawBarAlpha("HEALTHMX", "HEALTH00", health, maxhealth, (0, basey), 0, SHADER_HORZ, flags, 1.0 * healthbaralpha);
 	DrawBarAlpha("HEALTH_Y", "",         health, maxhealth, (0, basey), 0, SHADER_HORZ, flags, ((maxhealth - health) / (maxhealth * 0.25)) * healthbaralpha);
