@@ -82,7 +82,7 @@ class NaziWeapon : Weapon
 
 					Line AimLine = kicktracer.Results.HitLine;
 
-					if (AimLine && AimLine.activation & SPAC_Use)
+					if (AimLine && !AimLine.GetUDMFInt("user_unkickable") && AimLine.activation & SPAC_Use)
 					{
 						if (AimLine.special == 7) // PolyObj_DoorSwing
 						{
