@@ -788,7 +788,7 @@ class BoAPlayer : PlayerPawn
 		// This flag tricks the player actor into only bobbing a tiny bit, but is an awful hack that depends on a quirk in the checks in the internal code.
 		// NOCLIP2 gets unset almost immediately after the check is made here, so never actually takes effect.
 		// Since this is just cosmetic (you only see it in chasecam or multiplayer), it may be best to comment it out, just in case internal code changes in the future.
-//		if (climbing) { player.cheats |= CF_NOCLIP2; }
+		// if (climbing) { player.cheats |= CF_NOCLIP2; }
 
 		if (!(player.cheats & CF_PREDICTING))
 		{
@@ -1355,14 +1355,14 @@ class BoAPlayer : PlayerPawn
 
 	override int DamageMobj(Actor inflictor, Actor source, int damage, Name mod, int flags, double angle)
 	{
-/*
+		/*
 		String i = "null";
 		String s = "null";
 		if (inflictor) { i = inflictor.getclassname(); }
 		if (source) { i = source.getclassname(); }
 
 		console.printf("Inflictor: %s\nSource: %s\nMod: %s", i, s, mod);
-*/
+		*/
 		Inventory saveme;
 
 		if (player && player.mo && G_SkillPropertyInt(SKILLP_ACSReturn) < 3) { saveme = player.mo.FindInventory("SavingHealth", true); }
