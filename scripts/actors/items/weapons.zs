@@ -81,7 +81,6 @@ class NaziWeapon : Weapon
 					kicktracer.Trace(pos + (0, 0, p.viewheight), p.CurSector, tracedir, p.UseRange, 0);
 
 					Line AimLine = kicktracer.Results.HitLine;
-					Side AimSide = AimLine.sidedef[kicktracer.Results.Side];
 
 					if (AimLine && !AimLine.GetUDMFInt("user_unkickable") && AimLine.activation & SPAC_Use)
 					{
@@ -92,9 +91,12 @@ class NaziWeapon : Weapon
 							AimLine.Activate(invoker.owner, 0, SPAC_Use);
 						}
 
+						{
+						Side AimSide = AimLine.sidedef[kicktracer.Results.Side];
 						if (TexMan.GetName(AimSide.GetTexture(Side.mid)) ~== "VENT_M01" ||
 							TexMan.GetName(AimSide.GetTexture(Side.mid)) ~== "textures/VENT_M01.png") {
 							AimLine.Activate(invoker.owner, 0, SPAC_Use);
+						}
 						}
 
 						// The mirror on C1M5 can be broken with attacks
