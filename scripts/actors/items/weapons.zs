@@ -81,6 +81,7 @@ class NaziWeapon : Weapon
 					kicktracer.Trace(pos + (0, 0, p.viewheight), p.CurSector, tracedir, p.UseRange, 0);
 
 					Line AimLine = kicktracer.Results.HitLine;
+					Side AimSide = AimLine.sidedef[kicktracer.Results.Side];
 
 					if (AimLine && !AimLine.GetUDMFInt("user_unkickable") && AimLine.activation & SPAC_Use)
 					{
@@ -88,9 +89,18 @@ class NaziWeapon : Weapon
 						{
 							AimLine.args[1] = 64 * AimLine.args[1] / abs(AimLine.args[1]); // Make it move fast
 							AimLine.args[3] = -1; // Make it stay open forever
+							AimLine.Activate(invoker.owner, 0, SPAC_Use);
 						}
 
-						AimLine.Activate(invoker.owner, 0, SPAC_Use); // Use the line...
+						if (TexMan.GetName(AimSide.GetTexture(Side.mid)) ~== "VENT_M01" ||
+							TexMan.GetName(AimSide.GetTexture(Side.mid)) ~== "textures/VENT_M01.png") {
+							AimLine.Activate(invoker.owner, 0, SPAC_Use);
+						}
+
+						// The mirror on C1M5 can be broken with attacks
+						// (the flag to allow it is set on a line a few pixels
+						// in front of it), so adding a handler for that
+						// specific line is unnecessary.
 					}
 				}
 			}
