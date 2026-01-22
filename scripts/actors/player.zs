@@ -1210,14 +1210,17 @@ class BoAPlayer : PlayerPawn
 		// Draggable corpse handling (also lets you pull pushable actors)
 		// Player must _hold_ crouch within use range of a draggable actor and _hold_ use, then move to drag the actor along
 		// There is also little sense to drag something with a weapon in your hands, so it gets lowered
-		else if (!crosshairSet && dodragging && (AimActor || DragTarget) && player.usedown && player.cmd.buttons & BT_CROUCH)
+		else if (dodragging && (AimActor || DragTarget) && player.usedown && player.cmd.buttons & BT_CROUCH)
 		{
 			if (DragTarget)
 			{
 				DragTarget.Warp(self, Clamp(Distance2D(DragTarget), radius + DragTarget.radius + speed, UseRange), flags:WARPF_INTERPOLATE | WARPF_NOCHECKPOSITION);
 				// Closed hand grab icon
-				crosshair = 97;
-				crosshairSet = true;
+				if (!crosshairSet)
+				{
+					crosshair = 97;
+					crosshairSet = true;
+				}
 			}
 			else
 			{
@@ -1243,7 +1246,7 @@ class BoAPlayer : PlayerPawn
 				}
 			}
 		}
-		else if (!AimLine && !AimActor && !crosshairSet)
+		else if (!AimLine && !AimActor)
 		{
 			if (LastWeapon)
 			{
@@ -1251,16 +1254,19 @@ class BoAPlayer : PlayerPawn
 				LastWeapon = null;
 			}
 
-			crosshair = 0;
-			crosshairstring = "";
-			crosshairSet = true;
+			if (!crosshairSet)
+			{
+				crosshair = 0;
+				crosshairstring = "";
+				crosshairSet = true;
+			}
 
 			if (dodragging)
 			{
 				DragTarget = null;
 				Speed = Default.Speed;
 				TakeInventory("IsDragging", 1);
-				if (
+				if (!crosshairSet &&
 					player.cmd.buttons & BT_CROUCH &&
 					AimActor && 
 					Distance2D(AimActor) < UseRange + AimActor.Radius && 
