@@ -84,19 +84,30 @@ class NaziWeapon : Weapon
 
 					if (AimLine && !AimLine.GetUDMFInt("user_unkickable") && AimLine.activation & SPAC_Use)
 					{
-						if (AimLine.special == 7) // PolyObj_DoorSwing
-						{
-							AimLine.args[1] = 64 * AimLine.args[1] / abs(AimLine.args[1]); // Make it move fast
-							AimLine.args[3] = -1; // Make it stay open forever
-							AimLine.Activate(invoker.owner, 0, SPAC_Use);
-						}
-
-						{
 						Side AimSide = AimLine.sidedef[kicktracer.Results.Side];
-						if (TexMan.GetName(AimSide.GetTexture(Side.mid)) ~== "VENT_M01" ||
-							TexMan.GetName(AimSide.GetTexture(Side.mid)) ~== "textures/VENT_M01.png") {
-							AimLine.Activate(invoker.owner, 0, SPAC_Use);
+						// Kick open swinging doors
+						if (AimSide.Flags & Side.WALLF_POLYOBJ) { // Ensure the line is on a polyobject
+							if (AimLine.special == 7) // PolyObj_DoorSwing
+							{
+								AimLine.args[1] = 64 * AimLine.args[1] / abs(AimLine.args[1]); // Make it move fast
+								AimLine.args[3] = -1; // Make it stay open forever
+								AimLine.Activate(invoker.owner, 0, SPAC_Use);
+							}
+							else if (
+								AimLine.special == 2 || // Polyobj_RotateLeft
+								AimLine.special == 3 // Polyobj_RotateRight
+							) 
+							{
+								// AimLine.args[1] = 64 * AimLine.args[1] / abs(AimLine.args[1]); // Make it move fast
+								AimLine.Activate(invoker.owner, 0, SPAC_Use);
+							}
 						}
+						else
+						{
+							if (TexMan.GetName(AimSide.GetTexture(Side.mid)) ~== "VENT_M01" ||
+								TexMan.GetName(AimSide.GetTexture(Side.mid)) ~== "textures/VENT_M01.png") {
+								AimLine.Activate(invoker.owner, 0, SPAC_Use);
+							}
 						}
 
 						// The mirror on C1M5 can be broken with attacks
