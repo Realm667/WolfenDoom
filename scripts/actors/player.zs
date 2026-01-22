@@ -1011,6 +1011,7 @@ class BoAPlayer : PlayerPawn
 		Actor AimActor = actortrace.HitActor;
 
 		interactiontimeout = max(interactiontimeout - 1, 0);
+		bool crosshairSet = false;
 
 		if (AimTexture)
 		{
@@ -1113,13 +1114,21 @@ class BoAPlayer : PlayerPawn
 					crosshair = 0;
 					crosshairstring = "";
 				}
+				crosshairSet = true;
 			}
 
-			if (AimActor && !crosshair && !crosshairstring.length())
+			if (!crosshairSet)
 			{
-				if (AimActor is "BoASupplyChest" && !BoASupplyChest(AimActor).open && Distance3d(AimActor) <= UseRange)
+				if (AimActor && AimActor is "BoASupplyChest")
 				{
-					crosshairstring = BoASupplyChest(AimActor).keyclass;
+					if (!BoASupplyChest(AimActor).open && Distance3d(AimActor) <= UseRange) {
+						crosshairstring = BoASupplyChest(AimActor).keyclass;
+					}
+				}
+				else
+				{
+					crosshair = 0;
+					crosshairstring = "";
 				}
 			}
 		}
@@ -1201,13 +1210,14 @@ class BoAPlayer : PlayerPawn
 		// Draggable corpse handling (also lets you pull pushable actors)
 		// Player must _hold_ crouch within use range of a draggable actor and _hold_ use, then move to drag the actor along
 		// There is also little sense to drag something with a weapon in your hands, so it gets lowered
-		else if (dodragging && (AimActor || DragTarget) && player.usedown && player.cmd.buttons & BT_CROUCH)
+		else if (!crosshairSet && dodragging && (AimActor || DragTarget) && player.usedown && player.cmd.buttons & BT_CROUCH)
 		{
 			if (DragTarget)
 			{
 				DragTarget.Warp(self, Clamp(Distance2D(DragTarget), radius + DragTarget.radius + speed, UseRange), flags:WARPF_INTERPOLATE | WARPF_NOCHECKPOSITION);
 				// Closed hand grab icon
 				crosshair = 97;
+				crosshairSet = true;
 			}
 			else
 			{
@@ -1233,7 +1243,7 @@ class BoAPlayer : PlayerPawn
 				}
 			}
 		}
-		else if (!AimLine && !AimActor)
+		else if (!AimLine && !AimActor && !crosshairSet)
 		{
 			if (LastWeapon)
 			{
@@ -1243,6 +1253,7 @@ class BoAPlayer : PlayerPawn
 
 			crosshair = 0;
 			crosshairstring = "";
+			crosshairSet = true;
 
 			if (dodragging)
 			{
@@ -1261,6 +1272,7 @@ class BoAPlayer : PlayerPawn
 				{
 					// Open hand grab icon
 					crosshair = 98;
+					crosshairSet = true;
 				}
 			}
 		}
