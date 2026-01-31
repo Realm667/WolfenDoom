@@ -712,6 +712,7 @@ class ToiletNazi : BasicGuard
 		//$Category Monsters (BoA)/Toilet Soldiers
 		//$Color 4
 		Nazi.CrouchChance 0;
+		Nazi.IdleSound "";
 		ToiletNazi.Replacement "WGuard"; // Replacement to spawn when "leaving WC"
 		ToiletNazi.SpawnSprite "GRDTA0"; // Base sprite to use.  Make sure to include the sprite in the Sprites state below
 		Speed 0;
