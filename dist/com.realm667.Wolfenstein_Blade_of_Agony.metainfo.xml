@@ -1,11 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<component type="desktop">
-	<id>com.realm667.Wolfenstein_Blade_of_Agony.desktop</id>
+<component type="desktop-application">
+	<id>com.realm667.Wolfenstein_Blade_of_Agony</id>
 	<name>Wolfenstein: Blade of Agony</name>
 	<summary>Story-driven FPS inspired by WWII shooters from the 90's and early 2000's</summary>
 	<metadata_license>CC0-1.0</metadata_license>
 	<project_license>CC-BY-NC-SA-3.0</project_license>
-	<developer_name>Realm667</developer_name>
+	<developer id="com.realm667">
+		<name>Realm667</name>
+	</developer>
 	<url type="homepage">https://boa.realm667.com</url>
 	<url type="bugtracker">https://github.com/Realm667/WolfenDoom/issues</url>
 	<url type="faq">https://boa.realm667.com/help/f-a-q</url>
@@ -47,6 +49,14 @@
 		<li>Much, much more!</li>
 	</ul>
 	</description>
+	<categories>
+		<category>Game</category>
+	</categories>
+	<icon type="remote">https://raw.githubusercontent.com/flathub/com.realm667.Wolfenstein_Blade_of_Agony/refs/heads/master/boa-256.png</icon>
+	<branding>
+		<color type="primary" scheme_preference="light">#c80000</color>
+		<color type="primary" scheme_preference="dark">#700000</color>
+	</branding>
 	<screenshots>
 		<screenshot type="default">
 			<image>https://boa.realm667.com/images/screenshots/c1/Screenshot_BoA_20210418_213149.jpg</image>
@@ -97,6 +107,14 @@
 			<caption>Chapter 3</caption>
 		</screenshot>
 	</screenshots>
+	<supports>
+	<control>keyboard</control>
+	<control>pointing</control>
+	<control>gamepad</control>
+	</supports>
+	<requires>
+		<display_length compare="ge">480</display_length>
+	</requires>
 	<releases>
 		<release date="2021-07-09" version="3.1"/>
 		<release date="2021-04-30" version="3.0"/>
