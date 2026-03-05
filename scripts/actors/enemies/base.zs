@@ -2431,8 +2431,12 @@ class Nazi : Base
 			if (footsteps) { footsteps.stepdistance = 36; }
 		}
 */
-		if (bBoss)
-		{ // Because most bosses don't have rotation sprites
+
+		if (!bInvisible && !bNoSector &&
+			!(self is "WGuard_Wounded") && // Adding chevrons gives away half-dead guards
+			!(self.GetClass() == "ZyklonMonster") &&
+			ZScriptTools.HasNoSpriteRotations(GetClass()))
+		{ // Add chevrons for bosses and monsters that lack rotation sprites.
 			DirectionIndicator.AddFor(self);
 		}
 		Super.PostBeginPlay();

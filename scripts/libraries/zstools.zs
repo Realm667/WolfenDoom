@@ -728,6 +728,33 @@ class ZScriptTools
 
 		return -1;
 	}
+
+	static bool HasNoSpriteRotations(class<Actor> actorType)
+	{
+		/*
+		// Unnecessary - this function is called by 'Nazi'
+		if (!GetDefaultByType(actorType).bIsMonster) {
+			return false; // Only monsters need chevrons beneath them.
+		}
+		*/
+		TextureID tex; // bool flipped; Vector2 scaledSize;
+		tex = GetDefaultByType(actorType).SpawnState.GetSpriteTexture(0);
+
+		// If the name of the sprite ends with a 0, there are no rotations.
+		String texName = TexMan.GetName(tex);
+		// Console.Printf("texName: %s", texName);
+		String spriteName = texName.Left(4);
+		if (spriteName == "MDLA" ||
+			spriteName == "MDLB" ||
+			spriteName == "MDLC" ||
+			spriteName == "MDLD" ||
+			spriteName == "MDLE" ||
+			spriteName == "MDLS")
+		{
+			return false; // It's a 3D model
+		}
+		return texName.ByteAt(5) == 48; // 0x30
+	}
 }
 
 // Separate class for this because it has to be a thinker, unfortunately.
