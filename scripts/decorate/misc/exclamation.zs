@@ -95,6 +95,26 @@ class ExclamationTouchable : Exclamation
 	}
 }
 
+class ExclamationTouchable2 : Exclamation
+{
+	Default
+	{
+		//$Title Exclamation Mark2 (greyed out on touching)
+		//$Sprite EXCLJ0
+		ExclamationBase.TouchRange 72.0;
+		Height 8;
+	}
+	States
+	{
+	Touched:
+		EXCL A 35 Bright;
+	TouchLoop:
+		EXCL B -1;
+		Stop;
+	}
+}
+
+
 class ExclamationTextpaper : ExclamationTouchable
 {
 	Default
