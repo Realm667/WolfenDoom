@@ -202,10 +202,10 @@ OptionMenu "SimpleBoAAudioVideoMenu"
 
     Option "$VIDMNU_PREFERBACKEND","vid_preferbackend","PreferBackend"
     Option "$VIDMNU_FULLSCREEN","vid_fullscreen","YesNo"
-    IfOption(Windows)
-	{
-		Option "$DSPLYMNU_GPUSWITCH",vid_gpuswitch,"GPUSwitch"
-	}
+//   IfOption(Windows)
+//	{
+//		Option "$DSPLYMNU_GPUSWITCH",vid_gpuswitch,"GPUSwitch" // what does this do ? Not even in U/ZDoom menudefs ... hawkwind
+//	}
 	StaticText "$VIDMNU_CUSTOMRES"
     SubMenu "$VIDMNU_RESPRESET", CustomResolutionMenu
 	TextField "$VIDMNU_CUSTOMX", menu_resolution_custom_width
