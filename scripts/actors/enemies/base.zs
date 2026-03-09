@@ -2435,6 +2435,7 @@ class Nazi : Base
 		if (!bInvisible && !bNoSector &&
 			!(self is "WGuard_Wounded") && // Adding chevrons gives away half-dead guards
 			!(self.GetClass() == "ZyklonMonster") &&
+			!(self.GetClass() == "SneakableWMP40GuardSleep") &&
 			ZScriptTools.HasNoSpriteRotations(GetClass()))
 		{ // Add chevrons for bosses and monsters that lack rotation sprites.
 			DirectionIndicator.AddFor(self);
