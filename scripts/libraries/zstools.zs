@@ -744,16 +744,17 @@ class ZScriptTools
 		String texName = TexMan.GetName(tex);
 		// Console.Printf("texName: %s", texName);
 		String spriteName = texName.Left(4);
-		if (spriteName == "MDLA" ||
+		if (spriteName == "MDLA" || // It's a 3D model
 			spriteName == "MDLB" ||
 			spriteName == "MDLC" ||
 			spriteName == "MDLD" ||
 			spriteName == "MDLE" ||
-			spriteName == "MDLS")
+			spriteName == "MDLS" ||
+			spriteName == "TNT1") // Or it's invisible
 		{
-			return false; // It's a 3D model
+			return false;
 		}
-		return texName.ByteAt(5) == 48; // 0x30
+		return texName.ByteAt(5) == 48; // 0x30 AKA '0'
 	}
 }
 

@@ -2433,9 +2433,11 @@ class Nazi : Base
 */
 
 		if (!bInvisible && !bNoSector &&
-			!(self is "WGuard_Wounded") && // Adding chevrons gives away half-dead guards
+			!(self is "WGuard_Wounded") && // Adding chevrons gives away half-dead guards.
 			!(self.GetClass() == "ZyklonMonster") &&
-			!(self.GetClass() == "SneakableWMP40GuardSleep") &&
+			// "SmokeMonster" does not inherit from Nazi, so it does not have chevrons.
+			!(self.GetClass() == "WMP40GuardSleep") &&
+			// Toilet Nazis and urinal Nazis' first spawn states have TNT1 (invisible)
 			ZScriptTools.HasNoSpriteRotations(GetClass()))
 		{ // Add chevrons for bosses and monsters that lack rotation sprites.
 			DirectionIndicator.AddFor(self);
