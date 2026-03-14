@@ -293,6 +293,27 @@ class ManholeCover3D : Debris_Vent_FloorCeiling
 	}
 }
 
+class ManholeCover3D2 : Debris_Vent_FloorCeiling
+{
+	Default
+	{
+		//$Category Models (BoA)/Scenery
+		//$Title Manhole Cover (3D snow)
+		//$Color 3
+		
+		-SHOOTABLE
+		+INVULNERABLE
+		Height 2;
+	}
+
+	States
+	{
+		Spawn:
+			MDLA A 1;
+		
+	}
+}
+
 class StatueBreakable : Actor
 {
 	double tiltangle;
