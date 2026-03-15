@@ -2432,7 +2432,7 @@ class Nazi : Base
 		}
 */
 
-		if (!bInvisible && !bNoSector &&
+		if (multiplayer && !bInvisible && !bNoSector &&
 			!(self is "WGuard_Wounded") && // Adding chevrons gives away half-dead guards.
 			!(self.GetClass() == "ZyklonMonster") &&
 			// "SmokeMonster" does not inherit from Nazi, so it does not have chevrons.
