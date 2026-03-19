@@ -1108,22 +1108,25 @@ class BoAPlayer : PlayerPawn
 				{
 					crosshair = AimLine.GetUDMFInt("user_crosshair"); // Use the line's user_crosshair property if it has a value
 					crosshairstring = AimLine.GetUDMFString("user_crosshair"); // Or try looking for a class name as a string value
+					crosshairSet = true;
 				}
 				else
 				{
 					crosshair = 0;
 					crosshairstring = "";
 				}
-				crosshairSet = true;
 			}
 
 			if (!crosshairSet)
 			{
-				if (AimActor && AimActor is "BoASupplyChest")
+				if (AimActor &&
+					AimActor is "BoASupplyChest" &&
+					!BoASupplyChest(AimActor).open &&
+					BoASupplyChest(AimActor).IsInFront(self) &&
+					Distance3d(AimActor) <= UseRange)
 				{
-					if (!BoASupplyChest(AimActor).open && Distance3d(AimActor) <= UseRange) {
-						crosshairstring = BoASupplyChest(AimActor).keyclass;
-					}
+					crosshairstring = BoASupplyChest(AimActor).keyclass;
+					crosshairSet = true;
 				}
 				else
 				{

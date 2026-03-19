@@ -99,16 +99,35 @@ class BoASupplyChest : Actor
 
 		Super.PostBeginPlay();
 	}
+	
+	clearscope bool IsInFront(Actor user)
+	{
+		// Checks whether user is in front of the chest or not, regardless of
+		// whether or not they are facing the chest.
+		// Vector3 coordiff = Level.SphericalCoords(Pos, user.Pos, (Angle, Pitch));
+		// return coordiff.x >= -90.0 && coordiff.x <= 90.0;
+		// ===========================================
+		// Chest and user are facing each other.
+		Vector2 chestFacing = AngleToVector(Angle);
+		Vector2 userFacing = AngleToVector(user.Angle);
+		return (chestFacing dot userFacing) < 0;
+	}
 
 	override bool Used(Actor user)
 	{
 		if (open) { return false; } // Fail if it's already open
 		if (keyclass && !user.FindInventory(keyclass, 1)) // If they don't have a key, don't open, and play a locked sound
 		{
-			A_StartSound(failsound, CHAN_AUTO, 0, 1.0); 
+			A_StartSound(failsound, CHAN_AUTO, 0, 1.0);
 			return false;
 		}
 
+		// Prevent chests from being opened from behind
+		if (!IsInFront(user))
+		{
+			A_StartSound(failsound, CHAN_AUTO, 0, 1.0);
+			return false;
+		}
 		// Take the key and play the opening sound
 		A_StartSound(opensound, CHAN_AUTO, 0, 1.0); 
 		if (keyclass) { user.TakeInventory(keyclass, 1); }
