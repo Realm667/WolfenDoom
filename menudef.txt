@@ -152,9 +152,11 @@ OptionMenu "BoAPerformanceOptions"
 	Title "$PERFOPT"
 	StaticText " "
 	Submenu "$OPT_WEAT",				"BoAWeatherOptions"
-	Submenu "$OPT_SFX",				"BoAEffectsOptions"
+	Submenu "$OPT_SFX",					"BoAEffectsOptions"
 	Submenu "$OPT_REND",				"BoARenderOptions"
 	Submenu "$OPT_PROC",				"BoAPostProcessShaderOptions"
+	SubMenu "$OPT_BLOOD",				"BoABloodOptions"
+	SubMenu "$OPT_GAME",				"BoAGameOptions"
 }
 
 OptionMenu "BoAPredefinedOptions"
@@ -247,7 +249,7 @@ OptionMenu "BoACustomizeControls"
 	Submenu    "$CNTRLMNU_INVENTORY"   , "BoAInventoryControlsMenu"
 	Submenu    "$MAPCNTRLMNU_CONTROLS" , "MapControlsMenu"
 	Submenu    "$CNTRLMNU_OTHER"       , "OtherControlsMenu"
-	Submenu    "$MNU_MULTIPLAYER"        , "ChatControlsMenu"
+	Submenu    "$MNU_MULTIPLAYER"      , "ChatControlsMenu"
 }
 
 OptionMenu "BoAActionControlsMenu"
@@ -372,8 +374,8 @@ OptionMenu "BoAWeatherOptions"
 	Title  "$OPT_WEAT"
 	StaticText "$WARNING1"
 	StaticText " "
-	Option "$WE_CLOUD",							"boa_cloudswitch","OnOff"
-	Option "$WE_FOG",							"boa_fogswitch","OnOff"
+	// Option "$WE_CLOUD",						"boa_cloudswitch","OnOff" // does not appear to have any effect - hawkwind
+	// Option "$WE_FOG",						"boa_fogswitch","OnOff"   // does not appear to have any effect - hawkwind
 	Option "$WE_RAIN",							"boa_rainswitch","OnOff"
 	Option "$WE_SNOW",							"boa_snowswitch","OnOff"
 }
@@ -446,6 +448,7 @@ OptionMenu "BoARenderOptions"
 	Option "$RE_REFL",							"gl_plane_reflection","OnOff"
 	Option "$RE_PLES",							"boa_maxparticleactors", "ParticlesAmt"
 	Option "$RE_DEBR",							"boa_maxdebrisactors", "DebrisAmt"
+	Slider "$RE_DEBRIS",						"boa_debrislifetime",1,180,5,0
 	StaticText " "
 	StaticText "$DISTANCE"
 	StaticText "$DECREASE"
@@ -527,7 +530,7 @@ OptionMenu "BoAVideoOptions"
 	Submenu "$OPTMNU_HUD",				"HUDOptions"
 	StaticText ""
 	Submenu "$DSPLYMNU_GLOPT", 					"OpenGLOptions"
-	Submenu "$DSPLYMNU_SWOPT", 					"SWROptions"
+	// Submenu "$DSPLYMNU_SWOPT", 				"SWROptions"  // BoA is not for software rendering - hawkwind
 	Submenu "$DSPLYMNU_VKOPT",					"VKOptions"
 	Submenu "$GLMNU_TEXOPT", 					"GLTextureGLOptions"
 	Submenu "$GLMNU_DYNLIGHT",					"GLLightOptions"
@@ -661,7 +664,7 @@ OptionMenu "BoAMiscOptions" //move boa cheats here? - ozy81
 	Slider "$MISCMNU_AUTOSAVECOUNT",			"autosavecount", 1, 20, 1, 0
 	Option "$MISCMNU_QUICKSAVEROTATION",		"quicksaverotation", "OnOff"
 	Slider "$MISCMNU_QUICKSAVECOUNT",			"quicksaverotationcount", 1, 20, 1, 0
-	Option "$MISCMNU_DEHLOAD",					"dehload", "dehopt"
+	// Option "$MISCMNU_DEHLOAD",					"dehload", "dehopt" // no dehs in BoA - hawkwind
 	Option "$MISCMNU_ENABLESCRIPTSCREENSHOTS",	"enablescriptscreenshot", "OnOff"
 	Option "$MISCMNU_INTERSCROLL",				"nointerscrollabort", "OffOn"
 	StaticText " "
@@ -761,7 +764,7 @@ OptionMenu "BoAGameOptions"
 	Slider "$GA_ZBULL",							"boa_maxflatdecals",1024,4096,1024,0
 	Slider "$GA_SHELLS",						"boa_casinglifetime",1,180,5,0
 	Slider "$GA_RECOIL",						"boa_recoilamount",0,20,1,0
-	Slider "$GA_DEBRIS",						"boa_debrislifetime",1,180,5,0
+	// Slider "$GA_DEBRIS",						"boa_debrislifetime",1,180,5,0 // now moved to line 451.
 }
 
 OptionValue "BloodAmount"
