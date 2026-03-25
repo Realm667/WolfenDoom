@@ -1268,6 +1268,19 @@ class Feldfernschreiber : ModelBase
 	}
 }
 
+class C64Joystick : ModelBase
+{
+	Default
+	{
+		//$Category Models (BoA)/Scenery
+		//$Title Commodore 64 Joystick
+		//$Color 3
+		DistanceCheck "boa_scenelod";
+		Radius 10;
+		Height 20;
+	}
+}
+
 class Toolbox3D: SceneryBase
 {
 	Default
