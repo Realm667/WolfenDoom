@@ -2863,10 +2863,11 @@ class DeathKnight : Nazi
 	{
 	//$Category Monsters (BoA)/Bosses
 	//$Title Todesritter (Boss)
+	Base.BossIcon "BOSSICO2";
 	//$Color 4
 	Tag "$TAGTODESRITTER";
 	Health 3000;
-	Radius 64;
+	Radius 24;
 	Height 96;
 	Mass 1000;
 	Speed 3.5;
