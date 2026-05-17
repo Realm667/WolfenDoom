@@ -256,3 +256,42 @@ class FlakVierling3D_War: SceneryBase
 			Loop;
 	}
 }
+
+class FlakVierling3D_War2: SceneryBase
+{
+	Default
+	{
+		//$Category Battlefield (BoA)
+		//$Title Flak Vierling2 (destroyable)
+		//$Color 3
+		DistanceCheck "boa_scenelod";
+		Radius 56;
+		Height 61;
+		DeathHeight 61;
+		Health 350;
+		+CANPASS
+		+DONTSPLASH
+		+DONTTHRUST
+		+FLOORCLIP
+		+NOBLOODDECALS
+		+SHOOTABLE
+		+SOLID
+		BloodType "TankSpark";
+		CullActorBase.CullLevel 1;
+	}
+
+	States
+	{
+		Spawn:
+			MDLA A -1;
+			Stop;
+		Death:
+			MDLA B 0 A_StartSound("weapons/explode", CHAN_AUTO, 0, 1.0, ATTN_NORM);
+			MDLA B 0 A_Scream;
+			MDLA BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB 0 A_SpawnItemEx("Debris_Tank", random[Debris](64,112), random[Debris](64,112), random[Debris](128,144), random[Debris](1,3), random[Debris](1,3), random[Debris](1,3), random[Debris](0,360), SXF_CLIENTSIDE);
+			MDLA B 1 A_SpawnItemEx("Nuke",0,0,5,0,0,0,0,SXF_TRANSFERPOINTERS|SXF_NOCHECKPOSITION);
+		Destroyed:
+			MDLA B 8 A_SpawnProjectile("DarkSmoke2",32,0,random[Smoke](0,360),CMF_AIMDIRECTION|CMF_BADPITCH,random[Smoke](70,130));
+			Loop;
+	}
+}
