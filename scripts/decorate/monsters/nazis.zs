@@ -3038,11 +3038,11 @@ class CTurret : ControllableBase
 	Default
 	{
 	//$Category Monsters (BoA)/Turrets
-	//$Title Controllable Turret (Afrika Guards only)
+	//$Title Controllable Turret (Pistol Guards only)
 	//$Color 4
 	Health 100;
 	Radius 8;
-	Height 32;
+	Height 40; // was 32. Now more "accurate" - hawkwind
 	Speed 0;
 	Scale 0.62;
 	+DONTTHRUST
@@ -3076,7 +3076,7 @@ class MGTurretSoldier : MGTurret
 	//$Title Stationary Turret Soldier (Afrika Korps)
 	Health 100;
 	MaxTargetRange 3072;
-	Height 56;
+	Height 64; // was 56. Changed for headshot - hawkwind
 	Radius 16;
 	PainChance 32;
 	Scale 0.62;
