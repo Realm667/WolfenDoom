@@ -91,6 +91,20 @@ namespace BladeOfAgonyLauncher
                         DarkTitleBar = true
                     };
                 }
+                if (theme == LauncherTheme.Wolfenstein3D) {
+                    return new ThemePalette {
+                        Background = Color.FromArgb(0x86, 0x00, 0x00),
+                        Surface = Color.FromArgb(104, 20, 20),
+                        Input = Color.FromArgb(57, 14, 14),
+                        Text = Color.FromArgb(250, 244, 244),
+                        MutedText = Color.FromArgb(215, 190, 190),
+                        Border = Color.FromArgb(145, 82, 82),
+                        Accent = Color.FromArgb(0x85, 0x7E, 0x7E),
+                        AccentText = Color.Black,
+                        Error = Color.FromArgb(255, 196, 128),
+                        DarkTitleBar = true
+                    };
+                }
                 return new ThemePalette {
                     Background = Color.FromArgb(0x3B, 0x3B, 0x3B),
                     Surface = Color.FromArgb(72, 72, 72),
@@ -206,10 +220,11 @@ namespace BladeOfAgonyLauncher
         private readonly Label addonStatus = new Label();
         private readonly Label addonTitle = new Label();
         private readonly Label addonCredits = new Label();
-        private readonly TextBox addonDescription = new TextBox();
+        private readonly RichTextBox addonDescription = new RichTextBox();
         private readonly CoverPictureBox previewBox = new CoverPictureBox();
         private readonly Label previewCounter = new Label();
         private readonly Button playButton = new Button();
+        private readonly ToolTip graphicsToolTip = new ToolTip();
         private NoAddonChoice noAddonChoice;
         private ThemePalette palette;
         private AddonDescriptor previewAddon;
@@ -234,8 +249,18 @@ namespace BladeOfAgonyLauncher
             Controls.Add(CreateRootLayout());
             LoadSettingsIntoControls();
             ApplyTheme(this);
+            graphicsToolTip.AutoPopDelay = 10000;
+            graphicsToolTip.InitialDelay = 400;
+            graphicsToolTip.ReshowDelay = 100;
+            graphicsToolTip.ShowAlways = true;
+            detailCombo.SelectedIndexChanged += delegate { UpdateGraphicsDropDownPresentation(); };
+            displacementCombo.SelectedIndexChanged += delegate {
+                UpdateGraphicsDropDownPresentation();
+            };
             interfaceLanguageCombo.SelectedIndexChanged += delegate { ChangeInterfaceLanguage(); };
             themeCombo.SelectedIndexChanged += delegate { ChangeTheme(); };
+            Shown += delegate { UpdateGraphicsDropDownPresentation(); };
+            FormClosed += delegate { graphicsToolTip.Dispose(); };
             FormClosing += delegate { SaveSettingsFromControls(); };
         }
 
@@ -569,7 +594,8 @@ namespace BladeOfAgonyLauncher
             addonDescription.ReadOnly = true;
             addonDescription.BorderStyle = BorderStyle.None;
             addonDescription.BackColor = SystemColors.Control;
-            addonDescription.ScrollBars = ScrollBars.None;
+            addonDescription.ScrollBars = RichTextBoxScrollBars.Vertical;
+            addonDescription.DetectUrls = false;
             details.Controls.Add(addonDescription);
 
             previewBox.Dock = DockStyle.Fill;
@@ -674,7 +700,7 @@ namespace BladeOfAgonyLauncher
                 interfaceLanguage == null ? "en" : interfaceLanguage.Code);
             options.Theme = themeCombo.SelectedIndex >= 0
                 ? (LauncherTheme)themeCombo.SelectedIndex
-                : LauncherTheme.Dark;
+                : LauncherTheme.BladeOfAgony;
             options.NetworkMode = multiplayerModeControl.SelectedIndex >= 0
                 ? (MultiplayerMode)multiplayerModeControl.SelectedIndex
                 : MultiplayerMode.SinglePlayer;
@@ -751,10 +777,13 @@ namespace BladeOfAgonyLauncher
             themeCombo.Items.AddRange(new object[] {
                 catalog.Get("Dark"),
                 catalog.Get("Light"),
-                "Blade of Agony"
+                "Blade of Agony",
+                "Wolfenstein 3D"
             });
-            themeCombo.SelectedIndex = theme >= 0 ? theme : (int)LauncherTheme.Dark;
+            themeCombo.SelectedIndex =
+                theme >= 0 ? theme : (int)LauncherTheme.BladeOfAgony;
             themeCombo.EndUpdate();
+            UpdateGraphicsDropDownPresentation();
             UpdateMultiplayerControls();
         }
 
@@ -763,7 +792,29 @@ namespace BladeOfAgonyLauncher
             int index = (int)theme;
             themeCombo.SelectedIndex = index >= 0 && index < themeCombo.Items.Count
                 ? index
-                : (int)LauncherTheme.Dark;
+                : (int)LauncherTheme.BladeOfAgony;
+        }
+
+        private void UpdateGraphicsDropDownPresentation()
+        {
+            UpdateComboPresentation(detailCombo);
+            UpdateComboPresentation(displacementCombo);
+        }
+
+        private void UpdateComboPresentation(ThemedComboBox combo)
+        {
+            string selected = combo.SelectedItem == null
+                ? string.Empty
+                : combo.SelectedItem.ToString();
+            graphicsToolTip.SetToolTip(combo, selected);
+
+            int widest = combo.Width;
+            foreach (object item in combo.Items) {
+                string text = item == null ? string.Empty : item.ToString();
+                widest = Math.Max(
+                    widest, TextRenderer.MeasureText(text, combo.Font).Width + 28);
+            }
+            combo.DropDownWidth = Math.Min(520, widest);
         }
 
         private void UpdateMultiplayerControls()

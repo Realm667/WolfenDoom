@@ -173,6 +173,22 @@ try {
         throw "The live preview viewport is not 16:9: ${previewWidth}x${previewHeight}"
     }
 
+    $descriptionBox = [IntPtr]::Zero
+    $findDescriptionBox = [RebuiltGuiTestNative+EnumProc] {
+        param($handle, $state)
+        $class = [Text.StringBuilder]::new(128)
+        [void] [RebuiltGuiTestNative]::GetClassName($handle, $class, $class.Capacity)
+        if ($class.ToString().ToUpperInvariant().Contains('RICHEDIT')) {
+            $script:descriptionBox = $handle
+        }
+        return $true
+    }
+    [void] [RebuiltGuiTestNative]::EnumChildWindows(
+        $window, $findDescriptionBox, [IntPtr]::Zero)
+    if (-not $descriptionBox) {
+        throw 'The scrollable addon description box was not found.'
+    }
+
     $languageCandidates = [Collections.Generic.List[object]]::new()
     $findLanguageCombo = [RebuiltGuiTestNative+EnumProc] {
         param($handle, $state)
@@ -276,7 +292,7 @@ try {
         $class = [Text.StringBuilder]::new(128)
         [void] [RebuiltGuiTestNative]::GetClassName($handle, $class, $class.Capacity)
         if ($class.ToString().Contains('COMBOBOX') -and
-            [RebuiltGuiTestNative]::SendMessage($handle, 0x0146, [IntPtr]::Zero, [IntPtr]::Zero).ToInt32() -eq 3) {
+            [RebuiltGuiTestNative]::SendMessage($handle, 0x0146, [IntPtr]::Zero, [IntPtr]::Zero).ToInt32() -eq 4) {
             $comboRect = [RebuiltGuiTestNative+Rect]::new()
             [void] [RebuiltGuiTestNative]::GetWindowRect($handle, [ref] $comboRect)
             $script:themeCandidates.Add([pscustomobject] @{
@@ -294,9 +310,10 @@ try {
     $themeControlId = [RebuiltGuiTestNative]::GetDlgCtrlID($themeCombo)
     $themeChanged = [IntPtr] (($themeControlId -band 0xffff) -bor (1 -shl 16))
     foreach ($themeCase in @(
-        [pscustomobject] @{ Index = 0; Color = '3B3B3B'; Name = 'Dark' },
-        [pscustomobject] @{ Index = 1; Color = 'F0F0F0'; Name = 'Light' },
-        [pscustomobject] @{ Index = 2; Color = '11273A'; Name = 'Blade of Agony' }
+        [pscustomobject] @{ Index = 0; Color = '3B3B3B'; Accent = $null; Name = 'Dark' },
+        [pscustomobject] @{ Index = 1; Color = 'F0F0F0'; Accent = $null; Name = 'Light' },
+        [pscustomobject] @{ Index = 2; Color = '11273A'; Accent = '668197'; Name = 'Blade of Agony' },
+        [pscustomobject] @{ Index = 3; Color = '860000'; Accent = '857E7E'; Name = 'Wolfenstein 3D' }
     )) {
         [void] [RebuiltGuiTestNative]::SendMessage(
             $themeCombo, 0x014E, [IntPtr] $themeCase.Index, [IntPtr]::Zero)
@@ -316,7 +333,7 @@ try {
             if ($actualColor -ne $themeCase.Color) {
                 throw "$($themeCase.Name) background mismatch: #$actualColor"
             }
-            if ($themeCase.Index -eq 2) {
+            if ($themeCase.Accent) {
                 $playRect = [RebuiltGuiTestNative+Rect]::new()
                 [void] [RebuiltGuiTestNative]::GetWindowRect($germanPlay, [ref] $playRect)
                 $accentX = $playRect.Left - $windowRect.Left + 10
@@ -324,8 +341,8 @@ try {
                 $accentPixel = $themeBitmap.GetPixel($accentX, $accentY)
                 $accentColor = '{0:X2}{1:X2}{2:X2}' -f `
                     $accentPixel.R, $accentPixel.G, $accentPixel.B
-                if ($accentColor -ne '668197') {
-                    throw "Blade of Agony accent mismatch: #$accentColor"
+                if ($accentColor -ne $themeCase.Accent) {
+                    throw "$($themeCase.Name) accent mismatch: #$accentColor"
                 }
             }
         }
@@ -439,8 +456,8 @@ foreach ($required in @('[Launcher co-op]', 'Players=2', '[Addon]')) {
         throw "The launcher did not preserve INI content: $required"
     }
 }
-if (-not $ini.Contains('Theme=BladeOfAgony')) {
-    throw 'The selected Blade of Agony design was not persisted.'
+if (-not $ini.Contains('Theme=Wolfenstein3D')) {
+    throw 'The selected Wolfenstein 3D design was not persisted.'
 }
 if (-not $ini.Contains('Language=es') -or
     -not $ini.Contains('InterfaceLanguage=de')) {
@@ -465,8 +482,9 @@ if ($previewWidth -gt 0) {
     "Live preview viewport ${previewWidth}x${previewHeight}: PASS"
 }
 "Independent game and interface language selectors: PASS"
+"Scrollable RichEdit addon description: PASS"
 "Multiplayer progressive disclosure: PASS"
-"Dark, Light, and Blade of Agony theme colors: PASS"
+"Dark, Light, Blade of Agony, and Wolfenstein 3D theme colors: PASS"
 
 if (Test-Path -LiteralPath $screenshot) {
     Get-Item -LiteralPath $screenshot | Select-Object FullName, Length

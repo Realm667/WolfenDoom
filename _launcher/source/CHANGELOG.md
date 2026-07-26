@@ -1,5 +1,37 @@
 # Changelog
 
+## 1.7.0
+
+### Added
+
+- Added the Wolfenstein 3D design using `#860000` as its background and
+  `#857E7E` as its accent color.
+- Added full-value tooltips to both Graphics dropdowns.
+- Added automatically widened Graphics dropdown lists so long options remain
+  readable while choosing.
+- Added a read-only RichEdit addon description with a vertical scrollbar for
+  overflowing text.
+- Added `wolfenstein3d`, `wolfenstein-3d`, and `wolf3d` theme aliases.
+
+### Changed
+
+- Changed the default design from Dark to Blade of Agony.
+- Changed the interface-language default to English, independently of the
+  selected or legacy game language.
+- Extended theme diagnostics and live color tests to all four designs.
+- Launcher version increased to 1.7.0.
+
+### Verified
+
+- Measured the live Wolfenstein 3D background as `#860000` and accent as
+  `#857E7E`.
+- Verified Blade of Agony and English as defaults for configurations without
+  their respective settings.
+- Verified that the addon description is hosted in a scrollable RichEdit
+  control.
+- Re-ran independent language, multiplayer, addon selection, command, INI,
+  theme, and 16:9 preview tests.
+
 ## 1.6.0
 
 ### Added

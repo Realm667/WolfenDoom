@@ -9,8 +9,9 @@ original Pascal source code.
 
 - Launches `boa.exe` with the same detail, displacement, commentary, and
   language arguments as the original launcher.
-- Offers the ten languages present in `boa.ipk3/language.csv`, defaults to
-  English, persists the selection, and normalizes GZDoom aliases.
+- Offers the ten languages present in `boa.ipk3/language.csv`, defaults both
+  language selectors to English, persists them independently, and normalizes
+  GZDoom aliases.
 - Keeps game and interface languages independent. The interface language is
   selected in the header and controls launcher text and localized addon
   metadata; the game language remains in the Game section and controls only
@@ -22,11 +23,14 @@ original Pascal source code.
   the settings required by the selected mode.
 - Shows invalid map and host input inline, highlights the affected field, and
   prevents launching until the visible input is valid.
-- Provides three persisted interface designs: Dark (the default, based on
-  `#3B3B3B`), Light, and Blade of Agony (`#11273A` with `#668197` accents).
+- Provides four persisted interface designs: Blade of Agony (the default,
+  `#11273A` with `#668197` accents), Dark (`#3B3B3B`), Light, and
+  Wolfenstein 3D (`#860000` with `#857E7E` accents).
 - Uses flat theme-aware dropdowns, text fields, numeric steppers, checkboxes,
   list frames, and group borders instead of high-contrast native Windows
   control frames.
+- Shows the complete selected graphics option in a tooltip and expands the
+  opened graphics lists to fit their longest option.
 - Organizes launcher settings into compact Graphics, Game, and Multiplayer
   sections with modern Segoe UI typography and reduced decorative chrome.
 - Places the interface-language and design selectors in a compact header
@@ -39,6 +43,8 @@ original Pascal source code.
 - Displays preview images in a fixed 16:9 viewport using centered cover
   cropping. The viewport always consumes the complete width of the details
   column, without letterboxing or unused side areas.
+- Uses a read-only rich-text addon description with a vertical scrollbar when
+  its content exceeds the visible area.
 - Supports single-addon loading from `addons`
   (`-file addons/addon_name.boa`).
 - Supports ordered multi-addon loading through each descriptor's
@@ -82,7 +88,7 @@ The console diagnostics build accepts:
 --displacement on|off
 --language en|de|es|ru|ptb|pt|br|it|tr|trk|fr|cs|pl|plk
 --interface-language en|de|es|ru|ptb|pt|br|it|tr|trk|fr|cs|pl|plk
---theme dark|light|boa
+--theme dark|light|boa|wolfenstein3d|wolf3d
 --commentary on|off
 --multiplayer single|host|join
 --players 2..8

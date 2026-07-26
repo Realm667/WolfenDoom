@@ -101,12 +101,14 @@ empty paths, `.` segments, and `..` traversal segments.
 - Changed the game language through the live WinForms selector and confirmed
   that launcher labels, addon metadata, persisted language, and the generated
   `+set language` argument all changed together.
-- Verified Dark as the default for configurations without a `Theme` key.
+- Verified Blade of Agony as the default for configurations without a
+  `Theme` key.
 - Measured the live GUI backgrounds for Dark (`#3B3B3B`), Light (`#F0F0F0`),
   and Blade of Agony (`#11273A`) as well as the Blade of Agony accent
   (`#668197`).
 - Confirmed that theme selection persists and that dark title-bar styling
-  follows both dark designs on supported Windows versions.
+  follows Dark, Blade of Agony, and Wolfenstein 3D on supported Windows
+  versions.
 - Replaced high-contrast native field chrome with custom-painted one-pixel
   borders and theme-aware chevrons, steppers, checkboxes, group boxes, and
   list frames.
@@ -120,5 +122,11 @@ empty paths, `.` segments, and `..` traversal segments.
   interface with Spanish selected for the game retained German controls while
   launching with `+set language es`.
 - Verified that localized addon metadata follows the interface language and
-  that legacy INIs without `InterfaceLanguage` inherit their existing
-  `Language` value once.
+  that INIs without `InterfaceLanguage` default it to English independently
+  of the game language.
+- Measured the Wolfenstein 3D design background (`#860000`) and accent
+  (`#857E7E`) from the live launcher window.
+- Confirmed that Graphics selections expose their full value through tooltips
+  and widened dropdown lists.
+- Replaced the plain addon description field with a read-only RichEdit control
+  configured for vertical scrolling when content overflows.

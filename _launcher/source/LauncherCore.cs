@@ -17,7 +17,8 @@ namespace BladeOfAgonyLauncher
     {
         Dark,
         Light,
-        BladeOfAgony
+        BladeOfAgony,
+        Wolfenstein3D
     }
 
     internal sealed class LauncherOptions
@@ -51,8 +52,8 @@ namespace BladeOfAgonyLauncher
             result.UseAddon = ini.GetBoolean("Launcher", "LaunchWithAddon", false);
             result.Language = NormalizeLanguage(ini.Get("Launcher", "Language", "en"));
             result.InterfaceLanguage = NormalizeLanguage(
-                ini.Get("Launcher", "InterfaceLanguage", result.Language));
-            result.Theme = ParseTheme(ini.Get("Launcher", "Theme", "Dark"));
+                ini.Get("Launcher", "InterfaceLanguage", "en"));
+            result.Theme = ParseTheme(ini.Get("Launcher", "Theme", "BladeOfAgony"));
             bool legacyMultiplayerEnabled = ini.GetBoolean("Launcher co-op", "Enabled", false);
             result.NetworkMode = ParseMultiplayerMode(
                 ini.Get("Launcher co-op", "Mode", legacyMultiplayerEnabled ? "Host" : "SinglePlayer"));
@@ -212,6 +213,9 @@ namespace BladeOfAgonyLauncher
         internal static LauncherTheme ParseTheme(string value)
         {
             string normalized = value == null ? string.Empty : value.Trim().ToLowerInvariant();
+            if (normalized == "dark") {
+                return LauncherTheme.Dark;
+            }
             if (normalized == "light") {
                 return LauncherTheme.Light;
             }
@@ -219,7 +223,11 @@ namespace BladeOfAgonyLauncher
                 normalized == "boa") {
                 return LauncherTheme.BladeOfAgony;
             }
-            return LauncherTheme.Dark;
+            if (normalized == "wolfenstein3d" || normalized == "wolfenstein-3d" ||
+                normalized == "wolf3d") {
+                return LauncherTheme.Wolfenstein3D;
+            }
+            return LauncherTheme.BladeOfAgony;
         }
 
         internal static string NormalizeMapName(string value)

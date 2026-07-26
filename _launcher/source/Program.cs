@@ -26,7 +26,7 @@ namespace BladeOfAgonyLauncher
                     "  --displacement VALUE  on or off.\n" +
                     "  --language VALUE      en, de, es, ru, ptb/pt/br, it, tr/trk, fr, cs, pl/plk.\n" +
                     "  --interface-language VALUE  Launcher UI language, using the same codes.\n" +
-                    "  --theme VALUE         dark, light, or boa.\n" +
+                    "  --theme VALUE         dark, light, boa, or wolfenstein3d.\n" +
                     "  --commentary VALUE    on or off.\n" +
                     "  --multiplayer MODE    single, host, or join.\n" +
                     "  --players VALUE       Total host player count (2-8).\n" +

@@ -158,8 +158,8 @@ try {
         [Text.UTF8Encoding]::new($false))
     $migratedUi = & $diagnostics --base-directory $migrationDirectory --print-ui
     if ($migratedUi -notcontains 'GameLanguage=fr' -or
-        $migratedUi -notcontains 'InterfaceLanguage=fr') {
-        throw 'A legacy Language setting was not migrated to the interface language.'
+        $migratedUi -notcontains 'InterfaceLanguage=en') {
+        throw 'The interface language did not default to English independently.'
     }
 }
 finally {
@@ -171,12 +171,17 @@ $themeCases = @{
     'light' = 'Light'
     'boa' = 'BladeOfAgony'
     'blade-of-agony' = 'BladeOfAgony'
+    'wolfenstein3d' = 'Wolfenstein3D'
+    'wolf3d' = 'Wolfenstein3D'
 }
 $defaultThemeUi = & $diagnostics `
     --base-directory (Join-Path $project 'dist\nonexistent-default-theme') `
     --print-ui
-if ($defaultThemeUi -notcontains 'Theme=Dark') {
-    throw 'A launcher configuration without Theme did not default to Dark.'
+if ($defaultThemeUi -notcontains 'Theme=BladeOfAgony') {
+    throw 'A launcher configuration without Theme did not default to Blade of Agony.'
+}
+if ($defaultThemeUi -notcontains 'InterfaceLanguage=en') {
+    throw 'A launcher configuration without InterfaceLanguage did not default to English.'
 }
 foreach ($theme in $themeCases.Keys) {
     $ui = & $diagnostics --base-directory $sandbox --print-ui --theme $theme
