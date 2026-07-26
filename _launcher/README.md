@@ -1,6 +1,6 @@
 # Blade of Agony Launcher
 
-Version 2.0.2 is a modern WPF launcher for Blade of Agony and the bundled
+Version 2.1.0 is a modern WPF launcher for Blade of Agony and the bundled
 UZDoom 4.14.3 engine. It is a clean-room replacement for the original native
 launcher and remains portable: no installer or additional UI runtime is
 required on supported Windows systems.
@@ -12,6 +12,8 @@ required on supported Windows systems.
 - Persistent launch summary and primary Launch action.
 - Official Blade of Agony header logo and live UZDoom product version read
   from the adjacent `boa.exe`.
+- Bundled Unica One typography for the Blade of Agony title and sidebar
+  navigation; no network connection or system font installation is required.
 - Independent game and interface languages for all ten Blade of Agony
   language codes.
 - Blade of Agony, Dark, Light, and Wolfenstein 3D designs.
@@ -42,8 +44,9 @@ required on supported Windows systems.
 - Supports normal Ctrl/Shift list selection and visible checkboxes.
 - Includes an exclusive `No add-ons` item and a selected-item count.
 - Preserves deterministic load order and provides move-up/down controls.
-- Keeps the 16:9 preview visible, uses cover cropping, and scrolls long
-  descriptions, requirements, and compatibility messages.
+- Keeps the 16:9 preview visible, uses cover cropping, and provides a
+  wrapping previous/next carousel for all numbered preview images.
+- Scrolls long descriptions, requirements, and compatibility messages.
 - Understands optional descriptor fields:
   `id`, `version`, `minBoAVersion`, `minEngineVersion`, `requires`,
   `conflicts`, `loadAfter`, `multiplayerSafe`, `newCampaignRequired`, and
@@ -77,6 +80,7 @@ included with Windows. It creates:
 dist/Blade of Agony - Launcher.exe
 dist/Blade of Agony - Launcher Diagnostics.exe
 dist/launcher-resource/*.cfg
+dist/licenses/UnicaOne-OFL.txt
 ```
 
 ## Install
@@ -103,9 +107,15 @@ copy is required.
 ```
 
 The core suite checks commands, language aliases, interface localization,
-MAPINFO parsing, add-on isolation, real archive overlaps, UZDoom 4.14.3, and
-graphics profiles. The GUI suite checks the accessibility tree, compact
-layout, navigation, add-on selection, and the live 16:9 preview bounds.
+MAPINFO parsing, add-on isolation, numbered preview discovery, embedded
+font resources, real archive overlaps, UZDoom 4.14.3, and graphics profiles.
+The GUI suite checks the accessibility tree, compact layout, Start control
+heights, navigation, add-on selection, and the wrapping 16:9 preview carousel.
+
+## Third-party assets
+
+Unica One is distributed under the SIL Open Font License 1.1. Its license is
+embedded in the launcher and copied to `dist/licenses/UnicaOne-OFL.txt`.
 
 ## Diagnostics
 

@@ -1,5 +1,37 @@
 # Changelog
 
+## 2.1.0
+
+### Added
+
+- Added a previous/next screenshot carousel for add-ons containing multiple
+  numbered preview images.
+- Added a visible image counter and cyclic navigation in both directions.
+- Bundled Unica One directly with the launcher and applied it to the Blade of
+  Agony header title and sidebar navigation.
+- Included the Unica One SIL Open Font License in the executable resources
+  and release distribution.
+
+### Changed
+
+- Add-on preview discovery now reads the numbered JPG, JPEG, and PNG files
+  actually present in each `.boa` archive and sorts them numerically.
+- Launcher version increased to 2.1.0.
+
+### Fixed
+
+- Restored a consistent 36-pixel control height for Start page combo boxes
+  whose WPF height was previously unset (`NaN`).
+
+### Verified
+
+- Tested four-image and three-image add-on descriptors from the current
+  Blade of Agony standalone files.
+- Verified carousel navigation, wrapping, counter updates, Unica One loading,
+  Start control heights, accessibility IDs, and the 16:9 preview bounds.
+- Re-ran command generation, localization, content parsing, compatibility,
+  responsive-layout, multiplayer, and graphics profile tests.
+
 ## 2.0.2
 
 ### Changed
