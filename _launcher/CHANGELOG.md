@@ -1,5 +1,34 @@
 # Changelog
 
+## 2.0.2
+
+### Changed
+
+- Replaced raw Detail Preset CFG listings with concise explanations of their
+  visual-quality and performance differences.
+- Vertically centered all combo-box content, including the Interface
+  Language and Design selectors in the header.
+- Applied explicit high-quality bitmap scaling to the header logo.
+- Reused the centered launcher checkbox template for add-on rows.
+- Disabled add-on order buttons whenever the active item cannot move in that
+  direction.
+- Launcher version increased to 2.0.2.
+
+### Fixed
+
+- Disabled combo boxes now render their selected text with a muted foreground
+  instead of appearing active.
+- Fixed vertically misaligned add-on checkboxes and titles.
+- Preserved the active add-on while rebuilding the list so repeated Move Up
+  and Move Down commands operate on the intended entry.
+
+### Verified
+
+- Verified Move Up and Move Down with two enabled add-ons by checking their
+  resulting UI positions.
+- Re-ran command generation, content parsing, compatibility, accessibility,
+  responsive-layout, multiplayer, and 16:9 add-on preview tests.
+
 ## 2.0.1
 
 ### Added

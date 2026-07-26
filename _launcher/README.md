@@ -1,6 +1,6 @@
 # Blade of Agony Launcher
 
-Version 2.0.1 is a modern WPF launcher for Blade of Agony and the bundled
+Version 2.0.2 is a modern WPF launcher for Blade of Agony and the bundled
 UZDoom 4.14.3 engine. It is a clean-room replacement for the original native
 launcher and remains portable: no installer or additional UI runtime is
 required on supported Windows systems.
@@ -33,7 +33,8 @@ required on supported Windows systems.
   by current BoA Zyklon steam spawners.
 - Ships corrected copies of all six detail profiles without duplicate
   `boa_grasslod` assignments.
-- Shows every exact CFG value of the selected detail profile in its tooltip.
+- Explains the visual-quality and performance differences between detail
+  profiles in concise, user-focused tooltips.
 
 ## Add-ons
 
