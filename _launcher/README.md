@@ -9,6 +9,8 @@ original Pascal source code.
 
 - Launches `boa.exe` with the same detail, displacement, commentary, and
   language arguments as the original launcher.
+- Offers the ten languages present in `boa.ipk3/language.csv`, defaults to
+  English, persists the selection, and normalizes GZDoom aliases.
 - Scans `.boa` ZIP descriptors and reads localized `addoninfo.txt` metadata.
 - Displays addon descriptions, requirements, credits, and preview images.
 - Supports the original single-addon behavior (`-file addon_name.boa`).
@@ -47,7 +49,7 @@ The console diagnostics build accepts:
 --base-directory DIR
 --detail last|default|verylow|low|normal|high|veryhigh
 --displacement on|off
---language last|auto|cs|de|default|en-GB|es|fr|it|pl|ptg|ru|tr
+--language en|de|es|ru|ptb|pt|br|it|tr|trk|fr|cs|pl|plk
 --commentary on|off
 --addon FILE
 --multi-addon FILE
@@ -58,7 +60,7 @@ Example:
 ```powershell
 & '.\dist\Blade of Agony - Launcher Diagnostics.exe' `
   --print-command --detail high --displacement on `
-  --language en-GB --commentary on
+  --language en --commentary on
 ```
 
 ## Compatibility notes

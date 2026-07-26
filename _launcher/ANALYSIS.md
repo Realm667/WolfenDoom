@@ -65,3 +65,5 @@ empty paths, `.` segments, and `..` traversal segments.
 - Exercised the rebuilt multi-addon dialog through Windows UI messages.
 - Confirmed that unrelated `boa-launcher.ini` sections and keys survive a
   GUI launch.
+- Verified all ten `language.csv` language groups and canonicalized the
+  aliases `pt`/`br`, `trk`, and `plk`.

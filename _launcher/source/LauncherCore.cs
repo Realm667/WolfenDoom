@@ -26,6 +26,7 @@ namespace BladeOfAgonyLauncher
             result.DisplacementTextures = ini.GetBoolean("Launcher", "DisplacementTextures", true);
             result.DeveloperCommentary = ini.GetBoolean("Launcher", "DevCommentary", false);
             result.UseAddon = ini.GetBoolean("Launcher", "LaunchWithAddon", false);
+            result.Language = NormalizeLanguage(ini.Get("Launcher", "Language", "en"));
 
             string addonFile = ini.Get("Launcher", "addonFileName", string.Empty);
             if (addonFile.Length > 0) {
@@ -48,6 +49,7 @@ namespace BladeOfAgonyLauncher
             ini.Set("Launcher", "DevCommentary", DeveloperCommentary ? "1" : "0");
             ini.Set("Launcher", "DisplacementTextures", DisplacementTextures ? "1" : "0");
             ini.Set("Launcher", "LaunchWithAddon", UseAddon ? "1" : "0");
+            ini.Set("Launcher", "Language", NormalizeLanguage(Language));
             if (SingleAddon != null && MultiAddons.Count == 0) {
                 ini.Set("Launcher", "addonTitle", SingleAddon.Title);
                 ini.Set("Launcher", "addonFileName", SingleAddon.FileName);
@@ -68,6 +70,35 @@ namespace BladeOfAgonyLauncher
                 }
             }
             throw new ArgumentException("Unknown detail preset: " + value);
+        }
+
+        internal static string NormalizeLanguage(string value)
+        {
+            string normalized = value == null ? string.Empty : value.Trim().ToLowerInvariant();
+            if (normalized.Length == 0 || normalized == "default" || normalized == "enu" ||
+                normalized == "eng" || normalized == "enc" || normalized == "ena" ||
+                normalized == "enz" || normalized == "eni" || normalized == "ens" ||
+                normalized == "enj" || normalized == "enb" || normalized == "enl" ||
+                normalized == "ent" || normalized == "enw") {
+                return "en";
+            }
+            if (normalized == "pt" || normalized == "br") {
+                return "ptb";
+            }
+            if (normalized == "trk") {
+                return "tr";
+            }
+            if (normalized == "plk") {
+                return "pl";
+            }
+
+            string[] supported = { "en", "de", "es", "ru", "ptb", "it", "tr", "fr", "cs", "pl" };
+            foreach (string language in supported) {
+                if (normalized == language) {
+                    return language;
+                }
+            }
+            return "en";
         }
     }
 

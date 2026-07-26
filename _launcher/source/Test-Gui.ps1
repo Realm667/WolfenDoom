@@ -1,5 +1,6 @@
 param(
-    [switch] $Multi
+    [switch] $Multi,
+    [switch] $SkipScreenshot
 )
 
 $ErrorActionPreference = 'Stop'
@@ -98,20 +99,22 @@ try {
         throw 'The rebuilt launcher window did not appear.'
     }
 
-    $rect = [RebuiltGuiTestNative+Rect]::new()
-    [void] [RebuiltGuiTestNative]::GetWindowRect($window, [ref] $rect)
-    [void] [RebuiltGuiTestNative]::SetForegroundWindow($window)
-    Start-Sleep -Milliseconds 400
-    $bitmap = [Drawing.Bitmap]::new($rect.Right - $rect.Left, $rect.Bottom - $rect.Top)
-    $graphics = [Drawing.Graphics]::FromImage($bitmap)
-    try {
-        $graphics.CopyFromScreen($rect.Left, $rect.Top, 0, 0, $bitmap.Size)
+    if (-not $SkipScreenshot) {
+        $rect = [RebuiltGuiTestNative+Rect]::new()
+        [void] [RebuiltGuiTestNative]::GetWindowRect($window, [ref] $rect)
+        [void] [RebuiltGuiTestNative]::SetForegroundWindow($window)
+        Start-Sleep -Milliseconds 400
+        $bitmap = [Drawing.Bitmap]::new($rect.Right - $rect.Left, $rect.Bottom - $rect.Top)
+        $graphics = [Drawing.Graphics]::FromImage($bitmap)
+        try {
+            $graphics.CopyFromScreen($rect.Left, $rect.Top, 0, 0, $bitmap.Size)
+        }
+        finally {
+            $graphics.Dispose()
+        }
+        $bitmap.Save($screenshot, [Drawing.Imaging.ImageFormat]::Png)
+        $bitmap.Dispose()
     }
-    finally {
-        $graphics.Dispose()
-    }
-    $bitmap.Save($screenshot, [Drawing.Imaging.ImageFormat]::Png)
-    $bitmap.Dispose()
 
     if ($Multi) {
         $multiButton = $null
@@ -215,6 +218,8 @@ foreach ($required in @('[Launcher co-op]', 'Players=2', '[Addon]')) {
     }
 }
 
-Get-Item -LiteralPath $screenshot | Select-Object FullName, Length
+if (Test-Path -LiteralPath $screenshot) {
+    Get-Item -LiteralPath $screenshot | Select-Object FullName, Length
+}
 Get-Content -LiteralPath $capture
 'INI preservation: PASS'

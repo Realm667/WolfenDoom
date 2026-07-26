@@ -8,5 +8,5 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyCopyright("Blade of Agony assets remain property of their respective owners")]
 [assembly: ComVisible(false)]
 [assembly: Guid("f6e5148b-4d9e-4be8-b9b6-226302494fbb")]
-[assembly: AssemblyVersion("1.0.0.0")]
-[assembly: AssemblyFileVersion("1.0.0.0")]
+[assembly: AssemblyVersion("1.1.0.0")]
+[assembly: AssemblyFileVersion("1.1.0.0")]

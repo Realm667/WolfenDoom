@@ -43,15 +43,44 @@ Assert-Command @(
 Assert-Command @(
     '--displacement', 'off',
     '--commentary', 'off',
+    '--language', 'last',
     '--addon', 'addon_behaviour.boa'
 ) 'boa.exe -iwad boa.ipk3 -file addon_behaviour.boa +set boa_devcomswitch 0'
 
 Assert-Command @(
     '--displacement', 'on',
     '--commentary', 'on',
+    '--language', 'last',
     '--multi-addon', 'addon_behaviour.boa',
     '--multi-addon', 'addon_confiscated_weapons.boa'
 ) 'boa.exe -iwad boa.ipk3 -file addons/behaviour.pk3 addons/confiscated_weapons.pk3 -file boa_dt.pk3 +set boa_devcomswitch 1'
+
+$languageCases = @{
+    'en' = 'en'
+    'de' = 'de'
+    'es' = 'es'
+    'ru' = 'ru'
+    'ptb' = 'ptb'
+    'pt' = 'ptb'
+    'br' = 'ptb'
+    'it' = 'it'
+    'tr' = 'tr'
+    'trk' = 'tr'
+    'fr' = 'fr'
+    'cs' = 'cs'
+    'pl' = 'pl'
+    'plk' = 'pl'
+    'default' = 'en'
+}
+foreach ($language in $languageCases.Keys) {
+    $expectedLanguage = $languageCases[$language]
+    Assert-Command @(
+        '--detail', 'last',
+        '--displacement', 'off',
+        '--commentary', 'off',
+        '--language', $language
+    ) "boa.exe -iwad boa.ipk3 +set boa_devcomswitch 0 +set language $expectedLanguage"
+}
 
 $scan = & $diagnostics --base-directory $sandbox --scan-addons
 if (($scan | Measure-Object).Count -ne 2) {
@@ -62,4 +91,5 @@ if (-not ($scan -match 'addons/behaviour.pk3') -or -not ($scan -match 'addons/co
 }
 
 'Core command tests: PASS'
+'Language and alias tests: PASS'
 'Addon descriptor tests: PASS'

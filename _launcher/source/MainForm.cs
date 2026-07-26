@@ -138,19 +138,16 @@ namespace BladeOfAgonyLauncher
             languageCombo.DropDownStyle = ComboBoxStyle.DropDownList;
             languageCombo.Dock = DockStyle.Top;
             languageCombo.Items.AddRange(new object[] {
-                new LanguageChoice(null, catalog.Get("Use last settings")),
-                new LanguageChoice("auto", "Auto"),
-                new LanguageChoice("cs", "Cesky"),
+                new LanguageChoice("en", "English (default)"),
                 new LanguageChoice("de", "Deutsch"),
-                new LanguageChoice("default", "English (US)"),
-                new LanguageChoice("en-GB", "English (UK)"),
-                new LanguageChoice("es", "Espanol"),
-                new LanguageChoice("fr", "Francais"),
+                new LanguageChoice("es", "Espa\u00f1ol"),
+                new LanguageChoice("ru", "\u0420\u0443\u0441\u0441\u043a\u0438\u0439"),
+                new LanguageChoice("ptb", "Portugu\u00eas (Brasil)"),
                 new LanguageChoice("it", "Italiano"),
-                new LanguageChoice("pl", "Polski"),
-                new LanguageChoice("ptg", "Portugues"),
-                new LanguageChoice("ru", "Russkiy"),
-                new LanguageChoice("tr", "Turkce")
+                new LanguageChoice("tr", "T\u00fcrk\u00e7e"),
+                new LanguageChoice("fr", "Fran\u00e7ais"),
+                new LanguageChoice("cs", "\u010ce\u0161tina"),
+                new LanguageChoice("pl", "Polski")
             });
 
             commentaryCheck.Text = catalog.Get("Developer commentary");
@@ -308,7 +305,7 @@ namespace BladeOfAgonyLauncher
         {
             detailCombo.SelectedIndex = 0;
             displacementCombo.SelectedIndex = options.DisplacementTextures ? 1 : 0;
-            languageCombo.SelectedIndex = 0;
+            SelectLanguage(options.Language);
             commentaryCheck.Checked = options.DeveloperCommentary;
             useAddonCheck.Checked = options.UseAddon;
             ScanAddons();
@@ -320,9 +317,22 @@ namespace BladeOfAgonyLauncher
             options.DisplacementTextures = displacementCombo.SelectedIndex == 1;
             options.DeveloperCommentary = commentaryCheck.Checked;
             LanguageChoice language = languageCombo.SelectedItem as LanguageChoice;
-            options.Language = language == null ? null : language.Code;
+            options.Language = LauncherOptions.NormalizeLanguage(language == null ? "en" : language.Code);
             options.UseAddon = useAddonCheck.Checked;
             options.Save();
+        }
+
+        private void SelectLanguage(string code)
+        {
+            string normalized = LauncherOptions.NormalizeLanguage(code);
+            for (int index = 0; index < languageCombo.Items.Count; index++) {
+                LanguageChoice choice = languageCombo.Items[index] as LanguageChoice;
+                if (choice != null && string.Equals(choice.Code, normalized, StringComparison.OrdinalIgnoreCase)) {
+                    languageCombo.SelectedIndex = index;
+                    return;
+                }
+            }
+            languageCombo.SelectedIndex = 0;
         }
 
         private void ScanAddons()

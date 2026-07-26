@@ -22,7 +22,7 @@ namespace BladeOfAgonyLauncher
                     "  --base-directory DIR Use a game directory other than the executable directory.\n" +
                     "  --detail VALUE        last, default, verylow, low, normal, high, veryhigh.\n" +
                     "  --displacement VALUE  on or off.\n" +
-                    "  --language VALUE      last, auto, cs, de, default, en-GB, es, fr, it, pl, ptg, ru, tr.\n" +
+                    "  --language VALUE      en, de, es, ru, ptb/pt/br, it, tr/trk, fr, cs, pl/plk.\n" +
                     "  --commentary VALUE    on or off.\n" +
                     "  --addon FILE          Select one .boa descriptor.\n" +
                     "  --multi-addon FILE    Add a .boa descriptor to the multi-addon load order.");
@@ -79,7 +79,9 @@ namespace BladeOfAgonyLauncher
                 } else if (TryReadValue(args, ref index, "--displacement", out value)) {
                     options.DisplacementTextures = ParseToggle(value);
                 } else if (TryReadValue(args, ref index, "--language", out value)) {
-                    options.Language = string.Equals(value, "last", StringComparison.OrdinalIgnoreCase) ? null : value;
+                    options.Language = string.Equals(value, "last", StringComparison.OrdinalIgnoreCase)
+                        ? null
+                        : LauncherOptions.NormalizeLanguage(value);
                 } else if (TryReadValue(args, ref index, "--commentary", out value)) {
                     options.DeveloperCommentary = ParseToggle(value);
                 } else if (TryReadValue(args, ref index, "--addon", out value)) {
