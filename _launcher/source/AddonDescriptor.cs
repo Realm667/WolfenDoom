@@ -28,7 +28,7 @@ namespace BladeOfAgonyLauncher
             return Title;
         }
 
-        internal static List<AddonDescriptor> Scan(string directory, CultureInfo culture)
+        internal static List<AddonDescriptor> Scan(string directory, string language)
         {
             List<AddonDescriptor> result = new List<AddonDescriptor>();
             string addonDirectory = Path.Combine(directory, "addons");
@@ -37,7 +37,7 @@ namespace BladeOfAgonyLauncher
             }
             foreach (string path in Directory.GetFiles(addonDirectory, "*.boa", SearchOption.TopDirectoryOnly)) {
                 try {
-                    result.Add(Load(path, culture));
+                    result.Add(Load(path, language));
                 } catch {
                     // A malformed descriptor should not prevent valid addons from being listed.
                 }
@@ -48,7 +48,7 @@ namespace BladeOfAgonyLauncher
             return result;
         }
 
-        internal static AddonDescriptor Load(string path, CultureInfo culture)
+        internal static AddonDescriptor Load(string path, string language)
         {
             if (!File.Exists(path)) {
                 throw new FileNotFoundException("Addon descriptor not found.", path);
@@ -63,7 +63,7 @@ namespace BladeOfAgonyLauncher
                 string addonInfo = ReadTextEntry(archive, "addoninfo.txt");
                 string gameInfo = ReadTextEntry(archive, "gameinfo.txt");
                 Dictionary<string, string> metadata = ParseKeyValues(addonInfo);
-                string language = culture == null ? string.Empty : culture.TwoLetterISOLanguageName.ToLowerInvariant();
+                language = LauncherOptions.NormalizeLanguage(language);
 
                 result.Title = Localized(metadata, "title", language, Path.GetFileNameWithoutExtension(path));
                 result.Credits = Localized(metadata, "credits", language, string.Empty);
@@ -195,6 +195,17 @@ namespace BladeOfAgonyLauncher
         {
             string localized;
             if (language.Length > 0 && values.TryGetValue(key + "_" + language, out localized)) {
+                return localized;
+            }
+            string alias = null;
+            if (language == "ptb") {
+                alias = "pt";
+            } else if (language == "tr") {
+                alias = "trk";
+            } else if (language == "pl") {
+                alias = "plk";
+            }
+            if (alias != null && values.TryGetValue(key + "_" + alias, out localized)) {
                 return localized;
             }
             return GetValue(values, key, fallback);

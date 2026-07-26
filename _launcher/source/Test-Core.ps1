@@ -6,6 +6,9 @@ $sandbox = Join-Path $workspace 'work\launcher-probe\sandbox'
 $diagnostics = Join-Path $project 'dist\Blade of Agony - Launcher Diagnostics.exe'
 
 function Assert-Command([string[]] $Arguments, [string] $Expected) {
+    if ($Arguments -notcontains '--multiplayer') {
+        $Arguments += @('--multiplayer', 'single')
+    }
     $actual = (& $diagnostics --base-directory $sandbox --print-command @Arguments | Out-String).Trim()
     if ($actual -ne $Expected) {
         throw "Command mismatch.`nExpected: $Expected`nActual:   $actual"
@@ -59,6 +62,31 @@ Assert-Command @(
     '--multi-addon', 'addons/addon_confiscated_weapons.boa'
 ) 'boa.exe -iwad boa.ipk3 -file addons/behaviour.pk3 addons/confiscated_weapons.pk3 -file boa_dt.pk3 +set boa_devcomswitch 1'
 
+Assert-Command @(
+    '--no-addons',
+    '--detail', 'last',
+    '--displacement', 'off',
+    '--language', 'de',
+    '--commentary', 'off',
+    '--multiplayer', 'host',
+    '--players', '4',
+    '--map', 'C1M2',
+    '--port', '5030',
+    '--skill', '3',
+    '--cheats', 'off'
+) 'boa.exe -iwad boa.ipk3 +set boa_devcomswitch 0 +set language de -host 4 -port 5030 -skill 3 +set sv_cheats 0 +map C1M2'
+
+Assert-Command @(
+    '--no-addons',
+    '--detail', 'last',
+    '--displacement', 'off',
+    '--language', 'en',
+    '--commentary', 'off',
+    '--multiplayer', 'join',
+    '--host', '192.168.1.25',
+    '--port', '5040'
+) 'boa.exe -iwad boa.ipk3 +set boa_devcomswitch 0 +set language en -join 192.168.1.25:5040'
+
 $languageCases = @{
     'en' = 'en'
     'de' = 'de'
@@ -87,6 +115,16 @@ foreach ($language in $languageCases.Keys) {
     ) "boa.exe -iwad boa.ipk3 +set boa_devcomswitch 0 +set language $expectedLanguage"
 }
 
+foreach ($language in @('en', 'de', 'es', 'ru', 'ptb', 'it', 'tr', 'fr', 'cs', 'pl')) {
+    $ui = & $diagnostics --base-directory $sandbox --print-ui --language $language
+    if ($ui -notcontains "Language=$language") {
+        throw "UI diagnostics did not retain language $language."
+    }
+    if ($language -ne 'en' -and $ui -contains 'HostCoop=Host co-op') {
+        throw "Multiplayer UI was not localized for $language."
+    }
+}
+
 $scan = & $diagnostics --base-directory $sandbox --scan-addons
 if (($scan | Measure-Object).Count -ne 2) {
     throw 'Addon scan did not return both sandbox descriptors.'
@@ -104,5 +142,7 @@ if ($previewTest -ne 'Preview 16:9 cover-crop tests: PASS') {
 
 'Core command tests: PASS'
 'Language and alias tests: PASS'
+'Launcher localization tests: PASS'
+'Multiplayer host/join command tests: PASS'
 'Addons-directory descriptor tests: PASS'
 'Preview 16:9 cover-crop tests: PASS'

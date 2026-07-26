@@ -6,6 +6,13 @@ using System.Text;
 
 namespace BladeOfAgonyLauncher
 {
+    internal enum MultiplayerMode
+    {
+        SinglePlayer,
+        Host,
+        Join
+    }
+
     internal sealed class LauncherOptions
     {
         internal string BaseDirectory;
@@ -16,6 +23,13 @@ namespace BladeOfAgonyLauncher
         internal bool UseAddon;
         internal AddonDescriptor SingleAddon;
         internal List<AddonDescriptor> MultiAddons = new List<AddonDescriptor>();
+        internal MultiplayerMode NetworkMode;
+        internal int MultiplayerPlayers;
+        internal string MultiplayerStartMap;
+        internal string MultiplayerHost;
+        internal int MultiplayerPort;
+        internal int MultiplayerSkill;
+        internal bool MultiplayerCheats;
 
         internal static LauncherOptions Load(string baseDirectory)
         {
@@ -27,6 +41,20 @@ namespace BladeOfAgonyLauncher
             result.DeveloperCommentary = ini.GetBoolean("Launcher", "DevCommentary", false);
             result.UseAddon = ini.GetBoolean("Launcher", "LaunchWithAddon", false);
             result.Language = NormalizeLanguage(ini.Get("Launcher", "Language", "en"));
+            bool legacyMultiplayerEnabled = ini.GetBoolean("Launcher co-op", "Enabled", false);
+            result.NetworkMode = ParseMultiplayerMode(
+                ini.Get("Launcher co-op", "Mode", legacyMultiplayerEnabled ? "Host" : "SinglePlayer"));
+            result.MultiplayerPlayers = Clamp(
+                ParseInteger(ini.Get("Launcher co-op", "Players", "2"), 2), 2, 8);
+            result.MultiplayerStartMap = NormalizeMapName(
+                ini.Get("Launcher co-op", "StartMap", "C1M1"));
+            result.MultiplayerHost = NormalizeHost(
+                ini.Get("Launcher co-op", "Hostname/IP", "localhost"));
+            result.MultiplayerPort = Clamp(
+                ParseInteger(ini.Get("Launcher co-op", "Port", "5029"), 5029), 1, 65535);
+            result.MultiplayerSkill = Clamp(
+                ParseInteger(ini.Get("Launcher co-op", "skill", "2"), 2), 1, 5);
+            result.MultiplayerCheats = ini.GetBoolean("Launcher co-op", "sv_cheats", true);
 
             string addonFiles = ini.Get("Launcher", "addonFileName", string.Empty).Trim().Trim('"');
             if (addonFiles.Length > 0) {
@@ -41,7 +69,7 @@ namespace BladeOfAgonyLauncher
                     }
                     try {
                         selected.Add(AddonDescriptor.Load(
-                            descriptorPath, System.Globalization.CultureInfo.CurrentUICulture));
+                            descriptorPath, result.Language));
                     } catch {
                         // Ignore stale or malformed persisted descriptors.
                     }
@@ -63,6 +91,18 @@ namespace BladeOfAgonyLauncher
             ini.Set("Launcher", "DisplacementTextures", DisplacementTextures ? "1" : "0");
             ini.Set("Launcher", "LaunchWithAddon", UseAddon ? "1" : "0");
             ini.Set("Launcher", "Language", NormalizeLanguage(Language));
+            ini.Set("Launcher co-op", "Enabled",
+                NetworkMode == MultiplayerMode.SinglePlayer ? "0" : "1");
+            ini.Set("Launcher co-op", "Mode", NetworkMode.ToString());
+            ini.Set("Launcher co-op", "Players",
+                Clamp(MultiplayerPlayers, 2, 8).ToString(System.Globalization.CultureInfo.InvariantCulture));
+            ini.Set("Launcher co-op", "StartMap", NormalizeMapName(MultiplayerStartMap));
+            ini.Set("Launcher co-op", "Hostname/IP", NormalizeHost(MultiplayerHost));
+            ini.Set("Launcher co-op", "Port",
+                Clamp(MultiplayerPort, 1, 65535).ToString(System.Globalization.CultureInfo.InvariantCulture));
+            ini.Set("Launcher co-op", "skill",
+                Clamp(MultiplayerSkill, 1, 5).ToString(System.Globalization.CultureInfo.InvariantCulture));
+            ini.Set("Launcher co-op", "sv_cheats", MultiplayerCheats ? "1" : "0");
             List<AddonDescriptor> selected = new List<AddonDescriptor>();
             if (UseAddon) {
                 if (MultiAddons.Count > 0) {
@@ -142,6 +182,49 @@ namespace BladeOfAgonyLauncher
             }
             return "en";
         }
+
+        internal static MultiplayerMode ParseMultiplayerMode(string value)
+        {
+            string normalized = value == null ? string.Empty : value.Trim().ToLowerInvariant();
+            if (normalized == "host" || normalized == "hostcoop" || normalized == "host-coop") {
+                return MultiplayerMode.Host;
+            }
+            if (normalized == "join" || normalized == "joincoop" || normalized == "join-coop") {
+                return MultiplayerMode.Join;
+            }
+            return MultiplayerMode.SinglePlayer;
+        }
+
+        internal static string NormalizeMapName(string value)
+        {
+            string normalized = value == null ? string.Empty : value.Trim().ToUpperInvariant();
+            if (normalized.Length == 0 ||
+                !System.Text.RegularExpressions.Regex.IsMatch(normalized, "^[A-Z0-9_]+$")) {
+                return "C1M1";
+            }
+            return normalized;
+        }
+
+        internal static string NormalizeHost(string value)
+        {
+            string normalized = value == null ? string.Empty : value.Trim();
+            if (normalized.Length == 0 ||
+                !System.Text.RegularExpressions.Regex.IsMatch(normalized, "^[A-Za-z0-9.-]+$")) {
+                return "localhost";
+            }
+            return normalized;
+        }
+
+        private static int ParseInteger(string value, int fallback)
+        {
+            int parsed;
+            return int.TryParse(value, out parsed) ? parsed : fallback;
+        }
+
+        private static int Clamp(int value, int minimum, int maximum)
+        {
+            return Math.Max(minimum, Math.Min(maximum, value));
+        }
     }
 
     internal static class LauncherCommand
@@ -203,6 +286,29 @@ namespace BladeOfAgonyLauncher
                 arguments.Add("+set");
                 arguments.Add("language");
                 arguments.Add(options.Language);
+            }
+
+            if (options.NetworkMode == MultiplayerMode.Host) {
+                arguments.Add("-host");
+                arguments.Add(Math.Max(2, Math.Min(8, options.MultiplayerPlayers))
+                    .ToString(System.Globalization.CultureInfo.InvariantCulture));
+                arguments.Add("-port");
+                arguments.Add(Math.Max(1, Math.Min(65535, options.MultiplayerPort))
+                    .ToString(System.Globalization.CultureInfo.InvariantCulture));
+                arguments.Add("-skill");
+                arguments.Add(Math.Max(1, Math.Min(5, options.MultiplayerSkill))
+                    .ToString(System.Globalization.CultureInfo.InvariantCulture));
+                arguments.Add("+set");
+                arguments.Add("sv_cheats");
+                arguments.Add(options.MultiplayerCheats ? "1" : "0");
+                arguments.Add("+map");
+                arguments.Add(LauncherOptions.NormalizeMapName(options.MultiplayerStartMap));
+            } else if (options.NetworkMode == MultiplayerMode.Join) {
+                arguments.Add("-join");
+                arguments.Add(
+                    LauncherOptions.NormalizeHost(options.MultiplayerHost) + ":" +
+                    Math.Max(1, Math.Min(65535, options.MultiplayerPort))
+                        .ToString(System.Globalization.CultureInfo.InvariantCulture));
             }
             return arguments;
         }

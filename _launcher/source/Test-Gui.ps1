@@ -124,6 +124,40 @@ try {
         throw "The live preview viewport is not 16:9: ${previewWidth}x${previewHeight}"
     }
 
+    $languageCombo = $null
+    $findLanguageCombo = [RebuiltGuiTestNative+EnumProc] {
+        param($handle, $state)
+        $class = [Text.StringBuilder]::new(128)
+        [void] [RebuiltGuiTestNative]::GetClassName($handle, $class, $class.Capacity)
+        if ($class.ToString().Contains('COMBOBOX') -and
+            [RebuiltGuiTestNative]::SendMessage($handle, 0x0146, [IntPtr]::Zero, [IntPtr]::Zero).ToInt32() -eq 10) {
+            $script:languageCombo = $handle
+        }
+        return $true
+    }
+    [void] [RebuiltGuiTestNative]::EnumChildWindows($window, $findLanguageCombo, [IntPtr]::Zero)
+    if (-not $languageCombo) {
+        throw 'The game-language selector was not found.'
+    }
+    [void] [RebuiltGuiTestNative]::SendMessage($languageCombo, 0x014E, [IntPtr] 1, [IntPtr]::Zero)
+    $languageControlId = [RebuiltGuiTestNative]::GetDlgCtrlID($languageCombo)
+    $languageChanged = [IntPtr] (($languageControlId -band 0xffff) -bor (1 -shl 16))
+    [void] [RebuiltGuiTestNative]::SendMessage($window, 0x0111, $languageChanged, $languageCombo)
+    Start-Sleep -Milliseconds 500
+
+    $germanPlay = $null
+    $findGermanPlay = [RebuiltGuiTestNative+EnumProc] {
+        param($handle, $state)
+        if ((Read-Text $handle) -eq 'Spielen') {
+            $script:germanPlay = $handle
+        }
+        return $true
+    }
+    [void] [RebuiltGuiTestNative]::EnumChildWindows($window, $findGermanPlay, [IntPtr]::Zero)
+    if (-not $germanPlay) {
+        throw 'Changing the game language did not localize the launcher to German.'
+    }
+
     if (-not $SkipScreenshot) {
         $rect = [RebuiltGuiTestNative+Rect]::new()
         [void] [RebuiltGuiTestNative]::GetWindowRect($window, [ref] $rect)
@@ -132,7 +166,18 @@ try {
         $bitmap = [Drawing.Bitmap]::new($rect.Right - $rect.Left, $rect.Bottom - $rect.Top)
         $graphics = [Drawing.Graphics]::FromImage($bitmap)
         try {
-            $graphics.CopyFromScreen($rect.Left, $rect.Top, 0, 0, $bitmap.Size)
+            try {
+                $graphics.CopyFromScreen($rect.Left, $rect.Top, 0, 0, $bitmap.Size)
+            }
+            catch {
+                $deviceContext = $graphics.GetHdc()
+                try {
+                    [void] [RebuiltGuiTestNative]::PrintWindow($window, $deviceContext, 2)
+                }
+                finally {
+                    $graphics.ReleaseHdc($deviceContext)
+                }
+            }
         }
         finally {
             $graphics.Dispose()
@@ -170,16 +215,28 @@ try {
         Start-Sleep -Milliseconds 500
     }
 
-    $play = $null
+    $playCandidates = [Collections.Generic.List[object]]::new()
     $childCallback = [RebuiltGuiTestNative+EnumProc] {
         param($handle, $state)
-        $text = Read-Text $handle
-        if ($text -in @('Play', 'Spielen')) {
-            $script:play = $handle
+        $class = [Text.StringBuilder]::new(128)
+        [void] [RebuiltGuiTestNative]::GetClassName($handle, $class, $class.Capacity)
+        if ($class.ToString().Contains('BUTTON')) {
+            $buttonRect = [RebuiltGuiTestNative+Rect]::new()
+            [void] [RebuiltGuiTestNative]::GetWindowRect($handle, [ref] $buttonRect)
+            $script:playCandidates.Add([pscustomobject] @{
+                Handle = $handle
+                Left = $buttonRect.Left
+                Top = $buttonRect.Top
+            })
         }
         return $true
     }
     [void] [RebuiltGuiTestNative]::EnumChildWindows($window, $childCallback, [IntPtr]::Zero)
+    $bottomTop = ($playCandidates | Measure-Object -Property Top -Maximum).Maximum
+    $play = ($playCandidates |
+        Where-Object { $_.Top -ge ($bottomTop - 10) } |
+        Sort-Object Left |
+        Select-Object -First 1).Handle
     if (-not $play) {
         throw 'The Play button was not found.'
     }
@@ -220,6 +277,7 @@ if ($Multi) {
 if ($previewWidth -gt 0) {
     "Live preview viewport ${previewWidth}x${previewHeight}: PASS"
 }
+"Game language -> launcher localization: PASS"
 
 if (Test-Path -LiteralPath $screenshot) {
     Get-Item -LiteralPath $screenshot | Select-Object FullName, Length
