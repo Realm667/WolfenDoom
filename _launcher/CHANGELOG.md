@@ -1,5 +1,62 @@
 # Changelog
 
+## 2.0.0
+
+### Added
+
+- Rebuilt the launcher interface in WPF with responsive layout, per-monitor
+  DPI awareness, animation, text scaling, high-contrast support, accessible
+  automation names, and full keyboard navigation.
+- Added flat navigation for Start, Add-ons, Multiplayer, and Diagnostics.
+- Added a persistent launch summary and status area.
+- Added runtime parsing of episodes, campaign maps, and all five skills from
+  the final `boa.ipk3` `MAPINFO`.
+- Added localized map, episode, and skill names from `language.csv`.
+- Added main-menu and direct campaign-start modes.
+- Added visible add-on checkboxes, selection count, deterministic load-order
+  controls, and inline compatibility reporting.
+- Added optional descriptor metadata for IDs, versions, dependencies,
+  conflicts, load ordering, minimum versions, multiplayer safety, campaign
+  restart requirements, and categories.
+- Added detection of missing payloads, invalid archives, engine-version
+  requirements, and overlapping PK3 paths.
+- Added a dedicated diagnostics view for the engine, main game, content
+  source, add-ons, and generated command.
+- Added command-line content, multiplayer, and add-on diagnostics.
+
+### Changed
+
+- Changed branded themes to use their colors for navigation and emphasis
+  while keeping content surfaces neutral and readable.
+- Changed the add-on description and compatibility area to a scrollable
+  region with an always-visible, cover-cropped 16:9 preview.
+- Changed multiplayer to load only UZDoom 4.14.3 and `boa.ipk3`; selected
+  add-ons and `boa_dt.pk3` are now excluded from host and join commands.
+- Changed campaign and co-op map selection from free text to data read from
+  the current Blade of Agony content.
+- Kept interface and game languages fully independent after the WPF rewrite.
+- Launcher version increased to 2.0.0.
+
+### Fixed
+
+- Forced `boa_steamswitch 1` after every detail profile to preserve current
+  Blade of Agony steam-spawner behavior.
+- Removed duplicate `boa_grasslod` assignments from the distributed detail
+  profiles.
+- Prevented a persisted multiplayer state from affecting launches initiated
+  from the Start or Add-ons areas.
+
+### Verified
+
+- Tested against `wolfendoom.git` commit `cc83160d7`.
+- Parsed 3 episodes, 33 campaign maps, and 5 skills from both the development
+  tree and the final `boa.ipk3`.
+- Verified the bundled engine as UZDoom 4.14.3.
+- Verified that multiplayer commands contain no add-on or displacement PK3.
+- Detected real overlapping files between the existing music add-ons.
+- Verified the live accessibility tree, compact layout, and a 311x175 16:9
+  add-on preview.
+
 ## 1.7.0
 
 ### Added
