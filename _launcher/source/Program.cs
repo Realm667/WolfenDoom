@@ -19,19 +19,30 @@ namespace BladeOfAgonyLauncher
                     "Blade of Agony Launcher (clean-room rebuild)\n" +
                     "  --print-command       Print the generated boa.exe command and exit.\n" +
                     "  --scan-addons         Print discovered addon descriptors and exit.\n" +
+                    "  --verify-preview      Verify 16:9 cover-crop geometry and exit.\n" +
                     "  --base-directory DIR Use a game directory other than the executable directory.\n" +
                     "  --detail VALUE        last, default, verylow, low, normal, high, veryhigh.\n" +
                     "  --displacement VALUE  on or off.\n" +
                     "  --language VALUE      en, de, es, ru, ptb/pt/br, it, tr/trk, fr, cs, pl/plk.\n" +
                     "  --commentary VALUE    on or off.\n" +
+                    "  --no-addons           Disable all persisted addon selections.\n" +
                     "  --addon FILE          Select one .boa descriptor.\n" +
                     "  --multi-addon FILE    Add a .boa descriptor to the multi-addon load order.");
                 return 0;
             }
 
+            if (HasArgument(args, "--verify-preview")) {
+                if (!PreviewLayout.SelfTest()) {
+                    throw new InvalidOperationException("The 16:9 cover-crop geometry test failed.");
+                }
+                Console.WriteLine("Preview 16:9 cover-crop tests: PASS");
+                return 0;
+            }
+
             if (HasArgument(args, "--scan-addons")) {
                 foreach (AddonDescriptor addon in AddonDescriptor.Scan(baseDirectory, CultureInfo.CurrentUICulture)) {
-                    Console.WriteLine(addon.FileName + "\t" + addon.Title + "\t" + string.Join(";", addon.LoadFiles.ToArray()));
+                    Console.WriteLine(addon.RelativePath + "\t" + addon.Title + "\t" +
+                        string.Join(";", addon.LoadFiles.ToArray()));
                 }
                 return 0;
             }
@@ -84,6 +95,10 @@ namespace BladeOfAgonyLauncher
                         : LauncherOptions.NormalizeLanguage(value);
                 } else if (TryReadValue(args, ref index, "--commentary", out value)) {
                     options.DeveloperCommentary = ParseToggle(value);
+                } else if (string.Equals(args[index], "--no-addons", StringComparison.OrdinalIgnoreCase)) {
+                    options.UseAddon = false;
+                    options.SingleAddon = null;
+                    options.MultiAddons.Clear();
                 } else if (TryReadValue(args, ref index, "--addon", out value)) {
                     options.SingleAddon = AddonDescriptor.Load(ResolveDescriptor(baseDirectory, value), CultureInfo.CurrentUICulture);
                     options.UseAddon = true;

@@ -28,15 +28,28 @@ namespace BladeOfAgonyLauncher
             result.UseAddon = ini.GetBoolean("Launcher", "LaunchWithAddon", false);
             result.Language = NormalizeLanguage(ini.Get("Launcher", "Language", "en"));
 
-            string addonFile = ini.Get("Launcher", "addonFileName", string.Empty);
-            if (addonFile.Length > 0) {
-                string descriptorPath = Path.Combine(baseDirectory, addonFile);
-                if (File.Exists(descriptorPath)) {
-                    try {
-                        result.SingleAddon = AddonDescriptor.Load(descriptorPath, System.Globalization.CultureInfo.CurrentUICulture);
-                    } catch {
-                        result.SingleAddon = null;
+            string addonFiles = ini.Get("Launcher", "addonFileName", string.Empty).Trim().Trim('"');
+            if (addonFiles.Length > 0) {
+                string[] storedPaths = addonFiles.IndexOf(';') >= 0
+                    ? addonFiles.Split(new[] { ';' }, StringSplitOptions.RemoveEmptyEntries)
+                    : addonFiles.Split(new[] { ':' }, StringSplitOptions.RemoveEmptyEntries);
+                List<AddonDescriptor> selected = new List<AddonDescriptor>();
+                foreach (string storedPath in storedPaths) {
+                    string descriptorPath = ResolveDescriptorPath(baseDirectory, storedPath);
+                    if (descriptorPath == null || !File.Exists(descriptorPath)) {
+                        continue;
                     }
+                    try {
+                        selected.Add(AddonDescriptor.Load(
+                            descriptorPath, System.Globalization.CultureInfo.CurrentUICulture));
+                    } catch {
+                        // Ignore stale or malformed persisted descriptors.
+                    }
+                }
+                if (selected.Count == 1) {
+                    result.SingleAddon = selected[0];
+                } else if (selected.Count > 1) {
+                    result.MultiAddons.AddRange(selected);
                 }
             }
             return result;
@@ -50,14 +63,43 @@ namespace BladeOfAgonyLauncher
             ini.Set("Launcher", "DisplacementTextures", DisplacementTextures ? "1" : "0");
             ini.Set("Launcher", "LaunchWithAddon", UseAddon ? "1" : "0");
             ini.Set("Launcher", "Language", NormalizeLanguage(Language));
-            if (SingleAddon != null && MultiAddons.Count == 0) {
-                ini.Set("Launcher", "addonTitle", SingleAddon.Title);
-                ini.Set("Launcher", "addonFileName", SingleAddon.FileName);
+            List<AddonDescriptor> selected = new List<AddonDescriptor>();
+            if (UseAddon) {
+                if (MultiAddons.Count > 0) {
+                    selected.AddRange(MultiAddons);
+                } else if (SingleAddon != null) {
+                    selected.Add(SingleAddon);
+                }
+            }
+            if (selected.Count > 0) {
+                List<string> titles = new List<string>();
+                List<string> paths = new List<string>();
+                foreach (AddonDescriptor addon in selected) {
+                    titles.Add(addon.Title);
+                    paths.Add(addon.RelativePath);
+                }
+                ini.Set("Launcher", "addonTitle", string.Join(", ", titles.ToArray()));
+                ini.Set("Launcher", "addonFileName", string.Join(";", paths.ToArray()));
             } else {
                 ini.Set("Launcher", "addonTitle", string.Empty);
                 ini.Set("Launcher", "addonFileName", string.Empty);
             }
             ini.Save(path);
+        }
+
+        private static string ResolveDescriptorPath(string baseDirectory, string storedPath)
+        {
+            string normalized = storedPath.Trim().Trim('"').Replace('\\', '/');
+            if (normalized.Length == 0 || Path.IsPathRooted(normalized)) {
+                return null;
+            }
+            if (normalized.IndexOf('/') < 0) {
+                normalized = "addons/" + normalized;
+            }
+            string addonDirectory = Path.GetFullPath(Path.Combine(baseDirectory, "addons"));
+            string fullPath = Path.GetFullPath(Path.Combine(baseDirectory, normalized.Replace('/', Path.DirectorySeparatorChar)));
+            string prefix = addonDirectory.TrimEnd(Path.DirectorySeparatorChar) + Path.DirectorySeparatorChar;
+            return fullPath.StartsWith(prefix, StringComparison.OrdinalIgnoreCase) ? fullPath : null;
         }
 
         internal static int ParseDetail(string value)
@@ -139,7 +181,7 @@ namespace BladeOfAgonyLauncher
                     }
                 } else if (options.SingleAddon != null) {
                     arguments.Add("-file");
-                    arguments.Add(options.SingleAddon.FileName);
+                    arguments.Add(options.SingleAddon.RelativePath);
                 }
             }
 

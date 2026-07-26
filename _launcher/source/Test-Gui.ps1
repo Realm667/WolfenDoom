@@ -1,5 +1,6 @@
 param(
     [switch] $Multi,
+    [switch] $NoAddons,
     [switch] $SkipScreenshot
 )
 
@@ -64,6 +65,9 @@ public static class RebuiltGuiTestNative
 
     [DllImport("user32.dll")]
     public static extern bool PostMessage(IntPtr handle, uint message, IntPtr wParam, IntPtr lParam);
+
+    [DllImport("user32.dll")]
+    public static extern int GetDlgCtrlID(IntPtr handle);
 }
 '@
 
@@ -116,68 +120,32 @@ try {
         $bitmap.Dispose()
     }
 
-    if ($Multi) {
-        $multiButton = $null
-        $findMulti = [RebuiltGuiTestNative+EnumProc] {
-            param($handle, $state)
-            if ((Read-Text $handle).StartsWith('Mehrere Addons') -or (Read-Text $handle).StartsWith('Select multiple')) {
-                $script:multiButton = $handle
-            }
-            return $true
-        }
-        [void] [RebuiltGuiTestNative]::EnumChildWindows($window, $findMulti, [IntPtr]::Zero)
-        if (-not $multiButton) {
-            throw 'The multi-addon button was not found.'
-        }
-        [void] [RebuiltGuiTestNative]::PostMessage($multiButton, 0x00F5, [IntPtr]::Zero, [IntPtr]::Zero)
-
-        $dialog = $null
-        for ($attempt = 0; $attempt -lt 40 -and -not $dialog; $attempt++) {
-            Start-Sleep -Milliseconds 250
-            $findDialog = [RebuiltGuiTestNative+EnumProc] {
-                param($handle, $state)
-                [uint32] $owner = 0
-                [void] [RebuiltGuiTestNative]::GetWindowThreadProcessId($handle, [ref] $owner)
-                $title = Read-Text $handle
-                if ($owner -eq $process.Id -and $handle -ne $window -and $title.StartsWith('Blade of Agony:')) {
-                    $script:dialog = $handle
-                }
-                return $true
-            }
-            [void] [RebuiltGuiTestNative]::EnumWindows($findDialog, [IntPtr]::Zero)
-        }
-        if (-not $dialog) {
-            throw 'The multi-addon dialog did not appear.'
-        }
-
-        $lists = [Collections.Generic.List[object]]::new()
-        $moveRight = $null
-        $apply = $null
-        $findDialogControls = [RebuiltGuiTestNative+EnumProc] {
+    if ($Multi -or $NoAddons) {
+        $addonList = $null
+        $findAddonList = [RebuiltGuiTestNative+EnumProc] {
             param($handle, $state)
             $class = [Text.StringBuilder]::new(128)
             [void] [RebuiltGuiTestNative]::GetClassName($handle, $class, $class.Capacity)
-            $text = Read-Text $handle
             if ($class.ToString().Contains('LISTBOX')) {
-                $rect = [RebuiltGuiTestNative+Rect]::new()
-                [void] [RebuiltGuiTestNative]::GetWindowRect($handle, [ref] $rect)
-                $lists.Add([pscustomobject] @{ Handle = $handle; Left = $rect.Left })
-            } elseif ($text -eq '>') {
-                $script:moveRight = $handle
-            } elseif ($text -in @('Apply', 'Anwenden')) {
-                $script:apply = $handle
+                $script:addonList = $handle
             }
             return $true
         }
-        [void] [RebuiltGuiTestNative]::EnumChildWindows($dialog, $findDialogControls, [IntPtr]::Zero)
-        $lists = @($lists | Sort-Object Left)
-        if ($lists.Count -ne 2 -or -not $moveRight -or -not $apply) {
-            throw 'The multi-addon dialog controls were incomplete.'
+        [void] [RebuiltGuiTestNative]::EnumChildWindows($window, $findAddonList, [IntPtr]::Zero)
+        if (-not $addonList) {
+            throw 'The addon list was not found.'
         }
 
-        [void] [RebuiltGuiTestNative]::SendMessage($lists[0].Handle, 0x0186, [IntPtr] 0, [IntPtr]::Zero)
-        [void] [RebuiltGuiTestNative]::SendMessage($moveRight, 0x00F5, [IntPtr]::Zero, [IntPtr]::Zero)
-        [void] [RebuiltGuiTestNative]::PostMessage($apply, 0x00F5, [IntPtr]::Zero, [IntPtr]::Zero)
+        [void] [RebuiltGuiTestNative]::SendMessage($addonList, 0x0185, [IntPtr]::Zero, [IntPtr] -1)
+        if ($Multi) {
+            [void] [RebuiltGuiTestNative]::SendMessage($addonList, 0x0185, [IntPtr] 1, [IntPtr] 1)
+            [void] [RebuiltGuiTestNative]::SendMessage($addonList, 0x0185, [IntPtr] 1, [IntPtr] 2)
+        } else {
+            [void] [RebuiltGuiTestNative]::SendMessage($addonList, 0x0185, [IntPtr] 1, [IntPtr] 0)
+        }
+        $controlId = [RebuiltGuiTestNative]::GetDlgCtrlID($addonList)
+        $selectionChanged = [IntPtr] (($controlId -band 0xffff) -bor (1 -shl 16))
+        [void] [RebuiltGuiTestNative]::SendMessage($window, 0x0111, $selectionChanged, $addonList)
         Start-Sleep -Milliseconds 500
     }
 
@@ -216,6 +184,17 @@ foreach ($required in @('[Launcher co-op]', 'Players=2', '[Addon]')) {
     if (-not $ini.Contains($required)) {
         throw "The launcher did not preserve INI content: $required"
     }
+}
+if ($Multi) {
+    if (-not $ini.Contains('addonFileName=addons/addon_confiscated_weapons.boa;addons/addon_behaviour.boa')) {
+        throw 'The Ctrl-style multi-selection was not persisted in list order.'
+    }
+    'Ctrl multi-selection persistence: PASS'
+} elseif ($NoAddons) {
+    if (-not $ini.Contains('LaunchWithAddon=0')) {
+        throw 'The No addons selection did not disable addons.'
+    }
+    'No-addons selection: PASS'
 }
 
 if (Test-Path -LiteralPath $screenshot) {

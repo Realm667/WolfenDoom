@@ -11,9 +11,15 @@ original Pascal source code.
   language arguments as the original launcher.
 - Offers the ten languages present in `boa.ipk3/language.csv`, defaults to
   English, persists the selection, and normalizes GZDoom aliases.
-- Scans `.boa` ZIP descriptors and reads localized `addoninfo.txt` metadata.
-- Displays addon descriptions, requirements, credits, and preview images.
-- Supports the original single-addon behavior (`-file addon_name.boa`).
+- Scans `.boa` ZIP descriptors exclusively from `addons` and reads localized
+  `addoninfo.txt` metadata.
+- Selects multiple addons directly in the main list with Ctrl plus the primary
+  mouse button.
+- Provides an exclusive `No addons` list entry instead of a separate checkbox.
+- Displays preview images in a fixed 16:9 viewport using centered cover
+  cropping, without letterboxing.
+- Supports single-addon loading from `addons`
+  (`-file addons/addon_name.boa`).
 - Supports ordered multi-addon loading through each descriptor's
   `gameinfo.txt` `LOAD` entries.
 - Reads the existing gettext `.po` files from `language`.
@@ -36,8 +42,9 @@ creates both executables in `dist`.
 ## Install
 
 Place `Blade of Agony - Launcher Rebuilt.exe` next to `boa.exe`, `boa.ipk3`,
-`boa_dt.pk3`, the `.boa` descriptors, `launcher-resource`, and `language`.
-The rebuilt launcher intentionally uses the game's existing data files.
+`boa_dt.pk3`, `launcher-resource`, and `language`. Place every `.boa`
+descriptor in `addons` next to its corresponding PK3 data. Root-level `.boa`
+files are intentionally ignored.
 
 ## Diagnostics
 
@@ -45,12 +52,14 @@ The console diagnostics build accepts:
 
 ```text
 --scan-addons
+--verify-preview
 --print-command
 --base-directory DIR
 --detail last|default|verylow|low|normal|high|veryhigh
 --displacement on|off
 --language en|de|es|ru|ptb|pt|br|it|tr|trk|fr|cs|pl|plk
 --commentary on|off
+--no-addons
 --addon FILE
 --multi-addon FILE
 ```

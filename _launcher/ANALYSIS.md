@@ -62,7 +62,14 @@ empty paths, `.` segments, and `..` traversal segments.
 - Matched original single-addon behavior.
 - Matched original ordered multi-addon behavior.
 - Exercised the rebuilt GUI against a recording `boa.exe` stub.
-- Exercised the rebuilt multi-addon dialog through Windows UI messages.
+- Exercised Ctrl-style multi-selection in the rebuilt main addon list through
+  Windows UI messages.
+- Confirmed that only `addons/*.boa` is scanned and root descriptors are
+  ignored.
+- Confirmed that `No addons` removes all addon arguments and persists the
+  disabled state.
+- Verified the 16:9 preview bounds and centered cover-crop geometry for wide
+  and tall source images.
 - Confirmed that unrelated `boa-launcher.ini` sections and keys survive a
   GUI launch.
 - Verified all ten `language.csv` language groups and canonicalized the

@@ -13,6 +13,7 @@ namespace BladeOfAgonyLauncher
     {
         internal string DescriptorPath;
         internal string FileName;
+        internal string RelativePath;
         internal string Title;
         internal string Credits;
         internal string CreditsFull;
@@ -30,7 +31,11 @@ namespace BladeOfAgonyLauncher
         internal static List<AddonDescriptor> Scan(string directory, CultureInfo culture)
         {
             List<AddonDescriptor> result = new List<AddonDescriptor>();
-            foreach (string path in Directory.GetFiles(directory, "*.boa", SearchOption.TopDirectoryOnly)) {
+            string addonDirectory = Path.Combine(directory, "addons");
+            if (!Directory.Exists(addonDirectory)) {
+                return result;
+            }
+            foreach (string path in Directory.GetFiles(addonDirectory, "*.boa", SearchOption.TopDirectoryOnly)) {
                 try {
                     result.Add(Load(path, culture));
                 } catch {
@@ -52,6 +57,7 @@ namespace BladeOfAgonyLauncher
             AddonDescriptor result = new AddonDescriptor();
             result.DescriptorPath = Path.GetFullPath(path);
             result.FileName = Path.GetFileName(path);
+            result.RelativePath = "addons/" + result.FileName;
 
             using (ZipArchive archive = ZipFile.OpenRead(path)) {
                 string addonInfo = ReadTextEntry(archive, "addoninfo.txt");

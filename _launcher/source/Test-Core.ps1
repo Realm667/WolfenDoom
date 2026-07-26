@@ -13,6 +13,7 @@ function Assert-Command([string[]] $Arguments, [string] $Expected) {
 }
 
 Assert-Command @(
+    '--no-addons',
     '--detail', 'last',
     '--displacement', 'off',
     '--language', 'last',
@@ -20,6 +21,7 @@ Assert-Command @(
 ) 'boa.exe -iwad boa.ipk3 +set boa_devcomswitch 0'
 
 Assert-Command @(
+    '--no-addons',
     '--detail', 'default',
     '--displacement', 'off',
     '--language', 'last',
@@ -27,6 +29,7 @@ Assert-Command @(
 ) 'boa.exe -iwad boa.ipk3 +exec launcher-resource/detail-default.cfg +set boa_devcomswitch 0'
 
 Assert-Command @(
+    '--no-addons',
     '--detail', 'verylow',
     '--displacement', 'off',
     '--language', 'last',
@@ -34,6 +37,7 @@ Assert-Command @(
 ) 'boa.exe -iwad boa.ipk3 +exec launcher-resource/detail-verylow.cfg +set boa_devcomswitch 0'
 
 Assert-Command @(
+    '--no-addons',
     '--detail', 'veryhigh',
     '--displacement', 'on',
     '--language', 'de',
@@ -44,15 +48,15 @@ Assert-Command @(
     '--displacement', 'off',
     '--commentary', 'off',
     '--language', 'last',
-    '--addon', 'addon_behaviour.boa'
-) 'boa.exe -iwad boa.ipk3 -file addon_behaviour.boa +set boa_devcomswitch 0'
+    '--addon', 'addons/addon_behaviour.boa'
+) 'boa.exe -iwad boa.ipk3 -file addons/addon_behaviour.boa +set boa_devcomswitch 0'
 
 Assert-Command @(
     '--displacement', 'on',
     '--commentary', 'on',
     '--language', 'last',
-    '--multi-addon', 'addon_behaviour.boa',
-    '--multi-addon', 'addon_confiscated_weapons.boa'
+    '--multi-addon', 'addons/addon_behaviour.boa',
+    '--multi-addon', 'addons/addon_confiscated_weapons.boa'
 ) 'boa.exe -iwad boa.ipk3 -file addons/behaviour.pk3 addons/confiscated_weapons.pk3 -file boa_dt.pk3 +set boa_devcomswitch 1'
 
 $languageCases = @{
@@ -75,6 +79,7 @@ $languageCases = @{
 foreach ($language in $languageCases.Keys) {
     $expectedLanguage = $languageCases[$language]
     Assert-Command @(
+        '--no-addons',
         '--detail', 'last',
         '--displacement', 'off',
         '--commentary', 'off',
@@ -89,7 +94,15 @@ if (($scan | Measure-Object).Count -ne 2) {
 if (-not ($scan -match 'addons/behaviour.pk3') -or -not ($scan -match 'addons/confiscated_weapons.pk3')) {
     throw 'Addon scan did not resolve both LOAD entries.'
 }
+if (($scan | Where-Object { $_ -notmatch '^addons/addon_[^\t]+\.boa\t' } | Measure-Object).Count -ne 0) {
+    throw 'Addon scan returned a descriptor outside the addons directory.'
+}
+$previewTest = (& $diagnostics --verify-preview | Out-String).Trim()
+if ($previewTest -ne 'Preview 16:9 cover-crop tests: PASS') {
+    throw 'Preview geometry diagnostics failed.'
+}
 
 'Core command tests: PASS'
 'Language and alias tests: PASS'
-'Addon descriptor tests: PASS'
+'Addons-directory descriptor tests: PASS'
+'Preview 16:9 cover-crop tests: PASS'

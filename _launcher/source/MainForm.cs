@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Drawing.Drawing2D;
 using System.Globalization;
 using System.IO;
 using System.Reflection;
@@ -27,6 +28,83 @@ namespace BladeOfAgonyLauncher
             }
         }
 
+        private sealed class NoAddonChoice
+        {
+            private readonly string label;
+
+            internal NoAddonChoice(string label)
+            {
+                this.label = label;
+            }
+
+            public override string ToString()
+            {
+                return label;
+            }
+        }
+
+        private sealed class CoverPictureBox : Control
+        {
+            private Image image;
+
+            internal Image Image
+            {
+                get { return image; }
+                set
+                {
+                    image = value;
+                    Invalidate();
+                }
+            }
+
+            internal CoverPictureBox()
+            {
+                SetStyle(
+                    ControlStyles.AllPaintingInWmPaint |
+                    ControlStyles.OptimizedDoubleBuffer |
+                    ControlStyles.ResizeRedraw |
+                    ControlStyles.UserPaint,
+                    true);
+                BackColor = Color.Black;
+            }
+
+            protected override void OnPaint(PaintEventArgs e)
+            {
+                e.Graphics.Clear(BackColor);
+                if (image == null || ClientSize.Width < 1 || ClientSize.Height < 1) {
+                    return;
+                }
+
+                RectangleF source = PreviewLayout.CoverSource(image.Size, ClientSize);
+
+                e.Graphics.InterpolationMode = InterpolationMode.HighQualityBicubic;
+                e.Graphics.PixelOffsetMode = PixelOffsetMode.HighQuality;
+                e.Graphics.DrawImage(
+                    image,
+                    new Rectangle(0, 0, ClientSize.Width, ClientSize.Height),
+                    source,
+                    GraphicsUnit.Pixel);
+            }
+        }
+
+        private sealed class AspectRatioHost : Panel
+        {
+            private readonly Control content;
+
+            internal AspectRatioHost(Control content)
+            {
+                this.content = content;
+                Controls.Add(content);
+                BackColor = SystemColors.Control;
+            }
+
+            protected override void OnLayout(LayoutEventArgs eventArgs)
+            {
+                base.OnLayout(eventArgs);
+                content.Bounds = PreviewLayout.Fit16By9(ClientSize);
+            }
+        }
+
         private readonly string baseDirectory;
         private readonly PoCatalog catalog;
         private readonly LauncherOptions options;
@@ -36,15 +114,18 @@ namespace BladeOfAgonyLauncher
         private readonly ComboBox displacementCombo = new ComboBox();
         private readonly ComboBox languageCombo = new ComboBox();
         private readonly CheckBox commentaryCheck = new CheckBox();
-        private readonly CheckBox useAddonCheck = new CheckBox();
         private readonly ListBox addonList = new ListBox();
         private readonly Label addonStatus = new Label();
         private readonly Label addonTitle = new Label();
         private readonly Label addonCredits = new Label();
         private readonly TextBox addonDescription = new TextBox();
-        private readonly PictureBox previewBox = new PictureBox();
+        private readonly CoverPictureBox previewBox = new CoverPictureBox();
         private readonly Label previewCounter = new Label();
+        private NoAddonChoice noAddonChoice;
+        private AddonDescriptor previewAddon;
         private int previewIndex = 1;
+        private int lastClickedAddonIndex = -1;
+        private bool updatingAddonSelection;
 
         internal MainForm(string baseDirectory)
         {
@@ -171,12 +252,11 @@ namespace BladeOfAgonyLauncher
             TableLayoutPanel panel = new TableLayoutPanel();
             panel.Dock = DockStyle.Fill;
             panel.ColumnCount = 2;
-            panel.RowCount = 5;
+            panel.RowCount = 4;
             panel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 42));
             panel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 58));
             panel.RowStyles.Add(new RowStyle(SizeType.Absolute, 31));
             panel.RowStyles.Add(new RowStyle(SizeType.Absolute, 34));
-            panel.RowStyles.Add(new RowStyle(SizeType.Absolute, 28));
             panel.RowStyles.Add(new RowStyle(SizeType.Percent, 100));
             panel.RowStyles.Add(new RowStyle(SizeType.Absolute, 34));
 
@@ -199,20 +279,21 @@ namespace BladeOfAgonyLauncher
             scan.Text = catalog.Get("Scan for addons");
             scan.AutoSize = true;
             scan.Click += delegate { ScanAddons(); };
-            Button multi = new Button();
-            multi.Text = catalog.Get("Select multiple addons");
-            multi.AutoSize = true;
-            multi.Click += delegate { SelectMultipleAddons(); };
             tools.Controls.Add(scan);
-            tools.Controls.Add(multi);
             panel.Controls.Add(tools, 0, 1);
             panel.SetColumnSpan(tools, 2);
 
             addonList.Dock = DockStyle.Fill;
             addonList.IntegralHeight = false;
-            addonList.SelectedIndexChanged += delegate { SelectSingleAddon(); };
+            addonList.SelectionMode = SelectionMode.MultiExtended;
+            addonList.DrawMode = DrawMode.OwnerDrawFixed;
+            addonList.ItemHeight = Math.Max(Font.Height + 6, 22);
+            addonList.DrawItem += DrawAddonItem;
+            addonList.MouseDown += delegate(object sender, MouseEventArgs eventArgs) {
+                lastClickedAddonIndex = addonList.IndexFromPoint(eventArgs.Location);
+            };
+            addonList.SelectedIndexChanged += delegate { SynchronizeAddonSelection(); };
             panel.Controls.Add(addonList, 0, 2);
-            panel.SetRowSpan(addonList, 2);
 
             TableLayoutPanel details = new TableLayoutPanel();
             details.Dock = DockStyle.Fill;
@@ -239,17 +320,10 @@ namespace BladeOfAgonyLauncher
             addonDescription.ScrollBars = ScrollBars.Vertical;
             details.Controls.Add(addonDescription);
 
-            previewBox.Dock = DockStyle.Fill;
-            previewBox.SizeMode = PictureBoxSizeMode.Zoom;
-            previewBox.BackColor = Color.Black;
-            details.Controls.Add(previewBox);
+            AspectRatioHost previewHost = new AspectRatioHost(previewBox);
+            previewHost.Dock = DockStyle.Fill;
+            details.Controls.Add(previewHost);
             panel.Controls.Add(details, 1, 2);
-            panel.SetRowSpan(details, 2);
-
-            useAddonCheck.Text = catalog.Get("Launch with:");
-            useAddonCheck.AutoSize = true;
-            useAddonCheck.CheckedChanged += delegate { UpdateAddonStatus(); };
-            panel.Controls.Add(useAddonCheck, 0, 4);
 
             FlowLayoutPanel previewTools = new FlowLayoutPanel();
             previewTools.Dock = DockStyle.Fill;
@@ -267,7 +341,7 @@ namespace BladeOfAgonyLauncher
             previewTools.Controls.Add(next);
             previewTools.Controls.Add(previous);
             previewTools.Controls.Add(previewCounter);
-            panel.Controls.Add(previewTools, 1, 4);
+            panel.Controls.Add(previewTools, 1, 3);
             return panel;
         }
 
@@ -307,7 +381,6 @@ namespace BladeOfAgonyLauncher
             displacementCombo.SelectedIndex = options.DisplacementTextures ? 1 : 0;
             SelectLanguage(options.Language);
             commentaryCheck.Checked = options.DeveloperCommentary;
-            useAddonCheck.Checked = options.UseAddon;
             ScanAddons();
         }
 
@@ -318,7 +391,6 @@ namespace BladeOfAgonyLauncher
             options.DeveloperCommentary = commentaryCheck.Checked;
             LanguageChoice language = languageCombo.SelectedItem as LanguageChoice;
             options.Language = LauncherOptions.NormalizeLanguage(language == null ? "en" : language.Code);
-            options.UseAddon = useAddonCheck.Checked;
             options.Save();
         }
 
@@ -337,65 +409,153 @@ namespace BladeOfAgonyLauncher
 
         private void ScanAddons()
         {
-            string selectedPath = options.SingleAddon == null ? null : options.SingleAddon.DescriptorPath;
+            HashSet<string> selectedPaths = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+            if (options.UseAddon) {
+                if (options.MultiAddons.Count > 0) {
+                    foreach (AddonDescriptor addon in options.MultiAddons) {
+                        selectedPaths.Add(addon.DescriptorPath);
+                    }
+                } else if (options.SingleAddon != null) {
+                    selectedPaths.Add(options.SingleAddon.DescriptorPath);
+                }
+            }
+
             addons.Clear();
             addons.AddRange(AddonDescriptor.Scan(baseDirectory, CultureInfo.CurrentUICulture));
+            updatingAddonSelection = true;
             addonList.BeginUpdate();
             addonList.Items.Clear();
+            noAddonChoice = new NoAddonChoice(GetNoAddonsLabel());
+            addonList.Items.Add(noAddonChoice);
             foreach (AddonDescriptor addon in addons) {
                 addonList.Items.Add(addon);
-                if (selectedPath != null &&
-                    string.Equals(selectedPath, addon.DescriptorPath, StringComparison.OrdinalIgnoreCase)) {
-                    addonList.SelectedItem = addon;
+                if (selectedPaths.Contains(addon.DescriptorPath)) {
+                    addonList.SetSelected(addonList.Items.Count - 1, true);
                 }
+            }
+            if (addonList.SelectedIndices.Count == 0) {
+                addonList.SetSelected(0, true);
             }
             addonList.EndUpdate();
-            if (addonList.SelectedIndex < 0 && addons.Count > 0 && options.MultiAddons.Count == 0) {
-                addonList.SelectedIndex = 0;
-            }
-            UpdateAddonStatus();
+            updatingAddonSelection = false;
+            lastClickedAddonIndex = -1;
+            SynchronizeAddonSelection();
         }
 
-        private void SelectSingleAddon()
+        private void SynchronizeAddonSelection()
         {
-            AddonDescriptor selected = addonList.SelectedItem as AddonDescriptor;
-            if (selected == null) {
+            if (updatingAddonSelection || addonList.Items.Count == 0) {
                 return;
             }
-            options.SingleAddon = selected;
-            options.MultiAddons.Clear();
-            previewIndex = 1;
-            ShowAddon(selected);
+
+            updatingAddonSelection = true;
+            bool noAddonsSelected = addonList.GetSelected(0);
+            if (noAddonsSelected && lastClickedAddonIndex == 0) {
+                for (int index = 1; index < addonList.Items.Count; index++) {
+                    addonList.SetSelected(index, false);
+                }
+            } else if (noAddonsSelected && addonList.SelectedIndices.Count > 1) {
+                addonList.SetSelected(0, false);
+            }
+            if (addonList.SelectedIndices.Count == 0) {
+                addonList.SetSelected(0, true);
+            }
+
+            List<AddonDescriptor> selectedAddons = new List<AddonDescriptor>();
+            foreach (object item in addonList.SelectedItems) {
+                AddonDescriptor addon = item as AddonDescriptor;
+                if (addon != null) {
+                    selectedAddons.Add(addon);
+                }
+            }
+
+            options.UseAddon = selectedAddons.Count > 0;
+            if (selectedAddons.Count == 1) {
+                options.SingleAddon = selectedAddons[0];
+                options.MultiAddons.Clear();
+            } else if (selectedAddons.Count > 1) {
+                options.SingleAddon = null;
+                options.MultiAddons = selectedAddons;
+            } else {
+                options.SingleAddon = null;
+                options.MultiAddons.Clear();
+            }
+            updatingAddonSelection = false;
+
+            AddonDescriptor detailsAddon = null;
+            if (lastClickedAddonIndex > 0 && lastClickedAddonIndex < addonList.Items.Count &&
+                addonList.GetSelected(lastClickedAddonIndex)) {
+                detailsAddon = addonList.Items[lastClickedAddonIndex] as AddonDescriptor;
+            }
+            if (detailsAddon == null && selectedAddons.Count > 0) {
+                detailsAddon = selectedAddons[0];
+            }
+            if (detailsAddon == null) {
+                previewAddon = null;
+                ClearAddonDetails();
+            } else {
+                if (!object.ReferenceEquals(previewAddon, detailsAddon)) {
+                    previewIndex = 1;
+                }
+                ShowAddon(detailsAddon);
+            }
+            addonList.Invalidate();
             UpdateAddonStatus();
         }
 
-        private void SelectMultipleAddons()
+        private void DrawAddonItem(object sender, DrawItemEventArgs eventArgs)
         {
-            if (addons.Count == 0) {
-                ScanAddons();
+            if (eventArgs.Index < 0 || eventArgs.Index >= addonList.Items.Count) {
+                return;
             }
-            List<AddonDescriptor> selected = new List<AddonDescriptor>();
-            if (options.MultiAddons.Count > 0) {
-                selected.AddRange(options.MultiAddons);
-            } else if (options.SingleAddon != null) {
-                selected.Add(options.SingleAddon);
-            }
+            bool noAddonsMode = addonList.Items.Count > 0 && addonList.GetSelected(0);
+            bool disabled = noAddonsMode && eventArgs.Index > 0;
+            bool selected = !disabled && (eventArgs.State & DrawItemState.Selected) != 0;
+            Color background = selected ? SystemColors.Highlight : addonList.BackColor;
+            Color foreground = disabled
+                ? SystemColors.GrayText
+                : (selected ? SystemColors.HighlightText : addonList.ForeColor);
 
-            using (MultiAddonForm dialog = new MultiAddonForm(addons, selected, catalog)) {
-                if (dialog.ShowDialog(this) != DialogResult.OK) {
-                    return;
-                }
-                options.MultiAddons = dialog.SelectedAddons;
-                options.SingleAddon = null;
-                addonList.ClearSelected();
-                useAddonCheck.Checked = options.MultiAddons.Count > 0;
-                ClearAddonDetails();
-                UpdateAddonStatus();
+            using (Brush backgroundBrush = new SolidBrush(background)) {
+                eventArgs.Graphics.FillRectangle(backgroundBrush, eventArgs.Bounds);
             }
+            TextRenderer.DrawText(
+                eventArgs.Graphics,
+                addonList.Items[eventArgs.Index].ToString(),
+                addonList.Font,
+                new Rectangle(
+                    eventArgs.Bounds.Left + 4,
+                    eventArgs.Bounds.Top,
+                    Math.Max(0, eventArgs.Bounds.Width - 8),
+                    eventArgs.Bounds.Height),
+                foreground,
+                TextFormatFlags.Left | TextFormatFlags.VerticalCenter | TextFormatFlags.EndEllipsis);
+            if (selected) {
+                eventArgs.DrawFocusRectangle();
+            }
+        }
+
+        private static string GetNoAddonsLabel()
+        {
+            string language = CultureInfo.CurrentUICulture.TwoLetterISOLanguageName.ToLowerInvariant();
+            if (language == "de") {
+                return "Keine Addons";
+            }
+            if (language == "cs") {
+                return "\u017d\u00e1dn\u00e9 dopl\u0148ky";
+            }
+            if (language == "pl") {
+                return "Brak dodatk\u00f3w";
+            }
+            if (language == "ru") {
+                return "\u0411\u0435\u0437 \u0434\u043e\u043f\u043e\u043b\u043d\u0435\u043d\u0438\u0439";
+            }
+            return "No addons";
         }
 
         private void ShowAddon(AddonDescriptor addon)
         {
+            previewAddon = addon;
             addonTitle.Text = addon.Title;
             addonCredits.Text = addon.Credits.Length == 0 ? string.Empty : "by " + addon.Credits;
             addonDescription.Text =
@@ -409,7 +569,7 @@ namespace BladeOfAgonyLauncher
 
         private void ChangePreview(int direction)
         {
-            AddonDescriptor addon = addonList.SelectedItem as AddonDescriptor;
+            AddonDescriptor addon = previewAddon;
             if (addon == null || addon.PreviewImageCount < 1) {
                 return;
             }
@@ -424,6 +584,7 @@ namespace BladeOfAgonyLauncher
 
         private void ClearAddonDetails()
         {
+            previewAddon = null;
             addonTitle.Text = string.Empty;
             addonCredits.Text = string.Empty;
             addonDescription.Text = string.Empty;
@@ -433,9 +594,8 @@ namespace BladeOfAgonyLauncher
 
         private void UpdateAddonStatus()
         {
-            options.UseAddon = useAddonCheck.Checked;
             if (!options.UseAddon) {
-                addonStatus.Text = catalog.Get("No addon selected.");
+                addonStatus.Text = GetNoAddonsLabel();
             } else if (options.MultiAddons.Count > 0) {
                 string first = options.MultiAddons[0].Title;
                 int extra = options.MultiAddons.Count - 1;
