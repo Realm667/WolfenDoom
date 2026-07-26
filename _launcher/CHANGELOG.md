@@ -1,5 +1,31 @@
 # Changelog
 
+## 2.1.1
+
+### Changed
+
+- Changed the Light theme accent color to `#668197`.
+- Applied Unica One to the Quick Launch, Add-ons, Multiplayer, and
+  Diagnostics page headlines.
+- Expanded the direct campaign footer status with the selected difficulty
+  and full game-language name.
+- Centered icon-button glyphs without inherited text-button padding.
+- Launcher version increased to 2.1.1.
+
+### Fixed
+
+- Accent-colored buttons and selected navigation entries now use white text
+  and icons in the Light theme.
+- Fixed clipped previous/next glyphs in the multi-image add-on slider.
+
+### Verified
+
+- Verified the exact Light theme accent and accent-text colors.
+- Verified all four page headline font resources, localized direct-start
+  details, slider wrapping, 16:9 preview bounds, and unclipped arrow buttons.
+- Re-ran command generation, localization, content parsing, compatibility,
+  responsive-layout, multiplayer, and graphics profile tests.
+
 ## 2.1.0
 
 ### Added
