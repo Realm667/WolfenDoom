@@ -1,5 +1,33 @@
 # Changelog
 
+## 2.0.1
+
+### Added
+
+- Added exact, profile-specific graphics values to the Detail Preset
+  tooltips, read from the distributed CFG files.
+- Added an accessible Blade of Agony logo and live UZDoom version read from
+  the `boa.exe` product metadata in the launcher directory.
+
+### Changed
+
+- Replaced the previous header thumbnail with the official Blade of Agony
+  logo and changed the title casing to `Blade of Agony`.
+- Left-aligned all sidebar navigation entries.
+- Sorted campaign missions by chapter, mission number, and map part, with
+  introduction maps first and optional `M0` missions last.
+- Vertically centered the custom checkbox indicators and labels.
+- Reduced the add-on author line size to leave more room for descriptions.
+- Removed the redundant Exit button from the footer.
+- Launcher version increased to 2.0.1.
+
+### Verified
+
+- Verified the mission order against the current `wolfendoom.git` MAPINFO.
+- Verified the displayed engine version against the bundled `boa.exe`.
+- Re-ran command generation, content parsing, compatibility, accessibility,
+  responsive-layout, multiplayer, and 16:9 add-on preview tests.
+
 ## 2.0.0
 
 ### Added

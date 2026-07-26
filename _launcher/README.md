@@ -1,6 +1,6 @@
 # Blade of Agony Launcher
 
-Version 2.0 is a modern WPF launcher for Blade of Agony and the bundled
+Version 2.0.1 is a modern WPF launcher for Blade of Agony and the bundled
 UZDoom 4.14.3 engine. It is a clean-room replacement for the original native
 launcher and remains portable: no installer or additional UI runtime is
 required on supported Windows systems.
@@ -10,6 +10,8 @@ required on supported Windows systems.
 - Responsive four-area navigation for Start, Add-ons, Multiplayer, and
   Diagnostics.
 - Persistent launch summary and primary Launch action.
+- Official Blade of Agony header logo and live UZDoom product version read
+  from the adjacent `boa.exe`.
 - Independent game and interface languages for all ten Blade of Agony
   language codes.
 - Blade of Agony, Dark, Light, and Wolfenstein 3D designs.
@@ -25,10 +27,13 @@ required on supported Windows systems.
 - Also reads unpacked files when the launcher is run from the current
   `wolfendoom.git` development tree.
 - Supports a normal main-menu launch or a direct episode/map/skill start.
+- Sorts missions by chapter, mission number, and map part while keeping
+  introduction maps first and optional `M0` missions last.
 - Keeps `boa_steamswitch` enabled after every graphics profile, as required
   by current BoA Zyklon steam spawners.
 - Ships corrected copies of all six detail profiles without duplicate
   `boa_grasslod` assignments.
+- Shows every exact CFG value of the selected detail profile in its tooltip.
 
 ## Add-ons
 
