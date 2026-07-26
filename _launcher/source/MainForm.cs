@@ -87,24 +87,6 @@ namespace BladeOfAgonyLauncher
             }
         }
 
-        private sealed class AspectRatioHost : Panel
-        {
-            private readonly Control content;
-
-            internal AspectRatioHost(Control content)
-            {
-                this.content = content;
-                Controls.Add(content);
-                BackColor = SystemColors.Control;
-            }
-
-            protected override void OnLayout(LayoutEventArgs eventArgs)
-            {
-                base.OnLayout(eventArgs);
-                content.Bounds = PreviewLayout.Fit16By9(ClientSize);
-            }
-        }
-
         private readonly string baseDirectory;
         private readonly PoCatalog catalog;
         private readonly LauncherOptions options;
@@ -302,7 +284,7 @@ namespace BladeOfAgonyLauncher
             details.RowStyles.Add(new RowStyle(SizeType.Absolute, 28));
             details.RowStyles.Add(new RowStyle(SizeType.Absolute, 24));
             details.RowStyles.Add(new RowStyle(SizeType.Percent, 55));
-            details.RowStyles.Add(new RowStyle(SizeType.Percent, 45));
+            details.RowStyles.Add(new RowStyle(SizeType.Absolute, 180));
 
             addonTitle.Dock = DockStyle.Fill;
             addonTitle.Font = new Font(Font.FontFamily, 11, FontStyle.Bold);
@@ -320,9 +302,12 @@ namespace BladeOfAgonyLauncher
             addonDescription.ScrollBars = ScrollBars.Vertical;
             details.Controls.Add(addonDescription);
 
-            AspectRatioHost previewHost = new AspectRatioHost(previewBox);
-            previewHost.Dock = DockStyle.Fill;
-            details.Controls.Add(previewHost);
+            previewBox.Dock = DockStyle.Fill;
+            previewBox.Margin = new Padding(0);
+            previewBox.Text = "AddonPreviewViewport";
+            details.Controls.Add(previewBox);
+            details.SizeChanged += delegate { ResizePreviewRow(details); };
+            details.Layout += delegate { ResizePreviewRow(details); };
             panel.Controls.Add(details, 1, 2);
 
             FlowLayoutPanel previewTools = new FlowLayoutPanel();
@@ -343,6 +328,19 @@ namespace BladeOfAgonyLauncher
             previewTools.Controls.Add(previewCounter);
             panel.Controls.Add(previewTools, 1, 3);
             return panel;
+        }
+
+        private static void ResizePreviewRow(TableLayoutPanel details)
+        {
+            if (details.ClientSize.Width < 1 || details.RowStyles.Count < 4) {
+                return;
+            }
+            int desiredHeight = PreviewLayout.HeightFor16By9Width(details.ClientSize.Width);
+            RowStyle previewRow = details.RowStyles[3];
+            if (Math.Abs(previewRow.Height - desiredHeight) > 0.5f) {
+                previewRow.SizeType = SizeType.Absolute;
+                previewRow.Height = desiredHeight;
+            }
         }
 
         private Control CreateActionBar()

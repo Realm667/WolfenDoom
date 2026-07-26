@@ -21,6 +21,11 @@ namespace BladeOfAgonyLauncher
             return new Rectangle(left, top, Math.Max(0, width), Math.Max(0, height));
         }
 
+        internal static int HeightFor16By9Width(int width)
+        {
+            return width < 1 ? 0 : (int)Math.Round(width * 9d / 16d);
+        }
+
         internal static RectangleF CoverSource(Size image, Size target)
         {
             if (image.Width < 1 || image.Height < 1 || target.Width < 1 || target.Height < 1) {
@@ -40,10 +45,13 @@ namespace BladeOfAgonyLauncher
         {
             Rectangle landscapeHost = Fit16By9(new Size(640, 400));
             Rectangle portraitHost = Fit16By9(new Size(320, 500));
+            int fullWidthHeight = HeightFor16By9Width(640);
             RectangleF wideSource = CoverSource(new Size(1920, 800), new Size(640, 360));
             RectangleF tallSource = CoverSource(new Size(800, 1200), new Size(640, 360));
 
-            return Is16By9(landscapeHost.Size) &&
+            return fullWidthHeight == 360 &&
+                   Is16By9(new Size(640, fullWidthHeight)) &&
+                   Is16By9(landscapeHost.Size) &&
                    Is16By9(portraitHost.Size) &&
                    NearlyEqual(wideSource.Width / wideSource.Height, 16f / 9f) &&
                    NearlyEqual(tallSource.Width / tallSource.Height, 16f / 9f) &&

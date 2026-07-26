@@ -103,6 +103,27 @@ try {
         throw 'The rebuilt launcher window did not appear.'
     }
 
+    $previewViewport = $null
+    $findPreview = [RebuiltGuiTestNative+EnumProc] {
+        param($handle, $state)
+        if ((Read-Text $handle) -eq 'AddonPreviewViewport') {
+            $script:previewViewport = $handle
+        }
+        return $true
+    }
+    [void] [RebuiltGuiTestNative]::EnumChildWindows($window, $findPreview, [IntPtr]::Zero)
+    if (-not $previewViewport) {
+        throw 'The addon preview viewport was not found.'
+    }
+    $previewRect = [RebuiltGuiTestNative+Rect]::new()
+    [void] [RebuiltGuiTestNative]::GetWindowRect($previewViewport, [ref] $previewRect)
+    $previewWidth = $previewRect.Right - $previewRect.Left
+    $previewHeight = $previewRect.Bottom - $previewRect.Top
+    if ($previewWidth -lt 1 -or $previewHeight -lt 1 -or
+        [Math]::Abs(($previewWidth / [double] $previewHeight) - (16 / 9)) -gt 0.02) {
+        throw "The live preview viewport is not 16:9: ${previewWidth}x${previewHeight}"
+    }
+
     if (-not $SkipScreenshot) {
         $rect = [RebuiltGuiTestNative+Rect]::new()
         [void] [RebuiltGuiTestNative]::GetWindowRect($window, [ref] $rect)
@@ -195,6 +216,9 @@ if ($Multi) {
         throw 'The No addons selection did not disable addons.'
     }
     'No-addons selection: PASS'
+}
+if ($previewWidth -gt 0) {
+    "Live preview viewport ${previewWidth}x${previewHeight}: PASS"
 }
 
 if (Test-Path -LiteralPath $screenshot) {

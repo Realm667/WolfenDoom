@@ -17,7 +17,8 @@ original Pascal source code.
   mouse button.
 - Provides an exclusive `No addons` list entry instead of a separate checkbox.
 - Displays preview images in a fixed 16:9 viewport using centered cover
-  cropping, without letterboxing.
+  cropping. The viewport always consumes the complete width of the details
+  column, without letterboxing or unused side areas.
 - Supports single-addon loading from `addons`
   (`-file addons/addon_name.boa`).
 - Supports ordered multi-addon loading through each descriptor's

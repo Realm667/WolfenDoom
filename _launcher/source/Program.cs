@@ -101,6 +101,7 @@ namespace BladeOfAgonyLauncher
                     options.MultiAddons.Clear();
                 } else if (TryReadValue(args, ref index, "--addon", out value)) {
                     options.SingleAddon = AddonDescriptor.Load(ResolveDescriptor(baseDirectory, value), CultureInfo.CurrentUICulture);
+                    options.MultiAddons.Clear();
                     options.UseAddon = true;
                 } else if (TryReadValue(args, ref index, "--multi-addon", out value)) {
                     multi.Add(AddonDescriptor.Load(ResolveDescriptor(baseDirectory, value), CultureInfo.CurrentUICulture));
