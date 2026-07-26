@@ -173,25 +173,37 @@ try {
         throw "The live preview viewport is not 16:9: ${previewWidth}x${previewHeight}"
     }
 
-    $languageCombo = $null
+    $languageCandidates = [Collections.Generic.List[object]]::new()
     $findLanguageCombo = [RebuiltGuiTestNative+EnumProc] {
         param($handle, $state)
         $class = [Text.StringBuilder]::new(128)
         [void] [RebuiltGuiTestNative]::GetClassName($handle, $class, $class.Capacity)
         if ($class.ToString().Contains('COMBOBOX') -and
             [RebuiltGuiTestNative]::SendMessage($handle, 0x0146, [IntPtr]::Zero, [IntPtr]::Zero).ToInt32() -eq 10) {
-            $script:languageCombo = $handle
+            $comboRect = [RebuiltGuiTestNative+Rect]::new()
+            [void] [RebuiltGuiTestNative]::GetWindowRect($handle, [ref] $comboRect)
+            $script:languageCandidates.Add([pscustomobject] @{
+                Handle = $handle
+                Top = $comboRect.Top
+            })
         }
         return $true
     }
     [void] [RebuiltGuiTestNative]::EnumChildWindows($window, $findLanguageCombo, [IntPtr]::Zero)
-    if (-not $languageCombo) {
-        throw 'The game-language selector was not found.'
+    if ($languageCandidates.Count -ne 2) {
+        throw "Expected separate interface and game language selectors, found $($languageCandidates.Count)."
     }
-    [void] [RebuiltGuiTestNative]::SendMessage($languageCombo, 0x014E, [IntPtr] 1, [IntPtr]::Zero)
-    $languageControlId = [RebuiltGuiTestNative]::GetDlgCtrlID($languageCombo)
-    $languageChanged = [IntPtr] (($languageControlId -band 0xffff) -bor (1 -shl 16))
-    [void] [RebuiltGuiTestNative]::SendMessage($window, 0x0111, $languageChanged, $languageCombo)
+    $sortedLanguages = @($languageCandidates | Sort-Object Top)
+    $interfaceLanguageCombo = $sortedLanguages[0].Handle
+    $gameLanguageCombo = $sortedLanguages[1].Handle
+
+    [void] [RebuiltGuiTestNative]::SendMessage(
+        $interfaceLanguageCombo, 0x014E, [IntPtr] 1, [IntPtr]::Zero)
+    $interfaceLanguageId = [RebuiltGuiTestNative]::GetDlgCtrlID($interfaceLanguageCombo)
+    $interfaceLanguageChanged =
+        [IntPtr] (($interfaceLanguageId -band 0xffff) -bor (1 -shl 16))
+    [void] [RebuiltGuiTestNative]::SendMessage(
+        $window, 0x0111, $interfaceLanguageChanged, $interfaceLanguageCombo)
     Start-Sleep -Milliseconds 500
 
     $germanPlay = $null
@@ -204,7 +216,19 @@ try {
     }
     [void] [RebuiltGuiTestNative]::EnumChildWindows($window, $findGermanPlay, [IntPtr]::Zero)
     if (-not $germanPlay) {
-        throw 'Changing the game language did not localize the launcher to German.'
+        throw 'Changing the interface language did not localize the launcher to German.'
+    }
+
+    [void] [RebuiltGuiTestNative]::SendMessage(
+        $gameLanguageCombo, 0x014E, [IntPtr] 2, [IntPtr]::Zero)
+    $gameLanguageId = [RebuiltGuiTestNative]::GetDlgCtrlID($gameLanguageCombo)
+    $gameLanguageChanged =
+        [IntPtr] (($gameLanguageId -band 0xffff) -bor (1 -shl 16))
+    [void] [RebuiltGuiTestNative]::SendMessage(
+        $window, 0x0111, $gameLanguageChanged, $gameLanguageCombo)
+    Start-Sleep -Milliseconds 300
+    if (-not [RebuiltGuiTestNative]::IsWindowVisible($germanPlay)) {
+        throw 'Changing the game language also changed the launcher interface.'
     }
 
     $modeControl = Find-ChildByText $window @('MultiplayerMode')
@@ -281,15 +305,19 @@ try {
         Start-Sleep -Milliseconds 250
         $themeBitmap = Capture-Window $window
         try {
-            $pixel = $themeBitmap.GetPixel(20, 200)
+            $windowRect = [RebuiltGuiTestNative+Rect]::new()
+            $gameLanguageRect = [RebuiltGuiTestNative+Rect]::new()
+            [void] [RebuiltGuiTestNative]::GetWindowRect($window, [ref] $windowRect)
+            [void] [RebuiltGuiTestNative]::GetWindowRect(
+                $gameLanguageCombo, [ref] $gameLanguageRect)
+            $backgroundY = $gameLanguageRect.Top - $windowRect.Top
+            $pixel = $themeBitmap.GetPixel(20, $backgroundY)
             $actualColor = '{0:X2}{1:X2}{2:X2}' -f $pixel.R, $pixel.G, $pixel.B
             if ($actualColor -ne $themeCase.Color) {
                 throw "$($themeCase.Name) background mismatch: #$actualColor"
             }
             if ($themeCase.Index -eq 2) {
-                $windowRect = [RebuiltGuiTestNative+Rect]::new()
                 $playRect = [RebuiltGuiTestNative+Rect]::new()
-                [void] [RebuiltGuiTestNative]::GetWindowRect($window, [ref] $windowRect)
                 [void] [RebuiltGuiTestNative]::GetWindowRect($germanPlay, [ref] $playRect)
                 $accentX = $playRect.Left - $windowRect.Left + 10
                 $accentY = $playRect.Top - $windowRect.Top + 10
@@ -414,6 +442,14 @@ foreach ($required in @('[Launcher co-op]', 'Players=2', '[Addon]')) {
 if (-not $ini.Contains('Theme=BladeOfAgony')) {
     throw 'The selected Blade of Agony design was not persisted.'
 }
+if (-not $ini.Contains('Language=es') -or
+    -not $ini.Contains('InterfaceLanguage=de')) {
+    throw 'The independent game and interface languages were not persisted.'
+}
+$capturedLaunch = Get-Content -LiteralPath $capture -Raw
+if (-not $capturedLaunch.Contains('+set language es')) {
+    throw 'The selected game language was not passed to the game independently.'
+}
 if ($Multi) {
     if (-not $ini.Contains('addonFileName=addons/addon_confiscated_weapons.boa;addons/addon_behaviour.boa')) {
         throw 'The Ctrl-style multi-selection was not persisted in list order.'
@@ -428,7 +464,7 @@ if ($Multi) {
 if ($previewWidth -gt 0) {
     "Live preview viewport ${previewWidth}x${previewHeight}: PASS"
 }
-"Game language -> launcher localization: PASS"
+"Independent game and interface language selectors: PASS"
 "Multiplayer progressive disclosure: PASS"
 "Dark, Light, and Blade of Agony theme colors: PASS"
 

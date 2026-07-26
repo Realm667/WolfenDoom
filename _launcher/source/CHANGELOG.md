@@ -1,5 +1,39 @@
 # Changelog
 
+## 1.6.0
+
+### Added
+
+- Added an independent interface-language selector to the launcher header.
+- Added the persisted `InterfaceLanguage` INI setting.
+- Added localized header labels for every supported interface language.
+- Added backward-compatible migration: configurations without
+  `InterfaceLanguage` initially inherit the existing game-language value.
+- Added diagnostics and regression coverage for mixed game/interface language
+  combinations.
+
+### Changed
+
+- Moved the design selector from the Game section to the launcher header.
+- Kept the game-language selector in the Game section.
+- Changing the game language now affects only the generated
+  `+set language <code>` game argument.
+- Changing the interface language now affects launcher controls and localized
+  addon metadata without changing the selected game language.
+- Extended the launcher window vertically to preserve the full content area
+  beneath the new header toolbar.
+- Launcher version increased to 1.6.0.
+
+### Verified
+
+- Verified a German launcher interface with Spanish game language in the live
+  GUI and confirmed `+set language es` in the recorded launch command.
+- Verified independent persistence as `InterfaceLanguage=de` and
+  `Language=es`.
+- Verified migration of legacy configurations containing only `Language`.
+- Re-ran all themes, multiplayer modes, addon selections, command generation,
+  INI preservation, and 16:9 preview tests.
+
 ## 1.5.0
 
 ### Added

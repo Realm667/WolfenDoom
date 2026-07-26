@@ -116,9 +116,13 @@ foreach ($language in $languageCases.Keys) {
 }
 
 foreach ($language in @('en', 'de', 'es', 'ru', 'ptb', 'it', 'tr', 'fr', 'cs', 'pl')) {
-    $ui = & $diagnostics --base-directory $sandbox --print-ui --language $language
-    if ($ui -notcontains "Language=$language") {
-        throw "UI diagnostics did not retain language $language."
+    $ui = & $diagnostics --base-directory $sandbox --print-ui `
+        --language en --interface-language $language
+    if ($ui -notcontains "InterfaceLanguage=$language") {
+        throw "UI diagnostics did not retain interface language $language."
+    }
+    if ($ui -notcontains 'GameLanguage=en') {
+        throw 'Changing the interface language also changed the game language.'
     }
     if ($language -ne 'en' -and $ui -contains 'HostCoop=Host co-op') {
         throw "Multiplayer UI was not localized for $language."
@@ -126,6 +130,40 @@ foreach ($language in @('en', 'de', 'es', 'ru', 'ptb', 'it', 'tr', 'fr', 'cs', '
     if ($language -ne 'en' -and $ui -contains 'Dark=Dark') {
         throw "Theme UI was not localized for $language."
     }
+}
+
+$independentLanguages = & $diagnostics --base-directory $sandbox --print-ui `
+    --language es --interface-language de
+if ($independentLanguages -notcontains 'GameLanguage=es' -or
+    $independentLanguages -notcontains 'InterfaceLanguage=de' -or
+    $independentLanguages -notcontains 'Play=Spielen') {
+    throw 'Game and interface languages were not retained independently.'
+}
+Assert-Command @(
+    '--no-addons',
+    '--detail', 'last',
+    '--displacement', 'off',
+    '--commentary', 'off',
+    '--language', 'es',
+    '--interface-language', 'de'
+) 'boa.exe -iwad boa.ipk3 +set boa_devcomswitch 0 +set language es'
+
+$migrationDirectory = Join-Path ([IO.Path]::GetTempPath()) (
+    'boa-launcher-language-migration-' + [Guid]::NewGuid().ToString('N'))
+[void] [IO.Directory]::CreateDirectory($migrationDirectory)
+try {
+    [IO.File]::WriteAllText(
+        (Join-Path $migrationDirectory 'boa-launcher.ini'),
+        "[Launcher]`r`nLanguage=fr`r`n",
+        [Text.UTF8Encoding]::new($false))
+    $migratedUi = & $diagnostics --base-directory $migrationDirectory --print-ui
+    if ($migratedUi -notcontains 'GameLanguage=fr' -or
+        $migratedUi -notcontains 'InterfaceLanguage=fr') {
+        throw 'A legacy Language setting was not migrated to the interface language.'
+    }
+}
+finally {
+    [IO.Directory]::Delete($migrationDirectory, $true)
 }
 
 $themeCases = @{
@@ -176,6 +214,7 @@ if ($invalidMap -notmatch '\+map C1M1$') {
 
 'Core command tests: PASS'
 'Language and alias tests: PASS'
+'Independent game and interface language tests: PASS'
 'Launcher localization tests: PASS'
 'Theme selection and localization tests: PASS'
 'Multiplayer host/join command tests: PASS'

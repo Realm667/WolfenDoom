@@ -26,6 +26,7 @@ namespace BladeOfAgonyLauncher
         internal int DetailPreset;
         internal bool DisplacementTextures;
         internal string Language;
+        internal string InterfaceLanguage;
         internal LauncherTheme Theme;
         internal bool DeveloperCommentary;
         internal bool UseAddon;
@@ -49,6 +50,8 @@ namespace BladeOfAgonyLauncher
             result.DeveloperCommentary = ini.GetBoolean("Launcher", "DevCommentary", false);
             result.UseAddon = ini.GetBoolean("Launcher", "LaunchWithAddon", false);
             result.Language = NormalizeLanguage(ini.Get("Launcher", "Language", "en"));
+            result.InterfaceLanguage = NormalizeLanguage(
+                ini.Get("Launcher", "InterfaceLanguage", result.Language));
             result.Theme = ParseTheme(ini.Get("Launcher", "Theme", "Dark"));
             bool legacyMultiplayerEnabled = ini.GetBoolean("Launcher co-op", "Enabled", false);
             result.NetworkMode = ParseMultiplayerMode(
@@ -78,7 +81,7 @@ namespace BladeOfAgonyLauncher
                     }
                     try {
                         selected.Add(AddonDescriptor.Load(
-                            descriptorPath, result.Language));
+                            descriptorPath, result.InterfaceLanguage));
                     } catch {
                         // Ignore stale or malformed persisted descriptors.
                     }
@@ -100,6 +103,7 @@ namespace BladeOfAgonyLauncher
             ini.Set("Launcher", "DisplacementTextures", DisplacementTextures ? "1" : "0");
             ini.Set("Launcher", "LaunchWithAddon", UseAddon ? "1" : "0");
             ini.Set("Launcher", "Language", NormalizeLanguage(Language));
+            ini.Set("Launcher", "InterfaceLanguage", NormalizeLanguage(InterfaceLanguage));
             ini.Set("Launcher", "Theme", Theme.ToString());
             ini.Set("Launcher co-op", "Enabled",
                 NetworkMode == MultiplayerMode.SinglePlayer ? "0" : "1");

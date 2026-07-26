@@ -116,3 +116,9 @@ empty paths, `.` segments, and `..` traversal segments.
   only the controls relevant to each mode remain visible.
 - Verified localized inline validation and defensive normalization for invalid
   multiplayer map and host input.
+- Separated the persisted game and interface language states. A live German
+  interface with Spanish selected for the game retained German controls while
+  launching with `+set language es`.
+- Verified that localized addon metadata follows the interface language and
+  that legacy INIs without `InterfaceLanguage` inherit their existing
+  `Language` value once.

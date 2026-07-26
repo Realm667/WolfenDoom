@@ -201,6 +201,24 @@ namespace BladeOfAgonyLauncher
             translations["Game"] = values[1];
             translations["Enter a valid start map."] = values[2];
             translations["Enter a valid host name or IPv4 address."] = values[3];
+            translations["Interface language:"] = InterfaceLanguageLabel(language);
+        }
+
+        private static string InterfaceLanguageLabel(string language)
+        {
+            switch (language) {
+                case "de": return "Interfacesprache:";
+                case "es": return "Idioma de la interfaz:";
+                case "ru":
+                    return "\u042f\u0437\u044b\u043a \u0438\u043d\u0442\u0435\u0440\u0444\u0435\u0439\u0441\u0430:";
+                case "ptb": return "Idioma da interface:";
+                case "it": return "Lingua dell'interfaccia:";
+                case "tr": return "Aray\u00fcz dili:";
+                case "fr": return "Langue de l'interface :";
+                case "cs": return "Jazyk rozhran\u00ed:";
+                case "pl": return "J\u0119zyk interfejsu:";
+                default: return "Interface language:";
+            }
         }
 
         private void Parse(string path)

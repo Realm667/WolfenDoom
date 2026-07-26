@@ -183,6 +183,7 @@ namespace BladeOfAgonyLauncher
         private readonly ThemedComboBox detailCombo = new ThemedComboBox();
         private readonly ThemedComboBox displacementCombo = new ThemedComboBox();
         private readonly ThemedComboBox languageCombo = new ThemedComboBox();
+        private readonly ThemedComboBox interfaceLanguageCombo = new ThemedComboBox();
         private readonly ThemedComboBox themeCombo = new ThemedComboBox();
         private readonly ThemedCheckBox commentaryCheck = new ThemedCheckBox();
         private readonly ThemedSegmentedControl multiplayerModeControl =
@@ -220,20 +221,20 @@ namespace BladeOfAgonyLauncher
         {
             this.baseDirectory = baseDirectory;
             options = LauncherOptions.Load(baseDirectory);
-            catalog = PoCatalog.Load(baseDirectory, options.Language);
+            catalog = PoCatalog.Load(baseDirectory, options.InterfaceLanguage);
             palette = ThemePalette.For(options.Theme);
 
             Text = "Blade of Agony";
             StartPosition = FormStartPosition.CenterScreen;
             Font = new Font("Segoe UI", 9.0f);
-            MinimumSize = new Size(940, 640);
-            Size = new Size(1080, 740);
+            MinimumSize = new Size(940, 690);
+            Size = new Size(1080, 790);
             Icon = Icon.ExtractAssociatedIcon(Application.ExecutablePath);
 
             Controls.Add(CreateRootLayout());
             LoadSettingsIntoControls();
             ApplyTheme(this);
-            languageCombo.SelectedIndexChanged += delegate { ChangeLauncherLanguage(); };
+            interfaceLanguageCombo.SelectedIndexChanged += delegate { ChangeInterfaceLanguage(); };
             themeCombo.SelectedIndexChanged += delegate { ChangeTheme(); };
             FormClosing += delegate { SaveSettingsFromControls(); };
         }
@@ -250,15 +251,11 @@ namespace BladeOfAgonyLauncher
             root.Dock = DockStyle.Fill;
             root.ColumnCount = 1;
             root.RowCount = 3;
-            root.RowStyles.Add(new RowStyle(SizeType.Absolute, 150));
+            root.RowStyles.Add(new RowStyle(SizeType.Absolute, 196));
             root.RowStyles.Add(new RowStyle(SizeType.Percent, 100));
             root.RowStyles.Add(new RowStyle(SizeType.Absolute, 58));
 
-            PictureBox banner = new PictureBox();
-            banner.Dock = DockStyle.Fill;
-            banner.SizeMode = PictureBoxSizeMode.StretchImage;
-            banner.Image = LoadEmbeddedImage("BladeLauncher.launcher.jpg");
-            root.Controls.Add(banner, 0, 0);
+            root.Controls.Add(CreateHeader(), 0, 0);
 
             TableLayoutPanel content = new TableLayoutPanel();
             content.Dock = DockStyle.Fill;
@@ -285,31 +282,80 @@ namespace BladeOfAgonyLauncher
             return root;
         }
 
+        private Control CreateHeader()
+        {
+            TableLayoutPanel header = new TableLayoutPanel();
+            header.Dock = DockStyle.Fill;
+            header.ColumnCount = 1;
+            header.RowCount = 2;
+            header.RowStyles.Add(new RowStyle(SizeType.Absolute, 46));
+            header.RowStyles.Add(new RowStyle(SizeType.Percent, 100));
+
+            TableLayoutPanel toolbar = new TableLayoutPanel();
+            toolbar.Dock = DockStyle.Fill;
+            toolbar.Padding = new Padding(18, 8, 18, 8);
+            toolbar.ColumnCount = 5;
+            toolbar.RowCount = 1;
+            toolbar.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100));
+            toolbar.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 145));
+            toolbar.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 170));
+            toolbar.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 100));
+            toolbar.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 155));
+
+            Label title = new Label();
+            title.Text = "Blade of Agony Launcher";
+            title.Dock = DockStyle.Fill;
+            title.Font = new Font(Font.FontFamily, 10.0f, FontStyle.Bold);
+            title.TextAlign = ContentAlignment.MiddleLeft;
+
+            Label interfaceLanguageLabel = new Label();
+            SetLocalizedText(interfaceLanguageLabel, "Interface language:");
+            interfaceLanguageLabel.Dock = DockStyle.Fill;
+            interfaceLanguageLabel.TextAlign = ContentAlignment.MiddleRight;
+            interfaceLanguageLabel.Margin = new Padding(6, 0, 8, 0);
+
+            PopulateLanguageChoices(interfaceLanguageCombo);
+            interfaceLanguageCombo.Dock = DockStyle.Fill;
+            interfaceLanguageCombo.Margin = new Padding(0);
+
+            Label designLabel = new Label();
+            SetLocalizedText(designLabel, "Design:");
+            designLabel.Dock = DockStyle.Fill;
+            designLabel.TextAlign = ContentAlignment.MiddleRight;
+            designLabel.Margin = new Padding(8, 0, 8, 0);
+
+            themeCombo.Dock = DockStyle.Fill;
+            themeCombo.Margin = new Padding(0);
+
+            toolbar.Controls.Add(title, 0, 0);
+            toolbar.Controls.Add(interfaceLanguageLabel, 1, 0);
+            toolbar.Controls.Add(interfaceLanguageCombo, 2, 0);
+            toolbar.Controls.Add(designLabel, 3, 0);
+            toolbar.Controls.Add(themeCombo, 4, 0);
+
+            PictureBox banner = new PictureBox();
+            banner.Dock = DockStyle.Fill;
+            banner.SizeMode = PictureBoxSizeMode.StretchImage;
+            banner.Image = LoadEmbeddedImage("BladeLauncher.launcher.jpg");
+            header.Controls.Add(toolbar, 0, 0);
+            header.Controls.Add(banner, 0, 1);
+            return header;
+        }
+
         private Control CreateSettingsPanel()
         {
             TableLayoutPanel panel = new TableLayoutPanel();
             panel.Dock = DockStyle.Fill;
             panel.ColumnCount = 2;
-            panel.RowCount = 9;
+            panel.RowCount = 8;
             panel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 46));
             panel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 54));
-            for (int row = 0; row < 8; row++) {
+            for (int row = 0; row < 7; row++) {
                 panel.RowStyles.Add(new RowStyle(SizeType.AutoSize));
             }
             panel.RowStyles.Add(new RowStyle(SizeType.Percent, 100));
 
-            languageCombo.Items.AddRange(new object[] {
-                new LanguageChoice("en", "English (default)"),
-                new LanguageChoice("de", "Deutsch"),
-                new LanguageChoice("es", "Espa\u00f1ol"),
-                new LanguageChoice("ru", "\u0420\u0443\u0441\u0441\u043a\u0438\u0439"),
-                new LanguageChoice("ptb", "Portugu\u00eas (Brasil)"),
-                new LanguageChoice("it", "Italiano"),
-                new LanguageChoice("tr", "T\u00fcrk\u00e7e"),
-                new LanguageChoice("fr", "Fran\u00e7ais"),
-                new LanguageChoice("cs", "\u010ce\u0161tina"),
-                new LanguageChoice("pl", "Polski")
-            });
+            PopulateLanguageChoices(languageCombo);
 
             SetLocalizedText(commentaryCheck, "Developer commentary");
             commentaryCheck.AutoSize = true;
@@ -325,15 +371,30 @@ namespace BladeOfAgonyLauncher
             panel.Controls.Add(game, 0, 3);
             panel.SetColumnSpan(game, 2);
             AddSettingRow(panel, 4, "Game language:", languageCombo);
-            AddSettingRow(panel, 5, "Design:", themeCombo);
-            panel.Controls.Add(commentaryCheck, 0, 6);
+            panel.Controls.Add(commentaryCheck, 0, 5);
             panel.SetColumnSpan(commentaryCheck, 2);
 
             Control multiplayer = CreateMultiplayerPanel();
-            panel.Controls.Add(multiplayer, 0, 7);
+            panel.Controls.Add(multiplayer, 0, 6);
             panel.SetColumnSpan(multiplayer, 2);
             RefreshChoiceText();
             return panel;
+        }
+
+        private static void PopulateLanguageChoices(ThemedComboBox combo)
+        {
+            combo.Items.AddRange(new object[] {
+                new LanguageChoice("en", "English (default)"),
+                new LanguageChoice("de", "Deutsch"),
+                new LanguageChoice("es", "Espa\u00f1ol"),
+                new LanguageChoice("ru", "\u0420\u0443\u0441\u0441\u043a\u0438\u0439"),
+                new LanguageChoice("ptb", "Portugu\u00eas (Brasil)"),
+                new LanguageChoice("it", "Italiano"),
+                new LanguageChoice("tr", "T\u00fcrk\u00e7e"),
+                new LanguageChoice("fr", "Fran\u00e7ais"),
+                new LanguageChoice("cs", "\u010ce\u0161tina"),
+                new LanguageChoice("pl", "Polski")
+            });
         }
 
         private Label CreateSectionHeader(string key)
@@ -582,7 +643,8 @@ namespace BladeOfAgonyLauncher
         {
             detailCombo.SelectedIndex = 0;
             displacementCombo.SelectedIndex = options.DisplacementTextures ? 1 : 0;
-            SelectLanguage(options.Language);
+            SelectLanguage(languageCombo, options.Language);
+            SelectLanguage(interfaceLanguageCombo, options.InterfaceLanguage);
             commentaryCheck.Checked = options.DeveloperCommentary;
             SelectTheme(options.Theme);
             multiplayerModeControl.SelectedIndex = (int)options.NetworkMode;
@@ -606,6 +668,10 @@ namespace BladeOfAgonyLauncher
             options.DeveloperCommentary = commentaryCheck.Checked;
             LanguageChoice language = languageCombo.SelectedItem as LanguageChoice;
             options.Language = LauncherOptions.NormalizeLanguage(language == null ? "en" : language.Code);
+            LanguageChoice interfaceLanguage =
+                interfaceLanguageCombo.SelectedItem as LanguageChoice;
+            options.InterfaceLanguage = LauncherOptions.NormalizeLanguage(
+                interfaceLanguage == null ? "en" : interfaceLanguage.Code);
             options.Theme = themeCombo.SelectedIndex >= 0
                 ? (LauncherTheme)themeCombo.SelectedIndex
                 : LauncherTheme.Dark;
@@ -621,14 +687,14 @@ namespace BladeOfAgonyLauncher
             options.Save();
         }
 
-        private void ChangeLauncherLanguage()
+        private void ChangeInterfaceLanguage()
         {
-            LanguageChoice language = languageCombo.SelectedItem as LanguageChoice;
+            LanguageChoice language = interfaceLanguageCombo.SelectedItem as LanguageChoice;
             if (language == null) {
                 return;
             }
-            options.Language = LauncherOptions.NormalizeLanguage(language.Code);
-            catalog = PoCatalog.Load(baseDirectory, options.Language);
+            options.InterfaceLanguage = LauncherOptions.NormalizeLanguage(language.Code);
+            catalog = PoCatalog.Load(baseDirectory, options.InterfaceLanguage);
             ApplyLocalization(this);
             RefreshChoiceText();
             ScanAddons();
@@ -901,17 +967,17 @@ namespace BladeOfAgonyLauncher
             }
         }
 
-        private void SelectLanguage(string code)
+        private static void SelectLanguage(ThemedComboBox combo, string code)
         {
             string normalized = LauncherOptions.NormalizeLanguage(code);
-            for (int index = 0; index < languageCombo.Items.Count; index++) {
-                LanguageChoice choice = languageCombo.Items[index] as LanguageChoice;
+            for (int index = 0; index < combo.Items.Count; index++) {
+                LanguageChoice choice = combo.Items[index] as LanguageChoice;
                 if (choice != null && string.Equals(choice.Code, normalized, StringComparison.OrdinalIgnoreCase)) {
-                    languageCombo.SelectedIndex = index;
+                    combo.SelectedIndex = index;
                     return;
                 }
             }
-            languageCombo.SelectedIndex = 0;
+            combo.SelectedIndex = 0;
         }
 
         private void ScanAddons()
@@ -928,7 +994,7 @@ namespace BladeOfAgonyLauncher
             }
 
             addons.Clear();
-            addons.AddRange(AddonDescriptor.Scan(baseDirectory, options.Language));
+            addons.AddRange(AddonDescriptor.Scan(baseDirectory, options.InterfaceLanguage));
             updatingAddonSelection = true;
             addonList.BeginUpdate();
             addonList.Items.Clear();

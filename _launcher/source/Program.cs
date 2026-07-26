@@ -25,6 +25,7 @@ namespace BladeOfAgonyLauncher
                     "  --detail VALUE        last, default, verylow, low, normal, high, veryhigh.\n" +
                     "  --displacement VALUE  on or off.\n" +
                     "  --language VALUE      en, de, es, ru, ptb/pt/br, it, tr/trk, fr, cs, pl/plk.\n" +
+                    "  --interface-language VALUE  Launcher UI language, using the same codes.\n" +
                     "  --theme VALUE         dark, light, or boa.\n" +
                     "  --commentary VALUE    on or off.\n" +
                     "  --multiplayer MODE    single, host, or join.\n" +
@@ -51,7 +52,8 @@ namespace BladeOfAgonyLauncher
             if (HasArgument(args, "--scan-addons")) {
                 LauncherOptions scanOptions = LauncherOptions.Load(baseDirectory);
                 ApplyDiagnosticArguments(scanOptions, args, baseDirectory);
-                foreach (AddonDescriptor addon in AddonDescriptor.Scan(baseDirectory, scanOptions.Language)) {
+                foreach (AddonDescriptor addon in AddonDescriptor.Scan(
+                        baseDirectory, scanOptions.InterfaceLanguage)) {
                     Console.WriteLine(addon.RelativePath + "\t" + addon.Title + "\t" +
                         string.Join(";", addon.LoadFiles.ToArray()));
                 }
@@ -62,8 +64,9 @@ namespace BladeOfAgonyLauncher
                 LauncherOptions options = LauncherOptions.Load(baseDirectory);
                 ApplyDiagnosticArguments(options, args, baseDirectory);
                 if (HasArgument(args, "--print-ui")) {
-                    PoCatalog catalog = PoCatalog.Load(baseDirectory, options.Language);
-                    Console.WriteLine("Language=" + options.Language);
+                    PoCatalog catalog = PoCatalog.Load(baseDirectory, options.InterfaceLanguage);
+                    Console.WriteLine("GameLanguage=" + options.Language);
+                    Console.WriteLine("InterfaceLanguage=" + options.InterfaceLanguage);
                     Console.WriteLine("Theme=" + options.Theme);
                     Console.WriteLine("Play=" + catalog.Get("Play"));
                     Console.WriteLine("NoAddons=" + catalog.Get("No addons"));
@@ -116,6 +119,8 @@ namespace BladeOfAgonyLauncher
                     options.Language = string.Equals(value, "last", StringComparison.OrdinalIgnoreCase)
                         ? null
                         : LauncherOptions.NormalizeLanguage(value);
+                } else if (TryReadValue(args, ref index, "--interface-language", out value)) {
+                    options.InterfaceLanguage = LauncherOptions.NormalizeLanguage(value);
                 } else if (TryReadValue(args, ref index, "--theme", out value)) {
                     options.Theme = LauncherOptions.ParseTheme(value);
                 } else if (TryReadValue(args, ref index, "--commentary", out value)) {
@@ -140,12 +145,12 @@ namespace BladeOfAgonyLauncher
                     options.MultiAddons.Clear();
                 } else if (TryReadValue(args, ref index, "--addon", out value)) {
                     options.SingleAddon = AddonDescriptor.Load(
-                        ResolveDescriptor(baseDirectory, value), options.Language);
+                        ResolveDescriptor(baseDirectory, value), options.InterfaceLanguage);
                     options.MultiAddons.Clear();
                     options.UseAddon = true;
                 } else if (TryReadValue(args, ref index, "--multi-addon", out value)) {
                     multi.Add(AddonDescriptor.Load(
-                        ResolveDescriptor(baseDirectory, value), options.Language));
+                        ResolveDescriptor(baseDirectory, value), options.InterfaceLanguage));
                 }
             }
             if (multi.Count > 0) {

@@ -10,8 +10,11 @@ original Pascal source code.
 - Launches `boa.exe` with the same detail, displacement, commentary, and
   language arguments as the original launcher.
 - Offers the ten languages present in `boa.ipk3/language.csv`, defaults to
-  English, persists the selection, and normalizes GZDoom aliases. Changing the
-  game language immediately changes the launcher language as well.
+  English, persists the selection, and normalizes GZDoom aliases.
+- Keeps game and interface languages independent. The interface language is
+  selected in the header and controls launcher text and localized addon
+  metadata; the game language remains in the Game section and controls only
+  the generated `+set language` argument.
 - Restores cooperative multiplayer setup with single-player, host, and join
   modes. Host settings cover total player count, start map, UDP port, skill,
   and `sv_cheats`; join mode accepts a host name or IPv4 address and port.
@@ -26,6 +29,8 @@ original Pascal source code.
   control frames.
 - Organizes launcher settings into compact Graphics, Game, and Multiplayer
   sections with modern Segoe UI typography and reduced decorative chrome.
+- Places the interface-language and design selectors in a compact header
+  toolbar above the Blade of Agony banner.
 - Scans `.boa` ZIP descriptors exclusively from `addons` and reads localized
   `addoninfo.txt` metadata.
 - Selects multiple addons directly in the main list with Ctrl plus the primary
@@ -76,6 +81,7 @@ The console diagnostics build accepts:
 --detail last|default|verylow|low|normal|high|veryhigh
 --displacement on|off
 --language en|de|es|ru|ptb|pt|br|it|tr|trk|fr|cs|pl|plk
+--interface-language en|de|es|ru|ptb|pt|br|it|tr|trk|fr|cs|pl|plk
 --theme dark|light|boa
 --commentary on|off
 --multiplayer single|host|join
