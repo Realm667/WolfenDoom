@@ -1,5 +1,31 @@
 # Changelog
 
+## 1.4.0
+
+### Added
+
+- Dark design as the new default, using `#3B3B3B` as its base color.
+- Optional Light design.
+- Optional Blade of Agony design using `#11273A` as its base and `#668197` as
+  its accent color.
+- Localized design names for every supported launcher language.
+- Dark Windows title-bar integration on supported Windows versions.
+
+### Changed
+
+- Buttons, inputs, lists, disabled addon rows, preview details, multiplayer
+  controls, and selection highlights now follow the active design.
+- The selected design is persisted as `Theme=Dark`, `Theme=Light`, or
+  `Theme=BladeOfAgony` in `boa-launcher.ini`.
+- Launcher version increased to 1.4.0.
+
+### Verified
+
+- Measured the rendered background and accent colors directly from the live
+  launcher window.
+- Verified immediate switching between all three designs and INI persistence.
+- Re-ran language, multiplayer, addon selection, and 16:9 preview regressions.
+
 ## 1.3.0
 
 ### Added
@@ -41,4 +67,3 @@
 - Added Ctrl-based multiple addon selection to the main list.
 - Added the exclusive `No addons` list entry.
 - Added full-width 16:9 cover-cropped addon previews.
-

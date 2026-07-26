@@ -86,3 +86,9 @@ empty paths, `.` segments, and `..` traversal segments.
 - Changed the game language through the live WinForms selector and confirmed
   that launcher labels, addon metadata, persisted language, and the generated
   `+set language` argument all changed together.
+- Verified Dark as the default for configurations without a `Theme` key.
+- Measured the live GUI backgrounds for Dark (`#3B3B3B`), Light (`#F0F0F0`),
+  and Blade of Agony (`#11273A`) as well as the Blade of Agony accent
+  (`#668197`).
+- Confirmed that theme selection persists and that dark title-bar styling
+  follows both dark designs on supported Windows versions.

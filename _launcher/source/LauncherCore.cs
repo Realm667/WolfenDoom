@@ -13,12 +13,20 @@ namespace BladeOfAgonyLauncher
         Join
     }
 
+    internal enum LauncherTheme
+    {
+        Dark,
+        Light,
+        BladeOfAgony
+    }
+
     internal sealed class LauncherOptions
     {
         internal string BaseDirectory;
         internal int DetailPreset;
         internal bool DisplacementTextures;
         internal string Language;
+        internal LauncherTheme Theme;
         internal bool DeveloperCommentary;
         internal bool UseAddon;
         internal AddonDescriptor SingleAddon;
@@ -41,6 +49,7 @@ namespace BladeOfAgonyLauncher
             result.DeveloperCommentary = ini.GetBoolean("Launcher", "DevCommentary", false);
             result.UseAddon = ini.GetBoolean("Launcher", "LaunchWithAddon", false);
             result.Language = NormalizeLanguage(ini.Get("Launcher", "Language", "en"));
+            result.Theme = ParseTheme(ini.Get("Launcher", "Theme", "Dark"));
             bool legacyMultiplayerEnabled = ini.GetBoolean("Launcher co-op", "Enabled", false);
             result.NetworkMode = ParseMultiplayerMode(
                 ini.Get("Launcher co-op", "Mode", legacyMultiplayerEnabled ? "Host" : "SinglePlayer"));
@@ -91,6 +100,7 @@ namespace BladeOfAgonyLauncher
             ini.Set("Launcher", "DisplacementTextures", DisplacementTextures ? "1" : "0");
             ini.Set("Launcher", "LaunchWithAddon", UseAddon ? "1" : "0");
             ini.Set("Launcher", "Language", NormalizeLanguage(Language));
+            ini.Set("Launcher", "Theme", Theme.ToString());
             ini.Set("Launcher co-op", "Enabled",
                 NetworkMode == MultiplayerMode.SinglePlayer ? "0" : "1");
             ini.Set("Launcher co-op", "Mode", NetworkMode.ToString());
@@ -193,6 +203,19 @@ namespace BladeOfAgonyLauncher
                 return MultiplayerMode.Join;
             }
             return MultiplayerMode.SinglePlayer;
+        }
+
+        internal static LauncherTheme ParseTheme(string value)
+        {
+            string normalized = value == null ? string.Empty : value.Trim().ToLowerInvariant();
+            if (normalized == "light") {
+                return LauncherTheme.Light;
+            }
+            if (normalized == "bladeofagony" || normalized == "blade-of-agony" ||
+                normalized == "boa") {
+                return LauncherTheme.BladeOfAgony;
+            }
+            return LauncherTheme.Dark;
         }
 
         internal static string NormalizeMapName(string value)

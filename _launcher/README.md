@@ -15,6 +15,8 @@ original Pascal source code.
 - Restores cooperative multiplayer setup with single-player, host, and join
   modes. Host settings cover total player count, start map, UDP port, skill,
   and `sv_cheats`; join mode accepts a host name or IPv4 address and port.
+- Provides three persisted interface designs: Dark (the default, based on
+  `#3B3B3B`), Light, and Blade of Agony (`#11273A` with `#668197` accents).
 - Scans `.boa` ZIP descriptors exclusively from `addons` and reads localized
   `addoninfo.txt` metadata.
 - Selects multiple addons directly in the main list with Ctrl plus the primary
@@ -65,6 +67,7 @@ The console diagnostics build accepts:
 --detail last|default|verylow|low|normal|high|veryhigh
 --displacement on|off
 --language en|de|es|ru|ptb|pt|br|it|tr|trk|fr|cs|pl|plk
+--theme dark|light|boa
 --commentary on|off
 --multiplayer single|host|join
 --players 2..8

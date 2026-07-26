@@ -5,12 +5,17 @@ using System.Drawing.Drawing2D;
 using System.Globalization;
 using System.IO;
 using System.Reflection;
+using System.Runtime.InteropServices;
 using System.Windows.Forms;
 
 namespace BladeOfAgonyLauncher
 {
     internal sealed class MainForm : Form
     {
+        [DllImport("dwmapi.dll")]
+        private static extern int DwmSetWindowAttribute(
+            IntPtr window, int attribute, ref int value, int valueSize);
+
         private sealed class LanguageChoice
         {
             internal readonly string Code;
@@ -40,6 +45,60 @@ namespace BladeOfAgonyLauncher
             public override string ToString()
             {
                 return label;
+            }
+        }
+
+        private sealed class ThemePalette
+        {
+            internal Color Background;
+            internal Color Surface;
+            internal Color Input;
+            internal Color Text;
+            internal Color MutedText;
+            internal Color Border;
+            internal Color Accent;
+            internal Color AccentText;
+            internal bool DarkTitleBar;
+
+            internal static ThemePalette For(LauncherTheme theme)
+            {
+                if (theme == LauncherTheme.Light) {
+                    return new ThemePalette {
+                        Background = Color.FromArgb(240, 240, 240),
+                        Surface = Color.White,
+                        Input = Color.White,
+                        Text = Color.FromArgb(30, 30, 30),
+                        MutedText = Color.FromArgb(100, 100, 100),
+                        Border = Color.FromArgb(180, 180, 180),
+                        Accent = Color.FromArgb(0, 102, 153),
+                        AccentText = Color.White,
+                        DarkTitleBar = false
+                    };
+                }
+                if (theme == LauncherTheme.BladeOfAgony) {
+                    return new ThemePalette {
+                        Background = Color.FromArgb(0x11, 0x27, 0x3A),
+                        Surface = Color.FromArgb(0x19, 0x34, 0x4A),
+                        Input = Color.FromArgb(0x0B, 0x1D, 0x2B),
+                        Text = Color.FromArgb(238, 244, 248),
+                        MutedText = Color.FromArgb(175, 192, 206),
+                        Border = Color.FromArgb(63, 91, 112),
+                        Accent = Color.FromArgb(0x66, 0x81, 0x97),
+                        AccentText = Color.White,
+                        DarkTitleBar = true
+                    };
+                }
+                return new ThemePalette {
+                    Background = Color.FromArgb(0x3B, 0x3B, 0x3B),
+                    Surface = Color.FromArgb(72, 72, 72),
+                    Input = Color.FromArgb(43, 43, 43),
+                    Text = Color.FromArgb(242, 242, 242),
+                    MutedText = Color.FromArgb(190, 190, 190),
+                    Border = Color.FromArgb(102, 102, 102),
+                    Accent = Color.FromArgb(102, 129, 151),
+                    AccentText = Color.White,
+                    DarkTitleBar = true
+                };
             }
         }
 
@@ -95,6 +154,7 @@ namespace BladeOfAgonyLauncher
         private readonly ComboBox detailCombo = new ComboBox();
         private readonly ComboBox displacementCombo = new ComboBox();
         private readonly ComboBox languageCombo = new ComboBox();
+        private readonly ComboBox themeCombo = new ComboBox();
         private readonly CheckBox commentaryCheck = new CheckBox();
         private readonly ComboBox multiplayerModeCombo = new ComboBox();
         private readonly NumericUpDown multiplayerPlayers = new NumericUpDown();
@@ -110,7 +170,9 @@ namespace BladeOfAgonyLauncher
         private readonly TextBox addonDescription = new TextBox();
         private readonly CoverPictureBox previewBox = new CoverPictureBox();
         private readonly Label previewCounter = new Label();
+        private readonly Button playButton = new Button();
         private NoAddonChoice noAddonChoice;
+        private ThemePalette palette;
         private AddonDescriptor previewAddon;
         private int previewIndex = 1;
         private int lastClickedAddonIndex = -1;
@@ -121,6 +183,7 @@ namespace BladeOfAgonyLauncher
             this.baseDirectory = baseDirectory;
             options = LauncherOptions.Load(baseDirectory);
             catalog = PoCatalog.Load(baseDirectory, options.Language);
+            palette = ThemePalette.For(options.Theme);
 
             Text = "Blade of Agony";
             StartPosition = FormStartPosition.CenterScreen;
@@ -130,8 +193,16 @@ namespace BladeOfAgonyLauncher
 
             Controls.Add(CreateRootLayout());
             LoadSettingsIntoControls();
+            ApplyTheme(this);
             languageCombo.SelectedIndexChanged += delegate { ChangeLauncherLanguage(); };
+            themeCombo.SelectedIndexChanged += delegate { ChangeTheme(); };
             FormClosing += delegate { SaveSettingsFromControls(); };
+        }
+
+        protected override void OnHandleCreated(EventArgs eventArgs)
+        {
+            base.OnHandleCreated(eventArgs);
+            ApplyTitleBarTheme();
         }
 
         private Control CreateRootLayout()
@@ -180,9 +251,9 @@ namespace BladeOfAgonyLauncher
             TableLayoutPanel panel = new TableLayoutPanel();
             panel.Dock = DockStyle.Fill;
             panel.ColumnCount = 1;
-            panel.RowCount = 12;
+            panel.RowCount = 13;
             panel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100));
-            for (int row = 0; row < 11; row++) {
+            for (int row = 0; row < 12; row++) {
                 panel.RowStyles.Add(new RowStyle(SizeType.AutoSize));
             }
             panel.RowStyles.Add(new RowStyle(SizeType.Percent, 100));
@@ -210,7 +281,7 @@ namespace BladeOfAgonyLauncher
 
             SetLocalizedText(commentaryCheck, "Developer commentary");
             commentaryCheck.AutoSize = true;
-            commentaryCheck.Margin = new Padding(0, 10, 0, 0);
+            commentaryCheck.Margin = new Padding(0, 4, 0, 0);
 
             panel.Controls.Add(CreateSettingLabel("Detail preset:"));
             panel.Controls.Add(detailCombo);
@@ -220,11 +291,32 @@ namespace BladeOfAgonyLauncher
             panel.Controls.Add(CreateSpacer());
             panel.Controls.Add(CreateSettingLabel("Game language:"));
             panel.Controls.Add(languageCombo);
+            panel.Controls.Add(CreateThemeSelector());
             panel.Controls.Add(commentaryCheck);
             panel.Controls.Add(CreateSpacer());
             panel.Controls.Add(CreateMultiplayerPanel());
             RefreshChoiceText();
             return panel;
+        }
+
+        private Control CreateThemeSelector()
+        {
+            TableLayoutPanel row = new TableLayoutPanel();
+            row.Dock = DockStyle.Top;
+            row.AutoSize = true;
+            row.ColumnCount = 2;
+            row.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 92));
+            row.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100));
+            row.Margin = new Padding(0, 4, 0, 0);
+
+            Label label = CreateSettingLabel("Design:");
+            label.Margin = new Padding(0, 5, 6, 0);
+            row.Controls.Add(label, 0, 0);
+
+            themeCombo.DropDownStyle = ComboBoxStyle.DropDownList;
+            themeCombo.Dock = DockStyle.Top;
+            row.Controls.Add(themeCombo, 1, 0);
+            return row;
         }
 
         private Control CreateMultiplayerPanel()
@@ -422,14 +514,13 @@ namespace BladeOfAgonyLauncher
             exit.Margin = new Padding(8, 0, 0, 0);
             exit.Click += delegate { Close(); };
 
-            Button play = new Button();
-            SetLocalizedText(play, "Play");
-            play.Dock = DockStyle.Fill;
-            play.Margin = new Padding(0);
-            play.Font = new Font(Font, FontStyle.Bold);
-            play.Click += delegate { LaunchGame(); };
+            SetLocalizedText(playButton, "Play");
+            playButton.Dock = DockStyle.Fill;
+            playButton.Margin = new Padding(0);
+            playButton.Font = new Font(Font, FontStyle.Bold);
+            playButton.Click += delegate { LaunchGame(); };
 
-            bar.Controls.Add(play, 1, 0);
+            bar.Controls.Add(playButton, 1, 0);
             bar.Controls.Add(exit, 2, 0);
             return bar;
         }
@@ -440,6 +531,7 @@ namespace BladeOfAgonyLauncher
             displacementCombo.SelectedIndex = options.DisplacementTextures ? 1 : 0;
             SelectLanguage(options.Language);
             commentaryCheck.Checked = options.DeveloperCommentary;
+            SelectTheme(options.Theme);
             multiplayerModeCombo.SelectedIndex = (int)options.NetworkMode;
             multiplayerPlayers.Value = Math.Max(
                 multiplayerPlayers.Minimum, Math.Min(multiplayerPlayers.Maximum, options.MultiplayerPlayers));
@@ -461,6 +553,9 @@ namespace BladeOfAgonyLauncher
             options.DeveloperCommentary = commentaryCheck.Checked;
             LanguageChoice language = languageCombo.SelectedItem as LanguageChoice;
             options.Language = LauncherOptions.NormalizeLanguage(language == null ? "en" : language.Code);
+            options.Theme = themeCombo.SelectedIndex >= 0
+                ? (LauncherTheme)themeCombo.SelectedIndex
+                : LauncherTheme.Dark;
             options.NetworkMode = multiplayerModeCombo.SelectedIndex >= 0
                 ? (MultiplayerMode)multiplayerModeCombo.SelectedIndex
                 : MultiplayerMode.SinglePlayer;
@@ -484,6 +579,16 @@ namespace BladeOfAgonyLauncher
             ApplyLocalization(this);
             RefreshChoiceText();
             ScanAddons();
+        }
+
+        private void ChangeTheme()
+        {
+            if (themeCombo.SelectedIndex < 0) {
+                return;
+            }
+            options.Theme = (LauncherTheme)themeCombo.SelectedIndex;
+            palette = ThemePalette.For(options.Theme);
+            ApplyTheme(this);
         }
 
         private void RefreshChoiceText()
@@ -523,7 +628,26 @@ namespace BladeOfAgonyLauncher
             });
             multiplayerModeCombo.SelectedIndex = multiplayer >= 0 ? multiplayer : 0;
             multiplayerModeCombo.EndUpdate();
+
+            int theme = themeCombo.SelectedIndex;
+            themeCombo.BeginUpdate();
+            themeCombo.Items.Clear();
+            themeCombo.Items.AddRange(new object[] {
+                catalog.Get("Dark"),
+                catalog.Get("Light"),
+                "Blade of Agony"
+            });
+            themeCombo.SelectedIndex = theme >= 0 ? theme : (int)LauncherTheme.Dark;
+            themeCombo.EndUpdate();
             UpdateMultiplayerControls();
+        }
+
+        private void SelectTheme(LauncherTheme theme)
+        {
+            int index = (int)theme;
+            themeCombo.SelectedIndex = index >= 0 && index < themeCombo.Items.Count
+                ? index
+                : (int)LauncherTheme.Dark;
         }
 
         private void UpdateMultiplayerControls()
@@ -546,6 +670,81 @@ namespace BladeOfAgonyLauncher
             }
             foreach (Control child in parent.Controls) {
                 ApplyLocalization(child);
+            }
+        }
+
+        private void ApplyTheme(Control parent)
+        {
+            Color background = palette.Background;
+            Color foreground = palette.Text;
+
+            if (parent is TextBox || parent is ComboBox || parent is ListBox ||
+                parent is NumericUpDown) {
+                background = palette.Input;
+            } else if (parent is Button) {
+                background = object.ReferenceEquals(parent, playButton)
+                    ? palette.Accent
+                    : palette.Surface;
+                foreground = object.ReferenceEquals(parent, playButton)
+                    ? palette.AccentText
+                    : palette.Text;
+            } else if (parent is PictureBox) {
+                background = Color.Black;
+            }
+            if (object.ReferenceEquals(parent, addonDescription)) {
+                background = palette.Background;
+            }
+            if (object.ReferenceEquals(parent, previewBox)) {
+                background = Color.Black;
+            }
+            if (object.ReferenceEquals(parent, addonCredits)) {
+                foreground = palette.MutedText;
+            }
+
+            parent.BackColor = background;
+            parent.ForeColor = foreground;
+
+            Button button = parent as Button;
+            if (button != null) {
+                button.UseVisualStyleBackColor = false;
+                button.FlatStyle = FlatStyle.Flat;
+                button.FlatAppearance.BorderColor = palette.Border;
+                button.FlatAppearance.MouseOverBackColor = palette.Accent;
+                button.FlatAppearance.MouseDownBackColor = palette.Input;
+            }
+            CheckBox checkBox = parent as CheckBox;
+            if (checkBox != null) {
+                checkBox.UseVisualStyleBackColor = false;
+            }
+            ComboBox comboBox = parent as ComboBox;
+            if (comboBox != null) {
+                comboBox.FlatStyle = FlatStyle.Flat;
+            }
+
+            foreach (Control child in parent.Controls) {
+                ApplyTheme(child);
+            }
+            if (object.ReferenceEquals(parent, this)) {
+                addonList.Invalidate();
+                ApplyTitleBarTheme();
+            }
+        }
+
+        private void ApplyTitleBarTheme()
+        {
+            if (!IsHandleCreated || palette == null) {
+                return;
+            }
+            int enabled = palette.DarkTitleBar ? 1 : 0;
+            try {
+                int result = DwmSetWindowAttribute(Handle, 20, ref enabled, sizeof(int));
+                if (result != 0) {
+                    DwmSetWindowAttribute(Handle, 19, ref enabled, sizeof(int));
+                }
+            } catch (DllNotFoundException) {
+                // Older Windows versions do not provide DWM theme attributes.
+            } catch (EntryPointNotFoundException) {
+                // Keep the standard title bar when the API is unavailable.
             }
         }
 
@@ -666,10 +865,10 @@ namespace BladeOfAgonyLauncher
             bool noAddonsMode = addonList.Items.Count > 0 && addonList.GetSelected(0);
             bool disabled = noAddonsMode && eventArgs.Index > 0;
             bool selected = !disabled && (eventArgs.State & DrawItemState.Selected) != 0;
-            Color background = selected ? SystemColors.Highlight : addonList.BackColor;
+            Color background = selected ? palette.Accent : addonList.BackColor;
             Color foreground = disabled
-                ? SystemColors.GrayText
-                : (selected ? SystemColors.HighlightText : addonList.ForeColor);
+                ? palette.MutedText
+                : (selected ? palette.AccentText : addonList.ForeColor);
 
             using (Brush backgroundBrush = new SolidBrush(background)) {
                 eventArgs.Graphics.FillRectangle(backgroundBrush, eventArgs.Bounds);
@@ -773,7 +972,7 @@ namespace BladeOfAgonyLauncher
             Label label = new Label();
             SetLocalizedText(label, key);
             label.AutoSize = true;
-            label.Margin = new Padding(0, 0, 0, 5);
+            label.Margin = new Padding(0, 0, 0, 3);
             return label;
         }
 
@@ -786,7 +985,7 @@ namespace BladeOfAgonyLauncher
         private static Control CreateSpacer()
         {
             Panel spacer = new Panel();
-            spacer.Height = 10;
+            spacer.Height = 4;
             return spacer;
         }
 

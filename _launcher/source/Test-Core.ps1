@@ -123,6 +123,28 @@ foreach ($language in @('en', 'de', 'es', 'ru', 'ptb', 'it', 'tr', 'fr', 'cs', '
     if ($language -ne 'en' -and $ui -contains 'HostCoop=Host co-op') {
         throw "Multiplayer UI was not localized for $language."
     }
+    if ($language -ne 'en' -and $ui -contains 'Dark=Dark') {
+        throw "Theme UI was not localized for $language."
+    }
+}
+
+$themeCases = @{
+    'dark' = 'Dark'
+    'light' = 'Light'
+    'boa' = 'BladeOfAgony'
+    'blade-of-agony' = 'BladeOfAgony'
+}
+$defaultThemeUi = & $diagnostics `
+    --base-directory (Join-Path $project 'dist\nonexistent-default-theme') `
+    --print-ui
+if ($defaultThemeUi -notcontains 'Theme=Dark') {
+    throw 'A launcher configuration without Theme did not default to Dark.'
+}
+foreach ($theme in $themeCases.Keys) {
+    $ui = & $diagnostics --base-directory $sandbox --print-ui --theme $theme
+    if ($ui -notcontains "Theme=$($themeCases[$theme])") {
+        throw "Theme diagnostics did not normalize $theme."
+    }
 }
 
 $scan = & $diagnostics --base-directory $sandbox --scan-addons
@@ -143,6 +165,7 @@ if ($previewTest -ne 'Preview 16:9 cover-crop tests: PASS') {
 'Core command tests: PASS'
 'Language and alias tests: PASS'
 'Launcher localization tests: PASS'
+'Theme selection and localization tests: PASS'
 'Multiplayer host/join command tests: PASS'
 'Addons-directory descriptor tests: PASS'
 'Preview 16:9 cover-crop tests: PASS'

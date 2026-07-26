@@ -77,6 +77,26 @@ function Read-Text([IntPtr] $Handle) {
     return $buffer.ToString()
 }
 
+function Capture-Window([IntPtr] $Handle) {
+    $rect = [RebuiltGuiTestNative+Rect]::new()
+    [void] [RebuiltGuiTestNative]::GetWindowRect($Handle, [ref] $rect)
+    $bitmap = [Drawing.Bitmap]::new($rect.Right - $rect.Left, $rect.Bottom - $rect.Top)
+    $graphics = [Drawing.Graphics]::FromImage($bitmap)
+    try {
+        $deviceContext = $graphics.GetHdc()
+        try {
+            [void] [RebuiltGuiTestNative]::PrintWindow($Handle, $deviceContext, 2)
+        }
+        finally {
+            $graphics.ReleaseHdc($deviceContext)
+        }
+    }
+    finally {
+        $graphics.Dispose()
+    }
+    return $bitmap
+}
+
 $startInfo = [Diagnostics.ProcessStartInfo]::new()
 $startInfo.FileName = $launcher
 $startInfo.Arguments = '--base-directory "' + $sandbox + '"'
@@ -156,6 +176,60 @@ try {
     [void] [RebuiltGuiTestNative]::EnumChildWindows($window, $findGermanPlay, [IntPtr]::Zero)
     if (-not $germanPlay) {
         throw 'Changing the game language did not localize the launcher to German.'
+    }
+
+    $themeCandidates = [Collections.Generic.List[object]]::new()
+    $findThemeCombo = [RebuiltGuiTestNative+EnumProc] {
+        param($handle, $state)
+        $class = [Text.StringBuilder]::new(128)
+        [void] [RebuiltGuiTestNative]::GetClassName($handle, $class, $class.Capacity)
+        if ($class.ToString().Contains('COMBOBOX') -and
+            [RebuiltGuiTestNative]::SendMessage($handle, 0x0146, [IntPtr]::Zero, [IntPtr]::Zero).ToInt32() -eq 3) {
+            $comboRect = [RebuiltGuiTestNative+Rect]::new()
+            [void] [RebuiltGuiTestNative]::GetWindowRect($handle, [ref] $comboRect)
+            $script:themeCandidates.Add([pscustomobject] @{
+                Handle = $handle
+                Top = $comboRect.Top
+            })
+        }
+        return $true
+    }
+    [void] [RebuiltGuiTestNative]::EnumChildWindows($window, $findThemeCombo, [IntPtr]::Zero)
+    $themeCombo = ($themeCandidates | Sort-Object Top | Select-Object -First 1).Handle
+    if (-not $themeCombo) {
+        throw 'The design selector was not found.'
+    }
+    $themeControlId = [RebuiltGuiTestNative]::GetDlgCtrlID($themeCombo)
+    $themeChanged = [IntPtr] (($themeControlId -band 0xffff) -bor (1 -shl 16))
+    foreach ($themeCase in @(
+        [pscustomobject] @{ Index = 0; Color = '3B3B3B'; Name = 'Dark' },
+        [pscustomobject] @{ Index = 1; Color = 'F0F0F0'; Name = 'Light' },
+        [pscustomobject] @{ Index = 2; Color = '11273A'; Name = 'Blade of Agony' }
+    )) {
+        [void] [RebuiltGuiTestNative]::SendMessage(
+            $themeCombo, 0x014E, [IntPtr] $themeCase.Index, [IntPtr]::Zero)
+        [void] [RebuiltGuiTestNative]::SendMessage(
+            $window, 0x0111, $themeChanged, $themeCombo)
+        Start-Sleep -Milliseconds 250
+        $themeBitmap = Capture-Window $window
+        try {
+            $pixel = $themeBitmap.GetPixel(20, 200)
+            $actualColor = '{0:X2}{1:X2}{2:X2}' -f $pixel.R, $pixel.G, $pixel.B
+            if ($actualColor -ne $themeCase.Color) {
+                throw "$($themeCase.Name) background mismatch: #$actualColor"
+            }
+            if ($themeCase.Index -eq 2) {
+                $accentPixel = $themeBitmap.GetPixel(760, 680)
+                $accentColor = '{0:X2}{1:X2}{2:X2}' -f `
+                    $accentPixel.R, $accentPixel.G, $accentPixel.B
+                if ($accentColor -ne '668197') {
+                    throw "Blade of Agony accent mismatch: #$accentColor"
+                }
+            }
+        }
+        finally {
+            $themeBitmap.Dispose()
+        }
     }
 
     if (-not $SkipScreenshot) {
@@ -263,6 +337,9 @@ foreach ($required in @('[Launcher co-op]', 'Players=2', '[Addon]')) {
         throw "The launcher did not preserve INI content: $required"
     }
 }
+if (-not $ini.Contains('Theme=BladeOfAgony')) {
+    throw 'The selected Blade of Agony design was not persisted.'
+}
 if ($Multi) {
     if (-not $ini.Contains('addonFileName=addons/addon_confiscated_weapons.boa;addons/addon_behaviour.boa')) {
         throw 'The Ctrl-style multi-selection was not persisted in list order.'
@@ -278,6 +355,7 @@ if ($previewWidth -gt 0) {
     "Live preview viewport ${previewWidth}x${previewHeight}: PASS"
 }
 "Game language -> launcher localization: PASS"
+"Dark, Light, and Blade of Agony theme colors: PASS"
 
 if (Test-Path -LiteralPath $screenshot) {
     Get-Item -LiteralPath $screenshot | Select-Object FullName, Length

@@ -25,6 +25,7 @@ namespace BladeOfAgonyLauncher
                     "  --detail VALUE        last, default, verylow, low, normal, high, veryhigh.\n" +
                     "  --displacement VALUE  on or off.\n" +
                     "  --language VALUE      en, de, es, ru, ptb/pt/br, it, tr/trk, fr, cs, pl/plk.\n" +
+                    "  --theme VALUE         dark, light, or boa.\n" +
                     "  --commentary VALUE    on or off.\n" +
                     "  --multiplayer MODE    single, host, or join.\n" +
                     "  --players VALUE       Total host player count (2-8).\n" +
@@ -63,10 +64,13 @@ namespace BladeOfAgonyLauncher
                 if (HasArgument(args, "--print-ui")) {
                     PoCatalog catalog = PoCatalog.Load(baseDirectory, options.Language);
                     Console.WriteLine("Language=" + options.Language);
+                    Console.WriteLine("Theme=" + options.Theme);
                     Console.WriteLine("Play=" + catalog.Get("Play"));
                     Console.WriteLine("NoAddons=" + catalog.Get("No addons"));
                     Console.WriteLine("Multiplayer=" + catalog.Get("Multiplayer"));
                     Console.WriteLine("HostCoop=" + catalog.Get("Host co-op"));
+                    Console.WriteLine("Dark=" + catalog.Get("Dark"));
+                    Console.WriteLine("Light=" + catalog.Get("Light"));
                     return 0;
                 }
                 Console.WriteLine(LauncherCommand.BuildDisplayCommand(options));
@@ -112,6 +116,8 @@ namespace BladeOfAgonyLauncher
                     options.Language = string.Equals(value, "last", StringComparison.OrdinalIgnoreCase)
                         ? null
                         : LauncherOptions.NormalizeLanguage(value);
+                } else if (TryReadValue(args, ref index, "--theme", out value)) {
+                    options.Theme = LauncherOptions.ParseTheme(value);
                 } else if (TryReadValue(args, ref index, "--commentary", out value)) {
                     options.DeveloperCommentary = ParseToggle(value);
                 } else if (TryReadValue(args, ref index, "--multiplayer", out value)) {
