@@ -162,10 +162,23 @@ if ($previewTest -ne 'Preview 16:9 cover-crop tests: PASS') {
     throw 'Preview geometry diagnostics failed.'
 }
 
+# Invalid network input is normalized defensively even when supplied outside the GUI.
+$invalidHost = (& $diagnostics --base-directory $sandbox --print-command `
+    --no-addons --multiplayer join --host 'bad host!' --port 5029 | Out-String).Trim()
+if ($invalidHost -notmatch '-join localhost:5029$') {
+    throw 'Invalid host input was not normalized safely.'
+}
+$invalidMap = (& $diagnostics --base-directory $sandbox --print-command `
+    --no-addons --multiplayer host --map 'bad map!' | Out-String).Trim()
+if ($invalidMap -notmatch '\+map C1M1$') {
+    throw 'Invalid map input was not normalized safely.'
+}
+
 'Core command tests: PASS'
 'Language and alias tests: PASS'
 'Launcher localization tests: PASS'
 'Theme selection and localization tests: PASS'
 'Multiplayer host/join command tests: PASS'
+'Multiplayer input validation tests: PASS'
 'Addons-directory descriptor tests: PASS'
 'Preview 16:9 cover-crop tests: PASS'

@@ -5,6 +5,127 @@ using System.Windows.Forms;
 
 namespace BladeOfAgonyLauncher
 {
+    internal sealed class ThemedSegmentedControl : Control
+    {
+        internal Color BorderColor = Color.Gray;
+        internal Color SurfaceColor = Color.DimGray;
+        internal Color AccentColor = Color.SteelBlue;
+        internal Color AccentTextColor = Color.White;
+        internal Color MutedTextColor = Color.Silver;
+
+        private string[] items = new string[0];
+        private int selectedIndex;
+
+        internal event EventHandler SelectedIndexChanged;
+
+        internal int SelectedIndex
+        {
+            get { return selectedIndex; }
+            set
+            {
+                int next = items.Length == 0 ? -1 : Math.Max(0, Math.Min(items.Length - 1, value));
+                if (selectedIndex == next) {
+                    return;
+                }
+                selectedIndex = next;
+                Invalidate();
+                EventHandler handler = SelectedIndexChanged;
+                if (handler != null) {
+                    handler(this, EventArgs.Empty);
+                }
+            }
+        }
+
+        internal ThemedSegmentedControl()
+        {
+            SetStyle(
+                ControlStyles.AllPaintingInWmPaint |
+                ControlStyles.OptimizedDoubleBuffer |
+                ControlStyles.ResizeRedraw |
+                ControlStyles.Selectable |
+                ControlStyles.UserPaint,
+                true);
+            Height = 30;
+            MinimumSize = new Size(150, 30);
+            TabStop = true;
+        }
+
+        internal void SetItems(params string[] values)
+        {
+            int previous = selectedIndex;
+            items = values ?? new string[0];
+            selectedIndex = items.Length == 0 ? -1 : Math.Max(0, Math.Min(items.Length - 1, previous));
+            Invalidate();
+        }
+
+        protected override void OnMouseDown(MouseEventArgs eventArgs)
+        {
+            base.OnMouseDown(eventArgs);
+            Focus();
+            if (Enabled && items.Length > 0 && ClientSize.Width > 0) {
+                SelectedIndex = Math.Min(
+                    items.Length - 1, eventArgs.X * items.Length / ClientSize.Width);
+            }
+        }
+
+        protected override void OnKeyDown(KeyEventArgs eventArgs)
+        {
+            base.OnKeyDown(eventArgs);
+            if (eventArgs.KeyCode == Keys.Left || eventArgs.KeyCode == Keys.Up) {
+                SelectedIndex--;
+                eventArgs.Handled = true;
+            } else if (eventArgs.KeyCode == Keys.Right || eventArgs.KeyCode == Keys.Down) {
+                SelectedIndex++;
+                eventArgs.Handled = true;
+            }
+        }
+
+        protected override void OnPaint(PaintEventArgs eventArgs)
+        {
+            Rectangle bounds = ClientRectangle;
+            eventArgs.Graphics.Clear(BackColor);
+            if (items.Length == 0 || bounds.Width < 2 || bounds.Height < 2) {
+                return;
+            }
+
+            int left = 0;
+            for (int index = 0; index < items.Length; index++) {
+                int right = index == items.Length - 1
+                    ? bounds.Width
+                    : (index + 1) * bounds.Width / items.Length;
+                Rectangle segment = new Rectangle(left, 0, right - left, bounds.Height);
+                using (Brush brush = new SolidBrush(
+                        index == selectedIndex ? AccentColor : SurfaceColor)) {
+                    eventArgs.Graphics.FillRectangle(brush, segment);
+                }
+                TextRenderer.DrawText(
+                    eventArgs.Graphics,
+                    items[index],
+                    Font,
+                    Rectangle.Inflate(segment, -5, -1),
+                    index == selectedIndex
+                        ? AccentTextColor
+                        : (Enabled ? ForeColor : MutedTextColor),
+                    TextFormatFlags.HorizontalCenter | TextFormatFlags.VerticalCenter |
+                    TextFormatFlags.EndEllipsis | TextFormatFlags.NoPrefix);
+                left = right;
+            }
+
+            using (Pen pen = new Pen(BorderColor)) {
+                eventArgs.Graphics.DrawRectangle(
+                    pen, 0, 0, bounds.Width - 1, bounds.Height - 1);
+                for (int index = 1; index < items.Length; index++) {
+                    int x = index * bounds.Width / items.Length;
+                    eventArgs.Graphics.DrawLine(pen, x, 1, x, bounds.Height - 2);
+                }
+            }
+            if (Focused && ShowFocusCues) {
+                ControlPaint.DrawFocusRectangle(
+                    eventArgs.Graphics, Rectangle.Inflate(bounds, -3, -3), ForeColor, BackColor);
+            }
+        }
+    }
+
     internal sealed class ThemedComboBox : ComboBox
     {
         internal Color BorderColor = Color.Gray;

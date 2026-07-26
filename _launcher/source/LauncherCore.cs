@@ -221,21 +221,33 @@ namespace BladeOfAgonyLauncher
         internal static string NormalizeMapName(string value)
         {
             string normalized = value == null ? string.Empty : value.Trim().ToUpperInvariant();
-            if (normalized.Length == 0 ||
-                !System.Text.RegularExpressions.Regex.IsMatch(normalized, "^[A-Z0-9_]+$")) {
+            if (!IsValidMapName(normalized)) {
                 return "C1M1";
             }
             return normalized;
         }
 
+        internal static bool IsValidMapName(string value)
+        {
+            string normalized = value == null ? string.Empty : value.Trim();
+            return normalized.Length > 0 &&
+                System.Text.RegularExpressions.Regex.IsMatch(normalized, "^[A-Za-z0-9_]+$");
+        }
+
         internal static string NormalizeHost(string value)
         {
             string normalized = value == null ? string.Empty : value.Trim();
-            if (normalized.Length == 0 ||
-                !System.Text.RegularExpressions.Regex.IsMatch(normalized, "^[A-Za-z0-9.-]+$")) {
+            if (!IsValidHost(normalized)) {
                 return "localhost";
             }
             return normalized;
+        }
+
+        internal static bool IsValidHost(string value)
+        {
+            string normalized = value == null ? string.Empty : value.Trim();
+            return normalized.Length > 0 &&
+                System.Text.RegularExpressions.Regex.IsMatch(normalized, "^[A-Za-z0-9.-]+$");
         }
 
         private static int ParseInteger(string value, int fallback)

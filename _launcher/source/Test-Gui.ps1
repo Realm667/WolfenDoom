@@ -64,6 +64,9 @@ public static class RebuiltGuiTestNative
     public static extern bool SetForegroundWindow(IntPtr handle);
 
     [DllImport("user32.dll")]
+    public static extern bool IsWindowVisible(IntPtr handle);
+
+    [DllImport("user32.dll")]
     public static extern bool PostMessage(IntPtr handle, uint message, IntPtr wParam, IntPtr lParam);
 
     [DllImport("user32.dll")]
@@ -95,6 +98,32 @@ function Capture-Window([IntPtr] $Handle) {
         $graphics.Dispose()
     }
     return $bitmap
+}
+
+function Find-ChildByText([IntPtr] $Parent, [string[]] $Texts) {
+    $script:matchingChild = [IntPtr]::Zero
+    $findChild = [RebuiltGuiTestNative+EnumProc] {
+        param($handle, $state)
+        if ($Texts -contains (Read-Text $handle)) {
+            $script:matchingChild = $handle
+        }
+        return $true
+    }
+    [void] [RebuiltGuiTestNative]::EnumChildWindows($Parent, $findChild, [IntPtr]::Zero)
+    return $script:matchingChild
+}
+
+function Select-Segment([IntPtr] $Handle, [int] $Index) {
+    $rect = [RebuiltGuiTestNative+Rect]::new()
+    [void] [RebuiltGuiTestNative]::GetWindowRect($Handle, [ref] $rect)
+    $width = $rect.Right - $rect.Left
+    $height = $rect.Bottom - $rect.Top
+    $x = [int] (($Index + 0.5) * $width / 3)
+    $y = [int] ($height / 2)
+    $position = [IntPtr] (($x -band 0xffff) -bor (($y -band 0xffff) -shl 16))
+    [void] [RebuiltGuiTestNative]::SendMessage($Handle, 0x0201, [IntPtr] 1, $position)
+    [void] [RebuiltGuiTestNative]::SendMessage($Handle, 0x0202, [IntPtr]::Zero, $position)
+    Start-Sleep -Milliseconds 150
 }
 
 $startInfo = [Diagnostics.ProcessStartInfo]::new()
@@ -178,6 +207,45 @@ try {
         throw 'Changing the game language did not localize the launcher to German.'
     }
 
+    $modeControl = Find-ChildByText $window @('MultiplayerMode')
+    $playersLabel = Find-ChildByText $window @(
+        'Players (including host):', 'Spieler (inklusive Host):')
+    $startMapLabel = Find-ChildByText $window @('Start map:', 'Startkarte:')
+    $hostInput = Find-ChildByText $window @('localhost')
+    $portLabel = Find-ChildByText $window @('UDP port:', 'UDP-Port:')
+    if (-not $modeControl -or -not $playersLabel -or -not $startMapLabel -or
+        -not $hostInput -or -not $portLabel) {
+        throw 'The multiplayer mode control or one of its contextual fields was not found.'
+    }
+
+    Select-Segment $modeControl 0
+    if ([RebuiltGuiTestNative]::IsWindowVisible($playersLabel) -or
+        [RebuiltGuiTestNative]::IsWindowVisible($hostInput) -or
+        [RebuiltGuiTestNative]::IsWindowVisible($portLabel)) {
+        throw 'Single-player mode did not hide multiplayer-only settings.'
+    }
+
+    Select-Segment $modeControl 1
+    if (-not [RebuiltGuiTestNative]::IsWindowVisible($playersLabel) -or
+        -not [RebuiltGuiTestNative]::IsWindowVisible($startMapLabel) -or
+        [RebuiltGuiTestNative]::IsWindowVisible($hostInput) -or
+        -not [RebuiltGuiTestNative]::IsWindowVisible($portLabel)) {
+        throw 'Host mode did not show only the host settings.'
+    }
+    Select-Segment $modeControl 2
+    $hostInput = Find-ChildByText $window @('localhost')
+    if ([RebuiltGuiTestNative]::IsWindowVisible($playersLabel) -or
+        [RebuiltGuiTestNative]::IsWindowVisible($startMapLabel) -or
+        -not $hostInput -or
+        -not [RebuiltGuiTestNative]::IsWindowVisible($hostInput) -or
+        -not [RebuiltGuiTestNative]::IsWindowVisible($portLabel)) {
+        throw "Join mode visibility mismatch: players=$([RebuiltGuiTestNative]::IsWindowVisible($playersLabel)), " +
+            "map=$([RebuiltGuiTestNative]::IsWindowVisible($startMapLabel)), " +
+            "host=$([RebuiltGuiTestNative]::IsWindowVisible($hostInput)), " +
+            "port=$([RebuiltGuiTestNative]::IsWindowVisible($portLabel))."
+    }
+    Select-Segment $modeControl 1
+
     $themeCandidates = [Collections.Generic.List[object]]::new()
     $findThemeCombo = [RebuiltGuiTestNative+EnumProc] {
         param($handle, $state)
@@ -219,7 +287,13 @@ try {
                 throw "$($themeCase.Name) background mismatch: #$actualColor"
             }
             if ($themeCase.Index -eq 2) {
-                $accentPixel = $themeBitmap.GetPixel(760, 680)
+                $windowRect = [RebuiltGuiTestNative+Rect]::new()
+                $playRect = [RebuiltGuiTestNative+Rect]::new()
+                [void] [RebuiltGuiTestNative]::GetWindowRect($window, [ref] $windowRect)
+                [void] [RebuiltGuiTestNative]::GetWindowRect($germanPlay, [ref] $playRect)
+                $accentX = $playRect.Left - $windowRect.Left + 10
+                $accentY = $playRect.Top - $windowRect.Top + 10
+                $accentPixel = $themeBitmap.GetPixel($accentX, $accentY)
                 $accentColor = '{0:X2}{1:X2}{2:X2}' -f `
                     $accentPixel.R, $accentPixel.G, $accentPixel.B
                 if ($accentColor -ne '668197') {
@@ -355,6 +429,7 @@ if ($previewWidth -gt 0) {
     "Live preview viewport ${previewWidth}x${previewHeight}: PASS"
 }
 "Game language -> launcher localization: PASS"
+"Multiplayer progressive disclosure: PASS"
 "Dark, Light, and Blade of Agony theme colors: PASS"
 
 if (Test-Path -LiteralPath $screenshot) {

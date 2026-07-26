@@ -17,6 +17,21 @@ project tree. The executable's `FORM1` and `FORM2` resources, launcher image,
 icon, manifest, localized gettext catalogs, and runtime behavior were
 therefore used to define a clean-room compatibility target.
 
+## Interface design references
+
+The 1.5 interface refresh uses the following current product and platform
+guidance:
+
+- Linear's design refresh informed the quieter visual hierarchy, restrained
+  borders, and the principle that structure should be perceived without every
+  section requiring a visible container.
+- Raycast informed the compact, fast, keyboard-accessible multiplayer mode
+  selector.
+- Microsoft Fluent progressive-disclosure guidance informed hiding settings
+  that are irrelevant to the selected network mode.
+- Microsoft dialog guidance informed showing validation errors beside the
+  affected input instead of interrupting the user with a modal dialog.
+
 ## Observed command behavior
 
 Base invocation:
@@ -97,3 +112,7 @@ empty paths, `.` segments, and `..` traversal segments.
   list frames.
 - Verified that the replacement numeric controls preserve loaded and saved
   multiplayer player-count, port, and skill values.
+- Verified the live single-player, host, and join layouts and confirmed that
+  only the controls relevant to each mode remain visible.
+- Verified localized inline validation and defensive normalization for invalid
+  multiplayer map and host input.

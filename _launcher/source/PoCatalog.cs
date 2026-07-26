@@ -122,6 +122,85 @@ namespace BladeOfAgonyLauncher
             for (int index = 0; index < keys.Length && index < values.Length; index++) {
                 translations[keys[index]] = values[index];
             }
+            AddModernTranslations(language);
+        }
+
+        private void AddModernTranslations(string language)
+        {
+            string[] values = null;
+            switch (language) {
+                case "de":
+                    values = new[] {
+                        "Grafik", "Spiel",
+                        "Bitte eine g\u00fcltige Startkarte eingeben.",
+                        "Bitte einen g\u00fcltigen Hostnamen oder eine IPv4-Adresse eingeben."
+                    };
+                    break;
+                case "es":
+                    values = new[] {
+                        "Gr\u00e1ficos", "Juego",
+                        "Introduce un mapa inicial v\u00e1lido.",
+                        "Introduce un nombre de host o una direcci\u00f3n IPv4 v\u00e1lidos."
+                    };
+                    break;
+                case "ru":
+                    values = new[] {
+                        "\u0413\u0440\u0430\u0444\u0438\u043a\u0430",
+                        "\u0418\u0433\u0440\u0430",
+                        "\u0412\u0432\u0435\u0434\u0438\u0442\u0435 \u0434\u043e\u043f\u0443\u0441\u0442\u0438\u043c\u0443\u044e \u043d\u0430\u0447\u0430\u043b\u044c\u043d\u0443\u044e \u043a\u0430\u0440\u0442\u0443.",
+                        "\u0412\u0432\u0435\u0434\u0438\u0442\u0435 \u0434\u043e\u043f\u0443\u0441\u0442\u0438\u043c\u043e\u0435 \u0438\u043c\u044f \u0445\u043e\u0441\u0442\u0430 \u0438\u043b\u0438 IPv4-\u0430\u0434\u0440\u0435\u0441."
+                    };
+                    break;
+                case "ptb":
+                    values = new[] {
+                        "Gr\u00e1ficos", "Jogo",
+                        "Insira um mapa inicial v\u00e1lido.",
+                        "Insira um nome de host ou endere\u00e7o IPv4 v\u00e1lido."
+                    };
+                    break;
+                case "it":
+                    values = new[] {
+                        "Grafica", "Gioco",
+                        "Inserisci una mappa iniziale valida.",
+                        "Inserisci un nome host o indirizzo IPv4 valido."
+                    };
+                    break;
+                case "tr":
+                    values = new[] {
+                        "Grafik", "Oyun",
+                        "Ge\u00e7erli bir ba\u015flang\u0131\u00e7 haritas\u0131 girin.",
+                        "Ge\u00e7erli bir host ad\u0131 veya IPv4 adresi girin."
+                    };
+                    break;
+                case "fr":
+                    values = new[] {
+                        "Graphismes", "Jeu",
+                        "Saisissez une carte de d\u00e9part valide.",
+                        "Saisissez un nom d'h\u00f4te ou une adresse IPv4 valide."
+                    };
+                    break;
+                case "cs":
+                    values = new[] {
+                        "Grafika", "Hra",
+                        "Zadejte platnou po\u010d\u00e1te\u010dn\u00ed mapu.",
+                        "Zadejte platn\u00fd n\u00e1zev hostitele nebo IPv4 adresu."
+                    };
+                    break;
+                case "pl":
+                    values = new[] {
+                        "Grafika", "Gra",
+                        "Wprowad\u017a prawid\u0142ow\u0105 map\u0119 startow\u0105.",
+                        "Wprowad\u017a prawid\u0142ow\u0105 nazw\u0119 hosta lub adres IPv4."
+                    };
+                    break;
+            }
+            if (values == null) {
+                return;
+            }
+            translations["Graphics"] = values[0];
+            translations["Game"] = values[1];
+            translations["Enter a valid start map."] = values[2];
+            translations["Enter a valid host name or IPv4 address."] = values[3];
         }
 
         private void Parse(string path)

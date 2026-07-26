@@ -15,11 +15,17 @@ original Pascal source code.
 - Restores cooperative multiplayer setup with single-player, host, and join
   modes. Host settings cover total player count, start map, UDP port, skill,
   and `sv_cheats`; join mode accepts a host name or IPv4 address and port.
+- Uses a keyboard-accessible segmented multiplayer selector and reveals only
+  the settings required by the selected mode.
+- Shows invalid map and host input inline, highlights the affected field, and
+  prevents launching until the visible input is valid.
 - Provides three persisted interface designs: Dark (the default, based on
   `#3B3B3B`), Light, and Blade of Agony (`#11273A` with `#668197` accents).
 - Uses flat theme-aware dropdowns, text fields, numeric steppers, checkboxes,
   list frames, and group borders instead of high-contrast native Windows
   control frames.
+- Organizes launcher settings into compact Graphics, Game, and Multiplayer
+  sections with modern Segoe UI typography and reduced decorative chrome.
 - Scans `.boa` ZIP descriptors exclusively from `addons` and reads localized
   `addoninfo.txt` metadata.
 - Selects multiple addons directly in the main list with Ctrl plus the primary

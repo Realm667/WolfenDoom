@@ -58,6 +58,7 @@ namespace BladeOfAgonyLauncher
             internal Color Border;
             internal Color Accent;
             internal Color AccentText;
+            internal Color Error;
             internal bool DarkTitleBar;
 
             internal static ThemePalette For(LauncherTheme theme)
@@ -72,6 +73,7 @@ namespace BladeOfAgonyLauncher
                         Border = Color.FromArgb(200, 200, 200),
                         Accent = Color.FromArgb(0, 102, 153),
                         AccentText = Color.White,
+                        Error = Color.FromArgb(180, 35, 24),
                         DarkTitleBar = false
                     };
                 }
@@ -85,6 +87,7 @@ namespace BladeOfAgonyLauncher
                         Border = Color.FromArgb(53, 80, 102),
                         Accent = Color.FromArgb(0x66, 0x81, 0x97),
                         AccentText = Color.White,
+                        Error = Color.FromArgb(224, 122, 122),
                         DarkTitleBar = true
                     };
                 }
@@ -97,6 +100,7 @@ namespace BladeOfAgonyLauncher
                     Border = Color.FromArgb(82, 82, 82),
                     Accent = Color.FromArgb(102, 129, 151),
                     AccentText = Color.White,
+                    Error = Color.FromArgb(224, 122, 122),
                     DarkTitleBar = true
                 };
             }
@@ -146,6 +150,31 @@ namespace BladeOfAgonyLauncher
             }
         }
 
+        private sealed class ChevronButton : Button
+        {
+            private readonly int direction;
+
+            internal ChevronButton(int direction)
+            {
+                this.direction = direction < 0 ? -1 : 1;
+                Text = string.Empty;
+            }
+
+            protected override void OnPaint(PaintEventArgs eventArgs)
+            {
+                base.OnPaint(eventArgs);
+                eventArgs.Graphics.SmoothingMode = SmoothingMode.AntiAlias;
+                int centerX = ClientSize.Width / 2;
+                int centerY = ClientSize.Height / 2;
+                int tipX = centerX + direction * 2;
+                int edgeX = centerX - direction * 2;
+                using (Pen pen = new Pen(ForeColor, 1.6f)) {
+                    eventArgs.Graphics.DrawLine(pen, edgeX, centerY - 4, tipX, centerY);
+                    eventArgs.Graphics.DrawLine(pen, tipX, centerY, edgeX, centerY + 4);
+                }
+            }
+        }
+
         private readonly string baseDirectory;
         private PoCatalog catalog;
         private readonly LauncherOptions options;
@@ -156,7 +185,15 @@ namespace BladeOfAgonyLauncher
         private readonly ThemedComboBox languageCombo = new ThemedComboBox();
         private readonly ThemedComboBox themeCombo = new ThemedComboBox();
         private readonly ThemedCheckBox commentaryCheck = new ThemedCheckBox();
-        private readonly ThemedComboBox multiplayerModeCombo = new ThemedComboBox();
+        private readonly ThemedSegmentedControl multiplayerModeControl =
+            new ThemedSegmentedControl();
+        private readonly TableLayoutPanel multiplayerSettingsPanel = new TableLayoutPanel();
+        private readonly Label multiplayerPlayersLabel = new Label();
+        private readonly Label multiplayerStartMapLabel = new Label();
+        private readonly Label multiplayerHostLabel = new Label();
+        private readonly Label multiplayerPortLabel = new Label();
+        private readonly Label multiplayerSkillLabel = new Label();
+        private readonly Label multiplayerValidation = new Label();
         private readonly ThemedNumericUpDown multiplayerPlayers = new ThemedNumericUpDown();
         private readonly ThemedTextBox multiplayerStartMap = new ThemedTextBox();
         private readonly ThemedTextBox multiplayerHost = new ThemedTextBox();
@@ -188,8 +225,9 @@ namespace BladeOfAgonyLauncher
 
             Text = "Blade of Agony";
             StartPosition = FormStartPosition.CenterScreen;
-            MinimumSize = new Size(900, 600);
-            Size = new Size(1040, 720);
+            Font = new Font("Segoe UI", 9.0f);
+            MinimumSize = new Size(940, 640);
+            Size = new Size(1080, 740);
             Icon = Icon.ExtractAssociatedIcon(Application.ExecutablePath);
 
             Controls.Add(CreateRootLayout());
@@ -226,7 +264,7 @@ namespace BladeOfAgonyLauncher
             content.Dock = DockStyle.Fill;
             content.ColumnCount = 2;
             content.RowCount = 1;
-            content.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 320));
+            content.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 350));
             content.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100));
 
             Panel settingsHost = new Panel();
@@ -251,22 +289,15 @@ namespace BladeOfAgonyLauncher
         {
             TableLayoutPanel panel = new TableLayoutPanel();
             panel.Dock = DockStyle.Fill;
-            panel.ColumnCount = 1;
-            panel.RowCount = 13;
-            panel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100));
-            for (int row = 0; row < 12; row++) {
+            panel.ColumnCount = 2;
+            panel.RowCount = 9;
+            panel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 46));
+            panel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 54));
+            for (int row = 0; row < 8; row++) {
                 panel.RowStyles.Add(new RowStyle(SizeType.AutoSize));
             }
             panel.RowStyles.Add(new RowStyle(SizeType.Percent, 100));
 
-            detailCombo.DropDownStyle = ComboBoxStyle.DropDownList;
-            detailCombo.Dock = DockStyle.Top;
-
-            displacementCombo.DropDownStyle = ComboBoxStyle.DropDownList;
-            displacementCombo.Dock = DockStyle.Top;
-
-            languageCombo.DropDownStyle = ComboBoxStyle.DropDownList;
-            languageCombo.Dock = DockStyle.Top;
             languageCombo.Items.AddRange(new object[] {
                 new LanguageChoice("en", "English (default)"),
                 new LanguageChoice("de", "Deutsch"),
@@ -282,42 +313,37 @@ namespace BladeOfAgonyLauncher
 
             SetLocalizedText(commentaryCheck, "Developer commentary");
             commentaryCheck.AutoSize = true;
-            commentaryCheck.Margin = new Padding(0, 4, 0, 0);
+            commentaryCheck.Margin = new Padding(0, 5, 0, 8);
 
-            panel.Controls.Add(CreateSettingLabel("Detail preset:"));
-            panel.Controls.Add(detailCombo);
-            panel.Controls.Add(CreateSpacer());
-            panel.Controls.Add(CreateSettingLabel("Displacement textures:"));
-            panel.Controls.Add(displacementCombo);
-            panel.Controls.Add(CreateSpacer());
-            panel.Controls.Add(CreateSettingLabel("Game language:"));
-            panel.Controls.Add(languageCombo);
-            panel.Controls.Add(CreateThemeSelector());
-            panel.Controls.Add(commentaryCheck);
-            panel.Controls.Add(CreateSpacer());
-            panel.Controls.Add(CreateMultiplayerPanel());
+            Label graphics = CreateSectionHeader("Graphics");
+            panel.Controls.Add(graphics, 0, 0);
+            panel.SetColumnSpan(graphics, 2);
+            AddSettingRow(panel, 1, "Detail preset:", detailCombo);
+            AddSettingRow(panel, 2, "Displacement textures:", displacementCombo);
+
+            Label game = CreateSectionHeader("Game");
+            panel.Controls.Add(game, 0, 3);
+            panel.SetColumnSpan(game, 2);
+            AddSettingRow(panel, 4, "Game language:", languageCombo);
+            AddSettingRow(panel, 5, "Design:", themeCombo);
+            panel.Controls.Add(commentaryCheck, 0, 6);
+            panel.SetColumnSpan(commentaryCheck, 2);
+
+            Control multiplayer = CreateMultiplayerPanel();
+            panel.Controls.Add(multiplayer, 0, 7);
+            panel.SetColumnSpan(multiplayer, 2);
             RefreshChoiceText();
             return panel;
         }
 
-        private Control CreateThemeSelector()
+        private Label CreateSectionHeader(string key)
         {
-            TableLayoutPanel row = new TableLayoutPanel();
-            row.Dock = DockStyle.Top;
-            row.AutoSize = true;
-            row.ColumnCount = 2;
-            row.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 92));
-            row.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100));
-            row.Margin = new Padding(0, 4, 0, 0);
-
-            Label label = CreateSettingLabel("Design:");
-            label.Margin = new Padding(0, 5, 6, 0);
-            row.Controls.Add(label, 0, 0);
-
-            themeCombo.DropDownStyle = ComboBoxStyle.DropDownList;
-            themeCombo.Dock = DockStyle.Top;
-            row.Controls.Add(themeCombo, 1, 0);
-            return row;
+            Label label = new Label();
+            SetLocalizedText(label, key);
+            label.AutoSize = true;
+            label.Font = new Font(Font.FontFamily, 9.5f, FontStyle.Bold);
+            label.Margin = new Padding(0, 5, 0, 7);
+            return label;
         }
 
         private Control CreateMultiplayerPanel()
@@ -329,20 +355,22 @@ namespace BladeOfAgonyLauncher
             group.AutoSizeMode = AutoSizeMode.GrowAndShrink;
             group.Padding = new Padding(10, 16, 10, 8);
 
-            TableLayoutPanel panel = new TableLayoutPanel();
-            panel.Dock = DockStyle.Top;
-            panel.AutoSize = true;
-            panel.ColumnCount = 2;
-            panel.RowCount = 7;
-            panel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 48));
-            panel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 52));
-            for (int row = 0; row < 7; row++) {
-                panel.RowStyles.Add(new RowStyle(SizeType.AutoSize));
+            multiplayerSettingsPanel.Dock = DockStyle.Top;
+            multiplayerSettingsPanel.AutoSize = true;
+            multiplayerSettingsPanel.ColumnCount = 2;
+            multiplayerSettingsPanel.RowCount = 8;
+            multiplayerSettingsPanel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 48));
+            multiplayerSettingsPanel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 52));
+            for (int row = 0; row < 8; row++) {
+                multiplayerSettingsPanel.RowStyles.Add(new RowStyle(SizeType.AutoSize));
             }
 
-            multiplayerModeCombo.DropDownStyle = ComboBoxStyle.DropDownList;
-            multiplayerModeCombo.Dock = DockStyle.Fill;
-            multiplayerModeCombo.SelectedIndexChanged += delegate { UpdateMultiplayerControls(); };
+            multiplayerModeControl.Dock = DockStyle.Top;
+            multiplayerModeControl.Margin = new Padding(0, 2, 0, 6);
+            multiplayerModeControl.Text = "MultiplayerMode";
+            multiplayerModeControl.SelectedIndexChanged += delegate {
+                UpdateMultiplayerControls();
+            };
 
             multiplayerPlayers.Minimum = 2;
             multiplayerPlayers.Maximum = 8;
@@ -352,6 +380,8 @@ namespace BladeOfAgonyLauncher
             multiplayerStartMap.Dock = DockStyle.Fill;
             multiplayerHost.MaxLength = 255;
             multiplayerHost.Dock = DockStyle.Fill;
+            multiplayerHost.TextChanged += delegate { UpdateMultiplayerValidation(); };
+            multiplayerStartMap.TextChanged += delegate { UpdateMultiplayerValidation(); };
             multiplayerPort.Minimum = 1;
             multiplayerPort.Maximum = 65535;
             multiplayerPort.Dock = DockStyle.Fill;
@@ -362,20 +392,42 @@ namespace BladeOfAgonyLauncher
             multiplayerCheats.AutoSize = true;
             multiplayerCheats.Margin = new Padding(3, 3, 3, 2);
 
-            AddSettingRow(panel, 0, "Mode:", multiplayerModeCombo);
-            AddSettingRow(panel, 1, "Players (including host):", multiplayerPlayers);
-            AddSettingRow(panel, 2, "Start map:", multiplayerStartMap);
-            AddSettingRow(panel, 3, "Host / IP:", multiplayerHost);
-            AddSettingRow(panel, 4, "UDP port:", multiplayerPort);
-            AddSettingRow(panel, 5, "Skill:", multiplayerSkill);
-            panel.Controls.Add(multiplayerCheats, 1, 6);
-            group.Controls.Add(panel);
+            multiplayerSettingsPanel.Controls.Add(multiplayerModeControl, 0, 0);
+            multiplayerSettingsPanel.SetColumnSpan(multiplayerModeControl, 2);
+            AddSettingRow(
+                multiplayerSettingsPanel, 1, "Players (including host):",
+                multiplayerPlayers, multiplayerPlayersLabel);
+            AddSettingRow(
+                multiplayerSettingsPanel, 2, "Start map:",
+                multiplayerStartMap, multiplayerStartMapLabel);
+            AddSettingRow(
+                multiplayerSettingsPanel, 3, "Host / IP:",
+                multiplayerHost, multiplayerHostLabel);
+            AddSettingRow(
+                multiplayerSettingsPanel, 4, "UDP port:",
+                multiplayerPort, multiplayerPortLabel);
+            AddSettingRow(
+                multiplayerSettingsPanel, 5, "Skill:",
+                multiplayerSkill, multiplayerSkillLabel);
+            multiplayerSettingsPanel.Controls.Add(multiplayerCheats, 1, 6);
+            multiplayerValidation.AutoSize = true;
+            multiplayerValidation.Margin = new Padding(0, 5, 0, 2);
+            multiplayerSettingsPanel.Controls.Add(multiplayerValidation, 0, 7);
+            multiplayerSettingsPanel.SetColumnSpan(multiplayerValidation, 2);
+            group.Controls.Add(multiplayerSettingsPanel);
             return group;
         }
 
         private void AddSettingRow(TableLayoutPanel panel, int row, string key, Control value)
         {
-            Label label = CreateSettingLabel(key);
+            AddSettingRow(panel, row, key, value, new Label());
+        }
+
+        private void AddSettingRow(
+            TableLayoutPanel panel, int row, string key, Control value, Label label)
+        {
+            SetLocalizedText(label, key);
+            label.AutoSize = true;
             label.Margin = new Padding(0, 3, 5, 2);
             label.AutoEllipsis = true;
             panel.Controls.Add(label, 0, row);
@@ -470,12 +522,10 @@ namespace BladeOfAgonyLauncher
             FlowLayoutPanel previewTools = new FlowLayoutPanel();
             previewTools.Dock = DockStyle.Fill;
             previewTools.FlowDirection = FlowDirection.RightToLeft;
-            Button next = new Button();
-            next.Text = ">";
+            Button next = new ChevronButton(1);
             next.Size = new Size(34, 26);
             next.Click += delegate { ChangePreview(1); };
-            Button previous = new Button();
-            previous.Text = "<";
+            Button previous = new ChevronButton(-1);
             previous.Size = new Size(34, 26);
             previous.Click += delegate { ChangePreview(-1); };
             previewCounter.AutoSize = true;
@@ -505,7 +555,6 @@ namespace BladeOfAgonyLauncher
             TableLayoutPanel bar = new TableLayoutPanel();
             bar.Dock = DockStyle.Fill;
             bar.Padding = new Padding(18, 10, 18, 10);
-            bar.BorderStyle = BorderStyle.FixedSingle;
             bar.ColumnCount = 3;
             bar.RowCount = 1;
             bar.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100));
@@ -536,7 +585,7 @@ namespace BladeOfAgonyLauncher
             SelectLanguage(options.Language);
             commentaryCheck.Checked = options.DeveloperCommentary;
             SelectTheme(options.Theme);
-            multiplayerModeCombo.SelectedIndex = (int)options.NetworkMode;
+            multiplayerModeControl.SelectedIndex = (int)options.NetworkMode;
             multiplayerPlayers.Value = Math.Max(
                 multiplayerPlayers.Minimum, Math.Min(multiplayerPlayers.Maximum, options.MultiplayerPlayers));
             multiplayerStartMap.Text = LauncherOptions.NormalizeMapName(options.MultiplayerStartMap);
@@ -560,8 +609,8 @@ namespace BladeOfAgonyLauncher
             options.Theme = themeCombo.SelectedIndex >= 0
                 ? (LauncherTheme)themeCombo.SelectedIndex
                 : LauncherTheme.Dark;
-            options.NetworkMode = multiplayerModeCombo.SelectedIndex >= 0
-                ? (MultiplayerMode)multiplayerModeCombo.SelectedIndex
+            options.NetworkMode = multiplayerModeControl.SelectedIndex >= 0
+                ? (MultiplayerMode)multiplayerModeControl.SelectedIndex
                 : MultiplayerMode.SinglePlayer;
             options.MultiplayerPlayers = Decimal.ToInt32(multiplayerPlayers.Value);
             options.MultiplayerStartMap = LauncherOptions.NormalizeMapName(multiplayerStartMap.Text);
@@ -622,16 +671,13 @@ namespace BladeOfAgonyLauncher
             displacementCombo.SelectedIndex = displacement >= 0 ? displacement : 1;
             displacementCombo.EndUpdate();
 
-            int multiplayer = multiplayerModeCombo.SelectedIndex;
-            multiplayerModeCombo.BeginUpdate();
-            multiplayerModeCombo.Items.Clear();
-            multiplayerModeCombo.Items.AddRange(new object[] {
+            int multiplayer = multiplayerModeControl.SelectedIndex;
+            multiplayerModeControl.SetItems(
                 catalog.Get("Single player"),
                 catalog.Get("Host co-op"),
-                catalog.Get("Join co-op")
-            });
-            multiplayerModeCombo.SelectedIndex = multiplayer >= 0 ? multiplayer : 0;
-            multiplayerModeCombo.EndUpdate();
+                catalog.Get("Join co-op"));
+            multiplayerModeControl.AccessibleName = catalog.Get("Multiplayer");
+            multiplayerModeControl.SelectedIndex = multiplayer >= 0 ? multiplayer : 0;
 
             int theme = themeCombo.SelectedIndex;
             themeCombo.BeginUpdate();
@@ -656,14 +702,63 @@ namespace BladeOfAgonyLauncher
 
         private void UpdateMultiplayerControls()
         {
-            bool hosting = multiplayerModeCombo.SelectedIndex == (int)MultiplayerMode.Host;
-            bool joining = multiplayerModeCombo.SelectedIndex == (int)MultiplayerMode.Join;
-            multiplayerPlayers.Enabled = hosting;
-            multiplayerStartMap.Enabled = hosting;
-            multiplayerHost.Enabled = joining;
-            multiplayerPort.Enabled = hosting || joining;
-            multiplayerSkill.Enabled = hosting;
-            multiplayerCheats.Enabled = hosting;
+            bool hosting = multiplayerModeControl.SelectedIndex == (int)MultiplayerMode.Host;
+            bool joining = multiplayerModeControl.SelectedIndex == (int)MultiplayerMode.Join;
+
+            SetMultiplayerRowVisible(1, hosting);
+            SetMultiplayerRowVisible(2, hosting);
+            SetMultiplayerRowVisible(3, joining);
+            SetMultiplayerRowVisible(4, hosting || joining);
+            SetMultiplayerRowVisible(5, hosting);
+            SetMultiplayerRowVisible(6, hosting);
+            UpdateMultiplayerValidation();
+            multiplayerSettingsPanel.PerformLayout();
+        }
+
+        private void SetMultiplayerRowVisible(int row, bool visible)
+        {
+            for (int column = 0; column < multiplayerSettingsPanel.ColumnCount; column++) {
+                Control control = multiplayerSettingsPanel.GetControlFromPosition(column, row);
+                if (control != null) {
+                    control.Visible = visible;
+                }
+            }
+            RowStyle style = multiplayerSettingsPanel.RowStyles[row];
+            style.SizeType = visible ? SizeType.AutoSize : SizeType.Absolute;
+            style.Height = 0;
+        }
+
+        private void UpdateMultiplayerValidation()
+        {
+            bool hosting = multiplayerModeControl.SelectedIndex == (int)MultiplayerMode.Host;
+            bool joining = multiplayerModeControl.SelectedIndex == (int)MultiplayerMode.Join;
+            string error = string.Empty;
+
+            if (hosting && !LauncherOptions.IsValidMapName(multiplayerStartMap.Text)) {
+                error = catalog.Get("Enter a valid start map.");
+            } else if (joining && !LauncherOptions.IsValidHost(multiplayerHost.Text)) {
+                error = catalog.Get("Enter a valid host name or IPv4 address.");
+            }
+
+            multiplayerStartMap.BorderColor =
+                hosting && !LauncherOptions.IsValidMapName(multiplayerStartMap.Text)
+                    ? palette.Error
+                    : palette.Border;
+            multiplayerHost.BorderColor =
+                joining && !LauncherOptions.IsValidHost(multiplayerHost.Text)
+                    ? palette.Error
+                    : palette.Border;
+            multiplayerStartMap.Invalidate();
+            multiplayerHost.Invalidate();
+
+            multiplayerValidation.Text = error;
+            multiplayerValidation.ForeColor = palette.Error;
+            bool showError = error.Length > 0;
+            multiplayerValidation.Visible = showError;
+            RowStyle validationStyle = multiplayerSettingsPanel.RowStyles[7];
+            validationStyle.SizeType = showError ? SizeType.AutoSize : SizeType.Absolute;
+            validationStyle.Height = 0;
+            playButton.Enabled = !showError;
         }
 
         private void ApplyLocalization(Control parent)
@@ -685,6 +780,8 @@ namespace BladeOfAgonyLauncher
             if (parent is TextBox || parent is ComboBox || parent is ListBox ||
                 parent is NumericUpDown || parent is ThemedNumericUpDown) {
                 background = palette.Input;
+            } else if (parent is ThemedSegmentedControl) {
+                background = palette.Background;
             } else if (parent is ThemedBorderPanel) {
                 background = palette.Input;
             } else if (parent is Button) {
@@ -735,6 +832,15 @@ namespace BladeOfAgonyLauncher
                 themedCombo.MutedTextColor = palette.MutedText;
                 themedCombo.Invalidate();
             }
+            ThemedSegmentedControl segmented = parent as ThemedSegmentedControl;
+            if (segmented != null) {
+                segmented.BorderColor = palette.Border;
+                segmented.SurfaceColor = palette.Surface;
+                segmented.AccentColor = palette.Accent;
+                segmented.AccentTextColor = palette.AccentText;
+                segmented.MutedTextColor = palette.MutedText;
+                segmented.Invalidate();
+            }
             ThemedTextBox themedText = parent as ThemedTextBox;
             if (themedText != null) {
                 themedText.BorderColor = palette.Border;
@@ -772,6 +878,7 @@ namespace BladeOfAgonyLauncher
             }
             if (object.ReferenceEquals(parent, this)) {
                 addonList.Invalidate();
+                UpdateMultiplayerValidation();
                 ApplyTitleBarTheme();
             }
         }

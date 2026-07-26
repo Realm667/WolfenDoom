@@ -1,5 +1,41 @@
 # Changelog
 
+## 1.5.0
+
+### Added
+
+- Added a keyboard-accessible segmented control for single-player, host
+  co-op, and join co-op selection.
+- Added progressive disclosure for multiplayer settings: single-player hides
+  all network fields, host shows server settings, and join shows only the
+  connection target and UDP port.
+- Added localized inline validation for host start maps and join addresses.
+- Added error-colored field borders and disabled the Play action while the
+  currently required multiplayer input is invalid.
+- Added built-in translations for the new section headings and validation
+  messages in all ten supported launcher languages.
+
+### Changed
+
+- Reorganized settings into clear Graphics, Game, and Multiplayer sections.
+- Increased the default window and settings-column size for improved
+  readability without reducing the 16:9 addon preview.
+- Updated the interface to Segoe UI 9 and removed the unnecessary frame
+  around the bottom action area.
+- Replaced font-dependent preview arrows with centered, custom-painted
+  chevron buttons.
+- Updated the live GUI test to verify all three multiplayer visibility states
+  and to sample theme colors from actual control bounds.
+- Launcher version increased to 1.5.0.
+
+### Verified
+
+- Verified single-player, host, and join progressive-disclosure states against
+  the live launcher window.
+- Verified defensive normalization of invalid map and host values.
+- Re-ran host/join commands, all language aliases, all three themes, addon
+  scanning and selection, INI preservation, and 16:9 cover-crop tests.
+
 ## 1.4.1
 
 ### Changed
