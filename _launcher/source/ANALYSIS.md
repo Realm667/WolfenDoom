@@ -92,3 +92,8 @@ empty paths, `.` segments, and `..` traversal segments.
   (`#668197`).
 - Confirmed that theme selection persists and that dark title-bar styling
   follows both dark designs on supported Windows versions.
+- Replaced high-contrast native field chrome with custom-painted one-pixel
+  borders and theme-aware chevrons, steppers, checkboxes, group boxes, and
+  list frames.
+- Verified that the replacement numeric controls preserve loaded and saved
+  multiplayer player-count, port, and skill values.

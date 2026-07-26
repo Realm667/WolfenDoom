@@ -69,7 +69,7 @@ namespace BladeOfAgonyLauncher
                         Input = Color.White,
                         Text = Color.FromArgb(30, 30, 30),
                         MutedText = Color.FromArgb(100, 100, 100),
-                        Border = Color.FromArgb(180, 180, 180),
+                        Border = Color.FromArgb(200, 200, 200),
                         Accent = Color.FromArgb(0, 102, 153),
                         AccentText = Color.White,
                         DarkTitleBar = false
@@ -82,7 +82,7 @@ namespace BladeOfAgonyLauncher
                         Input = Color.FromArgb(0x0B, 0x1D, 0x2B),
                         Text = Color.FromArgb(238, 244, 248),
                         MutedText = Color.FromArgb(175, 192, 206),
-                        Border = Color.FromArgb(63, 91, 112),
+                        Border = Color.FromArgb(53, 80, 102),
                         Accent = Color.FromArgb(0x66, 0x81, 0x97),
                         AccentText = Color.White,
                         DarkTitleBar = true
@@ -94,7 +94,7 @@ namespace BladeOfAgonyLauncher
                     Input = Color.FromArgb(43, 43, 43),
                     Text = Color.FromArgb(242, 242, 242),
                     MutedText = Color.FromArgb(190, 190, 190),
-                    Border = Color.FromArgb(102, 102, 102),
+                    Border = Color.FromArgb(82, 82, 82),
                     Accent = Color.FromArgb(102, 129, 151),
                     AccentText = Color.White,
                     DarkTitleBar = true
@@ -151,19 +151,20 @@ namespace BladeOfAgonyLauncher
         private readonly LauncherOptions options;
         private readonly List<AddonDescriptor> addons = new List<AddonDescriptor>();
 
-        private readonly ComboBox detailCombo = new ComboBox();
-        private readonly ComboBox displacementCombo = new ComboBox();
-        private readonly ComboBox languageCombo = new ComboBox();
-        private readonly ComboBox themeCombo = new ComboBox();
-        private readonly CheckBox commentaryCheck = new CheckBox();
-        private readonly ComboBox multiplayerModeCombo = new ComboBox();
-        private readonly NumericUpDown multiplayerPlayers = new NumericUpDown();
-        private readonly TextBox multiplayerStartMap = new TextBox();
-        private readonly TextBox multiplayerHost = new TextBox();
-        private readonly NumericUpDown multiplayerPort = new NumericUpDown();
-        private readonly NumericUpDown multiplayerSkill = new NumericUpDown();
-        private readonly CheckBox multiplayerCheats = new CheckBox();
+        private readonly ThemedComboBox detailCombo = new ThemedComboBox();
+        private readonly ThemedComboBox displacementCombo = new ThemedComboBox();
+        private readonly ThemedComboBox languageCombo = new ThemedComboBox();
+        private readonly ThemedComboBox themeCombo = new ThemedComboBox();
+        private readonly ThemedCheckBox commentaryCheck = new ThemedCheckBox();
+        private readonly ThemedComboBox multiplayerModeCombo = new ThemedComboBox();
+        private readonly ThemedNumericUpDown multiplayerPlayers = new ThemedNumericUpDown();
+        private readonly ThemedTextBox multiplayerStartMap = new ThemedTextBox();
+        private readonly ThemedTextBox multiplayerHost = new ThemedTextBox();
+        private readonly ThemedNumericUpDown multiplayerPort = new ThemedNumericUpDown();
+        private readonly ThemedNumericUpDown multiplayerSkill = new ThemedNumericUpDown();
+        private readonly ThemedCheckBox multiplayerCheats = new ThemedCheckBox();
         private readonly ListBox addonList = new ListBox();
+        private readonly ThemedBorderPanel addonListFrame = new ThemedBorderPanel();
         private readonly Label addonStatus = new Label();
         private readonly Label addonTitle = new Label();
         private readonly Label addonCredits = new Label();
@@ -321,7 +322,7 @@ namespace BladeOfAgonyLauncher
 
         private Control CreateMultiplayerPanel()
         {
-            GroupBox group = new GroupBox();
+            ThemedGroupBox group = new ThemedGroupBox();
             SetLocalizedText(group, "Multiplayer");
             group.Dock = DockStyle.Top;
             group.AutoSize = true;
@@ -420,6 +421,7 @@ namespace BladeOfAgonyLauncher
 
             addonList.Dock = DockStyle.Fill;
             addonList.IntegralHeight = false;
+            addonList.BorderStyle = BorderStyle.None;
             addonList.SelectionMode = SelectionMode.MultiExtended;
             addonList.DrawMode = DrawMode.OwnerDrawFixed;
             addonList.ItemHeight = Math.Max(Font.Height + 6, 22);
@@ -428,7 +430,9 @@ namespace BladeOfAgonyLauncher
                 lastClickedAddonIndex = addonList.IndexFromPoint(eventArgs.Location);
             };
             addonList.SelectedIndexChanged += delegate { SynchronizeAddonSelection(); };
-            panel.Controls.Add(addonList, 0, 2);
+            addonListFrame.Dock = DockStyle.Fill;
+            addonListFrame.Controls.Add(addonList);
+            panel.Controls.Add(addonListFrame, 0, 2);
 
             TableLayoutPanel details = new TableLayoutPanel();
             details.Dock = DockStyle.Fill;
@@ -452,7 +456,7 @@ namespace BladeOfAgonyLauncher
             addonDescription.ReadOnly = true;
             addonDescription.BorderStyle = BorderStyle.None;
             addonDescription.BackColor = SystemColors.Control;
-            addonDescription.ScrollBars = ScrollBars.Vertical;
+            addonDescription.ScrollBars = ScrollBars.None;
             details.Controls.Add(addonDescription);
 
             previewBox.Dock = DockStyle.Fill;
@@ -679,7 +683,9 @@ namespace BladeOfAgonyLauncher
             Color foreground = palette.Text;
 
             if (parent is TextBox || parent is ComboBox || parent is ListBox ||
-                parent is NumericUpDown) {
+                parent is NumericUpDown || parent is ThemedNumericUpDown) {
+                background = palette.Input;
+            } else if (parent is ThemedBorderPanel) {
                 background = palette.Input;
             } else if (parent is Button) {
                 background = object.ReferenceEquals(parent, playButton)
@@ -719,6 +725,46 @@ namespace BladeOfAgonyLauncher
             ComboBox comboBox = parent as ComboBox;
             if (comboBox != null) {
                 comboBox.FlatStyle = FlatStyle.Flat;
+            }
+            ThemedComboBox themedCombo = parent as ThemedComboBox;
+            if (themedCombo != null) {
+                themedCombo.BorderColor = palette.Border;
+                themedCombo.SurfaceColor = palette.Surface;
+                themedCombo.AccentColor = palette.Accent;
+                themedCombo.AccentTextColor = palette.AccentText;
+                themedCombo.MutedTextColor = palette.MutedText;
+                themedCombo.Invalidate();
+            }
+            ThemedTextBox themedText = parent as ThemedTextBox;
+            if (themedText != null) {
+                themedText.BorderColor = palette.Border;
+                themedText.Invalidate();
+            }
+            ThemedNumericUpDown themedNumber = parent as ThemedNumericUpDown;
+            if (themedNumber != null) {
+                themedNumber.BorderColor = palette.Border;
+                themedNumber.SurfaceColor = palette.Surface;
+                themedNumber.MutedTextColor = palette.MutedText;
+                themedNumber.Invalidate();
+            }
+            ThemedGroupBox themedGroup = parent as ThemedGroupBox;
+            if (themedGroup != null) {
+                themedGroup.BorderColor = palette.Border;
+                themedGroup.Invalidate();
+            }
+            ThemedBorderPanel themedBorder = parent as ThemedBorderPanel;
+            if (themedBorder != null) {
+                themedBorder.BorderColor = palette.Border;
+                themedBorder.Invalidate();
+            }
+            ThemedCheckBox themedCheck = parent as ThemedCheckBox;
+            if (themedCheck != null) {
+                themedCheck.BorderColor = palette.Border;
+                themedCheck.InputColor = palette.Input;
+                themedCheck.AccentColor = palette.Accent;
+                themedCheck.AccentTextColor = palette.AccentText;
+                themedCheck.MutedTextColor = palette.MutedText;
+                themedCheck.Invalidate();
             }
 
             foreach (Control child in parent.Controls) {

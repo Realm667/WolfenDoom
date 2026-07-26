@@ -17,6 +17,9 @@ original Pascal source code.
   and `sv_cheats`; join mode accepts a host name or IPv4 address and port.
 - Provides three persisted interface designs: Dark (the default, based on
   `#3B3B3B`), Light, and Blade of Agony (`#11273A` with `#668197` accents).
+- Uses flat theme-aware dropdowns, text fields, numeric steppers, checkboxes,
+  list frames, and group borders instead of high-contrast native Windows
+  control frames.
 - Scans `.boa` ZIP descriptors exclusively from `addons` and reads localized
   `addoninfo.txt` metadata.
 - Selects multiple addons directly in the main list with Ctrl plus the primary

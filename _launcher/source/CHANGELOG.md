@@ -1,5 +1,26 @@
 # Changelog
 
+## 1.4.1
+
+### Changed
+
+- Replaced bright native field frames with subdued one-pixel theme borders.
+- Replaced native dropdown buttons with flat theme-colored buttons and
+  chevrons.
+- Replaced native numeric steppers with compact theme-colored step controls.
+- Replaced native checkboxes, multiplayer group borders, and addon-list frames
+  with consistent custom-painted controls.
+- Removed the permanently visible native description scrollbar.
+- Reduced border contrast to `#525252` in Dark, `#355066` in Blade of Agony,
+  and `#C8C8C8` in Light.
+- Launcher version increased to 1.4.1.
+
+### Verified
+
+- Re-ran all three live theme color tests.
+- Re-ran language switching, host/join command, addon multi-selection,
+  no-addon selection, INI persistence, and 16:9 preview tests.
+
 ## 1.4.0
 
 ### Added
