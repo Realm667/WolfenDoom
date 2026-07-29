@@ -533,7 +533,7 @@ OptionMenu "BoAVideoOptions"
 	// Submenu "$DSPLYMNU_SWOPT", 				"SWROptions"  // BoA is not for software rendering - hawkwind
 	Submenu "$DSPLYMNU_VKOPT",					"VKOptions"
 	Submenu "$GLMNU_TEXOPT", 					"GLTextureGLOptions"
-	Submenu "$GLMNU_DYNLIGHT",					"GLLightOptions"
+	Submenu "$GLMNU_DYNLIGHT",					"GLLightOptions" // now uses the actual options in uzdoom.pk3 to fix an issue - https://github.com/UZDoom/UZDoom/issues/1638 - hawkwind.
 	StaticText " "
 	Slider "$DSPLYMNU_SCREENSIZE",				"screenblocks", 				3.0, 12.0, 1.0, 0
 	StaticText " "
@@ -553,18 +553,6 @@ OptionMenu "BoAVideoOptions"
 	StaticText " "
 	StaticText " "
 	Submenu "$OPTMNU_ORGVID",					"VideoOptions"
-}
-
-OptionMenu "GLLightOptions" protected
-{
-	Title "$GLLIGHTMNU_TITLE"
-	Option "$TCMNU_DYNLIGHTS",					"r_dynlights", "OnOff"
-	Option "$GLLIGHTMNU_LIGHTSENABLED",			gl_lights,				"OnOff"
-	Option "$GLLIGHTMNU_LIGHTSPRITES",			gl_light_sprites,		"YesNo"
-	Option "$GLLIGHTMNU_LIGHTPARTICLES",		gl_light_particles,		"YesNo"
-	Option "$GLLIGHTMNU_LIGHTSHADOWMAP",		gl_light_shadowmap,		"YesNo"
-	Option "$GLLIGHTMNU_LIGHTSHADOWMAPQUALITY", gl_shadowmap_quality,	"ShadowMapQuality"
-	Option "$GLLIGHTMNU_LIGHTSHADOWMAPFILTER", 	gl_shadowmap_filter,	"ShadowFilter"
 }
 
 OptionMenu "OpenGLOptions" protected
@@ -797,7 +785,7 @@ OptionMenu "BoABloodOptions"
 OptionString "BoALanguageOptions" //these includes BoA only related languages, so uncommented ones are not present yet - ozy81
 {
 	"auto", "Auto"
-    "cs", "Česky (Czech)"
+    "cs", "Čeština (Czech)" // was Česky. See https://www.italki.com/en/post/question-211686 - and conforms with the new BoA launcher - hawkwind. 
 	"de", "Deutsch (German)"
 	"default", "English (US)"
 	"en-GB", "English (UK)"
