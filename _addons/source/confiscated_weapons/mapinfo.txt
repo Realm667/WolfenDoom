@@ -1,0 +1,2776 @@
+// All this just so I could add to the list of equipment wipe in Astrostein, Part 2. I wish there's a cleaner way.
+
+
+
+////////////////////////////////
+///// GAME INFO SETTINGS ///////
+////////////////////////////////
+
+gameinfo
+{
+	PlayerClasses = "BoAPlayer"
+	menufontcolor_title = "DARKGRAY"
+	menufontcolor_label = "DARKGRAY"
+	menufontcolor_value = "DARKGRAY"
+	menufontcolor_action = "DARKGRAY"
+	menufontcolor_header = "DARKGRAY"
+	menufontcolor_highlight = "MENUBLACK"
+	menufontcolor_selection = "MENUBLACK"
+
+	MenuSliderColor = "RED"
+
+	dimcolor = "133049"
+	dimamount = 0.5
+	fullscreenautoaspect = 3
+	pickupcolor = "FFFFFF"
+
+	statscreen_mapnamefont = "BIGFONT", "DARKGRAY"
+	statscreen_finishedfont = "BIGFONT", "DARKGRAY"
+	statscreen_enteringfont = "BIGFONT", "DARKGRAY"
+
+	armoricons = "armh04", 0.1, "armh04"
+
+	cursorpic = "boacurs"
+	pausesign = "paused"
+	menubackbutton = "M_BACK"
+
+	maparrow = "graphics/MapArrow.txt"
+
+	borderflat = "textures/cncr_grn.jpg"
+
+	defaultconversationmenuclass = "BoAConversationMenu"
+	MessageboxClass = "ClassicMessageBox"
+	statusbarclass = "BoAStatusBar"
+
+	ForceKillScripts = true //needed for Droplets - ozy81
+
+	AddEventHandlers = "InventoryClearHandler", "WaterHandler",
+	"CustomShaderHandler", "MineSweeperHandler", "CompassHandler",
+	"MapStatsHandler", "PersistentMapStatsHandler", "UnderlayRenderer",
+	"TcPostProcessShaderHandler", "InteractionHandler", "LoadScreen", 
+	"KeyHandler", "ParticleManager", "GroundSplashDataHandler", 
+	"DebugEventHandler", "WideObjectivesDataHandler", "ScreenLabelHandler",
+	"MessageHandler", "PersistentMessageHandler", "ObjectiveHandler",
+	"MessageLogHandler", "DamageTracker", "ThingTracker", "InventoryTracker",
+	"AchievementTracker", "PersistentAchievementTracker"
+
+	ChatSound = "misc/chat"
+
+	QuitMessages = "$QUITMSG", "$QUITMSG1", "$QUITMSG2", "$QUITMSG3", "$QUITMSG4", "$QUITMSG5", "$QUITMSG6", 
+	"$QUITMSG7", "$QUITMSG8", "$QUITMSG9", "$QUITMSG10", "$QUITMSG11", "$QUITMSG12", "$QUITMSG13", "$QUITMSG14"
+}
+
+Automap
+{
+	Base = "Strife"
+	ShowLocks = True
+
+	Background = "CD CD CD"
+
+	YourColor = "29 3C CC"
+	ThingColor = "88 88 88"			//Decorations
+	ThingColor_Item = "20 9C FC"		//Weapons and Ammo
+	ThingColor_CountItem = "FF BB 00"	//Treasure (usually)
+	ThingColor_Monster = "FC 00 00"
+	ThingColor_Friend = "00 FC 00"
+
+	WallColor = "44 44 44"
+	TwoSidedWallColor = "C0 C0 C0"
+	FloorDiffWallColor = "66 66 66"
+	CeilingDiffWallColor = "99 99 99"
+	ExtraFloorWallColor = "99 99 99"
+	NotSeenColor = "B0 B0 B0"
+
+	PortalColor = "BB BB BB"
+
+	SpecialWallColor = "AE 0E 0E"
+	SecretSectorColor = "99 89 00"
+	UnexploredSecretColor = "FF EF 00"
+
+	GridColor = "D0 D0 D0"
+
+	AlmostBackgroundColor = "C0 C0 C0"
+}
+
+Automap_Overlay
+{
+	Base = "Strife"
+	ShowLocks = True
+
+	YourColor = "29 3C CC"
+	ThingColor = "88 88 88"			//Decorations
+	ThingColor_Item = "20 9C FC"		//Weapons and Ammo
+	ThingColor_CountItem = "FF BB 00"	//Treasure (usually)
+	ThingColor_Monster = "FC 00 00"
+	ThingColor_Friend = "00 FC 00"
+
+	WallColor = "BB BB BB"
+	TwoSidedWallColor = "3F 3F 3F"
+	FloorDiffWallColor = "99 99 99"
+	CeilingDiffWallColor = "66 66 66"
+	ExtraFloorWallColor = "66 66 66"
+	NotSeenColor = "4F 4F 4F"
+
+	PortalColor = "44 44 44"
+
+	SpecialWallColor = "AE 0E 0E"
+	SecretSectorColor = "99 89 00"
+	UnexploredSecretColor = "FF EF 00"
+
+	GridColor = "2F 2F 2F"
+
+	AlmostBackgroundColor = "3F 3F 3F"
+}
+
+Intermission Automap_Hack
+{
+	Image
+	{
+		Music = "NOMUSIC"
+		Background = ""
+		Sound = ""
+		Subtitle = " "
+		Time = -1
+	}
+}
+
+////////////////////////////////
+/////// EPISODE MENU ///////////
+////////////////////////////////
+
+clearepisodes
+
+defaultmap
+{
+	lightmode = 3
+	next = INTERMAP
+	Sky1 = "F_SKY1"
+	MapBackground = "MAP_BG"
+	nointermission
+	UnFreezeSinglePlayerConversations
+	ForceFallingDamage
+	MonsterFallingDamage
+	EnterPic = "CONBACK"
+	ExitPic = "CONBACK"
+
+	// Color Grading
+	EventHandlers = "ColorGradeEventHandler"
+
+	// Force breaking compatibility options off
+	compat_maskedmidtex = 0
+	compat_trace = 0
+
+	// Force SSAO being disabled in skyboxes
+	disableskyboxao
+}
+
+map INTERMAP lookup "INTERMAP"	//Tormentor667, MaxED & DoomJuan - Ed The Bat, Talon1024 & Ozy81 for minor edits
+{
+	levelnum = 99
+	cluster = 1
+}
+
+map TITLEMAP lookup "TITLEMAP" //MaxED & Tormentor667
+{
+	music = "D_DM2TTL"
+	EventHandlers = "ColorGradeEventHandler", "IWADChecker"
+	NoAutosaveHint 
+}
+
+map INTROMAP lookup "INTROMAP" //Tormentor667
+{
+	levelnum = 400
+	NoAutosaveHint 
+}
+
+map CREDITSM lookup "CREDITSM" //Tormentor667
+{
+	music = "C3M6_END"
+	next = EndTitle
+	NoAutosaveHint 
+}
+
+map TEST_ACT lookup "TEST_ACT" //Ozymandias81
+{
+	music = "JUKE11"
+	NoAutosaveHint 
+}
+
+map TEST_DLG lookup "TEST_DLG" // Talon1024
+{
+	music = "JUKE14"
+	NoAutosaveHint 
+}
+
+map TEST_LDR lookup "TEST_LDR" // AFADoomer
+{
+	music = "GETTHEM"
+	NoAutosaveHint 
+}
+
+// 3-digit map numbers:
+// 10x -> episode secret map
+// 15x/16x -> SNES easter egg maps
+// 20x -> additional parts of a multi-part map (modulus by 100 for the mission number)
+//##############################
+//###### FIRST EPISODE #########
+//##############################
+
+episode INTROMAP
+{
+	name = "$EPNAME1"
+	key = "s"
+}
+
+cluster 1
+{
+	hub
+}
+
+map C1M1 lookup "C1M1"	//Tormentor667
+{
+	levelnum = 1
+	music = "NOMUSIC"
+	cluster = 1
+	par = 662
+}
+
+map C1M2 lookup "C1M2"	//Tormentor667
+{
+	levelnum = 2
+	music = "C1M2_MUS"
+	cluster = 1
+	par = 1456
+}
+
+map C1M3 lookup "C1M3"	//Tormentor667
+{
+	levelnum = 3
+	FogDensity = 80 //mxd
+	music = "C1M3_MUS"
+	cluster = 1
+	par = 1352
+}
+
+map C1M4 lookup "C1M4"	//GuardSoul & Tormentor667
+{
+	levelnum = 4
+	music = "C1M4_MUS"
+	cluster = 1
+	par = 953
+}
+
+map CUTSCEN1 lookup "CUTSCEN1" //DoomJuan & Tormentor667
+{
+	levelnum = 5
+	music = "JUKE03"
+	cluster = 1
+	next = C1M5
+}
+
+map C1M5 lookup "C1M5"	//Tormentor667 & DoomJuan
+{
+	levelnum = 205
+	music = "C1M5_INT"
+	cluster = 1
+	EventHandlers = "ColorGradeEventHandler", "RevolvingDoorHandler"
+	par = 2051
+}
+
+map C1M6 lookup "C1M6"	//Tormentor667
+{
+	levelnum = 6
+	next = EndTitle
+	music = "C1M6_MUS"
+	cluster = 1
+	par = 1607
+}
+
+map C1M0 lookup "C1M0"	//Tormentor667
+{
+	levelnum = 101
+	cluster = 1
+	music = "C3M2_MUS"
+	par = 1672
+}
+
+//###############################/
+//###### SECOND EPISODE #########/
+//###############################/
+
+episode C2M1
+{
+	name = "$EPNAME2"
+	key = "f"
+}
+
+map C2M1 lookup "C2M1"	//Tormentor667
+{
+	levelnum = 7
+	music = "NOMUSIC"
+	cluster = 1
+	par = 1926
+}
+
+map C2M2 lookup "C2M2"	//Guardsoul & Tormentor667
+{
+	levelnum = 8
+	music = "NOMUSIC"
+	cluster = 1
+	par = 1629
+}
+
+map C2M3 lookup "C2M3"	//Tormentor667
+{
+	levelnum = 9
+	music = "C1M2_MUS"
+	cluster = 1
+	par = 1702
+}
+
+map C2M4 lookup "C2M4"	//Tormentor667
+{
+	levelnum = 10
+	music = "C2M4_RUS"
+	cluster = 1
+	next = CUTSCEN2
+	par = 1059
+}
+
+map CUTSCEN2 lookup "CUTSCEN2" //N00b & ??
+{
+	levelnum = 210
+	music = "JUKE03"
+	cluster = 1
+	NoAutosaveHint 
+}
+
+map C2M5_A lookup "C2M5"	//Tormentor667
+{
+	levelnum = 11
+	music = "C1M2_MUS"
+	cluster = 1
+	next = C2M5_B
+	par = 475
+}
+
+map C2M5_B lookup "C2M5"	//Tormentor667
+{
+	levelnum = 211
+	music = "C2M5_LAB"
+	cluster = 1
+	par = 1683
+}
+
+map C2M6_A lookup "C2M6"	//Tormentor667
+{
+	levelnum = 12
+	music = "C2M4_MUS"
+	cluster = 1
+	next = C2M6_B
+	par = 1278
+}
+
+map C2M6_B lookup "C2M6"	//Tormentor667 & DoomJuan
+{
+	levelnum = 212
+	music = "C2M6B_IN" 	//"C2M5_MUS" runs after intro
+	cluster = 1
+	next = C2M6_C
+	par = 899
+}
+
+map C2M6_C lookup "C2M6"	//Tormentor667
+{
+	levelnum = 312
+	next = EndTitle
+	music = "C2M6C_IN"	//"C2M6AMUS" runs after intro
+	cluster = 1
+	par = 1730
+}
+
+map C2M0_A lookup "C2M0"	//Tormentor667
+{
+	levelnum = 102
+	music = "C2M0AMUS"
+	cluster = 1
+	next = C2M0_B
+	par = 1193
+}
+
+map C2M0_B lookup "C2M0"	//Tormentor667
+{
+	levelnum = 311
+	music = "C2M0BMUS"
+	cluster = 1
+	par = 2316
+	EventHandlers = "ConfisWeapsAstroWipe"
+}
+
+//###############################/
+//####### THIRD EPISODE #########/
+//###############################/
+
+episode C3INTRO
+{
+	name = "$EPNAME3"
+	key = "b"
+}
+
+map C3INTRO lookup "C3INTRO" //Tormentor667
+{
+	levelnum = 13
+	cluster = 1
+	music = "C3INTR2"
+	NoAutosaveHint 
+}
+
+map C3M1_A lookup "C3M1"	//Tormentor667
+{
+	levelnum = 14
+	music = "NOMUSIC"
+	cluster = 1
+	next = C3M1_B
+	par = 1259
+}
+
+map C3M1_B lookup "C3M1"	//Tormentor667
+{
+	levelnum = 214
+	music = "NOMUSIC"
+	cluster = 1
+	par = 805
+}
+
+map C3M2 lookup "C3M2"	//Tormentor667
+{
+	levelnum = 15
+	music = "C3M2_MU2"
+	cluster = 1
+	par = 2509
+}
+
+map C3M3_A lookup "C3M3"	//Tormentor667
+{
+	levelnum = 16
+	music = "C3M3_MUS"
+	cluster = 1
+	next = C3M3_B
+	par = 876
+}
+
+map C3M3_B lookup "C3M3"	//Tormentor667
+{
+	levelnum = 216
+	music = "C3M3_MUS"
+	cluster = 1
+	next = CUTSCEN3
+	par = 1139
+}
+
+map CUTSCEN3 lookup "CUTSCEN3" //DoomJuan & Tormentor667
+{
+	levelnum = 316
+	music = "JUKE03"
+	cluster = 1
+	NoAutosaveHint 
+}
+
+map C3M4 lookup "C3M4"		//Tormentor667
+{
+	levelnum = 17
+	music = "C3M4_MUS"
+	cluster = 1
+	par = 1399
+}
+
+map C3M5_A lookup "C3M5"	//Tormentor667 & DoomJuan
+{
+	levelnum = 18
+	music = "C3M5AMUS"
+	cluster = 1
+	next = C3M5_B
+	par = 1619
+}
+
+map C3M5_B lookup "C3M5"	//Tormentor667
+{
+	levelnum = 218
+	music = "C3M5BMUS"
+	cluster = 1
+	next = C3M5_C
+	par = 1009
+}
+
+map C3M5_C lookup "C3M5"	//Tormentor667
+{
+	levelnum = 318
+	music = "C3M5CMS"
+	cluster = 1
+	next = C3M6_A
+	par = 728
+}
+
+map C3M6_A lookup "C3M6"	//DoomJuan & Tormentor667
+{
+	levelnum = 19
+	music = ""
+	cluster = 1
+	next = C3M6_B
+	par = 1724
+}
+
+map C3M6_B lookup "C3M6"	//DoomJuan & Tormentor667
+{
+	levelnum = 219
+	music = "C3M6BMUS"
+	cluster = 1
+	next = CREDITSM
+	par = 3329
+}
+
+map C3M0_A lookup "C3M0_A"	//Tormentor667
+{
+	levelnum = 103
+	music = "C3M0AMUS"
+	cluster = 1
+	par = 3302
+}
+
+map C3M0_B lookup "C3M0_B"	//Tormentor667
+{
+	levelnum = 104
+	music = "C3M0BMUS"
+	cluster = 1
+	par = 620
+}
+
+//###############################/
+//######## BONUS MAPS ###########/
+//###############################/
+
+map SM01 lookup "SM01"	//Tormentor667
+{
+	levelnum = 151
+	music = "SM01_MUS"
+	cluster = 1
+	EvenLighting 
+	aircontrol = 0.8
+	ForgetState
+}
+
+map SM02 lookup "SM02"	//Tormentor667
+{
+	levelnum = 152
+	music = "SM02_MUS"
+	cluster = 1
+	EvenLighting 
+	 lightmode = 0
+	aircontrol = 0.8
+	ForgetState
+}
+
+map SM03 lookup "SM03"	//Tormentor667
+{
+	levelnum = 153
+	music = "SM03_MUS"
+	cluster = 1
+	EvenLighting 
+	aircontrol = 0.8
+	ForgetState
+}
+
+////////////////////////////////
+////// SKILL SETTINGS //////////
+////////////////////////////////
+
+clearskills
+
+skill Nazis1
+{
+	DamageFactor = 0.5
+	Aggressiveness = -0.5
+	SpawnFilter = Easy
+	MonsterHealth = 0.44444444  // 2/3²
+	EasyBossBrain
+	ACSReturn = 0
+	Key = 1
+	Name = "$BOASKILL1" // "German Girls" - the division of the Hitler Youth for girls aged 10-14.
+	replaceactor = "EnemyAstroTracer", "BabyEnemyAstroTracer"
+	replaceactor = "EnemyChaingunTracer", "BabyEnemyChaingunTracer"
+	replaceactor = "EnemyMutantTracer", "BabyEnemyMutantTracer"
+	replaceactor = "EnemyPanzerRocket", "BabyEnemyPanzerRocket"
+	replaceactor = "EnemyPistolTracer", "BabyEnemyPistolTracer"
+	replaceactor = "EnemyProtoTracer", "BabyEnemyProtoTracer"
+	replaceactor = "EnemyRifleTracer", "BabyEnemyRifleTracer"
+	replaceactor = "EnemySMGTracer", "BabyEnemySMGTracer"
+	replaceactor = "EnemySTGTracer", "BabyEnemySTGTracer"
+	replaceactor = "EnemyShotgunTracer", "BabyEnemyShotgunTracer"
+	replaceactor = "REnemyPistolTracer", "BabyREnemyPistolTracer"
+	replaceactor = "REnemyRifleTracer", "BabyREnemyRifleTracer"
+	replaceactor = "REnemySMGTracer", "BabyREnemySMGTracer"
+	totalinfighting
+}
+
+skill Nazis2
+{
+	DamageFactor = 0.75
+	SpawnFilter = Easy
+	MonsterHealth = 0.66666666  // 2/3
+	ACSReturn = 1
+	Key = 2
+	Name = "$BOASKILL2" // "Morning Stroll" - borrowed from the title of a Kraftwerk song.
+	replaceactor = "EnemyAstroTracer", "EasyEnemyAstroTracer"
+	replaceactor = "EnemyChaingunTracer", "EasyEnemyChaingunTracer"
+	replaceactor = "EnemyMutantTracer", "EasyEnemyMutantTracer"
+	replaceactor = "EnemyPistolTracer", "EasyEnemyPistolTracer"
+	replaceactor = "EnemyProtoTracer", "EasyEnemyProtoTracer"
+	replaceactor = "EnemyRifleTracer", "EasyEnemyRifleTracer"
+	replaceactor = "EnemySMGTracer", "EasyEnemySMGTracer"
+	replaceactor = "EnemySTGTracer", "EasyEnemySTGTracer"
+	replaceactor = "EnemyShotgunTracer", "EasyEnemyShotgunTracer"
+	replaceactor = "REnemyPistolTracer", "EasyREnemyPistolTracer"
+	replaceactor = "REnemyRifleTracer", "EasyREnemyRifleTracer"
+	replaceactor = "REnemySMGTracer", "EasyREnemySMGTracer"
+	totalinfighting
+}
+
+skill Nazis3
+{
+	SpawnFilter = Normal
+	ACSReturn = 2
+	Key = 3
+	Name = "$BOASKILL3" // "Ordinary" - from Google translate.
+}
+
+skill Nazis4
+{
+	Aggressiveness = 0.25
+	SpawnFilter = Hard
+	ACSReturn = 3
+	Key = 4
+	Name = "$BOASKILL4" // "Super Man" -- this was actually incorrect
+	replaceactor = "AstroDroneBall", "HardAstroDroneBall"
+	replaceactor = "AstroRobotSeekerBall", "HardAstroRobotSeekerBall"
+	replaceactor = "ClusterBomb_Debris", "HardClusterBomb_Debris"
+	replaceactor = "EnemyAstroTracer", "HardEnemyAstroTracer"
+	replaceactor = "EnemyChaingunTracer", "HardEnemyChaingunTracer"
+	replaceactor = "EnemyFlamebolt", "HardEnemyFlamebolt"
+	replaceactor = "EnemyFlamebolt2", "HardEnemyFlamebolt2"
+	replaceactor = "EnemyFlamerShot", "HardEnemyFlamerShot"
+	replaceactor = "EnemyMutantTracer", "HardEnemyMutantTracer"
+	replaceactor = "EnemyPanzerRocket", "HardEnemyPanzerRocket"
+	replaceactor = "EnemyPistolTracer", "HardEnemyPistolTracer"
+	replaceactor = "EnemyProtoTracer", "HardEnemyProtoTracer"
+	replaceactor = "EnemyRifleTracer", "HardEnemyRifleTracer"
+	replaceactor = "EnemySMGTracer", "HardEnemySMGTracer"
+	replaceactor = "EnemySTGTracer", "HardEnemySTGTracer"
+	replaceactor = "EnemyShotgunTracer", "HardEnemyShotgunTracer"
+	replaceactor = "REnemyPistolTracer", "HardREnemyPistolTracer"
+	replaceactor = "REnemyRifleTracer", "HardREnemyRifleTracer"
+	replaceactor = "REnemySMGTracer", "HardREnemySMGTracer"
+	replaceactor = "FlyingCleaver", "HardFlyingCleaver"
+	replaceactor = "FlyingHack", "HardFlyingHack"
+	replaceactor = "FlyingNeedle", "HardFlyingNeedle"
+	replaceactor = "FlyingNeedleNoGrav", "HardFlyingNeedleNoGrav"
+	replaceactor = "FlyingNeedleZ", "HardFlyingNeedleZ"
+	replaceactor = "FlyingNeedleZNoGrav", "HardFlyingNeedleZNoGrav"
+	replaceactor = "MechaRocket", "HardMechaRocket"
+	replaceactor = "MiniMechaRocket", "HardMiniMechaRocket"
+	replaceactor = "MiniMiniRocket", "HardMiniMiniRocket"
+	replaceactor = "MiniRocket", "HardMiniRocket"
+	replaceactor = "MutantRocket", "HardMutantRocket"
+	replaceactor = "NebRocketEnemy", "HardNebRocketEnemy"
+	replaceactor = "SeekerRocket", "HardSeekerRocket"
+	replaceactor = "ZTracer", "HardZTracer"
+	replaceactor = "ZombieRocket", "HardZombieRocket"
+}
+
+skill Nazis5
+{
+	DamageFactor = 2.0
+	Aggressiveness = 0.75
+	SpawnFilter = Hard
+	ACSReturn = 4
+	Key = 5
+	DisableCheats
+	FastMonsters
+	Name = "$BOASKILL5" // If you don't know this...
+	replaceactor = "AstroDroneBall", "HardAstroDroneBall"
+	replaceactor = "AstroRobotSeekerBall", "HardAstroRobotSeekerBall"
+	replaceactor = "ClusterBomb_Debris", "HardClusterBomb_Debris"
+	replaceactor = "EnemyAstroTracer", "HardEnemyAstroTracer"
+	replaceactor = "EnemyChaingunTracer", "HardEnemyChaingunTracer"
+	replaceactor = "EnemyFlamebolt", "HardEnemyFlamebolt"
+	replaceactor = "EnemyFlamebolt2", "HardEnemyFlamebolt2"
+	replaceactor = "EnemyFlamerShot", "HardEnemyFlamerShot"
+	replaceactor = "EnemyMutantTracer", "HardEnemyMutantTracer"
+	replaceactor = "EnemyPanzerRocket", "HardEnemyPanzerRocket"
+	replaceactor = "EnemyPistolTracer", "HardEnemyPistolTracer"
+	replaceactor = "EnemyProtoTracer", "HardEnemyProtoTracer"
+	replaceactor = "EnemyRifleTracer", "HardEnemyRifleTracer"
+	replaceactor = "EnemySMGTracer", "HardEnemySMGTracer"
+	replaceactor = "EnemySTGTracer", "HardEnemySTGTracer"
+	replaceactor = "EnemyShotgunTracer", "HardEnemyShotgunTracer"
+	replaceactor = "FlyingCleaver", "HardFlyingCleaver"
+	replaceactor = "FlyingHack", "HardFlyingHack"
+	replaceactor = "FlyingNeedle", "HardFlyingNeedle"
+	replaceactor = "FlyingNeedleNoGrav", "HardFlyingNeedleNoGrav"
+	replaceactor = "FlyingNeedleZ", "HardFlyingNeedleZ"
+	replaceactor = "FlyingNeedleZNoGrav", "HardFlyingNeedleZNoGrav"
+	replaceactor = "HansGrenade", "HardHansGrenade"
+	replaceactor = "MechaRocket", "HardMechaRocket"
+	replaceactor = "MiniMechaRocket", "HardMiniMechaRocket"
+	replaceactor = "MiniMiniRocket", "HardMiniMiniRocket"
+	replaceactor = "MiniRocket", "HardMiniRocket"
+	replaceactor = "MutantRocket", "HardMutantRocket"
+	replaceactor = "NebRocketEnemy", "HardNebRocketEnemy"
+	replaceactor = "REnemyPistolTracer", "HardREnemyPistolTracer"
+	replaceactor = "REnemyRifleTracer", "HardREnemyRifleTracer"
+	replaceactor = "REnemySMGTracer", "HardREnemySMGTracer"
+	replaceactor = "SeekerRocket", "HardSeekerRocket"
+	replaceactor = "SlowGrenade", "HardSlowGrenade"
+	replaceactor = "VeryFastGrenade", "HardVeryFastGrenade"
+	replaceactor = "VerySlowGrenade", "HardVerySlowGrenade"
+	replaceactor = "ZFlyingHack", "ZHardFlyingHack"
+	replaceactor = "ZTracer", "HardZTracer"
+	replaceactor = "ZombieRocket", "HardZombieRocket"
+}
+
+////////////////
+//DAMAGE TYPES//
+////////////////
+
+/*
+AstroPoison
+Creepy
+Electric
+EnemyFrag
+Fire
+Frag
+FriendlyFrag
+IceWater
+Knife
+MutantPoison
+MutantPoisonAmbience
+None
+OccultFire
+PoisonCloud
+Rocket
+Reznator
+Smoke
+Trample
+Truck
+UndeadPoison
+UndeadPoisonAmbience
+*/
+
+DamageType IceWater
+{
+	NoArmor
+	ReplaceFactor
+}
+
+DamageType MutantPoison
+{
+	NoArmor
+	ReplaceFactor
+}
+
+DamageType MutantPoisonAmbience
+{
+	NoArmor
+	ReplaceFactor
+}
+
+DamageType UndeadPoison
+{
+	NoArmor
+	ReplaceFactor
+}
+
+DamageType UndeadPoisonAmbience
+{
+	NoArmor
+	ReplaceFactor
+}
+
+DamageType EnemyFrag
+{
+	ReplaceFactor
+}
+
+DamageType FriendlyFrag
+{
+	NoArmor
+	ReplaceFactor
+}
+
+DamageType Knife
+{
+	NoArmor
+	ReplaceFactor
+}
+
+DamageType Trample { NoArmor }
+DamageType Truck { ReplaceFactor }
+DamageType Rocket { ReplaceFactor }
+
+DamageType Failure
+{
+	Factor = 1000000.0
+	NoArmor
+	ReplaceFactor
+	Obituary = "$OBFAILURE"
+}
+
+//////////////
+//DOOMEDNUMS//
+//////////////
+
+DoomEdNums
+{
+	5998=ExTeleportIfPlayerBelow
+	5999=ExTeleportIfPlayerAbove
+	6000=RepairKit
+	6001=Crank
+	6002=LaraCroft
+	6003=WolfBloodPool
+	6004=WolfColonGibs
+	7890=RatFamiliar
+	7891=BatFamiliar
+	7892=BloodSkull
+	7893=ZBatFamiliar
+	7894=ZyklonSkull
+	7895=ZyklonMonk
+	7997=LaserShark
+	7998=ActorBlockerMini
+	7999=ActorBlocker
+	8000=Shark
+	8001=Bodiless_Swarm
+	8002=Bodiless_Swarm2
+	8005=ScientistUniform
+	8006=SSBJUniform
+	8007=CCBJUniform
+	8008=GrapplingHook
+	8009=TrainingTarget
+	8010=Fahrkarten
+	8181=CinderSpawner
+	8182=CinderSpawnerSky
+	8183=LeavesSpawner
+	8184=LeavesSpawnerHorizontal
+	8185=ConfettiSpawner
+	8186=SnowSpawner
+	8187=RainSpawner
+	8188=VolumetricLight_ConeDown
+	8189=VolumetricLight_ConeUp
+	8190=VolumetricLight_ConePitch
+	8877=AstrosteinExplosion_Decorative
+	8878=SceneryExplosion_Medium
+	8879=AstrosteinExplosion_Medium
+	8880=GeneralExplosion_Medium
+	8881=CrowWander1L
+	8882=CrowWander1R
+	8883=CrowWander2L
+	8884=CrowWander2R
+	8885=CrowWander3L
+	8886=CrowWander3R
+	8887=CrowWander4L
+	8888=CrowWander4R
+	8889=CrowStill1L
+	8890=CrowStill1R
+	8891=CrowStill2L
+	8892=CrowStill2R
+	8893=CrowStill3L
+	8894=CrowStill3R
+	8895=CrowStill4L
+	8896=CrowStill4R
+	8897=Cows
+	8898=BarkDog
+	8899=BlackCat
+	8900=CatSpawner
+	8910=Camel
+	10000=CloudSpawner
+	10018=BigSpider
+	10019=MiniSpider
+	10151=BreakableVase1
+	10152=BreakableVase2
+	10153=BreakableVase3
+	10154=BreakableVase4
+	10155=BreakableVase5
+	10156=BreakableVase6
+	10157=EgyptPlant1
+	10158=AztecVase1
+	10159=AztecVase2
+	10310=BoulderStartGrey
+	10311=BoulderStartBrown
+	10312=BoulderStartBrownHugger
+	10313=BoulderStartGreyHugger
+	10315=GroundSpikes
+	10320=CobwebBody
+	10321=CobwebNest
+	10420=LavaCauldron
+	10421=CraterGrass
+	10422=NiceBush1
+	10423=NiceBush2
+	10424=NiceBush3
+	10425=NiceBush4
+	10426=NiceBush5
+	10427=NiceBush6
+	10428=NiceBush7
+	10429=NiceBush8
+	10430=NiceBush9
+	10431=CraterSnow
+	10432=CraterDirt
+	10433=SnowPile1
+	10434=Door_A1_3d
+	10435=Door_A2_3d
+	10436=Door_B1_3d
+	10437=Door_B2_3d
+	10438=StainedGlassLight
+	10440=GoryDecal1
+	10441=GoryDecal2
+	10442=GoryDecal3
+	10443=GoryDecal4
+	10444=GoryDecal5
+	10445=GoryDecal6
+	10446=GoryDecal7
+	10447=GoryDecal8
+	10448=GoryDecal9
+	10449=GoryDecal10
+	10450=GoryDecal11
+	10451=GoryDecal12
+	10452=GoryDecal13
+	10453=GoryDecal14
+	10454=GoryDecal15
+	10455=GoryDecal16
+	10456=GoryDecalSpawner
+	10457=SootDecal1
+	10458=SootDecal2
+	10459=SootDecal3
+	10460=SootDecal4
+	10461=SootDecal5
+	10462=SootDecal6
+	10463=SootDecal7
+	10464=EiffelTower
+	10465=ZyklonDecal1
+	10466=ZyklonDecal2
+	10467=ZyklonDecal3
+	10468=ZyklonDecal4
+	10469=ZyklonDecal5
+	10470=ZyklonDecal6
+	10471=ZyklonDecal7
+	10472=ZyklonDecal8
+	10473=ZyklonDecal9
+	10474=ZyklonDecal10
+	10475=ZyklonDecal11
+	10476=ZyklonDecal12
+	10477=ZyklonDecal13
+	10478=ZyklonDecal14
+	10479=ZyklonDecal15
+	10480=ZyklonDecal16
+	10481=ZyklonDecalSpawner
+	10482=CyanideProp1
+	10483=CyanideProp2
+	10500=CODPipe1
+	10501=CODPipe2
+	10502=CODPipe3
+	10503=CODPipe4
+	10504=CODPipe5
+	10505=CODPipe6
+	10506=CODPipe7
+	10507=CODPipe8
+	10508=CODPipe9
+	10509=CODPipe10
+	10510=CODPipe11
+	10511=CODPipe12
+	10512=CODPipe13
+	10513=CODPipe14
+	10514=CODPipe15
+	10515=CODPipe16
+	10516=CODPipe17
+	10517=CODPipe18
+	10520=Gurney1
+	10521=Gurney2
+	10522=MedicalLight
+	10525=COD_DogHouse
+	10526=COD_Mortars1
+	10527=COD_Mortars2
+	10528=COD_StukaBomb1
+	10529=COD_StukaBomb2
+	10530=Junker52
+	10531=COD_StukaBomb2HH
+	10700=SmallTree1
+	10701=SmallTree2
+	10702=SmallBush1
+	10703=SmallBush2
+	10704=BigBush
+	10705=CeilingGrass
+	10706=Grass1
+	10707=Grass2
+	10708=Grass3
+	10709=Grass4
+	10710=Grass5
+	10711=Grass6
+	10712=Grass7
+	10713=Grass8
+	10714=Grass9
+	10715=Flower1
+	10716=Flower2
+	10717=Flower3
+	10718=Rose1
+	10719=Rose2
+	10720=Rose3
+	10721=Rose4
+	10722=GrassSpawner
+	10723=GrassSpawnerDesert
+	10724=GrassSpawnerWinter
+	10725=FlowersSpawner
+	10726=RandomRye
+	10727=WoodyLogs
+	10728=SnowyLogs
+	10729=JungleGrass1
+	10730=JungleGrass2
+	10731=JungleGrass3
+	10732=JungleGrass4
+	10733=GrassSpawnerJungle
+	10777=PrisonerDeco
+	10778=PrisonerFree
+	10779=PrisonerEnemyBoss_End
+	10780=PrisonerEnemyBoss
+	10781=Textpaper
+	10782=CraterConcrete
+	10783=RyanIDs
+	11001=ChestKey
+	11002=BoASupplyChest
+	11003=JazzJackrabbit
+	11004=BoASupplyChest_DSA1
+	11114=BigMutant1
+	11115=BigMutant2
+	11116=SSTank1
+	11117=DestroyedTank1
+	11118=SSTank2
+	11119=DestroyedTank2
+	11120=SSTank3
+	11121=DestroyedTank3
+	11122=SSTank4
+	11123=DestroyedTank4
+	11124=T34Tank
+	11125=DestroyedT34Tank
+	11126=US_Sherman
+	11127=US_ShermanProp
+	11128=T34TankProp
+	11129=CODStuka_Deco
+	11130=US_ShermanDeco
+	11131=CODCondor_Deco
+	11133=PanzerIVTreads
+	11333=Scorpion
+	11334=ScorpionBig
+	11335=ScorpionMK
+	11499=CreepyRiftSpawner
+	11500=CreepyGhostSpawner
+	11501=GreenCirclePad
+	11502=BlueCirclePad
+	11503=WhiteCirclePad
+	11504=RedCirclePad
+	11505=OrangeCirclePad
+	11506=Kennkarte
+	11507=ProtoDrone
+	11508=WGuard_Wounded
+	11509=Guard_Wounded
+	11510=Officer_Wounded
+	11511=SSGuard_Wounded
+	11512=SSOfficer_Wounded
+	11513=WOfficer_Wounded
+	11514=Mechanic
+	11515=NaziMedic
+	11516=Alarm
+	11517=AlarmSpawner
+	11518=AlarmPanel
+	11519=ActorSpawner
+	11520=SnookerBallSpawner
+	11521=CasinoDice
+	11522=WaveSpawner
+	11523=SnookerBall1
+	11524=SnookerBall2
+	11525=SnookerBall3
+	11526=SnookerBall4
+	11527=SnookerBall5
+	11528=AggressiveActorSpawner
+	11530=SubmarineF
+	11531=RTCWChair3DF
+	11532=RTCWCouch1DF
+	11533=RTCWTable1DF
+	11534=Prometheus_LF3d
+	11535=Prometheus_RF3d
+	11536=COD_Dresser1DF
+	11537=COD_ArmChairDF
+	11538=COD_WriTable1DF
+	11539=COD_Piano1DF
+	11540=COD_Cabinet1DF
+	11541=COD_Shelve1DF
+	11542=CODStukaF
+	11543=CreepyStatue1RF
+	11544=CreepyStatue1LF
+	11545=CreepyStatue2RF
+	11546=CreepyStatue2LF
+	11547=COD_Popcorn
+	11548=COD_WallBars1
+	11549=COD_WallBars2
+	11550=COD_Boiler
+	11551=COD_Stove
+	11552=COD_Drafting
+	11553=COD_Crowbar
+	11554=COD_Hammer
+	11555=COD_Screwdriver
+	11556=COD_Toolbox
+	11557=COD_Wrench
+	11558=MusicStand
+	11559=BerlinAngel1L
+	11560=BerlinAngel1R
+	11561=BerlinAngel1L_Museum
+	11562=BerlinAngel1R_Museum
+	11994=WToilet2
+	11995=SSToilet2
+	11996=ToiletSoldier
+	11997=WToilet
+	11998=SSToilet
+	11999=WMP40GuardSleep
+	12000=WereWaffenSS
+	12001=Guard
+	12002=SSGuard
+	12003=WGuard
+	12004=MP40Guard
+	12005=WMP40Guard
+	12006=SSMP40Guard
+	12007=RifleGuard
+	12008=WRifleGuard
+	12009=WaffenSS
+	12010=Mutant
+	12011=MutantMelee
+	12012=Officer
+	12013=WOfficer
+	12014=LOfficer
+	12015=SSOfficer
+	12016=Rottweiler
+	12017=GermanShepherd
+	12018=RocketMan
+	12019=MadDoctor
+	12020=SuperSoldier
+	12021=SuperSoldier_Girl
+	12022=SuperSoldier_Elite
+	12023=General
+	12024=FlamerMan
+	12025=ChairGuy
+	12026=HitlerGhost
+	12027=MGTurretCeiling
+	12028=MiniShip
+	12029=Geist
+	12030=MGTurret
+	12031=Longinus_Hitler
+	12032=DeathKnight
+	12033=WShotgunGuard
+	12034=FatMan
+	12035=Scientist
+	12036=Doberman
+	12037=NaziGeist
+	12038=Gestapo
+	12039=FatMan2
+	12040=SuperSoldier_SS
+	12041=SuperSoldier_Afrika
+	12042=SuperSoldier_Arctic
+	12043=SuperSoldier_Wehrmacht
+	12044=SuperSoldier_Elsa
+	12045=SuperSoldier_Navy
+	12046=PlagueDoc
+	12047=ROfficer
+	12048=RPPSHGuard1
+	12049=RPPSHGuard2
+	12050=RPPSHGuard3
+	12051=RDragunovGuard
+	12052=SSOccult
+	12053=SSOccultFire
+	12054=SSOccultElectric
+	12055=MechaNaziStanding5
+	12056=GoeringBoss
+	12057=HimmlerBoss
+	12058=UberMutant
+	12059=MechaNaziStanding1
+	12060=MechaNaziWalking1
+	12061=MechaNaziStanding2
+	12062=MechaNaziWalking2
+	12063=MechaNaziStanding3
+	12064=MechaNaziWalking3
+	12065=MechaNaziStanding4
+	12066=MechaNaziWalking4
+	12067=MechaNaziWalking5
+	12068=Totengraber_Healthy
+	12069=Totengraber_Wounded
+	12070=GoebbelsBoss
+	12071=BattonBoss
+	12072=BerlinGeneral1
+	12073=MadDoctor3
+	12074=MadDoctor4
+	12075=Blondi
+	12076=BerlinGeneral2
+	12077=BattonBoss2
+	12078=Mengele_Healthy
+	12079=Mengele_Wounded
+	12080=RommelBoss
+	12081=MadDoctor3B
+	12082=MaskedBoss
+	12089=SneakableWToilet
+	12090=SneakableSSToilet
+	12091=SneakableGestapo
+	12092=SneakableWOfficer
+	12093=SneakableWGuard
+	12094=SneakableWMP40Guard
+	12095=SneakableOfficer
+	12096=SneakableGuard
+	12097=SneakableMP40Guard
+	12098=SneakableWaffenSS
+	12099=SneakableSSOfficer
+	12100=SneakableSSGuard
+	12101=SneakableSSMP40Guard
+	12102=SneakableScientist
+	12103=SneakableScientist2
+	12104=SneakableMechanic
+	12105=SneakableWRifleGuard
+	12106=SneakableMarineGeneral
+	12107=SneakableWMP40GuardSleep
+	12108=SneakableWSniper
+	12109=Paratrooper
+	12110=NaziLoper
+	12111=AirshipGeneral
+	12112=MarineGeneral
+	12113=MadDoctor2
+	12114=GiantGuard
+	12115=MGTurretStealth
+	12116=SneakableSSMP40GuardStatic
+	12117=SneakableSSOccult
+	12118=SneakableSSOccultFire
+	12119=SneakableSSOccultElectric
+	12120=SneakableSSMP40GuardStatic2
+	12121=SneakableLOfficer
+	12351=LaserShooter
+	12352=LaserShooterNF
+	12353=ZapShooter
+	12379=WaterSplashGeneratorNormalLooping
+	12380=WaterSplashGeneratorNormal
+	12381=RatSpawner
+	12382=KnifeSilent
+	12383=ExclamationTextpaper
+	12384=ExclamationHintpaper
+	12400=StrobeEmitterBlue
+	12401=StrobeEmitterGreen
+	12402=StrobeEmitterRed
+	12403=StrobeEmitterYellow
+	12404=Red_Light
+	12405=Blue_Light
+	12406=Green_Light
+	12407=Yellow_Light
+	12501=TNTBarrel1
+	12502=TNTBarrel2
+	12503=TNTBarrel3
+	12504=GoodieBarrel1
+	12505=PlainsSun3D
+	12506=MountainsSun3D
+	12699=AstroTurret
+	12700=AstroScientist
+	12701=Sniper
+	12702=ScientistGutenberg
+	12703=UndeadMonk
+	12704=SuperMutant
+	12705=Scientist2
+	12706=Marine1
+	12707=Marine2A
+	12708=GeneralAllied
+	12709=DirtyDarren
+	12710=PrisonerAgent
+	12711=Marine_Talk1
+	12712=Marine_Talk2
+	12713=Dummy_Talk1
+	12714=PrisonerAgentTalk
+	12715=Dummy_Talk2
+	12716=Marine3A
+	12717=Marine1B
+	12718=Dummy_Talk3
+	12719=Marine2B
+	12720=Marine3B
+	12739=Clerk
+	12740=AgentArmed
+	12741=AgentArmedMP40
+	12742=DouglasArmed
+	12743=SoldierArmed
+	12744=SoldierArmedRifle
+	12745=AscherArmed
+	12746=SSAscherArmed
+	12747=SoldierArmedShotgun
+	12785=CTurret
+	12787=MGTurretSoldierW
+	12788=MGTurretInvisible
+	12789=FlamerSoldier
+	12790=MGTurretSoldier
+	12791=EliteFlamer
+	12792=EliteAssaulter
+	12793=EliteSoldatRifler
+	12794=MadCook
+	12795=MadCook2
+	12796=AngelOfDeath
+	12797=MadButcher
+	12798=ZombieButcher
+	12799=AngelOfDeath_End
+	12800=ZyklonMonster
+	12801=WSniper
+	12802=Sniper_Crouch
+	12803=WSniper_Crouch
+	12804=ArcticSniper
+	12805=ArcticSniper_Crouch
+	12806=ArcticRifleGuard
+	12807=ArcticWaffen
+	12808=WGrenadier
+	12809=AGrenadier
+	12810=SGrenadier
+	12811=WPanzerGuard
+	12812=WSniper_Switchable
+	12813=WSniper_CrouchSwitchable
+	12814=AKFlamerSoldier
+	12815=PhantomBoss
+	12816=MadCook3
+	12817=MadCook4
+	12818=MadCook5
+	12819=MadCook6
+	12820=MadCook7
+	12821=MadCook8
+	12822=BladeRunner
+	13001=FlakJacket
+	13002=HeavyArmor
+	13003=NazisBackpack
+	13103=LeatherJacket
+	13104=Stahlhelm
+	13105=AdrenalineKit
+	14501=BoABlueKey
+	14502=BoAYellowKey
+	14503=BoARedKey
+	14505=BoACyanKey
+	14506=BoAGreenKey
+	14507=BoAPurpleKey
+	15000=Fireworks_Base
+	15001=GrenadePickup
+	15002=Shovel
+	15003=Browning5
+	15004=Kar98k
+	15006=Firebrand
+	15007=Pyrolight
+	15008=Luger9mm
+	15009=MP40
+	15010=Nebelwerfer
+	15011=Walther9mm
+	15013=Panzerschreck
+	15018=TrenchShotgun
+	15021=Sten
+	15022=UMG43
+	15097=G43
+	15102=Ammo12Gauge
+	15103=AmmoBox12Gauge
+	15110=NebAmmoBox
+	15114=FlameAmmo
+	15115=MauserAmmoBox
+	15116=MauserAmmo
+	15117=ArtifactAstrostrein
+	15118=ArtifactAstrostreinIM
+	15119=NebAmmo
+	15120=ArmorShard
+	15122=SuperShield
+	15123=UnderwaterMine
+	15124=Mine
+	15125=FireExtinguisher
+	15126=GasBottle
+	15127=UnderwaterMineChain
+	15128=Bomb
+	15129=MineInvisible
+	15130=DeployableMine
+	15131=PlacedMine
+	15132=FlakShellAP
+	15133=FlakShellHE
+	15134=Flak38Box
+	15158=PanzerAmmo
+	15160=Hammer1
+	15161=Hammer2
+	15162=Hammer3
+	15163=Saw1
+	15164=Saw2
+	15165=Tongs
+	15166=Wrench
+	15192=AmmoBox9mm
+	15193=Ammo9mm
+	15198=Wheelbarrow
+	15199=OilCan
+	15200=Handrail
+	15201=NTomb1
+	15202=NTomb2
+	15203=NTomb3
+	15204=NTomb4
+	15205=NTomb5
+	15206=Haycart
+	15207=BurningBarrelBoA
+	15208=BrainLab1
+	15209=BrainLab2
+	15210=DripLab1
+	15211=DripLab2
+	15212=CreepyCandle
+	15213=CreepyCandlestick
+	15214=TeslaLab1
+	15215=TeslaLab2
+	15216=TeslaLab3
+	15217=TeslaLab4
+	15218=TeslaLab5
+	15219=TeslaTurret
+	15220=Rune_Fa
+	15221=Rune_Gibor
+	15222=Rune_Tyr
+	15223=BrainLab3
+	15224=DripLab3
+	15225=TestCrate
+	15226=MovableCrate1
+	15227=MovableCrate2
+	15228=CasinoChips_Green
+	15229=CasinoChips_Blue
+	15230=CasinoChips_Red
+	15231=TestCrate2
+	15232=SkullKey
+	15233=MoneyBags
+	15234=PrisonerGuts
+	15235=PrisonerSit1
+	15236=PrisonerSit2
+	15237=PrisonerSit3
+	15238=PrisonerSitRandom
+	15239=PrisonerMaleHang1
+	15240=PrisonerMaleHang2
+	15241=PrisonerMaleHang3
+	15242=HangingPara1
+	15243=HangingPara2
+	15244=TestCrate3
+	15245=MovableCrate3
+	15246=MovableCrate4
+	15247=CreepyCandleS
+	15248=TestCrate4
+	15249=AstroUrsel
+	15300=DarkSmokeSpawner
+	15301=Rune_Fa_Small
+	15302=Rune_Gibor_Small
+	15303=Rune_Tyr_Small
+	16000=MineSweeper
+	16001=Akten
+	16002=AktenEisenmann
+	16003=SpearOfDestiny
+	16004=AktenV2
+	16005=LanternPickup
+	16006=OilPickup
+	16007=ZyklonMask
+	16010=RadioPickup
+	16011=ChutePickup
+	16012=ChemicalsPickup
+	16501=TreasureCrown
+	16502=TreasureChest
+	16503=TreasureChest2
+	16504=TreasureChest3
+	16505=TreasureCross
+	16506=GoldBar
+	16507=Goblet
+	16508=AktenDream
+	16509=AktenDreamClue
+	16510=ZombieArmClue
+	16511=ZombieHeadClue
+	16512=MineralClue
+	16513=GraalHoly
+	16514=GraalHelm
+	16530=DogsBodies
+	16531=CatsBodies
+	16532=CowsBodies
+	16533=PigsBodies
+	16534=DeadBear
+	16649=SteamSpawner
+	16650=ZyklonBSteamSpawner
+	16651=ManholeCover3D
+	17000=PartyMeal8
+	17001=PartyMeal9
+	17002=PartyMeal10
+	17003=StackedMeal
+	17004=StackedPartyMeal
+	17011=TotaleGier
+	17012=NaziBerserk
+	17013=Meal
+	17014=Medikit_Small
+	17015=Medikit_Medium
+	17016=Medikit_Large
+	17017=ScubaGearGiver
+	17018=VitalitySerum
+	17019=Dogfood
+	17020=FieldKit
+	17021=Bandages
+	17022=PartyMealR
+	17023=PartyMeal1
+	17024=PartyMeal2
+	17025=PartyMeal3
+	17026=PartyMeal4
+	17027=PartyMeal5
+	17028=PartyMeal6
+	17029=PartyMeal7
+	17030=PartyMeal11
+	17031=PartyMeal12
+	17032=SoulFountain
+	17035=FastFoodR
+	17036=FastFood1
+	17037=FastFood2
+	17038=FastFood3
+	17039=FastFood4
+	17040=FastFood5
+	17041=FastFood6
+	17042=FastFood7
+	17043=FastFood8
+	17044=FastFood9
+	17045=FastFood10
+	17046=FastFood11
+	17047=FastFood12
+	17048=FastFood13
+	17049=FastFood14
+	17050=EastFoodR
+	17051=EastFood1
+	17052=EastFood2
+	17053=EastFood3
+	17054=EastFood4
+	17060=ShishKebab
+	17061=JuicyChicken
+	17124=FireSpawner
+	17125=AmbientSmokeGenerator
+	17126=AmbientSmokeGenerator_Large
+	17127=AmbientSmokeGeneratorDown
+	17128=AmbientSmokeGeneratorDown_Large
+	17130=Wall_CampMalePrisoner
+	17131=Wall_CampMaleSkeleton
+	17132=Wall_CampFemalePrisoner
+	17133=Wall_CivilianMale1
+	17134=Wall_CivilianMale2
+	17135=Wall_CivilianMale3
+	17136=Wall_CivilianMale4
+	17139=NaziCakeBabe
+	17196=Camp_RandomBoots
+	17197=Camp_Eyeglass
+	17198=Camp_RandomEyeglass
+	17199=Camp_RandomBags
+	17200=Camp_HungSkeleton
+	17201=Camp_RandomPileDead
+	17202=Camp_PrisonerSit
+	17203=Camp_ImpaledHead
+	17204=Camp_LogsDead
+	17205=Camp_SnowyLogsDead
+	17206=Camp_RandomUniform
+	17207=Camp_StaticBroom
+	17208=Camp_StaticShovel
+	17209=Camp_StaticShovelLow
+	17210=Camp_StaticKneeing
+	17211=Camp_StaticStandingA
+	17212=Camp_StaticStandingB
+	17213=Camp_StaticWashBroom
+	17214=Camp_StaticShovelDig
+	17215=Camp_PrisonerBald
+	17216=Camp_RandomBodyParts
+	17217=Camp_LyingBodies
+	17218=Camp_PrisonerGuts
+	17219=Camp_PrisonerSamples
+	17220=Camp_RandomPileBones
+	17221=Camp_MoundOfBodies
+	17222=Camp_StaticSit
+	17223=Camp_PrisonerHang
+	17224=Camp_LyingBodies2
+	17225=Camp_PrisonerBaldShirtless
+	17226=Camp_StaticStandingBTalk
+	17227=Camp_PrisonerZombie
+	17228=Camp_StaticHammeringL
+	17229=Camp_StaticHammeringR
+	17230=Camp_PrisonerSample1
+	17231=Camp_PrisonerSample2
+	17232=Camp_PrisonerSample3
+	17233=Camp_PrisonerSample4
+	17234=Camp_PrisonerSample5
+	17235=Camp_PrisonerSample6
+	17236=Camp_PrisonerSample7
+	17237=Camp_PrisonerSample8
+	17238=Camp_PrisonerSample9
+	17239=Camp_PrisonerSample10
+	17240=Camp_PrisonerSample11
+	17241=Camp_PrisonerSample12
+	17242=Camp_PrisonerSample13
+	17243=Camp_PrisonerSample14
+	17244=Camp_LyingBodies3
+	17245=Camp_StaticShirtlessNH
+	17246=Camp_StaticBaldNH
+	17300=ZSkeletons
+	17301=ZRandomBodyParts1
+	17302=ZLyingBodies1
+	17303=ZLyingBodies2
+	17304=ZBodySamples
+	17305=ZImpaledHeads
+	17306=ZDeadBody
+	17307=ZDogsBodies
+	17308=ZCatsBodies
+	17309=ZCowsBodies
+	17310=DripLab4
+	17311=ZPigsBodies
+	17312=ZDeadBear
+	17320=CivilianZombie1
+	17321=CivilianZombie2
+	17322=CivilianZombie3
+	17323=CivilianZombieSpawner
+	17500=BOD_GlassShardActivatable
+	17501=Swirl_Wall
+	17502=Swirl_Normal
+	17503=ClimbableZone
+	17504=RopeSpawner
+	17505=CableSpawner
+	17506=RopeSpawnerTarget
+	17507=BridgeSpawner
+	17508=ClimbableZone2
+	17509=Swirl_XL1
+	17510=Swirl_XL2
+	17511=Swirl_XL3
+	17512=Swirl_XL4
+	17513=ActiveFlare
+	18909=ZombieGeneral
+	18910=ZombieKazi
+	18911=ZombieBrain
+	18912=ZombieOfficer
+	18913=ZombieZyklonstein
+	18914=AKZombieKazi
+	18915=AKZombieBrain
+	18916=AKZombieOfficer
+	18917=SSZombieKazi
+	18918=SSZombieBrain
+	18919=SSZombieOfficer
+	18920=ZGermanShepherd
+	18921=SSTemplar
+	18922=Zapper
+	18923=StatistSinger
+	18924=KittySinger
+	18925=ZFatSinger
+	18926=StatistDimitri
+	18927=StatistSSAscher
+	18928=StatistPeeingMan
+	18929=EisenhimmelHangarDoors
+	18930=BloodMime
+	18931=FatSinger
+	18932=HelmetlessMarine1C
+	18933=HelmetlessMarine1H
+	18934=HelmetlessMarine1O
+	18935=HelmetlessMarine1S
+	18936=HelmetlessMarine1T
+	18937=HelmetlessMarine2C
+	18938=HelmetlessMarine2H
+	18939=HelmetlessMarine2O
+	18940=HelmetlessMarine2S
+	18941=HelmetlessMarine2T
+	18942=HelmetlessPara1C
+	18943=HelmetlessPara1H
+	18944=HelmetlessPara1O
+	18945=HelmetlessPara1S
+	18946=HelmetlessPara1T
+	18949=Ink6
+	18950=Plant3
+	18951=Plant4
+	18952=Plant5
+	18953=Plant6
+	18954=DecoVase
+	18955=Ink5
+	18956=Ink1
+	18957=Ink2
+	18958=Ink3
+	18959=Ink4
+	18960=NaziPlant1
+	18961=NaziPlant2
+	18962=NaziPlant3
+	18963=NaziPlant4
+	18964=NaziPlant5
+	18965=NaziPlant6
+	18966=NaziPlant7
+	18967=NaziPlant8
+	18968=HitlersDesk
+	18969=HitlersDesk2
+	18970=HelmetlessAlliedRC
+	18971=HelmetlessAlliedRH
+	18972=HelmetlessAlliedRO
+	18973=HelmetlessAlliedRS
+	18974=HelmetlessAlliedRT
+	18995=Maps_Pins1
+	18996=Maps_Pins2
+	18997=Maps_Pins3
+	18998=Maps_Pins4
+	18999=USFlagT
+	19000=ToiletTalking
+	19001=ToiletShootable
+	19002=BinWhite
+	19003=Truck1
+	19004=UKFlagT
+	19005=COD_EagleBust
+	19006=NaziFlagS
+	19007=NaziFlagT
+	19008=CeilingLightM2
+	19009=TableLightM
+	19010=ColumnLight
+	19011=StreetLight1Lit
+	19012=StreetLight1
+	19013=TableLightM2
+	19014=Plane1
+	19015=Plane2
+	19016=Pipe1
+	19017=Pipe2
+	19018=Pipe3
+	19019=Pipe4
+	19020=Radar
+	19021=LightBulbOn
+	19022=UnderwaterPlant1
+	19023=UnderwaterPlant2
+	19024=UnderwaterPlant3
+	19025=FlagWithFaces1
+	19026=FlagWithFaces2
+	19027=FlagWithFaces3
+	19028=StageLight
+	19029=Single_Tire
+	19030=CeilingLightM
+	19031=LightBulb_Red
+	19032=LightBulbOn_Red
+	19033=Tree2
+	19034=HarnessSet
+	19035=Bush
+	19036=Plant1
+	19037=HydrantShootable
+	19038=HarnessSet2
+	19039=StreetLight2
+	19040=StreetLight3
+	19041=TruckFront
+	19042=StreetLight2NH
+	19043=StreetLight3NH
+	19044=Chair1
+	19045=Tires
+	19046=NazibannerM2
+	19047=TankD1
+	19048=TankD2
+	19049=TableLightSA
+	19050=ScareCrow
+	19051=TankD3
+	19052=LightBulb_Grn
+	19053=LightBulbOn_Grn
+	19054=BlowTorch
+	19055=Radiator_Short
+	19056=RoadBarrier
+	19057=ElectricOrb1
+	19058=ElectricOrb2
+	19059=ElectricalArc
+	19060=ElectricalPillar
+	19061=Radiator_Long
+	19062=Truck3
+	19063=FBowl1
+	19064=CBowl1
+	19065=FBarrel1
+	19066=Electricity1
+	19067=Electricity2
+	19068=Electricity3
+	19069=Electricity4
+	19070=Tires2
+	19071=EColumn
+	19072=EVase
+	19073=EStatue1
+	19074=EStatue2
+	19075=EStatue3
+	19076=CreepyStatue1R
+	19077=CreepyStatue1R_Museum
+	19078=CreepyStatue1L
+	19079=CreepyStatue1L_Museum
+	19080=Tree4_Burnt
+	19081=Tree3_Burnt
+	19082=Tree2_Burnt
+	19083=JungleTree1_Burnt
+	19084=JungleTree2_Burnt
+	19085=SmallTree1_Burnt
+	19086=BurnTreeSpawner
+	19088=StreetBin2
+	19089=Dome
+	19090=StreetBin
+	19091=Denkmal
+	19092=LightBulb
+	19093=Tree4
+	19094=JunkPile1
+	19095=JunkPile2
+	19096=JunkPile3
+	19097=Palm1
+	19098=Palm2
+	19099=Palm3
+	19100=ArtifactEgyptian
+	19101=NukageBody
+	19102=NukageBody2
+	19103=NukageBody3
+	19104=HungBody
+	19105=DeadBody
+	19106=Skeleton1
+	19107=Skeleton2
+	19108=Skeleton3
+	19109=SkeletonChains
+	19110=EmptyCage
+	19111=Pileofskulls
+	19112=RandomDeadSoldier
+	19113=MacSkulls
+	19114=T100Lava
+	19115=Manacles
+	19116=Toys_Hans
+	19117=Toys_Waffen
+	19118=Toys_UKFlag
+	19119=Toys_USFlag
+	19120=Toys_NaziFlagT
+	19121=Toys_NaziFlagS
+	19122=RandomDeadMutant
+	19123=ElectricalArc2
+	19124=ElectricalPillar2
+	19125=DeadSSGuardPistol
+	19126=HungBodyMov
+	19127=BronzeStatueFMini
+	19128=BronzeStatueE
+	19129=BronzeStatueF
+	19130=BronzeStatueC
+	19131=BronzeStatueD
+	19132=BronzeStatueA
+	19133=BronzeStatueB
+	19134=Table1
+	19135=Table2
+	19136=Table3
+	19137=Table4
+	19138=Table5
+	19139=Table6
+	19140=MonsterStatue
+	19141=WellEmpty
+	19142=WellWater
+	19143=WellBlood
+	19144=BarrelWine
+	19145=Table7
+	19146=Table8
+	19147=Table9
+	19148=Tree3
+	19149=SSUniformStatic
+	19150=UniformStatic
+	19151=Cup1
+	19152=Cup2
+	19153=CoffeeMachine
+	19154=WaterMachine
+	19155=Shit
+	19156=WashingDish
+	19157=BucketMop
+	19158=MonsterStatue2
+	19159=Chair4
+	19160=Plant2
+	19161=CeilingFan
+	19162=ScientistUniformStatic
+	19163=FoxUniformStatic
+	19164=HitlerUniformStatic
+	19165=CoatHanger2
+	19166=CoatHanger3
+	19167=CoatHanger4
+	19168=CoatHanger5
+	19169=CoatHanger6
+	19170=SSBanner2
+	19171=SSBanner
+	19172=JungleTree1
+	19173=JungleTree2
+	19174=JungleTree3
+	19175=HungBody2
+	19176=HungBody3
+	19177=HungBody4
+	19178=CoatHanger
+	19179=ShopStand1
+	19180=ShopStand2
+	19181=ShopStand3
+	19182=ShopStand4
+	19183=ShopStand5
+	19184=ShopStand6
+	19185=ShopStand7
+	19186=ShopStand8
+	19187=ShopStand9
+	19188=CeilingFanD
+	19189=ShopStand10
+	19190=Butchery1
+	19191=Butchery2
+	19192=Butchery3
+	19193=Butchery4
+	19194=Butchery5
+	19195=Butchery6
+	19196=Butchery7
+	19197=Butchery8
+	19198=RadioactiveBarrel
+	19199=Crane
+	19200=UBoat
+	19201=NaziDopefish
+	19202=PaperBox1
+	19203=PaperBox2
+	19204=ChanGold
+	19205=FlaskBlueA
+	19206=FlaskBlueB
+	19207=FlaskPurpleA
+	19208=FlaskPurpleB
+	19209=FlaskRedA
+	19210=FlaskRedB
+	19211=BigFlaskSpawner
+	19212=BigFlaskSpawner2
+	19213=BigFlaskSpawner3
+	19214=TubeFlaskSpawner
+	19215=Surgery_Crab
+	19216=PetriDish_Green
+	19217=PetriDish_Purple
+	19218=FlaskGreenA
+	19219=FlaskGreenB
+	19220=FlaskYellowA
+	19221=FlaskYellowB
+	19222=FlaskGreyA
+	19223=MagnifyGlass
+	19224=LabSkeleton
+	19225=Butchery9
+	19226=CagedBody
+	19227=ButcheryNazi
+	19228=CreepySkulls
+	19229=CreepySkullsImpaled
+	19230=RandomBodyParts
+	19231=FlaskGreyB
+	19232=GlassGreen
+	19233=GlassYellow
+	19234=GlassGrey
+	19235=PetriSpawner
+	19236=MagnifySpawner
+	19237=Table10
+	19238=Table11
+	19239=Table12
+	19240=Palm1NH
+	19241=Palm2NH
+	19242=Palm3NH
+	19243=RadioactiveBarrel2
+	19244=Denkmal2
+	19245=AZChalice1
+	19246=AZChalice2
+	19247=AZIdol1
+	19248=AZIdol2
+	19249=AZMask
+	19250=AZStatue
+	19251=REWheelchair
+	19252=Toys_SS
+	19253=Toys_Afrika
+	19254=Toys_Hitler
+	19255=EStatue1NH
+	19256=AZChalice1NH
+	19257=AZChalice2NH
+	19258=AZIdol1NH
+	19259=AZIdol2NH
+	19341=Cell_Light
+	19342=ArtDeco_WLight1
+	19343=CeilingLightMNC
+	19344=CeilingLightM2NC
+	19350=CoatHangerA1
+	19351=CoatHangerB1
+	19352=CoatHangerC1
+	19353=CoatHangerA2
+	19354=CoatHangerB2
+	19355=CoatHangerC2
+	19356=CoatHangerA3
+	19357=CoatHangerB3
+	19358=CoatHangerC3
+	19359=CoatHangerD3
+	19360=CoatHangerE3
+	19361=CoatHangerF3
+	19362=CoatHanger7A
+	19363=CoatHanger7B
+	19364=CoatHanger7C
+	19365=CoatHanger7S
+	19370=TableLightM3Y
+	19371=TableLightM3B
+	19372=TableLightM3R
+	19373=TableLightM3G
+	19374=TableLightS2
+	19375=TableLightS
+	19376=TableLightSB
+	19377=TableLightSC
+	19378=TableLightSD
+	19380=Pickles1
+	19381=Pickles2
+	19382=Pickles3
+	19383=Pickles4
+	19384=PicklesSpawner
+	19426=Reichbanner
+	19427=NazibannerM
+	19428=ArtifactEgyptian_H1
+	19429=ArtifactEgyptian_H2
+	19430=ShopStand1D
+	19431=ShopStand2D
+	19432=ShopStand3D
+	19433=ShopStand4D
+	19434=ShopStand5D
+	19435=ShopStand6D
+	19436=ShopCleaver
+	19440=Butchery1D
+	19441=Butchery2D
+	19442=Butchery3D
+	19443=Butchery4D
+	19444=Butchery5D
+	19445=Butchery6D
+	19446=Butchery7D_A
+	19447=Butchery7D_B
+	19448=Butchery8D
+	19449=Butchery9D
+	19450=Butchery1D_R
+	19451=Butchery1_R
+	19452=ButcheryNaziD
+	19453=Bakery1
+	19462=Bakery1D
+	19470=CupCake1
+	19471=CupCake2
+	19472=CupCake3
+	19473=CupCake4
+	19499=Kettle
+	19500=PotKitchen1
+	19501=PotKitchen2
+	19502=BarSeat
+	19503=WineBottle
+	19504=OvenHot
+	19505=WineGlass
+	19506=CathedralBell
+	19507=BoAWallTorch1
+	19508=PotKitchen3
+	19509=PotKitchen4
+	19510=Teapot1
+	19511=Teapot2
+	19512=TeaCup1
+	19513=TeaCup2
+	19514=TeaCup3
+	19515=TeaCup4
+	19516=Plates1
+	19517=Plates2
+	19518=Plates3
+	19519=BoAWallTorch2
+	19520=BoAWallTorch3
+	19532=Mike
+	19533=Roswell
+	19534=Dogse
+	19535=DogseResult
+	19536=AsterixObelix
+	19537=BoAHead1
+	19538=BoAHead2
+	19539=BoAHead3
+	19540=BoAHead4
+	19541=BoAHead5
+	19542=BoABrain
+	19544=Chair2
+	19545=Chair3
+	19593=CafeStuff
+	19594=Debris_Vent
+	19595=Debris_Vent_FloorCeiling
+	19596=Debris_Wood2
+	19597=Debris_Wood_FloorCeiling
+	19598=Debris_Wood_FloorCeiling2
+	19600=COD_OilLamp
+	19601=Chandelier4Switchable
+	19602=Chandelier3Switchable
+	19603=Chandelier2Switchable
+	19605=Chandelier1Switchable
+	19606=StripperGirls
+	19607=Spanner3D
+	19608=Toolbox3D
+	19609=TrainLever3D
+	19610=TrainLever3DSwitch
+	19611=TrainLever3DSwitch1
+	19612=TrainLever3DSwitch2
+	19613=TrainLever3DSwitch3
+	19614=TrainLever3DSwitch4
+	19615=TrainLever3DSwitch5
+	19616=TrainLever3DSwitch6
+	19617=TrainLever3DSwitch7
+	19618=TrainLever3DSwitch8
+	19619=StripperGirl1
+	19620=StripperGirl2
+	19621=StripperGirl3
+	19622=StripperGirl1NH
+	19623=Chandelier1SwitchableNH
+	19624=Chandelier2SwitchableNH
+	19625=Chandelier3SwitchableNH
+	19626=Chandelier4SwitchableNH
+	19627=Shitler
+	19762=ColumnLight2
+	19982=JunkPile4
+	19983=DebrisChunk
+	19984=DebrisPipe
+	19985=DebrisBeam
+	19986=DebrisGirder
+	19987=DebrisBrick
+	19988=DebrisCorrugated
+	19989=Mountains
+	19990=SkyViewpointStatic
+	19991=SkyViewpointAnchor
+	19992=SkyboxDayNight
+	19993=SkyboxStars
+	19994=SkyboxEarth
+	19995=SkyboxTracerSpawner
+	19996=StarParticle_SpawnerFast
+	19997=StarParticle_Spawner2
+	19998=StarParticle_Spawner
+	19999=SkyboxMoon
+	20000=C4
+	20001=AstroShotgun
+	20002=AstroRocketlauncher
+	20003=AstroChaingun
+	20004=AstroGuard
+	20005=AstroGuard2
+	20006=AstroCommando
+	20007=AstroOfficer
+	20008=AstroElite
+	20009=AstroDrone
+	20010=AstroCyborg1
+	20011=AstroCyborg2
+	20012=AstroSuiteGuard
+	20013=AstroRobot
+	20014=AstroHitler
+	20015=AstroShotgunShell
+	20016=AstroRocketAmmo
+	20017=AstroClipAmmo
+	20018=EnergyTankLit
+	20019=MrSpock
+	20020=EnergyTankUnLit
+	20021=StreetLightAstro
+	20022=ChairFuture
+	20023=BarrelFuture
+	20024=BarrelFutureExploding
+	20025=RadioTower
+	20026=RadioSatelite
+	20027=FutureCeilingLightNC
+	20028=SolarPanel
+	20029=FutureCeilingLight
+	20030=DecorationShip
+	20031=RotatingStation
+	20032=AstroMedikit
+	20033=AstroBlueKey
+	20034=AstroYellowKey
+	20035=AstroRedKey
+	20036=BillyBlaze
+	20037=Predator
+	20038=Alien
+	20039=SoloChewbie
+	20040=KingsQuest5
+	20041=Cedric
+	20042=SpaceSuit
+	20043=RogerWilco
+	20044=AstrosteinMelee
+	20045=AstroGrenadePickup
+	20046=AstroShuttle
+	20047=Destroyed_AstroSuite
+	20048=Destroyed_AstroRobot
+	20049=Soul
+	20050=SoulBig
+	20060=FutureCeilingLightNC2
+	20073=WinterTreeSpawner
+	20074=SummerTreeSpawner
+	20075=IndianaJones
+	20076=IndianaJonesGirl
+	20077=BDDoll
+	20078=AstroLuger
+	20079=TeslaCannon
+	20080=TeslaCell
+	20081=TeslaCellBox
+	20082=DSA1Pillar
+	20083=DSA1Female
+	20084=DSA1Male
+	20130=COD_OpBlitzDestroyed
+	20131=CODCondor
+	20132=Hitler_Bust
+	20133=WaterTower
+	20134=Tent
+	20135=CODStuka
+	20136=BomberVTOL3
+	20137=Submarine
+	20138=Vidcam
+	20139=SubmarineIcy
+	20140=Windmill
+	20141=COD_Gascan
+	20142=COD_FemaleBust
+	20143=COD_USJeep
+	20144=Flak88mm
+	20145=Nebelwerfer3D
+	20146=Bunker3D_A
+	20147=Wire3D
+	20148=Bunker3D_B
+	20149=FlakGun3D
+	20150=TankPanzer3
+	20151=Cruiser
+	20152=FlakVierling3D
+	20153=Luftschiff
+	20154=ModelRailBoxcar2
+	20155=FlagWave
+	20156=ModelGMCTruck
+	20157=ModelOpelTruck
+	20158=Naziward
+	20159=FlagWave_SS
+	20160=FlagWave_War
+	20161=Speakers_1_3d
+	20162=Speakers_2_3d
+	20163=Speakers_4_3d
+	20164=FlagWide_Flutter
+	20165=FlagWide_Hang
+	20166=FlagShort_Flutter
+	20167=FlagShort_Hang
+	20168=TrainWheels
+	20169=Female_StatueA
+	20170=Female_StatueB
+	20171=FlagWave_Gear
+	20172=NaziBannerGearTallFlutter512
+	20173=Cacoward
+	20174=FlakVierling3D_War
+	20175=FlakVierling3D_Ship
+	20176=Luftschiff_End
+	20177=COD_FemaleBust_Museum
+	20178=COD_EagleBust_Museum
+	20179=COD_BunkerPhone
+	20180=COD_BunkerSeat
+	20181=COD_BunkerTable
+	20182=COD_Dresser1
+	20183=COD_Dresser1D
+	20184=COD_ArmChair
+	20185=COD_WriTable1
+	20186=COD_WriTable1D
+	20187=COD_Piano1
+	20188=COD_Piano1D
+	20189=COD_SideTable1
+	20190=COD_SideTable1D
+	20191=COD_LongTable1
+	20192=COD_LongTable1D
+	20193=COD_Rolltop1
+	20194=COD_Rolltop1D
+	20195=COD_WallTable1
+	20196=COD_WallTable1D
+	20197=COD_WallTable2
+	20198=COD_WallTable2D
+	20199=COD_OrnateClock1
+	20200=COD_OrnateClock2
+	20201=COD_Cabinet1
+	20202=COD_Cabinet1D
+	20203=COD_OrnateChair1
+	20204=COD_OrnateChair1D
+	20205=COD_Shelve1
+	20206=COD_Shelve1D
+	20207=COD_ArmChairD
+	20208=FlagWave_State
+	20209=FlagWave_US
+	20210=FlagWave_France
+	20211=COD_OrnateChair2
+	20212=COD_OrnateChair2D
+	20213=FlakGun3DNC
+	20214=Keenaward
+	20215=Opel_Fuel
+	20216=Tires3
+	20217=Single_Tire2
+	20218=Forklift
+	20219=MedTruck
+	20220=MedTruckD
+	20221=Luftschiff_Deco
+	20222=ArnhemCathedral
+	20223=ArnhemHouseA
+	20224=ArnhemHouseB
+	20225=ArnhemHouseC
+	20226=ArnhemHouseD
+	20227=ModelOpelTruckRide
+	21233=Tree1_Plaza
+	21234=Tree1
+	21235=SecretUFO
+	21236=Exclamation
+	21237=ExclamationTouchable
+	21238=ObjectiveIcon
+	21239=ExclamationCompass
+	21405=VolcanoSmokeGenerator
+	21406=PowerPlantSmokeGenerator
+	21409=PowerPlantSmokeGenerator2
+	22133=CODSideCarD
+	22134=CODPTBoat
+	22135=Feldfernschreiber
+	22136=COD_DestroyedTrainPlain
+	22137=COD_Refrigerator
+	22138=COD_DestroyedTrainSnow
+	22139=COD_Tiger1
+	22140=CODNeoLights1
+	22141=COD_ArtDecoLight1A
+	22142=COD_ArtDecoLight1B
+	22143=CODNeoLights2
+	22144=CODRailway_Switch
+	22145=CODSignal_Light
+	22146=CODBike
+	22147=CODOmahaBoat
+	22148=CODScheinwerfer
+	22149=CODCivCarD_Spawner
+	22150=CODSideCar
+	22151=ModelCampBed
+	22152=ModelCampBed2
+	22153=Bunk_Bed1
+	22154=Bunk_Bed2
+	22155=COD_StationLight1A
+	22156=COD_StationLight1B
+	22157=COD_RustyChandelier1A
+	22158=COD_RustyChandelier1B
+	22159=COD_StationLight1BNC
+	22169=ModelBeachHedgeHog
+	22182=COD_SSHorch
+	22183=COD_WBarrel1
+	22184=COD_WBarrel2
+	22185=COD_WBarrel3
+	22186=COD_WBarrel4
+	22214=ModelIncaTrain
+	22218=ModelSandBagCurve
+	22225=ModelRailBoxcar
+	22226=ModelRailTanker
+	22227=ModelRailBoxcar3
+	22228=TMModelIncaTrain
+	22229=TMModelRailBoxcar
+	22230=TMModelRailBoxcar2
+	22231=TMModelRailTanker
+	22232=TMTrainWheels
+	22238=ModelSandBagStraight
+	22239=RTCWParachute1
+	22240=RTCWParachute2
+	22241=Cable1
+	22242=Cable2
+	22243=Cable3
+	22244=Cable4
+	22245=Cable5
+	22246=Minerals3d
+	22247=MineCartF
+	22248=MineCartE
+	22249=MineCartW
+	22250=Trolley3d
+	22251=Cannon3d
+	22252=Cannonballs3d
+	22253=Guillotine3d
+	22254=HeadCrusher3d
+	22255=JudasCrusher3d
+	22256=Pillory3d
+	22257=Rack3d
+	22258=Splitter3d
+	22259=Skeleton_Sit3d
+	22260=Prometheus_L3d
+	22261=Prometheus_R3d
+	22262=RTCWGramo
+	22263=MineCartEMoving
+	22264=NaziGlobe
+	22265=PMetal1
+	22266=PMetal2
+	22267=PMetal3
+	22268=PMetal4
+	22269=PMetal5
+	22270=OldCash
+	22271=RTCWGramoHitler
+	24002=PowerPlantSmokeGeneratorSmall
+	25000=UWLightGenerator1
+	25001=UWLightGenerator2
+	25002=UWLightGenerator3
+	25003=UWLightGenerator4
+	25006=SingleCoin
+	25007=BagOfCoins
+	28000=AshSpawner
+	28001=CKShikadiSoda
+	28002=CKShikkersCandyBar
+	28003=CKDoughnut
+	28004=CKIceCreamCone
+	28005=CKRaindrop
+	28006=CKOneUp
+	28007=CKBlueKey
+	28008=CKYellowKey
+	28009=CKRedKey
+	28010=CKRedKeyPod
+	28011=CKBlueKeyPod
+	28012=CKYellowKeyPod
+	28013=CKArachnut
+	28014=CKMadMushroom
+	28015=CKPoisonSlug
+	28016=CKWallShooter
+	28017=CKOracle
+	28018=CKBounder
+	28019=CKStunner
+	28020=CKThundercloud
+	28021=CKCloud
+	28022=CKCoral1
+	28023=CKCoral2
+	28024=CKAlge1
+	28025=CKAlge2
+	28026=CKFireplace
+	28027=CKWallSlug
+	28028=CKCaveEyes
+	28029=CKFireBowl
+	28030=CKExitSign1
+	28031=CKExitSign2
+	28032=CKFireColumn
+	28033=CKAquaDrop
+	28034=CKSpike
+	28035=CKGroundfire
+	28036=CKLick
+	28037=CKWormouth
+	28038=CKMine
+	28039=CKSmirky
+	28040=CKLindsey
+	28041=CKDopefish
+	28042=CKSchoolfish
+	28043=CKInchworm
+	28044=CKMimrock
+	28045=CKSprite
+	28046=CKBirdEgg
+	28047=CKBird
+	28048=CKJawbreaker
+	28049=CKGum
+	28050=CKFoot
+	28051=CKSpearDown
+	28052=CKSpearUp
+	28053=CKBerkeloid
+	28054=CKSkyPest
+	28055=CKSpear
+	28056=CKPCKFSign1
+	28100=CKPlatform
+	28101=CKPlatformFalling
+	28102=CKPlatformVertical
+	28103=CKPlatformGlass
+	28104=CKPipeBlue
+	28105=CKPipePink
+	28106=CKPipeGold
+	28110=CKPogostick
+	28111=CKWallFire
+	28112=CKGroundThruster
+	28113=CKTreeBranch
+	25104=StatistBarkeeper
+	25105=StatistMedic
+	25106=StatistBarkeeperMale
+	25107=StatistDarren
+	25108=StatistVolkoff
+	25109=StatistAFA
+	25110=StatistZhukov
+	25111=StatistStierlitz1
+	25112=StatistStierlitz2
+	25113=StatistStierlitz3
+	25114=StatistWehrmachtSpy
+	25115=Camp_StaticSitTalk
+	25116=StatistSpion
+	25117=StatistSSMerchant
+	25118=StatistNWSmuggler
+	29395=BubbleSpawner
+	29990=BomberInAir_C3M2
+	29991=BomberInAir
+	29992=PurpleSparkSpawner
+	29993=BlueSparkSpawner
+	29994=GreenSparkSpawner
+	29995=YellowSparkSpawner
+	29996=OrangeSparkSpawner
+	29997=RedSparkSpawner
+	29998=WhiteSparkSpawner
+	30001=Flare1
+	30002=Flare2
+	30003=Flare_Sun
+	30007=BoACompass
+	30011=Cartridge51
+	30012=Cartridge52
+	30013=Cartridge53
+	30352=RooftopAntennae
+	30353=SandRockSpawner
+	30354=CanyonRockSpawner
+	30355=DryRockSpawner
+	30356=SnowyRockSpawner
+	30357=MuddyRockSpawner
+	30358=LunarRockSpawner
+	30359=CKNisaba
+	31450=CastleLight1
+	31451=CastleLight2
+	31452=CastleLight1_NoInt
+	31453=CastleLight2_NoInt
+	31454=CeilingLightM_NoInt
+	31455=CeilingLightM2_NoInt
+	31456=ChanGold_NoInt
+	31457=Cell_Light_NoInt
+	31458=CastleLight1NC
+	31459=CastleLight2NC
+	31460=Cell_LightNC
+	31670=BoATable1
+	31671=BoATable2
+	31672=CastleShield1
+	31673=CastleShield2
+	31674=CastleShield3
+	31675=CastleShield4
+	31676=CastleShield5
+	31677=CastleShield6
+	31678=CastleShield7
+	31679=CastleWeapon1
+	31680=CastleWeapon2
+	31681=CastleWeapon3
+	31682=CastleWeapon4
+	31683=CastleWeapon5
+	31684=CastleWeapon6
+	31689=Cello
+	31690=WallLight1NC
+	31691=Piano3d
+	31692=Eagle2_3d
+	31694=SimpleLight1NC
+	31695=Tractor
+	31696=OldCar_Spawner
+	31697=Kubelwagen
+	31698=MercedesLimo
+	31699=Typewriter
+	31700=COD_RadioSimple
+	31701=RadioModern
+	31702=RTCWChalice
+	31703=RTCWGenerator
+	31704=RTCWClock
+	31705=RTCWCar
+	31706=RTCWPhoneWall
+	31707=COD_Radio_Tall
+	31708=COD_Radio_Tall_D
+	31709=RTCWParlor
+	31710=RTCWPhone
+	31711=WallLight1
+	31712=WallLight1Lit
+	31713=EnigmaMachine
+	31714=RTCWBench
+	31715=Book1_3d
+	31716=Book2_3d
+	31717=RTCWShield
+	31718=SimpleLight1
+	31719=SimpleLight1Lit
+	31720=IntermapSkylight
+	31721=SlopeMe1
+	31722=SlopeMe2
+	31723=RTCW_V2_Complete
+	31724=RTCW_V2_NoRamp
+	31725=RTCW_V2_Rocket
+	31726=Tie_Fighter
+	31727=Eagle3d
+	31728=ZeppelinBridge
+	31729=Lion_Left
+	31730=Lion_Right
+	31731=NaziBannerTallFlutter512
+	31732=NaziBannerTallFlutter256
+	31733=NaziBannerTallHang512
+	31734=NaziBannerTallHang256
+	31735=Caesar
+	31736=King
+	31737=RTCWBench2
+	31738=ParkBench
+	31739=ParkBench2
+	31740=RTCWChair1
+	31741=RTCWChair2
+	31742=RTCWChair3
+	31743=TrestleTable
+	31744=WallLight2
+	31745=WallLight2Lit
+	31746=Caesar_Museum
+	31747=King_Museum
+	31748=PromL_Museum
+	31749=PromR_Museum
+	31750=LionL_Museum
+	31751=LionR_Museum
+	31752=WallLight2Switch
+	31753=RTCWCouch1
+	31754=RTCWTable1
+	31755=RTCWTable2
+	31756=RTCWTable3
+	31757=GardenUrn
+	31758=GardenUrn_Museum
+	31759=RTCWChair1D
+	31760=RTCWChair2D
+	31761=RTCWChair3D
+	31762=RTCWCouch1D
+	31763=RTCWTable1D
+	31764=RTCWTable2D
+	31765=RTCWTable3D
+	31766=SovietRadio
+	31767=RTCW_V2_CompleteNH
+	31768=ParkBench3
+	31769=HangLight1Switch
+	31770=Lids1
+	31771=Lids2
+	31772=Lids3
+	31773=Lids4
+	31780=Planks1
+	31781=Planks2
+	31782=Planks3
+	31783=SSTank3Part1
+	31784=SSTank3Part2
+	31785=TMWZombie
+	31786=TMSeeteufel
+	31787=Planks4
+	31788=Planks5
+	31789=Planks6
+	31790=Suitcase1
+	31791=TypewriterSmall
+	31989=TMBlazko4
+	31990=TMMarine1
+	31991=TMMarine2
+	31992=TMMarine3
+	31993=TMMarine4
+	31994=TMMiller
+	31995=TMRUFlag
+	31996=TMSSTank1
+	31998=TMBlazko3
+	31999=FogCloud_Generator
+	32001=TMBlazko
+	32002=TMGuard
+	32003=TMDog
+	32004=TMPlane
+	32005=TMLightBeam
+	32006=PollenAir
+	32007=LighthouseBeam
+	32008=MutantSubjectRandom
+	32009=UnderwaterLightRay
+	32010=FuelDrum
+	32011=TMGuardWithShadow
+	32012=AlertLight
+	32013=SpotlightMount
+	32014=TMBlazko2
+	32015=FuelDrumAstro
+	32016=TurretStand
+	32017=TMFanfare1
+	32018=TMFanfare2
+	32019=TMFanfare3
+	32020=TMHitler
+	32021=TMTankPanzer3
+	32022=TMGauleiter
+	32023=TMHitler2
+	32024=TMFanfare4
+	32025=TMFanfare5
+	32026=GasDrum
+	32027=GhostGate
+	32028=GhostGateHelper
+	32029=HeatEffectGiver
+	32030=DoorHandler
+	32031=ClassicSlidingDoor
+	32032=SlidingDoor
+	32033=TMGauleiterNS
+	32034=FuelDrumFix
+	32035=TMWound1
+	32036=TMWound2
+	32037=TMWound3
+	32038=TMWound4
+	32039=TMWound5
+	32040=TMMarine1B
+	32041=TMMarine1G
+	32042=TMMarine1R
+	32043=TMMarine1Y
+	32044=TMMarine2B
+	32045=TMMarine2G
+	32046=TMMarine2R
+	32047=TMMarine2Y
+	32048=TMMarine3B
+	32049=TMMarine3G
+	32050=TMMarine3R
+	32051=TMMarine3Y
+	32052=TMMarine4B
+	32053=TMMarine4G
+	32054=TMMarine4R
+	32055=TMMarine4Y
+	32056=FuelDrumSide
+	32060=TMCivMale1
+	32061=TMCivMale2
+	32062=TMCivMale3
+	32063=TMCivMale4
+	32064=TMCivMale5
+	32065=TMCivMale6
+	32066=TMCivMale7
+	32067=TMCivMale8
+	32068=TMCivMale9
+	32069=TMCivMale10
+	32070=TMCivFemale1
+	32071=TMCivFemale2
+	32072=TMCivFemale3
+	32073=TMCivFemale4
+	32074=TMCivBoy1
+	32075=TMCivBoy2
+	32076=TMCivBoy3
+	32077=TMCivBoy4
+	32078=TMCivGirl1
+	32079=TMCivGirl2
+	32080=TMCivGirl3
+	32081=TMCivGirl4
+	32082=TMMechanicNT
+	32083=TMMechanic
+	32084=TMScientist
+	32085=TMScientist2
+	32090=TMCivExtra1
+	32091=TMCivExtra2
+	32092=TMCivExtra3
+	32093=TMCivExtra4
+	32094=TMCivExtra5
+	32095=TMCivExtra6
+	32096=TMCivExtra7
+	32097=TMCivExtra8
+	32098=StatueBreakable
+	32099=Gem
+	32100=TMMarineHQ1
+	32101=TMAscher
+	32102=TMClerk
+	32103=TMStatistBarkeeper
+	32104=TMStatistBarkeeperMale
+	32105=TMStatistMedic
+	32106=TMStatistAFA
+	32107=TMStatistDimitri
+	32108=TMStatistYevgeny
+	32109=TMMarineHQ2
+	32110=TMMarineHQ3
+	32111=TMMarineHQ4
+	32112=TMMarineHQ5
+	32113=ZyklonFogCloud_Generator
+	32114=Safe
+	32115=TextPaperCollectible
+	32116=TMMarineHQ1NW
+	32117=TMMarineHQ2NW
+	32118=TMMarineHQ3NW
+	32119=TMRDragunovGuard
+	32120=TMGuard2
+	32121=SandEffectGiver
+	32122=TextPaperSecretHint
+	32123=StatueBreakable2
+	32124=UnderwaterLightRayCone
+	32500=REChandelier
+	32501=RETableSmall
+	32502=RETableSide
+	32503=REVase
+	32504=RELightStair
+	32505=RELightStair2
+	32506=REColumn1
+	32507=REColumn2
+	32508=REColumn3
+	32509=REChair
+	32510=REBalusterLarge
+	32511=REBalusterMedium
+	32512=REBalusterSmall
+	32513=RECarpetWeight
+	32514=REArches
+	32515=REColumn4
+	32516=REColumn5
+	32517=REColumn6
+	32518=RECeiling
+	32519=REWindows
+	32520=REBalusterLarge2
+	32521=REBasementEntry
+	32522=REBasementEntry2
+	32523=REBasementVault
+	32524=REBasementVault2
+	32525=BatSwarmSpawner
+	32526=Debris_WindowBoards
+	32765=ScreenLabel
+	32766=Tornado
+	32767=SmokeMonster
+}
+
+////////////
+//SPAWNIDS//
+////////////
+
+SpawnNums
+{
+	171=SmokeMonsterProjectile
+	211=DecorationShip
+	212=ModelRailBoxcar3_Projectile
+	222=Flamebolt
+	289=BomberInAir
+	288=BomberInAir_C3M2
+}

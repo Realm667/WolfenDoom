@@ -1,0 +1,115 @@
+// There was a point in time where I pondered on what exactly to add to Slot 6. Seeing as how the armor hitters are at 7 and the heavy armaments are at 8, clearly 6 is meant to be something along the lines of demolitions-type medium weapons. And then something hit me. Medal of Honor Allied Assault's expansion, Breakthrough. A section where you had to use a Mortar to defend a small house against multiple armor. It was then that I just had to add this thing in. It's perfect for large groups and armor, though you might wanna watch the ceiling lest you blast yourself headfirst.
+
+ACTOR MortarAmmo : Ammo
+{
+	Scale 0.1
+	Tag "Mortar Shell"
+	Inventory.Amount 1
+	Inventory.MaxAmount 10
+	Ammo.BackpackAmount 1
+	Ammo.BackpackMaxAmount 20
+	Inventory.PickupMessage "Picked up a shell for the Mortar."
+	Inventory.Icon MORT01
+	States
+	{
+	Spawn:
+		MTRR B -1
+		Stop
+	}
+}
+
+ACTOR MortarPlayer : NaziWeapon
+{
+	//$Category Weapons (Confiscated Weapons)
+	//$Title (6) Mortar
+	//$Color 14
+	Weapon.SlotNumber 6
+	Weapon.SelectionOrder 10000
+	Inventory.PickupMessage "You got the Mortar! Better watch the ceiling with this one."
+	Tag "Mortar"
+	Weapon.AmmoUse 1
+	Weapon.AmmoType "MortarAmmo"
+	Weapon.AmmoGive 2
+	-WEAPON.AMMO_CHECKBOTH
+	-WEAPON.NOALERT
+	Scale .4
+	Weapon.UpSound "mortarplayer/select"
+	States
+	{
+	Select:
+		MTRG A 0 A_Raise
+		MTRG A 1 A_Raise
+		Loop
+	Deselect:
+		MTRG A 0 A_Lower
+		MTRG A 1 A_Lower
+		Loop
+	Ready:
+		MTRG A 1 A_WeaponReady
+		Loop
+	Fire:
+		MTRG B 1 Offset(6,34)
+		MTRG B 1 Offset(1,46)
+		MTRG B 1 Offset(2,59)
+		MTRG C 1 Offset(2,63)
+		MTRG C 1 Offset(3,78)
+		MTRG C 1 Offset(2,84)
+		MTRG D 1 Offset(2,90) A_PlaySound("mortarplayer/load",CHAN_WEAPON)
+		MTRG D 1 Offset(1,106) 
+		MTRG D 1 Offset(1,114)
+		MTRG D 1 Offset(6,122)
+		MTRG D 1 Offset(3,130)
+		MTRG A 0 A_PlaySound("mortarplayer/fire",CHAN_WEAPON)
+		MTRG A 0 A_FireProjectile("ShotSmokeSpawner",0,0,0,random(-4,4),0,0)
+		MTRG A 2 Bright A_FireCustomMissile("MortarShelling",0,1,0,0,0,45)
+		MTRG A 0 A_JumpIf(waterlevel > 0,2)
+		MTRG A 0 A_FireProjectile("ShotSmokeSpawner",0,0,0,random(-4,4),0,0)
+		MTRG A 1 Offset(1,29)
+		MTRG A 1 Offset(-2,30)
+		MTRG A 1 Offset(-1,32)
+		MTRG A 2 A_ReFire
+		Goto Ready
+	Spawn:
+		MTRW A -1
+		Loop
+	}
+}
+
+ACTOR MortarShelling : GrenadeBase
+{
+	Scale 0.1
+	Radius 5
+	Height 6
+	Speed 40
+	PROJECTILE
+	-NOGRAVITY
+	-NOTELEPORT
+	+WINDTHRUST
+	Damage (100)
+	Decal Scorch
+	DamageType "Rocket"
+	Obituary "%o notices %k's rocket speeding towards %h."
+	ProjectileKickback 5000
+	GrenadeBase.SplashType "Missile"
+	States
+	{
+	Spawn:
+		MTRR A 1 BRIGHT NODELAY
+		MTRR A 1 BRIGHT
+		Wait
+	Death:
+		EXP1 A 0 A_SpawnGroundSplash
+		EXP1 A 0 A_SetScale(0.75,0.75)
+		EXP1 A 0 A_AlertMonsters
+		EXP1 A 0 A_StopSound(CHAN_VOICE)
+		EXP1 A 0 A_StartSound("panzer/explode",CHAN_AUTO, 0, 1.0, 0.1)
+		EXP1 A 0 A_Explode(96,600)
+		EXP1 A 0 A_SpawnItemEx("ZScorch")
+		TNT1 AAAAAAAAAAAAAAAAAAAAAAAAAAA 0 A_SpawnItemEx("TracerSpark_Longlive", 0, 0, 0, random(-5,5), random(-5,5), random(-5,5), random(0,359)) //T667 improvements
+		TNT1 A 0 A_SpawnItemEx("PanzerNuke",0,0,0,0,0,0,0,SXF_TRANSFERPOINTERS|SXF_NOCHECKPOSITION)
+		TNT1 A 8 A_SpawnItemEx("GeneralExplosion_Large",0,0,0)
+		TNT1 A 2 BRIGHT LIGHT("BOAFLMW2") A_Quake(9,15,0,1024,"")
+		TNT1 BCDEFGHIJKLMN 2 BRIGHT LIGHT("BOAFLMW2")
+		Stop
+	}
+}

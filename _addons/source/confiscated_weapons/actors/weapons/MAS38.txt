@@ -1,0 +1,150 @@
+// Unfortunately, there's no other counterpart to the ammo of this thing, so, this URGH ARGH FRENCH SMG is the only thing you got for the Longue.
+
+ACTOR 765LongueCasing : Casing9mm
+{
+	Scale .1
+	States
+	{
+	Spawn:
+		CAS3 ABCDEFGH 2
+		Loop
+	}
+}
+
+ACTOR 765LongueAmmo : Ammo
+{
+	Scale 0.6
+	Tag "7.65x20mm Longue"
+	Inventory.Amount 64
+	Inventory.MaxAmount 300
+	Ammo.BackpackAmount 80
+	Ammo.BackpackMaxAmount 450
+	Inventory.PickupMessage "Picked up a small box of 7.65x20mm Longue ammo."
+	Inventory.Icon 765A01
+	States
+	{
+	Spawn:
+		765L A -1
+		Stop
+	}
+}
+
+ACTOR 765LongueTracer : PlayerTracer
+{
+	ProjectileKickback 40
+	Damage (random(2,14))
+	Speed 100
+}
+
+ACTOR MAS38 : NaziWeapon
+{
+	//$Category Weapons (Confiscated Weapons)
+	//$Title (4) Thompson
+	//$Color 14
+	Weapon.SlotNumber 4
+	Weapon.SelectionOrder 600
+	Inventory.PickupMessage "You got the MAS-38!"
+	Weapon.AmmoType "MAS38Loaded"
+	Weapon.AmmoUse 1
+	Weapon.AmmoType2 "765LongueAmmo"
+	Weapon.AmmoUse2 1
+	Weapon.AmmoGive1 32
+	Weapon.AmmoGive2 64
+	Scale 0.4
+	Tag "MAS-38"
+	Weapon.UpSound "mas38/select"
+	States
+	{
+	Ready:
+		MASV A 0 A_JumpIfInventory("MAS38Loaded",0,2)
+		MASV A 0 A_JumpIfInventory("765LongueAmmo",1,2)
+		MASV A 1 A_WeaponReady
+		Loop
+		MASV A 1 A_WeaponReady(WRF_ALLOWRELOAD)
+		Loop
+	Deselect:
+		MASV A 0 A_Lower
+		MASV A 1 A_Lower
+		Loop
+	Select:
+		MASV A 0 A_Raise
+		MASV A 1 A_Raise
+		Loop
+	Fire:
+		MASV A 0 A_JumpIfInventory("MAS38Loaded",1,1)
+		Goto Dryfire
+		MASV A 0 A_GunFlash
+		MASV A 0 A_PlaySound("mas38/fire",CHAN_WEAPON)
+		MASV A 0 A_SpawnItemEx("45ACPCasing",12,-20,32,8,random(-2,2),random(0,4),random(-55,-80),SXF_NOCHECKPOSITION)
+		MASV A 0 A_AlertMonsters
+		MASV B 1 A_FireCustomMissile("765LongueTracer",frandom(-1.5,1.5),1,0,0,0,frandom(-1.0,1.0))
+		MASV B 1 Offset(0,40) A_SetPitch(pitch-(0.6*boa_recoilamount))
+		MASV A 0 A_JumpIf(waterlevel > 0,2)
+		MASV A 0 A_FireProjectile("ChainSmokeSpawner",0,0,0,random(-4,4),0,0)
+		MASV A 1 Offset(0,34)
+		TNT1 A 0 A_Refire
+		Goto Ready
+	Hold:
+		MASV A 0 A_JumpIfInventory("MAS38Loaded",1,1)
+		Goto Dryfire
+		MASV A 0 A_GunFlash
+		MASV A 0 A_PlaySound("mas38/fire",CHAN_WEAPON)
+		MASV A 0 A_SpawnItemEx("765LongueCasing",12,-20,32,8,random(-2,2),random(0,4),random(-55,-80),SXF_NOCHECKPOSITION)
+		MASV A 0 A_AlertMonsters
+		MASV B 1 Offset(0,36) A_FireCustomMissile("765LongueTracer",frandom(-1.5,1.5),1,0,0,0,frandom(-1.0,1.0))
+		MASV B 1 Offset(0,40) A_SetPitch(pitch-(0.6*boa_recoilamount))
+		MASV A 0 A_JumpIf(waterlevel > 0,2)
+		MASV A 0 A_FireProjectile("ChainSmokeSpawner",0,0,0,random(-4,4),0,0)
+		MASV A 1 Offset(0,34)
+		TNT1 A 0 A_Refire
+		Goto Ready
+	Reload:
+		MASV A 1 Offset(0,35) A_PlaySound("mas38/reload",5)
+		MASV A 1 Offset(0,38) 
+		MASV A 1 Offset(0,44)
+		MASV A 1 Offset(-2,46)
+		MASV C 1 Offset(-4,52)
+		MASV C 1 Offset(-7,56)
+		MASV C 1 Offset(-10,57)
+		MASV C 8 Offset(-11,58)
+	ReloadLoop:
+		TNT1 A 0 A_TakeInventory("765LongueAmmo",1,TIF_NOTAKEINFINITE)
+		TNT1 A 0 A_GiveInventory("MAS38Loaded")
+		TNT1 A 0 A_JumpIfInventory("MAS38Loaded",0,"ReloadFinish")
+		TNT1 A 0 A_JumpIfInventory("765LongueAmmo",1,"ReloadLoop")
+	ReloadFinish:
+		MASV A 1 Offset(-10,58)
+		MASV A 1 Offset(-10,61)
+		MASV D 1 Offset(-10,65)
+		MASV D 1 Offset(-10,71)
+		MASV D 1 Offset(-10,65)
+		MASV D 1 Offset(-10,60)
+		MASV D 1 Offset(-10,55)
+		MASV D 1 Offset(-10,53)
+		MASV D 1 Offset(-10,51)
+		MASV D 1 Offset(-9,50)
+		MASV A 1 Offset(-8,46)
+		MASV A 1 Offset(-7,43)
+		MASV A 1 Offset(-5,40)
+		MASV A 1 Offset(-3,37)
+		MASV A 1 Offset(-1,34)
+		MASV A 1 Offset(0,32)
+		Goto Ready
+	Flash:
+		MASF A 1 BRIGHT A_Light2
+		MASF B 1 BRIGHT
+		TNT1 A 2 A_Light1
+		Goto LightDone
+	Spawn:
+		MASW A -1
+		Stop
+	}
+}
+
+ACTOR MAS38Loaded : Ammo
+{
+	Tag "7.65x20mm Longue"
+	Inventory.MaxAmount 32
+	+IGNORESKILL
+	Inventory.Icon NAMA02
+}

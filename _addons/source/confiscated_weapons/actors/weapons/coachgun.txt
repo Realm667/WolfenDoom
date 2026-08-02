@@ -1,0 +1,135 @@
+// No, I couldn't find an M30 Drilling. Even if I did I wouldn't know how to implement the thing without causing some anomalies in the HUD. Goodness knows there's already plenty anomaly with this mod regarding HUD, the regular statusbar not showing every possible ammo in this mod and all that. Also, this was another one of the 40-to-50 weapon stuffing that I initially didn't want to even add to the mod. Thank Jeimuzu for this particular idea. I was irritated at the request initially, particularly since it came at the expense of the Ithica, but it came back around to being implemented anyways.
+
+ACTOR CoachGun : NaziWeapon
+{
+	//$Category Weapons (Confiscated Weapons)
+	//$Title (3) Coach Gun
+	//$Color 14
+	Weapon.SlotNumber 3
+	Weapon.SelectionOrder 400
+	Weapon.AmmoType "DoubleShotgunLoaded"
+	Weapon.AmmoUse 1
+	Weapon.AmmoType2 "Ammo12Gauge"
+	Weapon.AmmoUse2 1
+	Inventory.PickupMessage "You got the Double Barrel Coach Gun!"
+	+WEAPON.NOAUTOFIRE
+	Weapon.AmmoGive1 2
+	Weapon.AmmoGive2 8
+	Scale .3
+	Tag "Double Barrel"
+	Weapon.UpSound "dbscoach/select"
+	States
+	{
+	Select:
+		CCHG A 0 A_Raise
+		CCHG A 1 A_Raise
+		Loop
+	Deselect:
+		CCHG A 0 A_Lower
+		CCHG A 1 A_Lower
+		Loop
+	Ready:
+		CCHG A 0 A_JumpIfInventory("DoubleShotgunLoaded",0,2)
+		CCHG A 0 A_JumpIfInventory("Ammo12Gauge",1,2)
+		CCHG A 1 A_WeaponReady
+		Loop
+		CCHG A 1 A_WeaponReady(WRF_ALLOWRELOAD)
+		Loop
+	Fire:
+		CCHG A 0 A_JumpIfInventory("DBSReloading",1,"ReloadFinish")
+		CCHG A 0 A_JumpIfInventory("DoubleShotgunLoaded",1,1)
+		Goto Dryfire
+		CCHG A 0 A_TakeInventory("DoubleShotgunLoaded",1)
+		CCHG A 0 A_PlaySound("dbscoach/firesingle",CHAN_WEAPON)
+		CCHG A 0 A_GiveInventory("DBSShotCounter")
+		CCHG A 0 A_AlertMonsters
+		CCHG AAAAAAAAAA 0 A_FireCustomMissile("ShotgunTracer",frandom(-2.5,2.5),0,0,0,0,frandom(-2.5,2.5))
+		CCHG A 1 A_GunFlash
+		CCHG B 1 A_SetPitch(pitch-(8.0*boa_recoilamount))
+		CCHG B 1 Offset(0,40) A_SetPitch(pitch-(4.0*boa_recoilamount))
+		CCHG B 1 Offset(0,36) A_SetPitch(pitch-(2.0*boa_recoilamount))
+		CCHG B 1 Offset(0,34) A_SetPitch(pitch+(1.0*boa_recoilamount))
+		CCHG B 1 Offset(0,33) A_SetPitch(pitch+(0.5*boa_recoilamount))
+		CCHG A 7 A_WeaponReady(WRF_NOFIRE)
+		TNT1 A 0 A_CheckReload
+		Goto Ready
+	Altfire:
+		CCHG A 0 A_JumpIfInventory("DBSReloading",1,"ReloadFinish")
+		CCHG A 0 A_JumpIfInventory("DoubleShotgunLoaded",2,1)
+		Goto Ready
+		CCHG A 0 A_TakeInventory("DoubleShotgunLoaded",2)
+		CCHG A 0 A_PlaySound("dbscoach/fire",CHAN_WEAPON)
+		CCHG A 0 A_GiveInventory("DBSShotCounter", 2)
+		CCHG A 0 A_AlertMonsters
+		CCHG AAAAAAAAAA 0 A_FireCustomMissile("ShotgunTracer",frandom(-2.5,2.5),0,0,0,0,frandom(-2.5,2.5))
+		CCHG AAAAAAAAAA 0 A_FireCustomMissile("ShotgunTracer",frandom(-2.5,2.5),0,0,0,0,frandom(-2.5,2.5))
+		CCHG A 1 A_GunFlash
+		CCHG B 1 A_SetPitch(pitch-(8.0*boa_recoilamount))
+		CCHG B 1 Offset(0,40) A_SetPitch(pitch-(4.0*boa_recoilamount))
+		CCHG B 1 Offset(0,36) A_SetPitch(pitch-(2.0*boa_recoilamount))
+		CCHG B 1 Offset(0,34) A_SetPitch(pitch+(1.0*boa_recoilamount))
+		CCHG B 1 Offset(0,33) A_SetPitch(pitch+(0.5*boa_recoilamount))
+		CCHG A 7 A_WeaponReady(WRF_NOFIRE)
+		TNT1 A 0 A_CheckReload
+		Goto Ready
+	Reload:
+		CCHG A 1 Offset(-1,33) A_GiveInventory("DBSReloading")
+		CCHG B 1 Offset(5,34)
+		CCHG B 1 Offset(2,36)
+		CCHG B 1 Offset(-1,38)
+		CCHG C 1 Offset(3,35) A_PlaySound("dbscoach/open",CHAN_AUTO)
+		CCHG C 1 Offset(-1,38)
+		CCHG D 1 Offset(-4,41) 
+	CylinderEject:
+		TNT1 A 0 A_JumpIfInventory("DBSShotCounter",1,2)
+		TNT1 A 0 A_Jump(256,"ReloadLoop")
+		TNT1 A 0 A_TakeInventory("DBSShotCounter",1)
+		TNT1 A 0 A_SpawnItemEx("ShotgunCasing",12,-20,32, 0,0,0, random(-55,-80),SXF_NOCHECKPOSITION)
+		Goto CylinderEject
+		CCHG D 10 Offset(-6,46)
+		CCHG E 3 Offset(-7,55) A_PlaySound("dbscoach/load",CHAN_AUTO)
+	ReloadLoop:
+		CCHG A 0 A_TakeInventory("Ammo12Gauge",1,TIF_NOTAKEINFINITE)
+		CCHG A 0 A_GiveInventory("DoubleShotgunLoaded")
+		CCHG A 0 A_JumpIfInventory("DoubleShotgunLoaded",0,"ReloadFinish")
+		TNT1 A 0 A_JumpIfInventory("Ammo12Gauge",1,"ReloadLoop")
+	ReloadFinish:
+		CCHG E 3 Offset(3,35) 
+		CCHG E 3 Offset(-1,38)
+		CCHG F 1 Offset(-4,41)
+		CCHG F 1 Offset(-1,33)
+		CCHG F 1 Offset(-2,37)
+		CCHG F 1 Offset(-3,43)
+		CCHG F 1 Offset(-2,40) 
+		CCHG F 1 Offset(-4,41) 
+		CCHG B 4 Offset(-1,38) A_PlaySound("dbscoach/shut",CHAN_AUTO)
+		CCHG B 1 Offset(3,35)
+		CCHG B 1 Offset(-1,38)
+		CCHG B 1 Offset(2,36)
+		CCHG B 1 Offset(5,34) A_TakeInventory("DBSReloading",1)
+		Goto Ready
+	Flash:
+		CCHF A 1 BRIGHT A_Light2
+		TNT1 A 1
+		TNT1 A 2 A_Light1
+		Goto LightDone
+	Spawn:
+		COCW A -1
+		Stop
+	}
+}
+
+ACTOR DoubleShotgunLoaded : Ammo
+{
+	Tag "12 Gauge"
+	+IGNORESKILL
+	Inventory.MaxAmount 2
+	Inventory.Icon BROW01
+}
+
+ACTOR DBSReloading : Inventory{}
+
+ACTOR DBSShotCounter : Inventory
+{
+	Inventory.MaxAmount 6
+}

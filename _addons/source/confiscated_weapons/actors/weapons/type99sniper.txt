@@ -1,0 +1,188 @@
+// Same thing from the Type 100 happened in Type 99 as well. Was nice to have a sniper that you could reload with stripper clips, atleast.
+
+ACTOR ArisakaCasing : MauserRifleCasing{}
+
+ACTOR ArisakaTracer : PlayerTracer
+{
+	ProjectileKickback 100
+	Damage (random(40,65))
+	Speed 200
+}
+
+ACTOR ArisakaAmmo : Ammo
+{
+	Scale 0.4
+	Tag "7.7x58mm Arisaka"
+	Inventory.Amount 20
+	Inventory.MaxAmount 40
+	Ammo.BackpackAmount 40
+	Ammo.BackpackMaxAmount 100
+	Inventory.PickupMessage "Picked up a box of 7.7x58mm Arisaka ammo."
+	Inventory.Icon ARIA01
+	States
+	{
+	Spawn:
+		ARIA A -1
+		Stop
+	}
+}
+
+
+ACTOR Type99 : NaziWeapon
+{
+	//$Category Weapons (BoA Addons)
+	//$Title (5) Type 99 Sniper
+	//$Color 14
+	Scale 0.4
+	Weapon.SlotNumber 5
+	Weapon.AmmoType "Type99Loaded"
+	Weapon.AmmoUse 1
+	Weapon.AmmoType2 "ArisakaAmmo"
+	Weapon.AmmoUse2 1
+	Weapon.AmmoGive1 5
+	Weapon.AmmoGive2 10	
+	Inventory.PickupMessage "You got the Type 99 Sniper Rifle! The sideways scope'll allow you to fire accurately at long ranges without the handicap of loading rounds one by one."
+	Weapon.SelectionOrder 750
+	+WEAPON.NOAUTOFIRE
+	Tag "Type 99"
+	Weapon.UpSound "t99/select"
+	States
+	{
+	Ready:
+		T99I A 0 A_JumpIfInventory("Type99SniperZoom",1,"ScopedReady")
+		T99I A 0 A_JumpIfInventory("Type99Loaded",0,2)
+		T99I A 0 A_JumpIfInventory("ArisakaAmmo",1,2)
+		T99I A 1 A_WeaponReady
+		Loop
+		T99I A 1 A_WeaponReady(WRF_ALLOWRELOAD)
+		Loop
+	ScopedReady:
+		SCO3 A 0 A_JumpIfInventory("Type99Loaded",0,2)
+		SCO3 A 0 A_JumpIfInventory("ArisakaAmmo",1,2)
+		SCO3 A 1 A_WeaponReady(WRF_NOBOB)
+		Goto Ready
+		SCO3 A 1 A_WeaponReady(WRF_NOBOB|WRF_ALLOWRELOAD)
+		Goto Ready
+	Select:
+		T99I A 0 A_Raise
+		T99I A 1 A_Raise
+		Loop
+	Deselect:
+		T99I A 0 A_JumpIfInventory("Type99SniperZoom",1,"ScopedDeselect")
+		T99I A 0 A_Lower
+		T99I A 1 A_Lower
+		Loop
+	ScopedDeselect:
+		SCO3 A 0 A_TakeInventory("Type99SniperZoom")
+		SCO3 A 0 A_PlaySound("t99/scope")
+		SCO3 A 15 A_ZoomFactor(1.0)
+		Goto Deselect
+	Fire:
+		T99I A 0 A_JumpIfInventory("Type99Loaded",1,1)
+		Goto Dryfire
+		T99I A 0 A_AlertMonsters
+		T99I A 0 A_PlaySound("t99/fire",CHAN_WEAPON)
+		T99I A 0 A_SpawnItemEx("ArisakaCasing",12,-20,32,8,random(-2,2),random(0,4),random(-55,-80),SXF_NOCHECKPOSITION)
+		T99I A 0
+		T99I A 0 A_JumpIfInventory("Type99SniperZoom", 1, "ScopedFire")
+		T99I A 0 A_GunFlash
+		T99I A 2 A_FireCustomMissile("ArisakaTracer")
+		T99I A 0 A_JumpIf(waterlevel > 0,2)
+		T99I A 0 A_FireProjectile("ShotSmokeSpawner",0,0,0,random(-4,4),0,0)
+		T99I G 2 Offset(0,40) A_SetPitch(pitch-(4.0*boa_recoilamount))
+		T99I G 1 Offset(0,36) A_SetPitch(pitch-(2.0*boa_recoilamount))
+		T99I B 1 Offset(0,32)A_SetPitch(pitch+(1.0*boa_recoilamount))
+		T99I C 0 A_PlaySound("t99/open",5)
+		T99I C 3 A_SetPitch(pitch+(1.0*boa_recoilamount))
+		T99I D 1 A_SetPitch(pitch+(0.5*boa_recoilamount))
+		T99I E 3
+		T99I F 5
+		T99I E 3 A_PlaySound("t99/shut",5)
+		T99I D 1
+		T99I C 4
+		T99I B 1 A_CheckReload
+		Goto Ready
+	ScopedFire:
+		SCO3 A 2 A_FireCustomMissile("ArisakaTracer")
+		SCO3 A 0 A_JumpIf(waterlevel > 0,2)
+		SCO3 A 0 A_FireProjectile("ShotSmokeSpawner",0,0,0,random(-4,4),0,0)
+		SCO3 A 2 A_SetPitch(pitch-(4.0*boa_recoilamount))
+		SCO3 A 1 A_SetPitch(pitch-(2.0*boa_recoilamount))
+		SCO3 A 1 A_SetPitch(pitch+(1.0*boa_recoilamount))
+		SCO3 A 0 A_PlaySound("t99/scopebolt",5)
+		SCO3 A 3 A_SetPitch(pitch+(1.0*boa_recoilamount))
+		SCO3 A 17 A_SetPitch(pitch+(0.5*boa_recoilamount))
+		SCO3 A 1 A_CheckReload
+		Goto Ready
+	Flash:
+		T99F A 1 BRIGHT A_Light2
+		T99F B 1 BRIGHT
+		TNT1 A 2 A_Light1
+		Goto LightDone
+	AltFire:
+		SCO3 A 0 A_JumpIfInventory("Type99SniperZoom",1,"ZoomOut")
+		SCO3 A 0 A_PlaySound("t99/scope")
+		SCO3 A 0 A_GiveInventory("Type99SniperZoom")
+		SCO3 A 15 A_ZoomFactor(12.0)
+		Goto Ready
+	ZoomOut:
+		SCO3 A 0 A_TakeInventory("Type99SniperZoom")
+		SCO3 A 0 A_PlaySound("t99/scope")
+		SCO3 A 15 A_ZoomFactor(1.0)
+		Goto Ready
+	Reload:
+		SCO3 A 0 A_JumpIfInventory("Type99SniperZoom",1,2)
+		SCO3 A 0 A_Jump(256,4)
+		SCO3 A 0 A_TakeInventory("Type99SniperZoom")
+		SCO3 A 0 A_PlaySound("t99/scope")
+		SCO3 A 15 A_ZoomFactor(1.0)
+		T99I A 5
+		T99I A 1 
+		T99I A 1 Offset(-4,34)
+		T99I A 1 Offset(-6,35)
+		T99I B 2 Offset(-8,36)
+		T99I B 2 Offset(-4,42)
+		T99I C 1 Offset(0,51) A_PlaySound("t99/open",5)
+		T99I C 1 Offset(4,60)
+		T99I D 2 Offset(5,74)
+		T99I D 3 Offset(6,76)
+		T99I E 5
+		T99I I 1 Offset(6,80) A_PlaySound("t99/insert",5)
+		T99I I 1 Offset(6,84)
+		T99I H 1 Offset(6,87)
+		T99I H 1 Offset(7,90)
+		T99I H 1 Offset(8,92)
+		T99I H 8 Offset(8,92)
+		T99I H 1 Offset(9,88)
+		T99I H 1 Offset(8,82)
+		T99I H 1 Offset(7,77)
+	ReloadLoop:
+		TNT1 A 0 A_TakeInventory("ArisakaAmmo",1,TIF_NOTAKEINFINITE)
+		TNT1 A 0 A_GiveInventory("Type99Loaded")
+		TNT1 A 0 A_JumpIfInventory("Type99Loaded",0,"ReloadEnd")
+		TNT1 A 0 A_JumpIfInventory("ArisakaAmmo",1,"ReloadLoop")
+	ReloadEnd:
+		T99I E 5 A_PlaySound("t99/shut",5)
+		T99I D 1 Offset(4,60)
+		T99I C 1 Offset(0,51)
+		T99I C 1 Offset(-4,42)
+		T99I B 2 Offset(-8,36)
+		T99I B 1 Offset(-6,35)
+		T99I A 1 Offset(-4,34)
+		T99I A 2 Offset(-2,33)
+		Goto Ready
+	Spawn:
+		T99G A -1
+		Stop
+	}
+}
+
+ACTOR Type99SniperZoom : Inventory{}
+
+ACTOR Type99Loaded : Ammo
+{
+	Tag "7.7x58mm Arisaka"
+	+IGNORESKILL
+	Inventory.MaxAmount 5
+	Inventory.Icon ARIA02
+}

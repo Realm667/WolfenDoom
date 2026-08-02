@@ -1,0 +1,105 @@
+// Absolutely ineffective at killing enemy soldiers. Great for disabling alarms from a distance, though. The perfect weapon to clear a stealth map off of alarms so you can finally start guns blazing without enemies respawning left and right.
+
+ACTOR WelrodTracer : LugerTracer
+{
+	Speed 70
+}
+
+ACTOR Welrod : NaziWeapon
+{
+	//$Category Weapons (BoA Addons)
+	//$Title (2) Welrod
+	//$Color 14
+	Scale 0.5
+	Weapon.SlotNumber 2
+	Weapon.SelectionOrder 9996
+	Weapon.AmmoType "WelrodLoaded"
+	Weapon.AmmoUse 1
+	weapon.ammotype2 "Ammo9mm"
+	weapon.ammouse2 1
+	Tag "Welrod"
+	Inventory.PickupMessage "You got the Welrod!"
+	Weapon.UpSound "welrod/select"
+	Weapon.AmmoGive1 6
+	Weapon.AmmoGive2 12
+	+WEAPON.NOAUTOFIRE
+	States
+	{
+	Ready:
+		WELG A 0 A_JumpIfInventory("WelrodLoaded",0,2)
+		WELG A 0 A_JumpIfInventory("Ammo9mm",1,2)
+		WELG A 1 A_WeaponReady
+		Loop
+		WELG A 1 A_WeaponReady(WRF_ALLOWRELOAD)
+		Loop
+	Deselect:
+		WELG B 0 A_Lower
+		WELG B 1 A_Lower
+		Loop
+	Select:
+		WELG A 0 A_Raise
+		WELG A 1 A_Raise
+		Loop
+	Fire:
+		WELG A 0 A_JumpIfInventory("WelrodLoaded",1,1)
+		Goto Dryfire
+		WALG A 0 A_JumpIf(waterlevel > 0,2)
+		WALG A 0 A_FireProjectile("PistolSmokeSpawner",0,0,0,random(-4,4),0,0)
+		WELG A 0 A_SetPitch(pitch-(0.2*boa_recoilamount))
+		WELG A 0 A_PlaySound("welrod/fire",CHAN_WEAPON)
+		WELG A 0 A_AlertMonsters(192)
+		WELG A 1 A_FireCustomMissile("WelrodTracer")
+		WELG B 2
+		WELG B 1 A_SetPitch(pitch-(0.2*boa_recoilamount))
+		WELG B 2 Offset(0,45)
+		WELG D 3 Offset(0,48)
+		WELG D 4 Offset(0,54)
+		WELG E 5 Offset(0,62) A_SpawnItemEx("Casing9mm",12,-20,32,8,random(-2,2),random(0,4),random(-55,-80),SXF_NOCHECKPOSITION)
+		WELG E 4 Offset(0,72)
+		WELG D 3 Offset(0,54)
+		WELG C 2 Offset(0,48)
+		TNT1 A 0 A_CheckReload
+		WELG A 1 Offset(0,42) A_Jump(128,"Ready")
+		Goto Ready
+	Reload:
+		WELG C 1 Offset(0,35) A_PlaySound("welrod/reload",5)
+		WELG C 1 Offset(0,38)
+		WELG C 1 Offset(0,44)
+		WELG C 1 Offset(0,52)
+		WELG C 1 Offset(0,62)
+		WELG C 1 Offset(0,72)
+		WELG C 1 Offset(0,82)
+		WELG C 8
+	ReloadLoop:
+		WELG C 0 A_TakeInventory("Ammo9mm",1,TIF_NOTAKEINFINITE)
+		WELG C 0 A_GiveInventory("WelrodLoaded")
+		WELG C 0 A_JumpIfInventory("WelrodLoaded",0,"ReloadFinish")
+		WELG C 0 A_JumpIfInventory("Ammo9mm",1,"ReloadLoop")
+	ReloadFinish:
+		WELG C 1 Offset(0,82)
+		WELG C 1 Offset(0,72)
+		WELG C 1 Offset(0,62)
+		WELG C 1 Offset(0,52)
+		WELG A 1 Offset(0,44)
+		WELG A 1 Offset(0,38)
+		WELG A 1 Offset(0,35)
+		WELG A 1 Offset(0,32)
+		Goto Ready
+	Flash:
+		WELF A 1 BRIGHT
+		TNT1 A 1
+		TNT1 A 2
+		Goto LightDone
+	Spawn:
+		WELP A -1
+		Stop
+	}
+}
+
+ACTOR WelrodLoaded : Ammo
+{
+	Tag "9x19mm"
+	+IGNORESKILL
+	Inventory.MaxAmount 6
+	Inventory.Icon WALT01
+}

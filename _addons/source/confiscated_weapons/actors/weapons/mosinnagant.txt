@@ -1,0 +1,142 @@
+// A jest weapon formulates in my head during the implementation of this thing. A viewsprite of just BJ holding a stripper clip for the Mosin (that gets taken away if you find the rifle). I decided not to, since no one would probably get the reference anyways.
+
+ACTOR MosinCasing : MauserRifleCasing{}
+
+ACTOR MosinTracer : PlayerTracer
+{
+	ProjectileKickback 100
+	Damage (random(40,65))
+	Speed 200
+}
+
+ACTOR NagantAmmo : Ammo
+{
+	Scale 0.6
+	Tag "7.62x54mmR"
+	Inventory.Amount 20
+	Inventory.MaxAmount 40
+	Ammo.BackpackAmount 10
+	Ammo.BackpackMaxAmount 100
+	Inventory.PickupMessage "Picked up a box of 7.62mm Mosin Nagant ammo."
+	Inventory.Icon MSAM01
+	States
+	{
+	Spawn:
+		MOSA A -1
+		Stop
+	}
+}
+
+
+ACTOR MosinNagant : NaziWeapon
+{
+	//$Category Weapons (BoA Addons)
+	//$Title (5) Mosin Nagant
+	//$Color 14
+	Scale 0.45
+	Weapon.SlotNumber 5
+	Weapon.AmmoType "MosinLoaded"
+	Weapon.AmmoUse 1
+	Weapon.AmmoType2 "NagantAmmo"
+	Weapon.AmmoUse2 1
+	Inventory.PickupMessage "You got the Mosin Nagant!"
+	Weapon.SelectionOrder 750
+	+WEAPON.NOAUTOFIRE
+	Tag "Mosin Nagant"
+	Weapon.UpSound "mosin/select"
+	Weapon.AmmoGive1 5
+	Weapon.AmmoGive2 10
+	States
+	{
+	Ready:
+		MOSN A 0 A_JumpIfInventory("MosinLoaded",0,2)
+		MOSN A 0 A_JumpIfInventory("NagantAmmo",1,2)
+		MOSN A 1 A_WeaponReady
+		Loop
+		MOSN A 1 A_WeaponReady(WRF_ALLOWRELOAD)
+		Loop
+	Select:
+		MOSN A 0 A_Raise
+		MOSN A 1 A_Raise
+		Loop
+	Deselect:
+		MOSN A 0 A_Lower
+		MOSN A 1 A_Lower
+		Loop
+	Fire:
+		MOSN A 0 A_JumpIfInventory("MosinLoaded",1,1)
+		Goto Dryfire
+		MOSN A 0 A_AlertMonsters
+		MOSN A 0 A_PlaySound("mosin/fire",CHAN_WEAPON)
+		MOSN A 0 A_SpawnItemEx("MosinCasing",12,-20,32,8,random(-2,2),random(0,4),random(-55,-80),SXF_NOCHECKPOSITION)
+		MOSN A 0 A_GunFlash
+		MOSN A 2 A_FireCustomMissile("MosinTracer")
+		MOSN A 0 A_JumpIf(waterlevel > 0,2)
+		MOSN A 0 A_FireProjectile("ShotSmokeSpawner",0,0,0,random(-4,4),0,0)
+		MOSN A 2 Offset(0,40) A_SetPitch(pitch-(4.0*boa_recoilamount))
+		MOSN A 1 Offset(0,36) A_SetPitch(pitch-(2.0*boa_recoilamount))
+		MOSN B 1 Offset(0,32) A_SetPitch(pitch+(1.0*boa_recoilamount))
+		MOSN A 0 A_PlaySound("mosin/cock",5)
+		MOSN C 3 A_SetPitch(pitch+(1.0*boa_recoilamount))
+		MOSN D 1 A_SetPitch(pitch+(0.5*boa_recoilamount))
+		MOSN E 3
+		MOSN F 5
+		MOSN E 3
+		MOSN D 1
+		MOSN C 4
+		MOSN B 1 A_CheckReload
+		Goto Ready
+	Flash:
+		MOSF A 1 BRIGHT A_Light2
+		MOSF B 1 BRIGHT
+		TNT1 A 2 A_Light1
+		Goto LightDone
+	Reload:
+		MOSN A 5 
+		MOSN A 1 
+		MOSN A 1 Offset(-4,34)
+		MOSN A 1 Offset(-6,35)
+		MOSN B 2 Offset(-8,36) 
+		MOSN B 2 Offset(-4,42)
+		MOSN C 1 Offset(0,51) A_PlaySound("mosin/open",5)
+		MOSN C 1 Offset(4,60)
+		MOSN D 2 Offset(5,74)
+		MOSN E 3 Offset(6,76)
+		MOSN G 5
+		MOSN H 1 Offset(6,80) A_PlaySound("mosin/insert",5)
+		MOSN H 1 Offset(6,84)
+		MOSN H 1 Offset(6,87)
+		MOSN G 1 Offset(7,90)
+		MOSN G 1 Offset(8,92)
+		MOSN G 8 Offset(8,92)
+		MOSN G 1 Offset(9,88)
+		MOSN G 1 Offset(8,82)
+		MOSN G 1 Offset(7,77)
+	ReloadLoop:
+		TNT1 A 0 A_TakeInventory("NagantAmmo",1,TIF_NOTAKEINFINITE)
+		TNT1 A 0 A_GiveInventory("MosinLoaded")
+		TNT1 A 0 A_JumpIfInventory("MosinLoaded",0,"ReloadEnd")
+		TNT1 A 0 A_JumpIfInventory("NagantAmmo",1,"ReloadLoop")
+	ReloadEnd:
+		MOSN E 5 A_PlaySound("mosin/shut",5)
+		MOSN D 1 Offset(4,60)
+		MOSN C 1 Offset(0,51)
+		MOSN C 1 Offset(-4,42)
+		MOSN B 2 Offset(-8,36)
+		MOSN B 1 Offset(-6,35)
+		MOSN A 1 Offset(-4,34)
+		MOSN A 2 Offset(-2,33)
+		Goto Ready
+	Spawn:
+		MSNG A -1
+		Stop
+	}
+}
+
+ACTOR MosinLoaded : Ammo
+{
+	Tag "7.62x54mmR"
+	+IGNORESKILL
+	Inventory.MaxAmount 5
+	Inventory.Icon ARIA02
+}

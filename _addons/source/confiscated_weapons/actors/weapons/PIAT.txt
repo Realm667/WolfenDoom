@@ -1,0 +1,192 @@
+// You don't really see much of this in Doom mods. Granted, a lot of weapons in Confiscated Weapons aren't found at all in other Doom mods, so I'm glad to be the first (or atleast one of the few, if I had missed others) to kinda get this funny British pipe launcher in. Yeah, I thought about keeping the modelshot camera origin similar to both the Bazooka and the Panzerschreck, but since this launcher shoots in an arc instead of straight line, I figured I'd let players get a break with aiming this thing.
+
+ACTOR PIATAmmo : Ammo
+{
+	Scale .1
+	Tag "PIAT Rocket"
+	Inventory.Amount 1
+	Inventory.MaxAmount 2
+	Ammo.BackpackAmount 1
+	Ammo.BackpackMaxAmount 4
+	Inventory.PickupMessage "Picked up a rocket for the PIAT."
+	Inventory.Icon PIAM01
+	States
+	{
+	Spawn:
+		PIAM A -1
+		Stop
+	}
+}
+
+ACTOR PIAT : NaziWeapon
+{
+	Weapon.SlotNumber 7
+	Weapon.SelectionOrder 10000
+	Inventory.PickupMessage "You got the PIAT!"
+	Tag "PIAT"
+	Weapon.AmmoType "PIATLoaded"
+	Weapon.AmmoUse 1
+	Weapon.AmmoType2 "PIATAmmo"
+	Weapon.AmmoUse2 1
+	Weapon.AmmoGive1 1
+	Weapon.AmmoGive2 2
+	+WEAPON.NOAUTOFIRE
+	Scale .4
+	Weapon.UpSound "piat/select"
+	States
+	{
+	Select:
+		TNT1 A 0 A_JumpIfInventory("PIATLoaded",1,3)
+		PIAT C 0 A_Raise
+		PIAT C 1 A_Raise
+		Loop
+		PIAT A 0 A_Raise
+		PIAT A 1 A_Raise
+		Loop
+	Deselect:
+		TNT1 A 0 A_JumpIfInventory("PIATLoaded",1,3)
+		PIAT C 0 A_Lower
+		PIAT C 1 A_Lower
+		Loop
+		PIAT A 0 A_Lower
+		PIAT A 1 A_Lower
+		Loop
+	Ready:
+		TNT1 A 0 A_JumpIfInventory("PIATLoaded",1,2)
+		Goto ReadyEmpty
+		TNT1 A 0 A_CheckReload
+		PIAT A 0 A_JumpIfInventory("PIATLoaded",0,2)
+		PIAT A 0 A_JumpIfInventory("PIATAmmo",1,2)
+		PIAT A 1 A_WeaponReady
+		Loop
+		PIAT A 1 A_WeaponReady(WRF_ALLOWRELOAD)
+		Loop
+	ReadyEmpty:
+		TNT1 A 0 A_CheckReload
+		TNT1 A 0 A_JumpIfInventory("PIATAmmo",1,2)
+		PIAT C 1 A_WeaponReady
+		Goto Ready
+		PIAT C 1 A_WeaponReady(WRF_ALLOWRELOAD)
+		Goto Ready
+	Fire:
+		PIAT A 0 A_JumpIfInventory("PIATLoaded",1,1)
+		Goto Dryfire
+		PIAT A 0 A_PlaySound("piat/fire",CHAN_WEAPON)
+		PIAT A 0 A_GunFlash
+		PIAT B 2 Bright A_FireCustomMissile("PIATRocket",0,1,0,0)
+		PIAT B 0 A_JumpIf(waterlevel > 0,2)
+		PIAT B 0 A_FireProjectile("ShotSmokeSpawner",0,0,0,random(-4,4),0,0)
+		PIAT B 1 Offset(6,34)
+		PIAT B 1 Offset(1,36)
+		PIAT B 1 Offset(2,39)
+		PIAT B 1 Offset(2,43)
+		PIAT B 1 Offset(3,48)
+		PIAT B 1 Offset(2,44)
+		PIAT B 1 Offset(2,40)
+		PIAT B 1 Offset(1,36)
+		PIAT B 1 Offset(1,34)
+		PIAT B 1 Offset(6,32)
+		PIAT B 1 Offset(3,30)
+		PIAT C 1 Offset(1,29)
+		PIAT C 1 Offset(-2,30)
+		PIAT C 1 Offset(-1,32)
+		TNT1 A 0 A_CheckReload
+		Goto Ready
+	Reload:
+		PIAT C 1 Offset(1,33) 
+		PIAT C 1 Offset(2,34)
+		PIAT C 1 Offset(3,35)
+		PIAT C 1 Offset(4,36)
+		PIAT C 1 Offset(4,43)
+		PIAT C 1 Offset(4,50)
+		PIAT C 1 Offset(5,58)
+		PIAT C 1 Offset(5,67)
+		PIAT C 1 Offset(5,71)
+		PIAT C 1 Offset(5,77)
+		PIAT C 1 Offset(4,83)
+		PIAT C 1 Offset(3,89)
+		PIAT C 1 Offset(3,94)
+		PIAT C 1 Offset(2,100)
+		PIAT C 1 Offset(2,102)
+		PIAT C 1 Offset(1,104)
+		PIAT C 1 Offset(1,106)
+		PIAT C 1 Offset(-1,108) A_PlaySound("piat/load",CHAN_WEAPON)
+		PIAT C 1 Offset(-3,112)
+		PIAT C 1 Offset(-5,116)
+		PIAT C 1 Offset(-7,120)
+		PIAT C 1 Offset(-10,124)
+		PIAT C 1 Offset(-14,126)
+		PIAT C 1 Offset(-18,128) 
+		PIAT A 0 A_TakeInventory("PIATAmmo",1)
+		PIAT A 1 Offset(-21,129) A_GiveInventory("PIATLoaded")
+		PIAT A 1 Offset(-24,130) 
+		PIAT A 1 Offset(-27,131)
+		PIAT A 1 Offset(-28,130)
+		PIAT A 1 Offset(-26,128)
+		PIAT A 1 Offset(-22,124)
+		PIAT A 1 Offset(-21,112)
+		PIAT A 1 Offset(-20,108)
+		PIAT A 1 Offset(-19,98)
+		PIAT A 1 Offset(-18,88)
+		PIAT A 1 Offset(-17,78)
+		PIAT A 1 Offset(-16,68)
+		PIAT A 1 Offset(-15,57)
+		PIAT A 1 Offset(-14,46)
+		PIAT A 1 Offset(-12,42)
+		PIAT A 1 Offset(-11,38)
+		PIAT A 1 Offset(-8,35)
+		PIAT A 1 Offset(-6,32)
+		PIAT A 1 Offset(-2,28)
+		PIAT A 1 Offset(1,27)
+		PIAT A 1 Offset(-1,29)
+		Goto Ready
+	Spawn:
+		PIAW A -1
+		Loop
+	}
+}
+
+ACTOR PIATLoaded : Ammo
+{
+	+IGNORESKILL
+	Tag "Loaded"
+	Inventory.Icon PIAM01
+}
+
+ACTOR PIATRocket : GrenadeBase
+{
+	Scale 0.1
+	Radius 5
+	Height 6
+	Speed 70
+	PROJECTILE
+	-NOGRAVITY
+	-NOTELEPORT
+	+WINDTHRUST
+	Damage (1000)
+	Decal Scorch
+	DamageType "Rocket"
+	Obituary "%o notices %k's rocket speeding towards %h."
+	ProjectileKickback 25000
+	GrenadeBase.SplashType "Missile"
+	States
+	{
+	Spawn:
+		PIAR A 1 BRIGHT NODELAY
+		PIAR A 1 BRIGHT
+		Wait
+	Death:
+		EXP1 A 0 A_SpawnGroundSplash
+		EXP1 A 0 A_SetScale(0.75,0.75)
+		EXP1 A 0 A_AlertMonsters
+		EXP1 A 0 A_StopSound(CHAN_VOICE)
+		EXP1 A 0 A_StartSound("grenade/explode",CHAN_AUTO, 0, 1.0, 0.1)
+		EXP1 A 0 A_Explode(192)
+		EXP1 A 0 A_SpawnItemEx("ZScorch")
+		TNT1 AAAAAAAAAAAAAAAAAAAAAAAAAAA 0 A_SpawnItemEx("TracerSpark_Longlive", 0, 0, 0, random(-5,5), random(-5,5), random(-5,5), random(0,359)) //T667 improvements
+		TNT1 A 8 A_SpawnItemEx("GeneralExplosion_Medium",0,0,0)
+		TNT1 A 2 BRIGHT LIGHT("BOAFLMW2") A_Quake(9,15,0,1024,"")
+		TNT1 BCDEFGHIJKLMN 2 BRIGHT LIGHT("BOAFLMW2")
+		Stop
+	}
+}

@@ -1,0 +1,104 @@
+// Ah, the first conundrum. Shall I make all pistols act like the Walther P38 that allows for sorta-automatic fire, or the Luger where it's strictly semi. Considering how there's multiple .45 firearms that use AUTOFIRE already (with dwindling accuracy), figured I'd let this be the ammo saving option.
+
+ACTOR Colt1911Tracer : M1ThompsonTracer
+{
+	Speed 80
+}
+
+ACTOR Colt1911 : NaziWeapon
+{
+	//$Category Weapons (Confiscated Weapons)
+	//$Title (2) Colt 1911
+	//$Color 14
+	Scale 0.5
+	Weapon.SlotNumber 2
+	Weapon.SelectionOrder 9997
+	Weapon.AmmoType "Colt1911Loaded"
+	Weapon.AmmoUse 1
+	weapon.ammotype2 "45ACPAmmo"
+	weapon.ammouse2 1
+	Tag "Colt 1911"
+	Inventory.PickupMessage "You got the Colt 1911!"
+	Weapon.UpSound "colt1911/select"
+	Weapon.AmmoGive1 7
+	Weapon.AmmoGive2 14
+	+WEAPON.NOAUTOFIRE
+	States
+	{
+	Ready:
+		1911 A 0 A_JumpIfInventory("Colt1911Loaded",0,2)
+		1911 A 0 A_JumpIfInventory("45ACPAmmo",1,2)
+		1911 A 1 A_WeaponReady
+		Loop
+		1911 A 1 A_WeaponReady(WRF_ALLOWRELOAD)
+		Loop
+	Deselect:
+		1911 A 0 A_Lower
+		1911 A 1 A_Lower
+		Loop
+	Select:
+		1911 A 0 A_Raise
+		1911 A 1 A_Raise
+		Loop
+	Fire:
+		1911 A 0 A_JumpIfInventory("Colt1911Loaded",1,1)
+		Goto Dryfire
+		1911 A 0 A_GunFlash
+		1911 A 0 A_SetPitch(pitch-(0.2*boa_recoilamount))
+		1911 A 0 A_JumpIf(waterlevel > 0,2)
+		1911 A 0 A_FireProjectile("PistolSmokeSpawner",0,0,0,random(-4,4),0,0)
+		1911 A 0 A_PlaySound("colt1911/fire",CHAN_WEAPON)
+		1911 A 0 A_SpawnItemEx("45ACPCasing",12,-20,32,8,random(-2,2),random(0,4),random(-55,-80),SXF_NOCHECKPOSITION)
+		1911 A 0 A_AlertMonsters
+		1911 A 1 A_FireCustomMissile("Colt1911Tracer",frandom(-1,1))
+		1911 B 2
+		TNT1 A 0 
+		1911 A 1 A_SetPitch(pitch-(0.2*boa_recoilamount))
+		1911 A 1 Offset(0,36)
+		1911 A 1 Offset(0,41)
+		1911 A 1 Offset(0,35)
+		TNT1 A 0 A_CheckReload
+		1911 A 1 Offset(0,32) A_Jump(128,"Ready")
+		Goto Ready
+	Reload:
+		1911 C 1 Offset(0,35) A_StartSound("colt1911/reload", CHAN_5)
+		1911 C 1 Offset(0,38)
+		1911 C 1 Offset(0,44)
+		1911 C 1 Offset(0,52)
+		1911 C 1 Offset(0,62)
+		1911 C 1 Offset(0,72)
+		1911 C 1 Offset(0,82)
+		TNT1 A 8
+	ReloadLoop:
+		TNT1 A 0 A_TakeInventory("45ACPAmmo",1,TIF_NOTAKEINFINITE)
+		TNT1 A 0 A_GiveInventory("Colt1911Loaded")
+		TNT1 A 0 A_JumpIfInventory("Colt1911Loaded",0,"ReloadFinish")
+		TNT1 A 0 A_JumpIfInventory("45ACPAmmo",1,"ReloadLoop")
+	ReloadFinish:
+		1911 C 1 Offset(0,82)
+		1911 C 1 Offset(0,72)
+		1911 C 1 Offset(0,62)
+		1911 C 1 Offset(0,52)
+		1911 A 1 Offset(0,44)
+		1911 A 1 Offset(0,38)
+		1911 A 1 Offset(0,35)
+		1911 A 1 Offset(0,32)
+		Goto Ready
+	Flash:
+		1911 F 1 BRIGHT A_Light2
+		TNT1 A 1
+		TNT1 A 2 A_Light1
+		Goto LightDone
+	Spawn:
+		1911 W -1
+		Stop
+	}
+}
+
+ACTOR Colt1911Loaded : Ammo
+{
+	Tag ".45 ACP"
+	+IGNORESKILL
+	Inventory.MaxAmount 7
+	Inventory.Icon FUDD01
+}

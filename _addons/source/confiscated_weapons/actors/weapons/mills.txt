@@ -1,0 +1,157 @@
+// It's literally just the Mk2 Grenade but it if had much less damaging fragmentation. Much more frags, atleast, so if you got plenty of small targets, this might work better than the Mk2.
+
+ACTOR MillsAmmo : Ammo
+{
+	Scale 0.2
+	Tag "Components of Mills Grenade"
+	Inventory.Amount 1
+	Inventory.MaxAmount 4
+	Ammo.BackpackAmount 0
+	Ammo.BackpackMaxAmount 9
+	Inventory.PickupMessage "Someway, somehow, you managed to cobble up a whole new grenade out of spare parts while looking at the grenades you already have. Also, you're not actually supposed to see this, but I like to have fun with how people might handwave getting ammo for a weapon like this."
+	Inventory.Icon MILL01
+	States
+	{
+	Spawn:
+		M2SW A -1
+		Stop
+	}
+}
+
+ACTOR MillsGrenade : NaziWeapon
+{
+	//$Category Weapons (Confiscated Weapons)
+	//$Title (9) Mills Grenade
+	//$Color 14
+	Weapon.SlotNumber 9
+	Weapon.SelectionOrder 10000
+	Inventory.PickupMessage "You got a Mills Fragmentation Grenade!"
+	Tag "Mills Grenade"
+	Weapon.AmmoUse 1
+	Weapon.AmmoType "MillsAmmo"
+	Weapon.AmmoGive 2
+	-WEAPON.AMMO_CHECKBOTH
+	-WEAPON.NOALERT
+	Scale .2
+	Weapon.UpSound "grenade/select"
+	Inventory.PickupSound "grenade/pickup"
+	States
+	{
+	Select:
+		M2SV A 0 A_Raise
+		M2SV A 1 A_Raise
+		Loop
+	Deselect:
+		TNT1 A 0 A_JumpIfInventory("MillsAmmo",1,3)
+		TNT1 A 0 A_Lower
+		TNT1 A 1 A_Lower
+		Loop
+		M2SV A 0 A_Lower
+		M2SV A 1 A_Lower
+		Loop
+	Ready:
+		TNT1 A 0 A_JumpIfInventory("MillsAmmo",1,2)
+		TNT1 A 1 A_WeaponReady
+		Loop
+		M2SV A 1 A_WeaponReady
+		Loop
+	Fire:
+		M2SV B 1 Offset(6,34)
+		M2SV B 1 Offset(1,46)
+		M2SV B 1 Offset(2,59)
+		M2SV B 1 Offset(2,63)
+		M2SV B 1 Offset(3,78)
+		M2SV B 1 Offset(2,84)
+		M2SV B 1 Offset(2,90) A_PlaySound("grenade/ringpull",CHAN_WEAPON)
+		M2SV B 1 Offset(1,106) 
+		M2SV B 1 Offset(1,114)
+		M2SV B 1 Offset(6,122)
+		M2SV B 1 Offset(3,130)
+		TNT1 A 0 A_PlaySound("grenade/throw",CHAN_WEAPON)
+		TNT1 A 2 Bright A_FireCustomMissile("MillsGrenade_Thrown",0,1,0,0,0,0)
+		TNT1 A 1 Offset(1,29)
+		TNT1 A 1 Offset(-2,30)
+		TNT1 A 1 Offset(-1,32)
+		Goto Ready
+	Spawn:
+		M2SW A -1
+		Loop
+	}
+}
+
+Actor MillsGrenade_Thrown : GrenadeBase
+{
+	Scale .2
+	Radius 4
+	Height 3
+	Speed 40
+	Damage (random(1,8))
+	DamageType "Frag"
+	Reactiontime 8 //for countdown
+	Projectile
+	-NOGRAVITY
+	-NOTELEPORT
+	+WINDTHRUST
+	BounceType "Doom"
+	BounceFactor 0.4
+	WallBounceFactor 0.6
+	BounceSound "grenade/bounce"
+	States
+	{
+	Spawn:
+		M2ST A 2 A_CountDown
+		M2ST BCDEFGH 2
+		TNT1 A 0 A_JumpIf(waterlevel == 3, "AdjustMass")
+		Loop
+	Swim:
+		M2ST A 2 A_CountDown() 
+		TNT1 A 0 A_ScaleVelocity(0.7) 
+		TNT1 A 0 A_SpawnItemEx("Bubble", 0, 0, 0, 0, 0, 2, random (0, 360), 0, 128)
+		M2ST BCDEFGH 2
+		Loop
+	Death:
+		M2ST A 35
+		TNT1 A 0 A_AlertMonsters
+		TNT1 A 0 A_SetScale(1.75,1.75)
+		TNT1 A 0 A_SetTranslucent(0.75,1)
+		TNT1 A 0 A_StartSound("grenade/explode", CHAN_AUTO, 0, 1.0, 0.1)
+		TNT1 A 1 A_SpawnItemEx("GeneralExplosion_Medium")
+		TNT1 A 0 A_SpawnItemEx("KD_HL2SmokeGenerator")
+		TNT1 A 0 A_SpawnItemEx("KD_HL2SparkGenerator")
+		TNT1 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 0 A_SpawnitemEx("MillsGrenade_Debris", 0, 0, 8, random(0,20), random(0,20), random(0,20), random(0,359), 0, 0)
+		TNT1 A 1 Radius_Quake(10,10,0,16,0)
+		Stop
+	}
+}
+
+Actor MillsGrenade_Debris
+{
+	Radius 8
+	Height 16
+	Mass 1
+	Damage (random(2,14))
+	Scale 0.1
+	Gravity 1
+	Projectile
+	-NOGRAVITY
+	+RANDOMIZE
+	+ROLLSPRITE
+	+HITOWNER
+	States
+	{
+	Spawn:
+		NLPJ A 4 NODELAY A_SetRoll(roll + 15, SPF_INTERPOLATE) 
+		TNT1 A 0 A_JumpIf(waterlevel == 3, "AdjustMass")
+		Loop
+	AdjustMass: 
+		NLPJ "#" 0 A_SetMass(400)
+		Goto Swim
+	Swim: 
+		NLPJ A 2 A_ScaleVelocity(0.7)
+		NLPJ A 2 A_SpawnItemEx("Bubble", 0, 0, 0, 0, 0, 2, random (0, 360), 0, 128)
+		Loop
+	Death:
+		NLPJ A 0
+		Stop
+	}
+}

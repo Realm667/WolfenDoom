@@ -1,0 +1,91 @@
+// Can you imagine that the original brass knucks had a randomized chance of just hitting for 40 damage without the use of zerks? That's enough to gib some of the low tier enemy soldiers (some of them starting out around 20HP). There's code here to hit that again (with some extras) if you got zerk on, but I don't think BoA's powerups actually have PowerStrength anywhere in the implementations. Sad. No gibbing punches for you (atleast unless they decided to roll back on that).
+
+ACTOR BrassKnucks : NaziWeapon
+{
+	//$Category Weapons (Confiscated Weapons)
+	//$Title (1) PUNCH
+	//$Color 14
+	Weapon.SlotNumber 1
+	Scale 0.2
+	Tag "Brass Knuckles"
+	-WEAPON.AMMO_CHECKBOTH
+	Weapon.SelectionOrder 10000
+	Inventory.PickupMessage "You got the Brass Knuckles!"
+	Weapon.UpSound "shovel/select"
+	States
+	{
+	Ready:
+		PUNG A 1 A_WeaponReady
+		Loop
+	Deselect:
+		PUNG A 0 A_Lower
+		PUNG A 1 A_Lower
+		Loop
+	Select:
+		PUNG A 0 A_Raise
+		PUNG A 1 A_Raise
+		Loop
+	Fire:
+		TNT1 A 0 A_JumpIfInventory("PowerStrength",1,"PowerPunch")
+		TNT1 A 0 A_Jump(128,"Fire2")
+		PUNG B 1 
+		PUNG C 1
+		TNT1 A 0 
+		PUNG D 4 A_CustomPunch(8,0,0,"HitPuff")
+		PUNG CB 2
+		TNT1 A 5
+		Goto Ready
+	Fire2:
+		PUNG FG 1
+		TNT1 A 0
+		TNT1 A 0 
+		PUNG H 4 A_CustomPunch(8,0,0,"HitPuff")
+		PUNG GF 2
+		TNT1 A 5
+		Goto Ready
+	PowerPunch:
+		TNT1 A 0 A_Jump(128,"PowerPunch2")
+		PUNG B 1 
+		PUNG C 1
+		TNT1 A 0 
+		PUNG D 4 A_CustomPunch(8*10,0,0,"HitPuffSandblast")
+		PUNG CB 2
+		TNT1 A 5
+		Goto Ready
+	PowerPunch2:
+		PUNG FG 1
+		TNT1 A 0
+		TNT1 A 0 
+		PUNG H 4 A_CustomPunch(8*10,0,0,"HitPuffSandblast")
+		PUNG GF 2
+		TNT1 A 5
+		Goto Ready
+	Spawn:
+		PUNG Z -1
+		Stop
+	}
+}
+
+ACTOR HitPuff
+{
+	+NOBLOCKMAP
+	+NOGRAVITY
+	+PUFFONACTORS
+	+NOEXTREMEDEATH
+	activesound "melee/miss"
+	attacksound "melee/wall"
+	seesound "melee/hit"
+	Obituary "%o was dusted by %k."
+	ProjectileKickback 40
+	states
+	{
+	Spawn:
+		TNT1 A 1
+		Stop
+	}
+}
+
+ACTOR HitPuffSandblast : HitPuff
+{
+	-NOEXTREMEDEATH
+}

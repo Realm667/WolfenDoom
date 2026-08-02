@@ -1,0 +1,222 @@
+// I was about to write about how conflicting it was for me to decide whether I should add a suppressor to the PPK and how it eventually led me to just leaving it as an unsilenced pistol, but then a sudden surge of productivity hit me, and now the PPK's got a nifty alternate mode where you can take the suppressor on or off. I wish that sudden surge would hit me more, would've probably finished more than half of the projects I have currently on hiatus as of this writing.
+
+ACTOR PPKTracer : PlayerTracer
+{
+	ProjectileKickback 80
+	Damage (random(15,19))
+	Speed 90
+}
+
+ACTOR PPKAmmo : Ammo
+{
+	Scale 0.35
+	Tag ".380 ACP"
+	Inventory.Amount 21
+	Inventory.MaxAmount 100
+	Ammo.BackpackAmount 42
+	Ammo.BackpackMaxAmount 200
+	Inventory.PickupMessage "Picked up a mag of .380 ACP PPK ammo."
+	Inventory.Icon PPKA02
+	States
+	{
+	Spawn:
+		WPPK N -1
+		Stop
+	}
+}
+
+ACTOR PPK : NaziWeapon
+{
+	//$Category Weapons (BoA Addons)
+	//$Title (2) PPK
+	//$Color 14
+	Scale 0.35
+	Weapon.SlotNumber 2
+	Weapon.SelectionOrder 9997
+	Weapon.AmmoType "PPKLoaded"
+	Weapon.AmmoUse 1
+	weapon.ammotype2 "PPKAmmo"
+	weapon.ammouse2 1
+	Tag "Walther PPK"
+	Inventory.PickupMessage "You got the Walther PPK! Alternate fire puts on a suppressor that'll reduce the amount of noise you make when firing."
+	Weapon.UpSound "peepee/select"
+	Weapon.AmmoGive1 7
+	Weapon.AmmoGive2 14
+	+WEAPON.NOAUTOFIRE
+	States
+	{
+	Ready:
+		TNT1 A 0 A_JumpIfInventory("PPKSuppressor",1,"ReadySuppressed")
+		WPPK A 0 A_JumpIfInventory("PPKLoaded",0,2)
+		WPPK A 0 A_JumpIfInventory("PPKAmmo",1,2)
+		WPPK A 1 A_WeaponReady
+		Loop
+		WPPK A 1 A_WeaponReady(WRF_ALLOWRELOAD)
+		Loop
+	ReadySuppressed:
+		WPPS A 0 A_JumpIfInventory("PPKLoaded",0,2)
+		WPPS A 0 A_JumpIfInventory("PPKAmmo",1,2)
+		WPPS A 1 A_WeaponReady
+		Loop
+		WPPS A 1 A_WeaponReady(WRF_ALLOWRELOAD)
+		Loop
+	Deselect:
+		TNT1 A 0 A_JumpIfInventory("PPKSuppressor",1,3)
+		WPPK A 0 A_Lower
+		WPPK A 1 A_Lower
+		Loop
+		WPPS A 0 A_Lower
+		WPPS A 1 A_Lower
+		Loop
+	Select:
+		TNT1 A 0 A_JumpIfInventory("PPKSuppressor",1,3)
+		WPPK A 0 A_Raise
+		WPPK A 1 A_Raise
+		Loop
+		WPPS A 0 A_Raise
+		WPPS A 1 A_Raise
+		Loop
+	Fire:
+		TNT1 A 0 A_JumpIfInventory("PPKSuppressor",1,"FireSuppressed")
+		WPPK A 0 A_JumpIfInventory("PPKLoaded",1,1)
+		Goto Dryfire
+		WPPK A 0 A_GunFlash
+		WPPK A 0 A_SetPitch(pitch-(0.2*boa_recoilamount))
+		WPPK A 0 A_JumpIf(waterlevel > 0,2)
+		WPPK A 0 A_FireProjectile("PistolSmokeSpawner",0,0,0,random(-4,4),0,0)
+		WPPK A 0 A_PlaySound("peepee/fire",CHAN_WEAPON)
+		WPPK A 0 A_SpawnItemEx("Casing9mm",12,-20,32,8,random(-2,2),random(0,4),random(-55,-80),SXF_NOCHECKPOSITION)
+		WPPK A 0 A_AlertMonsters
+		WPPK A 1 A_FireCustomMissile("PPKTracer")
+		WPPK B 2
+		TNT1 A 0 
+		WPPK A 1 A_SetPitch(pitch-(0.2*boa_recoilamount))
+		WPPK A 1 Offset(0,36)
+		WPPK A 1 Offset(0,41)
+		WPPK A 1 Offset(0,35)
+		TNT1 A 0 A_CheckReload
+		WPPK A 1 Offset(0,32) A_Jump(128,"Ready")
+		Goto Ready
+	FireSuppressed:
+		WPPS A 0 A_JumpIfInventory("PPKLoaded",1,1)
+		Goto Dryfire
+		WPPS A 0 A_SetPitch(pitch-(0.2*boa_recoilamount))
+		WPPS A 0 A_JumpIf(waterlevel > 0,2)
+		WPPS A 0 A_FireProjectile("PistolSmokeSpawner",0,0,0,random(-4,4),0,0)
+		WPPS A 0 A_PlaySound("peepee/firesuppressed",CHAN_WEAPON)
+		WPPS A 0 A_SpawnItemEx("Casing9mm",12,-20,32,8,random(-2,2),random(0,4),random(-55,-80),SXF_NOCHECKPOSITION)
+		WPPS A 0 A_AlertMonsters(256)
+		WPPS A 1 A_FireCustomMissile("PPKTracer")
+		WPPS B 2
+		TNT1 A 0 
+		WPPS A 1 A_SetPitch(pitch-(1.2*boa_recoilamount))
+		WPPS A 1 Offset(0,36)
+		WPPS A 1 Offset(0,41)
+		WPPS A 1 Offset(0,35)
+		TNT1 A 0 A_CheckReload
+		WPPS A 1 Offset(0,32) A_Jump(128,"ReadySuppressed")
+		Goto ReadySuppressed
+	AltFire:
+		WPPK A 0 A_JumpIfInventory("PPKSuppressor",1,"SuppressorOut")
+		WPPK A 0 A_GiveInventory("PPKSuppressor")
+		WPPK A 1 Offset(0,35) A_PlaySound("peepee/suppon",5)
+		WPPK A 1 Offset(0,38)
+		WPPK A 1 Offset(0,44)
+		WPPS D 1 Offset(0,52)
+		WPPS D 1 Offset(-1,54)
+		WPPS D 1 Offset(-2,56)
+		WPPS D 1 Offset(-3,58)
+		WPPS D 1 Offset(-4,58)
+		WPPS D 1 Offset(-4,57)
+		WPPS A 1 Offset(-3,54)
+		WPPS A 1 Offset(-3,51)
+		WPPS A 1 Offset(-3,53)
+		WPPS A 1 Offset(-3,55)
+		WPPS A 1 Offset(-3,56)
+		Goto Ready
+	SuppressorOut:
+		WPPS A 0 A_TakeInventory("PPKSuppressor")
+		WPPS A 1 Offset(0,35) A_PlaySound("peepee/suppon",5)
+		WPPS A 1 Offset(0,38)
+		WPPS A 1 Offset(0,44)
+		WPPS D 1 Offset(0,52)
+		WPPS D 1 Offset(-1,54)
+		WPPS D 1 Offset(-2,56)
+		WPPS D 1 Offset(-3,58)
+		WPPS D 1 Offset(-4,58)
+		WPPS D 1 Offset(-4,57)
+		WPPK A 1 Offset(-3,54)
+		WPPK A 1 Offset(-3,51)
+		WPPK A 1 Offset(-3,53)
+		WPPK A 1 Offset(-3,55)
+		WPPK A 1 Offset(-3,56)
+		Goto Ready
+	Reload:
+		WPPK C 0 A_JumpIfInventory("PPKSuppressor",1,"ReloadSuppressed")
+		WPPK C 1 Offset(0,35) A_StartSound("peepee/reload", CHAN_5)
+		WPPK C 1 Offset(0,38)
+		WPPK C 1 Offset(0,44)
+		WPPK C 1 Offset(0,52)
+		WPPK C 1 Offset(0,62)
+		WPPK C 1 Offset(0,72)
+		WPPK C 1 Offset(0,82)
+		TNT1 A 8
+	ReloadLoop:
+		TNT1 A 0 A_TakeInventory("PPKAmmo",1,TIF_NOTAKEINFINITE)
+		TNT1 A 0 A_GiveInventory("PPKLoaded")
+		TNT1 A 0 A_JumpIfInventory("PPKLoaded",0,"ReloadFinish")
+		TNT1 A 0 A_JumpIfInventory("PPKAmmo",1,"ReloadLoop")
+	ReloadFinish:
+		WPPK C 1 Offset(0,82)
+		WPPK C 1 Offset(0,72)
+		WPPK C 1 Offset(0,62)
+		WPPK C 1 Offset(0,52)
+		WPPK A 1 Offset(0,44)
+		WPPK A 1 Offset(0,38)
+		WPPK A 1 Offset(0,35)
+		WPPK A 1 Offset(0,32)
+		Goto Ready
+	ReloadSuppressed:
+		WPPS C 1 Offset(0,35) A_StartSound("peepee/reload", CHAN_5)
+		WPPS C 1 Offset(0,38)
+		WPPS C 1 Offset(0,44)
+		WPPS C 1 Offset(0,52)
+		WPPS C 1 Offset(0,62)
+		WPPS C 1 Offset(0,72)
+		WPPS C 1 Offset(0,82)
+		TNT1 A 8
+	ReloadSuppressedLoop:
+		TNT1 A 0 A_TakeInventory("PPKAmmo",1,TIF_NOTAKEINFINITE)
+		TNT1 A 0 A_GiveInventory("PPKLoaded")
+		TNT1 A 0 A_JumpIfInventory("PPKLoaded",0,"ReloadSuppressedFinish")
+		TNT1 A 0 A_JumpIfInventory("PPKAmmo",1,"ReloadSuppressedLoop")
+	ReloadSuppressedFinish:
+		WPPS C 1 Offset(0,82)
+		WPPS C 1 Offset(0,72)
+		WPPS C 1 Offset(0,62)
+		WPPS C 1 Offset(0,52)
+		WPPS A 1 Offset(0,44)
+		WPPS A 1 Offset(0,38)
+		WPPS A 1 Offset(0,35)
+		WPPS A 1 Offset(0,32)
+		Goto Ready
+	Flash:
+		WPPK F 1 BRIGHT A_Light2
+		TNT1 A 1
+		TNT1 A 2 A_Light1
+		Goto LightDone
+	Spawn:
+		WPPK W -1
+		Stop
+	}
+}
+
+ACTOR PPKLoaded : Ammo
+{
+	Tag ".380 ACP"
+	+IGNORESKILL
+	Inventory.MaxAmount 7
+	Inventory.Icon PPKA01
+}
+
+ACTOR PPKSuppressor : Inventory{}
