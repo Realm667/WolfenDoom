@@ -1,0 +1,127 @@
+// I was not planning to implement Japanese firearms at all. I blame the 40-to-50 goalpost moving. The exact same thing happened with the Johnson in that the model of this came from somewhere that wouldn't tell me who bloody made it, and I had to look for the initial actual release myself. What a bother.
+
+ACTOR NambuCasing : Casing9mm {}
+
+ACTOR NambuAmmo : Ammo
+{
+	Scale 0.6
+	Tag "8x22mm Nambu"
+	Inventory.Amount 36
+	Inventory.MaxAmount 200
+	Ammo.BackpackAmount 48
+	Ammo.BackpackMaxAmount 300
+	Inventory.PickupMessage "Picked up a small box of 8x22mm Nambu ammo."
+	Inventory.Icon NAMA01
+	States
+	{
+	Spawn:
+		NAMA W -1
+		Stop
+	}
+}
+
+ACTOR NambuTracer : PlayerTracer
+{
+	ProjectileKickback 40
+	Damage (random(2,16))
+	Speed 100
+}
+
+
+ACTOR Nambu : NaziWeapon
+{
+	//$Category Weapons (BoA Addons)
+	//$Title (2) Browning Hi-Power
+	//$Color 14
+	Scale 0.5
+	Weapon.SlotNumber 2
+	Weapon.SelectionOrder 9997
+	Weapon.AmmoType "NambuLoaded"
+	Weapon.AmmoUse 1
+	weapon.ammotype2 "NambuAmmo"
+	weapon.ammouse2 1
+	Tag "Nambu"
+	Inventory.PickupMessage "You got the Nambu pistol!"
+	Weapon.UpSound "nambu/select"
+	Weapon.AmmoGive1 8
+	Weapon.AmmoGive2 16
+	+WEAPON.NOAUTOFIRE
+	States
+	{
+	Ready:
+		NMBU A 0 A_JumpIfInventory("NambuLoaded",0,2)
+		NMBU A 0 A_JumpIfInventory("NambuAmmo",1,2)
+		NMBU A 1 A_WeaponReady
+		Loop
+		NMBU A 1 A_WeaponReady(WRF_ALLOWRELOAD)
+		Loop
+	Deselect:
+		NMBU A 0 A_Lower
+		NMBU A 1 A_Lower
+		Loop
+	Select:
+		NMBU A 0 A_Raise
+		NMBU A 1 A_Raise
+		Loop
+	Fire:
+		NMBU A 0 A_JumpIfInventory("NambuLoaded",1,1)
+		Goto Dryfire
+		NMBU A 0 A_GunFlash
+		NMBU A 0 A_SetPitch(pitch-(0.2*boa_recoilamount))
+		NMBU A 0 A_JumpIf(waterlevel > 0,2)
+		NMBU A 0 A_FireProjectile("PistolSmokeSpawner",0,0,0,random(-4,4),0,0)
+		NMBU A 0 A_PlaySound("nambu/fire",CHAN_WEAPON)
+		NMBU A 0 A_SpawnItemEx("NambuCasing",12,-20,32,8,random(-2,2),random(0,4),random(-55,-80),SXF_NOCHECKPOSITION)
+		NMBU A 0 A_AlertMonsters
+		NMBU A 1 A_FireCustomMissile("NambuTracer")
+		NMBU B 2
+		TNT1 A 0 
+		NMBU A 1 A_SetPitch(pitch-(0.2*boa_recoilamount))
+		NMBU A 1 Offset(0,36)
+		NMBU A 1 Offset(0,41)
+		NMBU A 1 Offset(0,35)
+		TNT1 A 0 A_CheckReload
+		NMBU A 1 Offset(0,32) A_Jump(128,"Ready")
+		Goto Ready
+	Reload:
+		NMBU C 1 Offset(0,35) A_StartSound("nambu/reload", CHAN_5)
+		NMBU C 1 Offset(0,38)
+		NMBU C 1 Offset(0,44)
+		NMBU C 1 Offset(0,52)
+		NMBU C 1 Offset(0,62)
+		NMBU C 1 Offset(0,72)
+		NMBU C 1 Offset(0,82)
+		TNT1 A 8
+	ReloadLoop:
+		TNT1 A 0 A_TakeInventory("NambuAmmo",1,TIF_NOTAKEINFINITE)
+		TNT1 A 0 A_GiveInventory("NambuLoaded")
+		TNT1 A 0 A_JumpIfInventory("NambuLoaded",0,"ReloadFinish")
+		TNT1 A 0 A_JumpIfInventory("NambuAmmo",1,"ReloadLoop")
+	ReloadFinish:
+		NMBU C 1 Offset(0,82)
+		NMBU C 1 Offset(0,72)
+		NMBU C 1 Offset(0,62)
+		NMBU C 1 Offset(0,52)
+		NMBU A 1 Offset(0,44)
+		NMBU A 1 Offset(0,38)
+		NMBU A 1 Offset(0,35)
+		NMBU A 1 Offset(0,32)
+		Goto Ready
+	Flash:
+		NMBU F 1 BRIGHT A_Light2
+		TNT1 A 1
+		TNT1 A 2 A_Light1
+		Goto LightDone
+	Spawn:
+		NMBU W -1
+		Stop
+	}
+}
+
+ACTOR NambuLoaded : Ammo
+{
+	Tag "8x22mm Nambu"
+	+IGNORESKILL
+	Inventory.MaxAmount 8
+	Inventory.Icon NAMA02
+}

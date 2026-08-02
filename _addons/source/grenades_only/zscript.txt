@@ -1,0 +1,196 @@
+version "3.7.2"
+
+class GrenadierBoAPlayer: BoAPlayer
+{
+	Default
+	{
+		//clear all slots
+		Player.WeaponSlot 1, "Firebrand";
+		Player.WeaponSlot 2, ""; // "HandGrenadeWeapon";
+		Player.WeaponSlot 3, "";
+		Player.WeaponSlot 4, ""; Player.WeaponSlot 5, "";
+		Player.WeaponSlot 6, ""; Player.WeaponSlot 7, "";
+		Player.WeaponSlot 8, ""; Player.WeaponSlot 9, "";
+		Player.WeaponSlot 0, "NullWeapon";
+		Player.StartItem "Stamina", 100;
+		//Player.StartItem "HandGrenadeWeapon", 1;
+		Player.StartItem "NullWeapon", 1;
+	}
+	override void Tick()
+	{
+		for (int i = 0; i < 26; ++i)
+		{
+			let a = FindInventory(GrenadierHandler.classes_to_remove[i], true);
+			if (a)
+			{
+				TakeInventory(GrenadierHandler.classes_to_remove[i], 5);
+			}
+		}
+		if (CountInv("GrenadePickup") < 9)
+		{
+			GiveInventory("GrenadePickup", 9);
+		}
+		Super.Tick();
+	}
+}
+
+/*
+class HandGrenadeWeapon: NaziWeapon
+{
+	int grenadetime;
+	Default {
+		+WEAPON.NOALERT
+		+WEAPON.NOAUTOFIRE
+		+INVENTORY.UNCLEARABLE
+		+INVENTORY.UNDROPPABLE
+		//Tag "$TAGKNIFE";
+		Weapon.BobStyle "Smooth";
+		Weapon.BobSpeed 1.5;
+		Weapon.BobRangeX 1.5;
+		Weapon.SelectionOrder 10000;
+	}
+	States
+	{
+	Ready:
+		PGTW B 1 A_WeaponReady;
+		Loop;
+	Deselect:
+		PGTW B 1 A_Lower;
+		PGTW B 0 A_Lower;
+		Loop;
+	Select:
+		PGTW B 1 A_Raise;
+		PGTW B 0 A_Raise;
+		Loop;
+	Fire:
+		PGTW E 1 Offset(0, 33);
+		PGTW E 1 Offset(-2, 37);
+		PGTW E 1 Offset(-3, 41);
+		PGTW G 1 Offset(-5, 43);
+		PGTW G 1 Offset(-6, 47);
+		PGTW G 1 Offset(-8, 52);
+		PGTW H 1 Offset(-9, 57);
+		PGTW H 1 Offset(-11, 62);
+		PGTW H 1 Offset(-12, 65);
+	Hold:
+		PGTW H 2 Offset(-13, 67)
+		{
+			invoker.grenadetime += 2;
+			if (invoker.grenadetime > 157) { return ResolveState("Boom"); }
+			return ResolveState(null);
+		}
+		PGTW H 0 A_Refire;
+		PGTW A 3 Offset(0, 65);
+		PGTW A 1 Offset(-2, 60);
+		PGTW A 1 Offset(-4, 55);
+		PGTW A 1 Offset(-8, 49);
+		PGTW A 1 Offset(-4, 43);
+		PGTW A 1 Offset(-2, 37);
+		PGTW C 2 { A_FireProjectile("PlayerHandGrenade",frandom(-1.5,1.5),1,0,0,FPF_NOAUTOAIM,frandom(-0.5,0.5)); invoker.grenadetime = 0; }
+		PGTW C 1 Offset(0, 36);
+		PGTW C 1 Offset(0, 47);
+		PGTW C 1 Offset(0, 60);
+		PGTW D 1 Offset(0, 57);
+		PGTW D 1 Offset(0, 69);
+		PGTW D 1 Offset(0, 82);
+		PGTW D 1 Offset(0, 97);
+		PGTW D 1 Offset(0, 110);
+		PGTW B 1 Offset(0, 110);
+		PGTW B 1 Offset(0, 97);
+		PGTW B 1 Offset(0, 82);
+		PGTW B 1 Offset(0, 69);
+		PGTW B 1 Offset(0, 57);
+		PGTW B 1 Offset(0, 42);
+		PGTW B 1;
+		Goto Ready;
+	Boom:
+		TNT1 A 0
+		{
+			A_StartSound("grenade/explode", CHAN_AUTO, 0, 1.0, 0.1);
+			A_SpawnItemEx("GeneralExplosion_Medium");
+			A_DamageSelf(10000);
+		}
+		TNT1 A -1;
+		Stop;
+	}
+}
+*/
+
+class PlayerHandGrenade: GrenadeBase replaces HandGrenade
+{
+	Default {
+		Radius 4;
+		Height 3;
+		Speed 50;
+		FastSpeed 45;
+		Damage (1);
+		DamageType "Frag";
+		Scale 0.25;
+		Projectile;
+		-NOGRAVITY
+		-NOTELEPORT
+		+WINDTHRUST
+		+FORCEXYBILLBOARD
+		Obituary "$OBGRENADE";
+		BounceType "Doom";
+		BounceFactor 0.2;
+		WallBounceFactor 0.6;
+		SeeSound "NailFlight";
+		BounceSound "grenade/bounce";
+		GrenadeBase.FearDistance 192;
+		GrenadeBase.SplashType "Missile";
+		Gravity 0.8;
+	}
+	States
+	{
+	Spawn:
+		THRW A 2 A_CountDown;
+		THRW BCDEFGH 2;
+		TNT1 A 0 A_JumpIf(waterlevel == 3, "AdjustMass");
+		Loop;
+	AdjustMass:
+		"####" "#" 0 { A_SetMass(800); ClearBounce(); }
+		Goto Swim;
+	Swim:
+		THRW A 2 { A_CountDown(); A_ScaleVelocity(0.7); A_SpawnItemEx("Bubble", 0, 0, 0, 0, 0, 2, random (0, 360), 0, 128); }
+		THRW BCDEFGH 2;
+		Loop;
+	Death:
+		THRW B 35 { floorclip -= 2; }
+	Death.Boom:
+		TNT1 A 0 A_SpawnGroundSplash;
+		TNT1 A 0 A_AlertMonsters;
+		TNT1 A 0 A_SetScale(1.75,1.75);
+		TNT1 A 0 A_SetTranslucent(0.75,1);
+		TNT1 A 0 A_StartSound("grenade/explode", CHAN_AUTO, 0, 1.0, 0.1);
+		TNT1 A 1 A_SpawnItemEx("GeneralExplosion_Medium");
+		TNT1 A 1 Radius_Quake(10,10,0,16,0);
+		Stop;
+	}
+}
+
+class GrenadierHandler: EventHandler
+{
+	//the Firebrand is allowed!
+	static const Name classes_to_remove[] = {'KnifeSilent', 'Shovel', 'Luger9mm', 'Walther9mm', 'AstroLuger', 'TrenchShotgun', 'Browning5', 'AstroShotgun', 'MP40', 'Sten', 'AstroChaingun', 'Kar98k', 'G43', 'Pyrolight', 'Nebelwerfer', 'AstroRocketlauncher', 'Panzerschreck', 'TeslaCannon', 'UMG43', 'GrenadePickup', 'DeployableMine', 'Ammo9mm', 'Ammo12Gauge', 'MauserAmmo', 'FlameAmmo', 'NebAmmo', 'PanzerAmmo', 'TeslaCell'};
+	static const Name classes_to_replace[] = {'AmmoBox9mm', 'AmmoBox12Gauge', 'MauserAmmoBox', 'NebAmmoBox', 'TeslaCellBox', 'AstroGrenadePickup'};
+	override void CheckReplacement(ReplaceEvent e)
+	{
+		for (int i = 0; i < 5; ++i)
+		{
+			if (e.Replacee is classes_to_replace[i])
+			{
+				e.Replacement = 'Nothing';
+				return;
+			}
+		}
+		for (int i = 0; i < 27; ++i)
+		{
+			if (e.Replacee is classes_to_remove[i])
+			{
+				e.Replacement = 'Nothing';
+				return;
+			}
+		}
+	}
+}

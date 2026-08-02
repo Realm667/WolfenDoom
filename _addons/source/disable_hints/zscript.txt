@@ -1,0 +1,21 @@
+version "3.7.2"
+
+class NoTextPaperSecretHints: TextPaperSecretHint replaces TextPaperSecretHint
+{ //remove secret hints
+	states
+	{
+	Spawn:
+		TNT1 A 1;
+		TNT1 A 1;
+		Stop;
+	}
+}
+
+class NoCompassHandler: EventHandler
+{
+	override void WorldTick()
+	{ //Disallow showing the compass
+		CompassHandler h = (CompassHandler) (EventHandler.Find("CompassHandler"));
+		if (h) { h.Destroy(); }
+	}
+}

@@ -1,0 +1,178 @@
+// I watched a few videos on how the FG42 fires IRL and thought that how Nazis! did it was probably just a pinch too much. I also added a scope, so there's very much a reason to start swapping things to a more "marksman assault rifle" sort of deal.
+
+ACTOR FG42Tracer : PlayerTracer
+{
+	ProjectileKickback 100
+	Damage (random(30,44))
+	Speed 155
+}
+
+ACTOR FG42 : NaziWeapon
+{
+	//$Category Weapons (Confiscated Weapons)
+	//$Title (2) Fallschirmjagergewehr 42
+	//$Color 14
+	Weapon.SlotNumber 5
+	Weapon.SelectionOrder 700
+	Inventory.PickupMessage "You got the Fallschirmjagergewehr 42! The scope allows for long range precision fire."
+	Weapon.AmmoType "FG42Loaded"
+	Weapon.AmmoUse 1
+	weapon.ammotype2 "MauserAmmo"
+	weapon.ammouse2 1
+	Weapon.AmmoGive1 20
+	Weapon.AmmoGive2 40
+	Scale .38
+	Tag "FG 42"
+	Weapon.UpSound "fg42/select"
+	States
+	{
+	Ready:
+		KAR9 A 0 A_JumpIfInventory("FG42SniperZoom",1,"ScopedReady")
+		FG42 A 0 A_JumpIfInventory("FG42Loaded",0,2)
+		FG42 A 0 A_JumpIfInventory("MauserAmmo",1,2)
+		FG42 A 1 A_WeaponReady
+		Loop
+		FG42 A 1 A_WeaponReady(WRF_ALLOWRELOAD)
+		Loop
+	ScopedReady:
+		SCO1 A 0 A_JumpIfInventory("FG42Loaded",0,2)
+		SCO1 A 0 A_JumpIfInventory("MauserAmmo",1,2)
+		SCO1 A 1 A_WeaponReady(WRF_NOBOB)
+		Goto Ready
+		SCO1 A 1 A_WeaponReady(WRF_NOBOB|WRF_ALLOWRELOAD)
+		Goto Ready
+	Deselect:
+		FG42 A 0 A_JumpIfInventory("FG42SniperZoom",1,"ScopedDeselect")
+		FG42 A 0 A_Lower
+		FG42 A 1 A_Lower
+		Loop
+	ScopedDeselect:
+		SCO1 A 0 A_TakeInventory("FG42SniperZoom")
+		SCO1 A 0 A_PlaySound("mauser/scope")
+		SCO1 A 15 A_ZoomFactor(1.0)
+		Goto Deselect
+	Select:
+		FG42 A 0 A_Raise
+		FG42 A 1 A_Raise
+		Loop
+	Fire:
+		FG42 A 0 A_JumpIfInventory("FG42Loaded",1,1)
+		Goto Dryfire
+		FG42 A 0 A_JumpIfInventory("FG42SniperZoom", 1, "ScopedFire")
+		FG42 A 0 A_GunFlash
+		FG42 A 0 A_PlaySound("fg42/fire",CHAN_WEAPON)
+		FG42 A 0 
+		FG42 A 0 A_SpawnItemEx("MauserRifleCasing",12,-20,32,8,random(-2,2),random(0,4),random(-55,-80),SXF_NOCHECKPOSITION)
+		FG42 A 0 A_AlertMonsters
+		FG42 A 1 A_FireCustomMissile("FG42Tracer",frandom(-2.5,2.5),1,0,0,0,frandom(-1.0,1.0))
+		FG42 A 0 A_JumpIf(waterlevel > 0,2)
+		FG42 A 0 A_FireProjectile("ShotSmokeSpawner",0,0,0,random(-4,4),0,0)
+		FG42 A 1 Offset(0,42) A_SetPitch(pitch-(1.8*boa_recoilamount))
+		FG42 A 1 
+		FG42 A 1 A_Refire
+		FG42 A 1 Offset(0,44) 
+		FG42 A 1 Offset(0,43) 
+		FG42 A 1 Offset(0,40) 
+		FG42 A 1 Offset(0,36) 
+		FG42 A 1 Offset(0,32) A_WeaponReady(WRF_NOBOB)
+		Goto Ready
+	Hold:
+		FG42 A 0 A_JumpIfInventory("FG42Loaded",1,1)
+		Goto Dryfire
+		FG42 A 0 A_JumpIfInventory("FG42SniperZoom", 1, "ScopedFire")
+		FG42 A 0 A_GunFlash
+		FG42 A 0 A_PlaySound("fg42/fire",CHAN_WEAPON)
+		FG42 A 0 
+		FG42 A 0 A_SpawnItemEx("MauserRifleCasing",12,-20,32,8,random(-2,2),random(0,4),random(-55,-80),SXF_NOCHECKPOSITION)
+		FG42 A 0 A_AlertMonsters
+		FG42 D 1 Offset(0,58) A_FireCustomMissile("FG42Tracer",frandom(-2.5,2.5),1,0,0,0,frandom(-1.0,1.0))
+		FG42 D 0 A_JumpIf(waterlevel > 0,2)
+		FG42 D 0 A_FireProjectile("ShotSmokeSpawner",0,0,0,random(-4,4),0,0)
+		FG42 D 1 Offset(0,54) A_SetPitch(pitch-(1.8*boa_recoilamount))
+		FG42 A 1 Offset(0,52)
+		FG42 A 1 A_Refire 
+		FG42 A 1 Offset(0,54) 
+		FG42 A 1 Offset(0,53) 
+		FG42 A 1 Offset(0,50) 
+		FG42 A 1 Offset(0,46) 
+		FG42 A 1 Offset(0,41) 
+		FG42 A 1 Offset(0,35) 
+		FG42 A 1 Offset(0,32) A_WeaponReady(WRF_NOBOB)
+		Goto Ready
+	ScopedFire:
+		FG42 A 0 A_PlaySound("fg42/fire",CHAN_WEAPON)
+		SCO1 A 2 A_FireCustomMissile("FG42Tracer")
+		SCO1 A 0 A_JumpIf(waterlevel > 0,2)
+		SCO1 A 0 A_FireProjectile("ShotSmokeSpawner",0,0,0,random(-4,4),0,0)
+		SCO1 A 2 A_SetPitch(pitch-(3.0*boa_recoilamount))
+		SCO1 A 1 A_CheckReload
+		Goto Ready
+	AltFire:
+		SCO1 A 0 A_JumpIfInventory("FG42SniperZoom",1,"ZoomOut")
+		SCO1 A 0 A_PlaySound("mauser/scope")
+		SCO1 A 0 A_GiveInventory("FG42SniperZoom")
+		SCO1 A 15 A_ZoomFactor(12.0)
+		Goto Ready
+	ZoomOut:
+		SCO1 A 0 A_TakeInventory("FG42SniperZoom")
+		SCO1 A 0 A_PlaySound("mauser/scope")
+		SCO1 A 15 A_ZoomFactor(1.0)
+		Goto Ready
+	Reload:
+		SCO1 A 0 A_JumpIfInventory("FG42SniperZoom",1,2)
+		SCO1 A 0 A_Jump(256,4)
+		SCO1 A 0 A_TakeInventory("FG42SniperZoom")
+		SCO1 A 0 A_PlaySound("mauser/scope")
+		SCO1 A 15 A_ZoomFactor(1.0)
+		FG42 A 1 Offset(0,35) A_PlaySound("fg42/reload",5)
+		FG42 A 1 Offset(0,38) 
+		FG42 A 1 Offset(0,44)
+		FG42 E 1 Offset(-2,46)
+		FG42 E 1 Offset(-4,52)
+		FG42 F 1 Offset(-7,56)
+		FG42 F 1 Offset(-10,57)
+		FG42 F 5 Offset(-11,58)
+	ReloadLoop:
+		FG42 F 0 A_TakeInventory("MauserAmmo",1,TIF_NOTAKEINFINITE)
+		FG42 F 0 A_GiveInventory("FG42Loaded")
+		FG42 F 0 A_JumpIfInventory("FG42Loaded",0,"ReloadFinish")
+		FG42 F 0 A_JumpIfInventory("MauserAmmo",1,"ReloadLoop")
+	ReloadFinish:
+		FG42 E 3 Offset(-10,58)
+		FG42 E 1 Offset(-10,58)
+		FG42 E 1 Offset(-10,61)
+		FG42 E 1 Offset(-10,65)
+		FG42 E 1 Offset(-10,71)
+		FG42 E 1 Offset(-10,65)
+		FG42 E 1 Offset(-10,60)
+		FG42 G 1 Offset(-10,55)
+		FG42 G 1 Offset(-10,53)
+		FG42 G 1 Offset(-10,51)
+		FG42 G 1 Offset(-9,50)
+		FG42 G 1 Offset(-8,46)
+		FG42 G 1 Offset(-7,43)
+		FG42 A 1 Offset(-5,40)
+		FG42 A 1 Offset(-3,37)
+		FG42 A 1 Offset(-1,34)
+		FG42 A 1 Offset(0,32)
+		Goto Ready
+	Flash:
+		FG42 B 1 BRIGHT A_Light2
+		FG42 C 1 BRIGHT
+		TNT1 A 2 A_Light1
+		Goto LightDone
+	Spawn:
+		FG42 P -1
+		Stop
+	}
+}
+
+ACTOR FG42Loaded : Ammo
+{
+	Tag "7.92x57mm"
+	Inventory.MaxAmount 20
+	+IGNORESKILL
+	Inventory.Icon MAUS01
+}
+
+ACTOR FG42SniperZoom : Inventory{}

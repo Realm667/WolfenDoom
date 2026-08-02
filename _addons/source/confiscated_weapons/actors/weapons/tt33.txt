@@ -1,0 +1,104 @@
+// Some of you attentive ones might've noticed that I redefined actors that are already defined in BoA's default code, stuff like tracers and bullets, even including sprites in the files that are the exact same stuff. It's more of a precaution incase Torm decided to clean house and toss out stuff that isn't used in the already cut down arsenal.
+
+ACTOR TokarevTT33Tracer : PPSH41Tracer
+{
+	Speed 90
+}
+
+ACTOR TT33 : NaziWeapon
+{
+	//$Category Weapons (BoA Addons)
+	//$Title (2) Tokarev TT33
+	//$Color 14
+	Scale 0.5
+	Weapon.SlotNumber 2
+	Weapon.SelectionOrder 9997
+	Weapon.AmmoType "TokarevTT33Loaded"
+	Weapon.AmmoUse 1
+	weapon.ammotype2 "TokarevAmmo"
+	weapon.ammouse2 1
+	Tag "Tokarev TT-33"
+	Inventory.PickupMessage "You got the Tokarev TT-33!"
+	Weapon.UpSound "tokarevtt33/select"
+	Weapon.AmmoGive1 8
+	Weapon.AmmoGive2 16
+	+WEAPON.NOAUTOFIRE
+	States
+	{
+	Ready:
+		TT33 A 0 A_JumpIfInventory("TokarevTT33Loaded",0,2)
+		TT33 A 0 A_JumpIfInventory("TokarevAmmo",1,2)
+		TT33 A 1 A_WeaponReady
+		Loop
+		TT33 A 1 A_WeaponReady(WRF_ALLOWRELOAD)
+		Loop
+	Deselect:
+		TT33 A 0 A_Lower
+		TT33 A 1 A_Lower
+		Loop
+	Select:
+		TT33 A 0 A_Raise
+		TT33 A 1 A_Raise
+		Loop
+	Fire:
+		TT33 A 0 A_JumpIfInventory("TokarevTT33Loaded",1,1)
+		Goto Dryfire
+		TT33 A 0 A_GunFlash
+		TT33 A 0 A_SetPitch(pitch-(0.2*boa_recoilamount))
+		TT33 A 0 A_JumpIf(waterlevel > 0,2)
+		TT33 A 0 A_FireProjectile("PistolSmokeSpawner",0,0,0,random(-4,4),0,0)
+		TT33 A 0 A_PlaySound("tokarevtt33/fire",CHAN_WEAPON)
+		TT33 A 0 A_SpawnItemEx("Tokarev762Casing",12,-20,32,8,random(-2,2),random(0,4),random(-55,-80),SXF_NOCHECKPOSITION)
+		TT33 A 0 A_AlertMonsters
+		TT33 A 1 A_FireCustomMissile("TokarevTT33Tracer",frandom(-0.5,0.5))
+		TT33 B 2
+		TNT1 A 0 
+		TT33 A 1 A_SetPitch(pitch-(0.2*boa_recoilamount))
+		TT33 A 1 Offset(0,36)
+		TT33 A 1 Offset(0,41)
+		TT33 A 1 Offset(0,35)
+		TNT1 A 0 A_CheckReload
+		TT33 A 1 Offset(0,32) A_Jump(128,"Ready")
+		Goto Ready
+	Reload:
+		TT33 C 1 Offset(0,35) A_StartSound("tokarevtt33/reload", CHAN_5)
+		TT33 C 1 Offset(0,38)
+		TT33 C 1 Offset(0,44)
+		TT33 C 1 Offset(0,52)
+		TT33 C 1 Offset(0,62)
+		TT33 C 1 Offset(0,72)
+		TT33 C 1 Offset(0,82)
+		TNT1 A 8
+	ReloadLoop:
+		TNT1 A 0 A_TakeInventory("TokarevAmmo",1,TIF_NOTAKEINFINITE)
+		TNT1 A 0 A_GiveInventory("TokarevTT33Loaded")
+		TNT1 A 0 A_JumpIfInventory("TokarevTT33Loaded",0,"ReloadFinish")
+		TNT1 A 0 A_JumpIfInventory("TokarevAmmo",1,"ReloadLoop")
+	ReloadFinish:
+		TT33 C 1 Offset(0,82)
+		TT33 C 1 Offset(0,72)
+		TT33 C 1 Offset(0,62)
+		TT33 C 1 Offset(0,52)
+		TT33 A 1 Offset(0,44)
+		TT33 A 1 Offset(0,38)
+		TT33 A 1 Offset(0,35)
+		TT33 A 1 Offset(0,32)
+		Goto Ready
+	Flash:
+		TT33 F 1 BRIGHT A_Light2
+		TNT1 A 1
+		TNT1 A 2 A_Light1
+		Goto LightDone
+	Spawn:
+		TT33 W -1
+		Stop
+	}
+}
+
+ACTOR TokarevTT33Loaded : Ammo
+{
+	Tag "7.62x25mm"
+	+IGNORESKILL
+	Inventory.MaxAmount 8
+	Inventory.Icon PPSM02
+}

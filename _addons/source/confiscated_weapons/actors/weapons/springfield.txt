@@ -1,0 +1,159 @@
+// Part of me wondered if I should remove the sniper scope from this thing, just so my Springfield'll be different from everyone else's. Then I remembered Sniper's Last Stand, and thought that it wouldn't be as cricket if I ever encounter something like that in BoA and had no Allied sniper rifle to reminiscent with.
+
+ACTOR Springfield : NaziWeapon
+{
+	//$Category Weapons (BoA Addons)
+	//$Title (5) Mosin Nagant
+	//$Color 14
+	Scale 0.4
+	Weapon.SlotNumber 5
+	Weapon.AmmoType "SpringfieldLoaded"
+	Weapon.AmmoUse 1
+	Weapon.AmmoType2 "3006Ammo"
+	Weapon.AmmoUse2 1
+	Weapon.AmmoGive1 5
+	Weapon.AmmoGive2 10	
+	Inventory.PickupMessage "You got the M1903 Springfield! Pressing the alternate fire key'll allow you to use the scope."
+	Weapon.SelectionOrder 750
+	+WEAPON.NOAUTOFIRE
+	Tag "M1903 Springfield"
+	Weapon.UpSound "springfield/select"
+	States
+	{
+	Ready:
+		SPRI A 0 A_JumpIfInventory("SpringfieldSniperZoom",1,"ScopedReady")
+		SPRI A 0 A_JumpIfInventory("SpringfieldLoaded",0,2)
+		SPRI A 0 A_JumpIfInventory("3006Ammo",1,2)
+		SPRI A 1 A_WeaponReady
+		Loop
+		SPRI A 1 A_WeaponReady(WRF_ALLOWRELOAD)
+		Loop
+	ScopedReady:
+		SCO2 A 0 A_JumpIfInventory("SpringfieldLoaded",0,2)
+		SCO2 A 0 A_JumpIfInventory("3006Ammo",1,2)
+		SCO2 A 1 A_WeaponReady(WRF_NOBOB)
+		Goto Ready
+		SCO2 A 1 A_WeaponReady(WRF_NOBOB|WRF_ALLOWRELOAD)
+		Goto Ready
+	Select:
+		SPRI A 0 A_Raise
+		SPRI A 1 A_Raise
+		Loop
+	Deselect:
+		SPRI A 0 A_JumpIfInventory("SpringfieldSniperZoom",1,"ScopedDeselect")
+		SPRI A 0 A_Lower
+		SPRI A 1 A_Lower
+		Loop
+	ScopedDeselect:
+		SCO2 A 0 A_TakeInventory("SpringfieldSniperZoom")
+		SCO2 A 0 A_PlaySound("springfield/scope")
+		SCO2 A 15 A_ZoomFactor(1.0)
+		Goto Deselect
+	Fire:
+		SPRI A 0 A_JumpIfInventory("SpringfieldLoaded",1,1)
+		Goto Dryfire
+		SPRI A 0 A_AlertMonsters
+		SPRI A 0 A_PlaySound("springfield/fire",CHAN_WEAPON)
+		SPRI A 0 A_SpawnItemEx("M1GarandRifleCasing",12,-20,32,8,random(-2,2),random(0,4),random(-55,-80),SXF_NOCHECKPOSITION)
+		SPRI A 0
+		SPRI A 0 A_JumpIfInventory("SpringfieldSniperZoom", 1, "ScopedFire")
+		SPRI A 0 A_GunFlash
+		SPRI A 2 A_FireCustomMissile("M1GarandTracer")
+		SPRI A 0 A_JumpIf(waterlevel > 0,2)
+		SPRI A 0 A_FireProjectile("ShotSmokeSpawner",0,0,0,random(-4,4),0,0)
+		SPRI A 2 Offset(0,40) A_SetPitch(pitch-(4.0*boa_recoilamount))
+		SPRI A 1 Offset(0,36) A_SetPitch(pitch-(2.0*boa_recoilamount))
+		SPRI B 1 Offset(0,32)A_SetPitch(pitch+(1.0*boa_recoilamount))
+		SPRI C 0 A_PlaySound("springfield/open",5)
+		SPRI C 3 A_SetPitch(pitch+(1.0*boa_recoilamount))
+		SPRI D 1 A_SetPitch(pitch+(0.5*boa_recoilamount))
+		SPRI E 3
+		SPRI F 5
+		SPRI E 3 A_PlaySound("springfield/shut",5)
+		SPRI D 1
+		SPRI C 4
+		SPRI B 1 A_CheckReload
+		Goto Ready
+	ScopedFire:
+		SCO2 A 2 A_FireCustomMissile("M1GarandTracer")
+		SCO2 A 0 A_JumpIf(waterlevel > 0,2)
+		SCO2 A 0 A_FireProjectile("ShotSmokeSpawner",0,0,0,random(-4,4),0,0)
+		SCO2 A 2 A_SetPitch(pitch-(4.0*boa_recoilamount))
+		SCO2 A 1 A_SetPitch(pitch-(2.0*boa_recoilamount))
+		SCO2 A 1 A_SetPitch(pitch+(1.0*boa_recoilamount))
+		SCO2 A 0 A_PlaySound("springfield/scopebolt",5)
+		SCO2 A 3 A_SetPitch(pitch+(1.0*boa_recoilamount))
+		SCO2 A 17 A_SetPitch(pitch+(0.5*boa_recoilamount))
+		SCO2 A 1 A_CheckReload
+		Goto Ready
+	Flash:
+		SPRF A 1 BRIGHT A_Light2
+		SPRF B 1 BRIGHT
+		TNT1 A 2 A_Light1
+		Goto LightDone
+	AltFire:
+		SCO2 A 0 A_JumpIfInventory("SpringfieldSniperZoom",1,"ZoomOut")
+		SCO2 A 0 A_PlaySound("springfield/scope")
+		SCO2 A 0 A_GiveInventory("SpringfieldSniperZoom")
+		SCO2 A 15 A_ZoomFactor(12.0)
+		Goto Ready
+	ZoomOut:
+		SCO2 A 0 A_TakeInventory("SpringfieldSniperZoom")
+		SCO2 A 0 A_PlaySound("springfield/scope")
+		SCO2 A 15 A_ZoomFactor(1.0)
+		Goto Ready
+	Reload:
+		SCO2 A 0 A_JumpIfInventory("SpringfieldSniperZoom",1,2)
+		SCO2 A 0 A_Jump(256,4)
+		SCO2 A 0 A_TakeInventory("SpringfieldSniperZoom")
+		SCO2 A 0 A_PlaySound("springfield/scope")
+		SCO2 A 15 A_ZoomFactor(1.0)
+		SPRI A 5
+		SPRI A 1 
+		SPRI A 1 Offset(-4,34)
+		SPRI A 1 Offset(-6,35)
+		SPRI B 2 Offset(-8,36)
+		SPRI B 2 Offset(-4,42)
+		SPRI C 1 Offset(0,51) A_PlaySound("springfield/open",5)
+		SPRI C 1 Offset(4,60)
+		SPRI D 2 Offset(5,74)
+		SPRI D 3 Offset(6,76)
+		SPRI E 5
+	ReloadLoop:
+		TNT1 A 0 A_TakeInventory("3006Ammo",1,TIF_NOTAKEINFINITE)
+		TNT1 A 0 A_GiveInventory("SpringfieldLoaded")
+		SPRI A 1 Offset(6,80) A_PlaySound("springfield/insert",5)
+		SPRI A 1 Offset(6,84)
+		SPRI A 1 Offset(6,87)
+		SPRI A 1 Offset(7,90)
+		SPRI A 1 Offset(8,92)
+		SPRI A 8 Offset(8,92)
+		SPRI A 1 Offset(9,88)
+		SPRI A 1 Offset(8,82)
+		SPRI A 1 Offset(7,77) A_WeaponReady(WRF_NOBOB|WRF_NOFIRE)
+		TNT1 A 0 A_JumpIfInventory("SpringfieldLoaded",0,"ReloadEnd")
+		TNT1 A 0 A_JumpIfInventory("3006Ammo",1,"ReloadLoop")
+	ReloadEnd:
+		SPRI E 5 A_PlaySound("springfield/shut",5)
+		SPRI D 1 Offset(4,60)
+		SPRI C 1 Offset(0,51)
+		SPRI C 1 Offset(-4,42)
+		SPRI B 2 Offset(-8,36)
+		SPRI B 1 Offset(-6,35)
+		SPRI A 1 Offset(-4,34)
+		SPRI A 2 Offset(-2,33)
+		Goto Ready
+	Spawn:
+		SPRG A -1
+		Stop
+	}
+}
+ACTOR SpringfieldSniperZoom : Inventory{}
+
+ACTOR SpringfieldLoaded : Ammo
+{
+	Tag ".30-06"
+	+IGNORESKILL
+	Inventory.MaxAmount 5
+	Inventory.Icon GARA01
+}

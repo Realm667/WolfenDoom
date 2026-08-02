@@ -1,0 +1,130 @@
+// A bit too much like the MG42, perhaps? Went for the "assault rifle pretending to be an LMG" path with this particular weapon. Much more reserved from its younger brother, so you'll miss less with this.
+
+ACTOR MG34 : NaziWeapon
+{
+	//$Category Weapons (Confiscated Weapons)
+	//$Title (8) MG34
+	//$Color 14
+	Scale 0.5
+	Weapon.SlotNumber 8
+	Weapon.SelectionOrder 750
+	Weapon.AmmoType "MG34Loaded"
+	Weapon.AmmoUse 1
+	Weapon.AmmoType2 "MauserAmmo"
+	Weapon.AmmoUse2 1
+	Weapon.AmmoGive1 50
+	Weapon.AmmoGive2 100
+	Tag "MG 34"
+	Inventory.PickupMessage "You got the Maschinengewehr 34!"
+	Weapon.UpSound "MG34/select"
+	States
+	{
+	Select:
+		MG34 A 0 A_Raise
+		MG34 A 1 A_Raise
+		Loop
+	Deselect:
+		MG34 A 0 A_Lower
+		MG34 A 1 A_Lower
+		Loop
+	Ready:
+		MG34 A 0 A_JumpIfInventory("MG34Loaded",0,2)
+		MG34 A 0 A_JumpIfInventory("MauserAmmo",1,2)
+		MG34 A 1 A_WeaponReady
+		Loop
+		MG34 A 1 A_WeaponReady(WRF_ALLOWRELOAD)
+		Loop
+	Fire:
+		MG34 A 0 A_JumpIfInventory("MG34Loaded",1,1)
+		Goto Dryfire
+		MG34 A 0 A_GunFlash
+		MG34 A 0 A_PlaySound("mg34/fire",CHAN_WEAPON)
+		MG34 A 0 A_SpawnItemEx("MauserRifleCasing",12,-20,32,8,random(-2,2),random(0,4),random(-55,-80),SXF_NOCHECKPOSITION)
+		MG34 A 0 A_AlertMonsters
+		MG34 A 1 A_FireCustomMissile("Kar98kTracer",frandom(-1.2,1.2),1,0,0,0,frandom(-1.0,1.0))
+		MG34 A 1 Offset(0,40) A_SetPitch(pitch-(1.46*boa_recoilamount))
+		MG34 A 0 A_JumpIf(waterlevel > 0,2)
+		MG34 A 0 A_FireProjectile("ChainSmokeSpawner",0,0,0,random(-4,4),0,0)
+		MG34 A 1 Offset(0,34)
+		TNT1 A 0 A_Refire
+		Goto Ready
+	Hold:
+		MG34 A 0 A_JumpIfInventory("MG34Loaded",1,1)
+		Goto Dryfire
+		MG34 A 0 A_GunFlash
+		MG34 A 0 A_PlaySound("mg34/fire",CHAN_WEAPON)
+		MG34 A 0 A_SpawnItemEx("MauserRifleCasing",12,-20,32,8,random(-2,2),random(0,4),random(-55,-80),SXF_NOCHECKPOSITION)
+		MG34 A 0 A_AlertMonsters
+		MG34 A 1 Offset(0,36) A_FireCustomMissile("Kar98kTracer",frandom(-1.2,1.2),1,0,0,0,frandom(-1.0,1.0))
+		MG34 A 1 Offset(0,40) A_SetPitch(pitch-(1.4*boa_recoilamount))
+		MG34 A 0 A_JumpIf(waterlevel > 0,2)
+		MG34 A 0 A_FireProjectile("ChainSmokeSpawner",0,0,0,random(-4,4),0,0)
+		MG34 A 1 Offset(0,34)
+		TNT1 A 0 A_Refire
+		Goto Ready
+	Reload:
+		MG34 A 1 Offset(0,35) A_PlaySound("MG34/reload",5)
+		MG34 A 1 Offset(0,38) 
+		MG34 A 1 Offset(0,44)
+		MG34 A 1 Offset(-2,46)
+		MG34 A 1 Offset(-4,52)
+		MG34 B 1 Offset(-7,56)
+		MG34 B 1 Offset(-10,57)
+		MG34 B 1 Offset(-11,58)
+		MG34 B 1 Offset(-2,46)
+		MG34 C 1 Offset(-4,52)
+		MG34 C 1 Offset(-7,56)
+		MG34 C 1 Offset(-10,57)
+		MG34 C 1 Offset(-10,65)
+		MG34 C 1 Offset(-11,58)
+		MG34 C 1 Offset(-2,46)
+		MG34 C 1 Offset(-4,52)
+		MG34 C 1 Offset(-7,56)
+		MG34 C 12 Offset(-11,58)
+	ReloadLoop:
+		MG34 C 0 A_TakeInventory("MauserAmmo",1,TIF_NOTAKEINFINITE)
+		MG34 C 0 A_GiveInventory("MG34Loaded")
+		MG34 C 0 A_JumpIfInventory("MG34Loaded",0,"ReloadFinish")
+		MG34 C 0 A_JumpIfInventory("MauserAmmo",1,"ReloadLoop")
+	ReloadFinish:
+		MG34 B 1 Offset(-10,57)
+		MG34 B 1 Offset(-11,58)
+		MG34 B 1 Offset(-2,46)
+		MG34 B 1 Offset(-4,52)
+		MG34 B 1 Offset(-7,56)
+		MG34 B 1 Offset(-10,58)
+		MG34 B 1 Offset(-10,61)
+		MG34 B 6 Offset(-10,65)
+		MG34 A 1 Offset(-10,71)
+		MG34 A 1 Offset(-10,65)
+		MG34 A 1 Offset(-10,60)
+		MG34 A 1 Offset(-10,55)
+		MG34 A 1 Offset(-10,53)
+		MG34 A 1 Offset(-10,51)
+		MG34 A 1 Offset(-9,50)
+		MG34 D 6 Offset(-8,46)
+		MG34 D 6 Offset(-7,43)
+		MG34 D 1 Offset(-5,40)
+		MG34 D 1 Offset(-3,37)
+		MG34 A 1 Offset(-1,34)
+		MG34 A 1 Offset(0,32)
+		Goto Ready
+	Flash:
+		MG3F A 1 BRIGHT A_Light2
+		MG3F B 1 BRIGHT
+		MG3F C 1 BRIGHT
+		TNT1 A 2 A_Light1
+		Goto LightDone
+	Spawn:
+		MG34 W -1
+		Stop
+	}
+}
+
+ACTOR MG34Loaded : Ammo
+{
+	Tag "7.92x57mm"
+	+IGNORESKILL
+	Inventory.MaxAmount 50
+	Inventory.Icon MAUS03
+}

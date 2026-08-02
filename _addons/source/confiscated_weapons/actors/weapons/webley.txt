@@ -1,0 +1,147 @@
+// This used to be the .357 Magnum in the original Nazis!. I didn't really see these kinds of firearms used much as infantry weapons in WW2, so I decided to swap it over for the Webley. Not as powerful as the OG, but atleast it's still a good ol' revolver.
+
+ACTOR WebleyCasing : Casing9mm{}
+
+ACTOR WebleyTracer : PlayerTracer
+{
+	ProjectileKickback 45
+	Damage (random(22,34))
+	Speed 90
+}
+
+ACTOR WebleyAmmo : Ammo
+{
+	Scale 0.3
+	Tag ".455 Webley"
+	Inventory.Amount 12
+	Inventory.MaxAmount 36
+	Ammo.BackpackAmount 36
+	Ammo.BackpackMaxAmount 60
+	Inventory.PickupMessage "Picked up a cylinder of .455 Webley ammo."
+	Inventory.Icon WEBA01
+	States
+	{
+	Spawn:
+		WEBA A -1
+		Stop
+	}
+}
+
+ACTOR Webley : NaziWeapon
+{
+	//$Category Weapons (BoA Addons)
+	//$Title (2) Webley Revolver
+	//$Color 14
+	Scale 0.5
+	Weapon.SlotNumber 2
+	Weapon.AmmoType "WebleyLoaded"
+	Weapon.AmmoUse 1
+	Weapon.AmmoType2 "WebleyAmmo"
+	Weapon.AmmoUse2 1
+	Weapon.SelectionOrder 9996
+	Weapon.AmmoGive1 6
+	Weapon.AmmoGive2 12
+	Tag "Webley Revolver"
+	Inventory.PickupMessage "You got the Webley Revolver!"
+	Scale .5
+	Weapon.UpSound "webley/select"
+	+WEAPON.NOAUTOFIRE
+	States
+	{
+	Select:
+		REVG A 0 A_Raise
+		REVG A 1 A_Raise
+		Loop
+	Deselect:
+		REVG A 0 A_Lower
+		REVG A 1 A_Lower
+		Loop
+	Ready:
+		REVG A 0 A_JumpIfInventory("WebleyLoaded",0,2)
+		REVG A 0 A_JumpIfInventory("WebleyAmmo",1,2)
+		REVG A 1 A_WeaponReady
+		Loop
+		REVG A 1 A_WeaponReady(WRF_ALLOWRELOAD)
+		Loop
+	Fire:
+		REVG B 0 A_JumpIfInventory("WebleyLoaded",1,1)
+		Goto Dryfire
+		REVG B 0 A_GunFlash
+		REVG B 0 A_JumpIf(waterlevel > 0,2)
+		REVG B 0 A_FireProjectile("ShotSmokeSpawner",0,0,0,random(-4,4),0,0)
+		REVG B 0 A_PlaySound("webley/fire",CHAN_WEAPON)
+		REVG B 0 A_GiveInventory("RevolverShotCounter")
+		REVG B 0 A_AlertMonsters
+		REVG B 2 A_FireCustomMissile("WebleyTracer",frandom(-1.0,1.0),1,0,0,0,frandom(-0.8,0.8))
+		REVG C 1 Offset(0,38) A_SetPitch(pitch-(0.6*boa_recoilamount))
+		REVG D 1 Offset(0,44) A_SetPitch(pitch-(0.6*boa_recoilamount))
+		REVG D 1 Offset(0,56) A_SetPitch(pitch-(0.6*boa_recoilamount))
+		REVG D 1 Offset(0,52)
+		REVG C 1 Offset(0,50)
+		REVG C 1 Offset(0,47)
+		REVG C 1 Offset(0,44)
+		REVG A 1 Offset(0,40) A_Jump(128,2)
+		REVG A 1 Offset(0,36)
+		REVG A 1 Offset(0,34)
+		REVG A 1 Offset(0,33)
+		REVG A 1 Offset(0,32) A_CheckReload
+		Goto Ready
+	Reload:
+		REVG A 1 Offset(0,35)
+		REVG C 1 Offset(0,38) 
+		REVG C 1 Offset(0,44)
+		REVG C 1 Offset(0,52)
+		REVG D 1 Offset(0,62)
+		REVG D 1 Offset(0,72)
+		RHND A 1 Offset(0,82) 
+		RHND A 11 A_PlaySound("webley/out",5)
+	CylinderEject:
+		TNT1 A 0 A_JumpIfInventory("RevolverShotCounter",1,2)
+		TNT1 A 0 A_Jump(256,"ReloadLoop")
+		TNT1 A 0 A_TakeInventory("RevolverShotCounter",1)
+		TNT1 A 0 A_SpawnItemEx("WebleyCasing",12,-20,32, 0,0,0, random(-55,-80),SXF_NOCHECKPOSITION)
+		Goto CylinderEject
+	ReloadLoop:
+		TNT1 A 0 A_TakeInventory("WebleyAmmo",1,TIF_NOTAKEINFINITE)
+		TNT1 A 0 A_GiveInventory("WebleyLoaded")
+		TNT1 A 0 A_JumpIfInventory("WebleyLoaded",0,"ReloadFinish")
+		TNT1 A 0 A_JumpIfInventory("WebleyAmmo",1,"ReloadLoop")
+	ReloadFinish:
+		RHND A 3 Offset(0,32)
+		RHND B 3 A_PlaySound("webley/load",5)
+		RHND B 2 Offset(0,40)
+		RHND C 1 Offset(0,32)
+		RHND C 1 Offset(0,38)
+		RHND C 1 Offset(0,46)
+		TNT1 A 6
+		REVG D 1 Offset(0,82) A_PlaySound("webley/in",5)
+		REVG D 1 Offset(0,72)
+		REVG D 1 Offset(0,62)
+		REVG C 1 Offset(0,52)
+		REVG C 1 Offset(0,44)
+		REVG C 1 Offset(0,38)
+		REVG A 1 Offset(0,35)
+		REVG A 1 Offset(0,32)
+		Goto Ready
+	Flash:
+		REVF A 2 BRIGHT A_Light2
+		TNT1 A 2 A_Light1
+		Goto LightDone
+	Spawn:
+		REVP A -1
+		Stop
+	}
+}
+
+ACTOR WebleyLoaded : Ammo
+{
+	Tag ".455 Webley"
+	+IGNORESKILL
+	Inventory.MaxAmount 6
+	Inventory.Icon WEBA02
+}
+
+ACTOR RevolverShotCounter : Inventory
+{
+	Inventory.MaxAmount 6
+}

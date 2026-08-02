@@ -1,0 +1,146 @@
+// I didn't really wanna implement this thing initially, there's already the SVT40 for semi auto rifles that shoot the Mosin rounds and I was prepared to call it in around the 40 weapons mark. That is until I got above 40, and had to find more things to stuff it so it'll reach 50. It's a completely arbitrary goal so I wouldn't keep trying to add new things in. If I REALLY want to add something, it'll have to come with a cost. Redundant, but at this point I ceased to care for duplicate weapons unless they use the exact same look but with slight differences.
+
+ACTOR AVS36 : NaziWeapon
+{
+	//$Category Weapons (Confiscated Weapons)
+	//$Title (5) SVT40
+	//$Color 14
+	Scale 0.35
+	Weapon.SlotNumber 5
+	Weapon.SelectionOrder 750
+	Weapon.AmmoType "AVS36Loaded"
+	Weapon.AmmoUse 1
+	Weapon.AmmoType2 "NagantAmmo"
+	Weapon.AmmoUse2 1
+	Weapon.AmmoGive1 15
+	Weapon.AmmoGive2 30
+	Inventory.PickupMessage "You got the Simonov AVS-36! Hitting alternate fire allows you to shoot the gun in semi auto."
+	Tag "AVS-36"
+	Weapon.UpSound "avs36/select"
+	+WEAPON.NOAUTOFIRE
+	States
+	{
+	Select:
+		AVSG A 0 A_Raise
+		AVSG A 1 A_Raise
+		Loop
+	Deselect:
+		AVSG A 0 A_Lower
+		AVSG A 1 A_Lower
+		Loop
+	Ready:
+		AVSG A 0 A_JumpIfInventory("AVS36Loaded",0,2)
+		AVSG A 0 A_JumpIfInventory("NagantAmmo",1,2)
+		AVSG A 1 A_WeaponReady
+		Loop
+		AVSG A 1 A_WeaponReady(WRF_ALLOWRELOAD)
+		Loop
+	Fire:
+		AVSG A 0 A_JumpIfInventory("AVS36Loaded",1,1)
+		Goto Dryfire
+		AVSG A 0 A_StartSound("avs36/fire",CHAN_WEAPON)
+		AVSG A 0 A_GunFlash
+		AVSG A 0 A_SpawnItemEx("MosinCasing",12,-20,32,8,random(-2,2),random(0,4),random(-55,-80),SXF_NOCHECKPOSITION)
+		AVSG A 0 A_AlertMonsters
+		AVSG A 1 A_FireProjectile("MosinTracer",frandom(-1.0,1.0),1,0,0,0,frandom(-1.0,1.0))
+		AVSG A 0 A_JumpIf(waterlevel > 0,2)
+		AVSG A 0 A_FireProjectile("ShotSmokeSpawner",0,0,0,random(-4,4),0,0)
+		AVSG A 1 A_SetPitch(pitch-(3.4*boa_recoilamount))
+		AVSG C 1 
+		AVSG D 1 A_Refire
+		AVSG E 1 
+		AVSG D 1
+		AVSG C 1 
+		TNT1 A 0 A_CheckReload
+		AVSG AFA 1 
+		Goto Ready
+	Hold:
+		AVSG A 0 A_JumpIfInventory("AVS36Loaded",1,1)
+		Goto Dryfire
+		AVSG A 0 A_StartSound("avs36/fire",CHAN_WEAPON)
+		AVSG A 0 A_GunFlash
+		AVSG A 0 A_SpawnItemEx("MosinCasing",12,-20,32,8,random(-2,2),random(0,4),random(-55,-80),SXF_NOCHECKPOSITION)
+		AVSG A 0 A_AlertMonsters
+		AVSG A 1 A_FireProjectile("MosinTracer",frandom(-2.0,2.0),1,0,0,0,frandom(-2.0,2.0))
+		AVSG A 0 A_JumpIf(waterlevel > 0,2)
+		AVSG A 0 A_FireProjectile("ShotSmokeSpawner",0,0,0,random(-4,4),0,0)
+		AVSG A 1 Offset(0,36) A_SetPitch(pitch-(2.4*boa_recoilamount))
+		AVSG C 1 
+		AVSG D 1 A_Refire
+		AVSG E 1 
+		AVSG D 1
+		AVSG C 1 
+		TNT1 A 0 A_CheckReload
+		AVSG AFA 1 
+		Goto Ready
+	AltFire:
+		AVSG A 0 A_JumpIfInventory("AVS36Loaded",1,1)
+		Goto Dryfire
+		AVSG A 0 A_StartSound("avs36/fire",CHAN_WEAPON)
+		AVSG A 0 A_GunFlash
+		AVSG A 0 A_SpawnItemEx("MosinCasing",12,-20,32,8,random(-2,2),random(0,4),random(-55,-80),SXF_NOCHECKPOSITION)
+		AVSG A 0 A_AlertMonsters
+		BRAG B 0 A_TakeInventory("AVS36Loaded",1,TIF_NOTAKEINFINITE)
+		AVSG A 1 A_FireProjectile("MosinTracer",frandom(-2.0,2.0),0,0,0,0,frandom(-2.0,2.0))
+		AVSG A 0 A_JumpIf(waterlevel > 0,2)
+		AVSG A 0 A_FireProjectile("ShotSmokeSpawner",0,0,0,random(-4,4),0,0)
+		AVSG A 1 A_SetPitch(pitch-(3.4*boa_recoilamount))
+		AVSG C 1 
+		AVSG D 1
+		AVSG E 1 
+		AVSG D 1
+		AVSG C 1 
+		TNT1 A 0 A_CheckReload
+		AVSG AFA 1 
+		Goto Ready
+	Reload:
+		AVSG A 1 Offset(0,35) A_StartSound("avs36/reload",CHAN_5)
+		AVSG A 1 Offset(-2,38)
+		AVSG A 1 Offset(-4,44)
+		AVSG A 1 Offset(-6,52)
+		AVSG A 1 Offset(-7,57)
+		AVSG G 1 Offset(-8,62)
+		AVSG G 1 Offset(-9,67)
+		AVSG G 1 Offset(-10,72)
+		AVSG G 1 Offset(-11,77)
+		AVSG G 1 Offset(-11,80)
+		AVSG G 1 Offset(-12,82)
+		AVSG G 1 Offset(-12,84)
+		AVSG G 1 Offset(-13,86)
+		AVSG G 1 Offset(-13,87)
+		AVSG G 2 Offset(-14,88)
+		AVSG G 3 Offset(-14,89)
+	ReloadLoop:
+		TNT1 A 0 A_TakeInventory("NagantAmmo",1,TIF_NOTAKEINFINITE)
+		TNT1 A 0 A_GiveInventory("AVS36Loaded")
+		TNT1 A 0 A_JumpIfInventory("AVS36Loaded",0,"ReloadFinish")
+		TNT1 A 0 A_JumpIfInventory("NagantAmmo",1,"ReloadLoop")
+	ReloadFinish:
+		AVSG H 2 Offset(-10,96)
+		AVSG H 1 Offset(-6,100)
+		AVSG H 1 Offset(-7,90)
+		AVSG H 1 Offset(-6,80)
+		AVSG H 1 Offset(-4,70)
+		AVSG H 1 Offset(-2,60)
+		AVSG H 1 Offset(0,50)
+		AVSG A 1 Offset(0,40)
+		AVSG A 1 Offset(0,32)
+		Goto Ready
+	Flash:
+		AVSF A 1 BRIGHT A_Light2
+		AVSF B 1 BRIGHT
+		TNT1 A 2 A_Light1
+		Goto LightDone
+	Spawn:
+		AVSP A -1
+		Stop
+	}
+}
+
+ACTOR AVS36Loaded : Ammo
+{
+	Tag "7.62x54mmR"
+	+IGNORESKILL
+	Inventory.MaxAmount 15
+	Inventory.Icon MSAM02
+}

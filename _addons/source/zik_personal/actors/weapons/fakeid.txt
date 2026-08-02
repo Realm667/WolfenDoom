@@ -1,0 +1,25 @@
+ACTOR FakeID : NullWeapon
+{
+	Tag "$TAGKARTE"
+	Weapon.SelectionOrder 10002
+	States
+	{
+	Select:
+		TNT1 A 1 A_Raise
+		Loop
+	Deselect:
+		TNT1 A 1 A_Lower
+		Loop
+	Fire:
+	Ready:
+		TNT1 A 1 A_WeaponReady(WRF_NOFIRE)
+		TNT1 A 1 A_StartSound("mohpapers/please", CHAN_AUTO)
+		TNT1 A 1 A_StartSound("mohpapers/show", CHAN_AUTO)
+		FKID AABC 4 
+		FKID DEFF 6
+		FKID F 30
+		FKID E 1 A_StartSound("mohpapers/holster", CHAN_AUTO)
+		FKID DCBA 4 
+		Stop
+	}
+}

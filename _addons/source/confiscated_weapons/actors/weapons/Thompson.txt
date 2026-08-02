@@ -1,0 +1,164 @@
+// Ah, the gun that started it all. The first implemented weapon in Confiscated Weapons. This thing was initially cobbled together to add visuals to a point in one of my videos for BoA regarding the shop, and how it could be made more enticing to spend money on, particularly on the first category where Rojas would usually sell you the same guns you'd find in the field anyways. How time flies since then.
+
+ACTOR 45ACPCasing : Casing9mm
+{
+	Scale .1
+	States
+	{
+	Spawn:
+		CAS3 ABCDEFGH 2
+		Loop
+	}
+}
+
+ACTOR 45ACPAmmo : Ammo
+{
+	Scale 0.6
+	Tag ".45 ACP"
+	Inventory.Amount 40
+	Inventory.MaxAmount 200
+	Ammo.BackpackAmount 100
+	Ammo.BackpackMaxAmount 300
+	Inventory.PickupMessage "Picked up a .45 ACP magazine."
+	Inventory.Icon FUDD02
+	States
+	{
+	Spawn:
+		45AM A -1
+		Stop
+	}
+}
+
+ACTOR 45ACPAmmoBox : 45ACPAmmo
+{
+	Inventory.Amount 80
+	Scale .5
+	Inventory.PickupMessage "Picked up a pack of .45 ACP ammo."
+	Inventory.Icon FUDD02
+	States
+	{
+	Spawn:
+		45AM B -1
+		Stop
+	}
+}
+
+ACTOR M1ThompsonTracer : PlayerTracer
+{
+	ProjectileKickback 100
+	Damage (random(14,18))
+	Speed 120
+}
+
+ACTOR Thompson : NaziWeapon
+{
+	//$Category Weapons (BoA Addons)
+	//$Title (4) Thompson
+	//$Color 14
+	Weapon.SlotNumber 4
+	Weapon.SelectionOrder 600
+	Inventory.PickupMessage "You got the Thompson M1A1!"
+	Weapon.AmmoType "ThompsonLoaded"
+	Weapon.AmmoUse 1
+	Weapon.AmmoType2 "45ACPAmmo"
+	Weapon.AmmoUse2 1
+	Weapon.AmmoGive1 20
+	Weapon.AmmoGive2 40
+	Scale 0.5
+	Tag "Thompson M1A1"
+	Weapon.UpSound "thompson/select"
+	States
+	{
+	Ready:
+		THOM A 0 A_JumpIfInventory("ThompsonLoaded",0,2)
+		THOM A 0 A_JumpIfInventory("45ACPAmmo",1,2)
+		THOM A 1 A_WeaponReady
+		Loop
+		THOM A 1 A_WeaponReady(WRF_ALLOWRELOAD)
+		Loop
+	Deselect:
+		THOM A 0 A_Lower
+		THOM A 1 A_Lower
+		Loop
+	Select:
+		THOM A 0 A_Raise
+		THOM A 1 A_Raise
+		Loop
+	Fire:
+		THOM A 0 A_JumpIfInventory("ThompsonLoaded",1,1)
+		Goto Dryfire
+		THOM A 0 A_GunFlash
+		THOM A 0 A_PlaySound("thompson/fire",CHAN_WEAPON)
+		THOM A 0 A_SpawnItemEx("45ACPCasing",12,-20,32,8,random(-2,2),random(0,4),random(-55,-80),SXF_NOCHECKPOSITION)
+		THOM A 0 A_AlertMonsters
+		THOM D 1 A_FireCustomMissile("M1ThompsonTracer",frandom(-1.5,1.5),1,0,0,0,frandom(-1.0,1.0))
+		THOM D 1 Offset(0,40) A_SetPitch(pitch-(0.6*boa_recoilamount))
+		THOM A 0 A_JumpIf(waterlevel > 0,2)
+		THOM A 0 A_FireProjectile("ChainSmokeSpawner",0,0,0,random(-4,4),0,0)
+		THOM A 1 Offset(0,34)
+		TNT1 A 0 A_Refire
+		Goto Ready
+	Hold:
+		THOM A 0 A_JumpIfInventory("ThompsonLoaded",1,1)
+		Goto Dryfire
+		THOM A 0 A_GunFlash
+		THOM A 0 A_PlaySound("thompson/fire",CHAN_WEAPON)
+		THOM A 0 A_SpawnItemEx("45ACPCasing",12,-20,32,8,random(-2,2),random(0,4),random(-55,-80),SXF_NOCHECKPOSITION)
+		THOM A 0 A_AlertMonsters
+		THOM D 1 Offset(0,36) A_FireCustomMissile("M1ThompsonTracer",frandom(-1.5,1.5),1,0,0,0,frandom(-1.0,1.0))
+		THOM D 1 Offset(0,40) A_SetPitch(pitch-(0.6*boa_recoilamount))
+		THOM A 0 A_JumpIf(waterlevel > 0,2)
+		THOM A 0 A_FireProjectile("ChainSmokeSpawner",0,0,0,random(-4,4),0,0)
+		THOM A 1 Offset(0,34)
+		TNT1 A 0 A_Refire
+		Goto Ready
+	Reload:
+		THOM A 1 Offset(0,35) A_PlaySound("thompson/reload",5)
+		THOM A 1 Offset(0,38) 
+		THOM A 1 Offset(0,44)
+		THOM A 1 Offset(-2,46)
+		THOM E 1 Offset(-4,52)
+		THOM E 1 Offset(-7,56)
+		THOM E 1 Offset(-10,57)
+		THOM E 8 Offset(-11,58)
+	ReloadLoop:
+		TNT1 A 0 A_TakeInventory("45ACPAmmo",1,TIF_NOTAKEINFINITE)
+		TNT1 A 0 A_GiveInventory("ThompsonLoaded")
+		TNT1 A 0 A_JumpIfInventory("ThompsonLoaded",0,"ReloadFinish")
+		TNT1 A 0 A_JumpIfInventory("45ACPAmmo",1,"ReloadLoop")
+	ReloadFinish:
+		THOM A 1 Offset(-10,58)
+		THOM A 1 Offset(-10,61)
+		THOM F 1 Offset(-10,65)
+		THOM F 1 Offset(-10,71)
+		THOM F 1 Offset(-10,65)
+		THOM F 1 Offset(-10,60)
+		THOM F 1 Offset(-10,55)
+		THOM F 1 Offset(-10,53)
+		THOM F 1 Offset(-10,51)
+		THOM F 1 Offset(-9,50)
+		THOM A 1 Offset(-8,46)
+		THOM A 1 Offset(-7,43)
+		THOM A 1 Offset(-5,40)
+		THOM A 1 Offset(-3,37)
+		THOM A 1 Offset(-1,34)
+		THOM A 1 Offset(0,32)
+		Goto Ready
+	Flash:
+		THOM B 1 BRIGHT A_Light2
+		THOM C 1 BRIGHT
+		TNT1 A 2 A_Light1
+		Goto LightDone
+	Spawn:
+		THOM P -1
+		Stop
+	}
+}
+
+ACTOR ThompsonLoaded : Ammo
+{
+	Tag ".45 ACP"
+	Inventory.MaxAmount 20
+	+IGNORESKILL
+	Inventory.Icon FUDD01
+}

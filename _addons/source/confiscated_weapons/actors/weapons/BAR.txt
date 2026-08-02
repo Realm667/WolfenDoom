@@ -1,0 +1,147 @@
+// Wasn't planning on adding the slowfire alt, initially. Hgluzowski however made quite a compelling argument about how older WW2 games would use the slow auto fire mode instead of the full, and I'm reminded of younger days in MoHAA. Yeah, it's a sentimental thing. It did open the path for me adding this to the AVS36 as well, atleast.
+
+ACTOR BAR3006 : NaziWeapon
+{
+	//$Category Weapons (Confiscated Weapons)
+	//$Title (8) BRAG LMG
+	//$Color 14
+	Scale 0.3
+	Weapon.SlotNumber 8
+	Weapon.SelectionOrder 750
+	Weapon.AmmoType "BAR3006Loaded"
+	Weapon.AmmoUse 1
+	Weapon.AmmoType2 "3006Ammo"
+	Weapon.AmmoUse2 1
+	Weapon.AmmoGive1 20
+	Weapon.AmmoGive2 40
+	Tag "Browning Automatic Rifle"
+	Inventory.PickupMessage "You got the Browning Automatic Rifle! Firing it in alternate attack will use its slow auto mode instead of full."
+	Weapon.UpSound "browningautomaticrifle/select"
+	States
+	{
+	Select:
+		BRAG A 0 A_Raise
+		BRAG A 1 A_Raise
+		Loop
+	Deselect:
+		BRAG A 0 A_Lower
+		BRAG A 1 A_Lower
+		Loop
+	Ready:
+		BRAG A 0 A_JumpIfInventory("BAR3006Loaded",0,2)
+		BRAG A 0 A_JumpIfInventory("3006Ammo",1,2)
+		BRAG A 1 A_WeaponReady
+		Loop
+		BRAG A 1 A_WeaponReady(WRF_ALLOWRELOAD)
+		Loop
+	Fire:
+		BRAG A 0 A_JumpIfInventory("BAR3006Loaded",1,1)
+		Goto Dryfire
+		BRAG A 0 A_GunFlash
+		BRAG A 0 A_PlaySound("browningautomaticrifle/fire",CHAN_WEAPON)
+		BRAG A 0 A_SpawnItemEx("M1GarandRifleCasing",12,-20,32,8,random(-2,2),random(0,4),random(-55,-80),SXF_NOCHECKPOSITION)
+		BRAG A 0 A_AlertMonsters
+		BRAG B 1 A_FireCustomMissile("M1GarandTracer",frandom(-1.0,1.0),1,0,0,0,frandom(-1.0,1.0))
+		BRAG B 1 Offset(0,40) A_SetPitch(pitch-(2.6*boa_recoilamount))
+		BRAG A 0 A_JumpIf(waterlevel > 0,2)
+		BRAG A 0 A_FireProjectile("ChainSmokeSpawner",0,0,0,random(-4,4),0,0)
+		BRAG A 1 Offset(0,34)
+		TNT1 A 0 A_Refire
+		Goto Ready
+	Hold:
+		BRAG A 0 A_JumpIfInventory("BAR3006Loaded",1,1)
+		Goto Dryfire
+		BRAG A 0 A_GunFlash
+		BRAG A 0 A_PlaySound("browningautomaticrifle/fire",CHAN_WEAPON)
+		BRAG A 0 A_SpawnItemEx("M1GarandRifleCasing",12,-20,32,8,random(-2,2),random(0,4),random(-55,-80),SXF_NOCHECKPOSITION)
+		BRAG A 0 A_AlertMonsters
+		BRAG B 1 Offset(0,36) A_FireCustomMissile("M1GarandTracer",frandom(-1.0,1.0),1,0,0,0,frandom(-1.0,1.0))
+		BRAG B 1 Offset(0,40) A_SetPitch(pitch-(2.6*boa_recoilamount))
+		BRAG A 0 A_JumpIf(waterlevel > 0,2)
+		BRAG A 0 A_FireProjectile("ChainSmokeSpawner",0,0,0,random(-4,4),0,0)
+		BRAG A 1 Offset(0,34)
+		TNT1 A 0 A_Refire
+		Goto Ready
+	Altfire:
+		BRAG A 0 A_JumpIfInventory("BAR3006Loaded",1,1)
+		Goto Dryfire
+		BRAG A 0 A_GunFlash
+		TNT1 A 0 
+		BRAG B 0 A_PlaySound("browningautomaticrifle/fire",CHAN_WEAPON)
+		BRAG B 0 A_SpawnItemEx("M1GarandRifleCasing",12,-20,32,8,random(-2,2),random(0,4),random(-55,-80),SXF_NOCHECKPOSITION)
+		BRAG B 0 A_AlertMonsters
+		BRAG B 0 A_TakeInventory("BAR3006Loaded",1,TIF_NOTAKEINFINITE)
+		BRAG B 1 A_FireCustomMissile("M1GarandTracer",frandom(-2.0,2.0),0,0,0,0,frandom(-1.0,1.0))
+		BRAG B 1 Offset(0,38) A_SetPitch(pitch-(2.6*boa_recoilamount))
+		BRAG B 0 A_JumpIf(waterlevel > 0,2)
+		BRAG B 0 A_FireProjectile("ShotSmokeSpawner",0,0,0,random(-4,4),0,0)
+		BRAG B 1 Offset(0,37)
+		BRAG A 1 Offset(0,35)
+		BRAG A 1 Offset(0,33)
+		TNT1 A 0 A_CheckReload
+		Goto Ready
+	Reload:
+		BRAG A 1 Offset(0,35) A_PlaySound("browningautomaticrifle/reload",5)
+		BRAG A 1 Offset(0,38) 
+		BRAG A 1 Offset(0,44)
+		BRAG A 1 Offset(-2,46)
+		BRAG A 1 Offset(-4,52)
+		BRAG C 1 Offset(-7,56)
+		BRAG C 1 Offset(-10,57)
+		BRAG C 1 Offset(-11,58)
+		BRAG C 1 Offset(-2,46)
+		BRAG C 1 Offset(-4,52)
+		BRAG C 1 Offset(-7,56)
+		BRAG C 1 Offset(-10,57)
+		BRAG C 1 Offset(-10,65)
+		BRAG C 1 Offset(-11,58)
+		BRAG C 1 Offset(-2,46)
+		BRAG C 1 Offset(-4,52)
+		BRAG C 1 Offset(-7,56)
+		BRAG C 12 Offset(-11,58)
+	ReloadLoop:
+		BRAG C 0 A_TakeInventory("3006Ammo",1,TIF_NOTAKEINFINITE)
+		BRAG C 0 A_GiveInventory("BAR3006Loaded")
+		BRAG C 0 A_JumpIfInventory("BAR3006Loaded",0,"ReloadFinish")
+		BRAG C 0 A_JumpIfInventory("3006Ammo",1,"ReloadLoop")
+	ReloadFinish:
+		BRAG C 1 Offset(-10,57)
+		BRAG C 1 Offset(-11,58)
+		BRAG C 1 Offset(-2,46)
+		BRAG C 1 Offset(-4,52)
+		BRAG C 1 Offset(-7,56)
+		BRAG C 1 Offset(-10,58)
+		BRAG C 1 Offset(-10,61)
+		BRAG C 6 Offset(-10,65)
+		BRAG C 1 Offset(-10,71)
+		BRAG C 1 Offset(-10,65)
+		BRAG C 1 Offset(-10,60)
+		BRAG C 1 Offset(-10,55)
+		BRAG C 1 Offset(-10,53)
+		BRAG C 1 Offset(-10,51)
+		BRAG C 1 Offset(-9,50)
+		BRAG D 6 Offset(-8,46)
+		BRAG D 6 Offset(-7,43)
+		BRAG D 1 Offset(-5,40)
+		BRAG D 1 Offset(-3,37)
+		BRAG A 1 Offset(-1,34)
+		BRAG A 1 Offset(0,32)
+		Goto Ready
+	Flash:
+		BRAF A 1 BRIGHT A_Light2
+		BRAF B 1 BRIGHT
+		TNT1 A 2 A_Light1
+		Goto LightDone
+	Spawn:
+		BRAW A -1
+		Stop
+	}
+}
+
+ACTOR BAR3006Loaded : Ammo
+{
+	Tag ".30-06"
+	+IGNORESKILL
+	Inventory.MaxAmount 20
+	Inventory.Icon BARA01
+}

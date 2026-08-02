@@ -1,0 +1,77 @@
+version "4.5"
+
+#include "scripts/decorate/confiscatedweaponscrate.zs"
+#include "scripts/decorate/weapons/kabar.zs"
+
+class ConfisWeapsAstroWipe : EventHandler
+	{
+			override void PlayerEntered (PlayerEvent e)
+			{
+				let pPawn = players [e.PlayerNumber].mo;
+				pPawn.A_TakeInventory ("Kabar", 0x7FFFFFFF);
+				pPawn.A_TakeInventory ("BrassKnucks", 0x7FFFFFFF);
+				pPawn.A_TakeInventory ("ThrowingKnife", 0x7FFFFFFF);
+				pPawn.A_TakeInventory ("Kabar", 0x7FFFFFFF);
+				pPawn.A_TakeInventory ("TT33", 0x7FFFFFFF);
+				pPawn.A_TakeInventory ("Welrod", 0x7FFFFFFF);
+				pPawn.A_TakeInventory ("Colt1911", 0x7FFFFFFF);
+				pPawn.A_TakeInventory ("PPK", 0x7FFFFFFF);
+				pPawn.A_TakeInventory ("C96", 0x7FFFFFFF);
+				pPawn.A_TakeInventory ("Webley", 0x7FFFFFFF);
+				pPawn.A_TakeInventory ("BrownHP", 0x7FFFFFFF);
+				pPawn.A_TakeInventory ("Nambu", 0x7FFFFFFF);
+				pPawn.A_TakeInventory ("Ithaca37", 0x7FFFFFFF);
+				pPawn.A_TakeInventory ("CoachGun", 0x7FFFFFFF);
+				pPawn.A_TakeInventory ("Thompson", 0x7FFFFFFF);
+				pPawn.A_TakeInventory ("PPSH41", 0x7FFFFFFF);
+				pPawn.A_TakeInventory ("M3Grease", 0x7FFFFFFF);
+				pPawn.A_TakeInventory ("PPS43", 0x7FFFFFFF);
+				pPawn.A_TakeInventory ("MP18", 0x7FFFFFFF);
+				pPawn.A_TakeInventory ("MAS38", 0x7FFFFFFF);
+				pPawn.A_TakeInventory ("T100", 0x7FFFFFFF);
+				pPawn.A_TakeInventory ("STNV", 0x7FFFFFFF);
+				pPawn.A_TakeInventory ("T1928", 0x7FFFFFFF);
+				pPawn.A_TakeInventory ("Enfield", 0x7FFFFFFF);
+				pPawn.A_TakeInventory ("Garand", 0x7FFFFFFF);
+				pPawn.A_TakeInventory ("DeLisle", 0x7FFFFFFF);
+				pPawn.A_TakeInventory ("MosinNagant", 0x7FFFFFFF);
+				pPawn.A_TakeInventory ("SVT40", 0x7FFFFFFF);
+				pPawn.A_TakeInventory ("M1C", 0x7FFFFFFF);
+				pPawn.A_TakeInventory ("Springfield", 0x7FFFFFFF);
+				pPawn.A_TakeInventory ("JM1941", 0x7FFFFFFF);
+				pPawn.A_TakeInventory ("AVS36", 0x7FFFFFFF);
+				pPawn.A_TakeInventory ("Type99", 0x7FFFFFFF);
+				pPawn.A_TakeInventory ("STG44", 0x7FFFFFFF);
+				pPawn.A_TakeInventory ("FG42", 0x7FFFFFFF);
+				pPawn.A_TakeInventory ("BAR3006", 0x7FFFFFFF);
+				pPawn.A_TakeInventory ("Bren", 0x7FFFFFFF);
+				pPawn.A_TakeInventory ("LewisGun", 0x7FFFFFFF);
+				pPawn.A_TakeInventory ("MG42", 0x7FFFFFFF);
+				pPawn.A_TakeInventory ("MG34", 0x7FFFFFFF);
+				pPawn.A_TakeInventory ("DP27", 0x7FFFFFFF);
+				pPawn.A_TakeInventory ("30CAL", 0x7FFFFFFF);
+				pPawn.A_TakeInventory ("MortarPlayer", 0x7FFFFFFF);
+				pPawn.A_TakeInventory ("M2Flamer", 0x7FFFFFFF);
+				pPawn.A_TakeInventory ("Panzerfaust", 0x7FFFFFFF);
+				pPawn.A_TakeInventory ("Bazooka", 0x7FFFFFFF);
+				pPawn.A_TakeInventory ("PIAT", 0x7FFFFFFF);
+				pPawn.A_TakeInventory ("MK2Frag", 0x7FFFFFFF);
+				pPawn.A_TakeInventory ("MillsGrenade", 0x7FFFFFFF);
+				pPawn.A_TakeInventory ("Geballte", 0x7FFFFFFF);
+				pPawn.A_TakeInventory ("Dynamite", 0x7FFFFFFF);
+				pPawn.A_TakeInventory ("PlayerSatchels", 0x7FFFFFFF);
+				pPawn.A_TakeInventory ("WebleyAmmo", 0x7FFFFFFF);
+				pPawn.A_TakeInventory ("792KurzAmmo", 0x7FFFFFFF);
+				pPawn.A_TakeInventory ("TokarevAmmo", 0x7FFFFFFF);
+				pPawn.A_TakeInventory ("765LongueAmmo", 0x7FFFFFFF);
+				pPawn.A_TakeInventory ("NambuAmmo", 0x7FFFFFFF);
+				pPawn.A_TakeInventory ("NagantAmmo", 0x7FFFFFFF);
+				pPawn.A_TakeInventory ("ArisakaAmmo", 0x7FFFFFFF);
+				pPawn.A_TakeInventory ("PPKAmmo", 0x7FFFFFFF);
+				pPawn.A_TakeInventory ("PIATAmmo", 0x7FFFFFFF);
+				pPawn.A_TakeInventory ("MortarAmmo", 0x7FFFFFFF);
+				pPawn.A_TakeInventory ("BazookaAmmo", 0x7FFFFFFF);
+				pPawn.A_TakeInventory ("45ACPAmmo", 0x7FFFFFFF);
+				pPawn.A_TakeInventory ("3006Ammo", 0x7FFFFFFF);
+			}	
+	}

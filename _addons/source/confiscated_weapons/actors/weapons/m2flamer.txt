@@ -1,0 +1,72 @@
+// How would you reload a weapon that exclusively loads from a big giant tank behind you? I figured that reloading on a flamethrower would be all too much like the regular vanilla flamer, so the gluon gun approach is the one I ended up picking for this thing. Made the flame sprites smaller so that you can see with this thing better in primary fire with all the heat shader effects practically blinding you, though no fireball altfire to compensate.
+
+ACTOR M2Gastank : Ammo
+{
+	Scale 0.1
+	Tag "M2 Gastank"
+	Inventory.Amount 100
+	Inventory.MaxAmount 100
+	Ammo.BackpackAmount 100
+	Ammo.BackpackMaxAmount 150
+	Inventory.PickupMessage "Picked up a gastank for the M2 Flamer."
+	Inventory.Icon FLAM02
+	States
+	{
+	Spawn:
+		FAMO B -1
+		Stop
+	}
+}
+
+ACTOR M2Flamer : NaziWeapon
+{
+	//$Category Weapons (Confiscated Weapons)
+	//$Title (6) M2 Flamethrower
+	//$Color 14
+	Weapon.SlotNumber 6
+	Weapon.SelectionOrder 10000
+	Inventory.PickupMessage "You got the M2 Flamethrower!"
+	Tag "M2 Flamethrower"
+	Weapon.AmmoUse 1
+	Weapon.AmmoType "M2Gastank"
+	Weapon.AmmoGive 100
+	-WEAPON.AMMO_CHECKBOTH
+	-WEAPON.NOALERT
+	Scale .4
+	Weapon.UpSound "flamer/select"
+	States
+	{
+	Select:
+		M2FL A 0 A_Raise
+		M2FL A 1 A_Raise
+		Loop
+	Deselect:
+		M2FL A 0 A_Lower
+		M2FL A 1 A_Lower
+		Loop
+	Ready:
+		M2FL A 1 A_WeaponReady
+		Loop
+	Fire:
+		M2FL A 0 A_JumpIf(waterlevel>= 2,"NoWay")
+		M2FL A 0 A_JumpIfInventory("M2Gastank",1,1)
+		Goto Dryfire
+		M2FL A 0 A_Light2
+		M2FL A 0 A_AlertMonsters
+		M2FL A 1 Offset(0,35) A_FireProjectile("M2Flames")
+		M2FL A 1 Offset(0,36)
+		M2FL A 1 Offset(0,37)
+		M2FL A 0 A_Light0
+		M2FL A 0 A_Refire
+		M2FL A 20 A_GunFlash
+		Goto Ready
+	Spawn:
+		M2FL W -1
+		Loop
+	}
+}
+
+ACTOR M2Flames : Flamebolt
+{
+	Scale 0.00001
+}
