@@ -1,5 +1,35 @@
 # Changelog
 
+## 2.2.0
+
+### Added
+
+- Added UZDoom 5.x compatibility while retaining support for the bundled
+  UZDoom 4.14.3 release.
+- Added separate English (US) and English (UK) game-language choices.
+- Added persistence for the user-adjusted launcher window size.
+
+### Changed
+
+- Limited hosted Blade of Agony sessions to the supported range of 2-4
+  players.
+- Renamed the sidebar Start entry to Quick Launch.
+- Changed the Portuguese game-language option to Portuguese (European).
+- UZDoom 5.x commands now use IETF BCP 47 language tags and the explicit
+  `-coop` hosting option; UZDoom 4.14.3 keeps its legacy language aliases.
+- Engine compatibility checks now accept UZDoom 4.14.3 and all UZDoom 5.x
+  releases.
+- Launcher version increased to 2.2.0.
+
+### Verified
+
+- Added automated UZDoom 5 command and compatibility tests using a synthetic
+  5.0 engine fixture.
+- Verified the 2-4 player limit, language choices, Quick Launch label, and
+  window-size save/restore behavior through the WPF accessibility tree.
+- Re-ran command generation, localization, content parsing, add-on
+  compatibility, responsive-layout, multiplayer, and graphics profile tests.
+
 ## 2.1.1
 
 ### Changed

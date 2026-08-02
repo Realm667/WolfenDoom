@@ -1,13 +1,13 @@
 # Blade of Agony Launcher
 
-Version 2.1.1 is a modern WPF launcher for Blade of Agony and the bundled
-UZDoom 4.14.3 engine. It is a clean-room replacement for the original native
-launcher and remains portable: no installer or additional UI runtime is
-required on supported Windows systems.
+Version 2.2.0 is a modern WPF launcher for Blade of Agony and UZDoom 4.14.3
+or 5.x. It is a clean-room replacement for the original native launcher and
+remains portable: no installer or additional UI runtime is required on
+supported Windows systems.
 
 ## Interface
 
-- Responsive four-area navigation for Start, Add-ons, Multiplayer, and
+- Responsive four-area navigation for Quick Launch, Add-ons, Multiplayer, and
   Diagnostics.
 - Persistent launch summary and primary Launch action.
 - Official Blade of Agony header logo and live UZDoom product version read
@@ -16,13 +16,14 @@ required on supported Windows systems.
   navigation; no network connection or system font installation is required.
 - Unica One page headlines for Quick Launch, Add-ons, Multiplayer, and
   Diagnostics.
-- Independent game and interface languages for all ten Blade of Agony
-  language codes.
+- Independent game and interface languages, including separate English (US)
+  and English (UK) game options plus European Portuguese.
 - Blade of Agony, Dark, Light, and Wolfenstein 3D designs.
 - Per-monitor DPI awareness, Windows text scaling, keyboard navigation,
   accessible automation names, high-contrast support, and animated page
   transitions.
 - Runtime reflow with compact icon navigation on narrow windows.
+- Saves and restores the user-adjusted launcher window size.
 
 ## Blade of Agony integration
 
@@ -61,13 +62,16 @@ required on supported Windows systems.
 ## Multiplayer
 
 - Provides single-player, host co-op, and join co-op modes.
-- Host setup supports 2-8 players, episode/map selection, all five BoA
+- Host setup supports 2-4 players, episode/map selection, all five BoA
   difficulties, UDP port, and `sv_cheats`.
 - Join setup supports host name or IPv4 address and port.
-- Multiplayer validates only `boa.exe` as UZDoom 4.14.3 and `boa.ipk3`.
+- Multiplayer validates only `boa.exe` as UZDoom 4.14.3 or 5.x and
+  `boa.ipk3`.
 - All selected add-ons and `boa_dt.pk3` are excluded from multiplayer
   commands. The single-player add-on selection is retained for later use.
-- No UZDoom 5 preview support is included.
+- UZDoom 4.14.3 receives its legacy language aliases (`enu`, `eng`, and
+  `pt`); UZDoom 5.x receives IETF BCP 47 language tags and the explicit
+  `-coop` option when hosting.
 
 ## Build
 
@@ -112,9 +116,11 @@ copy is required.
 
 The core suite checks commands, language aliases, interface localization,
 MAPINFO parsing, add-on isolation, numbered preview discovery, embedded
-font resources, real archive overlaps, UZDoom 4.14.3, and graphics profiles.
-The GUI suite checks the accessibility tree, compact layout, Start control
-heights, navigation, add-on selection, and the wrapping 16:9 preview carousel.
+font resources, real archive overlaps, UZDoom 4.14.3/5.x command generation,
+and graphics profiles. The GUI suite checks the accessibility tree, compact
+layout, Quick Launch controls, navigation, language and player choices,
+window-size persistence, add-on selection, and the wrapping 16:9 preview
+carousel.
 
 ## Third-party assets
 
