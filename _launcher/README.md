@@ -1,6 +1,6 @@
 # Blade of Agony Launcher
 
-Version 2.2.1 is a modern WPF launcher for Blade of Agony and UZDoom 4.14.3
+Version 2.5.2 is a modern WPF launcher for Blade of Agony and UZDoom 4.14.3
 or 5.x. It is a clean-room replacement for the original native launcher and
 remains portable: no installer or additional UI runtime is required on
 supported Windows systems.
@@ -9,9 +9,10 @@ supported Windows systems.
 
 - Responsive four-area navigation for Quick Launch, Add-ons, Multiplayer, and
   Diagnostics.
-- Persistent launch summary and primary Play action.
+- Persistent launch summary with Continue Campaign as the primary action
+  when a readable savegame exists.
 - Official Blade of Agony header logo and live UZDoom product version read
-  from the adjacent `boa.exe`.
+  from the adjacent `uzdoom.exe`.
 - Bundled Unica One typography for the Blade of Agony title and sidebar
   navigation; no network connection or system font installation is required.
 - Unica One page headlines for Quick Launch, Add-ons, Multiplayer, and
@@ -24,6 +25,9 @@ supported Windows systems.
   transitions.
 - Runtime reflow with compact icon navigation on narrow windows.
 - Saves and restores the user-adjusted launcher window size.
+- Named built-in and user launch profiles with validated import/export.
+- Full launcher animations are always enabled. XInput controller navigation
+  activates automatically whenever a compatible controller is connected.
 
 ## Blade of Agony integration
 
@@ -31,7 +35,15 @@ supported Windows systems.
   `MAPINFO` and `language.csv` inside `boa.ipk3`.
 - Also reads unpacked files when the launcher is run from the current
   `wolfendoom.git` development tree.
-- Supports a normal main-menu launch or a direct episode/map/skill start.
+- Reads `.zds` `info.json` metadata and save previews for one-click campaign
+  continuation through UZDoom's `-loadgame` option.
+- Binds newly written saves to engine, game, add-on, and load-order hashes;
+  mismatched content is blocked before Continue.
+- Supports a normal main-menu launch or an advanced direct mission start.
+- Clearly identifies Mission Select as an advanced path that can bypass
+  campaign state, inventory, and briefings.
+- Detects an interrupted previous run and offers Safe Mode with an isolated
+  configuration, no add-ons, no displacement pack, and windowed rendering.
 - Shows the selected mission, difficulty, and game language in the footer
   for direct campaign starts.
 - Sorts missions by chapter, mission number, and map part while keeping
@@ -57,7 +69,10 @@ supported Windows systems.
   `conflicts`, `loadAfter`, `multiplayerSafe`, `newCampaignRequired`, and
   `category`.
 - Detects missing payloads, declared dependencies/conflicts, minimum engine
-  versions, ordering mistakes, invalid archives, and overlapping PK3 paths.
+  and BoA versions, ordering mistakes, invalid archives, and overlapping PK3
+  paths.
+- Enforces `newCampaignRequired` before launch and records the selected
+  add-on fingerprints beside newly created saves.
 
 ## Multiplayer
 
@@ -65,13 +80,29 @@ supported Windows systems.
 - Host setup supports 2-4 players, episode/map selection, all five BoA
   difficulties, UDP port, and `sv_cheats`.
 - Join setup supports host name or IPv4 address and port.
-- Multiplayer validates only `boa.exe` as UZDoom 4.14.3 or 5.x and
+- Multiplayer validates only `uzdoom.exe` as UZDoom 4.14.3 or 5.x and
   `boa.ipk3`.
 - All selected add-ons and `boa_dt.pk3` are excluded from multiplayer
   commands. The single-player add-on selection is retained for later use.
 - UZDoom 4.14.3 receives its legacy language aliases (`enu`, `eng`, and
   `pt`); UZDoom 5.x receives IETF BCP 47 language tags and the explicit
   `-coop` option when hosting.
+- Probes UZDoom 5 with `-help-all` once per executable hash and caches support
+  for `-loadgame`, `-episode`, `-coop`, `-password`, `-optfile`, and
+  `-config`, with version-based fallback for engines that cannot be probed.
+- Imports and exports privacy-safe `.boa-session` files containing exact
+  engine and `boa.ipk3` hashes, map, skill, port, and player settings. Lobby
+  passwords are never written to disk.
+
+## Support and recovery
+
+- Creates a redacted ZIP support package containing versions, SHA-256 file
+  identities, engine capabilities, command line, add-on order, compatibility
+  findings, last-run data, and the latest available engine log.
+- Removes passwords, host/IP information, usernames, and local game paths
+  from exported diagnostics.
+- Keeps runtime data in `launcher-data/` and user profiles in
+  `launcher-profiles/` next to the portable launcher.
 
 ## Build
 
@@ -96,13 +127,16 @@ dist/licenses/UnicaOne-OFL.txt
 Place `Blade of Agony - Launcher.exe` in the same directory as:
 
 ```text
-boa.exe
+uzdoom.exe
 boa.ipk3
 boa_dt.pk3
 launcher-resource/
 addons/
 language/
 ```
+
+The engine must retain its official `uzdoom.exe` filename. The legacy
+`boa.exe` filename is no longer detected or launched.
 
 The launcher reads the final `MAPINFO` directly from `boa.ipk3`; no extracted
 copy is required.
@@ -111,6 +145,7 @@ copy is required.
 
 ```powershell
 .\Test-Core.ps1
+.\Test-V25.ps1
 .\Test-ModernGui.ps1
 ```
 
@@ -121,6 +156,11 @@ and graphics profiles. The GUI suite checks the accessibility tree, compact
 layout, Quick Launch controls, navigation, language and player choices,
 window-size persistence, add-on selection, and the wrapping 16:9 preview
 carousel.
+The v2.5 suite additionally checks save parsing, compatibility binding,
+profiles, capability detection, session parity and password privacy, Safe
+Mode isolation, automatic controller navigation, full animation defaults,
+support-package redaction, strict `uzdoom.exe` selection, and v2.5
+localization.
 
 ## Third-party assets
 
@@ -138,6 +178,14 @@ Useful commands:
 --scan-addons
 --check-addons
 --check-multiplayer
+--print-capabilities
+--scan-saves
+--check-save FILE
+--save-profile NAME
+--list-profiles
+--validate-session FILE
+--create-session FILE
+--create-diagnostics ZIP
 --base-directory DIR
 --detail last|default|verylow|low|normal|high|veryhigh
 --displacement on|off
@@ -152,6 +200,9 @@ Useful commands:
 --port 1..65535
 --skill 1..5
 --cheats on|off
+--password VALUE
+--continue FILE
+--safe-mode
 --no-addons
 --multi-addon FILE
 ```

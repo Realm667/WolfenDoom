@@ -1,5 +1,88 @@
 # Changelog
 
+## 2.5.2
+
+### Changed
+
+- The launcher now starts the adjacent, canonically named `uzdoom.exe`.
+- Engine version detection, capability probing, multiplayer validation,
+  savegame bindings, session parity, and support diagnostics now consistently
+  fingerprint `uzdoom.exe`.
+- Removed all runtime fallback behavior for the legacy `boa.exe` name so a
+  missing `uzdoom.exe` is reported instead of silently launching another file.
+- Launcher version increased to 2.5.2.
+
+### Verified
+
+- Added regression coverage proving that `boa.exe` alone is rejected.
+- Re-ran command generation, compatibility, savegame, diagnostics, and modern
+  WPF interface tests against the new executable name.
+
+## 2.5.1
+
+### Changed
+
+- Full launcher animations are now always enabled; the Motion Effects option
+  has been removed.
+- XInput controller navigation is now automatically available whenever a
+  compatible controller is connected; its manual option has been removed.
+- Savegame comments with a separate time line now display as
+  `Map title - Time` in Continue Campaign and the footer.
+- Launcher version increased to 2.5.1.
+
+### Verified
+
+- Updated core and UI regression coverage for the removed options, automatic
+  controller behavior, full animations, and the save-title separator.
+
+## 2.5.0
+
+### Added
+
+- Added Continue Campaign as the primary action when a readable `.zds`
+  savegame exists, including map, timestamp, title, and embedded preview.
+- Added per-save compatibility bindings for the UZDoom executable,
+  `boa.ipk3`, selected add-ons, and deterministic add-on load order.
+- Added named built-in and user launch profiles with validated import,
+  export, save, apply, and delete workflows.
+- Added cached UZDoom `-help-all` capability probing for `-loadgame`,
+  `-episode`, `-coop`, `-password`, `-optfile`, and `-config`.
+- Added privacy-safe `.boa-session` import/export with SHA-256 engine and
+  game parity checks. Password-required state is exported, but passwords are
+  never stored.
+- Added interrupted-run detection and an isolated Safe Mode that excludes
+  add-ons and `boa_dt.pk3`, uses a separate config, and forces windowed mode.
+- Added optional XInput controller navigation and Windows-aware reduced-motion
+  behavior.
+- Added redacted ZIP support packages containing versions, hashes, detected
+  capabilities, add-on state, compatibility findings, command line, last-run
+  data, and the latest available engine log.
+
+### Changed
+
+- Continue Campaign replaces Play as the default primary action while a
+  savegame is available; New Campaign remains directly accessible.
+- Mission Select is now explicitly marked as an advanced function and warns
+  that direct map starts can bypass campaign state, inventory, and briefings.
+- Add-on compatibility now checks minimum Blade of Agony versions in addition
+  to engine versions, dependencies, conflicts, ordering, and archive overlap.
+- Launcher version increased to 2.5.0.
+
+### Add-on metadata
+
+- Completed structured metadata for all 15 official add-ons in the
+  WolfenDoom repository, including stable IDs, semantic versions, minimum
+  versions, conflicts, categories, multiplayer safety, and campaign flags.
+- Added a descriptor/preview validator and GitHub Actions workflow.
+
+### Verified
+
+- Added a dedicated v2.5 suite covering save parsing, Continue commands,
+  compatibility binding, profiles, engine capabilities, session privacy and
+  parity, Safe Mode, support-package redaction, localization, and versioning.
+- Re-ran the complete pre-v2.5 command, localization, MAPINFO, add-on,
+  multiplayer, graphics-profile, and resource regression suite.
+
 ## 2.2.1
 
 ### Changed
