@@ -1,39 +1,4 @@
-// All this just so I could add to the list of equipment wipe in Astrostein, Part 2. I wish there's a cleaner way.
-// Update: I found a cleaner way.
-
-defaultmap
+gameinfo
 {
-	lightmode = 3
-	next = INTERMAP
-	Sky1 = "F_SKY1"
-	MapBackground = "MAP_BG"
-	nointermission
-	UnFreezeSinglePlayerConversations
-	ForceFallingDamage
-	MonsterFallingDamage
-	EnterPic = "CONBACK"
-	ExitPic = "CONBACK"
-
-	// Color Grading
-	EventHandlers = "ColorGradeEventHandler"
-
-	// Force breaking compatibility options off
-	compat_maskedmidtex = 0
-	compat_trace = 0
-
-	// Force SSAO being disabled in skyboxes
-	disableskyboxao
-
-	// Reduce the amount of data (and thus time) it takes to save your game
-	ForgetState
-}
-
-
-map C2M0_B lookup "C2M0"	//Tormentor667
-{
-	levelnum = 311
-	music = "C2M0BMUS"
-	cluster = 1
-	par = 2316
-	EventHandlers = "ConfisWeapsAstroWipe"
+	AddEventHandlers = "ConfisWeapsAstroWipe"
 }
