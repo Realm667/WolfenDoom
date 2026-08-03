@@ -1946,6 +1946,12 @@ class ActiveEffectWidget : Widget
 		Super.DoTick(index);
 	}
 
+	bool IsBlockedPoisonDamage(Name damageType)
+	{
+		return player.mo.FindInventory("PowerZyklonMask") &&
+			(damageType == "MutantPoisonAmbience" || damageType == "UndeadPoisonAmbience");
+	}
+
 	override Vector2 Draw()
 	{
 		Inventory item;
@@ -1975,11 +1981,17 @@ class ActiveEffectWidget : Widget
 			else if (player.damagecount && mod == "None") { mod = GetTextureMod(TexMan.GetName(player.mo.floorpic), mod); }
 		}
 
-		if ((mod != "None" || player.LastDamageType) && player.damagecount) { count++; }
-		else if (player.poisoncount) { count++; }
+		Name directDamageType = mod != "None" ? mod : player.LastDamageType;
+		bool drawDirectDamage = directDamageType && player.damagecount && !IsBlockedPoisonDamage(directDamageType);
+		bool drawPoison = player.poisoncount && !IsBlockedPoisonDamage(player.poisonpaintype);
+		bool drawHazard = player.hazardcount && !IsBlockedPoisonDamage(player.hazardtype);
+		bool drawReceivedPoison = player.mo.poisondurationreceived && !IsBlockedPoisonDamage(player.mo.poisondamagetypereceived);
 
-		if (player.hazardcount) { count++; }
-		if (player.mo.poisondurationreceived) { count++; }
+		if (drawDirectDamage) { count++; }
+		else if (drawPoison) { count++; }
+
+		if (drawHazard) { count++; }
+		if (drawReceivedPoison) { count++; }
 
 		if (count) { size = (count * (iconsize + 2), iconsize + 1); }
 		Super.Draw();
@@ -2002,25 +2014,24 @@ class ActiveEffectWidget : Widget
 			}
 		}
 
-		if ((mod != "None" || player.LastDamageType) && player.damagecount)
+		if (drawDirectDamage)
 		{
-			if (mod == "None") { mod = player.LastDamageType; }
-			DrawEffectIcon(GetDamageIcon(mod), 1, 1, (drawposx, drawposy), GetDamageColor(mod));
+			DrawEffectIcon(GetDamageIcon(directDamageType), 1, 1, (drawposx, drawposy), GetDamageColor(directDamageType));
 			drawposx += spacing;
 		}
-		else if (player.poisoncount)
+		else if (drawPoison)
 		{
 			DrawEffectIcon(GetDamageIcon(player.poisonpaintype), player.poisoncount, 100, (drawposx, drawposy), GetDamageColor(player.poisonpaintype));
 			drawposx += spacing;
 		}
 
-		if (player.hazardcount)
+		if (drawHazard)
 		{
 			DrawEffectIcon(GetDamageIcon(player.hazardtype), min(1, player.hazardcount), 1, (drawposx, drawposy), GetDamageColor(player.hazardtype));
 			drawposx += spacing;
 		}
 
-		if (player.mo.poisondurationreceived)
+		if (drawReceivedPoison)
 		{
 			DrawEffectIcon(GetDamageIcon(player.mo.poisondamagetypereceived), player.mo.poisondurationreceived, int(player.mo.poisonperiodreceived ? 60.0 / player.mo.poisonperiodreceived : 60.0), (drawposx, drawposy), GetDamageColor(player.mo.poisondamagetypereceived));
 			drawposx += spacing;

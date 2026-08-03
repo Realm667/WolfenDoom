@@ -58,7 +58,6 @@ class NaziMedic : NaziStandard
 		Speed 4;
 		+ALLOWPAIN
 		+AVOIDMELEE
-		+NODAMAGE
 		+NEVERTARGET
 		Base.NoMedicHeal;
 		Nazi.CanSurrender True;
@@ -118,8 +117,7 @@ class NaziMedic : NaziStandard
 					)
 					{
 						// Randomly surrender if the player was the frightener
-						surrendered = true;
-						SetStateLabel("Death");
+						SetStateLabel("Surrender");
 					}
 				}
 			}
@@ -146,14 +144,10 @@ class NaziMedic : NaziStandard
 				return ResolveState("See");
 			}
 			Goto See;
-		Death:
+		Surrender:
 			"####" A 0 A_NoBlocking(true); // No weapon to drop, just the medical kit
 			"####" XYZ 6;
-			"####" A 0 {
-				DoSurrender(target);
-				bShootable = false;
-				bIsMonster = false; // Keep these from being re-killed by the massacre/kill monsters cheat
-			}
+			"####" A 0 DoSurrender(target);
 		Death.Surrender:
 			"####" F 1 A_SetTics(Random[Medic](35, 70));
 			"####" BA 6;
@@ -178,6 +172,14 @@ class NaziMedic : NaziStandard
 			"####" Z 16;
 			"####" Y 8;
 			"####" A 0 { return ResolveState("Death.StandingSurrender.MainLoop"); }
+		Death:
+			"####" Q 5;
+			"####" R 5 A_Scream();
+			"####" S 5;
+			"####" T 5 A_NoBlocking(true);
+			"####" UV 5;
+			"####" W -1;
+			Stop;
 		SurrenderSprite:
 			NMDS A 0;
 		Alarm:
@@ -219,24 +221,4 @@ class NaziMedic : NaziStandard
 		Super.Tick();
 	}
 
-	override int DamageMobj(Actor inflictor, Actor source, int damage, Name mod, int flags, double angle)
-	{
-		if (source && source is "MovingTrailBeam") { source = source.master; } // Attribute damage to the owner of any lightning beam
-
-		if (bNoDamage && source && source.player || source is "PlayerFollower")
-		{
-			if (!surrendered)
-			{
-				target = source;
-				surrendered = true;
-				SetStateLabel("Death");
-			}
-
-			return 0;
-		}
-		else
-		{
-			return Super.DamageMobj(inflictor, source, damage, mod, flags, angle);
-		}
-	}
 }

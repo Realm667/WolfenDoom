@@ -21,7 +21,6 @@ class FireSpawner : HeatEffectGiver
 		//$Arg2Enum { 0 = "Yes"; 1 = "No"; }
 		Height 40;
 		Radius 30;
-		+CLIENTSIDEONLY
 		+DONTSPLASH
 		+NOCLIP
 		+NOGRAVITY
@@ -86,6 +85,28 @@ class FireSpawner : HeatEffectGiver
 		if (spawntype == 1 || spawntype == 3) { Spawn("Flame_" .. suffix, pos); }
 		if (spawntype == 3) { Spawn("Ember_" .. suffix, pos); }
 		if (spawntype == 2 && !args[2]) { Spawn("Smoke_" .. suffix, pos); }
+	}
+
+	override void Tick()
+	{
+		// The shader volume is deliberately wider than the visible flame. Only damage actors
+		// inside the flame core, and do so slowly to avoid turning scenery fires into traps.
+		if (!bDormant && level.time % 18 == 0)
+		{
+			double damageRadius = Default.Radius * scale.x;
+			double damageTop = pos.z + Default.Height * scale.y;
+
+			for (int i = Activators.Size() - 1; i >= 0; i--)
+			{
+				Actor mo = Activators[i];
+				if (!mo || mo.health <= 0) { continue; }
+				if (Distance2D(mo) > damageRadius || mo.pos.z + mo.height <= pos.z || mo.pos.z >= damageTop) { continue; }
+
+				mo.DamageMobj(self, self, 1, "Fire");
+			}
+		}
+
+		Super.Tick();
 	}
 
 	override void Deactivate(Actor activator)

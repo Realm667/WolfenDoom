@@ -1393,6 +1393,14 @@ class BoAPlayer : PlayerPawn
 
 		console.printf("Inflictor: %s\nSource: %s\nMod: %s", i, s, mod);
 		*/
+		// Falling into C3M5_C's exterior kill sector after collecting a parachute is a failed
+		// extraction, not a normal player death.
+		if (level.mapname ~== "C3M5_C" && mod == "Falling" && ACS_NamedExecuteWithResult("HasParachute"))
+		{
+			ACS_NamedExecute("ParachuteFallFailure", 0);
+			return 0;
+		}
+
 		Inventory saveme;
 
 		if (player && player.mo && G_SkillPropertyInt(SKILLP_ACSReturn) < 3) { saveme = player.mo.FindInventory("SavingHealth", true); }

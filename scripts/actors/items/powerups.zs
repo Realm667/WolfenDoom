@@ -1323,6 +1323,14 @@ class RepairKit : CompassItem
 			Stop;
 	}
 
+	override String PickupMessage()
+	{
+		// C2M6_B supplies Dirty Douglas's contextual line instead of the generic pickup text.
+		if (level.mapname ~== "C2M6_B") { return ""; }
+
+		return Super.PickupMessage();
+	}
+
 	override bool Use(bool pickup)
 	{
 		// Only activate for tank players that aren't at full health and who aren't already using a repair kit

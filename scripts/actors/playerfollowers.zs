@@ -848,6 +848,15 @@ class PlayerFollower : Actor // Default version - for actors like prisoner with 
 	{
 		if (health <= 0) { Super.Tick(); return; }
 
+		// Mirror the followed player's keys so AI companions can traverse the same locked doors.
+		if (playerToChase && level.time % 5 == 0)
+		{
+			for (Inventory item = playerToChase.Inv; item != null; item = item.Inv)
+			{
+				if (item is "Key" && !FindInventory(item.GetClass())) { GiveInventoryType(item.GetClass()); }
+			}
+		}
+
 		if (scouttime > 0) { scouttime--; }
 
 		if ((level.time + offset) % 5 == 0) { A_LookForGrenades(); }

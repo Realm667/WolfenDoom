@@ -225,6 +225,7 @@ class MapStatsHandler : StaticEventHandler
 				mapname = mapname.MakeUpper();
 
 				if (mapname.Mid(0, 1) != "C" || mapname.Mid(2, 1) != "M") { continue; }
+				if (mapname ~== "C3M0_B") { continue; } // Raubgold is a retrospective diary map, not a BJ mission.
 
 				int mapnum = mapname.ByteAt(3) - 48;
 				int chapnum = mapname.ByteAt(1) - 48;
