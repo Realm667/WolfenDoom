@@ -11,6 +11,19 @@ repository and keeps add-on development next to the main game.
 - `add-on_builder.cmd` builds every source directory.
 - `7za.exe` is the command-line archiver used by the builder.
 
+## Descriptor metadata
+
+Every `source/<addon>/addoninfo.txt` declares a stable `id`, semantic
+`version`, minimum BoA and engine versions, dependencies, conflicts, load
+ordering, multiplayer safety, campaign requirements, and a category. Keep
+these values current whenever an add-on changes behavior or compatibility.
+
+Validate all descriptors and numbered preview images before building:
+
+```powershell
+./validate_metadata.ps1
+```
+
 ## Build
 
 Run `add-on_builder.cmd` from this directory. Generated descriptor and payload
