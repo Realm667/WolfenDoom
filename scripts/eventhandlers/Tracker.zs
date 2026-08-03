@@ -984,13 +984,21 @@ class AchievementTracker : StaticEventHandler
 		PersistentAchievementTracker ptracker = PersistentAchievementTracker(EventHandler.Find("PersistentAchievementTracker"));
 		if (!ptracker) { return; }
 
+		keycount = ptracker.keycount;
+
 		for (int i = 0; i < MAXPLAYERS; i++)
 		{
 			pistolshots[i] = ptracker.pistolshots[i];
 			knifekills[i] = ptracker.knifekills[i];
+			damaged[i] = ptracker.damaged[i];
+			reloads[i] = ptracker.reloads[i];
+			manualreloads[i] = ptracker.manualreloads[i];
 			surrenders[i] = ptracker.surrenders[i];
+			grenades[i] = ptracker.grenades[i];
 			totalgrenades[i] = ptracker.totalgrenades[i];
 			exhaustion[i] = ptracker.exhaustion[i];
+			lastminedeath[i] = ptracker.lastminedeath[i];
+			minedeaths[i] = ptracker.minedeaths[i];
 			zombies[i] = ptracker.zombies[i];
 			fieldkits[i] = ptracker.fieldkits[i];
 			chests[i] = ptracker.chests[i];
@@ -1003,6 +1011,11 @@ class AchievementTracker : StaticEventHandler
 			{
 				weapons[i][w] = ptracker.weapons[i][w];
 			}
+
+			for (int s = 0; s < 2; s++)
+			{
+				shots[i][s] = ptracker.shots[i][s];
+			}
 		}
 	}
 
@@ -1011,13 +1024,21 @@ class AchievementTracker : StaticEventHandler
 		PersistentAchievementTracker ptracker = PersistentAchievementTracker(EventHandler.Find("PersistentAchievementTracker"));
 		if (!ptracker) { return; }
 
+		ptracker.keycount = keycount;
+
 		for (int i = 0; i < MAXPLAYERS; i++)
 		{
 			ptracker.pistolshots[i] = pistolshots[i];
 			ptracker.knifekills[i] = knifekills[i];
+			ptracker.damaged[i] = damaged[i];
+			ptracker.reloads[i] = reloads[i];
+			ptracker.manualreloads[i] = manualreloads[i];
 			ptracker.surrenders[i] = surrenders[i];
+			ptracker.grenades[i] = grenades[i];
 			ptracker.totalgrenades[i] = totalgrenades[i];
 			ptracker.exhaustion[i] = exhaustion[i];
+			ptracker.lastminedeath[i] = lastminedeath[i];
+			ptracker.minedeaths[i] = minedeaths[i];
 			ptracker.zombies[i] = zombies[i];
 			ptracker.fieldkits[i] = fieldkits[i];
 			ptracker.chests[i] = chests[i];
@@ -1029,6 +1050,11 @@ class AchievementTracker : StaticEventHandler
 			for (int w = 0; w < 16; w++)
 			{
 				ptracker.weapons[i][w] = weapons[i][w];
+			}
+
+			for (int s = 0; s < 2; s++)
+			{
+				ptracker.shots[i][s] = shots[i][s];
 			}
 		}
 	}
@@ -1045,9 +1071,16 @@ class PersistentAchievementTracker : EventHandler
 {
 	int pistolshots[MAXPLAYERS];
 	int knifekills[MAXPLAYERS];
+	int damaged[MAXPLAYERS];
+	int reloads[MAXPLAYERS];
+	int manualreloads[MAXPLAYERS];
 	int surrenders[MAXPLAYERS];
+	int grenades[MAXPLAYERS];
 	int totalgrenades[MAXPLAYERS];
 	int exhaustion[MAXPLAYERS];
+	int lastminedeath[MAXPLAYERS];
+	int minedeaths[MAXPLAYERS];
+	int shots[MAXPLAYERS][2];
 	int zombies[MAXPLAYERS];
 	bool weapons[MAXPLAYERS][16];
 	int fieldkits[MAXPLAYERS];
@@ -1055,5 +1088,6 @@ class PersistentAchievementTracker : EventHandler
 	int deadwounded[MAXPLAYERS];
 	int gibs[MAXPLAYERS];
 	int coins[MAXPLAYERS];
+	int keycount;
 	int shovelkills[MAXPLAYERS];
 }

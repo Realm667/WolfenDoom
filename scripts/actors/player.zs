@@ -1351,7 +1351,16 @@ class BoAPlayer : PlayerPawn
 		{
 			if (mod == "Drowning") { tracker.SetBit(tracker.records[tracker.STAT_LIQUIDDEATH].value, 0); }
 			else if (mod == "Lava") { tracker.SetBit(tracker.records[tracker.STAT_LIQUIDDEATH].value, 1); }
-			else if (mod == "MutantPoisonAmbience") { tracker.SetBit(tracker.records[tracker.STAT_LIQUIDDEATH].value, 2); }
+			else if (
+				mod == "MutantPoisonAmbience" &&
+				(
+					GetTextureMod(TexMan.GetName(floorpic)) == "MutantPoisonAmbience" ||
+					(underwater && GetTextureMod(TexMan.GetName(cursec.GetTexture(Sector.ceiling))) == "MutantPoisonAmbience")
+				)
+			)
+			{
+				tracker.SetBit(tracker.records[tracker.STAT_LIQUIDDEATH].value, 2);
+			}
 
 			AchievementTracker.CheckAchievement(PlayerNumber(), AchievementTracker.ACH_LIQUIDDEATH);
 		}

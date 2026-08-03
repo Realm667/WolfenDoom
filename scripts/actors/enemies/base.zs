@@ -2526,7 +2526,7 @@ class Nazi : Base
 			if (bBoss && inflictor is "KickPuff") { AchievementTracker.CheckAchievement(source.PlayerNumber(), AchievementTracker.ACH_DISGRACE); }
 
 			// Achievement for killing enemies with the shovel
-			if (inflictor is "ShovelPuff" && Default.species == "Nazi" && !(self is "MutantStandard")) { AchievementTracker.CheckAchievement(source.PlayerNumber(), AchievementTracker.ACH_SHOVEL); }
+			if (inflictor && inflictor.GetClass() == "ShovelPuff" && Default.species == "Nazi" && !(self is "MutantStandard")) { AchievementTracker.CheckAchievement(source.PlayerNumber(), AchievementTracker.ACH_SHOVEL); }
 
 			// Achievement for sniping over long range
 			if (inflictor && inflictor is "Kar98KTracer2" && Distance3D(source) >= 6000) { AchievementTracker.CheckAchievement(source.PlayerNumber(), AchievementTracker.ACH_CLEARSHOT); }
@@ -2561,7 +2561,7 @@ class Nazi : Base
 
 		String currentDamage = (inflictor && inflictor.paintype) ? inflictor.paintype : mod; // Get the damage type
 
-		if (currentDamage ~== "SilentKnifeAttack" && !bBoss) // If the attack was with the knife (and this is not a boss actor - they can't be one-hit killed!)
+		if (currentDamage ~== "SilentKnifeAttack" && !bBoss && !bInvulnerable && !bNoDamage) // Bosses and damage-immune actors can't be one-hit killed
 		{
 			if (bFriendly)
 			{

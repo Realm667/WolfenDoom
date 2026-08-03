@@ -7,7 +7,11 @@ class ConfisWeapsAstroWipe : EventHandler
 	{
 			override void PlayerEntered (PlayerEvent e)
 			{
+				if (level.mapname != "C2M0_B") { return; }
+
 				let pPawn = players [e.PlayerNumber].mo;
+				if (!pPawn) { return; }
+
 				pPawn.A_TakeInventory ("Kabar", 0x7FFFFFFF);
 				pPawn.A_TakeInventory ("BrassKnucks", 0x7FFFFFFF);
 				pPawn.A_TakeInventory ("ThrowingKnife", 0x7FFFFFFF);

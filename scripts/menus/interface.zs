@@ -639,10 +639,11 @@ class ViewItem : BoAMenu
 				else { break; }
 			}		
 
-			double pages = count / maxlines;
+			double pages = double(count) / maxlines;
 
-			maxpages = int(pages);  // maxpages is an integer, but make sure to always round up if there was even a small amount of overflow
+			maxpages = int(pages);  // Round up to get the number of pages
 			if (maxpages < pages) { maxpages++; }
+			maxpages = max(0, maxpages - 1); // maxpages is the zero-based index of the final page
 		}
 
 		// Hint message
