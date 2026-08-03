@@ -96,6 +96,12 @@ class TeslaCannon : NaziAstroWeapon
 			A_ReFire();
 		}
 		Goto Ready;
+	Dryfire:
+		"####" "#" 1 A_JumpIf(CVar.FindCVar("boa_autoreload").GetInt() == 1,"Reload");
+		"####" "#" 1 Offset(0,35) A_StartSound("tesla/kill", CHAN_WEAPON);
+		"####" "#" 9 Offset(0,34);
+		"####" "#" 0 A_Jump(256,"Ready");
+		Stop;
 	Suicide:
 		PULS E 0 A_SetBlend("Purple",0.25,5);
 		PULS E 1 A_StartSound("tesla/kill", CHAN_WEAPON, CHANF_LOOPING, 1.0);

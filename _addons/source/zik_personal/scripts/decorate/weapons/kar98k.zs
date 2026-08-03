@@ -87,7 +87,6 @@ class Kar98k : NaziWeapon
 		Goto Dryfire;
 		KAR9 A 0 A_AlertMonsters;
 		KAR9 A 0 A_StartSound("mauser/fire", CHAN_WEAPON);
-		KAR9 A 0 A_SpawnItemEx("MauserRifleCasing",12,-20,32,8,random(-2,2),random(0,4),random(-55,-80),SXF_NOCHECKPOSITION);
 		KAR9 A 0 A_JumpIfInventory("SniperZoom", 1, "ScopedFire");
 		KAR9 A 0 A_GunFlash;
 		KAR9 A 2 A_FireProjectile("Kar98kTracer");
@@ -98,6 +97,7 @@ class Kar98k : NaziWeapon
 		KAR9 B 1 Offset(0,32)A_SetPitch(pitch+(1.0*boa_recoilamount));
 		KAR9 A 0 A_StartSound("mauser/cock", CHAN_5);
 		KAR9 C 3 A_SetPitch(pitch+(1.0*boa_recoilamount));
+		KAR9 A 0 A_SpawnItemEx("MauserRifleCasing",12,-20,32,8,random(-2,2),random(0,4),random(-55,-80),SXF_NOCHECKPOSITION);
 		KAR9 D 1 A_SetPitch(pitch+(0.5*boa_recoilamount));
 		KAR9 E 3;
 		KAR9 F 5;

@@ -72,6 +72,12 @@ class AstroShotgun : NaziAstroWeapon
 		ASSG B 17;
 		ASSG B 0 A_ReFire;
 		Goto Ready;
+	Dryfire:
+		"####" "#" 1 A_JumpIf(CVar.FindCVar("boa_autoreload").GetInt() == 1,"Reload");
+		"####" "#" 1 Offset(0,35) A_StartSound("tesla/kill", CHAN_WEAPON);
+		"####" "#" 9 Offset(0,34);
+		"####" "#" 0 A_Jump(256,"Ready");
+		Stop;
 	AltFire:
 		ASSG B 0 A_JumpIfInventory("AstroShotgunLoaded",1,1);
 		Goto Dryfire;
@@ -229,6 +235,12 @@ class AstroRocketlauncher : NaziAstroWeapon
 		ASRL C 21;
 		ASRL C 0 A_ReFire;
 		Goto Ready;
+	Dryfire:
+		"####" "#" 1 A_JumpIf(CVar.FindCVar("boa_autoreload").GetInt() == 1,"Reload");
+		"####" "#" 1 Offset(0,35) A_StartSound("tesla/kill", CHAN_WEAPON);
+		"####" "#" 9 Offset(0,34);
+		"####" "#" 0 A_Jump(256,"Ready");
+		Stop;
 	AltFire:
 		ASRL B 0 A_JumpIfInventory("AstroRocketLauncherLoaded",1,1);
 		Goto Dryfire;
@@ -391,6 +403,12 @@ class AstroChaingun : NaziAstroWeapon
 		ASCG E 4 A_FireProjectile("AstroTracerPlayer",frandom(-1.0,1.0),0,0,0,0,frandom(-1.0,1.0));
 		ASCG D 0 A_ReFire;
 		Goto Ready;
+	Dryfire:
+		"####" "#" 1 A_JumpIf(CVar.FindCVar("boa_autoreload").GetInt() == 1,"Reload");
+		"####" "#" 1 Offset(0,35) A_StartSound("tesla/kill", CHAN_WEAPON);
+		"####" "#" 9 Offset(0,34);
+		"####" "#" 0 A_Jump(256,"Ready");
+		Stop;
 	AltFire:
 		ASCG B 0 A_JumpIfInventory("AstroChaingunLoaded",1,1);
 		Goto Dryfire;
@@ -637,6 +655,12 @@ class AstroLuger : NaziAstroWeapon //quite the same code from Luger P08 - ozy81
 		PLPI C 1 Offset(0,31) A_WeaponReady(WRF_NOBOB);
 		PLPI A 1 Offset(0,32) A_WeaponReady(WRF_NOBOB);
 		Goto Ready;
+	Dryfire:
+		"####" "#" 1 A_JumpIf(CVar.FindCVar("boa_autoreload").GetInt() == 1,"Reload");
+		"####" "#" 1 Offset(0,35) A_StartSound("tesla/kill", CHAN_WEAPON);
+		"####" "#" 9 Offset(0,34);
+		"####" "#" 0 A_Jump(256,"Ready");
+		Stop;
 	Reload:
 		PLPI A 1 Offset(0,35) A_StartSound("weapons/engload4", CHAN_5);
 		PLPI A 1 Offset(0,38);

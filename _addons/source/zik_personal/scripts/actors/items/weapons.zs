@@ -65,7 +65,35 @@ class NaziWeapon : Weapon
 			BJKK A 1 Offset(40, 24);
 			BJKK A 1 Offset(24, 7);
 			BJKK A 1 Offset(6, 2) A_StartSound("knife/swing",CHAN_WEAPON);
-			BJKK B 2 Offset(4, 0) A_CustomPunch(int(8 * invoker.modifier), TRUE, CPF_NOTURN, "KickPuff", invoker.modifier ? 80 : 70); //CPF_NOTURN is added in order to avoid 3d actors to turn towards us like if they are autoaimed - I want to destroy a tank with kicks!
+			BJKK B 2 Offset(4, 0) {
+				A_CustomPunch(int(8 * invoker.modifier), TRUE, CPF_NOTURN, "KickPuff", invoker.modifier ? 80 : 70); //CPF_NOTURN is added in order to avoid 3d actors to turn towards us like if they are autoaimed - I want to destroy a tank with kicks!
+
+				if (invoker.owner && invoker.owner.player)
+				{
+					PlayerPawn p = PlayerPawn(invoker.owner);
+					if (!p) { return; }
+
+					BoAFindHitPointTracer kicktracer;
+					kicktracer = new("BoAFindHitPointTracer");
+
+					kicktracer.skipactor = p;
+					Vector3 tracedir = ZScriptTools.GetTraceDirection(p.angle, p.pitch);
+					kicktracer.Trace(pos + (0, 0, p.viewheight), p.CurSector, tracedir, p.UseRange, 0);
+
+					Line AimLine = kicktracer.Results.HitLine;
+
+					if (AimLine && AimLine.activation & SPAC_Use)
+					{
+						if (AimLine.special == 7) // PolyObj_DoorSwing
+						{
+							AimLine.args[1] = 64 * AimLine.args[1] / abs(AimLine.args[1]); // Make it move fast
+							AimLine.args[3] = -1; // Make it stay open forever
+						}
+
+						AimLine.Activate(invoker.owner, 0, SPAC_Use); // Use the line...
+					}
+				}
+			}
 			BJKK A 1 Offset(6, 2) { bDontBlast = true; }
 			BJKK A 1 Offset(24, 7) { bDontBlast = false; } //KickPuff blast happens 3 tics after spawning
 			BJKK A 1 Offset(36, 20);
@@ -163,24 +191,6 @@ class NaziWeapon : Weapon
 				}
 
 				oldbuttons = owner.player.cmd.buttons;
-
-				// If you're using the knife and there's a chance of a stealth kill, hide 
-				// the crosshair so that the status bar code can draw the overlay knife icon.
-				if (self is "KnifeSilent")
-				{
-					BoAPlayer p = BoAPlayer(owner);
-
-					if (
-						p && 
-						Nazi(p.crosshairtarget) && 
-						!Nazi(p.crosshairtarget).user_incombat &&
-						!(p.crosshairtarget is "WGuard_Wounded") && //this gave away wounded guards
-						p.Distance2D(p.crosshairtarget) < p.crosshairtarget.radius + 64.0
-					)
-					{
-						crosshair = 99;
-					}
-				}
 			}
 		}
 
@@ -189,6 +199,8 @@ class NaziWeapon : Weapon
 
 	override bool TryPickup (in out Actor toucher)
 	{
+		if (special) { bAlwaysPickup = true; }
+
 		bool ret = Super.TryPickup(toucher);
 
 		if (ret && toucher && toucher.player)
@@ -420,7 +432,7 @@ class TankCannonWeapon : NaziWeapon // Weapon used when morphed into a tank.
 				}
 				else if (cannontimeout == 105)
 				{
-					owner.A_StartSound("tank/shellcasing", CHAN_6, 0, 12.0, ATTN_NORM, FRandom(0.7, 1.0));
+					owner.A_StartSound("tank/shellcasing", CHAN_6, 0, 12.0, ATTN_NORM, FRandom[Weapon](0.7, 1.0));
 				}
 				else if (cannontimeout == 35)
 				{
@@ -459,7 +471,7 @@ class TankCannonWeapon : NaziWeapon // Weapon used when morphed into a tank.
 			mo.SetOrigin(origin.pos, false); // Move the missile so that it flies from the model's gun
 		}
 
-		invoker.prevtimeout = random(int(reloadtime * 0.9), int(reloadtime * 1.1));
+		invoker.prevtimeout = Random[Weapon](int(reloadtime * 0.9), int(reloadtime * 1.1));
 		invoker.cannontimeout = invoker.prevtimeout;
 	}
 
@@ -477,14 +489,14 @@ class TankCannonWeapon : NaziWeapon // Weapon used when morphed into a tank.
 		double angledelta = deltaangle(angle, maingun.angle);
 		double pitchdelta = deltaangle(pitch, maingun.pitch);
 
-		A_StartSound(sound, CHAN_WEAPON, 0, FRandom(0.6, 0.8));
+		A_StartSound(sound, CHAN_WEAPON, 0, FRandom[Weapon](0.6, 0.8));
 		Actor muzzleflash = Spawn("KTFlare", origin.Pos, ALLOW_REPLACE);
 		if (muzzleflash)
 		{
 			muzzleflash.master = origin;
 		}
 		A_FireProjectile("TurrSmokeSpawner", origin.Pos.Z - Pos.Z);
-		Actor mo = A_FireProjectile(missiletype, angledelta + Random(-2, 2), False, origin.pos.x - pos.x, origin.pos.z - pos.z, 0, pitchdelta + Random(-2, 2));
+		Actor mo = A_FireProjectile(missiletype, angledelta + Random[Weapon](-2, 2), False, origin.pos.x - pos.x, origin.pos.z - pos.z, 0, pitchdelta + Random[Weapon](-2, 2));
 		if (mo && origin != self)
 		{
 			mo.SetOrigin(origin.pos, false); // Move the tracer so that it flies from the model's gun
@@ -549,7 +561,7 @@ class TankRocket : GrenadeBase
 			TNT1 A 2;
 		SpawnLoop:
 			MNSS A 1 Bright Light("BOAFLMW2") A_StartSound("panzer/fly", CHAN_VOICE, CHANF_LOOPING, 1.0);
-			MNSS A 1 Bright Light("BOAFLMW2") A_SpawnItemEx("RocketFlame", random(-1,1), 0, random(-1,1));
+			MNSS A 1 Bright Light("BOAFLMW2") A_SpawnItemEx("RocketFlame", Random[Weapon](-1,1), 0, Random[Weapon](-1,1));
 			Wait;
 		Death:
 			EXP1 A 0 A_SpawnGroundSplash;
@@ -557,7 +569,7 @@ class TankRocket : GrenadeBase
 			EXP1 A 0 A_StopSound(CHAN_VOICE);
 			EXP1 A 0 A_StartSound("panzer/explode", CHAN_VOICE, 0, 1.0, ATTN_NORM);
 			EXP1 A 0 { A_Explode(0, 192, 0, TRUE, 320); A_SpawnItemEx("ZScorch"); }
-			TNT1 AAAAAAAAAAAAAAAAAAAAAAAAAAA 0 A_SpawnItemEx("TracerSpark_Longlive", 0, 0, 0, random(-5,5), random(-5,5), random(-5,5), random(0,359)); //T667 improvements
+			TNT1 AAAAAAAAAAAAAAAAAAAAAAAAAAA 0 A_SpawnItemEx("TracerSpark_Longlive", 0, 0, 0, Random[Weapon](-5,5), Random[Weapon](-5,5), Random[Weapon](-5,5), Random[Weapon](0,359)); //T667 improvements
 			TNT1 A 0 A_SpawnItemEx("PanzerNuke", 0, 0, 0, 0, 0, 0, 0, SXF_TRANSFERPOINTERS|SXF_NOCHECKPOSITION);
 			TNT1 A 8 {
 				Actor ex = Spawn("GeneralExplosion_Large", pos + (RotateVector((56, 0), angle), 32));
@@ -726,7 +738,7 @@ class TurretGun : ActorPositionable
 	{
 		A_StartSound("weapons/mountedmachinegunfire", CHAN_WEAPON);
 
-		A_SpawnItemEx("MauserRifleCasing", 4 * scale.x, 4 * scale.x, 8 * scale.y, 8, Random(-2,2), Random(0,4), Random(50,80), SXF_NOCHECKPOSITION);
+		A_SpawnItemEx("MauserRifleCasing", 4 * scale.x, 4 * scale.x, 8 * scale.y, 8, Random[Weapon](-2,2), Random[Weapon](0,4), Random[Weapon](50,80), SXF_NOCHECKPOSITION);
 		A_SpawnItemEx("TurrSmokeSpawner", 10 * scale.x, 0, 8 * scale.x, 0, 0, 0, 0, SXF_NOCHECKPOSITION | SXF_TRANSFERROLL | SXF_TRANSFERPITCH);
 
 		bool temp;
@@ -735,7 +747,7 @@ class TurretGun : ActorPositionable
 
 		if (!origin) { origin = self; }
 		// Spawn the tracer from the flare so that the tracer model isn't visible sticking through the turret gun body
-		origin.A_SpawnProjectile("KTurretTracer", 8 * scale.y, 0, angle + FRandom(-1.0, 1.0), CMF_AIMDIRECTION | CMF_ABSOLUTEANGLE, pitch + FRandom(-1.0, 1.0));
+		origin.A_SpawnProjectile("KTurretTracer", 8 * scale.y, 0, angle + FRandom[Weapon](-1.0, 1.0), CMF_AIMDIRECTION | CMF_ABSOLUTEANGLE, pitch + FRandom[Weapon](-1.0, 1.0));
 
 		shotcount++;
 		heatlevel++;
@@ -1066,6 +1078,9 @@ class TurretStand : Actor
 			if (!GunIsReloading() && gun.shotcount > 0)
 			{
 				gun.SetStateLabel("Reload");
+
+				AchievementTracker tracker = AchievementTracker(StaticEventHandler.Find("AchievementTracker"));
+				if (tracker && shooter) { tracker.reloads[shooter.PlayerNumber()]++; }
 			}
 		}
 	}
@@ -1280,8 +1295,8 @@ class GunSmokeSpawner : Actor
 	{
 		bool sp;
 		Actor ac;
-		[sp, ac] = A_SpawnItemEx(smokeClass,24 * xPosFactor,0,0,frandom(0.1,0.2) * xVelFactor,0,frandom(0.2,0.6) * zVelFactor);
-		ac.Roll = frandom(0.0, 360.0);
+		[sp, ac] = A_SpawnItemEx(smokeClass,24 * xPosFactor,0,0, FRandom[Weapon](0.1,0.2) * xVelFactor,0, FRandom[Weapon](0.2,0.6) * zVelFactor);
+		ac.Roll = FRandom[Weapon](0.0, 360.0);
 		return ac;
 	}
 }
@@ -1440,7 +1455,7 @@ class Firebrand : NaziWeapon
 			}
 			else
 			{
-				Thing_Damage(0,25);
+				invoker.Owner.DamageMobj(null, null, 25, 'None', DMG_NO_ARMOR);
 				A_SetBlend("ff 00 00", .5, 15);
 			}
 		}
@@ -1470,7 +1485,7 @@ class Firebrand : NaziWeapon
 					A_TakeInventory("Soul", soulTakeCount, TIF_NOTAKEINFINITE);
 					for (i = 1; i < soulTakeCount; i++)
 					{ // Already fired 1 projectile
-						A_FireProjectile("FirebrandFireball", frandom(-2.0, 2.0), false, 0, 0, 0, frandom(-2.0, 2.0));
+						A_FireProjectile("FirebrandFireball", FRandom[Weapon](-2.0, 2.0), false, 0, 0, 0, FRandom[Weapon](-2.0, 2.0));
 					}
 				}
 				else
@@ -1484,6 +1499,14 @@ class Firebrand : NaziWeapon
 				Thing_Damage(0,2);
 			}
 			*/
+			// Extend charge timer by 1.5 seconds
+			// See https://github.com/Realm667/WolfenDoom/issues/1473
+			FirebrandCharged chargeTimer = FirebrandCharged(FindInventory("FirebrandCharged"));
+			if (!chargeTimer) {
+				chargeTimer = FirebrandCharged(GiveInventoryType("FirebrandCharged"));
+				chargeTimer.EffectTics = 0;
+			}
+			chargeTimer.EffectTics = min(chargeTimer.MaxEffectTics, chargeTimer.EffectTics + 50);
 		}
 		"####" KLM 1;
 		TNT1 A 20 A_WeaponReady;

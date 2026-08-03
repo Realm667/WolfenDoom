@@ -59,6 +59,9 @@ ACTOR PlayerSatchels : NaziWeapon
 		SATV A 1 A_WeaponReady
 		Loop
 	Fire:
+		TNT1 A 0 A_JumpIfInventory("SatchelAmmo",1,2)
+		TNT1 A 1 A_WeaponReady
+		Goto Ready
 		SATV A 1 Offset(6,34)
 		SATV A 1 Offset(1,46)
 		SATV A 1 Offset(2,59)
