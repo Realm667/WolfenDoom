@@ -1,5 +1,19 @@
 # Changelog
 
+## 2.2.1
+
+### Changed
+
+- Renamed the primary bottom-right action button from Launch to Play in the
+  English interface.
+- Launcher version increased to 2.2.1.
+
+### Verified
+
+- Added automated core and WPF accessibility checks for the Play label.
+- Re-ran command generation, localization, content parsing, add-on,
+  multiplayer, responsive-layout, and window-persistence tests.
+
 ## 2.2.0
 
 ### Added
