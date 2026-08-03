@@ -146,7 +146,7 @@ Useful commands:
 --theme dark|light|boa|wolfenstein3d
 --direct-start on|off
 --multiplayer single|host|join
---players 2..8
+--players 2..4
 --map MAP
 --host HOSTNAME_OR_IPV4
 --port 1..65535
