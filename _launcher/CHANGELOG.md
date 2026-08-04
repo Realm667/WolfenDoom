@@ -1,5 +1,20 @@
 # Changelog
 
+## 2.5.3
+
+### Fixed
+
+- Continue Campaign now lists only savegames whose `Game WAD` metadata points
+  to `boa.ipk3`.
+- Savegames created for other IWADs, as well as saves without an identifiable
+  game IWAD, are omitted instead of appearing as disabled incompatible items.
+- Launcher version increased to 2.5.3.
+
+### Verified
+
+- Added a regression fixture proving that a newer `HERETIC.WAD` save is
+  excluded while a valid `boa.ipk3` save remains available.
+
 ## 2.5.2
 
 ### Changed

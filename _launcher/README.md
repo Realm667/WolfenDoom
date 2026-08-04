@@ -1,6 +1,6 @@
 # Blade of Agony Launcher
 
-Version 2.5.2 is a modern WPF launcher for Blade of Agony and UZDoom 4.14.3
+Version 2.5.3 is a modern WPF launcher for Blade of Agony and UZDoom 4.14.3
 or 5.x. It is a clean-room replacement for the original native launcher and
 remains portable: no installer or additional UI runtime is required on
 supported Windows systems.
@@ -37,6 +37,8 @@ supported Windows systems.
   `wolfendoom.git` development tree.
 - Reads `.zds` `info.json` metadata and save previews for one-click campaign
   continuation through UZDoom's `-loadgame` option.
+- Lists only savegames whose `Game WAD` metadata identifies `boa.ipk3`;
+  saves belonging to other games are omitted from Continue Campaign.
 - Binds newly written saves to engine, game, add-on, and load-order hashes;
   mismatched content is blocked before Continue.
 - Supports a normal main-menu launch or an advanced direct mission start.
