@@ -1981,7 +1981,7 @@ class ActiveEffectWidget : Widget
 			else if (player.damagecount && mod == "None") { mod = GetTextureMod(TexMan.GetName(player.mo.floorpic), mod); }
 		}
 
-		Name directDamageType = mod != "None" ? mod : player.LastDamageType;
+		Name directDamageType = player.LastDamageType != "None" ? player.LastDamageType : mod;
 		bool drawDirectDamage = directDamageType && player.damagecount && !IsBlockedPoisonDamage(directDamageType);
 		bool drawPoison = player.poisoncount && !IsBlockedPoisonDamage(player.poisonpaintype);
 		bool drawHazard = player.hazardcount && !IsBlockedPoisonDamage(player.hazardtype);

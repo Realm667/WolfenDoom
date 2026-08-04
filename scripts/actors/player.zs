@@ -1395,7 +1395,7 @@ class BoAPlayer : PlayerPawn
 		*/
 		// Falling into C3M5_C's exterior kill sector after collecting a parachute is a failed
 		// extraction, not a normal player death.
-		if (level.mapname ~== "C3M5_C" && mod == "Falling" && ACS_NamedExecuteWithResult("HasParachute"))
+		if (level.mapname ~== "C3M5_C" && mod == "Falling" && damage >= 9999 && ACS_NamedExecuteWithResult("HasParachute"))
 		{
 			ACS_NamedExecute("ParachuteFallFailure", 0);
 			return 0;

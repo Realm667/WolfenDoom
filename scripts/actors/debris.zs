@@ -437,7 +437,7 @@ class DebrisGirder : DebrisBase
 	{
 		Super.PostBeginPlay();
 
-		if (!bWasCulled) { scale *= FRandom[Debris](0.8, min(maxscale, 2.5)); }
+		if (!bWasCulled) { scale *= FRandom[Debris](0.8, 2.5); }
 	}
 }
 

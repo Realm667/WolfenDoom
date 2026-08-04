@@ -180,6 +180,12 @@ class NaziMedic : NaziStandard
 			"####" UV 5;
 			"####" W -1;
 			Stop;
+		Death.KilledAfterSurrender:
+			"####" Q 5;
+			"####" R 5 A_Scream();
+			"####" STUV 5;
+			"####" W -1;
+			Stop;
 		SurrenderSprite:
 			NMDS A 0;
 		Alarm:
@@ -219,6 +225,16 @@ class NaziMedic : NaziStandard
 		candodge = !crouched; // Only let him dodge if he's not crouched
 
 		Super.Tick();
+	}
+
+	override int DamageMobj(Actor inflictor, Actor source, int damage, Name mod, int flags, double angle)
+	{
+		bool wasSurrendered = surrendered && health > 0;
+		int damageTaken = Super.DamageMobj(inflictor, source, damage, mod, flags, angle);
+
+		if (wasSurrendered && health <= 0) { SetStateLabel("Death.KilledAfterSurrender"); }
+
+		return damageTaken;
 	}
 
 }
