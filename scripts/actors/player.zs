@@ -1336,10 +1336,15 @@ class BoAPlayer : PlayerPawn
 	override void Die(Actor source, Actor inflictor, int dmgflags, Name MeansOfDeath)
 	{
 		String mod = (inflictor && inflictor.paintype) ? inflictor.paintype : MeansOfDeath; // Get the damage type
+		bool inMutantPoisonPool = IsInMutantPoisonPool();
 
 		if (mod == "Pest") { AchievementTracker.CheckAchievement(PlayerNumber(), AchievementTracker.ACH_PESTS); }
 
-		if (underwater && (mod == "None" || mod == "Drowning"))
+		if (inMutantPoisonPool && (mod == "None" || mod == "Drowning"))
+		{
+			mod = "MutantPoisonAmbience";
+		}
+		else if (underwater && (mod == "None" || mod == "Drowning"))
 		{
 			String texture = TexMan.GetName(cursec.GetTexture(Sector.ceiling)); 
 			mod = GetTextureMod(texture, mod);
@@ -1351,13 +1356,7 @@ class BoAPlayer : PlayerPawn
 		{
 			if (mod == "Drowning") { tracker.SetBit(tracker.records[tracker.STAT_LIQUIDDEATH].value, 0); }
 			else if (mod == "Lava") { tracker.SetBit(tracker.records[tracker.STAT_LIQUIDDEATH].value, 1); }
-			else if (
-				mod == "MutantPoisonAmbience" &&
-				(
-					GetTextureMod(TexMan.GetName(floorpic)) == "MutantPoisonAmbience" ||
-					(underwater && GetTextureMod(TexMan.GetName(cursec.GetTexture(Sector.ceiling))) == "MutantPoisonAmbience")
-				)
-			)
+			else if (mod == "MutantPoisonAmbience" && inMutantPoisonPool)
 			{
 				tracker.SetBit(tracker.records[tracker.STAT_LIQUIDDEATH].value, 2);
 			}
@@ -1366,6 +1365,33 @@ class BoAPlayer : PlayerPawn
 		}
 
 		Super.Die(source, inflictor, dmgflags, MeansOfDeath);
+	}
+
+	bool IsInMutantPoisonPool()
+	{
+		if (GetTextureMod(TexMan.GetName(floorpic)) == "MutantPoisonAmbience") { return true; }
+		if (underwater && GetTextureMod(TexMan.GetName(cursec.GetTexture(Sector.ceiling))) == "MutantPoisonAmbience") { return true; }
+
+		for (int i = 0; i < cursector.Get3DFloorCount(); i++)
+		{
+			F3DFloor ffloor = cursector.Get3DFloor(i);
+			if (!(ffloor.flags & F3DFloor.FF_EXISTS) || !(ffloor.flags & F3DFloor.FF_SWIMMABLE) || (ffloor.flags & F3DFloor.FF_NODAMAGE)) { continue; }
+			if (!ffloor.model || ffloor.model.damageamount <= 0) { continue; }
+
+			double bottomZ = ffloor.bottom.ZatPoint(pos.xy);
+			double topZ = ffloor.top.ZatPoint(pos.xy);
+			if (pos.z >= topZ || pos.z + height <= bottomZ) { continue; }
+
+			if (
+				GetTextureMod(TexMan.GetName(ffloor.GetTexture(0))) == "MutantPoisonAmbience" ||
+				GetTextureMod(TexMan.GetName(ffloor.GetTexture(1))) == "MutantPoisonAmbience"
+			)
+			{
+				return true;
+			}
+		}
+
+		return false;
 	}
 
 	static Name GetTextureMod(String texture, Name default = "None")
