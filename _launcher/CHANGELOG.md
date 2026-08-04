@@ -1,5 +1,25 @@
 # Changelog
 
+## 2.5.4
+
+### Added
+
+- Launch profiles now visibly include the selected add-ons and their exact
+  load order, with guidance explaining how to configure them before saving.
+- Added discovery of UZDoom's Windows user save directory and custom
+  `save_dir` configuration while retaining the local `save/` fallback.
+- Diagnostics now show and print every scanned save location.
+
+### Fixed
+
+- Changed the Import Profile glyph to a downward import arrow.
+- Ensured Save Profile captures the current add-on selection immediately.
+
+### Verified
+
+- Added regression coverage for profile add-on persistence, deterministic
+  load order, configured save paths, diagnostic roots, and the import glyph.
+
 ## 2.5.3
 
 ### Fixed

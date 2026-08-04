@@ -1,6 +1,6 @@
 # Blade of Agony Launcher
 
-Version 2.5.3 is a modern WPF launcher for Blade of Agony and UZDoom 4.14.3
+Version 2.5.4 is a modern WPF launcher for Blade of Agony and UZDoom 4.14.3
 or 5.x. It is a clean-room replacement for the original native launcher and
 remains portable: no installer or additional UI runtime is required on
 supported Windows systems.
@@ -25,7 +25,8 @@ supported Windows systems.
   transitions.
 - Runtime reflow with compact icon navigation on narrow windows.
 - Saves and restores the user-adjusted launcher window size.
-- Named built-in and user launch profiles with validated import/export.
+- Named built-in and user launch profiles with validated import/export;
+  profiles include the selected add-ons and their load order.
 - Full launcher animations are always enabled. XInput controller navigation
   activates automatically whenever a compatible controller is connected.
 
@@ -39,6 +40,9 @@ supported Windows systems.
   continuation through UZDoom's `-loadgame` option.
 - Lists only savegames whose `Game WAD` metadata identifies `boa.ipk3`;
   saves belonging to other games are omitted from Continue Campaign.
+- Discovers UZDoom saves in `%USERPROFILE%\Saved Games\UZDoom` on Windows,
+  honors an explicit `save_dir` in UZDoom configuration, and retains the
+  local `save/` folder as a legacy fallback.
 - Binds newly written saves to engine, game, add-on, and load-order hashes;
   mismatched content is blocked before Continue.
 - Supports a normal main-menu launch or an advanced direct mission start.
@@ -182,6 +186,7 @@ Useful commands:
 --check-multiplayer
 --print-capabilities
 --scan-saves
+--print-save-roots
 --check-save FILE
 --save-profile NAME
 --list-profiles
