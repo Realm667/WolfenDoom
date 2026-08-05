@@ -1,6 +1,6 @@
 # Blade of Agony Launcher
 
-Version 2.5.4 is a modern WPF launcher for Blade of Agony and UZDoom 4.14.3
+Version 2.5.5 is a modern WPF launcher for Blade of Agony and UZDoom 4.14.3
 or 5.x. It is a clean-room replacement for the original native launcher and
 remains portable: no installer or additional UI runtime is required on
 supported Windows systems.
@@ -38,6 +38,8 @@ supported Windows systems.
   `wolfendoom.git` development tree.
 - Reads `.zds` `info.json` metadata and save previews for one-click campaign
   continuation through UZDoom's `-loadgame` option.
+- Passes a canonical absolute save path to `-loadgame`, preventing UZDoom
+  from prepending its active save directory a second time.
 - Lists only savegames whose `Game WAD` metadata identifies `boa.ipk3`;
   saves belonging to other games are omitted from Continue Campaign.
 - Discovers UZDoom saves in `%USERPROFILE%\Saved Games\UZDoom` on Windows,
@@ -77,6 +79,10 @@ supported Windows systems.
 - Detects missing payloads, declared dependencies/conflicts, minimum engine
   and BoA versions, ordering mistakes, invalid archives, and overlapping PK3
   paths.
+- Treats identical ZScript source paths as blocking conflicts and prevents
+  UZDoom from starting combinations that would fail during script compilation.
+- Distributes the restored `z_boa_addon_README.txt` credits document referenced
+  by Confiscated Weapons and ZikShadow's Personal Addon.
 - Enforces `newCampaignRequired` before launch and records the selected
   add-on fingerprints beside newly created saves.
 

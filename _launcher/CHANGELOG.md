@@ -1,5 +1,25 @@
 # Changelog
 
+## 2.5.5
+
+### Fixed
+
+- Continue Campaign now passes an absolute `.zds` path to UZDoom, preventing
+  the configured save directory from being prepended twice.
+- Add-on combinations containing the same ZScript source path are now marked
+  as blocking compatibility errors before UZDoom starts.
+- The Play action now enforces all blocking add-on compatibility findings
+  instead of allowing the engine to fail during script compilation.
+- Restored the original shared `z_boa_addon_README.txt` credits document for
+  Confiscated Weapons and ZikShadow's Personal Addon.
+
+### Verified
+
+- Added regressions for absolute save loading and the fatal
+  More Weapons/M2HB `scripts/weapons.zs` collision.
+- Validated the restored credits file against its original archived Git blob
+  and added builder/metadata checks to keep it in future add-on releases.
+
 ## 2.5.4
 
 ### Added

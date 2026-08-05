@@ -1,5 +1,10 @@
 $ErrorActionPreference = 'Stop'
 $root = Join-Path $PSScriptRoot 'source'
+$sharedCreditsName = 'z_boa_addon_README.txt'
+$sharedCreditsPath = Join-Path $PSScriptRoot $sharedCreditsName
+if (-not (Test-Path -LiteralPath $sharedCreditsPath)) {
+    throw "Shared ZikShadow credits file is missing: $sharedCreditsName"
+}
 $required = @(
     'id', 'version', 'minBoAVersion', 'minEngineVersion', 'requires',
     'conflicts', 'loadAfter', 'multiplayerSafe', 'newCampaignRequired',
@@ -32,6 +37,10 @@ foreach ($addon in Get-ChildItem -LiteralPath $root -Directory) {
     if ($values.multiplayerSafe -notmatch '^(true|false)$' -or
         $values.newCampaignRequired -notmatch '^(true|false)$') {
         throw "$($addon.Name): boolean metadata must be true or false."
+    }
+    if ($addon.Name -in @('confiscated_weapons', 'zik_personal') -and
+        $values.creditsFull -notmatch [Regex]::Escape($sharedCreditsName)) {
+        throw "$($addon.Name): creditsFull must reference $sharedCreditsName."
     }
     [int] $previewCount = 0
     if (-not [int]::TryParse($values.previewImages, [ref] $previewCount)) {
