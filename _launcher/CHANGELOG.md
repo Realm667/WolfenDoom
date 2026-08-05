@@ -1,5 +1,20 @@
 # Changelog
 
+## 2.5.6
+
+### Fixed
+
+- The footer action now always remains Play and starts the game according to
+  the selected Start Mode; Continue Campaign remains a separate save action.
+- Continue Campaign now passes the save directory through `-savedir` and only
+  the save filename through `-loadgame`, matching UZDoom's command-line
+  semantics and preventing duplicated save paths.
+
+### Verified
+
+- Added command-generation and UI regressions for UZDoom save loading and the
+  persistent Play action.
+
 ## 2.5.5
 
 ### Fixed
