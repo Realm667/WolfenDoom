@@ -1,6 +1,6 @@
 # Blade of Agony Launcher
 
-Version 2.5.6 is a modern WPF launcher for Blade of Agony and UZDoom 4.14.3
+Version 2.5.7 is a modern WPF launcher for Blade of Agony and UZDoom 4.14.3
 or 5.x. It is a clean-room replacement for the original native launcher and
 remains portable: no installer or additional UI runtime is required on
 supported Windows systems.
@@ -27,6 +27,8 @@ supported Windows systems.
 - Saves and restores the user-adjusted launcher window size.
 - Named built-in and user launch profiles with validated import/export;
   profiles include the selected add-ons and their load order.
+- Compatibility-aware add-on selection: compatible choices are highlighted
+  in green, while only the add-ons involved in a blocking clash turn red.
 - Full launcher animations are always enabled. XInput controller navigation
   activates automatically whenever a compatible controller is connected.
 

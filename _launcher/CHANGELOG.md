@@ -1,5 +1,23 @@
 # Changelog
 
+## 2.5.7
+
+### Changed
+
+- Compatible selected add-ons are now highlighted in green.
+- Add-ons involved in a blocking compatibility clash are highlighted in red,
+  while unrelated selected add-ons remain green.
+
+### Fixed
+
+- Changed the Import Session icon to a downward import arrow.
+- Vertically centered the multiplayer radio indicators with their labels.
+
+### Verified
+
+- Added WPF automation regressions for the session icon, radio alignment, and
+  compatibility-aware add-on states, including the More Weapons/M2HB clash.
+
 ## 2.5.6
 
 ### Fixed
