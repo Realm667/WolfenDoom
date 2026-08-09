@@ -36,3 +36,10 @@ release/addons/<name>.pk3
 
 The generated archives are release artifacts and are intentionally excluded
 from version control.
+
+## Disclaimer
+
+It is important for those working on these addons, that it is not possible to
+predict all combinations of addons in a single run. For this reason, we had to
+state on forums and discord that users should have play BoA with just ONE ADDON
+active. --Ozymandias81
