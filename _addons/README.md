@@ -40,6 +40,13 @@ from version control.
 ## Disclaimer
 
 It is important for those working on these addons, that it is not possible to
-predict all combinations of addons in a single run. For this reason, we had to
-state on forums and discord that users should have play BoA with just ONE ADDON
-active. --Ozymandias81
+predict all combinations of addons in a single run ON 3.1 RELEASE, where you are
+forced mostly to play with just ONE ADDON.
+
+With the imminent release of 3.2, now GREEN or RED indicators will show you
+possibile choices among addons compatible with BoA before you launch a new
+game (via our custom launcher). Though, it is possible that later or early
+during your gameplay, issues might happen. In that case, let us know or open an
+issue on this repository, maybe even with fixes for the problem.
+
+--Ozymandias81, with help from hawkwind3

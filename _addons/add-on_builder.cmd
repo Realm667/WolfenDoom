@@ -10,5 +10,3 @@ for /F %%I in ('dir /ad /b') do (
   popd
 )
 popd
-
-copy /y "z_boa_addon_README.txt" "release\addons\z_boa_addon_README.txt" >nul
