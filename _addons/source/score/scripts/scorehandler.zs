@@ -18,7 +18,7 @@ class ScoreHandler : StaticEventHandler
         if (!initialized)
         {
             let compass = Widget.Find("Compass");
-            if (compass) { compass.priority = 2; }
+            if (compass) { compass.priority = 1; }
             ScoreWidget.Init("Score", Widget.WDG_TOP | Widget.WDG_LEFT, 1);
         }
     }
@@ -154,7 +154,7 @@ class ScoreWidget : Widget
         size = (max(BigFont.StringWidth(score), 64), BigFont.GetHeight());
         Super.Draw();
 
-        DrawToHUD.DrawText(score, (pos.x + size.x, pos.y + 1), BigFont, alpha, 1.0, shade:Font.CR_GOLD, flags:ZScriptTools.STR_RIGHT);
+        DrawToHUD.DrawText(score, (pos.x + size.x, pos.y +size.y + size.y), BigFont, alpha, 1.0, shade:Font.CR_GOLD, flags:ZScriptTools.STR_RIGHT);
 
 		return size;
 	}
