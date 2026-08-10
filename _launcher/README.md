@@ -1,6 +1,6 @@
 # Blade of Agony Launcher
 
-Version 2.5.7 is a modern WPF launcher for Blade of Agony and UZDoom 4.14.3
+Version 2.6.0 is a modern WPF launcher for Blade of Agony and UZDoom 4.14.3
 or 5.x. It is a clean-room replacement for the original native launcher and
 remains portable: no installer or additional UI runtime is required on
 supported Windows systems.
@@ -24,9 +24,16 @@ supported Windows systems.
   accessible automation names, high-contrast support, and animated page
   transitions.
 - Runtime reflow with compact icon navigation on narrow windows.
+- A launch preflight verifies the engine, main game, writable data and save
+  paths, selected add-ons, and supported command surface before UZDoom starts.
+- UZDoom configuration discovery supports portable, Documents/My Games,
+  Documents/MyGames, and roaming-user locations without requiring an existing
+  INI file.
 - Saves and restores the user-adjusted launcher window size.
 - Named built-in and user launch profiles with validated import/export;
   profiles include the selected add-ons and their load order.
+- Profiles can be duplicated, renamed, favorited, compared with current
+  settings, and assigned an isolated UZDoom configuration.
 - Compatibility-aware add-on selection: compatible choices are highlighted
   in green, while only the add-ons involved in a blocking clash turn red.
 - Full launcher animations are always enabled. XInput controller navigation
@@ -50,6 +57,10 @@ supported Windows systems.
 - Binds newly written saves to engine, game, add-on, and load-order hashes;
   mismatched content is blocked before Continue.
 - Supports a normal main-menu launch or an advanced direct mission start.
+- Separates Main Menu, New Campaign, and Mission Select into explicit start
+  modes while keeping Play as the single normal launch action.
+- Shows up to twelve recent compatible saves and can create timestamped local
+  backups before continuing.
 - Clearly identifies Mission Select as an advanced path that can bypass
   campaign state, inventory, and briefings.
 - Detects an interrupted previous run and offers Safe Mode with an isolated
@@ -87,6 +98,8 @@ supported Windows systems.
   by Confiscated Weapons and ZikShadow's Personal Addon.
 - Enforces `newCampaignRequired` before launch and records the selected
   add-on fingerprints beside newly created saves.
+- Resolves declared `requires` and `loadAfter` relationships into a stable load
+  order and provides pairwise official-add-on matrix validation.
 
 ## Multiplayer
 
@@ -117,6 +130,19 @@ supported Windows systems.
   from exported diagnostics.
 - Keeps runtime data in `launcher-data/` and user profiles in
   `launcher-profiles/` next to the portable launcher.
+- Falls back to per-user or temporary runtime storage when the installation
+  directory is read-only.
+- Classifies recognized renderer, ZScript/add-on, savegame, missing-file, and
+  fatal-engine signatures from the latest log and recommends a recovery path.
+- Labels detected engines as Stable, Preview, or Unsupported; UZDoom preview
+  builds remain usable but are clearly identified.
+
+## Content manifest
+
+The optional `boa-launcher.json` file in `boa.ipk3` is the authoritative,
+versioned launcher contract for BoA version, minimum engine version, languages,
+episodes, and missions. The launcher safely falls back to MAPINFO when the
+manifest is absent.
 
 ## Build
 
@@ -160,6 +186,7 @@ copy is required.
 ```powershell
 .\Test-Core.ps1
 .\Test-V25.ps1
+.\Test-V26.ps1
 .\Test-ModernGui.ps1
 ```
 
@@ -175,6 +202,9 @@ profiles, capability detection, session parity and password privacy, Safe
 Mode isolation, automatic controller navigation, full animation defaults,
 support-package redaction, strict `uzdoom.exe` selection, and v2.5
 localization.
+The v2.6 suite checks missing-config startup resilience, launch preflight,
+versioned game manifests, dependency-aware add-on ordering, pairwise matrix
+validation, and the SHA-256 release manifest.
 
 ## Third-party assets
 
@@ -201,6 +231,12 @@ Useful commands:
 --validate-session FILE
 --create-session FILE
 --create-diagnostics ZIP
+--preflight
+--print-launcher-manifest
+--generate-launcher-manifest FILE
+--validate-addon-matrix
+--resolve-addon-order
+--analyze-last-crash
 --base-directory DIR
 --detail last|default|verylow|low|normal|high|veryhigh
 --displacement on|off

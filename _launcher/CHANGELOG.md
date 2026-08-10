@@ -1,5 +1,23 @@
 # Changelog
 
+## 2.6.0
+
+- Added resilient portable and per-user UZDoom configuration discovery.
+- Added a blocking launch preflight with actionable file, path, engine, save,
+  and add-on findings.
+- Added the versioned `boa-launcher.json` content contract with MAPINFO fallback.
+- Split Quick Launch into Main Menu, New Campaign, and advanced Mission Select.
+- Added a recent compatible-save browser and timestamped save backups.
+- Added reversible Performance, Balanced, and Quality graphics guidance.
+- Added profile duplication, rename, favorites, last-used sorting, current-state
+  comparison, and optional isolated UZDoom configuration files.
+- Added dependency-aware add-on order resolution and pairwise matrix validation.
+- Added Stable/Preview/Unsupported engine-channel labels.
+- Added crash-log classification for common renderer, script, save, resource,
+  and engine failures.
+- Added reproducible release packaging, SHA-256 manifests, version consistency
+  checks, and optional Authenticode signing support.
+
 ## 2.5.7
 
 ### Changed
