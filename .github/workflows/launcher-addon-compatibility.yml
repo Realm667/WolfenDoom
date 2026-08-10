@@ -26,6 +26,12 @@ jobs:
     runs-on: windows-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          sparse-checkout: |
+            _addons
+            _launcher/Blade of Agony - Launcher Diagnostics.exe
+            wolf_boa.txt
+          sparse-checkout-cone-mode: false
       - name: Build and validate every official add-on pair
         shell: pwsh
         run: ./_addons/validate_compatibility_matrix.ps1
