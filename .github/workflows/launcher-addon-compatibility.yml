@@ -1,0 +1,31 @@
+name: Launcher add-on compatibility
+
+on:
+  push:
+    paths:
+      - '_addons/**'
+      - '_launcher/Blade of Agony - Launcher Diagnostics.exe'
+      - '_launcher/boa-launcher.json'
+      - 'boa-launcher.json'
+      - 'wolf_boa.txt'
+      - '.github/workflows/launcher-addon-compatibility.yml'
+  pull_request:
+    paths:
+      - '_addons/**'
+      - '_launcher/Blade of Agony - Launcher Diagnostics.exe'
+      - '_launcher/boa-launcher.json'
+      - 'boa-launcher.json'
+      - 'wolf_boa.txt'
+      - '.github/workflows/launcher-addon-compatibility.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build and validate every official add-on pair
+        shell: pwsh
+        run: ./_addons/validate_compatibility_matrix.ps1
