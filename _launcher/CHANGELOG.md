@@ -1,5 +1,18 @@
 # Changelog
 
+## 2.6.1
+
+### Fixed
+
+- Corrected the launcher content manifest to identify Blade of Agony 3.2.
+- Always block Confiscated Weapons and More Weapons as an incompatible
+  combination, including when older add-on descriptors omit the conflict.
+- Deduplicated conflict messages when both add-ons declare the same conflict.
+
+### Verified
+
+- Added regression coverage for the official manifest-backed conflict rule.
+
 ## 2.6.0
 
 - Added resilient portable and per-user UZDoom configuration discovery.
