@@ -1,5 +1,21 @@
 # Changelog
 
+## 2.6.2
+
+### Fixed
+
+- Changed the Quick Launch navigation glyph from a right-facing play symbol
+  to a distinct upward launch arrow.
+- Reworked Diagnostics actions as a fluid wrap layout with consistent
+  horizontal and vertical spacing on every row.
+
+### Verified
+
+- Revalidated launcher startup and preflight without `uzdoom_portable.ini`;
+  per-user UZDoom configuration discovery remains fully supported.
+- Added WPF automation coverage for the Quick Launch glyph and wrapped
+  Diagnostics action alignment.
+
 ## 2.6.1
 
 ### Fixed
