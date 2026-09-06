@@ -1,6 +1,6 @@
 # Blade of Agony Launcher
 
-Version 2.6.8 is a modern WPF launcher for Blade of Agony and UZDoom 4.14.3
+Version 2.6.9 is a modern WPF launcher for Blade of Agony and UZDoom 4.14.3
 or 5.x. It is a clean-room replacement for the original native launcher and
 remains portable: no installer or additional UI runtime is required on
 supported Windows systems.
@@ -20,7 +20,8 @@ supported Windows systems.
 - Shared graphics and game settings sit below both campaign panes. Continue
   Campaign loads its chosen save directly without changing the selected episode,
   difficulty or mission. Start Multiplayer Session belongs to the Multiplayer page
-  and is enabled only for Host co-op or Join co-op.
+  with only Host co-op and Join co-op choices. Host is the first-visit default;
+  the last multiplayer role is retained across navigation and launcher restarts.
 - Official Blade of Agony header logo and live UZDoom product version read
   from the adjacent `uzdoom.exe`.
 - Bundled Unica One typography for the Blade of Agony title and sidebar
@@ -30,6 +31,8 @@ supported Windows systems.
 - Independent game and interface languages, including separate English (US)
   and English (UK) game options plus European Portuguese.
 - Blade of Agony, Dark, Light, and Wolfenstein 3D designs.
+- Startup loading feedback uses the selected theme's accent and track colors,
+  with a pulsing indicator instead of the green Windows progress effect.
 - Per-monitor DPI awareness, Windows text scaling, keyboard navigation,
   accessible automation names, high-contrast support, and animated page
   transitions.

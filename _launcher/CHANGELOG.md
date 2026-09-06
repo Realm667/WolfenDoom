@@ -1,5 +1,16 @@
 # Changelog
 
+## 2.6.9
+
+### Fixed
+
+- Use the selected theme's accent and track colors for the startup loading bar,
+  replacing the green Windows progress effect with a theme-controlled pulse.
+- Remove Single player from the Multiplayer page. Default to Host co-op on the
+  first visit and retain the last Host/Join role across navigation and restarts.
+- Keep campaign navigation in single-player mode without clearing the saved
+  multiplayer role or imported session requirements.
+
 ## 2.6.8
 
 ### Improved
