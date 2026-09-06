@@ -779,6 +779,8 @@ class DevCommentary : MessageBase
 		DevCommentary msg = DevCommentary(MessageBase.Init(mo, text, text, intime, outtime, "DevCommentary", 62));
 		if (msg)
 		{
+			// Extra reading time for developer commentary only; leave dialogue timing unchanged.
+			msg.time += TICRATE;
 			if (msg && input.Size() > 1) { msg.image = input[1]; }
 			MessageLogHandler.Add(String.Format("MESSAGELOGTYPE_DEVCOM|%s", text), msg.image);
 

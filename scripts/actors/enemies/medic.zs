@@ -58,6 +58,7 @@ class NaziMedic : NaziStandard
 		Speed 4;
 		+ALLOWPAIN
 		+AVOIDMELEE
+		+NODAMAGE
 		+NEVERTARGET
 		Base.NoMedicHeal;
 		Nazi.CanSurrender True;
@@ -229,12 +230,17 @@ class NaziMedic : NaziStandard
 
 	override int DamageMobj(Actor inflictor, Actor source, int damage, Name mod, int flags, double angle)
 	{
-		bool wasSurrendered = surrendered && health > 0;
-		int damageTaken = Super.DamageMobj(inflictor, source, damage, mod, flags, angle);
+		// A hit from the player (or their companion) makes an unarmed medic surrender.
+		// Do not restart the animation on subsequent hits or drop additional medical kits.
+		if (source && source is "MovingTrailBeam") { source = source.master; }
+		if (health > 0 && !surrendered && source && (source.player || source is "PlayerFollower"))
+		{
+			target = source;
+			surrendered = true;
+			SetStateLabel("Surrender");
+		}
 
-		if (wasSurrendered && health <= 0) { SetStateLabel("Death.KilledAfterSurrender"); }
-
-		return damageTaken;
+		return 0; // Protected before and after surrender, regardless of the damage type.
 	}
 
 }
