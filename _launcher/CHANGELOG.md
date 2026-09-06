@@ -1,5 +1,19 @@
 # Changelog
 
+## 2.6.7
+
+### Improved
+
+- Move the Main menu / Episode choice into New Campaign, followed by Episode,
+  Difficulty and optional Mission select. Remove the footer Start Mode selector
+  and the redundant campaign radio option.
+- Default mission selection to From the beginning. Reset it when changing episodes
+  or switching launch destinations; keep explicit mission selections in profiles.
+- Keep campaign fields visible but disabled for Main menu, and show the advanced
+  campaign-state warning only when selecting a specific mission.
+- Preserve independent Continue Campaign behavior, responsive campaign panes and
+  shared settings. Localize the new mission labels in all ten interface languages.
+
 ## 2.6.6
 
 ### Improved

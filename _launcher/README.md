@@ -1,6 +1,6 @@
 # Blade of Agony Launcher
 
-Version 2.6.6 is a modern WPF launcher for Blade of Agony and UZDoom 4.14.3
+Version 2.6.7 is a modern WPF launcher for Blade of Agony and UZDoom 4.14.3
 or 5.x. It is a clean-room replacement for the original native launcher and
 remains portable: no installer or additional UI runtime is required on
 supported Windows systems.
@@ -12,11 +12,13 @@ supported Windows systems.
 - Collapsed launch-profile accordion and equal-width Continue Campaign / New
   Campaign panes, displayed side by side when space permits and stacked on narrow
   windows or with larger text. Save previews retain a cropped 16:9 viewport.
-- Shared graphics and game settings sit below both campaign panes. Start Mode is
-  next to Play in the persistent footer; advanced mission selection appears only
-  when its mode is selected. The campaign radio option selects a normal new game
-  for Play without launching it. Continue Campaign loads its chosen save directly
-  without changing the regular Play action.
+- New Campaign contains the Main menu / Episode choice, followed by Episode,
+  Difficulty and optional Mission select. Missions default to From the beginning;
+  changing the episode resets this optional selection. Campaign fields remain
+  visible but disabled for Main menu. The footer contains only status and Play.
+- Shared graphics and game settings sit below both campaign panes. Continue
+  Campaign loads its chosen save directly without changing the regular Play action
+  or the selected episode, difficulty and mission.
 - Official Blade of Agony header logo and live UZDoom product version read
   from the adjacent `uzdoom.exe`.
 - Bundled Unica One typography for the Blade of Agony title and sidebar
@@ -63,8 +65,8 @@ supported Windows systems.
 - Binds newly written saves to engine, game, add-on, and load-order hashes;
   mismatched content is blocked before Continue.
 - Supports a normal main-menu launch or an advanced direct mission start.
-- Separates Main Menu, New Campaign, and Mission Select into explicit start
-  modes while keeping Play as the single normal launch action.
+- Groups normal and advanced campaign starts in New Campaign while keeping Play
+  as the single normal launch action and retaining existing profile compatibility.
 - Shows up to twelve recent compatible saves and can create timestamped local
   backups before continuing.
 - Clearly identifies Mission Select as an advanced path that can bypass
