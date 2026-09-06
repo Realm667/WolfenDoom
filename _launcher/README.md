@@ -1,6 +1,6 @@
 # Blade of Agony Launcher
 
-Version 2.6.10 is a modern WPF launcher for Blade of Agony and UZDoom 4.14.3
+Version 2.6.11 is a modern WPF launcher for Blade of Agony and UZDoom 4.14.3
 or 5.x. It is a clean-room replacement for the original native launcher and
 remains portable: no installer or additional UI runtime is required on
 supported Windows systems.
@@ -12,13 +12,13 @@ supported Windows systems.
 - Equal-width Continue Campaign / New Campaign panes, displayed side by side
   when space permits and stacked on narrow
   windows or with larger text. Save previews retain a cropped 16:9 viewport.
-- New Campaign contains the Main menu / Episode choice, followed by Episode,
+- New Campaign contains the Main menu / Chapter choice, followed by Chapter,
   Difficulty and optional Mission select. Missions default to From the beginning;
-  changing the episode resets this optional selection. Campaign fields remain
+  changing the chapter resets this optional selection. Campaign fields remain
   visible but disabled for Main menu. Start New Campaign sits at the bottom of
   its pane; the footer contains status only, with no global Play button.
 - Shared graphics and game settings sit below both campaign panes. Continue
-  Campaign loads its chosen save directly without changing the selected episode,
+  Campaign loads its chosen save directly without changing the selected chapter,
   difficulty or mission. Start Multiplayer Session belongs to the Multiplayer page
   with only Host co-op and Join co-op choices. Host is the first-visit default;
   the last multiplayer role is retained across navigation and launcher restarts.
@@ -52,7 +52,7 @@ supported Windows systems.
 
 ## Blade of Agony integration
 
-- Reads episodes, campaign maps, skills, and localized names at runtime from
+- Reads chapters, campaign maps, skills, and localized names at runtime from
   `MAPINFO` and `language.csv` inside `boa.ipk3`.
 - Also reads unpacked files when the launcher is run from the current
   `wolfendoom.git` development tree.
@@ -115,7 +115,7 @@ supported Windows systems.
 ## Multiplayer
 
 - Provides single-player, host co-op, and join co-op modes.
-- Host setup supports 2-4 players, episode/map selection, all five BoA
+- Host setup supports 2-4 players, chapter/map selection, all five BoA
   difficulties, UDP port, and `sv_cheats`.
 - Join setup supports host name or IPv4 address and port.
 - Multiplayer validates only `uzdoom.exe` as UZDoom 4.14.3 or 5.x and
@@ -188,7 +188,7 @@ checkpoint, respawn and cinematic regression pass were not performed.
 
 The optional `boa-launcher.json` file in `boa.ipk3` is the authoritative,
 versioned launcher contract for BoA version, minimum engine version, languages,
-episodes, and missions. The launcher safely falls back to MAPINFO when the
+chapters, and missions. The launcher safely falls back to MAPINFO when the
 manifest is absent.
 
 ## Build

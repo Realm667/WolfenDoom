@@ -1,5 +1,14 @@
 # Changelog
 
+## 2.6.11
+
+### Improved
+
+- Use Chapter instead of Episode throughout campaign and multiplayer controls,
+  generated chapter names and content diagnostics, matching Blade of Agony.
+- Translate the chapter label in all ten interface languages, including Kapitel
+  in German. Preserve engine arguments, MAPINFO syntax and existing data formats.
+
 ## 2.6.10
 
 ### Fixed
