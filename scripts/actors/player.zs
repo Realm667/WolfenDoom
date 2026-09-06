@@ -293,9 +293,12 @@ class BoAPlayer : PlayerPawn
 		Super.Tick();
 
 		cursec = cursector;
+		underwater = false;
+		waterheight = 0;
 		if (waterlevel)
 		{
 			[waterheight, underwater, cursec] = Buoyancy.GetWaterHeight(self);
+			if (!cursec) { cursec = cursector; }
 			floorpic = cursec.GetTexture(Sector.floor);
 			ceilingpic = cursec.GetTexture(Sector.ceiling);
 		}
@@ -1336,27 +1339,18 @@ class BoAPlayer : PlayerPawn
 	override void Die(Actor source, Actor inflictor, int dmgflags, Name MeansOfDeath)
 	{
 		String mod = (inflictor && inflictor.paintype) ? inflictor.paintype : MeansOfDeath; // Get the damage type
-		bool inMutantPoisonPool = IsInMutantPoisonPool();
 
 		if (mod == "Pest") { AchievementTracker.CheckAchievement(PlayerNumber(), AchievementTracker.ACH_PESTS); }
 
-		if (inMutantPoisonPool && (mod == "None" || mod == "Drowning"))
-		{
-			mod = "MutantPoisonAmbience";
-		}
-		else if (underwater && (mod == "None" || mod == "Drowning"))
-		{
-			String texture = TexMan.GetName(cursec.GetTexture(Sector.ceiling)); 
-			mod = GetTextureMod(texture, mod);
-		}
-		else if (mod == "None") { mod = GetTextureMod(TexMan.GetName(floorpic), mod); }
+		// Use the fatal damage's cause, not PainType or the previous tick's water state.
+		Name liquidDeath = GetLiquidDeathType(source, inflictor, MeansOfDeath);
 
 		AchievementTracker tracker = AchievementTracker(StaticEventHandler.Find("AchievementTracker"));
 		if (tracker)
 		{
-			if (mod == "Drowning") { tracker.SetBit(tracker.records[tracker.STAT_LIQUIDDEATH].value, 0); }
-			else if (mod == "Lava") { tracker.SetBit(tracker.records[tracker.STAT_LIQUIDDEATH].value, 1); }
-			else if (mod == "MutantPoisonAmbience" && inMutantPoisonPool)
+			if (liquidDeath == 'Drowning') { tracker.SetBit(tracker.records[tracker.STAT_LIQUIDDEATH].value, 0); }
+			else if (liquidDeath == 'Lava') { tracker.SetBit(tracker.records[tracker.STAT_LIQUIDDEATH].value, 1); }
+			else if (liquidDeath == 'MutantPoisonAmbience')
 			{
 				tracker.SetBit(tracker.records[tracker.STAT_LIQUIDDEATH].value, 2);
 			}
@@ -1367,44 +1361,93 @@ class BoAPlayer : PlayerPawn
 		Super.Die(source, inflictor, dmgflags, MeansOfDeath);
 	}
 
-	bool IsInMutantPoisonPool()
+	Name GetLiquidDeathType(Actor source, Actor inflictor, Name cause)
 	{
-		if (GetTextureMod(TexMan.GetName(floorpic)) == "MutantPoisonAmbience") { return true; }
-		if (underwater && GetTextureMod(TexMan.GetName(cursec.GetTexture(Sector.ceiling))) == "MutantPoisonAmbience") { return true; }
+		// Sector damage and drowning have no attacking actor. In particular, a
+		// syringe kill must not qualify even when its victim is inside a pool.
+		if (source || inflictor) { return 'None'; }
+		if (cause != 'None' && cause != 'Drowning' && cause != 'Lava' && cause != 'MutantPoisonAmbience') { return 'None'; }
+		// A poisoner's actor may have been removed before the last poison tick.
+		if (cause == 'MutantPoisonAmbience' && PoisonDamageReceived > 0 && PoisonDamageTypeReceived == cause) { return 'None'; }
+
+		Name liquid = GetContactLiquid(cause != 'Drowning');
+		if (cause == 'Drowning')
+		{
+			if (waterlevel < 3) { return 'None'; }
+			return liquid == 'None' ? 'Drowning' : liquid;
+		}
+		if (liquid == 'Lava' && (cause == 'None' || cause == 'Lava')) { return liquid; }
+		if (liquid == 'MutantPoisonAmbience' && (cause == 'None' || cause == 'MutantPoisonAmbience')) { return liquid; }
+		return 'None';
+	}
+
+	Name GetContactLiquid(bool damagingOnly)
+	{
+		// Read geometry at the time of death. floorpic/cursec are also used for
+		// visual effects and can still refer to a previously visited liquid.
+		if (!cursector) { return 'None'; }
 
 		for (int i = 0; i < cursector.Get3DFloorCount(); i++)
 		{
 			F3DFloor ffloor = cursector.Get3DFloor(i);
-			if (!(ffloor.flags & F3DFloor.FF_EXISTS) || !(ffloor.flags & F3DFloor.FF_SWIMMABLE) || (ffloor.flags & F3DFloor.FF_NODAMAGE)) { continue; }
-			if (!ffloor.model || ffloor.model.damageamount <= 0) { continue; }
+			if (!(ffloor.flags & F3DFloor.FF_EXISTS) || !(ffloor.flags & F3DFloor.FF_SWIMMABLE) || (ffloor.flags & F3DFloor.FF_SOLID)) { continue; }
+			if (!ffloor.model) { continue; }
+			if (damagingOnly && ((ffloor.flags & F3DFloor.FF_NODAMAGE) || ffloor.model.damageamount <= 0)) { continue; }
 
 			double bottomZ = ffloor.bottom.ZatPoint(pos.xy);
 			double topZ = ffloor.top.ZatPoint(pos.xy);
 			if (pos.z >= topZ || pos.z + height <= bottomZ) { continue; }
 
-			if (
-				GetTextureMod(TexMan.GetName(ffloor.GetTexture(0))) == "MutantPoisonAmbience" ||
-				GetTextureMod(TexMan.GetName(ffloor.GetTexture(1))) == "MutantPoisonAmbience"
-			)
-			{
-				return true;
-			}
+			Name liquid = GetTextureMod(TexMan.GetName(ffloor.GetTexture(0)));
+			if (liquid == 'None') { liquid = GetTextureMod(TexMan.GetName(ffloor.GetTexture(1))); }
+			if (liquid != 'None') { return liquid; }
 		}
 
-		return false;
+		Sector heightsec = cursector.GetHeightSec();
+		if (heightsec && (heightsec.MoreFlags & Sector.SECMF_UNDERWATERMASK) &&
+			pos.z < heightsec.floorplane.ZatPoint(pos.xy) &&
+			(!damagingOnly || cursector.damageamount > 0))
+		{
+			return GetTextureMod(TexMan.GetName(heightsec.GetTexture(Sector.floor)));
+		}
+
+		if (!damagingOnly || cursector.damageamount > 0)
+		{
+			if (cursector.MoreFlags & Sector.SECMF_UNDERWATER)
+			{
+				Name liquid = GetTextureMod(TexMan.GetName(cursector.GetTexture(Sector.ceiling)));
+				if (liquid != 'None') { return liquid; }
+			}
+			if (pos.z <= cursector.floorplane.ZatPoint(pos.xy))
+			{
+				return GetTextureMod(TexMan.GetName(cursector.GetTexture(Sector.floor)));
+			}
+		}
+		return 'None';
 	}
 
 	static Name GetTextureMod(String texture, Name default = "None")
 	{
+		// UDMF maps use both short names and full resource paths.
+		int slash = texture.IndexOf("/");
+		while (slash >= 0)
+		{
+			texture = texture.Mid(slash + 1);
+			slash = texture.IndexOf("/");
+		}
+		int extension = texture.IndexOf(".");
+		if (extension >= 0) { texture = texture.Left(extension); }
+
 		if (texture ~== "WATR_X98") { return "MutantPoisonAmbience"; }
 		else if (
 			texture.Left(5) ~== "WATR_" || 
+			texture.Left(5) ~== "WATRA" ||
 			texture.Left(5) ~== "SLDG_" || 
 			texture.Left(6) ~== "HIACID" || 
 			texture.Left(6) ~== "HIWATR" || 
 			texture ~== "AZTC_WTR"
 		) { return "Drowning"; }
-		else if (texture.Left(5) ~== "LAVA_") { return "Lava"; }
+		else if (texture.Left(5) ~== "LAVA_" || texture ~== "LAVA1" || texture ~== "LAVA2" || texture ~== "LAVA3" || texture ~== "LAVA4") { return "Lava"; }
 
 		return default;
 	}
