@@ -1,13 +1,13 @@
 # Blade of Agony Launcher
 
-Version 2.6.12 is a modern WPF launcher for Blade of Agony and UZDoom 5.0.1
+Version 2.6.13 is a modern WPF launcher for Blade of Agony and UZDoom 5.0.1
 or newer. It is a clean-room replacement for the original native launcher and
 remains portable: no installer or additional UI runtime is required on
 supported Windows systems.
 
 ## Interface
 
-- Responsive four-area navigation for Quick Launch, Add-ons, Multiplayer, and
+- Responsive four-area navigation for Start, Add-ons, Multiplayer, and
   Diagnostics.
 - Equal-width Continue Campaign / New Campaign panes, displayed side by side
   when space permits and stacked on narrow
@@ -26,7 +26,7 @@ supported Windows systems.
   from the adjacent `uzdoom.exe`.
 - Bundled Unica One typography for the Blade of Agony title and sidebar
   navigation; no network connection or system font installation is required.
-- Unica One page headlines for Quick Launch, Add-ons, Multiplayer, and
+- Unica One page headlines for Start, Add-ons, Multiplayer, and
   Diagnostics.
 - Independent game and interface languages, including separate English (US)
   and English (UK) game options plus European Portuguese.

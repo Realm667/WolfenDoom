@@ -1,5 +1,13 @@
 # Changelog
 
+## 2.6.13
+
+### Changed
+
+- Rename the Quick Launch navigation entry and page heading to Start in every
+  interface language, reusing the existing Start translations (#1696).
+- Keep launch behavior and stable automation identifiers unchanged.
+
 ## 2.6.12
 
 ### Changed
