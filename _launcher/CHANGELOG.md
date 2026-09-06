@@ -1,5 +1,33 @@
 # Changelog
 
+## 2.6.4
+
+### Optimized
+
+- Update affected launcher sections instead of rebuilding the entire window
+  for campaign selections, profile edits, or graphics changes.
+- Run content discovery, launch validation, image decoding, compatibility matrix
+  checks, and support package creation outside the UI thread.
+- Cache unchanged add-on metadata, save metadata, archive indexes, game text,
+  and decoded previews with bounded capacity and file-change invalidation.
+- Read save screenshots only when selected and decode previews at display-appropriate sizes.
+- Reuse compatibility results and avoid duplicate startup save scans.
+- Keep fingerprints in memory and batch persistent cache updates.
+
+### Fixed
+
+- Replace settings files atomically and synchronize engine output collection.
+- Represent campaign launch intent with one exclusive state, clearing stale save paths.
+- Ignore obsolete background results after a newer selection or window closure.
+- Traverse accessible save directories even when another subdirectory is unreadable.
+
+### Build and Validation
+
+- Centralize version and build definitions and stage builds in a clean directory.
+- Package an explicit distribution file list and validate every release file hash.
+- Add isolated regression tests with a recording engine for real Play arguments,
+  cache invalidation, atomic replacement, and campaign state transitions.
+
 ## 2.6.3
 
 ### Fixed
