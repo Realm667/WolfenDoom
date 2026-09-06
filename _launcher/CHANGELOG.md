@@ -1,5 +1,15 @@
 # Changelog
 
+## 2.6.10
+
+### Fixed
+
+- Replace the subtle full-width startup pulse with a clearly moving segment in
+  the selected theme's accent color. Keep it animated while startup disables the
+  interface, adapt motion to resizing and stop the animation after loading.
+- Validate visible movement across rendered frames, rather than checking only
+  whether an animation clock exists.
+
 ## 2.6.9
 
 ### Fixed
