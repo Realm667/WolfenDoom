@@ -1,5 +1,18 @@
 # Changelog
 
+## 2.6.12
+
+### Changed
+
+- Require UZDoom 5.0.1 or newer throughout the launcher; older engines and
+  5.0.1 prereleases are unsupported.
+- Enforce the minimum before every process start, including Continue Campaign,
+  multiplayer and Safe Mode, with consistent preflight and compatibility status.
+- Update all interface-language notices, diagnostics and shipped/generated
+  manifests. Legacy manifests cannot lower the built-in minimum.
+- Retain dynamic capability detection for newer engines and use modern game
+  language tags consistently.
+
 ## 2.6.11
 
 ### Improved

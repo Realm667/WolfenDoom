@@ -1,7 +1,7 @@
 # Blade of Agony Launcher
 
-Version 2.6.11 is a modern WPF launcher for Blade of Agony and UZDoom 4.14.3
-or 5.x. It is a clean-room replacement for the original native launcher and
+Version 2.6.12 is a modern WPF launcher for Blade of Agony and UZDoom 5.0.1
+or newer. It is a clean-room replacement for the original native launcher and
 remains portable: no installer or additional UI runtime is required on
 supported Windows systems.
 
@@ -114,18 +114,16 @@ supported Windows systems.
 
 ## Multiplayer
 
-- Provides single-player, host co-op, and join co-op modes.
+- Provides host co-op and join co-op modes.
 - Host setup supports 2-4 players, chapter/map selection, all five BoA
   difficulties, UDP port, and `sv_cheats`.
 - Join setup supports host name or IPv4 address and port.
-- Multiplayer validates only `uzdoom.exe` as UZDoom 4.14.3 or 5.x and
+- Multiplayer validates only `uzdoom.exe` as UZDoom 5.0.1 or newer and
   `boa.ipk3`.
 - All selected add-ons and `boa_dt.pk3` are excluded from multiplayer
   commands. The single-player add-on selection is retained for later use.
-- UZDoom 4.14.3 receives its legacy language aliases (`enu`, `eng`, and
-  `pt`); UZDoom 5.x receives IETF BCP 47 language tags and the explicit
-  `-coop` option when hosting.
-- Probes UZDoom 5 with `-help-all` once per executable hash and caches support
+- Uses IETF BCP 47 language tags and the explicit `-coop` option when hosting.
+- Probes supported UZDoom builds with `-help-all` once per executable hash and caches support
   for `-loadgame`, `-episode`, `-coop`, `-password`, `-optfile`, and
   `-config`, with version-based fallback for engines that cannot be probed.
 - Imports and exports privacy-safe `.boa-session` files containing exact
@@ -159,7 +157,8 @@ supported Windows systems.
 The official UZDoom 5.0.1 binary was tested with a fresh archive of BoA master:
 2/4-player localhost handshakes, autoexec isolation, a running 2-player C1M1 game,
 and restoration of both players from a real co-op save passed. Official UZDoom
-4.14.3 also passed a 2-player handshake using launcher-generated commands.
+4.14.3 also passed a 2-player handshake at that time; it is no longer supported
+as of v2.6.12.
 Automated tests cover password byte boundaries, sessions, compatibility checks,
 portable/user save paths, profiles, Play/Continue separation and WPF layout.
 Separate-machine LAN/WAN, physical controller input, and a full campaign inventory,
@@ -182,14 +181,17 @@ checkpoint, respawn and cinematic regression pass were not performed.
 - Classifies recognized renderer, ZScript/add-on, savegame, missing-file, and
   fatal-engine signatures from the latest log and recommends a recovery path.
 - Labels detected engines as Stable, Preview, or Unsupported; UZDoom preview
-  builds remain usable but are clearly identified.
+  builds above the 5.0.1 release minimum remain usable but are clearly identified.
+  Older releases and 5.0.1 prereleases are blocked before every game launch,
+  including campaign continuation, multiplayer and Safe Mode.
 
 ## Content manifest
 
 The optional `boa-launcher.json` file in `boa.ipk3` is the authoritative,
 versioned launcher contract for BoA version, minimum engine version, languages,
 chapters, and missions. The launcher safely falls back to MAPINFO when the
-manifest is absent.
+manifest is absent. Older, missing or invalid minimum-version declarations cannot
+lower the launcher's built-in UZDoom 5.0.1 requirement.
 
 ## Build
 
@@ -234,12 +236,15 @@ copy is required.
 .\Test-Core.ps1
 .\Test-V25.ps1
 .\Test-V26.ps1
+.\Test-Optimizations.ps1
+.\Test-V265.ps1
+.\Test-UZDoomLegacy.ps1
 .\Test-ModernGui.ps1
 ```
 
 The core suite checks commands, language aliases, interface localization,
 MAPINFO parsing, add-on isolation, numbered preview discovery, embedded
-font resources, real archive overlaps, UZDoom 4.14.3/5.x command generation,
+font resources, real archive overlaps, UZDoom 5.0.1 command generation,
 and graphics profiles. The GUI suite checks the accessibility tree, compact
 layout, Quick Launch controls, navigation, language and player choices,
 window-size persistence, add-on selection, and the wrapping 16:9 preview
@@ -251,7 +256,9 @@ support-package redaction, strict `uzdoom.exe` selection, and v2.5
 localization.
 The v2.6 suite checks missing-config startup resilience, launch preflight,
 versioned game manifests, dependency-aware add-on ordering, pairwise matrix
-validation, and the SHA-256 release manifest.
+validation, and the SHA-256 release manifest. Optimization regressions include
+engine-version boundaries, future major versions, and launch guards for every
+mode. The legacy-engine test now verifies rejection rather than launching 4.14.3.
 
 ## Third-party assets
 
