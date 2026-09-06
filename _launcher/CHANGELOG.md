@@ -1,5 +1,24 @@
 # Changelog
 
+## 2.6.8
+
+### Improved
+
+- Place Start New Campaign at the bottom of the New Campaign pane, preserving
+  Main menu, episode, difficulty and optional mission selection.
+- Add Start Multiplayer Session below multiplayer compatibility checks, enabled
+  only for hosting or joining co-op. Retain existing preflight and launch guards.
+- Keep Continue Campaign independent and remove the global footer Play button.
+  Localize both new actions in all ten interface languages.
+
+### Removed
+
+- Remove launch profiles completely: built-in/user profiles, profile management,
+  import/export, favorites, comparisons, separate profile configurations and
+  profile diagnostic commands.
+- Stop applying legacy profile configuration paths. Preserve ordinary settings
+  and leave existing profile files untouched.
+
 ## 2.6.7
 
 ### Improved

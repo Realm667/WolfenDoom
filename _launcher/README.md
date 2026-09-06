@@ -1,6 +1,6 @@
 # Blade of Agony Launcher
 
-Version 2.6.7 is a modern WPF launcher for Blade of Agony and UZDoom 4.14.3
+Version 2.6.8 is a modern WPF launcher for Blade of Agony and UZDoom 4.14.3
 or 5.x. It is a clean-room replacement for the original native launcher and
 remains portable: no installer or additional UI runtime is required on
 supported Windows systems.
@@ -9,16 +9,18 @@ supported Windows systems.
 
 - Responsive four-area navigation for Quick Launch, Add-ons, Multiplayer, and
   Diagnostics.
-- Collapsed launch-profile accordion and equal-width Continue Campaign / New
-  Campaign panes, displayed side by side when space permits and stacked on narrow
+- Equal-width Continue Campaign / New Campaign panes, displayed side by side
+  when space permits and stacked on narrow
   windows or with larger text. Save previews retain a cropped 16:9 viewport.
 - New Campaign contains the Main menu / Episode choice, followed by Episode,
   Difficulty and optional Mission select. Missions default to From the beginning;
   changing the episode resets this optional selection. Campaign fields remain
-  visible but disabled for Main menu. The footer contains only status and Play.
+  visible but disabled for Main menu. Start New Campaign sits at the bottom of
+  its pane; the footer contains status only, with no global Play button.
 - Shared graphics and game settings sit below both campaign panes. Continue
-  Campaign loads its chosen save directly without changing the regular Play action
-  or the selected episode, difficulty and mission.
+  Campaign loads its chosen save directly without changing the selected episode,
+  difficulty or mission. Start Multiplayer Session belongs to the Multiplayer page
+  and is enabled only for Host co-op or Join co-op.
 - Official Blade of Agony header logo and live UZDoom product version read
   from the adjacent `uzdoom.exe`.
 - Bundled Unica One typography for the Blade of Agony title and sidebar
@@ -38,10 +40,8 @@ supported Windows systems.
   Documents/MyGames, and roaming-user locations without requiring an existing
   INI file.
 - Saves and restores the user-adjusted launcher window size.
-- Named built-in and user launch profiles with validated import/export;
-  profiles include the selected add-ons and their load order.
-- Profiles can be duplicated, renamed, favorited, compared with current
-  settings, and assigned an isolated UZDoom configuration.
+- Settings persist directly, without launch profiles or profile-specific engine
+  configurations. Old profile files are left untouched but are no longer used.
 - Compatibility-aware add-on selection: compatible choices are highlighted
   in green, while only the add-ons involved in a blocking clash turn red.
 - Full launcher animations are always enabled. XInput controller navigation
@@ -65,8 +65,8 @@ supported Windows systems.
 - Binds newly written saves to engine, game, add-on, and load-order hashes;
   mismatched content is blocked before Continue.
 - Supports a normal main-menu launch or an advanced direct mission start.
-- Groups normal and advanced campaign starts in New Campaign while keeping Play
-  as the single normal launch action and retaining existing profile compatibility.
+- Groups normal and advanced campaign starts in New Campaign, with a dedicated
+  start button independent of save continuation and multiplayer.
 - Shows up to twelve recent compatible saves and can create timestamped local
   backups before continuing.
 - Clearly identifies Mission Select as an advanced path that can bypass
@@ -169,8 +169,11 @@ checkpoint, respawn and cinematic regression pass were not performed.
   findings, last-run data, and the latest available engine log.
 - Removes passwords, host/IP information, usernames, and local game paths
   from exported diagnostics.
-- Keeps runtime data in `launcher-data/` and user profiles in
-  `launcher-profiles/` next to the portable launcher.
+- Keeps runtime data in `launcher-data/` next to the portable launcher.
+- Ignores legacy `ActiveProfile` and `ProfileConfigPath` settings. Existing
+  `launcher-profiles/` and `launcher-data/profile-configs/` files are not deleted
+  or migrated automatically. Normal UZDoom configuration discovery and Safe Mode
+  remain available.
 - Falls back to per-user or temporary runtime storage when the installation
   directory is read-only.
 - Classifies recognized renderer, ZScript/add-on, savegame, missing-file, and
@@ -239,7 +242,7 @@ layout, Quick Launch controls, navigation, language and player choices,
 window-size persistence, add-on selection, and the wrapping 16:9 preview
 carousel.
 The v2.5 suite additionally checks save parsing, compatibility binding,
-profiles, capability detection, session parity and password privacy, Safe
+legacy-profile removal, capability detection, session parity and password privacy, Safe
 Mode isolation, automatic controller navigation, full animation defaults,
 support-package redaction, strict `uzdoom.exe` selection, and v2.5
 localization.
@@ -267,8 +270,6 @@ Useful commands:
 --scan-saves
 --print-save-roots
 --check-save FILE
---save-profile NAME
---list-profiles
 --validate-session FILE
 --create-session FILE
 --create-diagnostics ZIP
