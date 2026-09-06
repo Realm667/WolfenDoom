@@ -31,12 +31,13 @@ class MovementBoAPlayer: BoAPlayer
 	
 	void WeightAdjustSpeed()
 	{
-		double weight = 100.0, t;
+		double weight = 100.0;
 		for (int i = 0; i < totalitems; ++i)
 		{
 			weight += CountInv(heavyitems[i]) * itemweights[i];
 		}
-		speed *= 100.0 / weight;
+		// Recompute from the class default, not last tic's already reduced speed.
+		speed = Default.Speed * 100.0 / weight;
 	}
 	
     void CheckForRoll()
@@ -71,34 +72,14 @@ class MovementBoAPlayer: BoAPlayer
 		}
     }
 	
-	//the following is to avoid default sprint handling
+	// Extend the current player tick so sector/water state and HUD data stay valid.
+	// Sprinting is handled by the base game's BoASprinting inventory effect.
 	override void Tick()
 	{
+		Super.Tick();
+
 		if (player && !player.morphtics)
 		{
-			if (Level.time % (35 * 5) == 0) { ForcedHealthBar = GetClosestForcedHealthBar(); } // Only run this check occasionally
-
-			CrosshairTarget = GetLineTarget();
-
-			DoGravity();
-
-			DoTokenChecks();
-
-			DoInteractions();
-			
-			if (level.mapname != "TITLEMAP")
-			{
-				// Do screen drawing actions
-				if (!FindInventory("TankMorph", 1)) // Only do these if you're not driving a tank
-				{
-					if (!CountInv("Billy"))
-					{
-						// Do visual effects
-						ACS_NamedExecuteAlways("DoFlinchRecovery_Wrapper", 0);
-						ACS_NamedExecuteAlways("DoTiltEffect_Wrapper", 0);
-					}
-				}
-			}
 			WeightAdjustSpeed();
 			//WeightAdjustJumpSpeed();
 			if (health > 0) { CheckForRoll(); }
@@ -109,7 +90,6 @@ class MovementBoAPlayer: BoAPlayer
 			else if (deltaroll < 0) { A_SetRoll((roll - 15) % 360, SPF_INTERPOLATE); deltaroll += 15; }
 			else if (roll != 0) { A_SetRoll(0, SPF_INTERPOLATE); }
 		}
-		PlayerPawn.Tick();
 	}
 	
 	void DoSprinting() //translation of the ACS function

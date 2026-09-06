@@ -94,7 +94,8 @@ override void Init()
 
 	ObjectivesWidget.Init("Objectives", Widget.WDG_RIGHT, 0);
 	KeenInventoryWidget.Init("Keen Inventory", Widget.WDG_RIGHT, 0);
-	PositionWidget.Init("Position", Widget.WDG_RIGHT, 0);
+	// Debug coordinates need their own row below the other right-hand widgets.
+	PositionWidget.Init("Position", Widget.WDG_RIGHT, 3);
 	KeyWidget.Init("Keys", Widget.WDG_RIGHT, 1);
 	PuzzleItemWidget.Init("Puzzle Items", Widget.WDG_RIGHT, 2, (16, 0));
 

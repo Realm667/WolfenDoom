@@ -318,6 +318,8 @@ class StatueBreakable : Actor
 {
 	double tiltangle;
 	double tiltpitch;
+	bool tilting;
+	bool broken;
 	double floorheight;
 	Actor item;
 	Class<Actor> itemclass;
@@ -365,6 +367,7 @@ class StatueBreakable : Actor
 		Death:
 			MDLA A -1
 			{
+				broken = true;
 				if (item)
 				{
 					item.bNoGravity = item.Default.bNoGravity;
@@ -470,31 +473,21 @@ class StatueBreakable : Actor
 	{
 		floorheight = pos.z - cursector.floorplane.ZatPoint(pos.xy);
 
-		if (BlockingLine && vel.xy.length() && floorheight > 0)
+		// Commit to the direction of the push when the centre leaves its support.
+		// BlockingLine may refer to an unrelated earlier collision and can point
+		// back onto the pedestal. Do not reselect the direction while tipping.
+		if (!broken && !tilting && pos.z == floorz && floorheight > 0)
 		{
-			double linelength = int(BlockingLine.delta.Length());
-
-			if (!BlockingLine.delta.x)
-			{
-				if (BlockingLine.v1.p.x > pos.x) { tiltangle = 180; }
-				else { tiltangle = 0; }
-			}
-			else if (!BlockingLine.delta.y)
-			{
-				if (BlockingLine.v1.p.y > pos.y) { tiltangle = 270; }
-				else { tiltangle = 90; }
-			}
-			else
-			{
-				tiltangle = atan2(BlockingLine.delta.y, BlockingLine.delta.x) + 90;
-				if (BlockingLine.frontsector == cursector) { tiltangle += 180; }
-
-				tiltangle = tiltangle % 360;
-			}
+			if (vel.xy.Length() > 0) { tiltangle = atan2(vel.y, vel.x); }
+			tilting = true;
+			SetStateLabel("Fall");
 		}
 
-		if (vel.z < -1.0 && floorheight <= 16) { SetStateLabel("Death"); }
-		if (pos.z == floorz && floorheight > 0) { SetStateLabel("Fall"); }
+		if (!broken && ((vel.z < -1.0 && floorheight <= 16) ||
+			(tilting && pos.z <= floorz && floorheight <= 0)))
+		{
+			SetStateLabel("Death");
+		}
 
 		if (
 			item && 
@@ -532,13 +525,17 @@ class StatueBreakable : Actor
 		if (tiltpitch < 90 || pitchinput)
 		{
 			if (pitchinput) { tiltpitch = pitchinput; }
-			else { tiltpitch += max(1, tiltpitch / 30); }
+			else { tiltpitch = min(90, tiltpitch + max(1, tiltpitch / 30)); }
 
 			pitch = tiltpitch * cos(angle);
 			roll = tiltpitch * sin(angle);
 		}
 
-		VelFromAngle(0.25 * (90 - tiltpitch) / (Default.radius / 1.4), tiltangle);
+		// Keep clearing the supporting edge if the collision radius still rests
+		// on it at full tilt; a negative speed would push us back onto the ledge.
+		double speed = max(0, 0.25 * (90 - tiltpitch) / (Default.radius / 1.4));
+		if (!broken && tilting && floorheight > 0) { speed = max(0.25, speed); }
+		VelFromAngle(speed, tiltangle);
 	}
 
 	void RotateItem()
