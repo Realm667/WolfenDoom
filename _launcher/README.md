@@ -1,6 +1,6 @@
 # Blade of Agony Launcher
 
-Version 2.6.13 is a modern WPF launcher for Blade of Agony and UZDoom 5.0.1
+Version 2.6.14 is a modern WPF launcher for Blade of Agony and UZDoom 5.0.1
 or newer. It is a clean-room replacement for the original native launcher and
 remains portable: no installer or additional UI runtime is required on
 supported Windows systems.
@@ -206,7 +206,6 @@ included with Windows. It creates:
 
 ```text
 dist/Blade of Agony - Launcher.exe
-dist/Blade of Agony - Launcher Diagnostics.exe
 dist/launcher-resource/*.cfg
 dist/licenses/UnicaOne-OFL.txt
 ```
@@ -267,7 +266,14 @@ embedded in the launcher and copied to `dist/licenses/UnicaOne-OFL.txt`.
 
 ## Diagnostics
 
-Useful commands:
+Use the Diagnostics page in the normal launcher to check the installation,
+inspect compatibility and create support packages. There is no separate
+Diagnostics executable. An obsolete copy from an earlier release can be deleted.
+
+For automated tooling, the normal launcher retains the following arguments.
+Capture standard output/error and wait for process completion; a Windows GUI
+executable does not open a console. The source test suites handle this through
+`TestSupport.ps1`.
 
 ```text
 --print-command

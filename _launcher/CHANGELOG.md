@@ -1,5 +1,14 @@
 # Changelog
 
+## 2.6.14
+
+### Changed
+
+- Remove the separate Launcher Diagnostics executable from builds and releases.
+- Keep the in-app Diagnostics page and support packages in the normal launcher.
+- Run automated diagnostic checks against the normal launcher using redirected
+  output, without building or distributing a second executable.
+
 ## 2.6.13
 
 ### Changed
