@@ -1,5 +1,20 @@
 # Changelog
 
+## 2.6.3
+
+### Fixed
+
+- Made Continue Campaign and New Campaign explicit, mutually exclusive launch
+  targets with a clear selected state.
+- Changed the footer Play action to execute the selected campaign target, so a
+  selected save is loaded directly without a second Continue Campaign click.
+- Kept the selected New Campaign action synchronized with the Start Mode field.
+
+### Verified
+
+- Added WPF automation coverage for the campaign action highlights and the
+  launch target used by Play.
+
 ## 2.6.2
 
 ### Fixed
