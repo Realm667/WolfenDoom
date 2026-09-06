@@ -1,5 +1,22 @@
 # Changelog
 
+## 2.6.6
+
+### Improved
+
+- Reorganize Quick Launch into equal-width, subtly bordered Continue Campaign
+  and New Campaign panes with aligned action rows and full-width 16:9 save previews.
+- Stack campaign panes on narrow windows and with larger text instead of squeezing
+  controls. Keep graphics, game language and commentary in a shared settings band.
+- Move Start Mode next to Play in the persistent footer, with a stacked footer on
+  compact windows. Hide single-player mode selection during multiplayer hosting/joining.
+- Replace the misleading New Campaign action button with an explicit selection
+  for Play. Show mission selection and its warning only in the advanced start mode.
+- Keep direct Continue separate from Play and synchronize campaign/footer selections
+  after profile, language and navigation changes.
+- Localize the new shared-setting and campaign-selection labels in all supported
+  interface languages. Retain the collapsed profile accordion and existing themes.
+
 ## 2.6.5
 
 ### Added
