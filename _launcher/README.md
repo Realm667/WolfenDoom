@@ -1,6 +1,6 @@
 # Blade of Agony Launcher
 
-Version 2.6.4 is a modern WPF launcher for Blade of Agony and UZDoom 4.14.3
+Version 2.6.5 is a modern WPF launcher for Blade of Agony and UZDoom 4.14.3
 or 5.x. It is a clean-room replacement for the original native launcher and
 remains portable: no installer or additional UI runtime is required on
 supported Windows systems.
@@ -9,8 +9,9 @@ supported Windows systems.
 
 - Responsive four-area navigation for Quick Launch, Add-ons, Multiplayer, and
   Diagnostics.
-- Persistent launch summary with Play executing the visibly selected Main Menu,
-  New Campaign, Mission Select, or Continue Campaign target.
+- Collapsed launch-profile accordion and independent Continue Campaign and New
+  Campaign sections. Play uses Start Mode; Continue Campaign loads its chosen save
+  directly without changing the regular Play action.
 - Official Blade of Agony header logo and live UZDoom product version read
   from the adjacent `uzdoom.exe`.
 - Bundled Unica One typography for the Blade of Agony title and sidebar
@@ -47,8 +48,8 @@ supported Windows systems.
   `wolfendoom.git` development tree.
 - Reads `.zds` `info.json` metadata and save previews for one-click campaign
   continuation through UZDoom's `-loadgame` option.
-- Passes a canonical absolute save path to `-loadgame`, preventing UZDoom
-  from prepending its active save directory a second time.
+- Loads single-player saves with their directory in `-savedir` and only the
+  filename in `-loadgame`, avoiding duplicated absolute paths.
 - Lists only savegames whose `Game WAD` metadata identifies `boa.ipk3`;
   saves belonging to other games are omitted from Continue Campaign.
 - Discovers UZDoom saves in `%USERPROFILE%\Saved Games\UZDoom` on Windows,
@@ -120,6 +121,39 @@ supported Windows systems.
 - Imports and exports privacy-safe `.boa-session` files containing exact
   engine and `boa.ipk3` hashes, map, skill, port, and player settings. Lobby
   passwords are never written to disk.
+- Rejects passwords longer than 255 UTF-8 bytes before starting host or client;
+  non-ASCII characters can occupy more than one byte.
+- Uses `-noautoexec -noautoload` for host and join launches. Explicit launcher
+  graphics presets still apply; single-player autoexec behavior is unchanged.
+- Offers advanced host-only network timing, pause/save permission, conversation,
+  repeated-action and chat-rate settings. Engine default leaves each setting
+  untouched. Unsupported settings are disabled; Reset removes old overrides.
+- Detects network CVars from compiled identifiers, separately from CLI help probes.
+  A detected identifier is not a claim that every modified engine behaves identically.
+- Session format 2 includes network overrides and the selected co-op save hash;
+  format 1 imports retain backward-compatible defaults. Save files are not embedded.
+- Resumes verified 2-4 player co-op saves in Multiplayer. Each participant selects
+  an identical local save plus its `.boa-launcher.ini` companion file, using the
+  original player count and names. Missing bindings, changed engine/game files,
+  add-ons, and mismatched imported saves block launch. Legacy unbound co-op saves
+  are not automatically declared safe.
+- Prepares a checksum-verified copy in the engine's native `Save/NetGame/<AutoName>`
+  folder (portable mode) or Windows Saved Games `UZDoom/NetGame/<AutoName>` folder.
+  UZDoom ignores `-savedir` in network games. Only a short filename is passed to
+  `-loadgame`; original saves are not moved or overwritten.
+- Keeps native lobby moderation in UZDoom. Engine cutscene-voting settings are
+  not presented as controls for BoA's custom ACS cinematics.
+
+### v2.6.5 Validation
+
+The official UZDoom 5.0.1 binary was tested with a fresh archive of BoA master:
+2/4-player localhost handshakes, autoexec isolation, a running 2-player C1M1 game,
+and restoration of both players from a real co-op save passed. Official UZDoom
+4.14.3 also passed a 2-player handshake using launcher-generated commands.
+Automated tests cover password byte boundaries, sessions, compatibility checks,
+portable/user save paths, profiles, Play/Continue separation and WPF layout.
+Separate-machine LAN/WAN, physical controller input, and a full campaign inventory,
+checkpoint, respawn and cinematic regression pass were not performed.
 
 ## Support and recovery
 

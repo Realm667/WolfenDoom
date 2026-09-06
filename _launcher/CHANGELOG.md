@@ -1,5 +1,40 @@
 # Changelog
 
+## 2.6.5
+
+### Added
+
+- Collapsible launch profiles and separate Continue Campaign / New Campaign sections.
+- Capability-gated advanced host rules for network timing, pause/save permissions,
+  conversation restrictions, repeated actions, and chat slow mode.
+- Version 2 multiplayer sessions carrying network overrides and co-op save hashes,
+  while retaining version 1 import compatibility and excluding passwords.
+- A co-op save selection workflow for hosts and joining clients, with engine/game,
+  add-on, player-count and imported save identity checks.
+
+### Fixed
+
+- Reject passwords exceeding UZDoom's 255-byte UTF-8 limit before launching.
+- Disable automatic configuration scripts and autoloads in multiplayer.
+- Keep Play tied to Start Mode when selecting or directly continuing a save.
+- Separate co-op saves from the single-player Continue Campaign list.
+- Clear transient co-op save/session requirements when applying a launch profile.
+- Allow controller confirmation to toggle accordions and checkbox/radio controls.
+- Keep release checksums stable across Git checkouts with canonical text line
+  endings and scoped release attributes.
+- Prepare verified co-op save copies in UZDoom's native NetGame folder, which
+  ignores `-savedir`; preserve original saves and avoid doubled absolute paths.
+
+### Compatibility
+
+- Detect network settings using compiled identifiers, separately from CLI help
+  probing; invalidate older capability caches automatically.
+- Retain the BoA 2-4 player limit and native UZDoom lobby controls.
+- Do not expose engine cutscene voting as a control for BoA's custom ACS cinematics.
+- Verified official UZDoom 5.0.1 localhost sessions (2/4 players), real 2-player
+  save restoration, and the official 4.14.3 host/join command path with current BoA
+  master. Full campaign and separate-machine LAN/WAN testing remain outstanding.
+
 ## 2.6.4
 
 ### Optimized
