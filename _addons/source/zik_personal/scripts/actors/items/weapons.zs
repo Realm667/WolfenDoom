@@ -82,15 +82,29 @@ class NaziWeapon : Weapon
 
 					Line AimLine = kicktracer.Results.HitLine;
 
-					if (AimLine && AimLine.activation & SPAC_Use)
+					if (AimLine && !AimLine.GetUDMFInt("user_unkickable") && AimLine.activation & SPAC_Use)
 					{
-						if (AimLine.special == 7) // PolyObj_DoorSwing
+						Side AimSide = AimLine.sidedef[kicktracer.Results.Side];
+						// Keep the base game's kick restrictions when overriding this file.
+						if (AimSide.Flags & Side.WALLF_POLYOBJ)
 						{
-							AimLine.args[1] = 64 * AimLine.args[1] / abs(AimLine.args[1]); // Make it move fast
-							AimLine.args[3] = -1; // Make it stay open forever
+							if (AimLine.special == 7) // PolyObj_DoorSwing
+							{
+								AimLine.args[1] = 64 * AimLine.args[1] / abs(AimLine.args[1]); // Make it move fast
+								AimLine.args[3] = -1; // Make it stay open forever
+								AimLine.Activate(invoker.owner, 0, SPAC_Use);
+							}
+							else if (AimLine.special == 2 || AimLine.special == 3) // Polyobj_RotateLeft/Right
+							{
+								AimLine.Activate(invoker.owner, 0, SPAC_Use);
+							}
 						}
-
-						AimLine.Activate(invoker.owner, 0, SPAC_Use); // Use the line...
+						else if (TexMan.GetName(AimSide.GetTexture(Side.mid)) ~== "VENT_M01" ||
+							TexMan.GetName(AimSide.GetTexture(Side.mid)) ~== "textures/VENT_M01.png")
+						{
+							AimLine.Activate(invoker.owner, 0, SPAC_Use);
+						}
+						// Attack-triggered objects such as the C1M5 mirror still use the punch above.
 					}
 				}
 			}
