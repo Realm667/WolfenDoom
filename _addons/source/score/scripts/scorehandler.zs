@@ -1,10 +1,16 @@
+const BONUSSTEP = 40000;
+
+class PersistentScoreHandler : EventHandler
+{
+    int BonusAmt[MAXPLAYERS];
+}
+
 class ScoreHandler : StaticEventHandler
 {
-    const bonusstep = 40000;
-
     ParsedValue scoredata, rewarddata;
-    int BonusAmt[MAXPLAYERS];
     bool initialized;
+    int BonusAmt[MAXPLAYERS];
+    PersistentScoreHandler persistent;
 
     override void OnRegister()
     {
@@ -20,6 +26,29 @@ class ScoreHandler : StaticEventHandler
             let compass = Widget.Find("Compass");
             if (compass) { compass.priority = 1; }
             ScoreWidget.Init("Score", Widget.WDG_TOP | Widget.WDG_LEFT, 1);
+        }
+    }
+
+    override void NewGame()
+	{
+        for (int i = 0; i < MAXPLAYERS; i++)
+        {
+            BonusAmt[i] = BONUSSTEP;
+        }
+    }
+
+    override void WorldLoaded(WorldEvent e)
+	{
+        if (e.IsSaveGame)
+        {
+            if (!persistent) { persistent = PersistentScoreHandler(EventHandler.Find("PersistentScoreHandler")); }
+            if (persistent)
+            {
+                for (int i = 0; i < MAXPLAYERS; i++)
+                {
+                    BonusAmt[i] = persistent.BonusAmt[i];
+                }
+            }
         }
     }
 
@@ -40,14 +69,22 @@ class ScoreHandler : StaticEventHandler
 
                 killer.score += amt;
 
-                if (rewarddata && killer.score >= BonusAmt[killer.PlayerNumber()])
+                if (!persistent) { persistent = PersistentScoreHandler(EventHandler.Find("PersistentScoreHandler")); }
+                if (persistent)
                 {
-                    if (BonusAmt[killer.PlayerNumber()] > 0)
-                    {
-                        if (GiveReward(killer, BonusAmt[killer.PlayerNumber()])) { clr = "CCAA00"; }
-                    }
+                    int p = killer.PlayerNumber();
+                    int bonus = BonusAmt[p];
 
-                    BonusAmt[killer.PlayerNumber()] += bonusstep;
+                    if (rewarddata && killer.score >= bonus)
+                    {
+
+                        if (bonus > 0)
+                        {
+                            if (GiveReward(killer, bonus)) { clr = "CCAA00"; }
+                        }
+
+                        persistent.BonusAmt[p] = BonusAmt[p] = bonus + BONUSSTEP;
+                    }
                 }
 
                 thing.A_Face(killer);
@@ -59,7 +96,7 @@ class ScoreHandler : StaticEventHandler
     int GetScoreAmt(Actor mo)
     {
         int score;
-        
+
         if (scoredata) { score = FileReader.GetInt(scoredata, mo.GetClassName()); }
         if (!score) { score = max(100, mo.Default.health * 5); } // Fallback for enemies that aren't included in the score data list
 
@@ -69,7 +106,7 @@ class ScoreHandler : StaticEventHandler
     bool GiveReward(Actor mo, int amt)
     {
         ParsedValue rewards, reward;
-        
+
         rewards = rewarddata.Find(String.Format("%i", amt)); // Try to find the reward associated with this point value
         if (!rewards) { rewards = rewarddata.Find("Default"); } // If there's not one, fall back to the default reward
         if (!rewards) { return false; } // If no default was set, return here
@@ -137,24 +174,30 @@ class ScoreWidget : Widget
 		if (
 				BoAStatusBar(StatusBar) &&
                 screenblocks < 12 &&
-				!automapactive && 
+				!automapactive &&
 				!player.mo.FindInventory("CutsceneEnabled") &&
 				!(player.mo is "KeenPlayer")
 			) { return true; }
-		
+
 		return false;
 	}
 
 	override Vector2 Draw()
 	{
-        String score;
-        if (player.mo) { score = String.Format("%i", player.mo.score); }
-        if (!score.length()) { score = "0"; }
+        if (!player || !player.mo) { return (0, 0); }
 
-        size = (max(BigFont.StringWidth(score), 64), BigFont.GetHeight());
+        String score = String.Format("%i", player.mo.score);
+
+        if (boa_debugscore)
+        {
+            let handler = ScoreHandler(StaticEventHandler.Find("ScoreHandler"));
+            if (handler) { score.AppendFormat(" / %i", handler.BonusAmt[consoleplayer]); }
+        }
+
+        size = (max(BigFont.StringWidth(score), 64), 2 * BigFont.GetHeight());
         Super.Draw();
 
-        DrawToHUD.DrawText(score, (pos.x + size.x, pos.y +size.y + size.y), BigFont, alpha, 1.0, shade:Font.CR_GOLD, flags:ZScriptTools.STR_RIGHT);
+        DrawToHUD.DrawText(score, (pos.x + size.x, pos.y + size.y), BigFont, alpha, 1.0, shade:Font.CR_GOLD, flags:ZScriptTools.STR_RIGHT);
 
 		return size;
 	}
