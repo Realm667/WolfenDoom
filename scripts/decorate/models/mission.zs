@@ -27,7 +27,7 @@ class Vidcam : Obstacle3d //Ozy81
 		//$Title Video Cam
 		//$Color 3
 		DistanceCheck "boa_scenelod";
-		Radius 12;
+		Radius 8;
 		Height 64;
 	}
 }
