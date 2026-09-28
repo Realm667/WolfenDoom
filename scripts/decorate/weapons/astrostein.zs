@@ -23,6 +23,19 @@
 
 class AstroShotgun : NaziAstroWeapon
 {
+	override bool TryPickup(in out Actor toucher)
+	{
+		bool firstPickup = toucher && !toucher.FindInventory(GetClass());
+		bool pickedUp = Super.TryPickup(toucher);
+
+		if (pickedUp && firstPickup && toucher && toucher.player && level.mapname ~== "C2M0_B")
+		{
+			HintMessage.Init(toucher, "HINTTEXTC2M0B", "+altattack");
+		}
+
+		return pickedUp;
+	}
+
 	Default
 	{
 	//$Title (3) Astrostein Shotgun
@@ -186,6 +199,19 @@ class AstroShotgunShell : Ammo
 
 class AstroRocketlauncher : NaziAstroWeapon
 {
+	override bool TryPickup(in out Actor toucher)
+	{
+		bool firstPickup = toucher && !toucher.FindInventory(GetClass());
+		bool pickedUp = Super.TryPickup(toucher);
+
+		if (pickedUp && firstPickup && toucher && toucher.player && level.mapname ~== "C2M0_B")
+		{
+			HintMessage.Init(toucher, "HINTTEXTC2M0C", "+altattack");
+		}
+
+		return pickedUp;
+	}
+
 	Default
 	{
 	//$Title (5) Astrostein RocketLauncher
