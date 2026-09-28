@@ -2,6 +2,8 @@ const BONUSSTEP = 40000;
 
 class PersistentScoreHandler : EventHandler
 {
+    // Kept for compatibility with existing saves; bonus thresholds are now
+    // calculated from the player's score instead of this persisted value.
     int BonusAmt[MAXPLAYERS];
 }
 
@@ -9,8 +11,6 @@ class ScoreHandler : StaticEventHandler
 {
     ParsedValue scoredata, rewarddata;
     bool initialized;
-    int BonusAmt[MAXPLAYERS];
-    PersistentScoreHandler persistent;
 
     override void OnRegister()
     {
@@ -29,29 +29,6 @@ class ScoreHandler : StaticEventHandler
         }
     }
 
-    override void NewGame()
-	{
-        for (int i = 0; i < MAXPLAYERS; i++)
-        {
-            BonusAmt[i] = BONUSSTEP;
-        }
-    }
-
-    override void WorldLoaded(WorldEvent e)
-	{
-        if (e.IsSaveGame)
-        {
-            if (!persistent) { persistent = PersistentScoreHandler(EventHandler.Find("PersistentScoreHandler")); }
-            if (persistent)
-            {
-                for (int i = 0; i < MAXPLAYERS; i++)
-                {
-                    BonusAmt[i] = persistent.BonusAmt[i];
-                }
-            }
-        }
-    }
-
     override void WorldThingDied (WorldEvent e)
     {
         color clr = "CC0000";
@@ -67,24 +44,15 @@ class ScoreHandler : StaticEventHandler
                 thing = Actor.Spawn("ScorePosition", thing.Pos, NO_REPLACE);
                 thing.target = killer;
 
+                int nextBonus = (max(0, killer.score) / BONUSSTEP + 1) * BONUSSTEP;
                 killer.score += amt;
 
-                if (!persistent) { persistent = PersistentScoreHandler(EventHandler.Find("PersistentScoreHandler")); }
-                if (persistent)
+                // Derive thresholds from the score so save/load and map changes
+                // cannot restore a stale or zero bonus target.
+                while (rewarddata && nextBonus <= killer.score)
                 {
-                    int p = killer.PlayerNumber();
-                    int bonus = BonusAmt[p];
-
-                    if (rewarddata && killer.score >= bonus)
-                    {
-
-                        if (bonus > 0)
-                        {
-                            if (GiveReward(killer, bonus)) { clr = "CCAA00"; }
-                        }
-
-                        persistent.BonusAmt[p] = BonusAmt[p] = bonus + BONUSSTEP;
-                    }
+                    if (GiveReward(killer, nextBonus)) { clr = "CCAA00"; }
+                    nextBonus += BONUSSTEP;
                 }
 
                 thing.A_Face(killer);
@@ -191,7 +159,7 @@ class ScoreWidget : Widget
         if (boa_debugscore)
         {
             let handler = ScoreHandler(StaticEventHandler.Find("ScoreHandler"));
-            if (handler) { score.AppendFormat(" / %i", handler.BonusAmt[consoleplayer]); }
+            if (handler) { score.AppendFormat(" / %i", (max(0, player.mo.score) / BONUSSTEP + 1) * BONUSSTEP); }
         }
 
         size = (max(BigFont.StringWidth(score), 64), 2 * BigFont.GetHeight());

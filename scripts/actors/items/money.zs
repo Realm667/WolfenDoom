@@ -81,16 +81,34 @@ class CoinItem : StackableInventory
 		return msg;
 	}
 
+	override bool HandlePickup(Inventory item)
+	{
+		bool handled = Super.HandlePickup(item);
+
+		// Map treasure must still count as found when the player's wallet is full.
+		// Bonus drops and other non-counting coins retain their normal cap behavior.
+		if (handled && item is "CoinItem" && item.bCountItem && !item.bPickupGood && Amount >= MaxAmount)
+		{
+			item.bPickupGood = true;
+		}
+
+		return handled;
+	}
+
 	override bool TryPickup (in out Actor toucher)
 	{
+		Inventory coins = toucher ? toucher.FindInventory("CoinItem") : null;
+		int before = coins ? coins.Amount : 0;
 		bool ret = Super.TryPickup(toucher);
 
 		if (ret && toucher && toucher.player)
 		{
+			coins = toucher.FindInventory("CoinItem");
+			int collected = (coins ? coins.Amount : 0) - before;
 			AchievementTracker achievements = AchievementTracker(StaticEventHandler.Find("AchievementTracker"));
-			if (achievements)
+			if (achievements && collected > 0)
 			{
-				achievements.coins[toucher.PlayerNumber()] += Amount;
+				achievements.coins[toucher.PlayerNumber()] += collected;
 				AchievementTracker.CheckAchievement(toucher.PlayerNumber(), AchievementTracker.ACH_GOLDDIGGER);
 			}
 		}
