@@ -7,7 +7,8 @@ class EfficientAmmo : Ammo abstract
 	Default
 	{
 		EfficientAmmo.AmmoType "Ammo9mm";
-		+USESPECIAL
+		// Let Used pass an unsuccessful pickup through to doors behind it.
+		-USESPECIAL
 		Radius 16;
 		Height 16;
 		Activation THINGSPEC_Switch; // no time to understand GZDoom code
@@ -47,6 +48,17 @@ class EfficientAmmo : Ammo abstract
 	}
 	
 	override String PickupMessage () { return GetDefaultByType(AmmoType).PickupMessage(); }
+
+	override bool Used(Actor user)
+	{
+		if (!user) { return false; }
+		Class<Ammo> ammoClass = GetDefaultByType(AmmoType).GetParentAmmo();
+		Inventory beforeItem = user.FindInventory(ammoClass);
+		int beforeAmount = beforeItem ? beforeItem.Amount : 0;
+		Activate(user);
+		Inventory afterItem = user.FindInventory(ammoClass);
+		return (afterItem ? afterItem.Amount : 0) > beforeAmount;
+	}
 	
 	override void Activate (Actor a)
 	{
@@ -72,7 +84,8 @@ class EfficientHealth : Health
 	Default
 	{
 		EfficientHealth.HealthType "Medikit_Small";
-		+USESPECIAL
+		// USESPECIAL would consume +use even when healing is impossible.
+		-USESPECIAL
 		Radius 16;
 		Height 16;
 		Activation THINGSPEC_Switch;
@@ -100,6 +113,14 @@ class EfficientHealth : Health
 	}
 	
 	override String PickupMessage () { return GetDefaultByType(HealthType).PickupMessage(); }
+
+	override bool Used(Actor user)
+	{
+		if (!user) { return false; }
+		int beforeHealth = user.health;
+		Activate(user);
+		return user.health > beforeHealth;
+	}
 	
 	override void Activate (Actor a)
 	{
