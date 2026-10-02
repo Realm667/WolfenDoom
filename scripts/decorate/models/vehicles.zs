@@ -264,7 +264,7 @@ class Forklift : Obstacle3d
 	//$Title Forklift
 	//$Color 3
 	DistanceCheck "boa_scenelod";
-	Radius 80;
+	Radius 24;
 	Height 64;
 	}
 }
