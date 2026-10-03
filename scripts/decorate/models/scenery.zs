@@ -424,8 +424,8 @@ class Book1_3d : Obstacle3d
 		//$Title Book (front)
 		//$Color 3
 		DistanceCheck "boa_scenelod";
-		Radius 16;
-		Height 8;
+		Radius 8;
+		Height 2;
 	}
 }
 
