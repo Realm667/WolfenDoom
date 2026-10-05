@@ -76,6 +76,16 @@ class InventoryClearHandler : EventHandler
 
 		ResetPlayerInventory(me);
 
+		// Regenschirm's keys have no use at HQ or in later missions. Keep the
+		// heart key throughout C3M0_A: its door checks the lock on every use.
+		if (level.levelnum == 99)
+		{
+			let gem = me.FindInventory("Gem");
+			if (gem) { gem.Destroy(); }
+			let heart = me.FindInventory("Key_RE");
+			if (heart) { heart.Destroy(); }
+		}
+
 		// Remove level-specific inventory items, and other items which should
 		// not persist between missions.
 		static const class<Inventory> itemTypes[] = {

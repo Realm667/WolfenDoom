@@ -1,0 +1,31 @@
+// Build masks from the replacement weapon's exposed status display. The
+// opaque black backing excludes the hand; firing frames retain muzzle glow.
+Graphic ZIKRLBP, 18, 5 { Patch "sprites/astrostein/weapons/ASRLB0.png", -66, -105 }
+Graphic ZIKRLCP, 18, 5 { Patch "sprites/astrostein/weapons/ASRLC0.png", -66, -105 }
+Graphic ZIKRLDP, 18, 5 { Patch "sprites/astrostein/weapons/ASRLD0.png", -66, -105 }
+Graphic ZIKRLEP, 18, 5 { Patch "sprites/astrostein/weapons/ASRLE0.png", -66, -105 }
+Graphic ZIKRLDF, 150, 100 { Patch "materials/brightmaps/auto/ASRLD0.png", 0, 0 }
+Graphic ZIKRLEF, 150, 100 { Patch "materials/brightmaps/auto/ASRLE0.png", 0, 0 }
+
+Graphic ZIKRLBM, 150, 153
+{
+    Patch "materials/brightmaps/auto/ASRLB0.png", 0, 0 { Blend "black" }
+    Patch ZIKRLBP, 66, 105
+}
+Graphic ZIKRLCM, 150, 153
+{
+    Patch "materials/brightmaps/auto/ASRLC0.png", 0, 0 { Blend "black" }
+    Patch ZIKRLCP, 66, 105
+}
+Graphic ZIKRLDM, 150, 153
+{
+    Patch "materials/brightmaps/auto/ASRLD0.png", 0, 0 { Blend "black" }
+    Patch ZIKRLDF, 0, 0
+    Patch ZIKRLDP, 66, 105
+}
+Graphic ZIKRLEM, 150, 153
+{
+    Patch "materials/brightmaps/auto/ASRLE0.png", 0, 0 { Blend "black" }
+    Patch ZIKRLEF, 0, 0
+    Patch ZIKRLEP, 66, 105
+}
