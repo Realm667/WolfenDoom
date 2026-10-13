@@ -182,7 +182,7 @@ class DamageTracker : EventHandler
 		damagehandler.oldblend[pnum] = damagehandler.blend[pnum];
 
 		double blendalpha = clamp((DamageTracker.DamageToAlpha[clamp(damageamount, 0, 113)] / 255.0) * blood_fade_scalar * 1.25, 0.0, 1.0);
-		
+
 		for (int i = 0; i < damagehandler.events.Size(); i++)
 		{
 			if (damagehandler.events[i].player == player)
@@ -228,7 +228,7 @@ class DamageTracker : EventHandler
 	int GetAmount(int i)
 	{
 		if (events[i] && events[i].timeout) { return max(0, events[i].timeout - level.time); }
-		
+
 		return 0;
 	}
 }
@@ -368,7 +368,7 @@ class AchievementTracker : StaticEventHandler
 	int keycount;
 	int shovelkills[MAXPLAYERS];
 
-	static const Class<Weapon> weaponlist[] = { 
+	static const Class<Weapon> weaponlist[] = {
 		"KnifeSilent",
 		"Shovel",
 		"Firebrand",
@@ -465,7 +465,7 @@ class AchievementTracker : StaticEventHandler
 		{
 			String value = recordvar[i].GetString();
 
-			if (value.length()) 
+			if (value.length())
 			{
 				Array<String> parse;
 				value = Decode(value, 7);
@@ -502,7 +502,7 @@ class AchievementTracker : StaticEventHandler
 							if (ach)
 							{
 								ach.value = parse[a].ToInt();
-								if (ach.value > 1 << 16) { ach.complete[consoleplayer] = true; } // Allow 16 bits for data 
+								if (ach.value > 1 << 16) { ach.complete[consoleplayer] = true; } // Allow 16 bits for data
 							}
 							break;
 					}
@@ -514,7 +514,7 @@ class AchievementTracker : StaticEventHandler
 	override void WorldTick()
 	{
 		CheckStats();
-		
+
 		if (shots[consoleplayer][1] > 100 && shots[consoleplayer][0] * 100.0 / shots[consoleplayer][1] > 75) { CheckAchievement(consoleplayer, ACH_ACCURACY); }
 		if (players[consoleplayer].cmd.buttons & BT_RELOAD) { manualreloads[consoleplayer]++; }
 		if (gameaction == ga_savegame) { CheckAchievement(consoleplayer, ACH_SPAM); }
@@ -557,7 +557,7 @@ class AchievementTracker : StaticEventHandler
 		if (e.Thing is "ZombieStandard" && e.Thing.target && e.Thing.target.player) { CheckAchievement(e.Thing.target.PlayerNumber(), ACH_ZOMBIES); }
 	}
 
-	override void WorldLinePreActivated(WorldEvent e) 
+	override void WorldLinePreActivated(WorldEvent e)
 	{
 		let line = e.activatedline;
 
@@ -676,14 +676,14 @@ class AchievementTracker : StaticEventHandler
 		achievements.DoChecks(pnum, a);
 	}
 
-	static bool IsComplete(int a)
+	static int IsComplete(int a)
 	{
 		AchievementTracker achievements = AchievementTracker(StaticEventHandler.Find("AchievementTracker"));
 		if (!achievements) { return false; }
 
 		if (a >= achievements.records.Size()) { return false; }
 
-		return achievements.records[a].complete[consoleplayer];
+		return achievements.records[a].value;
 	}
 
 	void DoChecks(int pnum, int a)
@@ -714,9 +714,9 @@ class AchievementTracker : StaticEventHandler
 				if (!records[ACH_GIBEMALL].complete[consoleplayer]) { records[ACH_GIBEMALL].value = gibs[pnum] = 0; }
 
 				UpdateRecord(pnum, a, true, records[a].complete[consoleplayer], true);
-				
+
 				if (self && !cheats_allowed) { self.Destroy(); } //a new handler will open on next level
-				
+
 				return;
 			}
 		}
@@ -748,7 +748,7 @@ class AchievementTracker : StaticEventHandler
 
 				ThinkerIterator keys = ThinkerIterator.Create("KeyBase", Thinker.STAT_DEFAULT);
 				Actor key;
-				
+
 				while (key = Actor(keys.Next()))
 				{
 					if (!key.bDormant)
@@ -840,7 +840,7 @@ class AchievementTracker : StaticEventHandler
 				SaveEncoded(3);
 				break;
 			case ACH_TROPHYHUNTER:
-				if (records[STAT_AWARDS].value == 7) { complete = true; }
+				if (records[STAT_AWARDS].value == 15) { complete = true; }
 				SaveEncoded(3);
 				break;
 			case ACH_ADDICTED: // Incremented here in WorldTick function
@@ -934,17 +934,17 @@ class AchievementTracker : StaticEventHandler
 	String Encode(String s, int v = 0)
 	{
 		String base64chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
-		String r = ""; 
-		String p = ""; 
+		String r = "";
+		String p = "";
 		int c = s.Length() % 3;
 
 		if (c)
 		{
 			for (; c < 3; c++)
-			{ 
-				p = p .. '='; 
-				s = s .. "\0"; 
-			} 
+			{
+				p = p .. '=';
+				s = s .. "\0";
+			}
 		}
 
 		for (c = 0; c < s.Length(); c += 3)
@@ -961,8 +961,8 @@ class AchievementTracker : StaticEventHandler
 	{
 		String base64chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
 
-		String p = (s.ByteAt(s.Length() - 1) == 0x3D ? (s.ByteAt(s.Length() - 2) == 0x3D ? "AA" : "A") : ""); 
-		String r = ""; 
+		String p = (s.ByteAt(s.Length() - 1) == 0x3D ? (s.ByteAt(s.Length() - 2) == 0x3D ? "AA" : "A") : "");
+		String r = "";
 		s = s.Mid(0, s.Length() - p.Length()) .. p;
 
 		for (int c = 0; c < s.Length(); c += 4)

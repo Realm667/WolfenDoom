@@ -30,7 +30,7 @@ class AchievementSummary : BoAMenu
 
 	TextureID background, board;
 	Font titlefont, textfont, captionfont;
-	
+
 	int drawtop, drawbottom, drawright, drawheightscaled;
 	int scrollpos, maxscroll, scrollamt;
 	int spacing, cellheight, cellwidth, iconwidth;
@@ -271,11 +271,13 @@ class AchievementSummary : BoAMenu
 			case AchievementTracker.ACH_TROPHYHUNTER:
 				int trophybits = tracker.records[AchievementTracker.STAT_AWARDS].value;
 
-				if (trophybits & 2) { value = "\cF"; }
+				if (trophybits & 1) { value = "\cF"; }
 				value = value .. "🅲\cU";
-				if (trophybits & 4) { value = value .. "\cF"; }
+				if (trophybits & 2) { value = value .. "\cF"; }
 				value = value .. "🅽\cU";
-				if (trophybits & 1) { value = value .. "\cF"; }
+				if (trophybits & 4) { value = value .. "\cF"; }
+				value = value .. "🅺\cU";
+				if (trophybits & 8) { value = value .. "\cF"; }
 				value = value .. "🅺";
 				break;
 			case AchievementTracker.ACH_ADDICTED:
@@ -308,7 +310,7 @@ class AchievementSummary : BoAMenu
 				)
 				{
 					valuewidth = captionfont.StringWidth(value);
-					screen.DrawText(captionfont, Font.CR_DARKGRAY, int(pos.x + size.x - valuewidth * captionscale), int(pos.y), value, DTA_Alpha, alpha, DTA_ScaleX, captionscale, DTA_ScaleY, captionscale, DTA_ClipTop, drawtop, DTA_ClipBottom, drawbottom);	
+					screen.DrawText(captionfont, Font.CR_DARKGRAY, int(pos.x + size.x - valuewidth * captionscale), int(pos.y), value, DTA_Alpha, alpha, DTA_ScaleX, captionscale, DTA_ScaleY, captionscale, DTA_ClipTop, drawtop, DTA_ClipBottom, drawbottom);
 				}
 				else
 				{
@@ -361,20 +363,26 @@ class AchievementSummary : BoAMenu
 					TextureID caco = TexMan.CheckForTexture("CACWA0");
 					TextureID nazi = TexMan.CheckForTexture("NZWRA0");
 					TextureID keen = TexMan.CheckForTexture("CKWRA0");
+					TextureID keen2 = TexMan.CheckForTexture("CKWRB0");
 
 					drawpos.y += 64;
 
-					complete = tracker.records[AchievementTracker.STAT_AWARDS].value & 2;
+					complete = tracker.records[AchievementTracker.STAT_AWARDS].value & 1;
 					size = TexMan.GetScaledSize(caco).Unit();
 					size *= (24 / size.x);
-					screen.DrawTexture(caco, true, drawpos.x - 36 * 3, drawpos.y, DTA_Alpha, alpha, DTA_AlphaChannel, !complete, DTA_FillColor, complete ? -1 : 0xBBBBCC, DTA_DestWidth, int(size.x), DTA_DestHeight, int(size.y), DTA_CenterBottomOffset, true);
+					screen.DrawTexture(caco, true, drawpos.x - 36 * 4, drawpos.y, DTA_Alpha, alpha, DTA_AlphaChannel, !complete, DTA_FillColor, complete ? -1 : 0xBBBBCC, DTA_DestWidth, int(size.x), DTA_DestHeight, int(size.y), DTA_CenterBottomOffset, true);
 
-					complete = tracker.records[AchievementTracker.STAT_AWARDS].value & 4;
+					complete = tracker.records[AchievementTracker.STAT_AWARDS].value & 2;
 					size = TexMan.GetScaledSize(nazi).Unit();
 					size *= (24 / size.x);
-					screen.DrawTexture(nazi, true, drawpos.x - 36 * 2, drawpos.y, DTA_Alpha, alpha, DTA_AlphaChannel, !complete, DTA_FillColor, complete ? -1 : 0xBBBBCC, DTA_DestWidth, int(size.x), DTA_DestHeight, int(size.y), DTA_CenterBottomOffset, true);
+					screen.DrawTexture(nazi, true, drawpos.x - 36 * 3, drawpos.y, DTA_Alpha, alpha, DTA_AlphaChannel, !complete, DTA_FillColor, complete ? -1 : 0xBBBBCC, DTA_DestWidth, int(size.x), DTA_DestHeight, int(size.y), DTA_CenterBottomOffset, true);
 
-					complete = tracker.records[AchievementTracker.STAT_AWARDS].value & 1;
+					complete = tracker.records[AchievementTracker.STAT_AWARDS].value & 4;
+					size = TexMan.GetScaledSize(keen).Unit();
+					size *= (24 / size.x);
+					screen.DrawTexture(keen2, true, drawpos.x - 36 * 2, drawpos.y, DTA_Alpha, alpha, DTA_AlphaChannel, !complete, DTA_FillColor, complete ? -1 : 0xBBBBCC, DTA_DestWidth, int(size.x), DTA_DestHeight, int(size.y), DTA_CenterBottomOffset, true);
+
+					complete = tracker.records[AchievementTracker.STAT_AWARDS].value & 8;
 					size = TexMan.GetScaledSize(keen).Unit();
 					size *= (24 / size.x);
 					screen.DrawTexture(keen, true, drawpos.x - 36, drawpos.y, DTA_Alpha, alpha, DTA_AlphaChannel, !complete, DTA_FillColor, complete ? -1 : 0xBBBBCC, DTA_DestWidth, int(size.x), DTA_DestHeight, int(size.y), DTA_CenterBottomOffset, true);
@@ -386,7 +394,7 @@ class AchievementSummary : BoAMenu
 
 					size = TexMan.GetScaledSize(cart51);
 					drawpos.y += size.y;
-					
+
 					complete = tracker.records[AchievementTracker.STAT_CARTRIDGES].value & 1;
 					screen.DrawTexture(cart51, true,drawpos.x - 36 * 3, drawpos.y, DTA_Alpha, alpha, DTA_AlphaChannel, !complete, DTA_FillColor, complete ? -1 : 0xBBBBCC, DTA_DestWidth, int(size.x), DTA_DestHeight, int(size.y), DTA_CenterBottomOffset, true);
 
@@ -583,7 +591,7 @@ class ScrollBar ui
 			s.scroll_m = TexMan.CheckForTexture("graphics/conversation/scroll_m.png", TexMan.Type_Any);
 			s.scroll_b = TexMan.CheckForTexture("graphics/conversation/scroll_b.png", TexMan.Type_Any);
 			s.scroll_s = TexMan.CheckForTexture("graphics/conversation/scroll_s.png", TexMan.Type_Any);
-	
+
 			s.x = x;
 			s.y = y;
 			s.w = w;

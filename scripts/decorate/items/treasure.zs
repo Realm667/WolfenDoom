@@ -271,7 +271,7 @@ class Award : SingleCoin
 		{
 			AchievementTracker tracker = AchievementTracker(StaticEventHandler.Find("AchievementTracker"));
 			if (tracker) { tracker.SetBit(tracker.records[tracker.STAT_AWARDS].value, number); }
-			
+
 			AchievementTracker.CheckAchievement(toucher.PlayerNumber(), AchievementTracker.ACH_TROPHYHUNTER);
 		}
 
@@ -287,7 +287,7 @@ class Naziward : Award
 		Scale 0.2;
 		Inventory.PickupMessage "$GOLDWRD";
 		Inventory.PickupSound "treasure/cup";
-		Award.Number 2;
+		Award.Number 1;
 	}
 
 	States
@@ -304,7 +304,7 @@ class Cacoward : Award
 	{
 		//$Title Treasure (Easteregg, Cacoward, 10pts)
 		Inventory.PickupMessage "$CACOWARD";
-		Award.Number 1;
+		Award.Number 0;
 	}
 
 	States
@@ -321,7 +321,7 @@ class Keenaward : Award
 	{
 		//$Title Treasure (Easteregg, Keenaward 2021, 10pts)
 		Inventory.PickupMessage "$KEENAWARD";
-		Award.Number 0;
+		Award.Number 2;
 	}
 
 	States
@@ -338,7 +338,7 @@ class Keenaward2 : Award
 	{
 		//$Title Treasure (Easteregg, Keenaward 2022, 10pts)
 		Inventory.PickupMessage "$KEENAWARD";
-		Award.Number 0;
+		Award.Number 3;
 	}
 
 	States
