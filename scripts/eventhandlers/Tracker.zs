@@ -423,7 +423,7 @@ class AchievementTracker : StaticEventHandler
 		ACH_GIBEMALL,		// Gib 100 Nazis (total across all levels)
 		ACH_NEAT,			// Collect all 3 Keen cartridges (total across all levels)
 		ACH_ADDICTED,		// Play BoA for more than 10 hours (total across all levels)
-		ACH_TROPHYHUNTER,	// Collect all three award trophies
+		ACH_TROPHYHUNTER,	// Collect all four award trophies
 		ACH_SHOVEL = 35,	// Kill 100 enemies with the shovel
 
 		ACH_LASTACHIEVEMENT, // Marker index for the end of the list of regular achievements
