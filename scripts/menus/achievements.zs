@@ -380,12 +380,12 @@ class AchievementSummary : BoAMenu
 					complete = tracker.records[AchievementTracker.STAT_AWARDS].value & 4;
 					size = TexMan.GetScaledSize(keen).Unit();
 					size *= (24 / size.x);
-					screen.DrawTexture(keen2, true, drawpos.x - 36 * 2, drawpos.y, DTA_Alpha, alpha, DTA_AlphaChannel, !complete, DTA_FillColor, complete ? -1 : 0xBBBBCC, DTA_DestWidth, int(size.x), DTA_DestHeight, int(size.y), DTA_CenterBottomOffset, true);
+					screen.DrawTexture(keen, true, drawpos.x - 36 * 2, drawpos.y, DTA_Alpha, alpha, DTA_AlphaChannel, !complete, DTA_FillColor, complete ? -1 : 0xBBBBCC, DTA_DestWidth, int(size.x), DTA_DestHeight, int(size.y), DTA_CenterBottomOffset, true);
 
 					complete = tracker.records[AchievementTracker.STAT_AWARDS].value & 8;
 					size = TexMan.GetScaledSize(keen).Unit();
 					size *= (24 / size.x);
-					screen.DrawTexture(keen, true, drawpos.x - 36, drawpos.y, DTA_Alpha, alpha, DTA_AlphaChannel, !complete, DTA_FillColor, complete ? -1 : 0xBBBBCC, DTA_DestWidth, int(size.x), DTA_DestHeight, int(size.y), DTA_CenterBottomOffset, true);
+					screen.DrawTexture(keen2, true, drawpos.x - 36, drawpos.y, DTA_Alpha, alpha, DTA_AlphaChannel, !complete, DTA_FillColor, complete ? -1 : 0xBBBBCC, DTA_DestWidth, int(size.x), DTA_DestHeight, int(size.y), DTA_CenterBottomOffset, true);
 					break;
 				case AchievementTracker.ACH_NEAT:
 					TextureID cart51 = TexMan.CheckForTexture("SNSCA0");
