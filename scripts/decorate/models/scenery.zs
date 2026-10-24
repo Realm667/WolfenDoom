@@ -1126,6 +1126,7 @@ class Cable1 : ModelBase
 		//$Title Cable A
 		//$Color 3
 		DistanceCheck "boa_scenelod";
+		RenderRadius 256;
 		Height 0;
 		+SPAWNCEILING
 	}
