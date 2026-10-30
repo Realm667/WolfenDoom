@@ -29,7 +29,7 @@ class SSUniformStatic: SceneryBase
 		//$Title SS Uniform
 		//$Color 3
 		Radius 8;
-		Height 20;
+		Height 40;
 		Scale 0.67;
 		ProjectilePassHeight 4;
 		+SOLID
@@ -62,7 +62,6 @@ class ScientistUniformStatic : SSUniformStatic
 	Default
 	{
 	//$Title Scientist Uniform
-	Height 40;
 	Scale 0.7;
 	}
 	States
@@ -106,7 +105,6 @@ class CoatHanger : SSUniformStatic
 	Default
 	{
 	//$Title Coat Hanger (empty)
-	Height 40;
 	Scale 0.8;
 	}
 	States
@@ -428,7 +426,6 @@ class CoatHanger7S : RandomSpawner
 	//$Color 3
 	//$Sprite CTHNN0
 	Radius 8;
-	Height 40;
 	Scale 0.35;
 	DropItem "CoatHanger7A";
 	DropItem "CoatHanger7B";
