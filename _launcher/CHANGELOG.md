@@ -1,5 +1,17 @@
 # Changelog
 
+## 2.6.15
+
+### Fixed
+
+- Restore Auto and Use last settings in the game-language selector (#1730).
+  Persist both choices; Auto passes `language auto`, while Use last settings
+  omits the language override. Keep explicit English US/UK selections.
+- Resolve automatic/retained languages for the campaign-label preview without
+  changing the engine's language. Retain independent interface localization.
+- Move Displacement textures directly below Developer commentary (#1728,
+  layout only; no new mission-start shortcuts).
+
 ## 2.6.14
 
 ### Changed

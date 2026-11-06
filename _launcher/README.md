@@ -1,6 +1,6 @@
 # Blade of Agony Launcher
 
-Version 2.6.14 is a modern WPF launcher for Blade of Agony and UZDoom 5.0.1
+Version 2.6.15 is a modern WPF launcher for Blade of Agony and UZDoom 5.0.1
 or newer. It is a clean-room replacement for the original native launcher and
 remains portable: no installer or additional UI runtime is required on
 supported Windows systems.
@@ -30,6 +30,11 @@ supported Windows systems.
   Diagnostics.
 - Independent game and interface languages, including separate English (US)
   and English (UK) game options plus European Portuguese.
+- Game language supports Auto (engine system-language detection) and Use last
+  settings (no language override; retain the engine's setting). Launcher map
+  labels use a best-effort preview of that language; engine autoexec overrides
+  are not executed by the preview.
+- Displacement textures appears directly below Developer commentary.
 - Blade of Agony, Dark, Light, and Wolfenstein 3D designs.
 - Startup loading feedback uses the selected theme's accent and track colors,
   with a clearly moving segment instead of the green Windows progress effect.

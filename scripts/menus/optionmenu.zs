@@ -31,6 +31,26 @@
 // 
 // See 'data/OptionMenus.txt' for configuration information.
 
+// Match legacy settings without rewriting the user's language CVAR or adding
+// duplicate entries to the language selector. New selections use BCP 47 codes.
+class OptionMenuItemBoALanguage : OptionMenuItemOption
+{
+	override int GetSelection()
+	{
+		int selection = Super.GetSelection();
+		if (selection >= 0 || !mCVar) { return selection; }
+		String value = mCVar.GetString();
+		if (value ~== "default" || value ~== "enu" || value ~== "en") { value = "en-US"; }
+		else if (value ~== "eng") { value = "en-GB"; }
+		else if (value ~== "ptg" || value ~== "pt") { value = "pt-PT"; }
+		for (int i = 0; i < OptionValues.GetCount(mValues); i++)
+		{
+			if (value ~== OptionValues.GetTextValue(mValues, i)) { return i; }
+		}
+		return selection;
+	}
+}
+
 class BoAOptionMenu : OptionMenu
 {
 	ParsedValue menudata, insertdata, rewritedata;
@@ -222,7 +242,11 @@ class BoAOptionMenu : OptionMenu
 					String shortvalue = value.Left(3);
 
 					if (value ~== "auto") { return ret; }
-					if (value ~== "default") { shortvalue = "enu"; }
+					if (value ~== "default" || value ~== "en") { shortvalue = "enu"; }
+					// UZDoom 5 uses BCP 47 codes; keep the existing flag assets.
+					if (value ~== "en-US") { shortvalue = "enu"; }
+					if (value ~== "en-GB") { shortvalue = "eng"; }
+					if (value ~== "pt-PT" || value ~== "pt") { shortvalue = "ptg"; }
 
 					icon = "mlang" .. shortvalue; // Flag icons are named MLANG[language code] - so MLANGENU, MLANGDE, etc.
 
