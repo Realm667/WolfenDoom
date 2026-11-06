@@ -1,5 +1,15 @@
 # Changelog
 
+## 2.6.16
+
+### Fixed
+
+- Recognize game metadata inside a single enclosing source-archive directory
+  consistently for the content catalog, launcher manifest and add-on version
+  checks (#1710). Do not search arbitrary nested add-on folders.
+- Report unknown game versions explicitly instead of treating them as 0.0.
+  Keep minimum-version enforcement for old or unidentified game builds.
+
 ## 2.6.15
 
 ### Fixed
