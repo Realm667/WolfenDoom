@@ -1,0 +1,11 @@
+// Keep the wreck's registration on the same side as the intact Zeppelin (#1645).
+// Cover only the unwanted number; retain the existing damaged hull texture.
+Texture ZEPWNUM, 116, 64
+{
+    Patch "models/LZ127c.png", -374, -96
+}
+Texture ZEPWLEFT, 512, 512
+{
+    Patch "models/LZ127d.png", 0, 0
+    Patch ZEPWNUM, 374, 96
+}

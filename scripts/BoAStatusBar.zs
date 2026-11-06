@@ -1091,7 +1091,8 @@ virtual void DrawCrosshairHint()
 			if (fill) { screen.DrawTexture (fill, false, screen.GetWidth() / 2, y, DTA_DestWidthF, dimensions.x, DTA_DestHeightF, dimensions.y, DTA_AlphaChannel, clr != 0x0, DTA_FillColor, clr & 0xFFFFFF, DTA_CenterOffset, true, DTA_Rotate, angle, DTA_ClipBottom, y); }
 
 			TextureID border = TexMan.CheckForTexture("COMPBORD");
-			if (border) { screen.DrawTexture (border, false, screen.GetWidth() / 2, y, DTA_DestWidthF, dimensions.x, DTA_DestHeightF, dimensions.y, DTA_AlphaChannel, clr != 0x0, DTA_FillColor, clr & 0xFFFFFF, DTA_CenterOffset, true); }
+			// Clip the border too: filtered texture wrapping can bleed its top edge below the arc.
+			if (border) { screen.DrawTexture (border, false, screen.GetWidth() / 2, y, DTA_DestWidthF, dimensions.x, DTA_DestHeightF, dimensions.y, DTA_AlphaChannel, clr != 0x0, DTA_FillColor, clr & 0xFFFFFF, DTA_CenterOffset, true, DTA_ClipBottom, y); }
 		}
 		else
 		{
