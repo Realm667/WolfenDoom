@@ -269,11 +269,24 @@ class DeployableMine : CustomInvBase
 			Stop;
 		Use:
 			"####" A 0 {
+				// Spawning at an offset does not check the path to that position.
+				// Test near ground level so a closed gate cannot be bypassed.
+				double distance = radius + 32;
+				if (LineTrace(angle, distance, 0, TRF_BLOCKSELF | TRF_SOLIDACTORS,
+					offsetz: GetBobOffset() + 6)) { return false; }
+
 				bool sp;
 				Actor mo;
-				[sp, mo] = A_SpawnItemEx("PlacedMine", radius + 32);
+				[sp, mo] = A_SpawnItemEx("PlacedMine", distance);
+				if (!sp || !mo) { return false; }
+				if (!mo.TestMobjLocation())
+				{
+					mo.Destroy();
+					return false;
+				}
 
-				if (sp && mo) { mo.tracer = self; }
+				mo.tracer = self;
+				return true;
 			}
 			Stop;
 		}
