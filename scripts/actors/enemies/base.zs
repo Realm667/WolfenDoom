@@ -2103,6 +2103,7 @@ class Nazi : Base
 		if (bCountKill) { ClearCounters(); }
 		user_ForceWeaponDrop = true;
 		surrendered = true;
+		SetSurrenderedDisposition();
 		health = 1;
 		vel *= 0;
 
@@ -2119,6 +2120,14 @@ class Nazi : Base
 		if (source) { AchievementTracker.CheckAchievement(source.PlayerNumber(), AchievementTracker.ACH_SURRENDERS); }
 
 		SetStateLabel("Death.Surrender");
+	}
+
+	void SetSurrenderedDisposition()
+	{
+		// Enemy explosions skip their own species. Captives must remain vulnerable,
+		// but must not become new targets for their former comrades.
+		Species = "SurrenderedNazi";
+		bNeverTarget = true;
 	}
 
 	// A_NaziChase with CheckLOF
@@ -2869,6 +2878,10 @@ class Nazi : Base
 
 		if (Nazi(goal))
 		{
+			// A revived soldier is no longer a captive. The native raise restores flags;
+			// the faction is restored to the healer's below.
+			Nazi(goal).surrendered = 0;
+			Nazi(goal).hiddentime = 0;
 			if (Nazi(goal).user_sneakable) { Nazi(goal).BecomeAlerted(target); } // If it's a sneakable actor, make it alert
 			Nazi(goal).healing = false;
 			Nazi(goal).ResetDodge(true); // Reset the dodge timeout
@@ -3054,6 +3067,9 @@ class Nazi : Base
 
 			if (level.time % interval == 0) { closestplayer = FindClosestPlayer(self, IgnoreFriendlies:!bFriendly); }
 		}
+
+		// Also update captives restored from saves made before this disposition existed.
+		if (surrendered && health > 0) { SetSurrenderedDisposition(); }
 
 		if (user_cansurrender && surrendered)
 		{
