@@ -24,7 +24,9 @@ Script "Activate" (int lineid, int repairtime)
 		if (step < 80) { step = 80; } // Clamp between 80 and 90
 		else if (step > 90) { step = 90; } 
 
-		SetUserVariable(0, "crosshairstatus", repairstate[lineid] * 1.0 / (repairtime * 35));
+		// Use discrete progress steps for cutting/repairing, as in BoA 3.1.
+		// The sentinel also lets crosshair 90 display the complete meter below.
+		SetUserVariable(0, "crosshairstatus", 0x7FFFFFFF);
 		SetUserVariable(0, "crosshair", step);  // Show progress by changing the crosshair based on hold time
 		repairstate[lineid] += increment; // Increment the repair amount
 	}
