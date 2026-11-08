@@ -469,7 +469,7 @@ class CombinationSafe : BoAMenu
 		if (match)
 		{
 			S_StartSound("safe/open", CHAN_7, CHANF_UI | CHANF_NOSTOP, 0.5);
-			EventHandler.SendNetworkEvent("opensafe", int(s.pos.x), int(s.pos.y), int(s.pos.z));
+			EventHandler.SendNetworkEvent("opensafe", s.GetNetworkID(), combo[0] | (combo[1] << 5) | (combo[2] << 10));
 
 			Close();
 		}

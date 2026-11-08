@@ -1028,6 +1028,7 @@ class CastleWolfensteinMap : InteractiveItem
 class Safe : Actor
 {
 	bool isopen, locked, unlock;
+	Actor safeUsers[MAXPLAYERS];
 	Class<Actor> spawnclass;
 
 	Default
@@ -1074,12 +1075,13 @@ class Safe : Actor
 
 	override bool Used(Actor user)
 	{
-		if (isopen || !user.player) { return false; }
+		if (isopen || !user || !user.player) { return false; }
 
 		if (locked)
 		{
+			safeUsers[user.PlayerNumber()] = user;
 			user.player.ConversationNPC = self;
-			if (user.player = players[consoleplayer]) { Menu.SetMenu("CombinationSafe"); }
+			if (user.player == players[consoleplayer]) { Menu.SetMenu("CombinationSafe"); }
 			user.player.ConversationNPC = null;
 
 			return true;
@@ -1093,8 +1095,34 @@ class Safe : Actor
 		return false;
 	}
 
+	void RequestOpen(int pnum, int combination)
+	{
+		if (pnum < 0 || pnum >= MAXPLAYERS || !playeringame[pnum] || isopen) { return; }
+		let user = players[pnum].mo;
+		if (!user || user.health <= 0 || safeUsers[pnum] != user) { return; }
+		if (Distance3D(user) > PlayerPawn(user).UseRange + radius + user.radius) { return; }
+		int solution[3];
+		if (!special) { for (int i = 0; i < 3; i++) { solution[i] = args[i + 1]; } }
+		if (solution[0] == 0 && solution[1] == 0 && solution[2] == 0 && !bStandStill)
+		{
+			solution[0] = int(abs(pos.x % 24));
+			solution[1] = int(abs(pos.y % 24));
+			solution[2] = int(abs(pos.z % 24));
+		}
+		for (int i = 0; i < 3; i++)
+		{
+			int digit = (combination >> (i * 5)) & 31;
+			if (digit >= 24 || (abs(digit - solution[i]) > 1 && !(solution[i] == 0 && digit == 23))) { return; }
+		}
+		DoOpen();
+	}
+
 	void DoOpen()
 	{
+		if (isopen) { return; }
+		// Set before state actions or ACS can cause another interaction.
+		isopen = true;
+		for (int i = 0; i < MAXPLAYERS; i++) { safeUsers[i] = null; }
 		SetStateLabel("Opened");
 
 		locked = false;
@@ -1106,6 +1134,7 @@ class Safe : Actor
 		{
 			// Spawn that actor
 			let mo = Spawn(spawnclass, pos + (0, 0, 4), ALLOW_REPLACE);
+			if (!mo) { BoACompass.Remove(self); return; }
 			mo.scale *= 0.5;
 			mo.bNoGravity = true;
 			mo.bDropped = false;

@@ -90,74 +90,60 @@ class TcPostProcessShaderHandler : StaticEventHandler
 	// PIXEL EATER MOTIONBLUR EVENTHANDLERS
 	//===========================================================================
 	
-	int			pitch, yaw ;
-	double		xtravel, ytravel ;
-	
-	override void PlayerEntered( PlayerEvent e )
+	transient ui double xtravel, ytravel;
+
+	override void PlayerEntered(PlayerEvent e)
 	{
-		PlayerInfo plr = players[ consoleplayer ];
-		if( plr )
-		{	
-			xtravel = 0 ;
-			ytravel = 0 ;
-		}
+		EventHandler.SendInterfaceEvent(e.PlayerNumber, "boa_mblur_reset");
 	}
-	
-	override void WorldTick()
+
+	override void InterfaceProcess(ConsoleEvent e)
 	{
-		PlayerInfo	plr = players[ consoleplayer ];
-		if( plr && plr.health > 0 && plr.mo && Cvar.GetCVar( "boa_mblur", plr ).GetBool() )
+		if (e.Name == "boa_mblur_reset")
 		{
-			yaw		= plr.mo.GetPlayerInput( ModInput_Yaw );
-			pitch	= -plr.mo.GetPlayerInput( ModInput_Pitch );
+			xtravel = 0;
+			ytravel = 0;
 		}
 	}
-	
-	override void NetworkProcess( ConsoleEvent e )
-	{
-		PlayerInfo	plr = players[ consoleplayer ];
-		if( plr && plr.mo && e.Name == "liveupdate" )
-		{
-			double pitchdimin	= 1. - abs( plr.mo.pitch * 1. / 90 );
-			double decay		= 1. - Cvar.GetCVar( "boa_mblur_recovery", plr ).GetFloat() * .01 ;
-			double amount		= Cvar.GetCVar( "boa_mblur_strength", plr ).GetFloat() * 10. / 32767 * sqrt( pitchdimin );
-			xtravel				= xtravel * decay + yaw * amount * .625 ;
-			ytravel				= ytravel * decay + pitch * amount ;
-			
-			if( Cvar.GetCVar( "boa_mblur_autostop", plr ).GetBool() )
-			{
-				double threshold = Cvar.GetCVar( "boa_mblur_threshold", plr ).GetFloat() * 30 ;
-				double recovery2 = 1 - Cvar.GetCVar( "boa_mblur_recovery2", plr ).GetFloat() * .01 ;
-				if( abs( yaw )		<= threshold ) xtravel *= recovery2 ;
-				if( abs( pitch )	<= threshold ) ytravel *= recovery2 ;
-			}
-		}
-	}
-	
+
 	override void UiTick()
 	{
-		PlayerInfo	plr = players[ consoleplayer ];
-		if( plr && plr.mo )
+		PlayerInfo plr = players[consoleplayer];
+		if (!plr || !plr.mo) { return; }
+		if (level.WorldPaused()) { return; }
+
+		if (plr.health > 0 && Cvar.GetCVar("boa_mblur", plr).GetBool() && !plr.mo.FindInventory("CutsceneEnabled"))
 		{
-			if( plr.health > 0 && Cvar.GetCVar( "boa_mblur", plr ).GetBool() && !plr.mo.FindInventory("CutsceneEnabled") )//&& yaw && pitch )
+			// These are the same modified inputs returned by GetPlayerInput.
+			// Read them in UI scope; motion blur must never send gameplay commands.
+			int yaw = plr.cmd.yaw;
+			int pitch = -plr.cmd.pitch;
+			double pitchdimin = 1. - abs(plr.mo.pitch * 1. / 90);
+			double decay = 1. - Cvar.GetCVar("boa_mblur_recovery", plr).GetFloat() * .01;
+			double amount = Cvar.GetCVar("boa_mblur_strength", plr).GetFloat() * 10. / 32767 * sqrt(pitchdimin);
+			xtravel = xtravel * decay + yaw * amount * .625;
+			ytravel = ytravel * decay + pitch * amount;
+
+			if (Cvar.GetCVar("boa_mblur_autostop", plr).GetBool())
 			{
-				EventHandler.SendNetworkEvent( "liveupdate" );
-				
-				int copies			= 1 + Cvar.GetCVar( "boa_mblur_samples", plr ).GetInt() ;
-				double increment	= 1. / copies ;
-				vector2 travel		= ( xtravel, ytravel ) / screen.getheight() ;
-				
-				Shader.SetUniform2f( plr, "boa_mblur", "steps", travel * increment );
-				Shader.SetUniform1f( plr, "boa_mblur", "samples", copies );
-				Shader.SetUniform1f( plr, "boa_mblur", "increment", increment );
-				Shader.SetUniform1f( plr, "boa_mblur", "blendmode", Cvar.GetCVar( "boa_mblur_blendmode", plr ).GetInt() );
-					
-				Shader.SetEnabled( plr, "boa_mblur", true );
+				double threshold = Cvar.GetCVar("boa_mblur_threshold", plr).GetFloat() * 30;
+				double recovery2 = 1 - Cvar.GetCVar("boa_mblur_recovery2", plr).GetFloat() * .01;
+				if (abs(yaw) <= threshold) { xtravel *= recovery2; }
+				if (abs(pitch) <= threshold) { ytravel *= recovery2; }
 			}
-			else
-			{
-				Shader.SetEnabled( plr, "boa_mblur", false );
-			}
+
+			int copies = 1 + Cvar.GetCVar("boa_mblur_samples", plr).GetInt();
+			double increment = 1. / copies;
+			vector2 travel = (xtravel, ytravel) / screen.GetHeight();
+			Shader.SetUniform2f(plr, "boa_mblur", "steps", travel * increment);
+			Shader.SetUniform1f(plr, "boa_mblur", "samples", copies);
+			Shader.SetUniform1f(plr, "boa_mblur", "increment", increment);
+			Shader.SetUniform1f(plr, "boa_mblur", "blendmode", Cvar.GetCVar("boa_mblur_blendmode", plr).GetInt());
+			Shader.SetEnabled(plr, "boa_mblur", true);
+		}
+		else
+		{
+			Shader.SetEnabled(plr, "boa_mblur", false);
 		}
 	}
 }

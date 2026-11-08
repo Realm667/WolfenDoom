@@ -72,8 +72,8 @@ class ParticleManager : EventHandler
 			if (maxbloodcvar) { maxblood = max(0, maxbloodcvar.GetInt()); }
 			if (!maxblood) { e.thing.Destroy(); return; }
 
-			bloodqueue.Insert(0, e.thing);
-			ConsolidateArray(bloodqueue, maxblood);
+			bloodqueue.Push(e.thing);
+			if (bloodqueue.Size() > maxblood) { ConsolidateArray(bloodqueue, maxblood); }
 		}
 		else if (
 			e.thing is "Casing9mm" ||		// All shell casings
@@ -83,8 +83,8 @@ class ParticleManager : EventHandler
 			if (maxdebriscvar) { maxdebris = max(0, maxdebriscvar.GetInt()); }
 			if (!maxdebris) { e.thing.Destroy(); return; }
 
-			debrisqueue.Insert(0, e.thing);
-			ConsolidateArray(debrisqueue, maxdebris);
+			debrisqueue.Push(e.thing);
+			if (debrisqueue.Size() > maxdebris) { ConsolidateArray(debrisqueue, maxdebris); }
 		}
 		else if (
 			e.thing is "ZFlatDecal"			// Flat decals
@@ -93,8 +93,8 @@ class ParticleManager : EventHandler
 			if (maxflatdecalscvar) { maxflatdecals = max(0, maxflatdecalscvar.GetInt()); }
 			if (!maxflatdecals) { e.thing.Destroy(); return; }
 
-			flatdecalqueue.Insert(0, e.thing);
-			ConsolidateArray(flatdecalqueue, maxflatdecals);
+			flatdecalqueue.Push(e.thing);
+			if (flatdecalqueue.Size() > maxflatdecals) { ConsolidateArray(flatdecalqueue, maxflatdecals); }
 		}
 		else if (
 			e.thing is "SplashParticleBase"	||	// Ground splash particle actors
@@ -105,14 +105,14 @@ class ParticleManager : EventHandler
 			if (maxparticlescvar) { maxparticles = max(0, maxparticlescvar.GetInt()); }
 			if (!maxparticles) { e.thing.Destroy(); return; }
 
-			particlequeue.Insert(0, e.thing);
-			ConsolidateArray(particlequeue, maxparticles);
+			particlequeue.Push(e.thing);
+			if (particlequeue.Size() > maxparticles) { ConsolidateArray(particlequeue, maxparticles); }
 
 			int size = particlequeue.Size();
 			if (size > maxparticles * 0.75) { tickdelay = clamp(int((size - (maxparticles * 0.75)) / (maxparticles * 0.25) * 10), 0, 10); }
 			else { tickdelay = 0; }
 
-			particlescaling = max(0.1, 1.0 - (tickdelay / 10));
+			particlescaling = max(0.1, 1.0 - (tickdelay / 10.0));
 
 			// Debug output: particle queue size and current tick delay
 			if (boa_debugparticles && level.time % 35 == 0) { console.printf("%i of %i particles, %i tick delay", size, maxparticles, tickdelay); }
@@ -136,54 +136,28 @@ class ParticleManager : EventHandler
 
 	void ConsolidateArray(in out Array<Actor> input, int limit)
 	{
-		Array<Actor> t;
-		int count = 0;
-
-		for (int s = 0; s < input.Size(); s++)
+		// Newest live actors win, as in the original queue. Compact in place.
+		int write = input.Size();
+		int kept = 0;
+		for (int i = input.Size() - 1; i >= 0; i--)
 		{
-			if (!input[s]) { continue; }
-
-			if (count >= limit)
+			let particle = input[i];
+			if (!particle) { continue; }
+			if (kept < limit) { input[--write] = particle; kept++; }
+			else
 			{
-				state FadeState = input[s].FindState("Fade");
-
-				if (FadeState) { input[s].SetState(FadeState); }
-				else { input[s].Destroy(); }
+				let fade = particle.FindState("Fade");
+				if (fade) { particle.SetState(fade); }
+				else { particle.Destroy(); }
 			}
-			else { t.Push(input[s]); }
-
-			count++;
 		}
-
-		input.Move(t);
+		if (write > 0) { input.Delete(0, write); }
 	}
 
 	int GetDelay(int chunkx, int chunky, Actor origin = null)
 	{
+		// Keep the established effect cadence. The previous distance throttle was
+		// unreachable and also affected gameplay actor state durations.
 		return 0;
-
-		if (!boa_culling) { return 0; }
-
-		if (!effectmanager) { effectmanager = EffectsManager.GetManager(); }
-
-		if (origin)
-		{
-			[chunkx, chunky] = EffectChunk.GetChunk(origin.pos.x, origin.pos.y);
-		}
-
-		if (effectmanager && effectmanager.handler)
-		{
-			EffectChunk chunk = EffectChunk.FindChunk(chunkx, chunky, effectmanager.handler.chunks);
-			if (chunk.range < 2) { return 0; }
-			else if (chunk.range > maxinterval) { return 0; }
-
-			int maxinterval = clamp(boa_cullrange, 1024, 8192) / CHUNKSIZE;
-			double delayfactor = chunk.range / maxinterval;
-			delayfactor = delayfactor ** 2 * chunk.range;
-
-			return int(tickdelay * delayfactor);
-		}
-
-		return tickdelay;
 	}
 }

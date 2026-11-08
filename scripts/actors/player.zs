@@ -1348,11 +1348,12 @@ class BoAPlayer : PlayerPawn
 		AchievementTracker tracker = AchievementTracker(StaticEventHandler.Find("AchievementTracker"));
 		if (tracker)
 		{
-			if (liquidDeath == 'Drowning') { tracker.SetBit(tracker.records[tracker.STAT_LIQUIDDEATH].value, 0); }
-			else if (liquidDeath == 'Lava') { tracker.SetBit(tracker.records[tracker.STAT_LIQUIDDEATH].value, 1); }
+			tracker.LoadProfile(PlayerNumber());
+			if (liquidDeath == 'Drowning') { tracker.SetBit(tracker.records[tracker.STAT_LIQUIDDEATH].value[PlayerNumber()], 0); }
+			else if (liquidDeath == 'Lava') { tracker.SetBit(tracker.records[tracker.STAT_LIQUIDDEATH].value[PlayerNumber()], 1); }
 			else if (liquidDeath == 'MutantPoisonAmbience')
 			{
-				tracker.SetBit(tracker.records[tracker.STAT_LIQUIDDEATH].value, 2);
+				tracker.SetBit(tracker.records[tracker.STAT_LIQUIDDEATH].value[PlayerNumber()], 2);
 			}
 
 			AchievementTracker.CheckAchievement(PlayerNumber(), AchievementTracker.ACH_LIQUIDDEATH);

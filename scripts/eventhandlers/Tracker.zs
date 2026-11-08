@@ -331,7 +331,7 @@ class Achievement
 	String icon;
 	String title;
 	bool complete[MAXPLAYERS];
-	int value;
+	int value[MAXPLAYERS];
 	Vector2 pos;
 	Vector2 size, fullsize;
 }
@@ -343,7 +343,9 @@ class AchievementTracker : StaticEventHandler
 	Array<Achievement> records;
 	bool allowed;
 	const cheats_allowed = 1;
-	int time;
+	int time[MAXPLAYERS];
+	bool profileLoaded[MAXPLAYERS];
+	transient ui int lastTimeSent;
 
 	int pistolshots[MAXPLAYERS];
 	int knifekills[MAXPLAYERS];
@@ -461,9 +463,17 @@ class AchievementTracker : StaticEventHandler
 			}
 		}
 
+	}
+
+	void LoadProfile(int pnum)
+	{
+		if (pnum < 0 || pnum >= MAXPLAYERS) { return; }
+		if (profileLoaded[pnum]) { return; }
+		profileLoaded[pnum] = true;
 		for (int i = 0; i < recordvar.Size(); i++)
 		{
-			String value = recordvar[i].GetString();
+			let profile = CVar.GetCVar(Name(String.Format("boa_achievementrecord%d", i)), players[pnum]);
+			String value = profile ? profile.GetString() : "";
 
 			if (value.length())
 			{
@@ -471,38 +481,38 @@ class AchievementTracker : StaticEventHandler
 				value = Decode(value, 7);
 				value.Split(parse, "|");
 
-				for (int a = 0; a < parse.Size(); a++)
+				for (int a = 0; a < min(15, parse.Size()); a++)
 				{
 					int index = i * 15 + a;
 
 					switch (index)
 					{
 						case STAT_PLAYTIME:
-							records[STAT_PLAYTIME].complete[consoleplayer] = true;
-							records[STAT_PLAYTIME].value = parse[a].ToInt();
+							records[STAT_PLAYTIME].complete[pnum] = true;
+							records[STAT_PLAYTIME].value[pnum] = parse[a].ToInt();
 							break;
 						case STAT_SAVES:
-							records[STAT_SAVES].complete[consoleplayer] = true;
-							records[STAT_SAVES].value = parse[a].ToInt();
+							records[STAT_SAVES].complete[pnum] = true;
+							records[STAT_SAVES].value[pnum] = parse[a].ToInt();
 							break;
 						case STAT_LIQUIDDEATH:
-							records[STAT_LIQUIDDEATH].complete[consoleplayer] = true;
-							records[STAT_LIQUIDDEATH].value = parse[a].ToInt();
+							records[STAT_LIQUIDDEATH].complete[pnum] = true;
+							records[STAT_LIQUIDDEATH].value[pnum] = parse[a].ToInt();
 							break;
 						case STAT_AWARDS:
-							records[STAT_AWARDS].complete[consoleplayer] = true;
-							records[STAT_AWARDS].value = parse[a].ToInt();
+							records[STAT_AWARDS].complete[pnum] = true;
+							records[STAT_AWARDS].value[pnum] = parse[a].ToInt();
 							break;
 						case STAT_CARTRIDGES:
-							records[STAT_CARTRIDGES].complete[consoleplayer] = true;
-							records[STAT_CARTRIDGES].value = parse[a].ToInt();
+							records[STAT_CARTRIDGES].complete[pnum] = true;
+							records[STAT_CARTRIDGES].value[pnum] = parse[a].ToInt();
 							break;
 						default:
 							Achievement ach = records[index];
 							if (ach)
 							{
-								ach.value = parse[a].ToInt();
-								if (ach.value > 1 << 16) { ach.complete[consoleplayer] = true; } // Allow 16 bits for data
+								ach.value[pnum] = parse[a].ToInt();
+								if (ach.value[pnum] > 1 << 16) { ach.complete[pnum] = true; } // Allow 16 bits for data
 							}
 							break;
 					}
@@ -513,18 +523,17 @@ class AchievementTracker : StaticEventHandler
 
 	override void WorldTick()
 	{
-		CheckStats();
-
-		if (shots[consoleplayer][1] > 100 && shots[consoleplayer][0] * 100.0 / shots[consoleplayer][1] > 75) { CheckAchievement(consoleplayer, ACH_ACCURACY); }
-		if (players[consoleplayer].cmd.buttons & BT_RELOAD) { manualreloads[consoleplayer]++; }
-		if (gameaction == ga_savegame) { CheckAchievement(consoleplayer, ACH_SPAM); }
-		if (level.time % 35 == 0) { CheckAchievement(consoleplayer, ACH_ADDICTED);}
-
-		CVar debug = CVar.GetCVar("boa_debugachievements");
-		if (!debug || !debug.GetInt())
+		for (int p = 0; p < MAXPLAYERS; p++)
 		{
-			let cheats = players[consoleplayer].cheats;
-			if (cheats & (CF_NOCLIP | CF_NOCLIP2 | CF_GODMODE | CF_GODMODE2 | CF_BUDDHA | CF_BUDDHA2)) { CheckAchievement(consoleplayer, ACH_NAUGHTY); }
+			if (!playeringame[p] || !players[p].mo) { continue; }
+			LoadProfile(p);
+			CheckStats(p);
+			if (shots[p][1] > 100 && shots[p][0] * 100.0 / shots[p][1] > 75) { CheckAchievement(p, ACH_ACCURACY); }
+			if (players[p].cmd.buttons & BT_RELOAD) { manualreloads[p]++; }
+			if (gameaction == ga_savegame) { CheckAchievement(p, ACH_SPAM); }
+			if (level.time % 35 == 0) { CheckAchievement(p, ACH_ADDICTED); }
+			let debug = CVar.GetCVar("boa_debugachievements", players[p]);
+			if ((!debug || !debug.GetInt()) && (players[p].cheats & (CF_NOCLIP | CF_NOCLIP2 | CF_GODMODE | CF_GODMODE2 | CF_BUDDHA | CF_BUDDHA2))) { CheckAchievement(p, ACH_NAUGHTY); }
 		}
 	}
 
@@ -544,7 +553,7 @@ class AchievementTracker : StaticEventHandler
 
 	override void WorldThingSpawned(WorldEvent e)
 	{
-		if (e.Thing is "PlayerTracer" && PlayerTracer(e.Thing).target.player)
+		if (e.Thing is "PlayerTracer" && PlayerTracer(e.Thing).target && PlayerTracer(e.Thing).target.player)
 		{
 			int pnum = PlayerTracer(e.Thing).target.PlayerNumber();
 			if (e.Thing is "LugerTracer") { CheckAchievement(pnum, ACH_GUNSLINGER); }
@@ -566,67 +575,69 @@ class AchievementTracker : StaticEventHandler
 
 	override void NetworkProcess(ConsoleEvent e)
 	{
+		if (e.Player < 0 || e.Player >= MAXPLAYERS || !playeringame[e.Player]) { return; }
+		LoadProfile(e.Player);
 		if (e.Name == "achievement" && e.args[0] > -1 && e.args[0] < 60)
 		{
 			if (e.args[0] > ACH_LASTACHIEVEMENT)
 			{
-				records[e.args[0]].value = e.args[1] ? e.args[1] : 0;
-				SaveEncoded(3);
+				records[e.args[0]].value[e.Player] = e.args[1] ? e.args[1] : 0;
+				SaveEncoded(3, e.Player);
 			}
 			else
 			{
-				if (e.args[1]) { UpdateRecord(consoleplayer, e.args[0], e.args[1] > 0, false, true); }
-				else { UpdateRecord(consoleplayer, e.args[0], true, false, true); }
+				if (e.args[1]) { UpdateRecord(e.Player, e.args[0], e.args[1] > 0, false, true); }
+				else { UpdateRecord(e.Player, e.args[0], true, false, true); }
 			}
 		}
-		else if (e.Name == "printachievements")
+		else if (e.Name == "printachievements" && e.Player == consoleplayer)
 		{
 			for (int a = 0; a < ACH_LASTACHIEVEMENT; a++)
 			{
 				String title = ZScriptTools.StripColorCodes(StringTable.Localize(records[a].title, false));
 				title.Replace(String.Format("%c", 0x0A), "\cC - ");
 
-				if (a < records.Size() && records[a].complete[consoleplayer]) { title = "\cJ" .. title .. " (" .. SystemTime.Format("%d %b %Y, %T", records[a].value) .. ")"; }
+				if (a < records.Size() && records[a].complete[e.Player]) { title = "\cJ" .. title .. " (" .. SystemTime.Format("%d %b %Y, %T", records[a].value[e.Player]) .. ")"; }
 				else { title = "\cR" .. title; }
 
 				console.printf(title);
 			}
 
-			console.printf("Number of saves: %i", records[STAT_SAVES].value);
+			console.printf("Number of saves: %i", records[STAT_SAVES].value[e.Player]);
 
-			int sec = records[STAT_PLAYTIME].value;
+			int sec = records[STAT_PLAYTIME].value[e.Player];
 			console.printf("Total play time: \cF%02d:%02d:%02d", sec / 3600, (sec % 3600) / 60, sec % 60);
 
-			console.printf("Flag fields:\n  Cartridges: %i\n  Liquid Deaths: %i\n  Trophies: %i", records[STAT_CARTRIDGES].value, records[STAT_LIQUIDDEATH].value, records[STAT_AWARDS].value);
+			console.printf("Flag fields:\n  Cartridges: %i\n  Liquid Deaths: %i\n  Trophies: %i", records[STAT_CARTRIDGES].value[e.Player], records[STAT_LIQUIDDEATH].value[e.Player], records[STAT_AWARDS].value[e.Player]);
 		}
 		else if (e.Name == "clearachievements")
 		{
 			// Reset all variables, up to play time...  Intentionally don't reset play time.
 			for (int a = 0; a < 59; a++)
 			{
-				records[a].complete[consoleplayer] = false;
-				records[a].value = 0;
+				records[a].complete[e.Player] = false;
+				records[a].value[e.Player] = 0;
 			}
 
 			// Make sure the CVars are updated also.
-			for (int c = 0; c < 4; c++) { SaveEncoded(c); }
+			for (int c = 0; c < 4; c++) { SaveEncoded(c, e.Player); }
 		}
-		else if (!e.IsManual && e.Name == "time" && e.player == consoleplayer) { time = e.args[0]; }
+		else if (!e.IsManual && e.Name == "time") { time[e.Player] = e.args[0]; }
 	}
 
-	void CheckStats()
+	void CheckStats(int pnum)
 	{
 		if (
-			levelstats[consoleplayer][0] != players[consoleplayer].killcount ||
-			levelstats[consoleplayer][1] != players[consoleplayer].itemcount ||
-			levelstats[consoleplayer][2] != players[consoleplayer].secretcount
+			levelstats[pnum][0] != players[pnum].killcount ||
+			levelstats[pnum][1] != players[pnum].itemcount ||
+			levelstats[pnum][2] != players[pnum].secretcount
 		)
 		{
-			levelstats[consoleplayer][0] = players[consoleplayer].killcount;
-			levelstats[consoleplayer][1] = players[consoleplayer].itemcount;
-			levelstats[consoleplayer][2] = players[consoleplayer].secretcount;
+			levelstats[pnum][0] = players[pnum].killcount;
+			levelstats[pnum][1] = players[pnum].itemcount;
+			levelstats[pnum][2] = players[pnum].secretcount;
 
-			CheckAchievement(consoleplayer, ACH_PERFECTIONIST);
+			CheckAchievement(pnum, ACH_PERFECTIONIST);
 		}
 	}
 
@@ -640,20 +651,24 @@ class AchievementTracker : StaticEventHandler
 			special == 74 // Teleport_NewMap
 		)
 		{
-			AchievementTracker.CheckAchievement(consoleplayer, AchievementTracker.ACH_SPEEDRUNNER);
-			AchievementTracker.CheckAchievement(consoleplayer, AchievementTracker.ACH_IMPENETRABLE);
-			AchievementTracker.CheckAchievement(consoleplayer, AchievementTracker.ACH_TRICKSTER);
-			AchievementTracker.CheckAchievement(consoleplayer, AchievementTracker.ACH_PACIFIST);
-			AchievementTracker.CheckAchievement(consoleplayer, AchievementTracker.ACH_1915);
-			AchievementTracker.CheckAchievement(consoleplayer, AchievementTracker.ACH_MINRELOADS);
-			AchievementTracker.CheckAchievement(consoleplayer, AchievementTracker.ACH_NORELOADS);
-			AchievementTracker.CheckAchievement(consoleplayer, AchievementTracker.ACH_NOGRENADES);
+			for (int p = 0; p < MAXPLAYERS; p++)
+			{
+				if (!playeringame[p] || !players[p].mo) { continue; }
+				AchievementTracker.CheckAchievement(p, AchievementTracker.ACH_SPEEDRUNNER);
+				AchievementTracker.CheckAchievement(p, AchievementTracker.ACH_IMPENETRABLE);
+				AchievementTracker.CheckAchievement(p, AchievementTracker.ACH_TRICKSTER);
+				AchievementTracker.CheckAchievement(p, AchievementTracker.ACH_PACIFIST);
+				AchievementTracker.CheckAchievement(p, AchievementTracker.ACH_1915);
+				AchievementTracker.CheckAchievement(p, AchievementTracker.ACH_MINRELOADS);
+				AchievementTracker.CheckAchievement(p, AchievementTracker.ACH_NORELOADS);
+				AchievementTracker.CheckAchievement(p, AchievementTracker.ACH_NOGRENADES);
+			}
 		}
 	}
 
 	static void CheckAchievement(int pnum, int a)
 	{
-		if (pnum < 0) { return; }
+		if (pnum < 0 || pnum >= MAXPLAYERS || !playeringame[pnum] || a < 0 || a >= ACH_LASTACHIEVEMENT) { return; }
 
 		AchievementTracker achievements = AchievementTracker(StaticEventHandler.Find("AchievementTracker"));
 		if (
@@ -673,6 +688,7 @@ class AchievementTracker : StaticEventHandler
 			return;
 		}
 
+		achievements.LoadProfile(pnum);
 		achievements.DoChecks(pnum, a);
 	}
 
@@ -683,7 +699,7 @@ class AchievementTracker : StaticEventHandler
 
 		if (a >= achievements.records.Size()) { return false; }
 
-		return achievements.records[a].value;
+		return achievements.records[a].value[consoleplayer];
 	}
 
 	void DoChecks(int pnum, int a)
@@ -695,25 +711,25 @@ class AchievementTracker : StaticEventHandler
 				// Reset session-based, achievements if you use 'give', 'god', 'noclip', or 'buddha' cheats
 				// This does not reset achievements that have already been accomplished, nor does it reset
 				// play time, savegame count, Keen cartridge status, or Trophy status
-				if (!records[ACH_GUNSLINGER].complete[consoleplayer]) { records[ACH_GUNSLINGER].value = pistolshots[pnum] = 0; }
-				if (!records[ACH_ASSASSIN].complete[consoleplayer]) { records[ACH_ASSASSIN].value = knifekills[pnum] = 0; }
-				if (!records[ACH_SURRENDERS].complete[consoleplayer]) { records[ACH_SURRENDERS].value = surrenders[pnum] = 0; }
-				if (!records[ACH_BOOM].complete[consoleplayer]) { records[ACH_BOOM].value = totalgrenades[pnum] = 0; }
-				if (!records[ACH_SPRINT].complete[consoleplayer]) { records[ACH_SPRINT].value = exhaustion[pnum] = 0; }
-				if (!records[ACH_ZOMBIES].complete[consoleplayer]) { records[ACH_ZOMBIES].value = zombies[pnum] = 0; }
+				if (!records[ACH_GUNSLINGER].complete[pnum]) { records[ACH_GUNSLINGER].value[pnum] = pistolshots[pnum] = 0; }
+				if (!records[ACH_ASSASSIN].complete[pnum]) { records[ACH_ASSASSIN].value[pnum] = knifekills[pnum] = 0; }
+				if (!records[ACH_SURRENDERS].complete[pnum]) { records[ACH_SURRENDERS].value[pnum] = surrenders[pnum] = 0; }
+				if (!records[ACH_BOOM].complete[pnum]) { records[ACH_BOOM].value[pnum] = totalgrenades[pnum] = 0; }
+				if (!records[ACH_SPRINT].complete[pnum]) { records[ACH_SPRINT].value[pnum] = exhaustion[pnum] = 0; }
+				if (!records[ACH_ZOMBIES].complete[pnum]) { records[ACH_ZOMBIES].value[pnum] = zombies[pnum] = 0; }
 
-				if (!records[ACH_FULLARSENAL].complete[consoleplayer])
+				if (!records[ACH_FULLARSENAL].complete[pnum])
 				{
-					for (int w = 0; w < 16; w++) { weapons[pnum][w] == false; }
+					for (int w = 0; w < 16; w++) { weapons[pnum][w] = false; }
 				}
 
-				if (!records[ACH_COMBATMEDIC].complete[consoleplayer]) { records[ACH_COMBATMEDIC].value = fieldkits[pnum] = 0; }
-				if (!records[ACH_TREASUREHUNTER].complete[consoleplayer]) { records[ACH_TREASUREHUNTER].value = chests[pnum] = 0; }
-				if (!records[ACH_GOLDDIGGER].complete[consoleplayer]) { records[ACH_GOLDDIGGER].value = coins[pnum] = 0; }
-				if (!records[ACH_STAYDEAD].complete[consoleplayer]) { records[ACH_STAYDEAD].value = deadwounded[pnum] = 0; }
-				if (!records[ACH_GIBEMALL].complete[consoleplayer]) { records[ACH_GIBEMALL].value = gibs[pnum] = 0; }
+				if (!records[ACH_COMBATMEDIC].complete[pnum]) { records[ACH_COMBATMEDIC].value[pnum] = fieldkits[pnum] = 0; }
+				if (!records[ACH_TREASUREHUNTER].complete[pnum]) { records[ACH_TREASUREHUNTER].value[pnum] = chests[pnum] = 0; }
+				if (!records[ACH_GOLDDIGGER].complete[pnum]) { records[ACH_GOLDDIGGER].value[pnum] = coins[pnum] = 0; }
+				if (!records[ACH_STAYDEAD].complete[pnum]) { records[ACH_STAYDEAD].value[pnum] = deadwounded[pnum] = 0; }
+				if (!records[ACH_GIBEMALL].complete[pnum]) { records[ACH_GIBEMALL].value[pnum] = gibs[pnum] = 0; }
 
-				UpdateRecord(pnum, a, true, records[a].complete[consoleplayer], true);
+				UpdateRecord(pnum, a, true, records[a].complete[pnum], true);
 
 				if (self && !cheats_allowed) { self.Destroy(); } //a new handler will open on next level
 
@@ -795,21 +811,21 @@ class AchievementTracker : StaticEventHandler
 				if (++totalgrenades[pnum] >= 40) { complete = true; }
 				break;
 			case ACH_SPAM: // Checked here in WorldTick function
-				if (++records[STAT_SAVES].value >= 100) { complete = true; }
-				SaveEncoded(3);
+				if (++records[STAT_SAVES].value[pnum] >= 100) { complete = true; }
+				SaveEncoded(3, pnum);
 				break;
 			case ACH_SPRINT: // Checked from BoASprinting powerup
 				if (++exhaustion[pnum] >= 50) { complete = true; }
 				break;
 			case ACH_LIQUIDDEATH:
-				if (records[STAT_LIQUIDDEATH].value == 7) { complete = true; }
-				SaveEncoded(3);
+				if (records[STAT_LIQUIDDEATH].value[pnum] == 7) { complete = true; }
+				SaveEncoded(3, pnum);
 				break;
 			case ACH_ZOMBIES: // Set up in the Nazi Die function
 				if (++zombies[pnum] >= 500) { complete = true; }
 				break;
 			case ACH_FULLARSENAL: // Set up in the NaziWeapon class
-				if (records[ACH_NAUGHTY].value == time) { break; }
+				if (records[ACH_NAUGHTY].value[pnum] == time[pnum]) { break; }
 
 				for (int w = 0; w < 16; w++)
 				{
@@ -825,7 +841,7 @@ class AchievementTracker : StaticEventHandler
 				if (++chests[pnum] >= 20) { complete = true; }
 				break;
 			case ACH_GOLDDIGGER: // Set up in the CoinItem class
-				if (records[ACH_NAUGHTY].value == time) { break; }
+				if (records[ACH_NAUGHTY].value[pnum] == time[pnum]) { break; }
 				if (coins[pnum] >= 1000) { complete = true; }
 				break;
 			case ACH_STAYDEAD:
@@ -835,17 +851,17 @@ class AchievementTracker : StaticEventHandler
 				if (++gibs[pnum] >= 100) { complete = true; }
 				break;
 			case ACH_NEAT:
-				if (records[ACH_NAUGHTY].value == time) { break; }
-				if (records[STAT_CARTRIDGES].value == 7) { complete = true; }
-				SaveEncoded(3);
+				if (records[ACH_NAUGHTY].value[pnum] == time[pnum]) { break; }
+				if (records[STAT_CARTRIDGES].value[pnum] == 7) { complete = true; }
+				SaveEncoded(3, pnum);
 				break;
 			case ACH_TROPHYHUNTER:
-				if (records[STAT_AWARDS].value == 15) { complete = true; }
-				SaveEncoded(3);
+				if (records[STAT_AWARDS].value[pnum] == 15) { complete = true; }
+				SaveEncoded(3, pnum);
 				break;
 			case ACH_ADDICTED: // Incremented here in WorldTick function
-				if (++records[STAT_PLAYTIME].value > 36000) { complete = true; }
-				SaveEncoded(3);
+				if (++records[STAT_PLAYTIME].value[pnum] > 36000) { complete = true; }
+				SaveEncoded(3, pnum);
 				break;
 			case ACH_SHOVEL:
 				if (++shovelkills[pnum] >= 100) { complete = true; }
@@ -875,17 +891,18 @@ class AchievementTracker : StaticEventHandler
 
 	void UpdateRecord(int pnum, int a, bool complete, bool silent = false, bool force = false)
 	{
-		if (a > ACH_LASTACHIEVEMENT) { return; } // Don't let this function update STAT_ trackers
+		if (pnum < 0 || pnum >= MAXPLAYERS || a < 0 || a >= ACH_LASTACHIEVEMENT) { return; } // Don't let this function update STAT_ trackers
 		if (a >= records.Size()) { records.Resize(a + 1); } // Make the array bigger if it's not already big enough
 
-		if (!force && records[a].complete[consoleplayer] == complete) { return; } // Only let the player get an achievement once
+		if (!force && records[a].complete[pnum] == complete) { return; } // Only let the player get an achievement once
 		else // Set the achievement as complete
 		{
-			records[a].complete[consoleplayer] = complete;
-			if (complete) { records[a].value = time; }
+			records[a].complete[pnum] = complete;
+			if (complete) { records[a].value[pnum] = max(65537, time[pnum]); }
+			else { records[a].value[pnum] = 0; }
 		}
 
-		SaveEncoded(a / 15);
+		SaveEncoded(a / 15, pnum);
 
 		if (!silent && complete)
 		{
@@ -896,8 +913,10 @@ class AchievementTracker : StaticEventHandler
 	}
 
 	// Encode the value string
-	void SaveEncoded(int index)
+	void SaveEncoded(int index, int pnum = -1)
 	{
+		if (pnum < 0) { pnum = consoleplayer; }
+		if (pnum != consoleplayer) { return; }
 		String bits = BitString(true, index * 15, index * 15 + 15);
 
 		// Save the value to the CVar
@@ -923,7 +942,7 @@ class AchievementTracker : StaticEventHandler
 		for (int b = start; b < end; b++)
 		{
 			if (b - start > 0) { bits = bits .. "|"; }
-			bits = String.Format("%s%i", bits, records[b].value);
+			bits = String.Format("%s%i", bits, records[b].value[consoleplayer]);
 		}
 
 		return bits;
@@ -1059,11 +1078,17 @@ class AchievementTracker : StaticEventHandler
 		}
 	}
 
-	// HACK // Pass system time to the eventhandler on the play side via a network event
-	override void RenderOverlay(RenderEvent e)
+	override void UITick()
 	{
-		EventHandler.SendNetworkEvent("time", SystemTime.Now());
+		if (!players[consoleplayer].mo) { lastTimeSent = 0; return; }
+		int now = SystemTime.Now();
+		if (now != lastTimeSent)
+		{
+			EventHandler.SendNetworkEvent("time", now);
+			lastTimeSent = now;
+		}
 	}
+
 }
 
 // Persistent tracker to allow tracking certain stats across level changes

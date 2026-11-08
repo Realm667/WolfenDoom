@@ -23,7 +23,9 @@
 class InventoryClearHandler : EventHandler
 {
 	bool preventClearing;
-	bool heartbeat;
+	// UI-only send cache: do not resend while waiting for the network command.
+	transient ui Actor heartbeatPawn;
+	transient ui int heartbeatState; // 0 = not sent, 1 = enabled, 2 = disabled
 
 	// Set this code as static so that it can be called from other scripts, consolidate
 	// updates to one place , and avoid copy/paste duplication of the inventory resets.
@@ -161,28 +163,35 @@ class InventoryClearHandler : EventHandler
 
 	override void NetworkProcess(ConsoleEvent e)
 	{
-		if (e.Name == "heartbeat")
-		{
-			heartbeat = e.args[0];
+		if (e.Name != "heartbeat" || e.Player < 0 || e.Player >= MAXPLAYERS) { return; }
+		if (!playeringame[e.Player]) { return; }
 
-			let mo = players[consoleplayer].mo;
-			if (mo)
-			{
-				Inventory hb = mo.FindInventory("BoAHeartbeat");
-				if (!hb) { hb = mo.GiveInventoryType("BoAHeartBeat"); }
-				if (hb) { hb.bDormant = !heartbeat; }
-			}
-		}
+		// Every peer must update the same pawn: the sender, not its local player.
+		let mo = players[e.Player].mo;
+		if (!mo) { return; }
+
+		Inventory hb = mo.FindInventory("BoAHeartBeat");
+		if (!hb) { hb = mo.GiveInventoryType("BoAHeartBeat"); }
+		if (hb) { hb.bDormant = !e.Args[0]; }
 	}
 
 	override void UITick()
 	{
-		bool beat = !BaseStatusBar.GetGlobalACSValue(5); // This is only accessible in ui context
-		bool cutscene = !!players[consoleplayer].mo.FindInventory("CutsceneEnabled");
-		
-		if (beat != heartbeat || cutscene)
+		let mo = players[consoleplayer].mo;
+		if (!mo)
 		{
-			EventHandler.SendNetworkEvent("heartbeat", cutscene ? false : beat);
+			heartbeatPawn = null;
+			heartbeatState = 0;
+			return;
+		}
+
+		bool beat = !BaseStatusBar.GetGlobalACSValue(5) && !mo.FindInventory("CutsceneEnabled");
+		int state = beat ? 1 : 2;
+		if (mo != heartbeatPawn || state != heartbeatState)
+		{
+			EventHandler.SendNetworkEvent("heartbeat", beat);
+			heartbeatPawn = mo;
+			heartbeatState = state;
 		}
 	}
 }

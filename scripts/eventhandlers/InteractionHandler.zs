@@ -46,6 +46,22 @@ class switchtype
 
 class InteractionHandler : EventHandler
 {
+	Actor skyCameras[MAXPLAYERS];
+	transient ui Actor sentSkyCamera;
+
+	override void UITick()
+	{
+		let camera = players[consoleplayer].camera;
+		if (!camera || !players[consoleplayer].mo) { sentSkyCamera = null; return; }
+		if (camera != sentSkyCamera)
+		{
+			// Spy cameras are local engine state. Publish identity changes only,
+			// so every peer computes the same per-player sky view.
+			EventHandler.SendNetworkEvent("boa_sky_camera", camera.GetNetworkID());
+			sentSkyCamera = camera;
+		}
+	}
+
 	ParsedValue texturesounds;
 	ParsedValue switchconfig;
 	
@@ -156,18 +172,16 @@ class InteractionHandler : EventHandler
 
 	override void NetworkProcess(ConsoleEvent e)
 	{
-		if (e.Name == "opensafe")
+		if (e.Name == "boa_sky_camera")
 		{
-			ThinkerIterator it = ThinkerIterator.Create("Safe", Thinker.STAT_DEFAULT);
-			Safe mo;
-
-			while (mo = Safe(Actor(it.Next())))
-			{
-				if (int(mo.pos.x) != e.args[0] || int(mo.pos.y) != e.args[1] || int(mo.pos.z) != e.args[2]) { continue; }
-
-				mo.DoOpen();
-				return;
-			}
+			if (e.IsManual || e.Player < 0 || e.Player >= MAXPLAYERS || !playeringame[e.Player]) { return; }
+			skyCameras[e.Player] = Actor(Object.GetNetworkEntity(e.Args[0]));
+		}
+		else if (e.Name == "opensafe")
+		{
+			if (e.IsManual) { return; }
+			let safe = Safe(Object.GetNetworkEntity(e.Args[0]));
+			if (safe) { safe.RequestOpen(e.Player, e.Args[1]); }
 		}
 		else if (e.Name == "testfonts")
 		{

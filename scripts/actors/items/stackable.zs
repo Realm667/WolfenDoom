@@ -83,6 +83,8 @@ class StackableInventory : PuzzleItem
 
 	override Inventory CreateCopy (Actor other)
 	{
+		if (IsCreatingLocalCopy()) { return Super.CreateCopy(other); }
+
 		Inventory copy;
 
 		let type = GetParentInventoryClass();

@@ -218,13 +218,13 @@ class AchievementSummary : BoAMenu
 				value = String.Format("%i/%i", tracker.totalgrenades[consoleplayer], 40);
 				break;
 			case AchievementTracker.ACH_SPAM:
-				value = String.Format("%i/%i", tracker.records[AchievementTracker.STAT_SAVES].value, 100);
+				value = String.Format("%i/%i", tracker.records[AchievementTracker.STAT_SAVES].value[consoleplayer], 100);
 				break;
 			case AchievementTracker.ACH_SPRINT:
 				value = String.Format("%i/%i", tracker.exhaustion[consoleplayer], 50);
 				break;
 			case AchievementTracker.ACH_LIQUIDDEATH:
-				int deathbits = tracker.records[AchievementTracker.STAT_LIQUIDDEATH].value;
+				int deathbits = tracker.records[AchievementTracker.STAT_LIQUIDDEATH].value[consoleplayer];
 				if (deathbits & 1) { value = "\cH"; }
 				value = value .. "⬛\cU";
 				if (deathbits & 2) { value = value .. "\cI"; }
@@ -259,7 +259,7 @@ class AchievementSummary : BoAMenu
 				value = String.Format("%i/%i", tracker.coins[consoleplayer], 1000);
 				break;
 			case AchievementTracker.ACH_NEAT:
-				int neatbits = tracker.records[AchievementTracker.STAT_CARTRIDGES].value;
+				int neatbits = tracker.records[AchievementTracker.STAT_CARTRIDGES].value[consoleplayer];
 
 				if (neatbits & 1) { value = "\cG"; }
 				value = value .. "⬛\cU";
@@ -269,7 +269,7 @@ class AchievementSummary : BoAMenu
 				value = value .. "⬛";
 				break;
 			case AchievementTracker.ACH_TROPHYHUNTER:
-				int trophybits = tracker.records[AchievementTracker.STAT_AWARDS].value;
+				int trophybits = tracker.records[AchievementTracker.STAT_AWARDS].value[consoleplayer];
 
 				if (trophybits & 1) { value = "\cF"; }
 				value = value .. "🅲\cU";
@@ -281,7 +281,7 @@ class AchievementSummary : BoAMenu
 				value = value .. "🅺";
 				break;
 			case AchievementTracker.ACH_ADDICTED:
-				int sec = tracker.records[AchievementTracker.STAT_PLAYTIME].value;
+				int sec = tracker.records[AchievementTracker.STAT_PLAYTIME].value[consoleplayer];
 				value = String.Format("%02d:%02d:%02d", sec / 3600, (sec % 3600) / 60, sec % 60);
 				break;
 			case AchievementTracker.ACH_SHOVEL:
@@ -293,9 +293,9 @@ class AchievementSummary : BoAMenu
 		int charsize = captionfont.StringWidth(" ");
 		int valuewidth, timewidth;
 
-		if (ach.value && ach.value > 1 << 16)
+		if (ach.value[consoleplayer] && ach.value[consoleplayer] > 1 << 16)
 		{
-			timevalue = SystemTime.Format("%d %b %Y, %T", ach.value);
+			timevalue = SystemTime.Format("%d %b %Y, %T", ach.value[consoleplayer]);
 			timewidth = timevalue.length() * charsize;
 			screen.DrawText(captionfont, Font.CR_GOLD, int(pos.x + size.x - timewidth * captionscale), int(pos.y), timevalue, DTA_Alpha, alpha, DTA_ScaleX, captionscale, DTA_ScaleY, captionscale, DTA_ClipTop, drawtop, DTA_ClipBottom, drawbottom, DTA_Monospace, 2, DTA_Spacing, charsize);
 		}
@@ -367,22 +367,22 @@ class AchievementSummary : BoAMenu
 
 					drawpos.y += 64;
 
-					complete = tracker.records[AchievementTracker.STAT_AWARDS].value & 1;
+					complete = tracker.records[AchievementTracker.STAT_AWARDS].value[consoleplayer] & 1;
 					size = TexMan.GetScaledSize(caco).Unit();
 					size *= (24 / size.x);
 					screen.DrawTexture(caco, true, drawpos.x - 36 * 4, drawpos.y, DTA_Alpha, alpha, DTA_AlphaChannel, !complete, DTA_FillColor, complete ? -1 : 0xBBBBCC, DTA_DestWidth, int(size.x), DTA_DestHeight, int(size.y), DTA_CenterBottomOffset, true);
 
-					complete = tracker.records[AchievementTracker.STAT_AWARDS].value & 2;
+					complete = tracker.records[AchievementTracker.STAT_AWARDS].value[consoleplayer] & 2;
 					size = TexMan.GetScaledSize(nazi).Unit();
 					size *= (24 / size.x);
 					screen.DrawTexture(nazi, true, drawpos.x - 36 * 3, drawpos.y, DTA_Alpha, alpha, DTA_AlphaChannel, !complete, DTA_FillColor, complete ? -1 : 0xBBBBCC, DTA_DestWidth, int(size.x), DTA_DestHeight, int(size.y), DTA_CenterBottomOffset, true);
 
-					complete = tracker.records[AchievementTracker.STAT_AWARDS].value & 4;
+					complete = tracker.records[AchievementTracker.STAT_AWARDS].value[consoleplayer] & 4;
 					size = TexMan.GetScaledSize(keen).Unit();
 					size *= (24 / size.x);
 					screen.DrawTexture(keen, true, drawpos.x - 36 * 2, drawpos.y, DTA_Alpha, alpha, DTA_AlphaChannel, !complete, DTA_FillColor, complete ? -1 : 0xBBBBCC, DTA_DestWidth, int(size.x), DTA_DestHeight, int(size.y), DTA_CenterBottomOffset, true);
 
-					complete = tracker.records[AchievementTracker.STAT_AWARDS].value & 8;
+					complete = tracker.records[AchievementTracker.STAT_AWARDS].value[consoleplayer] & 8;
 					size = TexMan.GetScaledSize(keen).Unit();
 					size *= (24 / size.x);
 					screen.DrawTexture(keen2, true, drawpos.x - 36, drawpos.y, DTA_Alpha, alpha, DTA_AlphaChannel, !complete, DTA_FillColor, complete ? -1 : 0xBBBBCC, DTA_DestWidth, int(size.x), DTA_DestHeight, int(size.y), DTA_CenterBottomOffset, true);
@@ -395,13 +395,13 @@ class AchievementSummary : BoAMenu
 					size = TexMan.GetScaledSize(cart51);
 					drawpos.y += size.y;
 
-					complete = tracker.records[AchievementTracker.STAT_CARTRIDGES].value & 1;
+					complete = tracker.records[AchievementTracker.STAT_CARTRIDGES].value[consoleplayer] & 1;
 					screen.DrawTexture(cart51, true,drawpos.x - 36 * 3, drawpos.y, DTA_Alpha, alpha, DTA_AlphaChannel, !complete, DTA_FillColor, complete ? -1 : 0xBBBBCC, DTA_DestWidth, int(size.x), DTA_DestHeight, int(size.y), DTA_CenterBottomOffset, true);
 
-					complete = tracker.records[AchievementTracker.STAT_CARTRIDGES].value & 2;
+					complete = tracker.records[AchievementTracker.STAT_CARTRIDGES].value[consoleplayer] & 2;
 					screen.DrawTexture(cart52, true, drawpos.x - 36 * 2, drawpos.y, DTA_Alpha, alpha, DTA_AlphaChannel, !complete, DTA_FillColor, complete ? -1 : 0xBBBBCC, DTA_DestWidth, int(size.x), DTA_DestHeight, int(size.y), DTA_CenterBottomOffset, true);
 
-					complete = tracker.records[AchievementTracker.STAT_CARTRIDGES].value & 4;
+					complete = tracker.records[AchievementTracker.STAT_CARTRIDGES].value[consoleplayer] & 4;
 					screen.DrawTexture(cart53, true, drawpos.x - 36, drawpos.y, DTA_Alpha, alpha, DTA_AlphaChannel, !complete, DTA_FillColor, complete ? -1 : 0xBBBBCC, DTA_DestWidth, int(size.x), DTA_DestHeight, int(size.y), DTA_CenterBottomOffset, true);
 					break;
 				case AchievementTracker.ACH_LIQUIDDEATH:

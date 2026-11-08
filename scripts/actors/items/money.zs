@@ -24,11 +24,14 @@
 // Inheriting from StackableInventory prevents player from picking it up if player is maxed out on it.
 class CoinItem : StackableInventory
 {
+	bool mapTreasure; // Origin survives local-copy ClearCounters and first pickup.
+
 	Default
 	{
 		Inventory.MaxAmount 9999;
 		Tag "Money";
 		+COUNTITEM
+		-INVENTORY.ISKEYITEM
 		+INVENTORY.UNDROPPABLE
 		+INVENTORY.IGNORESKILL
 	}
@@ -63,6 +66,7 @@ class CoinItem : StackableInventory
 	{
 		Super.BeginPlay();
 
+		mapTreasure = bCountItem && !bDropped;
 		bDormant = SpawnFlags & MTF_DORMANT;
 		if (bDormant) { ClearCounters(); }
 	}
@@ -81,13 +85,29 @@ class CoinItem : StackableInventory
 		return msg;
 	}
 
+	// Currency is personal even when cooperative key sharing is enabled.
+	override bool ShouldShareItem(Actor giver) { return false; }
+
+	override Inventory CreateCopy(Actor other)
+	{
+		bool localCopy = IsCreatingLocalCopy();
+		if (localCopy && bCountItem && !bDropped) { mapTreasure = true; }
+		let copy = Super.CreateCopy(other);
+		if (localCopy && copy is "CoinItem")
+		{
+			CoinItem(copy).mapTreasure = mapTreasure || (bCountItem && !bDropped);
+			copy.bDormant = bDormant;
+		}
+		return copy;
+	}
+
 	override bool HandlePickup(Inventory item)
 	{
 		bool handled = Super.HandlePickup(item);
 
 		// Map treasure must still count as found when the player's wallet is full.
 		// Bonus drops and other non-counting coins retain their normal cap behavior.
-		if (handled && item is "CoinItem" && item.bCountItem && !item.bPickupGood && Amount >= MaxAmount)
+		if (handled && item is "CoinItem" && (item.bCountItem || CoinItem(item).mapTreasure) && !item.bPickupGood && Amount >= MaxAmount)
 		{
 			item.bPickupGood = true;
 		}
