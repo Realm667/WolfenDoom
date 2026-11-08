@@ -1,5 +1,11 @@
 # Changelog
 
+## 2.6.17
+
+- Require UZDoom 5.0.3 or newer for every launch path and multiplayer session.
+- Update version guidance and boundary checks; keep historical test records unchanged.
+
+
 ## 2.6.16
 
 ### Fixed

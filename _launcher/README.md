@@ -1,6 +1,6 @@
 # Blade of Agony Launcher
 
-Version 2.6.16 is a modern WPF launcher for Blade of Agony and UZDoom 5.0.1
+Version 2.6.17 is a modern WPF launcher for Blade of Agony and UZDoom 5.0.3
 or newer. It is a clean-room replacement for the original native launcher and
 remains portable: no installer or additional UI runtime is required on
 supported Windows systems.
@@ -128,7 +128,7 @@ game with build.bat and the add-ons with their builder remains recommended.
 - Host setup supports 2-4 players, chapter/map selection, all five BoA
   difficulties, UDP port, and `sv_cheats`.
 - Join setup supports host name or IPv4 address and port.
-- Multiplayer validates only `uzdoom.exe` as UZDoom 5.0.1 or newer and
+- Multiplayer validates only `uzdoom.exe` as UZDoom 5.0.3 or newer and
   `boa.ipk3`.
 - All selected add-ons and `boa_dt.pk3` are excluded from multiplayer
   commands. The single-player add-on selection is retained for later use.
@@ -191,8 +191,8 @@ checkpoint, respawn and cinematic regression pass were not performed.
 - Classifies recognized renderer, ZScript/add-on, savegame, missing-file, and
   fatal-engine signatures from the latest log and recommends a recovery path.
 - Labels detected engines as Stable, Preview, or Unsupported; UZDoom preview
-  builds above the 5.0.1 release minimum remain usable but are clearly identified.
-  Older releases and 5.0.1 prereleases are blocked before every game launch,
+  builds above the 5.0.3 release minimum remain usable but are clearly identified.
+  Older releases and 5.0.3 prereleases are blocked before every game launch,
   including campaign continuation, multiplayer and Safe Mode.
 
 ## Content manifest
@@ -201,7 +201,7 @@ The optional `boa-launcher.json` file in `boa.ipk3` is the authoritative,
 versioned launcher contract for BoA version, minimum engine version, languages,
 chapters, and missions. The launcher safely falls back to MAPINFO when the
 manifest is absent. Older, missing or invalid minimum-version declarations cannot
-lower the launcher's built-in UZDoom 5.0.1 requirement.
+lower the launcher's built-in UZDoom 5.0.3 requirement.
 
 ## Build
 
