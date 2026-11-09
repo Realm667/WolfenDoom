@@ -157,9 +157,36 @@ class SkyViewPointStaticView : SkyViewPoint
 	}
 }
 
+// Map pickers remain synchronized. Only a reference to a personal BoA skybox
+// is forwarded to an explicitly spawned local selector; other skies use the
+// unchanged engine implementation.
+class BoAMapSkyPicker : SkyPicker replaces SkyPicker
+{
+	override void PostBeginPlay()
+	{
+		if (args[0] != 0)
+		{
+			let it = Level.CreateActorIterator(args[0], "SkyViewPointStatic");
+			if (it.Next())
+			{
+				let picker = SpawnClientSide("BoAStaticSkyPicker");
+				if (picker)
+				{
+					picker.CurSector = CurSector;
+					picker.args[0] = args[0]; picker.args[1] = args[1];
+					Destroy(); return;
+				}
+			}
+		}
+		Super.PostBeginPlay();
+	}
+}
+
 // Engine SkyPicker owns the native portal writes. This clientside adapter
 // selects a synchronized view without spawning local networked actors.
-class BoAStaticSkyPicker : SkyPicker replaces SkyPicker
+// Spawn this explicitly: replacing the synchronized map SkyPicker with a
+// CLIENTSIDE actor is forbidden and would affect unrelated map sky pickers.
+class BoAStaticSkyPicker : SkyPicker
 {
 	Default { +CLIENTSIDE }
 	override void PostBeginPlay() { SelectView(); }
