@@ -337,6 +337,18 @@ class RadioPickup : CompassItem
 		Inventory.PickupSound "pickup/radiopk";
 		-INVENTORY.INVBAR
 	}
+
+	override void Touch(Actor toucher)
+	{
+		let itemtype = GetClass();
+		let previous = toucher.FindInventory(itemtype);
+		int amount = previous ? previous.Amount : 0;
+		Super.Touch(toucher);
+		let received = toucher.FindInventory(itemtype);
+		// Only the actual pickup makes noise, not scripted grants or coop sharing.
+		if (received && received.Amount > amount && toucher.player) { toucher.SoundAlert(toucher, false, 512); }
+	}
+
 	States
 	{
 	Spawn:
