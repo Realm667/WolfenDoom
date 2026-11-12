@@ -118,7 +118,7 @@ class HandGrenade : GrenadeBase //no hard variant since it is used also by playe
 		Death:
 			THRW B 35 { floorclip -= 2; }
 			TNT1 A 0 A_SpawnGroundSplash;
-			TNT1 A 0 A_AlertMonsters(512);
+			TNT1 A 0 A_AlertMonsters(1024); // Nearby groups can hear the blast; normal sound blocking still applies.
 			TNT1 A 0 A_SetScale(1.75,1.75);
 			TNT1 A 0 A_SetTranslucent(0.75,1);
 			TNT1 A 0 A_StartSound("grenade/explode", CHAN_AUTO, 0, 1.0, 0.1);
