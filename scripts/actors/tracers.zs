@@ -26,6 +26,7 @@ class BulletTracer : FastProjectile
 	Actor trailactor;
 	int offset;
 	int zoffset;
+	bool liquidImpact;
 	int flags;
 	EffectsManager manager;
 
@@ -62,6 +63,7 @@ class BulletTracer : FastProjectile
 			Loop;
 		Death:
 		Crash:
+			TNT1 A 0 A_JumpIf(liquidImpact, "LiquidImpact");
 			TNT1 AAA 0 {
 				A_SpawnItemEx("TracerSpark", 0, 0, 0, Random[Spark](-2,2), Random[Spark](-2,2), Random[Spark](-2,2), Random[Spark](0,359)); //T667 improvements
 			}
@@ -75,6 +77,9 @@ class BulletTracer : FastProjectile
 				if (!bNoRicochet) { A_StartSound("ricochet"); }
 			}
 			PUFF CD 3 BRIGHT LIGHT("BPUFF1");
+			Stop;
+		LiquidImpact:
+			TNT1 A 0 { if (trailactor) { trailactor.Destroy(); } }
 			Stop;
 		XDeath:
 			TNT1 A 1 {
@@ -248,6 +253,13 @@ class BulletTracer : FastProjectile
 							}
 						}
 
+						if (!BlockingMobj && BlockingLine &&
+							FindState("Death") == GetDefaultByType("BulletTracer").FindState("Death") &&
+							HitLiquidWall(BlockingLine))
+						{
+							liquidImpact = true;
+							DecalGenerator = null;
+						}
 						ExplodeMissile (BlockingLine, BlockingMobj);
 						return;
 					}
@@ -267,7 +279,7 @@ class BulletTracer : FastProjectile
 					}
 
 					SetZ(floorz);
-					HitFloor ();
+					liquidImpact = HitFloor();
 					Destructible.ProjectileHitPlane(self, SECPART_Floor);
 					ExplodeMissile (NULL, NULL);
 					return;
@@ -320,6 +332,51 @@ class BulletTracer : FastProjectile
 				trailactor.pitch = -VectorAngle(Speed, Vel.Z);
 			}
 		}
+	}
+
+	// Classify the struck face, not the sector floor underneath the shot.
+	// As in the native decal path, use the opposite sector's planes to
+	// distinguish upper/lower tiers from a solid 3D-floor side.
+	bool HitLiquidWall(Line wall)
+	{
+		Vector3 at = PosRelative(wall.frontsector);
+		int face = level.PointOnLineSide(at.xy, wall, true);
+		if (!wall.sidedef[face]) { face ^= 1; }
+		let hit = wall.sidedef[face];
+		if (!hit) { return false; }
+		TextureID tex = hit.GetTexture(Side.mid);
+		let other = wall.sidedef[face ^ 1];
+		if (other)
+		{
+			Vector2 span = wall.v2.p - wall.v1.p;
+			double lengthSq = span dot span;
+			if (lengthSq <= 0) { return false; }
+			Vector2 point = wall.v1.p + span * clamp(((at.xy - wall.v1.p) dot span) / lengthSq, 0., 1.);
+			let back = other.sector;
+			if (at.z <= back.floorplane.ZatPoint(point)) { tex = hit.GetTexture(Side.bottom); }
+			else if (at.z >= back.ceilingplane.ZatPoint(point)) { tex = hit.GetTexture(Side.top); }
+			else for (int i = 0; i < back.Get3DFloorCount(); i++)
+			{
+				let slab = back.Get3DFloor(i);
+				int mask = F3DFloor.FF_EXISTS | F3DFloor.FF_SOLID | F3DFloor.FF_RENDERSIDES;
+				if ((slab.flags & mask) != mask || at.z < slab.bottom.ZatPoint(point) || at.z > slab.top.ZatPoint(point)) { continue; }
+				if (slab.flags & F3DFloor.FF_UPPERTEXTURE) { tex = hit.GetTexture(Side.top); }
+				else if (slab.flags & F3DFloor.FF_LOWERTEXTURE) { tex = hit.GetTexture(Side.bottom); }
+				else { tex = slab.master.sidedef[0].GetTexture(Side.mid); }
+				break;
+			}
+		}
+		if (!tex.IsValid()) { return false; }
+		String material = TexMan.GetName(tex);
+		if (BoAPlayer.GetTextureMod(material) != 'None') { return true; }
+		// Additional wall materials defined by TERRAIN and the waterfall shaders;
+		// these do not change the player's underwater damage classification.
+		material = material.Mid(material.RightIndexOf("/") + 1);
+		int ext = material.IndexOf(".");
+		if (ext >= 0) { material = material.Left(ext); }
+		return material ~== "AZTC_WTF" || material ~== "WFAL_G98" || material ~== "WFAL_X98" ||
+			material ~== "NUKA_A01" || material ~== "CK_WATR0" ||
+			material ~== "FWATER1" || material ~== "FWATER2" || material ~== "FWATER3" || material ~== "FWATER4";
 	}
 
 	void DoWhizChecks(int radius = 96)
