@@ -1,5 +1,13 @@
 # Changelog
 
+## 2.6.20
+
+- Choose classic death handling or checkpoint respawns after selecting the single-player difficulty. The choice only applies to new chapter or mission starts with game data supporting this feature. Resuming an existing save uses its original rule.
+
+## 2.6.19
+
+- Add an opt-in single-player mission selector for the three Commander Keen bonus maps (#1728). In the active launcher INI, set `DebugKeenMissions=1` under `[Launcher]`. No bonus missions are added to the normal campaign or co-op catalog.
+
 ## 2.6.18
 
 - Keep engine probing, campaign save discovery, multiplayer and diagnostics off the initial Quick Launch path (#1711).

@@ -25,6 +25,9 @@ class VolumetricLight_ConeDown : VolumetricBase
 	Default
 	{
 	//$Title Volumetric Light, Downward (PLACE IT 256MP MINIMUM)
+		// Alpha-blend the gradient; an additive white cone saturates on GLES.
+		RenderStyle "Translucent";
+		Alpha 0.10;
 	}
 	States
 	{

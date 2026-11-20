@@ -1313,14 +1313,20 @@ class AmmoWidget : Widget
 				info.ammotype = ammotype;
 				info.icon = GetDefaultbyType(ammotype).icon;
 
-				if (player.mo.FindInventory(ammotype)) { info.carried = player.mo.FindInventory(ammotype).amount; }
+				let reserve = player.mo.FindInventory(ammotype);
+				if (reserve) { info.carried = reserve.amount; }
 				if (!carried) { return; }
-				if (ammotypeloaded && player.mo.FindInventory(ammotypeloaded)) { info.chambered = player.mo.FindInventory(ammotypeloaded).amount; }
+				if (ammotypeloaded)
+				{
+					let loaded = player.mo.FindInventory(ammotypeloaded);
+					if (loaded) { info.chambered = loaded.amount; }
+				}
 			}
 			else if (ammotypeloaded && carried)
 			{
 				info = ammotypes[a];
-				if (player.mo.FindInventory(ammotypeloaded)) { info.chambered += player.mo.FindInventory(ammotypeloaded).amount; }
+				let loaded = player.mo.FindInventory(ammotypeloaded);
+				if (loaded) { info.chambered += loaded.amount; }
 			}
 
 		}

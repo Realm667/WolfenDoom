@@ -88,7 +88,7 @@ ListMenu "SkillMenu"
 {
 	StaticPatchCentered 160, 5, "M_SKILL"
 	Position 70, 60
-	Class "StaticIconListMenu"
+	Class "BoACampaignSkillMenu"
 }
 
 //-------------------------------------------------------------------------------------------
@@ -806,4 +806,13 @@ OptionString "BoALanguageOptions" //these includes BoA only related languages, s
 	//"pt", "Português do Brasil (Brazilian Portuguese)"
 	//"ro", "Română (Romanian)"
 	//"sr", "Српски (Serbian)"
+}
+
+ListMenu "BoARespawnChoice"
+{
+ StaticTextCentered 160, 44, "$BOA_DEATHMODE"
+ Position 48, 68
+ TextItem "$BOA_DEATHCLASSIC", "1", "BoAClassicMode"
+ TextItem "$BOA_DEATHCHECKPOINT", "2", "BoACheckpointMode"
+ Class "BoARespawnChoice"
 }

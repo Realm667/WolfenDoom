@@ -300,6 +300,44 @@ class ExtendedListMenu : ListMenu
 		}
 	}
 }
+// Keep the episode and any difficulty confirmation in UZDoom's native new-game flow.
+class BoACampaignSkillMenu : StaticIconListMenu
+{
+ int classicSkill, checkpointSkill;
+ Name originalAction;
+ override bool MenuEvent(int key, bool fromController)
+ {
+  if (key == MKEY_Enter && mDesc.mSelectedItem >= 0 && !overlay) {
+   Name destination; int idx;
+   [destination,idx] = mDesc.mItems[mDesc.mSelectedItem].GetAction();
+   if ((destination == 'StartGame' || destination == 'StartGameConfirm') && idx >= 0 && idx < AllSkills.Size()) {
+    for (int i=0; i<5; i++) {
+     if (AllSkills[idx].SkillName != Name(String.Format("Nazis%d",i+1))) continue;
+     for (int j=0;j<AllSkills.Size();j++) {
+      if (AllSkills[j].SkillName != Name(String.Format("BoACheckpoint%d",i+1))) continue;
+      classicSkill=idx; checkpointSkill=j; originalAction=destination;
+      Menu.SetMenu('BoARespawnChoice'); return true;
+     }
+    }
+   }
+  }
+  return Super.MenuEvent(key,fromController);
+ }
+}
+class BoARespawnChoice : ListMenu
+{
+ override bool MenuEvent(int key, bool fromController) {
+  let origin=BoACampaignSkillMenu(mParentMenu);
+  if (key==MKEY_Enter && origin && mDesc.mSelectedItem>=0) {
+   Name option=mDesc.mItems[mDesc.mSelectedItem].GetAction();
+   if(option=='BoAClassicMode' || option=='BoACheckpointMode') {
+    Menu.SetMenu(origin.originalAction,option=='BoACheckpointMode'?origin.checkpointSkill:origin.classicSkill);
+    return true;
+   }
+  }
+  return Super.MenuEvent(key,fromController);
+ }
+}
 
 // For an icon beside the menu entry, like Wolf3D episode select
 class IconListMenu : ExtendedListMenu

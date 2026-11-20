@@ -89,6 +89,13 @@ class PlayerCheckpointManager : StaticEventHandler {
 
 	override void PlayerRespawned(PlayerEvent e) {
 		// Teleport player to their new start
+		if (!multiplayer) {
+			if (G_SkillPropertyInt(SKILLP_PlayerRespawn)) {
+				let checkpoint = BoACoopCheckpoint.FindSoloCheckpoint();
+				if (checkpoint) players[e.PlayerNumber].mo.Teleport(checkpoint.Pos, checkpoint.Angle, 0);
+			}
+			return; // The engine has already placed the player at the map start.
+		}
 		if (!activeCheckpoint) return;
 		Vector3 newPos; double newAngle;
 		[newPos, newAngle] = GetNewPosition(e.PlayerNumber, activeCheckpoint);
@@ -166,6 +173,17 @@ class PlayerCheckpointManager : StaticEventHandler {
 }
 
 class BoACoopCheckpoint : MapSpot {
+	// Actor fields are restored by the savegame system; a static handler pointer is not.
+	bool soloCheckpoint;
+	static BoACoopCheckpoint FindSoloCheckpoint() {
+		let it = ThinkerIterator.Create("BoACoopCheckpoint");
+		BoACoopCheckpoint ck;
+		while (ck = BoACoopCheckpoint(it.Next())) {
+			if (ck.soloCheckpoint) return ck;
+		}
+		return null;
+	}
+
 	Default {
 		//$Icon CHKPT0
 		//$Category Multiplayer (BoA)
@@ -182,7 +200,15 @@ class BoACoopCheckpoint : MapSpot {
 
 	override void Activate(Actor activator) {
 		// Set active level checkpoint to self
-		if (!multiplayer || deathmatch) { return; }
+		if (deathmatch) return;
+		if (!multiplayer) {
+			if (!G_SkillPropertyInt(SKILLP_PlayerRespawn)) return;
+			let old = FindSoloCheckpoint();
+			if (old) old.soloCheckpoint = false;
+			soloCheckpoint = true;
+			ObjectiveMessage.Init(null, "CHK_REACHED", "OBJCKPNT");
+			return;
+		}
 		PlayerCheckpointManager pcm = PlayerCheckpointManager(StaticEventHandler.Find("PlayerCheckpointManager"));
 		pcm.activeCheckpoint = self;
 		// See https://github.com/Realm667/WolfenDoom/commit/5fe30fa8e5a5268420402fd2313991a76cd0fdce#commitcomment-63170874
@@ -190,7 +216,11 @@ class BoACoopCheckpoint : MapSpot {
 	}
 
 	override void Deactivate(Actor activator) {
-		if (!multiplayer || deathmatch) { return; }
+		if (deathmatch) return;
+		if (!multiplayer) {
+			soloCheckpoint = false;
+			return;
+		}
 		// Unset active level checkpoint
 		PlayerCheckpointManager pcm = PlayerCheckpointManager(StaticEventHandler.Find("PlayerCheckpointManager"));
 		pcm.activeCheckpoint = null;
