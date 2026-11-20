@@ -4,7 +4,7 @@ on:
   push:
     paths:
       - '_addons/**'
-      - '_launcher/Blade of Agony - Launcher Diagnostics.exe'
+      - '_launcher/Blade of Agony - Launcher.exe'
       - '_launcher/boa-launcher.json'
       - 'boa-launcher.json'
       - 'wolf_boa.txt'
@@ -12,7 +12,7 @@ on:
   pull_request:
     paths:
       - '_addons/**'
-      - '_launcher/Blade of Agony - Launcher Diagnostics.exe'
+      - '_launcher/Blade of Agony - Launcher.exe'
       - '_launcher/boa-launcher.json'
       - 'boa-launcher.json'
       - 'wolf_boa.txt'
@@ -29,7 +29,8 @@ jobs:
         with:
           sparse-checkout: |
             _addons
-            _launcher/Blade of Agony - Launcher Diagnostics.exe
+            _launcher/Blade of Agony - Launcher.exe
+            boa-launcher.json
             wolf_boa.txt
           sparse-checkout-cone-mode: false
       - name: Build and validate every official add-on pair
