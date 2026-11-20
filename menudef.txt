@@ -1,15 +1,3 @@
-//-------------------------------------------------------------------------------------------
-//
-// About BoA menudef:
-// In order to include our custom standalone menus, we have decide to get rid of certain
-// options which may be potential game breakers or that we retain not useful for players
-// due of the nature of the mod.
-//
-// Following menu parts have been removed from the original gzdoom.pk3:
-// DefaultOptionMenu, MainMenuTextOnly, CompatibilityOptions, os_menu
-//
-//-------------------------------------------------------------------------------------------
-
 DEFAULTLISTMENU
 {
 	Font "BigFont", "DarkGray", "Black"
@@ -17,10 +5,6 @@ DEFAULTLISTMENU
 	Linespacing 16
 }
 
-DEFAULTOPTIONMENU
-{
-	Class "BoAOptionMenu"
-}
 
 //-------------------------------------------------------------------------------------------
 //
@@ -34,7 +18,7 @@ LISTMENU "MainMenu"
 	StaticPatchCentered 160, 5, "M_START"
 	Position 110, 60
 	TextItem "$MNU_NEWGAME", "n", "PlayerclassMenu"
-	TextItem "$MNU_OPTIONS", "o", "OptionsMenu"
+	TextItem "$MNU_OPTIONS", "o", "BoASettingsEntry"
 	TextItem "$MNU_GAMEFILES", "g", "GameFilesMenu"
 	TextItem "$MNU_INFO", "i", "BoAInfo"
 	TextItem "$MNU_QUITGAME", "q", "QuitMenu"
@@ -138,11 +122,6 @@ ListMenu "SaveGameMenu"
 //
 //-------------------------------------------------------------------------------------------
 
-OptionMenuSettings
-{
-	Linespacing 16
-}
-
 ///////////////////////
 //CUSTOM OPTION MENUS//
 ///////////////////////
@@ -150,13 +129,17 @@ OptionMenuSettings
 OptionMenu "BoAPerformanceOptions"
 {
 	Title "$PERFOPT"
+	StaticText "$NOTEOPT2"
+	SafeCommand "$OPT_VLOW", "boa_verylow", "$OPT_VLOWM"
+	Submenu "$PREDOPT", "BoAPredefinedOptions"
 	StaticText " "
 	Submenu "$OPT_WEAT",				"BoAWeatherOptions"
 	Submenu "$OPT_SFX",					"BoAEffectsOptions"
 	Submenu "$OPT_REND",				"BoARenderOptions"
 	Submenu "$OPT_PROC",				"BoAPostProcessShaderOptions"
 	SubMenu "$OPT_BLOOD",				"BoABloodOptions"
-	SubMenu "$OPT_GAME",				"BoAGameOptions"
+	Slider "$GA_ZBULL", "boa_maxflatdecals", 1024,4096,1024,0
+	Slider "$GA_SHELLS", "boa_casinglifetime", 1,180,5,0
 }
 
 OptionMenu "BoAPredefinedOptions"
@@ -190,32 +173,55 @@ OptionMenu "BoACheatsOptions"
 	Option "$MISCMNU_ALLCHEATS",			"allcheats", "OnOff"
 }
 
-OptionMenu "BoAOptionsTop" // Added onto the top of the default Options menu
+// Own the BoA pages only. OptionsMenuFull is UZDoom's public full-menu entry,
+// including when the player prefers the engine's simple view.
+OptionMenu "BoASettingsEntry"
 {
-	Submenu "$PERFOPT",				"BoAPerformanceOptions" //this should contain most of all custom related boa menus - ozy81
-	Submenu "$PREDOPT",				"BoAPredefinedOptions"
-	StaticText " "
-
-	class "MenuShim"
+	Title "$MNU_OPTIONS"
+	Submenu "Blade of Agony", "BoASettings"
+	StaticText "UZDoom", 1
+	Submenu "$OPTMNU_FULLOPTIONS", "OptionsMenuFull"
 }
 
-OptionMenu "BoAOptionsMiddle" // Added in the middle of the default Options menu (before Options Search)
+OptionMenu "BoASettings"
 {
-	Submenu "$OPT_CHEAT", 				"BoACheatsOptions"
+	Title "Blade of Agony"
+	Submenu "$OPT_GAME", "BoAPlaySettings"
+	Submenu "$PERFOPT", "BoAPerformanceOptions"
+	Submenu "$OPTMNU_SOUND", "BoAAudioLanguage"
 	StaticText " "
-	BoALanguage "$OPTMNU_LANGUAGE", 		"language", "BoALanguageOptions"
-	StaticText " "
-	Option "$OPT_DEVC", 				"boa_devcomswitch", "OnOff"
-
-	class "MenuShim"
+	Submenu "$SMP_MOREOPTIONS", "BoAAdvancedSettings"
 }
 
-OptionMenu "BoAHudScaleOptionsInsert"
+OptionMenu "BoAPlaySettings"
 {
-	Option "$OPT_HUDRATIO",				"boa_hudratio", "ForceRatios"
-
-	class "MenuShim"
+	Title "$OPT_GAME"
+	Submenu "$SMP_CONTROLS", "BoACustomizeControls"
+	Option "$GA_SCAM", "boa_strafetilt", "OnOff"
+	Option "$GA_REL", "boa_autoreload", "OnOff"
+	Slider "$GA_RECOIL", "boa_recoilamount", 0,20,1,0
+	Option "$OPT_HUDRATIO", "boa_hudratio", "ForceRatios"
+	PercentSlider "$OPT_HUDMETERFADE", "boa_hudmeterfade", 0,1,0.05, "$OPT_HUDMETERFADE_HIDE", "$OPT_HUDMETERFADE_SHOW"
+	Option "$OPT_HUDPARTIME", "boa_hudshowpartime", "HUDParTime"
 }
+
+OptionMenu "BoAAudioLanguage"
+{
+	Title "$OPTMNU_SOUND"
+	BoALanguage "$OPTMNU_LANGUAGE", "language", "BoALanguageOptions"
+	Option "$MSGMNU_SUBTITLES", "inter_subtitles", "OnOff"
+	Option "$OPT_DEVC", "boa_devcomswitch", "OnOff"
+	Submenu "$OPTMNU_SOUND", "SoundOptions"
+	Submenu "$OPTMNU_ACCESSIBILITY", "AccessibilityOptions"
+}
+
+OptionMenu "BoAAdvancedSettings"
+{
+	Title "$SMP_MOREOPTIONS"
+	Submenu "$OPT_CHEAT", "BoACheatsOptions"
+}
+
+
 
 OptionValue "HUDParTime"
 {
@@ -224,15 +230,6 @@ OptionValue "HUDParTime"
 	2, "$OPTVAL_HUD_REPLACETIME"
 }
 
-OptionMenu "BoAHudOptionsInsert"
-{
-	StaticText " "
-	PercentSlider "$OPT_HUDMETERFADE",		"boa_hudmeterfade", 0.0, 1.0, 0.05, "$OPT_HUDMETERFADE_HIDE", "$OPT_HUDMETERFADE_SHOW"
-	Option "$OPT_HUDPARTIME", 			"boa_hudshowpartime", "HUDParTime"
-	StaticText " "
-
-	class "MenuShim"
-}
 
 //-------------------------------------------------------------------------------------------
 //
@@ -525,64 +522,10 @@ OptionMenu "MBlurOpts"
 
 OptionMenu "BoAVideoOptions"
 {
-	Title "$DSPLYMNU_TITLE"
-	Submenu "$OPTMNU_VIDEO",			"VideoModeMenu"
-	Submenu "$OPTMNU_HUD",				"HUDOptions"
-	StaticText ""
-	Submenu "$DSPLYMNU_GLOPT", 					"OpenGLOptions"
-	// Submenu "$DSPLYMNU_SWOPT", 				"SWROptions"  // BoA is not for software rendering - hawkwind
-	Submenu "$DSPLYMNU_VKOPT",					"VKOptions"
-	Submenu "$GLMNU_TEXOPT", 					"GLTextureGLOptions"
-	Submenu "$GLMNU_DYNLIGHT",					"GLLightOptions" // now uses the actual options in uzdoom.pk3 to fix an issue - https://github.com/UZDoom/UZDoom/issues/1638 - hawkwind.
-	StaticText " "
-	Slider "$DSPLYMNU_SCREENSIZE",				"screenblocks", 				3.0, 12.0, 1.0, 0
-	StaticText " "
-	Slider "$DSPLYMNU_GAMMA",					"vid_gamma",					0.75, 3.0, 0.05, 2
-	Slider "$DSPLYMNU_BRIGHTNESS",				"vid_brightness",				-0.8,0.8, 0.05,2
-	Slider "$DSPLYMNU_CONTRAST",				"vid_contrast",	   				0.1, 3.0, 0.1
-	Slider "$DSPLYMNU_SATURATION",				"vid_saturation",  				-3.0, 3.0, 0.25, 2
-	StaticText " "
-	Option "$DSPLYMNU_WIPETYPE",				"wipetype", 					"Wipes"
-	Option "$DSPLYMNU_DRAWFUZZ",				"r_drawfuzz", 					"Fuzziness"
-	Option "$DSPLYMNU_FAKECONTRAST",			"r_fakecontrast", 				"Contrast"
-	Option "$DSPLYMNU_DEATHCAM",				"r_deathcamera", 				"OnOff"
-	Option "$DSPLYMNU_TELEZOOM",				"telezoom", 					"OnOff"
-	Slider "$DSPLYMNU_QUAKEINTENSITY",			"r_quakeintensity", 			0.0, 1.0, 0.05, 2
-	Option "$DSPLYMNU_NOMONSTERINTERPOLATION",	"nomonsterinterpolation", 		"NoYes"
-	StaticText " "
-	StaticText " "
-	StaticText " "
-	Submenu "$OPTMNU_ORGVID",					"VideoOptions"
+	Title "$MNU_OPTIONS"
+	Submenu "$OPTMNU_FULLOPTIONS", "VideoOptions"
 }
 
-OptionMenu "OpenGLOptions" protected
-{
-	Title "$GLMNU_TITLE"
-	Submenu "$GLPREFMNU_VRMODE",				"VR3DMenu"
-	Submenu "$GLMNU_POSTPROCESS",				"PostProcessMenu"
-	StaticText " "
-	Option "$GLPREFMNU_SECLIGHTMODE",			gl_lightmode,					"LightingModes"
-	Option "$GLPREFMNU_SWLMBANDED",				gl_bandedswlight,				"OnOff"
-	Option "$GLPREFMNU_FOGMODE",				gl_fogmode,						"FogMode"
-	Option "$GLPREFMNU_FOGFORCEFULLBRIGHT",		gl_brightfog,					"YesNo"
-	Slider "$GLPREFMNU_WPNLIGHTSTR",			gl_weaponlight,					0,32, 2
-	Option "$GLPREFMNU_ENVIRONMENTMAPMIRROR",	gl_mirror_envmap,				"OnOff"
-	Option "$GLPREFMNU_ENV",					gl_enhanced_nightvision,		"OnOff"
-	Option "$GLPREFMNU_ENVSTEALTH",				gl_enhanced_nv_stealth,			"EnhancedStealth"
-	Option "$GLPREFMNU_SPRCLIP",				gl_spriteclip,					"SpriteclipModes"
-	Option "$GLPREFMNU_SPRBLEND",				gl_sprite_blend,				"OnOff"
-	Option "$GLPREFMNU_FUZZSTYLE",				gl_fuzztype,					"FuzzStyle"
-	Option "$GLPREFMNU_SPRBILLBOARD",			gl_billboard_mode,				"BillboardModes"
-	Option "$GLPREFMNU_SPRBILLFACECAMERA",		gl_billboard_faces_camera,		"OnOff"
-	Option "$GLPREFMNU_SPRBILLFACECAMERAFORCE",	hw_force_cambbpref,				"OnOff"
-	Option "$GLPREFMNU_PARTICLESTYLE",			gl_particles_style,				"Particles"
-	Option "$GLPREFMNU_RENDERQUALITY",			gl_seamless,					"Precision"
-	//Option "$GLPREFMNU_CORONAS",				gl_coronas,						"OnOff"
-	StaticText " "
-	Slider "$GLPREFMNU_MENUBLUR",				gl_menu_blur, 0, 5.0, 0.5, 2
-	StaticText " "
-	Option "$GLPREFMNU_MULTISAMPLE", 			gl_multisample,					"Multisample"
-}
 
 //-------------------------------------------------------------------------------------------
 //
@@ -590,41 +533,16 @@ OptionMenu "OpenGLOptions" protected
 //
 //-------------------------------------------------------------------------------------------
 
-OptionMenu "BoAFlashOptions" //include some options regarding custom poisons? - ozy81
+OptionMenu "BoAFlashOptions"
 {
-	Title "$HUDMNU_FLASH"
-	Option "$HUDMNU_HEXENFLASHES",			"pf_hexenweaps", "ZDoomHexen"
-	Option "$HUDMNU_POISONFLASHES",			"pf_poison", "ZDoomHexen"
-	Option "$HUDMNU_ICEFLASHES",			"pf_ice", "ZDoomHexen"
-	Option "$HUDMNU_HAZARDFLASHES",			"pf_hazard", "ZDoomStrife"
-	StaticText " "
-	Slider "$DSPLYMNU_BLOODFADE",			"blood_fade_scalar", 0.0, 1.0, 0.05, 2
-	Slider "$DSPLYMNU_PICKUPFADE",			"pickup_fade_scalar", 0.0, 1.0, 0.05, 2
-	Slider "$DSPLYMNU_WATERFADE",			"underwater_fade_scalar", 0.0, 1.0, 0.05, 2
+	Title "$MNU_OPTIONS"
+	Submenu "$OPTMNU_FULLOPTIONS", "FlashOptions"
 }
 
-OptionMenu "BoAScalingOptions" //limit some scaling aspect to not break hud? - ozy81
+OptionMenu "BoAScalingOptions"
 {
-	Title "$SCALEMNU_TITLE"
-	ScaleSlider "$HUDMNU_UISCALE",				"uiscale", 0.0, 8.0, 1.0, "$SCALEMNU_ADAPT"
-	StaticText " "
-	// These will need a new control type.
-	StaticText "$SCALEMNU_OVERRIDE", 1
-	ScaleSlider "$SCALEMNU_MESSAGES", 			"con_scaletext", 0.0, 8.0, 1.0, "$SCALEMNU_USEUI"
-	ScaleSlider "$SCALEMNU_CONSOLE", 			"con_scale", 0.0, 8.0, 1.0, "$SCALEMNU_USEUI"
-	Option "$SCALEMNU_HUD_OLDSCALE",			"hud_oldscale", "OnOff"
-	Slider "$SCALEMNU_HUD_SCALEFACTOR",			"hud_scalefactor", 0.0, 1.0, 0.025, 3, "hud_oldscale", 1
-	ScaleSlider "$SCALEMNU_STATBAR",			"st_scale", -1.0, 8.0, 1.0, "$SCALEMNU_USEUI", "$SCALEMNU_USEFS", "hud_oldscale"
-	ScaleSlider "$SCALEMNU_HUD", 				"hud_scale", -1.0, 8.0, 1.0, "$SCALEMNU_USEUI", "$SCALEMNU_USEFS", "hud_oldscale"
-	ScaleSlider "$SCALEMNU_ALTHUD",				"hud_althudscale", 0.0, 8.0, 1.0, "$SCALEMNU_USEUI"
-	StaticText " "
-	Option "$SCALEMNU_HUDASPECT", 				"hud_aspectscale", "OnOff"
-	StaticText " "
-	StaticText "$SCALEMNU_SCALECLASSIC", 1
-	Option "$SCALEMNU_INTER",					"inter_classic_scaling", "OnOff"
-	Option "$SCALEMNU_BORDER",					"ui_screenborder_classic_scaling", "OnOff"
-	Slider "$SCALEMNU_FACTOR",					"classic_scaling_factor", 1.0, 3.0, 0.2, 1
-	Slider "$SCALEMNU_RATIO",					"classic_scaling_pixelaspect", 1.0, 1.2, 0.2, 1
+	Title "$MNU_OPTIONS"
+	Submenu "$OPTMNU_FULLOPTIONS", "ScalingOptions"
 }
 
 //-------------------------------------------------------------------------------------------
@@ -633,41 +551,10 @@ OptionMenu "BoAScalingOptions" //limit some scaling aspect to not break hud? - o
 //
 //-------------------------------------------------------------------------------------------
 
-OptionMenu "BoAMiscOptions" //move boa cheats here? - ozy81
+OptionMenu "BoAMiscOptions"
 {
-	Title "$MISCMNU_TITLE"
-	IfOption(Windows)
-	{
-		Option "$MISCMNU_MERGEKEYS", 			"k_mergekeys", "OnOff"
-		Option "$MISCMNU_WINFULLSCREENTOGGLE",	"k_allowfullscreentoggle", "OnOff"
-	}
-	IfOption(Mac)
-	{
-		Option "$MISCMNU_MACFULLSCREENTOGGLE",	"k_allowfullscreentoggle", "OnOff"
-	}
-	Option "$MISCMNU_QUERYIWAD",				"queryiwad", "OnOff"
-	StaticText " "
-	Option "$MISCMNU_ENABLEAUTOSAVES",			"disableautosave", "Autosave"
-	Option "$MISCMNU_SAVELOADCONFIRMATION",		"saveloadconfirmation", "OnOff"
-	Slider "$MISCMNU_AUTOSAVECOUNT",			"autosavecount", 1, 20, 1, 0
-	Option "$MISCMNU_QUICKSAVEROTATION",		"quicksaverotation", "OnOff"
-	Slider "$MISCMNU_QUICKSAVECOUNT",			"quicksaverotationcount", 1, 20, 1, 0
-	// Option "$MISCMNU_DEHLOAD",					"dehload", "dehopt" // no dehs in BoA - hawkwind
-	Option "$MISCMNU_ENABLESCRIPTSCREENSHOTS",	"enablescriptscreenshot", "OnOff"
-	Option "$MISCMNU_INTERSCROLL",				"nointerscrollabort", "OffOn"
-	StaticText " "
-	Option "$MISCMNU_CACHENODES",				"gl_cachenodes", "OnOff"
-	Slider "$MISCMNU_CACHETIME",				"gl_cachetime", 0.0, 2.0, 0.1
-	SafeCommand "$MISCMNU_CLEARNODECACHE",		"clearnodecache"
-
-	StaticText " "
-	Option "$MISCMNU_QUICKEXIT",				"m_quickexit", "OnOff"
-
-	IfOption(Windows)
-	{
-		StaticText " "
-		Option	"$DSPLYMNU_SHOWENDOOM",			"showendoom", "Endoom"
-	}
+	Title "$MNU_OPTIONS"
+	Submenu "$OPTMNU_FULLOPTIONS", "MiscOptions"
 }
 
 //-------------------------------------------------------------------------------------------
@@ -678,28 +565,8 @@ OptionMenu "BoAMiscOptions" //move boa cheats here? - ozy81
 
 OptionMenu "BoAMessageOptions"
 {
-	Title "$MSGMNU_TITLE"
-	Option "$OPT_DEVC", 				"boa_devcomswitch", "OnOff"
-	StaticText ""
-	Option "$MSGMNU_SHOWMESSAGES",				"show_messages", "OnOff"
-	Option "$MSGMNU_SHOWOBITUARIES",			"show_obituaries", "OnOff"
-	Option "$MSGMNU_SHOWSECRETS",				"cl_showsecretmessage", "OnOff"
-	Option "$MSGMNU_MESSAGELEVEL", 				"msg", "MessageLevels"
-	Option "$MSGMNU_DEVELOPER", 				"developer", "DevMessageLevels"
-	Option "$MSGMNU_CENTERMESSAGES",			"con_centernotify", "OnOff"
-	Option "$MSGMNU_SUBTITLES",					"inter_subtitles", "OnOff"
-	StaticText " "
-	StaticText "$MSGMNU_MESSAGECOLORS", 1
-	StaticText " "
-	Option "$MSGMNU_ITEMPICKUP",				"msg0color", "TextColors"
-	Option "$MSGMNU_OBITUARIES",				"msg1color", "TextColors"
-	Option "$MSGMNU_CRITICALMESSAGES",			"msg2color", "TextColors"
-	Option "$MSGMNU_CHATMESSAGES",				"msg3color", "TextColors"
-	Option "$MSGMNU_TEAMMESSAGES",				"msg4color", "TextColors"
-	Option "$MSGMNU_CENTEREDMESSAGES",			"msgmidcolor", "TextColors"
-	StaticText " "
-	Option "$MSGMNU_SCREENSHOTMESSAGES",		"screenshot_quiet",	"OffOn"
-	Option "$MSGMNU_LONGSAVEMESSAGES",			"longsavemessages",	"OnOff"
+	Title "$MNU_OPTIONS"
+	Submenu "$OPTMNU_FULLOPTIONS", "MessageOptions"
 }
 
 //-------------------------------------------------------------------------------------------
@@ -708,15 +575,10 @@ OptionMenu "BoAMessageOptions"
 //
 //-------------------------------------------------------------------------------------------
 
-OptionMenu "BoAScoreboardOptions" //include some options for HQs scoreboard? - ozy81
+OptionMenu "BoAScoreboardOptions"
 {
-	Title "$SCRBRDMNU_TITLE"
-	StaticText "$SCRBRDMNU_COOPERATIVE", 1
-	StaticText " "
-	Option "$SCRBRDMNU_ENABLE",				"sb_cooperative_enable", "YesNo"
-	Option "$SCRBRDMNU_HEADERCOLOR",		"sb_cooperative_headingcolor", "TextColors"
-	Option "$SCRBRDMNU_YOURCOLOR",			"sb_cooperative_yourplayercolor", "TextColors"
-	Option "$SCRBRDMNU_OTHERPLAYERCOLOR",	"sb_cooperative_otherplayercolor", "TextColors"
+	Title "$MNU_OPTIONS"
+	Submenu "$OPTMNU_FULLOPTIONS", "ScoreboardOptions"
 }
 
 ///////////////////////
@@ -725,22 +587,8 @@ OptionMenu "BoAScoreboardOptions" //include some options for HQs scoreboard? - o
 
 OptionMenu "BoAGameplayOptions"
 {
-	Position -35
-	Title 	"$GMPLYMNU_TITLE"
-	Submenu "$OPT_GAME",						"BoAGameOptions"
-	Submenu "$OPT_BLOOD",						"BoABloodOptions"
-	StaticText " "
-	Submenu "$GMPLYMNU_COOPERATIVE",			"CoopOptions"
-	StaticText " "
-	Option "$GMPLYMNU_TEAMPLAY",				"teamplay",	"OnOff"
-	Slider	"$GMPLYMNU_TEAMDAMAGE",				"teamdamage", 0, 1, 0.05,2
-	StaticText " "
-	Option "$GMPLYMNU_SMARTAUTOAIM",			"sv_smartaim", "SmartAim"	//gameplay breaker? - ozy81
-	StaticText " "
-	StaticText " "
-	StaticText " "
-	Submenu "$OPTMNU_ORGGPL",					"GameplayOptions"
-	Class "GameplayMenu"
+	Title "$MNU_OPTIONS"
+	Submenu "$OPTMNU_FULLOPTIONS", "GameplayOptions"
 }
 
 OptionMenu "BoAGameOptions"

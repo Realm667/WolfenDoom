@@ -34,11 +34,22 @@ Blade of Agony is much more than just a pastiche of the classic shooters that in
 - Devastating armaments from the battlefields of WWII
 - Interactive NPCs that support the twisted plot's progress and help you understand the game
 - Beautiful special effects (weather, elements, explosions, shaders etc.)
-- Achievement system
+- Single-player achievements (multiplayer matches leave the achievement profile unchanged)
 - Custom launcher
 - Mutators
 - Switchable developer commentaries
 - And Much, much more!
+
+## In-game options
+
+Open **Options → Blade of Agony** for the game's controls and HUD, performance
+settings, language, subtitles and developer commentary. If a map runs slowly,
+try **Performance Options → Potato quality**. The confirmation describes what
+the preset changes; the other presets and individual effects are on the same page.
+Cheats are in **More Options**.
+
+For resolution, input devices, the renderer or the full engine settings search,
+choose **Full Options** under **UZDoom** instead. No configuration reset is needed.
 
 ## License
 This repository is for development and testing purposes. Contributions are welcome, but you are **NOT ALLOWED** to use any un-released material for your own projects without our permission!
