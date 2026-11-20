@@ -1,6 +1,6 @@
 # Blade of Agony Launcher
 
-Version 2.6.17 is a modern WPF launcher for Blade of Agony and UZDoom 5.0.3
+Version 2.6.18 is a modern WPF launcher for Blade of Agony and UZDoom 5.0.3
 or newer. It is a clean-room replacement for the original native launcher and
 remains portable: no installer or additional UI runtime is required on
 supported Windows systems.
@@ -20,8 +20,9 @@ game with build.bat and the add-ons with their builder remains recommended.
 - New Campaign contains the Main menu / Chapter choice, followed by Chapter,
   Difficulty and optional Mission select. Missions default to From the beginning;
   changing the chapter resets this optional selection. Campaign fields remain
-  visible but disabled for Main menu. Start New Campaign sits at the bottom of
-  its pane; the footer contains status only, with no global Play button.
+  visible but disabled for Main menu. The action reads Open Main Menu or Start
+  New Campaign according to the selection. Without a save, compact layouts put
+  New Campaign first; the footer contains status only, with no global Play button.
 - Shared graphics and game settings sit below both campaign panes. Continue
   Campaign loads its chosen save directly without changing the selected chapter,
   difficulty or mission. Start Multiplayer Session belongs to the Multiplayer page
@@ -39,7 +40,8 @@ game with build.bat and the add-ons with their builder remains recommended.
   settings (no language override; retain the engine's setting). Launcher map
   labels use a best-effort preview of that language; engine autoexec overrides
   are not executed by the preview.
-- Displacement textures appears directly below Developer commentary.
+- Displacement textures and detail level share the Graphics section. The performance
+  goal follows both settings and reads Custom for other combinations.
 - Blade of Agony, Dark, Light, and Wolfenstein 3D designs.
 - Startup loading feedback uses the selected theme's accent and track colors,
   with a clearly moving segment instead of the green Windows progress effect.
@@ -85,7 +87,8 @@ game with build.bat and the add-ons with their builder remains recommended.
 - Clearly identifies Mission Select as an advanced path that can bypass
   campaign state, inventory, and briefings.
 - Detects an interrupted previous run and offers Safe Mode with an isolated
-  configuration, no add-ons, no displacement pack, and windowed rendering.
+  configuration, no autoexec or autoload, no add-ons, no displacement pack, and
+  windowed rendering. A failed recovery attempt retains the recovery notice.
 - Shows the selected mission, difficulty, and game language in the footer
   for direct campaign starts.
 - Sorts missions by chapter, mission number, and map part while keeping

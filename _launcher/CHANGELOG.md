@@ -1,5 +1,13 @@
 # Changelog
 
+## 2.6.18
+
+- Keep engine probing, campaign save discovery, multiplayer and diagnostics off the initial Quick Launch path (#1711).
+- Isolate recovery launches from normal settings and use the resolved safe-mode configuration.
+- Keep compatible saves playable even when their optional screenshot cannot be decoded.
+- Label campaign actions by destination and prioritize New Campaign on narrow windows without saves.
+- Keep performance goals synchronized with detail and displacement settings. Show actionable preflight findings beside launch actions.
+
 ## 2.6.17
 
 - Require UZDoom 5.0.3 or newer for every launch path and multiplayer session.
