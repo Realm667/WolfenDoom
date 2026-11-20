@@ -269,6 +269,14 @@ class NTomb3 : NTomb1
 	}
 }
 
+class ArchStantonTomb : NTomb3
+{
+	Default
+	{
+		//$Title Tombstone 3 (Arch Stanton)
+	}
+}
+
 class NTomb4 : NTomb1
 {
 	Default
