@@ -1,0 +1,42 @@
+version "4.12"
+
+// Roll once per map placement, before actors are spawned. Swapping only the
+// editor number keeps placement properties and the game's native barrel logic.
+class ChocolateBarrelPlacement : LevelPostProcessor
+{
+    const DisguisedTNT = 12501;
+    const Supplies = 12504;
+    const Empty = 31929; // See mapinfo.txt.
+
+    protected void Apply(Name checksum, String mapname)
+    {
+        uint count = GetThingCount();
+        for (uint i = 0; i < count; i++)
+        {
+            int original = GetThingEdNum(i);
+            if (original != DisguisedTNT && original != Supplies) continue;
+
+            // Preserve scripted targets, specials and author-specified drops.
+            if (GetThingID(i) || GetThingSpecial(i) || GetThingArgument(i, 0) ||
+                GetThingStringArgument(i) != 'None') continue;
+
+            int roll = Random[ChocolateBarrels](0, 99);
+            int boomChance = original == DisguisedTNT ? 60 : 15;
+            SetThingEdNum(i, roll < boomChance ? DisguisedTNT : roll < 85 ? Supplies : Empty);
+        }
+    }
+}
+
+// Same BARL A disguise, health and collision as the other two outcomes.
+// BarrelSpawner handles unblocking; there are no DropItems or explosive states.
+class ChocolateEmptyBarrel : TNTBarrel1
+{
+    Default { DeathSound "WOODBRK"; }
+    States
+    {
+    Death:
+        TNT1 A 0 A_Scream;
+        BARL A 2 A_SpawnItemEx("BarrelFrags");
+        Stop;
+    }
+}
