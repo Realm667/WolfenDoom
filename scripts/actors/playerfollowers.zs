@@ -141,6 +141,8 @@ class PlayerFollower : Actor // Default version - for actors like prisoner with 
 	int healplayer;
 	int scouttime;
 	int offset;
+	bool canUseDoors;
+	int nextDoorCheck;
 
 	static const statelabel MissileStateNames[] = { null, "Melee", "Luger", "MP40", "Rifle", "Grenade", "Shotgun" };
 	static const int MissileRanges[] = { 1, 32, 512, 768, 1024, 512, 512 };
@@ -155,6 +157,7 @@ class PlayerFollower : Actor // Default version - for actors like prisoner with 
 	Property HealParticle:healparticle;
 	Property HealPlayer:healplayer;
 	Property CharName:charname; // Name of follower
+	Property CanUseDoors:canUseDoors;
 
 	Default
 	{
@@ -176,6 +179,7 @@ class PlayerFollower : Actor // Default version - for actors like prisoner with 
 		Speed 5;
 		MaxStepHeight 56; //Matches max player jump height with standard JumpZ of 8 and MaxStepHeight of 24
 		MaxDropOffHeight 512;
+		PlayerFollower.CanUseDoors True;
 		MaxTargetRange 3072; // Because we have long corridors that are more than 2048 units long, and PlayerFollowers would stand there stupidly even though enemies are in sight
 		DamageFactor "Trample", 0.0;
 		PainChance 128;
@@ -387,6 +391,50 @@ class PlayerFollower : Actor // Default version - for actors like prisoner with 
 		return ResolveState("Stand");
 	}
 
+	// Only movement specials which start by opening a door. Never run arbitrary
+	// player-use scripts or treat a closing Generic_Door as an opening door.
+	static bool IsFollowerDoor(Line boundary)
+	{
+		switch (boundary.special)
+		{
+		case Door_Open:
+		case Door_Raise:
+		case Door_LockedRaise:
+		case Door_WaitRaise:
+		case Door_Animated:
+		case Polyobj_DoorSwing:
+		case Polyobj_DoorSlide:
+			return true;
+		case Generic_Door:
+			return (boundary.args[2] & 63) <= 1;
+		}
+		return false;
+	}
+
+	void TryUseFollowDoor(Actor destination)
+	{
+		if (!canUseDoors || !bFriendly || nonmoving || !destination || level.time < nextDoorCheck) return;
+		nextDoorCheck = level.time + 5;
+		double reach = min(64., Distance2D(destination));
+		if (reach <= 0) return;
+		FLineTraceData hit;
+		LineTrace(AngleTo(destination), reach, 0, TRF_BLOCKSELF | TRF_BLOCKUSE | TRF_SOLIDACTORS,
+			height * 0.5, 0, 0, hit);
+		Line boundary = hit.HitLine;
+		if (hit.HitType != FLineTraceData.TRACE_HitWall || !boundary || hit.NumPortals ||
+			(boundary.flags & Line.ML_SECRET) || !IsFollowerDoor(boundary)) return;
+		int useType = hit.LineSide ? SPAC_UseBack : SPAC_Use;
+		if (!(boundary.activation & (hit.LineSide ? SPAC_UseBack : (SPAC_Use | SPAC_UseThrough)))) return;
+
+		// Use the real activator, side, locks, event hooks and one-shot handling.
+		// Grant monster permission only for this synchronous call.
+		int grant = Line.ML_MONSTERSCANACTIVATE & ~boundary.flags;
+		boundary.flags |= grant;
+		bool used = boundary.Activate(self, hit.LineSide, useType);
+		boundary.flags &= ~grant;
+		if (used) nextDoorCheck = level.time + 70;
+	}
+
 	state A_ChaseGoal()
 	{
 		if (!playerToChase || playerToChase.health <= 0) { return ResolveState("Stand"); } // Make sure a player was targeted as who to chase - if he's dead, target another player (multiplayer support)
@@ -466,6 +514,7 @@ class PlayerFollower : Actor // Default version - for actors like prisoner with 
 
 			goal = currentGoal;
 
+			TryUseFollowDoor(currentGoal ? currentGoal : playerToChase);
 			A_Chase(null, null, CHF_STOPIFBLOCKED); // Use default chase logic to go after our goal without trying to fire
 
 			// Not sure why I'm having to manually handle stepping up onto map objects
@@ -1555,6 +1604,7 @@ class DogFollower : PlayerFollower2
 		//$Category Monsters (BoA)/NPCs/Followers
 		//$Title German Shepherd (Friendly Follower - Melee)
 		//$Color 4
+		PlayerFollower.CanUseDoors False;
 
 		Speed 4;
 		Scale 0.67;
