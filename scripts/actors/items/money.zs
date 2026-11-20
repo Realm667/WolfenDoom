@@ -125,7 +125,7 @@ class CoinItem : StackableInventory
 		{
 			coins = toucher.FindInventory("CoinItem");
 			int collected = (coins ? coins.Amount : 0) - before;
-			AchievementTracker achievements = AchievementTracker(StaticEventHandler.Find("AchievementTracker"));
+			AchievementTracker achievements = AchievementTracker.ActiveTracker();
 			if (achievements && collected > 0)
 			{
 				achievements.coins[toucher.PlayerNumber()] += collected;

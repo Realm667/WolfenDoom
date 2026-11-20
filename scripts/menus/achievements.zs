@@ -80,9 +80,15 @@ class AchievementSummary : BoAMenu
 		scroll = Scroll.Init(int(drawright - 12 * scale), drawtop, int(12 * scale), drawbottom - drawtop, maxscroll);
 	}
 
+	override void Ticker()
+	{
+		if (multiplayer) { Close(); return; }
+		Super.Ticker();
+	}
+
 	override void Drawer()
 	{
-		if (!tracker) { return; }
+		if (multiplayer || !tracker) { return; }
 
 		int height = int(Screen.GetHeight());
 		int width = int(Screen.GetWidth());

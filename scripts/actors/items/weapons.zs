@@ -228,7 +228,7 @@ class NaziWeapon : Weapon
 
 		if (ret && toucher && toucher.player)
 		{
-			AchievementTracker achievements = AchievementTracker(StaticEventHandler.Find("AchievementTracker"));
+			AchievementTracker achievements = AchievementTracker.ActiveTracker();
 			if (achievements)
 			{
 				for (int w = 0; w < achievements.weaponlist.Size(); w++)
@@ -301,7 +301,7 @@ class NaziWeapon : Weapon
 		if (r && invoker.Owner.player) {
 			invoker.Owner.player.WeaponState &= ~(WF_WEAPONREADY | WF_WEAPONREADYALT);
 
-			AchievementTracker tracker = AchievementTracker(StaticEventHandler.Find("AchievementTracker"));
+			AchievementTracker tracker = AchievementTracker.ActiveTracker();
 			if (tracker) { tracker.reloads[invoker.owner.PlayerNumber()]++; }
 		}
 	}
@@ -1102,7 +1102,7 @@ class TurretStand : Actor
 			{
 				gun.SetStateLabel("Reload");
 
-				AchievementTracker tracker = AchievementTracker(StaticEventHandler.Find("AchievementTracker"));
+				AchievementTracker tracker = AchievementTracker.ActiveTracker();
 				if (tracker && shooter) { tracker.reloads[shooter.PlayerNumber()]++; }
 			}
 		}

@@ -112,7 +112,7 @@ class DamageTracker : EventHandler
 
 	override void WorldTick()
 	{
-		if (!achievements) { achievements = AchievementTracker(StaticEventHandler.Find("AchievementTracker")); }
+		if (!achievements) { achievements = AchievementTracker.ActiveTracker(); }
 
 		for (int i = 0; i < events.Size(); i++)
 		{
@@ -338,6 +338,13 @@ class Achievement
 
 class AchievementTracker : StaticEventHandler
 {
+	// Use the game mode, not the number of connected players.
+	static AchievementTracker ActiveTracker()
+	{
+		if (multiplayer) return null;
+		return AchievementTracker(StaticEventHandler.Find("AchievementTracker"));
+	}
+
 	transient CVar recordvar[4];
 	int record;
 	Array<Achievement> records;
@@ -467,6 +474,7 @@ class AchievementTracker : StaticEventHandler
 
 	void LoadProfile(int pnum)
 	{
+		if (multiplayer) return;
 		if (pnum < 0 || pnum >= MAXPLAYERS) { return; }
 		if (profileLoaded[pnum]) { return; }
 		profileLoaded[pnum] = true;
@@ -523,6 +531,7 @@ class AchievementTracker : StaticEventHandler
 
 	override void WorldTick()
 	{
+		if (multiplayer) return;
 		for (int p = 0; p < MAXPLAYERS; p++)
 		{
 			if (!playeringame[p] || !players[p].mo) { continue; }
@@ -539,11 +548,13 @@ class AchievementTracker : StaticEventHandler
 
 	override void WorldUnloaded(WorldEvent e)
 	{
+		if (multiplayer) return;
 		SaveStatsToPersistent();
 	}
 
 	override void WorldLoaded(WorldEvent e)
 	{
+		if (multiplayer) return;
 		if (e.IsSaveGame) { GetStatsFromPersistent(); } // Only restore from saved values if a save game was loaded
 
 		// Achievements only work on CxMy and TEST_x named maps
@@ -553,6 +564,7 @@ class AchievementTracker : StaticEventHandler
 
 	override void WorldThingSpawned(WorldEvent e)
 	{
+		if (multiplayer) return;
 		if (e.Thing is "PlayerTracer" && PlayerTracer(e.Thing).target && PlayerTracer(e.Thing).target.player)
 		{
 			int pnum = PlayerTracer(e.Thing).target.PlayerNumber();
@@ -563,11 +575,13 @@ class AchievementTracker : StaticEventHandler
 
 	override void WorldThingDied(WorldEvent e)
 	{
+		if (multiplayer) return;
 		if (e.Thing is "ZombieStandard" && e.Thing.target && e.Thing.target.player) { CheckAchievement(e.Thing.target.PlayerNumber(), ACH_ZOMBIES); }
 	}
 
 	override void WorldLinePreActivated(WorldEvent e)
 	{
+		if (multiplayer) return;
 		let line = e.activatedline;
 
 		CheckSpecials(line.special);
@@ -575,6 +589,7 @@ class AchievementTracker : StaticEventHandler
 
 	override void NetworkProcess(ConsoleEvent e)
 	{
+		if (multiplayer) return;
 		if (e.Player < 0 || e.Player >= MAXPLAYERS || !playeringame[e.Player]) { return; }
 		LoadProfile(e.Player);
 		if (e.Name == "achievement" && e.args[0] > -1 && e.args[0] < 60)
@@ -644,6 +659,7 @@ class AchievementTracker : StaticEventHandler
 	// Check for achievements on level exit
 	static void CheckSpecials(int special = -1)
 	{
+		if (multiplayer) return;
 		if (
 			special == -1 || // Force checking regardless of special if none was passed
 			special == 243 || // Exit_Normal
@@ -670,7 +686,7 @@ class AchievementTracker : StaticEventHandler
 	{
 		if (pnum < 0 || pnum >= MAXPLAYERS || !playeringame[pnum] || a < 0 || a >= ACH_LASTACHIEVEMENT) { return; }
 
-		AchievementTracker achievements = AchievementTracker(StaticEventHandler.Find("AchievementTracker"));
+		AchievementTracker achievements = AchievementTracker.ActiveTracker();
 		if (
 			!achievements ||
 			(
@@ -694,7 +710,7 @@ class AchievementTracker : StaticEventHandler
 
 	static int IsComplete(int a)
 	{
-		AchievementTracker achievements = AchievementTracker(StaticEventHandler.Find("AchievementTracker"));
+		AchievementTracker achievements = AchievementTracker.ActiveTracker();
 		if (!achievements) { return false; }
 
 		if (a >= achievements.records.Size()) { return false; }
@@ -891,6 +907,7 @@ class AchievementTracker : StaticEventHandler
 
 	void UpdateRecord(int pnum, int a, bool complete, bool silent = false, bool force = false)
 	{
+		if (multiplayer) return;
 		if (pnum < 0 || pnum >= MAXPLAYERS || a < 0 || a >= ACH_LASTACHIEVEMENT) { return; } // Don't let this function update STAT_ trackers
 		if (a >= records.Size()) { records.Resize(a + 1); } // Make the array bigger if it's not already big enough
 
@@ -915,6 +932,7 @@ class AchievementTracker : StaticEventHandler
 	// Encode the value string
 	void SaveEncoded(int index, int pnum = -1)
 	{
+		if (multiplayer) return;
 		if (pnum < 0) { pnum = consoleplayer; }
 		if (pnum != consoleplayer) { return; }
 		String bits = BitString(true, index * 15, index * 15 + 15);
@@ -1080,6 +1098,7 @@ class AchievementTracker : StaticEventHandler
 
 	override void UITick()
 	{
+		if (multiplayer) return;
 		if (!players[consoleplayer].mo) { lastTimeSent = 0; return; }
 		int now = SystemTime.Now();
 		if (now != lastTimeSent)

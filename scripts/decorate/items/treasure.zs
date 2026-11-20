@@ -269,7 +269,7 @@ class Award : SingleCoin
 
 		if (ret && toucher && toucher.player)
 		{
-			AchievementTracker tracker = AchievementTracker(StaticEventHandler.Find("AchievementTracker"));
+			AchievementTracker tracker = AchievementTracker.ActiveTracker();
 			if (tracker) { tracker.LoadProfile(toucher.PlayerNumber()); tracker.SetBit(tracker.records[tracker.STAT_AWARDS].value[toucher.PlayerNumber()], number); }
 
 			AchievementTracker.CheckAchievement(toucher.PlayerNumber(), AchievementTracker.ACH_TROPHYHUNTER);

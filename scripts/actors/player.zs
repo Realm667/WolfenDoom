@@ -255,7 +255,7 @@ class BoAPlayer : PlayerPawn
 		int playerID = PLAYER_TAG_OFFSET + PlayerNumber();
 		Thing_ChangeTID(0, playerID);
 
-		tracker = AchievementTracker(StaticEventHandler.Find("AchievementTracker"));
+		tracker = AchievementTracker.ActiveTracker();
 		hittracer = new("BoAFindHitPointTracer");
 
 		Super.PostBeginPlay();
@@ -1345,7 +1345,7 @@ class BoAPlayer : PlayerPawn
 		// Use the fatal damage's cause, not PainType or the previous tick's water state.
 		Name liquidDeath = GetLiquidDeathType(source, inflictor, MeansOfDeath);
 
-		AchievementTracker tracker = AchievementTracker(StaticEventHandler.Find("AchievementTracker"));
+		AchievementTracker tracker = AchievementTracker.ActiveTracker();
 		if (tracker)
 		{
 			tracker.LoadProfile(PlayerNumber());
