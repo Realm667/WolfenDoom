@@ -1,5 +1,9 @@
 # Changelog
 
+## 2.6.21
+
+- Explain the actual graphics preset settings in all ten launcher languages, including the differences between High and Very High.
+
 ## 2.6.20
 
 - Choose classic death handling or checkpoint respawns after selecting the single-player difficulty. The choice only applies to new chapter or mission starts with game data supporting this feature. Resuming an existing save uses its original rule.
