@@ -260,6 +260,13 @@ class BulletTracer : FastProjectile
 							liquidImpact = true;
 							DecalGenerator = null;
 						}
+						else if (!BlockingMobj && !tm.stepthing && !tm.touchmidtex && pos.z < tm.floorz &&
+							FindState("Death") == GetDefaultByType("BulletTracer").FindState("Death") &&
+							SplashOnRisingFloor(tm.floorsector, frac.xy))
+						{
+							liquidImpact = true;
+							DecalGenerator = null;
+						}
 						ExplodeMissile (BlockingLine, BlockingMobj);
 						return;
 					}
@@ -332,6 +339,39 @@ class BulletTracer : FastProjectile
 				trailactor.pitch = -VectorAngle(Speed, Vel.Z);
 			}
 		}
+	}
+
+	// TryMove tests XY at the old Z before Tick advances vertically. A steep
+	// floor can therefore stop the bullet without ever reaching HitFloor().
+	bool SplashOnRisingFloor(Sector support, Vector2 step)
+	{
+		if (!support || support != curSector || support.floorplane.normal.z >= 1 ||
+			!support.GetFloorTerrain(Sector.floor).IsLiquid) { return false; }
+		// At a slope seam the radius can touch the next line before the centre
+		// gets there. Never reinterpret an actual blocking wall as a floor.
+		double reach = 1;
+		if (BlockingLine)
+		{
+			let wall = BlockingLine;
+			if (!wall.backsector || wall.flags & (Line.ML_BLOCKING | Line.ML_BLOCKEVERYTHING | Line.ML_BLOCKPROJECTILE) ||
+				!wall.frontsector.GetFloorTerrain(Sector.floor).IsLiquid || !wall.backsector.GetFloorTerrain(Sector.floor).IsLiquid)
+				{ return false; }
+			Vector2 span = wall.v2.p - wall.v1.p;
+			double lengthSq = span dot span;
+			if (lengthSq <= 0 || step.Length() == 0) { return false; }
+			Vector2 seam = wall.v1.p + span * clamp(((pos.xy - wall.v1.p) dot span) / lengthSq, 0., 1.);
+			if (abs(wall.frontsector.floorplane.ZatPoint(seam) - wall.backsector.floorplane.ZatPoint(seam)) > 0.001)
+				{ return false; }
+			reach += radius / step.Length();
+		}
+		double startZ = support.floorplane.ZatPoint(pos.xy);
+		double rise = support.floorplane.ZatPoint(pos.xy + step) - startZ;
+		double gap = pos.z - startZ;
+		if (rise <= 0 || gap < 0 || gap > rise * reach) { return false; }
+		Vector2 xy = pos.xy + step * (gap / rise);
+		if (level.PointInSector(xy) != support) { return false; }
+		HitWater(support, (xy, pos.z));
+		return true;
 	}
 
 	// Classify the struck face, not the sector floor underneath the shot.
