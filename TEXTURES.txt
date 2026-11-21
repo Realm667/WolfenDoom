@@ -1030,6 +1030,52 @@ Sprite SHWVA0, 256, 256
 	}
 	Offset 128, 128
 }
+
+// C3M1_B. Composite the green wave onto an opaque backing so it does not
+// depend on sorting multiple transparent surfaces. Wrap the 256px wave.
+Texture BAGRL00, 128, 128
+{
+	Patch "textures/astrostein/ASTR_MS6.png", 0, 0
+	Patch "textures/WATR_G98.png", 0, 0 { Style Add Alpha 0.26 }
+}
+Texture BAGRL01, 128, 128
+{
+	Patch "textures/astrostein/ASTR_MS6.png", 0, 0
+	Patch "textures/WATR_G98.png", 0, -32 { Style Add Alpha 0.26 }
+}
+Texture BAGRL02, 128, 128
+{
+	Patch "textures/astrostein/ASTR_MS6.png", 0, 0
+	Patch "textures/WATR_G98.png", 0, -64 { Style Add Alpha 0.26 }
+}
+Texture BAGRL03, 128, 128
+{
+	Patch "textures/astrostein/ASTR_MS6.png", 0, 0
+	Patch "textures/WATR_G98.png", 0, -96 { Style Add Alpha 0.26 }
+}
+Texture BAGRL04, 128, 128
+{
+	Patch "textures/astrostein/ASTR_MS6.png", 0, 0
+	Patch "textures/WATR_G98.png", 0, -128 { Style Add Alpha 0.26 }
+}
+Texture BAGRL05, 128, 128
+{
+	Patch "textures/astrostein/ASTR_MS6.png", 0, 0
+	Patch "textures/WATR_G98.png", 0, -160 { Style Add Alpha 0.26 }
+	Patch "textures/WATR_G98.png", 0, 96 { Style Add Alpha 0.26 }
+}
+Texture BAGRL06, 128, 128
+{
+	Patch "textures/astrostein/ASTR_MS6.png", 0, 0
+	Patch "textures/WATR_G98.png", 0, -192 { Style Add Alpha 0.26 }
+	Patch "textures/WATR_G98.png", 0, 64 { Style Add Alpha 0.26 }
+}
+Texture BAGRL07, 128, 128
+{
+	Patch "textures/astrostein/ASTR_MS6.png", 0, 0
+	Patch "textures/WATR_G98.png", 0, -224 { Style Add Alpha 0.26 }
+	Patch "textures/WATR_G98.png", 0, 32 { Style Add Alpha 0.26 }
+}
 Sprite SHWVB0, 256, 256
 {
 	Patch "sprites/sfx/explosion/SHWVZ0.png", 0, 0
