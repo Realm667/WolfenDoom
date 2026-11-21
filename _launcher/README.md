@@ -1,6 +1,6 @@
 # Blade of Agony Launcher
 
-Version 2.6.21 is a modern WPF launcher for Blade of Agony and UZDoom 5.0.3
+Version 2.6.22 is a modern WPF launcher for Blade of Agony and UZDoom 5.0.3
 or newer. It is a clean-room replacement for the original native launcher and
 remains portable: no installer or additional UI runtime is required on
 supported Windows systems.

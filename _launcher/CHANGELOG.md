@@ -1,5 +1,9 @@
 # Changelog
 
+## 2.6.22
+
+- Explain why a new co-op campaign should start at HQ, next to the host's mission selector in all ten launcher languages. Direct starts and save loading are unchanged.
+
 ## 2.6.21
 
 - Explain the actual graphics preset settings in all ten launcher languages, including the differences between High and Very High.
