@@ -43,6 +43,20 @@ class VolumetricLight_ConeDown : VolumetricBase
 	}
 }
 
+// C3M1_B doorway: the sprite is the fallback on renderers without material shaders.
+class BoADoorConeDown : VolumetricLight_ConeDown
+{
+	States
+	{
+	Spawn:
+	Active:
+		BACL A 1 NODELAY A_SpawnItemEx("AlertLight", 0, 0, -112, 0, 0, 0, 0, SXF_SETMASTER | SXF_SETTRACER);
+	ActiveLoop:
+		BACL A 1;
+		Loop;
+	}
+}
+
 class VolumetricLight_ConeUp : VolumetricBase //spawn correct AlertLight & sprite
 {
 	Default

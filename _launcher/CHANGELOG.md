@@ -1,5 +1,10 @@
 # Changelog
 
+## 2.6.23
+
+- Expose single-player mission debugging, including Keen missions, with an explicit campaign-progression warning.
+- Keep displacement textures next to the graphics preset and offer a level-restart death rule with compatible game data.
+
 ## 2.6.22
 
 - Explain why a new co-op campaign should start at HQ, next to the host's mission selector in all ten launcher languages. Direct starts and save loading are unchanged.

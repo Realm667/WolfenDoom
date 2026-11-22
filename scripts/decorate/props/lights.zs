@@ -145,7 +145,7 @@ class WallLight1Lit : WallLight1
 	States
 	{
 	Spawn:
-		MDLA A 0 NODELAY A_SpawnItemEx("VolumetricLight_ConeDown", Scale.X*16, 0, 24, 0, 0, 0, 0, SXF_ISTRACER, 0, tid);
+		MDLA A 0 NODELAY A_SpawnItemEx(args[4] == 145 ? "BoADoorConeDown" : "VolumetricLight_ConeDown", Scale.X*16, 0, 24, 0, 0, 0, 0, SXF_ISTRACER, 0, tid);
 		MDLA A -1 LIGHT("OZYWALLT");
 		Stop;
 	}

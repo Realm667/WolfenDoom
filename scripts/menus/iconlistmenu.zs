@@ -303,7 +303,7 @@ class ExtendedListMenu : ListMenu
 // Keep the episode and any difficulty confirmation in UZDoom's native new-game flow.
 class BoACampaignSkillMenu : StaticIconListMenu
 {
- int classicSkill, checkpointSkill;
+ int classicSkill, checkpointSkill, restartSkill;
  Name originalAction;
  override bool MenuEvent(int key, bool fromController)
  {
@@ -316,7 +316,10 @@ class BoACampaignSkillMenu : StaticIconListMenu
      for (int j=0;j<AllSkills.Size();j++) {
       if (AllSkills[j].SkillName != Name(String.Format("BoACheckpoint%d",i+1))) continue;
       classicSkill=idx; checkpointSkill=j; originalAction=destination;
-      Menu.SetMenu('BoARespawnChoice'); return true;
+      for (int k=0;k<AllSkills.Size();k++) {
+       if (AllSkills[k].SkillName != Name(String.Format("BoARestart%d",i+1))) continue;
+       restartSkill=k; Menu.SetMenu('BoARespawnChoice'); return true;
+      }
      }
     }
    }
@@ -330,8 +333,8 @@ class BoARespawnChoice : ListMenu
   let origin=BoACampaignSkillMenu(mParentMenu);
   if (key==MKEY_Enter && origin && mDesc.mSelectedItem>=0) {
    Name option=mDesc.mItems[mDesc.mSelectedItem].GetAction();
-   if(option=='BoAClassicMode' || option=='BoACheckpointMode') {
-    Menu.SetMenu(origin.originalAction,option=='BoACheckpointMode'?origin.checkpointSkill:origin.classicSkill);
+   if(option=='BoAClassicMode' || option=='BoACheckpointMode' || option=='BoARestartMode') {
+    Menu.SetMenu(origin.originalAction,option=='BoARestartMode'?origin.restartSkill:option=='BoACheckpointMode'?origin.checkpointSkill:origin.classicSkill);
     return true;
    }
   }

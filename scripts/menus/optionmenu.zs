@@ -26,6 +26,27 @@
 // duplicate entries to the language selector. New selections use BCP 47 codes.
 class OptionMenuItemBoALanguage : OptionMenuItemOption
 {
+	override int Draw(OptionMenuDescriptor desc, int y, int indent, bool selected)
+	{
+		int edge = Super.Draw(desc, y, indent, selected);
+		int i = GetSelection();
+		if (i < 0) return edge;
+		String code = OptionValues.GetTextValue(mValues, i);
+		if (code ~== "en-US") code = "enu";
+		else if (code ~== "en-GB") code = "eng";
+		else if (code ~== "pt-PT") code = "ptg";
+		let flag = TexMan.CheckForTexture("MLANG" .. code);
+		if (!flag.IsValid()) return edge;
+		String value = StringTable.Localize(OptionValues.GetText(mValues, i));
+		int x = indent + CursorSpace() + (Menu.OptionWidth(value) + 4) * CleanXfac_1;
+		let size = TexMan.GetScaledSize(flag);
+		int h = max(1, OptionMenuSettings.mLinespacing * CleanYfac_1 * 3 / 4);
+		int w = int(h * size.x / max(1., size.y));
+		if (x+w < Screen.GetWidth())
+			Screen.DrawTexture(flag, true, x, y, DTA_DestWidth, w, DTA_DestHeight, h);
+		return edge;
+	}
+
 	override int GetSelection()
 	{
 		int selection = Super.GetSelection();

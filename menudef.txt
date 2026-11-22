@@ -130,7 +130,6 @@ OptionMenu "BoAPerformanceOptions"
 {
 	Title "$PERFOPT"
 	StaticText "$NOTEOPT2"
-	SafeCommand "$OPT_VLOW", "boa_verylow", "$OPT_VLOWM"
 	Submenu "$PREDOPT", "BoAPredefinedOptions"
 	StaticText " "
 	Submenu "$OPT_WEAT",				"BoAWeatherOptions"
@@ -188,7 +187,8 @@ OptionMenu "BoASettings"
 	Title "Blade of Agony"
 	Submenu "$OPT_GAME", "BoAPlaySettings"
 	Submenu "$PERFOPT", "BoAPerformanceOptions"
-	Submenu "$OPTMNU_SOUND", "BoAAudioLanguage"
+	Submenu "$OPTMNU_SOUND", "SoundOptions"
+	Submenu "$BOA_DIALOGSETTINGS", "BoAAudioLanguage"
 	StaticText " "
 	Submenu "$SMP_MOREOPTIONS", "BoAAdvancedSettings"
 }
@@ -207,12 +207,9 @@ OptionMenu "BoAPlaySettings"
 
 OptionMenu "BoAAudioLanguage"
 {
-	Title "$OPTMNU_SOUND"
+	Title "$BOA_DIALOGSETTINGS"
 	BoALanguage "$OPTMNU_LANGUAGE", "language", "BoALanguageOptions"
-	Option "$MSGMNU_SUBTITLES", "inter_subtitles", "OnOff"
 	Option "$OPT_DEVC", "boa_devcomswitch", "OnOff"
-	Submenu "$OPTMNU_SOUND", "SoundOptions"
-	Submenu "$OPTMNU_ACCESSIBILITY", "AccessibilityOptions"
 }
 
 OptionMenu "BoAAdvancedSettings"
@@ -662,5 +659,6 @@ ListMenu "BoARespawnChoice"
  Position 48, 68
  TextItem "$BOA_DEATHCLASSIC", "1", "BoAClassicMode"
  TextItem "$BOA_DEATHCHECKPOINT", "2", "BoACheckpointMode"
+ TextItem "$BOA_DEATHRESTART", "3", "BoARestartMode"
  Class "BoARespawnChoice"
 }

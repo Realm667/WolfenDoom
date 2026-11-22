@@ -57,6 +57,10 @@ class BoAPlayerDistanceFinderTracer : LineTracer
 	}
 }
 
+// Skill-local marker; never spawned and never writes the user's cl_restartondeath.
+class BoARetryMarker : Actor {}
+class BoARetryEnabled : BoARetryMarker {}
+
 class PlayerCheckpointManager : StaticEventHandler {
 	Vector3 averageStart;
 	double averageAngle;
@@ -87,10 +91,20 @@ class PlayerCheckpointManager : StaticEventHandler {
 		activeCheckpoint = null;
 	}
 
+	override bool PlayerRespawning(PlayerEvent e) {
+		if (multiplayer || Actor.GetReplacement("BoARetryMarker") != "BoARetryEnabled") return true;
+		// A same-map transition on a persistent hub restores the dead world.
+		// Keep headquarters progress and let the engine spawn a living player
+		// at the hub entrance. Never create/replace a recovery save.
+		if ((level.clusterflags & LevelLocals.CLUSTER_HUB) && !(level.info.flags2 & LEVEL2_FORGETSTATE)) return true;
+		level.ChangeLevel(level.MapName, 0, CHANGELEVEL_NOINTERMISSION | CHANGELEVEL_RESETHEALTH | CHANGELEVEL_RESETINVENTORY);
+		return false;
+	}
+
 	override void PlayerRespawned(PlayerEvent e) {
 		// Teleport player to their new start
 		if (!multiplayer) {
-			if (G_SkillPropertyInt(SKILLP_PlayerRespawn)) {
+			if (G_SkillPropertyInt(SKILLP_PlayerRespawn) && Actor.GetReplacement("BoARetryMarker") != "BoARetryEnabled") {
 				let checkpoint = BoACoopCheckpoint.FindSoloCheckpoint();
 				if (checkpoint) players[e.PlayerNumber].mo.Teleport(checkpoint.Pos, checkpoint.Angle, 0);
 			}
@@ -202,7 +216,7 @@ class BoACoopCheckpoint : MapSpot {
 		// Set active level checkpoint to self
 		if (deathmatch) return;
 		if (!multiplayer) {
-			if (!G_SkillPropertyInt(SKILLP_PlayerRespawn)) return;
+			if (!G_SkillPropertyInt(SKILLP_PlayerRespawn) || Actor.GetReplacement("BoARetryMarker") == "BoARetryEnabled") return;
 			let old = FindSoloCheckpoint();
 			if (old) old.soloCheckpoint = false;
 			soloCheckpoint = true;
