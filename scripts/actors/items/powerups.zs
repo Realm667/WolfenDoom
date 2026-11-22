@@ -794,7 +794,7 @@ class InventoryHolder play
 	}
 
 	Array<Inventory> heldItems;
-	Array<String> itemTypeNames; // For debugging only - Some items are apparently being lost in C3M0_B
+	Array<String> itemTypeNames; // Captured types, including armor (which is saved by value).
 	Actor owner;
 	Inventory holder;
 	
@@ -949,31 +949,48 @@ class InventoryHolder play
 		if (boa_debugholdinventory) {
 			Console.Printf("Attempting to restore armor (%d)", armor);
 		}
-		// HexenArmor
+		// Hub arrivals need not have either native armor carrier. The captured
+		// type list also exists in old saves; zero armor is not proof of absence.
+		if (itemTypeNames.Find("HexenArmor") < itemTypeNames.Size())
 		{
 			HexenArmor armorobj = HexenArmor(receiver.FindInventory("HexenArmor"));
+			if (!armorobj)
+			{
+				receiver.GiveInventoryType("HexenArmor");
+				armorobj = HexenArmor(receiver.FindInventory("HexenArmor"));
+				let pawn = PlayerPawn(receiver);
+				// GiveDefaultInventory normally initializes these per-class increments.
+				if (armorobj && pawn)
+				{
+					for (int i = 0; i < 4; i++) { armorobj.SlotsIncrement[i] = pawn.HexenArmor[i + 1]; }
+				}
+			}
 			if (boa_debugholdinventory)
 			{
 				Console.Printf("Hexen armor slots: %.3f, %.3f, %.3f, %.3f, %.3f", hexenarmorslots[0], hexenarmorslots[1], hexenarmorslots[2], hexenarmorslots[3], hexenarmorslots[4]);
 				Console.Printf("Icon: %s", harmorIcon);
 			}
-			for (int i = 0; i < 5; i++)
+			if (armorobj)
 			{
-				armorobj.Slots[i] = hexenarmorslots[i];
+				for (int i = 0; i < 5; i++) { armorobj.Slots[i] = hexenarmorslots[i]; }
+				armorobj.Icon = TexMan.CheckForTexture(harmorIcon);
 			}
-			armorobj.Icon = TexMan.CheckForTexture(harmorIcon);
 		}
-		// BasicArmor
+		if (itemTypeNames.Find("BasicArmor") < itemTypeNames.Size())
 		{
 			BasicArmor armorobj = BasicArmor(receiver.FindInventory("BasicArmor"));
 			if (!armorobj)
 			{
-				armorobj = BasicArmor(receiver.GiveInventoryType("BasicArmor"));
+				receiver.GiveInventoryType("BasicArmor");
+				armorobj = BasicArmor(receiver.FindInventory("BasicArmor"));
 			}
-			armorobj.Amount = armor;
-			armorobj.MaxAmount = armorMax;
-			armorobj.SavePercent = savepercent;
-			armorobj.Icon = TexMan.CheckForTexture(armorIcon);
+			if (armorobj)
+			{
+				armorobj.Amount = armor;
+				armorobj.MaxAmount = armorMax;
+				armorobj.SavePercent = savepercent;
+				armorobj.Icon = TexMan.CheckForTexture(armorIcon);
+			}
 			if (boa_debugholdinventory)
 			{
 				Console.Printf("Basic armor: %d/%d (%.3f, icon %s)", armor, armorMax, savepercent, armorIcon);

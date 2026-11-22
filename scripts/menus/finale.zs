@@ -202,6 +202,34 @@ class IntroScroll : TextScroll
 //	Example: ScriptCall("Finale", "Setup", "$EPILOGUEC1", true, false);
 //
 // Wait for completion from within ACS with: 'While (!ScriptCall("Finale", "Ready")) { Delay(35); }' (checks if the currently open finale is closing)
+class RaubgoldFinaleResume : StaticEventHandler
+{
+	private int generation;
+	private bool raubgoldLoad;
+	private transient ui int consumed, lastGeneration, lastPoll;
+
+	override void WorldLoaded(WorldEvent e)
+	{
+		generation++;
+		raubgoldLoad = e.IsSaveGame && level.MapName ~== "C3M0_B";
+	}
+
+	ui bool NeedsMenu(Menu current)
+	{
+		if (!raubgoldLoad || consumed == generation) { return false; }
+		if (current is "Finale") { consumed = generation; return false; }
+		let camera = players[consoleplayer].camera;
+		if (current || !camera || (camera.tid != 174 && camera.tid != 175)) { return false; }
+		// An already acknowledged ACS scene can still evaluate Ready once
+		// when it changes cameras. Only a continuing wait needs the UI back.
+		bool waiting = lastGeneration == generation && lastPoll == level.maptime - 1;
+		lastGeneration = generation;
+		lastPoll = level.maptime;
+		if (waiting) { consumed = generation; }
+		return waiting;
+	}
+}
+
 class Finale : BoAMenu
 {
 	TextureID background, strips, epiloguestrips, label_l, label_r, frame;
@@ -510,6 +538,17 @@ class Finale : BoAMenu
 	{
 		Menu current = Menu.GetCurrentMenu();
 
+		// Raubgold's ACS wait survives a save/load; its non-pausing UI does not.
+		// Only rebuild the missing dialogue while that script is still polling.
+		// Never dismiss it on the player's behalf or replace another open menu.
+		if (level.MapName ~== "C3M0_B")
+		{
+			let resume = RaubgoldFinaleResume(StaticEventHandler.Find("RaubgoldFinaleResume"));
+			if (resume && resume.NeedsMenu(current))
+			{
+				Setup("$EPILOGUEC3S", false, true);
+			}
+		}
 		if (current is "Finale" && Finale(current).finished) { return true; }
 		else { return false; }
 	}
