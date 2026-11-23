@@ -22,9 +22,19 @@
  * Portions copied from GZDoom licensed under GPLv3
 **/
 
-// Match legacy settings without rewriting the user's language CVAR or adding
-// duplicate entries to the language selector. New selections use BCP 47 codes.
-class OptionMenuItemBoALanguage : OptionMenuItemOption
+// The native search follows GetAction() into menu descriptors. OptionsMenuFull
+// is a runtime redirect, not a descriptor; use it only on actual activation.
+class OptionMenuItemBoAFullOptions : OptionMenuItemSubmenu
+{
+	override bool Activate()
+	{
+		Menu.MenuSound("menu/advance");
+		Menu.SetMenu("OptionsMenuFull", mParam);
+		return true;
+	}
+}
+
+class OptionMenuItemBoAFlagLanguage : OptionMenuItemOption
 {
 	override int Draw(OptionMenuDescriptor desc, int y, int indent, bool selected)
 	{
@@ -34,7 +44,10 @@ class OptionMenuItemBoALanguage : OptionMenuItemOption
 		String code = OptionValues.GetTextValue(mValues, i);
 		if (code ~== "en-US") code = "enu";
 		else if (code ~== "en-GB") code = "eng";
-		else if (code ~== "pt-PT") code = "ptg";
+		else if (code ~== "pt-PT" || code ~== "pt") code = "ptg";
+		else if (code ~== "pt-BR") code = "pt";
+		else if (code ~== "es-MX") code = "esm";
+		else if (code ~== "ja") code = "jp";
 		let flag = TexMan.CheckForTexture("MLANG" .. code);
 		if (!flag.IsValid()) return edge;
 		String value = StringTable.Localize(OptionValues.GetText(mValues, i));
@@ -47,6 +60,12 @@ class OptionMenuItemBoALanguage : OptionMenuItemOption
 		return edge;
 	}
 
+}
+
+// Only the BoA selector uses its legacy aliases. The native selector keeps
+// the engine's GetSelection/SetSelection, including Auto and unsupported flags.
+class OptionMenuItemBoALanguage : OptionMenuItemBoAFlagLanguage
+{
 	override int GetSelection()
 	{
 		int selection = Super.GetSelection();
@@ -65,6 +84,25 @@ class OptionMenuItemBoALanguage : OptionMenuItemOption
 
 // Compatibility name for add-ons; stock rendering and navigation are inherited.
 class BoAOptionMenu : OptionMenu {}
+
+class BoAMiscLanguageMenu : OptionMenu
+{
+	override void Init(Menu parent, OptionMenuDescriptor desc)
+	{
+		for (int i = 0; i < desc.mItems.Size(); i++)
+		{
+			let old = OptionMenuItemOption(desc.mItems[i]);
+			if (!old || old.GetClass() != "OptionMenuItemOption" ||
+				old.GetAction() != 'language' || old.mValues != 'LanguageOptions') continue;
+			let item = new("OptionMenuItemBoAFlagLanguage").Init(old.mLabel, 'language', old.mValues, old.mGrayCheck, old.mCenter, old.mGrayCheckVal);
+			item.mGrayCheckMode = old.mGrayCheckMode;
+			item.mEnabled = old.mEnabled;
+			desc.mItems[i] = item;
+			break;
+		}
+		Super.Init(parent, desc);
+	}
+}
 
 // Option menu slider that displays a float value as a percentage (e.g., 0.5 as 50% if min is 0 and max is 1.0)
 // Also accepts optional text values that display in place of 0% and 100%

@@ -179,8 +179,12 @@ OptionMenu "BoASettingsEntry"
 	Title "$MNU_OPTIONS"
 	Submenu "Blade of Agony", "BoASettings"
 	StaticText "UZDoom", 1
-	Submenu "$OPTMNU_FULLOPTIONS", "OptionsMenuFull"
+	BoAFullOptions "$OPTMNU_FULLOPTIONS", "OptionsMenu"
 }
+
+// Extend the engine pages, retaining their native options and language list.
+AddOptionMenu "MiscOptions" { Class "BoAMiscLanguageMenu" }
+AddOptionMenu "MiscOptionsSimple" { Class "BoAMiscLanguageMenu" }
 
 OptionMenu "BoASettings"
 {
