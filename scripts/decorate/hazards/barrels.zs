@@ -75,7 +75,7 @@ class TNTBarrel2 : TNTBarrel1
 {
 	Default
 	{
-		//$Title TNT Box
+		//$Title TNT Barrel
 	}
 	States
 	{
@@ -89,7 +89,7 @@ class TNTBarrel3 : TNTBarrel1
 {
 	Default
 	{
-		//$Title TNT Barrel
+		//$Title TNT Box
 	}
 	States
 	{
