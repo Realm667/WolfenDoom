@@ -3,6 +3,8 @@ on:
   push:
     paths:
     - 'language.csv'
+    - '.github/workflows/fontchars.yml'
+    - 'tools/programs/fontchecker/**'
     - 'fonts/**/*'
     - '!fonts/fontchars.csv'
     branches: [ master ]
@@ -13,22 +15,24 @@ jobs:
     name: Scan fonts
     if: ${{ github.event_name == 'workflow_dispatch' || github.repository_owner == 'Realm667' }}
     runs-on: ubuntu-latest
-    env:
-      REPO_ROOT: ${{github.workspace}}
+    permissions:
+      contents: write
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
       - name: Install Rust tools
-        uses: actions-rs/toolchain@v1
+        run: rustup toolchain install stable --profile minimal
       - name: Scan language table, fonts, and update font character table
         run: |
-          cd $REPO_ROOT/tools/programs/fontchecker 
-          cargo run -- $REPO_ROOT > $REPO_ROOT/fonts/fontchars.csv
+          cargo +stable run --locked --manifest-path tools/programs/fontchecker/Cargo.toml -- "$GITHUB_WORKSPACE" > "$RUNNER_TEMP/fontchars.csv"
+          test -s "$RUNNER_TEMP/fontchars.csv"
+          mv "$RUNNER_TEMP/fontchars.csv" fonts/fontchars.csv
       - name: Commit updated font character table
         if: ${{ !env.ACT }}
         run: |
           git config user.name github-actions
           git config user.email github-actions@github.com
           git add fonts/fontchars.csv
-          # Force 0 exit status here so that the workflow run doesn't fail
-          git commit -m "Update fontchars.csv" && git push || :
+          if git diff --cached --quiet -- fonts/fontchars.csv; then exit 0; fi
+          git commit -m "Update fontchars.csv"
+          git push
