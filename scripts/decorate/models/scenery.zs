@@ -748,7 +748,7 @@ class RTCWShield : Obstacle3d
 	Default
 	{
 		//$Category Models (BoA)/Scenery
-		//$Title Shield with Swords
+		//$Title Shield with Halberds
 		//$Color 3
 		DistanceCheck "boa_scenelod";
 		Radius 8;
