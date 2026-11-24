@@ -30,6 +30,22 @@ class DebugEventHandler : StaticEventHandler
 	{
 		waitForHQExit = false;
 		if (level.MapName != "INTERMAP") return;
+		// The retired exterior switch is only a two-sided overlay. Clear its
+		// front texture on load so existing HQ saves keep their map checksum.
+		if (level.lines.Size() > 6080)
+		{
+			let panel = level.lines[6080];
+			if (!panel.special && panel.sidedef[0] && panel.frontsector == panel.backsector)
+			{
+				String tex = TexMan.GetName(panel.sidedef[0].GetTexture(Side.mid));
+				if (tex ~== "SW_ON_13" || tex ~== "SW_OF_13")
+				{
+					TextureID empty;
+					empty.SetNull();
+					panel.sidedef[0].SetTexture(Side.mid, empty);
+				}
+			}
+		}
 		// Tag 256 is the original debug entrance. Restore its authored wall
 		// on non-debug loads too: a save or hub snapshot may contain an open wall.
 		bool open = !multiplayer && CVar.FindCVar("boa_hqdebug").GetBool();
