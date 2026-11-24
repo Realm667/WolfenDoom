@@ -1,13 +1,15 @@
 # Blade of Agony Launcher
 
-Version 2.6.23 is a modern WPF launcher for Blade of Agony and UZDoom 5.0.3
+Version 2.6.24 is a modern WPF launcher for Blade of Agony and UZDoom 5.0.3
 or newer. It is a clean-room replacement for the original native launcher and
 remains portable: no installer or additional UI runtime is required on
 supported Windows systems.
 
-In single-player campaign setup, enable Debug mode to add the episode's Keen
-mission to the mission selector. Direct mission starts are intended for testing
-and can break progression. Leave debug off for a normal playthrough.
+In single-player campaign setup, Debug mode opens the secret room inside the
+HQ briefing room. Choose a mission in that room, then speak to General Miller
+for the briefing and depart with Dirty Douglas as usual. The outside switch stays
+inactive. Debug mode also lists the episode's Keen mission for direct starts;
+direct starts bypass HQ and may break progression. Leave debug off for normal play.
 
 ## Interface
 

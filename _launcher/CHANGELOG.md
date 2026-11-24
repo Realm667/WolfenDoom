@@ -1,5 +1,9 @@
 # Changelog
 
+## 2.6.24
+
+- Use the existing single-player Debug mode to unlock the mission selector inside the HQ briefing room (#1697). Direct mission starts and co-op are unchanged.
+
 ## 2.6.23
 
 - Expose single-player mission debugging, including Keen missions, with an explicit campaign-progression warning.

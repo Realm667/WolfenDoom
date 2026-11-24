@@ -24,6 +24,48 @@ class DebugEventHandler : StaticEventHandler
 {
 	bool showvel;
 	bool showlightlevel;
+	bool waitForHQExit;
+
+	override void WorldLoaded(WorldEvent e)
+	{
+		waitForHQExit = false;
+		if (level.MapName != "INTERMAP") return;
+		// Tag 256 is the original debug entrance. Restore its authored wall
+		// on non-debug loads too: a save or hub snapshot may contain an open wall.
+		bool open = !multiplayer && CVar.FindCVar("boa_hqdebug").GetBool();
+		level.ExecuteSpecial(79, null, null, false, 172, open ? 271 : 0); // Thing_SetConversation
+		waitForHQExit = !open && e.IsSaveGame && AtHQEntrance();
+		SetHQEntrance(open || waitForHQExit);
+	}
+
+	private bool AtHQEntrance()
+	{
+		let p = players[0].mo;
+		if (!p || multiplayer) return false;
+		int sector = p.CurSector.Index();
+		if (sector == 1431 || sector == 1430) return true; // selector room and threshold
+		// Do not close through BJ while he is still straddling the doorway.
+		int i = level.CreateLineIdIterator(256).Next();
+		if (i < 0) return false;
+		let l = level.lines[i];
+		return p.CurSector == l.frontsector && abs(p.pos.y - l.v1.p.y) <= p.radius
+			&& p.pos.x >= min(l.v1.p.x,l.v2.p.x) - p.radius && p.pos.x <= max(l.v1.p.x,l.v2.p.x) + p.radius;
+	}
+
+	private void SetHQEntrance(bool open)
+	{
+		LineTools.SetLineFlag(256, Line.ML_BLOCKEVERYTHING, !open);
+		level.ExecuteSpecial(208, null, null, false, 256, 255, open ? 1 : 0); // TranslucentLine
+	}
+
+	override void WorldTick()
+	{
+		if (waitForHQExit && !AtHQEntrance())
+		{
+			waitForHQExit = false;
+			SetHQEntrance(false);
+		}
+	}
 
 	void ShowRemainingEnemies(class<Actor> base = "Base")
 	{
