@@ -34,7 +34,7 @@ class Browning5 : NaziWeapon
 	Weapon.AmmoType2 "Ammo12Gauge";
 	Weapon.AmmoUse2 1;
 	Weapon.AmmoGive2 8;
-	Weapon.UpSound "browning/select";
+	Weapon.UpSound "boa/weapon/ba5/raise";
 	Scale .5;
 	Inventory.PickupMessage "$BROWNING";
 	Tag "Browning Auto-5";
@@ -52,7 +52,7 @@ class Browning5 : NaziWeapon
 		BA5G A 0 A_Lower;
 		BA5G A 1 A_Lower;
 		Loop;
-		BA5G E 1 Offset(-8,58) A_StartSound("browning/cock", CHAN_5);
+		BA5G E 1 Offset(-8,58) { A_StartSound("boa/weapon/ba5/boltback", CHAN_5, 0, 0.80); A_StartSound("boa/weapon/ba5/boltforward", CHAN_AUTO, CHANF_OVERLAP, 0.45); }
 		BA5G E 1 Offset(-8,60);
 		BA5G E 1 Offset(-8,63);
 		BA5G E 1 Offset(-9,67);
@@ -78,7 +78,13 @@ class Browning5 : NaziWeapon
 		BA5G A 0 A_JumpIfReloading("ReloadFinish");
 		BA5G A 0 A_JumpIfInventory("Browning5Loaded",1,1);
 		Goto Dryfire;
-		BA5G A 0 A_StartSound("browning/fire", CHAN_WEAPON);
+		BA5G A 0
+		{
+			A_StartSound("boa/weapon/ba5/fire", CHAN_WEAPON, 0, 0.67);
+			A_StartSound("boa/weapon/ba5/mech", CHAN_AUTO, CHANF_OVERLAP, 0.28);
+			A_StartSound("boa/weapon/ba5/firebass", CHAN_AUTO, CHANF_OVERLAP, 0.28);
+			A_StartSound("boa/weapon/ba5/add", CHAN_AUTO, CHANF_OVERLAP, 0.24);
+		}
 		BA5G A 0 A_SpawnItemEx("ShotgunCasing",12,-20,32,8, Random[Weapon](-2,2), Random[Weapon](0,4), Random[Weapon](-55,-80),SXF_NOCHECKPOSITION);
 		BA5G AAAAAAAAAA 0 A_FireProjectile("AutoShotgunTracer", FRandom[Weapon](-4.0,4.0),0,0,0,0, FRandom[Weapon](-3,3));
 		BA5G A 0 A_TakeInventory("Browning5Loaded",1,TIF_NOTAKEINFINITE);
@@ -102,7 +108,7 @@ class Browning5 : NaziWeapon
 		ReloadLoop:
 		BA5G A 0 A_TakeInventory("Ammo12Gauge",1,TIF_NOTAKEINFINITE);
 		BA5G A 0 A_GiveInventory("Browning5Loaded");
-		BA5G E 1 Offset(-8,58) A_StartSound("browning/load", CHAN_5);
+		BA5G E 1 Offset(-8,58) A_StartSound("boa/weapon/ba5/shell", CHAN_5, 0, 0.80);
 		BA5G E 1 Offset(-9,64);
 		BA5G E 1 Offset(-10,70);
 		BA5G E 1 Offset(-10,68);
@@ -116,7 +122,7 @@ class Browning5 : NaziWeapon
 		BA5G A 0 A_JumpIfInventory("Browning5Loaded",0,"ReloadFinish");
 		BA5G A 0 A_JumpIfInventory("Ammo12Gauge",1,"ReloadLoop");
 		ReloadFinish:
-		BA5G E 1 Offset(-8,58) A_StartSound("browning/cock", CHAN_5);
+		BA5G E 1 Offset(-8,58) { A_StartSound("boa/weapon/ba5/boltback", CHAN_5, 0, 0.80); A_StartSound("boa/weapon/ba5/boltforward", CHAN_AUTO, CHANF_OVERLAP, 0.45); }
 		BA5G E 1 Offset(-8,60);
 		BA5G E 1 Offset(-8,63);
 		BA5G E 1 Offset(-9,67);

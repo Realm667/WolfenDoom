@@ -29,7 +29,7 @@ class Shovel : NaziWeapon
 	//$Color 14
 	Scale 0.5;
 	Weapon.SelectionOrder 9999;
-	Weapon.UpSound "shovel/select";
+	Weapon.UpSound "boa/weapon/raise/melee";
 	Tag "$TAGSHOVL";
 	Inventory.PickupMessage "$SHOVEL";
 	-WEAPON.AMMO_CHECKBOTH

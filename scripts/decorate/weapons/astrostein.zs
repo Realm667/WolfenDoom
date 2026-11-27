@@ -45,7 +45,7 @@ class AstroShotgun : NaziAstroWeapon
 	Weapon.AmmoType2 "AstroShotgunShell";
 	Weapon.AmmoUse2 1;
 	Weapon.AmmoGive2 8;
- 	Weapon.UpSound "shotgun/select";
+	Weapon.UpSound "boa/weapon/raise/shotgun";
  	Inventory.PickupMessage "$PROTON";
 	Obituary "$OBPROTON";
 	Tag "$TAGPROTF";
@@ -221,7 +221,7 @@ class AstroRocketlauncher : NaziAstroWeapon
 	Weapon.AmmoType2 "AstroRocketAmmo";
 	Weapon.AmmoUse2 1;
 	Weapon.AmmoGive2 5;
-	Weapon.UpSound "weapons/rezup"; //mxd
+	Weapon.UpSound "boa/weapon/raise/launcher";
 	Inventory.PickupMessage "$ENERGIE";
 	Obituary "$OBENERGIE";
 	Tag "$TAGENB95";
@@ -381,7 +381,7 @@ class AstroChaingun : NaziAstroWeapon
 	Weapon.AmmoType2 "AstroClipAmmo";
 	Weapon.AmmoUse2 1;
 	Weapon.AmmoGive2 20;
-	Weapon.UpSound "weapons/rezup"; //mxd
+	Weapon.UpSound "boa/weapon/raise/ar";
 	Inventory.PickupMessage "$REPETIE";
 	Obituary "$OBREPETIE";
 	Tag "$TAGREPLZ";
@@ -549,7 +549,7 @@ class AstrosteinMelee : NaziAstroWeapon
 	States
 	{
 	Select:
-		REZG C 0 A_StartSound("weapons/rezup", CHAN_BODY, 0, 1.0); //mxd. UpSound will be cut off by ReadySound
+		REZG C 0 A_StartSound("boa/weapon/raise/melee", CHAN_BODY); //mxd. UpSound will be cut off by ReadySound
 	SelectLoop:
 		REZG C 0 A_Raise;
 		REZG C 1 A_Raise;
@@ -628,7 +628,7 @@ class AstroLuger : NaziAstroWeapon //quite the same code from Luger P08 - ozy81
 	Weapon.AmmoType2 "AstroClipAmmo";
 	Weapon.AmmoUse2 1;
 	Weapon.AmmoGive2 8;
-	Weapon.UpSound "luger/select";
+	Weapon.UpSound "boa/weapon/raise/pistol";
 	+WEAPON.NOAUTOFIRE
 	Obituary "$OBALUGER";
 	Inventory.PickupMessage "$ALUGER";

@@ -37,10 +37,19 @@ class UMG43 : NaziWeapon
 	Weapon.AmmoType2 "Ammo9mm";
 	Weapon.AmmoUse2 4;
 	Weapon.SelectionOrder 900;
-	Weapon.UpSound "chaingun/select";
+	Weapon.UpSound "boa/weapon/raise/ar";
 	-WEAPON.AMMO_CHECKBOTH
 	-WEAPON.NOALERT
 	}
+	action void A_PlayRotaryShot()
+	{
+		A_StartSound("boa/weapon/venomgun/fire", CHAN_WEAPON, 0, 0.39);
+		A_StartSound("boa/weapon/venomgun/mech", CHAN_AUTO, CHANF_OVERLAP, 0.15);
+		A_StartSound("boa/weapon/venomgun/bass", CHAN_AUTO, CHANF_OVERLAP, 0.17);
+		A_StartSound("boa/weapon/venomgun/fireadd", CHAN_AUTO, CHANF_OVERLAP, 0.10);
+		A_StartSound("boa/weapon/venomgun/mechadd", CHAN_AUTO, CHANF_OVERLAP, 0.11);
+	}
+
 	States
 	{
 	Select:
@@ -58,19 +67,19 @@ class UMG43 : NaziWeapon
 		UMGG A 1 A_WeaponReady;
 		Wait;
 	Fire:
-		UMGG A 0 A_StartSound("chaingun/start");
-		UMGG A 1 A_StartSound("chaingun/loop", CHAN_5, CHANF_LOOPING, 1.0);
+		UMGG A 0 A_StartSound("boa/weapon/venomgun/windup");
+		UMGG A 1 A_StartSound("boa/weapon/venomgun/loop", CHAN_5, CHANF_LOOPING, 0.40);
 		UMGG AAABBBCCD 1;
 		UMGG D 1 A_Refire;
 	FireFinish:
 		UMGG D 1 A_WeaponReady(WRF_NOPRIMARY);
-		UMGG D 0 Offset(0,32) A_StartSound("chaingun/stop", CHAN_5);
+		UMGG D 0 Offset(0,32) A_StartSound("boa/weapon/venomgun/winddown", CHAN_5);
 		UMGG ABCDABCDAABBBCCCCDDDDD 1 A_WeaponReady;
 		Goto Ready;
 	Hold:
 		UMGG A 0 A_GunFlash("Flash1A");
 		UMGG A 0 A_SetPitch(pitch-(0.34*boa_recoilamount));
-		UMGG A 0 A_StartSound("chaingun/fire", CHAN_WEAPON);
+		UMGG A 0 A_PlayRotaryShot;
 		UMGG A 0 A_SpawnItemEx("Casing9mm",12,-20,32,8, Random[Weapon](-2,2), Random[Weapon](0,4), Random[Weapon](-55,-80),SXF_NOCHECKPOSITION);
 		UMGG E 1 Offset(0,34) A_FireProjectile("ChaingunTracer", FRandom[Weapon](-5.0,5.0),1,0,0,0, FRandom[Weapon](-3.0,3.0));
 		UMGG E 0 A_SetPitch(pitch-(0.34*boa_recoilamount));
@@ -82,7 +91,7 @@ class UMG43 : NaziWeapon
 		UMGG F 0 A_SetPitch(pitch-(0.34*boa_recoilamount));
 		UMGG F 0 A_JumpIf(waterlevel > 0,2);
 		UMGG F 0 A_FireProjectile("ChainSmokeSpawner",0,0,0, Random[Weapon](-4,4),0,0);
-		UMGG F 0 A_StartSound("chaingun/fire", CHAN_WEAPON);
+		UMGG F 0 A_PlayRotaryShot;
 		UMGG F 0 A_SpawnItemEx("Casing9mm",12,-20,32,8, Random[Weapon](-2,2), Random[Weapon](0,4), Random[Weapon](-55,-80),SXF_NOCHECKPOSITION);
 		UMGG G 1 Offset(0,37) A_FireProjectile("ChaingunTracer", FRandom[Weapon](-5.0,5.0),1,0,0,0, FRandom[Weapon](-3.0,3.0));
 		UMGG G 0 A_SetPitch(pitch-(0.34*boa_recoilamount));

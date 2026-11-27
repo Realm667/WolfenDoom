@@ -33,7 +33,7 @@ class Kar98k : NaziWeapon
 	Weapon.AmmoType2 "MauserAmmo";
 	Weapon.AmmoUse2 1;
 	Weapon.AmmoGive2 5;
-	Weapon.UpSound "mauser/select";
+	Weapon.UpSound "boa/weapon/raise/sniper";
 	Inventory.PickupMessage "$KAR98K";
 	Weapon.SelectionOrder 750;
 	+WEAPON.NOAUTOFIRE
@@ -67,7 +67,7 @@ class Kar98k : NaziWeapon
 		KAR9 A 0 A_Lower;
 		KAR9 A 1 A_Lower;
 		Loop;
-		KAR9 A 5 A_StartSound("mauser/shut", CHAN_5);
+		KAR9 A 5 A_StartSound("boa/weapon/kar98k/boltforward", CHAN_5);
 		KAR9 A 1 Offset(4,60);
 		KAR9 A 1 Offset(0,51);
 		KAR9 A 1 Offset(-4,42);
@@ -86,7 +86,14 @@ class Kar98k : NaziWeapon
 		KAR9 A 0 A_JumpIfInventory("Kar98kLoaded",1,1);
 		Goto Dryfire;
 		KAR9 A 0 A_AlertMonsters;
-		KAR9 A 0 A_StartSound("mauser/fire", CHAN_WEAPON);
+		KAR9 A 0
+		{
+			A_StartSound("boa/weapon/kar98k/fire", CHAN_WEAPON, 0, 0.68);
+			A_StartSound("boa/weapon/kar98k/mech", CHAN_AUTO, CHANF_OVERLAP, 0.27);
+			A_StartSound("boa/weapon/kar98k/bass", CHAN_AUTO, CHANF_OVERLAP, 0.28);
+			A_StartSound("boa/weapon/kar98k/sweethi", CHAN_AUTO, CHANF_OVERLAP, 0.22);
+			A_StartSound("boa/weapon/kar98k/sweetlo", CHAN_AUTO, CHANF_OVERLAP, 0.19);
+		}
 		KAR9 A 0 A_SpawnItemEx("MauserRifleCasing",12,-20,32,8, Random[Weapon](-2,2), Random[Weapon](0,4), Random[Weapon](-55,-80),SXF_NOCHECKPOSITION);
 		KAR9 A 0 A_JumpIfInventory("SniperZoom", 1, "ScopedFire");
 		KAR9 A 0 A_GunFlash;
@@ -96,7 +103,7 @@ class Kar98k : NaziWeapon
 		KAR9 A 2 Offset(0,40) A_SetPitch(pitch-(4.0*boa_recoilamount));
 		KAR9 A 1 Offset(0,36) A_SetPitch(pitch-(2.0*boa_recoilamount));
 		KAR9 B 1 Offset(0,32)A_SetPitch(pitch+(1.0*boa_recoilamount));
-		KAR9 A 0 A_StartSound("mauser/cock", CHAN_5);
+		KAR9 A 0 { A_StartSound("boa/weapon/kar98k/boltup", CHAN_5); A_StartSound("boa/weapon/kar98k/boltdown", CHAN_AUTO, CHANF_OVERLAP, 0.55); }
 		KAR9 C 3 A_SetPitch(pitch+(1.0*boa_recoilamount));
 		KAR9 D 1 A_SetPitch(pitch+(0.5*boa_recoilamount));
 		KAR9 E 3;
@@ -114,7 +121,7 @@ class Kar98k : NaziWeapon
 		SCO1 A 2 A_SetPitch(pitch-(4.0*boa_recoilamount));
 		SCO1 A 1 A_SetPitch(pitch-(2.0*boa_recoilamount));
 		SCO1 A 1 A_SetPitch(pitch+(1.0*boa_recoilamount));
-		SCO1 A 0 A_StartSound("mauser/cock", CHAN_5);
+		SCO1 A 0 { A_StartSound("boa/weapon/kar98k/boltup", CHAN_5); A_StartSound("boa/weapon/kar98k/boltdown", CHAN_AUTO, CHANF_OVERLAP, 0.55); }
 		SCO1 A 3 A_SetPitch(pitch+(1.0*boa_recoilamount));
 		SCO1 A 17 A_SetPitch(pitch+(0.5*boa_recoilamount));
 		SCO1 A 1 A_CheckReload;
@@ -125,7 +132,7 @@ class Kar98k : NaziWeapon
 		SCO1 A 2 A_SetPitch(pitch-(2.0*boa_recoilamount));
 		SCO1 A 1 A_SetPitch(pitch-(1.0*boa_recoilamount));
 		SCO1 A 1 A_SetPitch(pitch+(0.5*boa_recoilamount));
-		SCO1 A 0 A_StartSound("mauser/cock", CHAN_5);
+		SCO1 A 0 { A_StartSound("boa/weapon/kar98k/boltup", CHAN_5); A_StartSound("boa/weapon/kar98k/boltdown", CHAN_AUTO, CHANF_OVERLAP, 0.55); }
 		SCO1 A 3 A_SetPitch(pitch+(0.5*boa_recoilamount));
 		SCO1 A 17 A_SetPitch(pitch+(0.25*boa_recoilamount));
 		SCO1 A 1 A_CheckReload;
@@ -155,7 +162,7 @@ class Kar98k : NaziWeapon
 		SCO1 A 0 A_StartSound("mauser/scope");
 		SCO1 A 3 A_ZoomFactor(1.0);
 		KAR9 A 5;
-		KAR9 A 1 A_StartSound("mauser/open", CHAN_5);
+		KAR9 A 1 A_StartSound("boa/weapon/kar98k/boltback", CHAN_5);
 		KAR9 A 1 Offset(-4,34);
 		KAR9 A 1 Offset(-6,35);
 		KAR9 A 2 Offset(-8,36);
@@ -168,7 +175,7 @@ class Kar98k : NaziWeapon
 	ReloadLoop:
 		TNT1 A 0 A_TakeInventory("MauserAmmo",1,TIF_NOTAKEINFINITE);
 		TNT1 A 0 A_GiveInventory("Kar98kLoaded");
-		KAR9 A 1 Offset(6,80) A_StartSound("mauser/insert",5);
+		KAR9 A 1 Offset(6,80) A_StartSound("boa/weapon/kar98k/load",5);
 		KAR9 A 1 Offset(6,84);
 		KAR9 A 1 Offset(6,87);
 		KAR9 A 1 Offset(7,90);
@@ -180,7 +187,7 @@ class Kar98k : NaziWeapon
 		TNT1 A 0 A_JumpIfInventory("Kar98kLoaded",0,"ReloadEnd");
 		TNT1 A 0 A_JumpIfInventory("MauserAmmo",1,"ReloadLoop");
 	ReloadEnd:
-		KAR9 A 5 A_StartSound("mauser/shut", CHAN_5);
+		KAR9 A 5 A_StartSound("boa/weapon/kar98k/boltforward", CHAN_5);
 		KAR9 A 1 Offset(4,60);
 		KAR9 A 1 Offset(0,51);
 		KAR9 A 1 Offset(-4,42);

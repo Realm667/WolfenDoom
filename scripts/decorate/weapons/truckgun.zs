@@ -44,7 +44,7 @@ class TruckWeapon : UMG43
 		UMGG A 1 A_WeaponReady(WRF_NOSWITCH);
 		Wait;
 	FireFinish:
-		UMGG D 0 Offset(0,32) A_StartSound("chaingun/stop", CHAN_5);
+		UMGG D 0 Offset(0,32) A_StartSound("boa/weapon/venomgun/winddown", CHAN_5);
 		UMGG DABCDABCDAABBBCCCCDDDDD 1 A_WeaponReady(WRF_NOSWITCH);
 		Goto Ready;
 	Hold:
@@ -52,7 +52,7 @@ class TruckWeapon : UMG43
 		UMGG A 0 A_GunFlash("Flash1A");
 		UMGG A 0 A_SetPitch(pitch-(0.34*boa_recoilamount));
 		UMGG A 0 A_FireProjectile("ChainSmokeSpawner",0,0,0, Random[Weapon](-4,4),0,0);
-		UMGG A 0 A_StartSound("chaingun/fire", CHAN_WEAPON);
+		UMGG A 0 A_PlayRotaryShot;
 		UMGG A 0 A_SpawnItemEx("Casing9mm",12,-20,32,8, Random[Weapon](-2,2), Random[Weapon](0,4), Random[Weapon](-55,-80),SXF_NOCHECKPOSITION);
 		UMGG E 1 Offset(0,34) A_FireProjectile("ChaingunTracer", FRandom[Weapon](-5.0,5.0),1,0,0,0, FRandom[Weapon](-3.0,3.0));
 		UMGG E 0 A_SetPitch(pitch-(0.34*boa_recoilamount));
@@ -62,7 +62,7 @@ class TruckWeapon : UMG43
 		UMGG F 0 A_GunFlash("Flash2A");
 		UMGG F 0 A_SetPitch(pitch-(0.34*boa_recoilamount));
 		UMGG F 0 A_FireProjectile("ChainSmokeSpawner",0,0,0, Random[Weapon](-4,4),0,0);
-		UMGG F 0 A_StartSound("chaingun/fire", CHAN_WEAPON);
+		UMGG F 0 A_PlayRotaryShot;
 		UMGG F 0 A_SpawnItemEx("Casing9mm",12,-20,32,8, Random[Weapon](-2,2), Random[Weapon](0,4), Random[Weapon](-55,-80),SXF_NOCHECKPOSITION);
 		UMGG G 1 Offset(0,37) A_FireProjectile("ChaingunTracer", FRandom[Weapon](-5.0,5.0),1,0,0,0, FRandom[Weapon](-3.0,3.0));
 		UMGG G 0 A_SetPitch(pitch-(0.34*boa_recoilamount));
@@ -75,7 +75,7 @@ class TruckWeapon : UMG43
 		UMGG A 0 A_GunFlash("Flash1A");
 		UMGG A 0 A_SetPitch(pitch-(0.17*boa_recoilamount));
 		UMGG A 0 A_FireProjectile("ChainSmokeSpawner",0,0,0, Random[Weapon](-4,4),0,0);
-		UMGG A 0 A_StartSound("chaingun/fire", CHAN_WEAPON);
+		UMGG A 0 A_PlayRotaryShot;
 		UMGG A 0 A_SpawnItemEx("Casing9mm",12,-20,32,8, Random[Weapon](-2,2), Random[Weapon](0,4), Random[Weapon](-55,-80),SXF_NOCHECKPOSITION);
 		UMGG E 1 Offset(0,34) A_FireProjectile("ChaingunTracer", FRandom[Weapon](-5.0,5.0),1,0,0,0, FRandom[Weapon](-3.0,3.0));
 		UMGG E 0 A_SetPitch(pitch-(0.17*boa_recoilamount));
@@ -85,7 +85,7 @@ class TruckWeapon : UMG43
 		UMGG F 0 A_GunFlash("Flash2A");
 		UMGG F 0 A_SetPitch(pitch-(0.17*boa_recoilamount));
 		UMGG F 0 A_FireProjectile("ChainSmokeSpawner",0,0,0, Random[Weapon](-4,4),0,0);
-		UMGG F 0 A_StartSound("chaingun/fire", CHAN_WEAPON);
+		UMGG F 0 A_PlayRotaryShot;
 		UMGG F 0 A_SpawnItemEx("Casing9mm",12,-20,32,8, Random[Weapon](-2,2), Random[Weapon](0,4), Random[Weapon](-55,-80),SXF_NOCHECKPOSITION);
 		UMGG G 1 Offset(0,37) A_FireProjectile("ChaingunTracer", FRandom[Weapon](-5.0,5.0),1,0,0,0, FRandom[Weapon](-3.0,3.0));
 		UMGG G 0 A_SetPitch(pitch-(0.17*boa_recoilamount));

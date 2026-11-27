@@ -34,7 +34,7 @@ class Walther9mm : NaziWeapon
 	Weapon.AmmoType2 "Ammo9mm";
 	Weapon.AmmoUse2 1;
 	Weapon.AmmoGive2 8;
-	Weapon.UpSound "walther/select";
+	Weapon.UpSound "boa/weapon/raise/pistol";
 	Tag "Walther P38";
 	Inventory.PickupMessage "$P38WALT";
 	}

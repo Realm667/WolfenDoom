@@ -163,8 +163,8 @@ class FuelDrum : Obstacle3d //MaxED
 	Default
 	{
 		DistanceCheck "boa_scenelod";
-		Radius 16;
-		Height 43;
+		Radius 12;
+		Height 40;
 		-NOGRAVITY
 		ModelBase.Buoyancy 0.2;
 	}
@@ -201,8 +201,8 @@ class GasDrum : Obstacle3d //MaxED
 		//$Title Gas Drum
 		//$Color 3
 		DistanceCheck "boa_scenelod";
-		Radius 16;
-		Height 43;
+		Radius 12;
+		Height 40;
 		-NOGRAVITY
 		ModelBase.Buoyancy 0.15;
 	}

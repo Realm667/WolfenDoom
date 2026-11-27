@@ -109,7 +109,7 @@ class BoAPlayer : PlayerPawn
 		Player.StartItem "TeslaLoaded",30;
 		Player.StartItem "TrenchShotgunLoaded",8;
 		Player.StartItem "Walther9mmLoaded",8;
-		Player.StartItem "Stamina", 100;
+		Player.StartItem "Stamina", 200;
 		Player.StartItem "NullWeapon", 1;
 		Player.StartItem "KnifeSilent";
 		Player.SoundClass "player";
@@ -250,7 +250,7 @@ class BoAPlayer : PlayerPawn
 
 	override void PostBeginPlay()
 	{
-		flinchfactor = 255; // Start out with full flinch amount.
+		flinchfactor = 100;
 		dodragging = false;
 		int playerID = PLAYER_TAG_OFFSET + PlayerNumber();
 		Thing_ChangeTID(0, playerID);
@@ -1325,12 +1325,13 @@ class BoAPlayer : PlayerPawn
 
 			if (!wpn) { return; }
 
-			if (st && st.Amount > 29)
+			int kickCost = 10;
+			if (st && st.Amount >= kickCost)
 			{
 				if (mo.FindInventory("PowerStrength")) { wpn.modifier = 3.0; } // Strength increases damage by 3 and range by 10
 				else { wpn.modifier = 1.0; }
 
-				mo.A_TakeInventory("Stamina", 30);
+				mo.A_TakeInventory("Stamina", kickCost);
 				mo.player.SetPsprite(-10, wpn.FindState("KickOverlay"), true);
 			}
 		}

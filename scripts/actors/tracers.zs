@@ -86,7 +86,8 @@ class BulletTracer : FastProjectile
 				// If a bleeding actor was hit, count the shot as successful
 				if (BoAPlayer(target) && BoAPlayer(target).tracker) { BoAPlayer(target).tracker.shots[target.PlayerNumber()][0]++; }
 				bWindThrust = false;
-				A_StartSound("hitflesh");
+				// A shotgun blast can play several pellet impacts at once.
+				A_StartSound("hitflesh", CHAN_BODY, 0, DamageType == 'Pellet' ? 0.22 : 1.0);
 			}
 			Stop;
 	}

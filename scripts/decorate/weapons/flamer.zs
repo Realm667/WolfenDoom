@@ -37,7 +37,7 @@ class Pyrolight : NaziWeapon
 		Weapon.AmmoUse2 1;
 		Weapon.AmmoGive2 50;
 		Weapon.SelectionOrder 800;
-		Weapon.UpSound "flamer/select";
+		Weapon.UpSound "boa/weapon/raise/launcher";
 	}
 
 	States

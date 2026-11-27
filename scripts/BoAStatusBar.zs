@@ -336,7 +336,7 @@ virtual void DrawMainBar(double TicFrac)
 
 	//AirControl & Stamina
 	DrawBar("HORZAIRF", "HORZAIRE", mAirInterpolator.GetValue(), level.airsupply, (36, 160), 0, SHADER_HORZ, DI_ITEM_OFFSETS);
-	DrawBar("HORZSTMF", "HORZSTME", mStaminaInterpolator.GetValue(), 100, (88, 160), 0, SHADER_HORZ, DI_ITEM_OFFSETS);
+	DrawBar("HORZSTMF", "HORZSTME", mStaminaInterpolator.GetValue(), GetDefaultByType("Stamina").MaxAmount, (88, 160), 0, SHADER_HORZ, DI_ITEM_OFFSETS);
 
 	//Ammo
 	Inventory ammo1, ammo2;

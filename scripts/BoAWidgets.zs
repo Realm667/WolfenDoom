@@ -1147,11 +1147,12 @@ class StaminaWidget : Widget
 		if (!BoAStatusBar(StatusBar)) { return (0, 0); }
 
 		int val = BoAStatusBar(StatusBar).mStaminaInterpolator.GetValue();
+		int capacity = GetDefaultByType("Stamina").MaxAmount;
 
 		if (fade > -1 && fade < 1.0)
 		{
 			if (
-				val >= 100 ||
+				val >= capacity ||
 				players[consoleplayer].cheats & CF_NOCLIP ||
 				players[consoleplayer].cheats & CF_NOCLIP2
 			) { visible = false; }
@@ -1161,7 +1162,7 @@ class StaminaWidget : Widget
 
 		Super.Draw();
 
-		StatusBar.DrawBar("VERTSTMF", "VERTSTME", val, 100, (pos.x, pos.y), 0, StatusBar.SHADER_VERT | StatusBar.SHADER_REVERSE, StatusBar.DI_ITEM_OFFSETS, alpha);
+		StatusBar.DrawBar("VERTSTMF", "VERTSTME", val, capacity, (pos.x, pos.y), 0, StatusBar.SHADER_VERT | StatusBar.SHADER_REVERSE, StatusBar.DI_ITEM_OFFSETS, alpha);
 
 		return size;
 	}

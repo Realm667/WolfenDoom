@@ -33,7 +33,7 @@ class TrenchShotgun : NaziWeapon
 	Weapon.AmmoType2 "Ammo12Gauge";
 	Weapon.AmmoUse2 1;
 	Weapon.AmmoGive2 8;
-	Weapon.UpSound "shotgun/select";
+	Weapon.UpSound "boa/weapon/raise/shotgun";
 	Inventory.PickupMessage "$TRENSSG";
 	+WEAPON.NOAUTOFIRE
 	+NaziWeapon.NORAMPAGE
@@ -51,7 +51,7 @@ class TrenchShotgun : NaziWeapon
 		SHTG A 0 A_Lower;
 		SHTG A 1 A_Lower;
 		Loop;
-		SHTG C 1 Offset(3,35) A_StartSound("shotgun/pump");
+		SHTG C 1 Offset(3,35) { A_StartSound("boa/weapon/trench/back", CHAN_5, 0, 0.63); A_StartSound("boa/weapon/trench/forward", CHAN_AUTO, CHANF_OVERLAP, 0.35); }
 		SHTG C 1 Offset(-1,38);
 		SHTG D 1 Offset(-4,41);
 		SHTG D 1 Offset(-1,33);
@@ -77,7 +77,7 @@ class TrenchShotgun : NaziWeapon
 		SHTG A 0 A_JumpIfInventory("TrenchShotgunLoaded",1,1);
 		Goto Dryfire;
 		SHTG A 0 A_TakeInventory("TrenchShotgunLoaded",1,TIF_NOTAKEINFINITE);
-		SHTG A 0 A_StartSound("shotgun/fire", CHAN_WEAPON);
+		SHTG A 0 A_StartSound("boa/weapon/trench/fire", CHAN_WEAPON, 0, 0.40);
 		SHTG A 0 A_AlertMonsters;
 		SHTG AAAAAAAAAA 0 A_FireProjectile("ShotgunTracer", FRandom[Weapon](-2.0,2.0),0,0,0,0, FRandom[Weapon](-1.5,1.5));
 		SHTG F 1 A_GunFlash;
@@ -90,7 +90,7 @@ class TrenchShotgun : NaziWeapon
 		SHTG A 1 Offset(0,33) A_SetPitch(pitch+(0.5*boa_recoilamount));
 		SHTG A 7 A_WeaponReady(WRF_NOFIRE);
 		SHTG A 1 Offset(-1,33);
-		SHTG B 1 Offset(5,34) A_StartSound("shotgun/pump", CHAN_5);
+		SHTG B 1 Offset(5,34) { A_StartSound("boa/weapon/trench/back", CHAN_5, 0, 0.63); A_StartSound("boa/weapon/trench/forward", CHAN_AUTO, CHANF_OVERLAP, 0.35); }
 		SHTG B 1 Offset(2,36);
 		SHTG B 1 Offset(-1,38);
 		SHTG C 1 Offset(3,35);
@@ -121,7 +121,7 @@ class TrenchShotgun : NaziWeapon
 	ReloadLoop:
 		SHTG A 0 A_TakeInventory("Ammo12Gauge",1,TIF_NOTAKEINFINITE);
 		SHTG A 0 A_GiveInventory("TrenchShotgunLoaded");
-		SHTG C 1 Offset(-8,58) A_StartSound("shotgun/load", CHAN_WEAPON);
+		SHTG C 1 Offset(-8,58) A_StartSound("boa/weapon/trench/load", CHAN_WEAPON, 0, 0.64);
 		SHTG C 1 Offset(-9,64);
 		SHTG C 1 Offset(-10,70);
 		SHTG C 1 Offset(-10,68);
@@ -135,7 +135,7 @@ class TrenchShotgun : NaziWeapon
 		SHTG A 0 A_JumpIfInventory("TrenchShotgunLoaded",0,"ReloadFinish");
 		TNT1 A 0 A_JumpIfInventory("Ammo12Gauge",1,"ReloadLoop");
 	ReloadFinish:
-		SHTG C 1 Offset(3,35) A_StartSound("shotgun/pump");
+		SHTG C 1 Offset(3,35) { A_StartSound("boa/weapon/trench/back", CHAN_5, 0, 0.63); A_StartSound("boa/weapon/trench/forward", CHAN_AUTO, CHANF_OVERLAP, 0.35); }
 		SHTG C 1 Offset(-1,38);
 		SHTG D 1 Offset(-4,41);
 		SHTG D 1 Offset(-1,33);

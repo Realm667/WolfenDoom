@@ -33,7 +33,7 @@ class MP40 : NaziWeapon
 	Weapon.AmmoUse 1;
 	Weapon.AmmoType2 "Ammo9mm";
 	Weapon.AmmoUse2 1;
-	Weapon.UpSound "mp40/select";
+	Weapon.UpSound "boa/weapon/raise/smg";
 	Tag "MP 40";
 	Inventory.PickupMessage "$MP40";
 	Weapon.AmmoGive2 32;
@@ -62,7 +62,14 @@ class MP40 : NaziWeapon
 		RIFG A 0 A_SetPitch(pitch-(0.5*boa_recoilamount));
 		RIFG A 0 A_JumpIf(waterlevel > 0,2);
 		RIFG A 0 A_FireProjectile("ChainSmokeSpawner",0,0,0, Random[Weapon](-4,4),0,0);
-		RIFG A 0 A_StartSound("mp40/fire", CHAN_WEAPON, 0, FRandom[Weapon](0.6, 0.8));
+		RIFG A 0
+		{
+			A_StartSound("boa/weapon/mp40/fire", CHAN_WEAPON, 0, FRandom[Weapon](0.43, 0.58));
+			A_StartSound("boa/weapon/mp40/mech", CHAN_AUTO, CHANF_OVERLAP, 0.25);
+			A_StartSound("boa/weapon/mp40/bass", CHAN_AUTO, CHANF_OVERLAP, 0.23);
+			A_StartSound("boa/weapon/mp40/tail", CHAN_AUTO, CHANF_OVERLAP, 0.17);
+			A_StartSound("boa/weapon/mp40/sweet", CHAN_AUTO, CHANF_OVERLAP, 0.15);
+		}
 		RIFG A 0 A_SpawnItemEx("Casing9mm",12,-20,32,8, Random[Weapon](-2,2), Random[Weapon](0,4), Random[Weapon](-55,-80),SXF_NOCHECKPOSITION);
 		RIFG A 0 A_AlertMonsters;
 		RIFG A 1 A_FireProjectile("MP40Tracer", FRandom[Weapon](-1.4,1.4));
@@ -78,7 +85,7 @@ class MP40 : NaziWeapon
 		TNT1 A 0 A_CheckReload;
 		Goto Ready;
 	Reload:
-		RIFG A 1 Offset(0,35) A_StartSound("mp40/reload", CHAN_5, 0, FRandom[Weapon](0.6, 0.8));
+		RIFG A 1 Offset(0,35) A_StartSound("boa/weapon/mp40/out", CHAN_5, 0, FRandom[Weapon](0.6, 0.8));
 		RIFG A 1 Offset(0,38) A_Reloading(true);
 		RIFG A 1 Offset(0,44);
 		RIFG B 1 Offset(0,52);
@@ -98,7 +105,7 @@ class MP40 : NaziWeapon
 		TNT1 A 0 A_JumpIfInventory("MP40Loaded",0,"ReloadFinish");
 		TNT1 A 0 A_JumpIfInventory("Ammo9mm",1,"ReloadLoop");
 	ReloadFinish:
-		RIFG B 1 Offset(-3,57);
+		RIFG B 1 Offset(-3,57) A_StartSound("boa/weapon/mp40/in", CHAN_5, 0, 0.85);
 		RIFG B 1 Offset(-3,59);
 		RIFG B 1 Offset(-3,63);
 		RIFG B 1 Offset(-3,67);
@@ -112,7 +119,7 @@ class MP40 : NaziWeapon
 		RIFG B 1 Offset(-2,45);
 		RIFG B 1 Offset(-1,44);
 		RIFG B 1 Offset(-1,46);
-		RIFG B 1 Offset(-1,47) A_Reloading(false);
+		RIFG B 1 Offset(-1,47) { A_StartSound("boa/weapon/mp40/forward", CHAN_AUTO, CHANF_OVERLAP, 0.57); A_Reloading(false); }
 		RIFG B 1 Offset(0,49) A_WeaponReady(WRF_NOBOB);
 		RIFG A 1 Offset(0,44) A_WeaponReady(WRF_NOBOB);
 		RIFG A 1 Offset(0,38) A_WeaponReady(WRF_NOBOB);

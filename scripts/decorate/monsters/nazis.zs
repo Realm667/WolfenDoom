@@ -3074,7 +3074,7 @@ class MGTurretSoldier : MGTurret
 	{
 	//$Category Monsters (BoA)/Turrets
 	//$Title Stationary Turret Soldier (Afrika Korps)
-	Health 100;
+	Health 60;
 	MaxTargetRange 3072;
 	Height 64; // was 56. Changed for headshot - hawkwind
 	Radius 16;

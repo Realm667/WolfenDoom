@@ -45,7 +45,7 @@ class TeslaCannon : NaziAstroWeapon
 	Weapon.AmmoType2 "TeslaCell";
 	Weapon.AmmoUse2 1;
 	Weapon.AmmoGive2 20;
-	Weapon.UpSound "tesla/raise";
+	Weapon.UpSound "boa/weapon/raise/launcher";
 	Inventory.PickupMessage "$TESLAC";
 	Obituary "$OBTESLAC";
 	Tag "$TAGTESLA";

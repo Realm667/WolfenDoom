@@ -32,7 +32,7 @@ class Nebelwerfer : NaziWeapon
 	Weapon.AmmoUse 1;
 	Weapon.AmmoGive 10;
 	Weapon.AmmoType "NebAmmo";
-	Weapon.UpSound "nebelwerfer/select";
+	Weapon.UpSound "boa/weapon/raise/launcher";
 	Tag "$TAGNEBWP";
 	Inventory.PickupMessage "$WERFER";
 	-WEAPON.AMMO_CHECKBOTH

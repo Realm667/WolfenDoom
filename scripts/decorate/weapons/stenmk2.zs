@@ -35,7 +35,7 @@ class Sten : NaziWeapon //Rate of fire: ~500 rounds/min - Wikipedia
 	Weapon.AmmoType2 "Ammo9mm";
 	Weapon.AmmoUse2 1;
 	Weapon.AmmoGive2 32;
-	Weapon.UpSound "sten/select";
+	Weapon.UpSound "boa/weapon/raise/smg";
 	Tag "STEN Mk II";
 	+WEAPON.NOAUTOFIRE //had to add this to make the altfire non-automatic --N00b
 	}
@@ -59,7 +59,12 @@ class Sten : NaziWeapon //Rate of fire: ~500 rounds/min - Wikipedia
 	Fire:
 		STEN A 0 A_JumpIfInventory("StenLoaded",1,1);
 		Goto Dryfire;
-		STEN A 0 A_StartSound("sten/fire", CHAN_WEAPON);
+		STEN A 0
+		{
+			A_StartSound("boa/weapon/sten/fire", CHAN_WEAPON, 0, 0.62);
+			A_StartSound("boa/weapon/sten/firemech", CHAN_AUTO, CHANF_OVERLAP, 0.35);
+			A_StartSound("boa/weapon/sten/fireadd", CHAN_AUTO, CHANF_OVERLAP, 0.23);
+		}
 		STEN A 0 A_SpawnItemEx("Casing9mm",12,-20,32,8, Random[Weapon](-2,2), Random[Weapon](0,4), Random[Weapon](-55,-80),SXF_NOCHECKPOSITION);
 		STEN A 0 A_AlertMonsters(384); // buffed a bit --N00b
 		STEN B 1 A_FireProjectile("StenTracer", FRandom[Weapon](-1.5,1.5),1,0,0,0, FRandom[Weapon](-1.0,1.0));
@@ -72,7 +77,12 @@ class Sten : NaziWeapon //Rate of fire: ~500 rounds/min - Wikipedia
 	Hold:
 		STEN A 0 A_JumpIfInventory("StenLoaded",1,1);
 		Goto Dryfire;
-		STEN A 0 A_StartSound("sten/fire", CHAN_WEAPON);
+		STEN A 0
+		{
+			A_StartSound("boa/weapon/sten/fire", CHAN_WEAPON, 0, 0.62);
+			A_StartSound("boa/weapon/sten/firemech", CHAN_AUTO, CHANF_OVERLAP, 0.35);
+			A_StartSound("boa/weapon/sten/fireadd", CHAN_AUTO, CHANF_OVERLAP, 0.23);
+		}
 		STEN A 0 A_SpawnItemEx("Casing9mm",12,-20,32,8, Random[Weapon](-2,2), Random[Weapon](0,4), Random[Weapon](-55,-80),SXF_NOCHECKPOSITION);
 		STEN A 0 A_AlertMonsters;
 		STEN B 1 Offset(0,36) A_FireProjectile("StenTracer", FRandom[Weapon](-1.5,1.5),1,0,0,0, FRandom[Weapon](-1.0,1.0));
@@ -85,7 +95,12 @@ class Sten : NaziWeapon //Rate of fire: ~500 rounds/min - Wikipedia
 	Altfire: // semi-auto, as it is difficult to fire exactly one shot --N00b
 		STEN A 0 A_JumpIfInventory("StenLoaded",1,1);
 		Goto Dryfire;
-		STEN A 0 A_StartSound("sten/fire", CHAN_WEAPON);
+		STEN A 0
+		{
+			A_StartSound("boa/weapon/sten/fire", CHAN_WEAPON, 0, 0.62);
+			A_StartSound("boa/weapon/sten/firemech", CHAN_AUTO, CHANF_OVERLAP, 0.35);
+			A_StartSound("boa/weapon/sten/fireadd", CHAN_AUTO, CHANF_OVERLAP, 0.23);
+		}
 		STEN A 0 A_SpawnItemEx("Casing9mm",12,-20,32,8, Random[Weapon](-2,2), Random[Weapon](0,4), Random[Weapon](-55,-80),SXF_NOCHECKPOSITION);
 		STEN A 0 A_AlertMonsters(384);
 		STEN A 0 A_TakeInventory("StenLoaded",1,TIF_NOTAKEINFINITE); // take the round manually (see ammotypes) --N00b
@@ -97,7 +112,7 @@ class Sten : NaziWeapon //Rate of fire: ~500 rounds/min - Wikipedia
 		STEN A 3; // balance the DPS --N00b
 		Goto Ready;
 	Reload:
-		STEN C 1 Offset(0,29) A_StartSound("sten/reload1", CHAN_5);
+		STEN C 1 Offset(0,29) A_StartSound("boa/weapon/sten/magout", CHAN_5);
 		STEN C 1 Offset(0,30);
 		STEN D 1 Offset(0,31) A_Reloading(true);
 		STEN D 1 Offset(0,32);
@@ -123,7 +138,7 @@ class Sten : NaziWeapon //Rate of fire: ~500 rounds/min - Wikipedia
 		TNT1 A 0 A_JumpIfInventory("StenLoaded",0,"ReloadFinish");
 		TNT1 A 0 A_JumpIfInventory("Ammo9mm",1,"ReloadLoop");
 	ReloadFinish:
-		STEN K 1 Offset(-11,39) A_StartSound("sten/reload2", CHAN_5);
+		STEN K 1 Offset(-11,39) { A_StartSound("boa/weapon/sten/magin", CHAN_5); A_StartSound("boa/weapon/sten/charge", CHAN_AUTO, CHANF_OVERLAP, 0.5); }
 		STEN K 1 Offset(-10,37);
 		STEN J 1 Offset(-8,34);
 		STEN J 1 Offset(-6,32);

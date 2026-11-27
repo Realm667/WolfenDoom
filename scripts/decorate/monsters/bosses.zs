@@ -3002,6 +3002,7 @@ class DeathKnight : Nazi
 
 class Longinus_Hitler : NaziBoss
 {
+	bool encounterHealthInitialized;
 	double user_rumbleoffset;
 	int user_count5;
 	int user_count6;
@@ -3012,10 +3013,9 @@ class Longinus_Hitler : NaziBoss
 		//$Color 4
 		Base.BossIcon "BOSSICO3";
 		Tag "$TAGHITLER";
-		Health 100000;
-		WoundHealth 50000;
+		Health 25000;
+		WoundHealth 12500;
 		Mass 16000;
-		Painchance 16;
 		Radius 64;
 		Height 192;
 		Speed 2.5;
@@ -3026,9 +3026,8 @@ class Longinus_Hitler : NaziBoss
 		+NOFEAR
 		+MISSILEMORE //these two added by N00b
 		+MISSILEEVENMORE
-		PainChance 0; // No pain reaction, except for Occult Fire attacks.
-		PainChance "OccultFire", 8; //changed from 24, else you could stun him with repeated alternative attacks --N00b
-		DamageFactor "Rocket", 0.0;
+		PainChance 8;
+		PainChance "OccultFire", 24;
 		DamageFactor "OccultFire", 5.0;
 		Obituary "$LHITLER";
 		SeeSound "hitler/sight";
@@ -3054,7 +3053,13 @@ class Longinus_Hitler : NaziBoss
 	See:
 		Goto See.BossGiant;
 	Wound:
-		"####" KLM 3;
+		"####" K 3
+		{
+			// Let the transition finish even under sustained fire.
+			WoundHealth = 0;
+			bNoPain = true;
+		}
+		"####" LM 3;
 	Wounded: // Set/define the 'wounded' state sprite here!  NaziBoss class will automatically force the enemy to use this base sprite when 'wounded' is set to true!
 		SHI2 "#" 0 {
 			A_SpawnItemEx("HitlerChaingun", Random[Boss](8,-8), Random[Boss](8,-8), Random[Boss](54,64), Random[Boss](1,6), Random[Boss](1,6), Random[Boss](1,6), Random[Boss](0,360), SXF_NOCHECKPOSITION);
@@ -3227,9 +3232,28 @@ class Longinus_Hitler : NaziBoss
 
 	override void PostBeginPlay()
 	{
+		encounterHealthInitialized = true;
 		SetStateLabel("Appear");
 
 		Super.PostBeginPlay();
+	}
+
+	override void OnLoad()
+	{
+		Super.OnLoad();
+		if (encounterHealthInitialized) { return; }
+		encounterHealthInitialized = true;
+
+		// Saves from before the rebalance can have the arena ACS waiting for 50000 HP.
+		if (health <= 0 || wounded || WoundHealth == 0) { return; }
+		if (InStateSequence(CurState, FindState("Wound")))
+		{
+			WoundHealth = 0;
+			bNoPain = true;
+			return;
+		}
+		if (health == Default.Health) { health = 100000; } // The old class default could be omitted from the save.
+		WoundHealth = 50000;
 	}
 
 	override void Tick()

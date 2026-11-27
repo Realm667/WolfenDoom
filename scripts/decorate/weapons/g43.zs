@@ -36,7 +36,7 @@ class G43 : NaziWeapon
 	Weapon.AmmoGive2 10;
 	Inventory.PickupMessage "$G43";
 	Tag "Gewehr 43";
-	Weapon.UpSound "g43/select";
+	Weapon.UpSound "boa/weapon/raise/ar";
 	+WEAPON.NOAUTOFIRE;
 	+NaziWeapon.NORAMPAGE
 	}
@@ -60,7 +60,7 @@ class G43 : NaziWeapon
 	Fire:
 		M1GG A 0 A_JumpIfInventory("G43Loaded",1,1);
 		Goto Dryfire;
-		M1GG A 0 A_StartSound("g43/fire",CHAN_WEAPON);
+		M1GG A 0 A_StartSound("boa/weapon/g43/fire", CHAN_WEAPON, 0, 0.60);
 		M1GG A 0 A_GunFlash;
 		M1GG A 0 A_SpawnItemEx("MauserRifleCasing",12,-20,32,8, Random[Weapon](-2,2), Random[Weapon](0,4), Random[Weapon](-55,-80),SXF_NOCHECKPOSITION);
 		M1GG A 0 A_AlertMonsters;
@@ -73,7 +73,7 @@ class G43 : NaziWeapon
 		M1GG AAFFFA 1 A_WeaponReady(WRF_NOBOB);
 		Goto Ready;
 	Reload:
-		M1GG A 1 Offset(0,35) A_StartSound("g43/reload",CHAN_5);
+		M1GG A 1 Offset(0,35) A_StartSound("boa/weapon/g43/out",CHAN_5);
 		M1GG A 1 Offset(-2,38) A_Reloading(true);
 		M1GG A 1 Offset(-4,44);
 		M1GG A 1 Offset(-6,52);
@@ -95,7 +95,7 @@ class G43 : NaziWeapon
 		TNT1 A 0 A_JumpIfInventory("G43Loaded",0,"ReloadFinish");
 		TNT1 A 0 A_JumpIfInventory("MauserAmmo",1,"ReloadLoop");
 	ReloadFinish:
-		M1GG D 2 Offset(-10,96);
+		M1GG D 2 Offset(-10,96) A_StartSound("boa/weapon/g43/in", CHAN_5);
 		M1GG D 1 Offset(-6,100);
 		M1GG C 1 Offset(-7,90);
 		M1GG C 1 Offset(-6,80);
@@ -103,7 +103,7 @@ class G43 : NaziWeapon
 		M1GG A 1 Offset(-2,60);
 		M1GG A 1 Offset(0,50);
 		M1GG A 1 Offset(0,40);
-		M1GG A 1 Offset(0,32) A_Reloading(false);
+		M1GG A 1 Offset(0,32) { A_StartSound("boa/weapon/g43/cock", CHAN_AUTO, CHANF_OVERLAP, 0.65); A_Reloading(false); }
 		Goto Ready;
 	Flash:
 		M1GF A 1 A_Light2;

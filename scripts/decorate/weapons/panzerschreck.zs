@@ -36,7 +36,7 @@ class Panzerschreck : NaziWeapon
 	Weapon.AmmoType2 "PanzerAmmo";
 	Weapon.AmmoGive2 1;
 	Weapon.AmmoUse2 1;
-	Weapon.UpSound "panzer/select";
+	Weapon.UpSound "boa/weapon/raise/launcher";
 	Radius 18;
 	Height 12;
 	+WEAPON.NOAUTOFIRE

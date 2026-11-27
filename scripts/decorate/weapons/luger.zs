@@ -34,7 +34,7 @@ class Luger9mm : NaziWeapon
 	Weapon.AmmoType2 "Ammo9mm";
 	Weapon.AmmoUse2 1;
 	Weapon.AmmoGive2 8;
-	Weapon.UpSound "luger/select";
+	Weapon.UpSound "boa/weapon/raise/pistol";
 	Tag "Luger P08";
 	Inventory.PickupMessage "$P08LUG";
 	+WEAPON.NOAUTOFIRE
@@ -64,7 +64,12 @@ class Luger9mm : NaziWeapon
 		LUGG A 0 A_SetPitch(pitch-(0.2*boa_recoilamount));
 		LUGG A 0 A_JumpIf(waterlevel > 0,2);
 		LUGG A 0 A_FireProjectile("PistolSmokeSpawner",0,0,0, Random[Weapon](-4,4),0,0);
-		LUGG A 0 A_StartSound("luger/fire", CHAN_WEAPON);
+		LUGG A 0
+		{
+			A_StartSound("boa/weapon/luger/fire", CHAN_WEAPON, 0, 0.49);
+			A_StartSound("boa/weapon/luger/firemech", CHAN_AUTO, CHANF_OVERLAP, 0.24);
+			A_StartSound("boa/weapon/luger/fireadd", CHAN_AUTO, CHANF_OVERLAP, 0.20);
+		}
 		LUGG A 0 A_SpawnItemEx("Casing9mm",12,-20,32,8, Random[Weapon](-2,2), Random[Weapon](0,4), Random[Weapon](-55,-80),SXF_NOCHECKPOSITION);
 		LUGG A 0 A_AlertMonsters;
 		LUGG G 1 A_FireProjectile("LugerTracer");
@@ -77,7 +82,7 @@ class Luger9mm : NaziWeapon
 		LUGG A 1 Offset(0,32) A_WeaponReady(WRF_NOBOB);
 		Goto Ready;
 	Reload:
-		LUGG H 1 Offset(0,35) A_StartSound("luger/reload", CHAN_5);
+		LUGG H 1 Offset(0,35) A_StartSound("boa/weapon/luger/magout", CHAN_5);
 		LUGG H 1 Offset(0,38) A_Reloading(true);
 		LUGG J 1 Offset(0,44);
 		LUGG J 1 Offset(0,52);
@@ -91,11 +96,11 @@ class Luger9mm : NaziWeapon
 		TNT1 A 0 A_JumpIfInventory("Luger9mmLoaded",0,"ReloadFinish");
 		TNT1 A 0 A_JumpIfInventory("Ammo9mm",1,"ReloadLoop");
 	ReloadFinish:
-		LUGG I 1 Offset(0,82);
+		LUGG I 1 Offset(0,82) A_StartSound("boa/weapon/luger/magin", CHAN_5);
 		LUGG I 1 Offset(0,72);
 		LUGG J 1 Offset(0,62);
 		LUGG J 1 Offset(0,52);
-		LUGG H 1 Offset(0,44);
+		LUGG H 1 Offset(0,44) A_StartSound("boa/weapon/luger/charge", CHAN_AUTO, CHANF_OVERLAP, 0.65);
 		LUGG H 1 Offset(0,38);
 		LUGG A 1 Offset(0,35);
 		LUGG A 1 Offset(0,32) A_Reloading(false);

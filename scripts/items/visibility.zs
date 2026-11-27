@@ -43,7 +43,7 @@ class BoAVisibility : CustomInventory
 	{
 		[lightlevel, fogfactor] = ZScriptTools.GetLightLevel(owner.CurSector);
 
-		if (lightlevel + extravisibility > 64)
+		if (lightlevel + extravisibility > 96)
 		{
 			double movespeed = Owner.vel.Length() * Owner.vel.Length();
 			double viewheightmod = Owner.player.crouchfactor * Owner.height - (Owner.height / 2);
@@ -54,7 +54,8 @@ class BoAVisibility : CustomInventory
 				viewheightmod = 0;
 			}
 
-			visibility = Clamp(int(lightlevel * 0.35 + movespeed + noiselevel * 0.9 + extravisibility + viewheightmod - ((3 - skill) * 10)), 0, 100);
+			double exposure = lightlevel * 0.35 + movespeed + noiselevel * 0.9 + extravisibility + viewheightmod - ((3 - skill) * 10);
+			visibility = Clamp(int(exposure * 0.8), 0, 100);
 		} else { visibility = 0; }
 
 		noiselevel = Max(0, noiselevel - 6);

@@ -39,6 +39,7 @@ class KnifeSilent : NaziWeapon
 	Weapon.BobStyle "Smooth";
 	Weapon.BobSpeed 1.5;
 	Weapon.BobRangeX 1.5;
+	Weapon.UpSound "boa/weapon/raise/melee";
 	Inventory.PickupMessage "$KNIFE";
 	Weapon.SelectionOrder 10000;
 	}
@@ -59,11 +60,11 @@ class KnifeSilent : NaziWeapon
 	Fire:
 		KNFG A 0 A_JumpIfInventory("PowerStrength", 1, "Fire.Berserked");
 	Fire.Normal:
-		KNFG A 1 A_StartSound("knife/swing", CHAN_WEAPON);
+		KNFG A 1 A_StartSound("boa/weapon/knife/swing", CHAN_WEAPON);
 		KNFG B 1 A_CustomPunch(10, 1, 0, "KnifePuff", 64);
 		Goto Fire.End;
 	Fire.Berserked:
-		KNFG A 1 A_StartSound("knife/swing", CHAN_WEAPON);
+		KNFG A 1 A_StartSound("boa/weapon/knife/swing", CHAN_WEAPON);
 		KNFG B 1 A_CustomPunch(10*5, 1, 0, "KnifePuff", 64); //Quintuple Damage with NaziBerserk, suggested by N00b - ozy81
 	Fire.End:
 		KNFG CDEFGHJKLMN 1;

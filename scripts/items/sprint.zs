@@ -67,7 +67,8 @@ class BoASprinting : Inventory
 		cooldown = 0;
 		staminarecoverytimeout = 0;
 		staminasoundtimeout = 0;
-		stamina.amount = stamina.maxamount;	
+		stamina.MaxAmount = max(stamina.MaxAmount, stamina.Default.MaxAmount);
+		stamina.amount = stamina.maxamount;
 	}
 
 	virtual void DoSprintCheck()
@@ -125,7 +126,7 @@ class BoASprinting : Inventory
 			// Don't use stamina if stamina check is disabled or if Totale Macht/Berserk is active
 			if (!boa_sprintswitch && !owner.FindInventory("BerserkToken"))
 			{
-				stamina.amount -= Random[Stamina](1, 3); //more stamina to use
+				stamina.amount = max(0, stamina.amount - Random[Stamina](1, 3));
 			}
 		}
 		else
@@ -140,7 +141,7 @@ class BoASprinting : Inventory
 
 		if (!stamina.amount)
 		{
-			cooldown = stamina.maxamount;
+			cooldown = 100; // Recovery steps before sprinting again after exhaustion.
 			AchievementTracker.CheckAchievement(owner.PlayerNumber(), AchievementTracker.ACH_SPRINT);
 		}
 	}
@@ -165,9 +166,16 @@ class BoASprinting : Inventory
 
 class Stamina : Inventory
 {
+	override void DoEffect()
+	{
+		// Older saves store the previous capacity on the inventory instance.
+		MaxAmount = max(MaxAmount, Default.MaxAmount);
+		Super.DoEffect();
+	}
+
 	Default
 	{
-		Inventory.MaxAmount 100;
+		Inventory.MaxAmount 200;
 		+Inventory.KEEPDEPLETED;
 	}
 }

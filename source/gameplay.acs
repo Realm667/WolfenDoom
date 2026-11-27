@@ -145,7 +145,7 @@ script "CLEAR INVENTORY"(void)
 Script "QuickKick" (void) net
 {
 	If (
-		(CheckInventory("Stamina") < 30) ||
+		(CheckInventory("Stamina") < 10) ||
 		(GetSpeed(0) > 55) ||
 		(GetActorViewHeight(0) >> 16 < 56) ||
 		(GetLevelInfo(LEVELINFO_LEVELNUM)==99) //let's remove the kick while on HQs - ozy81

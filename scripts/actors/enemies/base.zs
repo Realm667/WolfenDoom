@@ -2300,7 +2300,7 @@ class Nazi : Base
 			else if (goal is "Nazi")
 			{
 				Speed = Default.Speed + Random[Base](1, 2); // Walk a little faster
-				if (Distance3D(goal) < 96)
+				if (Distance3D(goal) < 32)
 				{
 					Notification.Init(goal.target, "$BODYFOUND", "misc/alert", MessageBase.MSG_ALLPLAYERS);
 					BecomeAlerted(goal.target);
@@ -2565,6 +2565,7 @@ class Nazi : Base
 		if (!bNoPain && (DodgeState && sprite == DodgeState.sprite) || surrendered) { sprite = defaultsprite; }
 
 		Inventory vis;
+		bool stealthKill;
 
 		if (user_sneakable && bDormant) { bDormant = False; } // Pain wakes up a dormant sneakable actors
 
@@ -2581,7 +2582,8 @@ class Nazi : Base
 					A_RemoveChildren(TRUE, RMVF_EVERYTHING, "None", "AlertMarker");
 					bFriendly = False; // Force to not friendly so that they will count as a kill and be healable.
 					if (self is "NaziStandard") { DeathSound = "Nazi/Gurgle"; } // Reset death sound to gurgle
-					SoundAlert(source, false, 192);
+					stealthKill = true;
+					SoundAlert(source, false, 32);
 					damage = health;
 					flags |= DMG_FORCED;
 					user_noaltdeath = True;
@@ -2601,7 +2603,8 @@ class Nazi : Base
 				user_incombat = True;
 				Notification.Init(source, "$CRITICAL");
 				if (self is "NaziStandard") { DeathSound = "Nazi/Gurgle"; } // Reset death sound to gurgle
-				SoundAlert(source, false, 192);
+				stealthKill = true;
+				SoundAlert(source, false, 32);
 				damage = health;
 				flags |= DMG_FORCED;
 				user_noaltdeath = True;
@@ -2628,6 +2631,7 @@ class Nazi : Base
 
 		if (user_activatewhenshot && bDormant && !bFriendly && source && source.player) { bDormant = false; } // Wake up dormant enemies that are shot by a player
 
+		Actor previousTarget = target;
 		int damageamt = Super.DamageMobj(inflictor, source, damage, mod, flags, angle); // Get the damage amount from the real DamageMobj function
 
 		if (health <= 0) // If we killed the actor...
@@ -2665,11 +2669,15 @@ class Nazi : Base
 			}
 		}
 
-		if (damageamt && !bDormant && OkayToSwitchTarget(source))
+		if (damageamt > 0 && !bDormant && ((target == source && previousTarget != source) || OkayToSwitchTarget(source)))
 		{
-			lastenemy = target;
-			target = source; // Target the source if it wasn't friendly or of the same species
-			SoundAlert(source, false, 192);
+			if (target != source)
+			{
+				lastenemy = target;
+				target = source;
+			}
+			// The knife kill already alerted nearby guards at the shorter range.
+			if (!stealthKill) { SoundAlert(source, false, 64); }
 		}
 
 		if (source.player && NaziLoper(self) && !(inflictor is "SwordPuff")) { NaziLoper(self).noachievement[source.PlayerNumber()] = true; }
@@ -2750,7 +2758,6 @@ class Nazi : Base
 		}
 
 		reactiontime = 0; // Make the enemy respond to seeing the player right away
-		A_AlertMonsters(512); // Alert an extra-large radius
 		[sp, eyes] = A_SpawnItemEx("SneakableGuardEyesAlerted", 0, 0, 0, 0, 0, 0, 0, SXF_SETMASTER | SXF_NOCHECKPOSITION, 0, tid); // Spawn active guard eyes
 		if (target && target.GetSpecies() == GetSpecies()) { target = null; SetStateLabel("Spawn"); } // Don't go after same-species targets
 

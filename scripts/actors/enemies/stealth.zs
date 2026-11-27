@@ -64,6 +64,7 @@ class StealthBase : Actor
 	override void BeginPlay()
 	{
 		ChangeStatNum(Thinker.STAT_DEFAULT - 2); // Change the statnum of these actors so that ThinkerIterators can look at just this statnum and be more efficient
+		playernum = -1;
 		if (master) { species = master.species; }
 	}
 
@@ -107,9 +108,10 @@ class StealthBase : Actor
 			}
 		}
 
-		if (target) { vis = players[playernum].mo.FindInventory("BoAVisibility"); }
+		bool hasPlayerTarget = target && playernum >= 0 && players[playernum].mo == target;
+		if (hasPlayerTarget) { vis = target.FindInventory("BoAVisibility"); }
 
-		if (target && vis && playernum >= 0 && CheckSight(target)) // If we have a player in view
+		if (hasPlayerTarget && vis && CheckSight(target)) // If we have a player in view
 		{
 			double distWeight = 1.5;
 			double speedWeight = .25;
@@ -144,19 +146,29 @@ class StealthBase : Actor
 		}
 		else // If all players are out of sight...
 		{
-			sighttime > 0 ? sighttime -= 0.05 : 0;  // ...decrement the amount of time elapsed gradually to 0
+			sighttime = Max(0, sighttime - 10);
 
 			if (sighttime <= 0 && playernum > -1) // Once fully out of sight and 'forgotten', restore NOTARGET flag if the player has a disguise (added check since default for playernum is 0)
 			{
-				DisguiseToken disguise = DisguiseToken(players[playernum].mo.FindInventory("DisguiseToken", True));
-
-				if (disguise && disguise.bNoTarget && !players[playernum].mo.FindInventory("DisguiseFailToken", True)) { players[playernum].cheats |= CF_NOTARGET; }
+				Actor previousPlayer = players[playernum].mo;
+				if (previousPlayer)
+				{
+					let disguise = DisguiseToken(previousPlayer.FindInventory("DisguiseToken", true));
+					if (disguise && disguise.bNoTarget && !previousPlayer.FindInventory("DisguiseFailToken", true))
+					{
+						players[playernum].cheats |= CF_NOTARGET;
+					}
+				}
 				playernum = -1;
 			}
 		}
 
 		if (alert) {
-			if (sighttime <= 0) { alert.SetStateLabel("Fade"); } // If we've completely lost sight of the player, fade out the alert indicator
+			if (sighttime <= 0)
+			{
+				alert.SetStateLabel("Fade");
+				alert = null;
+			}
 			else // Otherwise, set the alpha and scale to correspond to sight time
 			{
 				alert.alpha = double(sighttime) / threshold;
@@ -172,6 +184,7 @@ class StealthBase : Actor
 
 	bool TargetIsHidden()
 	{
+		if (!target) { return false; }
 		Inventory vis = target.FindInventory("BoAVisibility");
 		if (vis)
 		{

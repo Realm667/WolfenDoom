@@ -30,7 +30,7 @@ Class ProtoDrone : Nazi //ozy81
 		//$Title Prototype Drone
 		//$Color 4
 		Scale 0.87;
-		Health 250;
+		Health 125;
 		Height 48;
 		Radius 32;
 		Mass 400;
