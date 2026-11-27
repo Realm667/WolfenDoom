@@ -1,5 +1,7 @@
 param(
-    [string] $SigningCertificateThumbprint = ''
+    [string] $SigningCertificateThumbprint = '',
+    [string] $StandaloneDirectory = $env:BOA_LAUNCHER_STANDALONE,
+    [switch] $SkipStandaloneSync
 )
 
 $ErrorActionPreference = 'Stop'
@@ -132,5 +134,13 @@ if (-not $resolvedOutput.StartsWith($expectedRoot, [StringComparison]::OrdinalIg
     throw 'Build staging directory is outside the workspace.'
 }
 Remove-Item -LiteralPath $resolvedOutput -Recurse -Force
+if (!$SkipStandaloneSync) {
+    if ([string]::IsNullOrWhiteSpace($StandaloneDirectory)) {
+        $StandaloneDirectory = [Environment]::GetEnvironmentVariable('BOA_LAUNCHER_STANDALONE', 'User')
+    }
+    if (![string]::IsNullOrWhiteSpace($StandaloneDirectory)) {
+        & (Join-Path $project 'Sync-Standalone.ps1') -Source $distributionOutput -Destination $StandaloneDirectory
+    }
+}
 Get-ChildItem -LiteralPath $distributionOutput -File |
     Select-Object Name, Length, LastWriteTime
