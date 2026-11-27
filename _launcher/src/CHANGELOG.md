@@ -1,0 +1,884 @@
+# Changelog
+
+## 2.6.25
+
+- Simplified Quick Launch and grouped optional mission and debug settings.
+- Distinguished informational, ready, warning and blocked diagnostics; listed add-on conflict reasons inline.
+- Improved button and status contrast while retaining theme accents.
+- Localized diagnostic controls, results and save backup notifications.
+- Included buildable WPF sources, page components and regression tests.
+- Added access to older campaign saves beyond the twelve most recent.
+
+## 2.6.24
+
+- Use the existing single-player Debug mode to unlock the mission selector inside the HQ briefing room (#1697). Direct mission starts and co-op are unchanged.
+
+## 2.6.23
+
+- Expose single-player mission debugging, including Keen missions, with an explicit campaign-progression warning.
+- Keep displacement textures next to the graphics preset and offer a level-restart death rule with compatible game data.
+
+## 2.6.22
+
+- Explain why a new co-op campaign should start at HQ, next to the host's mission selector in all ten launcher languages. Direct starts and save loading are unchanged.
+
+## 2.6.21
+
+- Explain the actual graphics preset settings in all ten launcher languages, including the differences between High and Very High.
+
+## 2.6.20
+
+- Choose classic death handling or checkpoint respawns after selecting the single-player difficulty. The choice only applies to new chapter or mission starts with game data supporting this feature. Resuming an existing save uses its original rule.
+
+## 2.6.19
+
+- Add an opt-in single-player mission selector for the three Commander Keen bonus maps (#1728). In the active launcher INI, set `DebugKeenMissions=1` under `[Launcher]`. No bonus missions are added to the normal campaign or co-op catalog.
+
+## 2.6.18
+
+- Keep engine probing, campaign save discovery, multiplayer and diagnostics off the initial Quick Launch path (#1711).
+- Isolate recovery launches from normal settings and use the resolved safe-mode configuration.
+- Keep compatible saves playable even when their optional screenshot cannot be decoded.
+- Label campaign actions by destination and prioritize New Campaign on narrow windows without saves.
+- Keep performance goals synchronized with detail and displacement settings. Show actionable preflight findings beside launch actions.
+
+## 2.6.17
+
+- Require UZDoom 5.0.3 or newer for every launch path and multiplayer session.
+- Update version guidance and boundary checks; keep historical test records unchanged.
+
+
+## 2.6.16
+
+### Fixed
+
+- Recognize game metadata inside a single enclosing source-archive directory
+  consistently for the content catalog, launcher manifest and add-on version
+  checks (#1710). Do not search arbitrary nested add-on folders.
+- Report unknown game versions explicitly instead of treating them as 0.0.
+  Keep minimum-version enforcement for old or unidentified game builds.
+
+## 2.6.15
+
+### Fixed
+
+- Restore Auto and Use last settings in the game-language selector (#1730).
+  Persist both choices; Auto passes `language auto`, while Use last settings
+  omits the language override. Keep explicit English US/UK selections.
+- Resolve automatic/retained languages for the campaign-label preview without
+  changing the engine's language. Retain independent interface localization.
+- Move Displacement textures directly below Developer commentary (#1728,
+  layout only; no new mission-start shortcuts).
+
+## 2.6.14
+
+### Changed
+
+- Remove the separate Launcher Diagnostics executable from builds and releases.
+- Keep the in-app Diagnostics page and support packages in the normal launcher.
+- Run automated diagnostic checks against the normal launcher using redirected
+  output, without building or distributing a second executable.
+
+## 2.6.13
+
+### Changed
+
+- Rename the Quick Launch navigation entry and page heading to Start in every
+  interface language, reusing the existing Start translations (#1696).
+- Keep launch behavior and stable automation identifiers unchanged.
+
+## 2.6.12
+
+### Changed
+
+- Require UZDoom 5.0.1 or newer throughout the launcher; older engines and
+  5.0.1 prereleases are unsupported.
+- Enforce the minimum before every process start, including Continue Campaign,
+  multiplayer and Safe Mode, with consistent preflight and compatibility status.
+- Update all interface-language notices, diagnostics and shipped/generated
+  manifests. Legacy manifests cannot lower the built-in minimum.
+- Retain dynamic capability detection for newer engines and use modern game
+  language tags consistently.
+
+## 2.6.11
+
+### Improved
+
+- Use Chapter instead of Episode throughout campaign and multiplayer controls,
+  generated chapter names and content diagnostics, matching Blade of Agony.
+- Translate the chapter label in all ten interface languages, including Kapitel
+  in German. Preserve engine arguments, MAPINFO syntax and existing data formats.
+
+## 2.6.10
+
+### Fixed
+
+- Replace the subtle full-width startup pulse with a clearly moving segment in
+  the selected theme's accent color. Keep it animated while startup disables the
+  interface, adapt motion to resizing and stop the animation after loading.
+- Validate visible movement across rendered frames, rather than checking only
+  whether an animation clock exists.
+
+## 2.6.9
+
+### Fixed
+
+- Use the selected theme's accent and track colors for the startup loading bar,
+  replacing the green Windows progress effect with a theme-controlled pulse.
+- Remove Single player from the Multiplayer page. Default to Host co-op on the
+  first visit and retain the last Host/Join role across navigation and restarts.
+- Keep campaign navigation in single-player mode without clearing the saved
+  multiplayer role or imported session requirements.
+
+## 2.6.8
+
+### Improved
+
+- Place Start New Campaign at the bottom of the New Campaign pane, preserving
+  Main menu, episode, difficulty and optional mission selection.
+- Add Start Multiplayer Session below multiplayer compatibility checks, enabled
+  only for hosting or joining co-op. Retain existing preflight and launch guards.
+- Keep Continue Campaign independent and remove the global footer Play button.
+  Localize both new actions in all ten interface languages.
+
+### Removed
+
+- Remove launch profiles completely: built-in/user profiles, profile management,
+  import/export, favorites, comparisons, separate profile configurations and
+  profile diagnostic commands.
+- Stop applying legacy profile configuration paths. Preserve ordinary settings
+  and leave existing profile files untouched.
+
+## 2.6.7
+
+### Improved
+
+- Move the Main menu / Episode choice into New Campaign, followed by Episode,
+  Difficulty and optional Mission select. Remove the footer Start Mode selector
+  and the redundant campaign radio option.
+- Default mission selection to From the beginning. Reset it when changing episodes
+  or switching launch destinations; keep explicit mission selections in profiles.
+- Keep campaign fields visible but disabled for Main menu, and show the advanced
+  campaign-state warning only when selecting a specific mission.
+- Preserve independent Continue Campaign behavior, responsive campaign panes and
+  shared settings. Localize the new mission labels in all ten interface languages.
+
+## 2.6.6
+
+### Improved
+
+- Reorganize Quick Launch into equal-width, subtly bordered Continue Campaign
+  and New Campaign panes with aligned action rows and full-width 16:9 save previews.
+- Stack campaign panes on narrow windows and with larger text instead of squeezing
+  controls. Keep graphics, game language and commentary in a shared settings band.
+- Move Start Mode next to Play in the persistent footer, with a stacked footer on
+  compact windows. Hide single-player mode selection during multiplayer hosting/joining.
+- Replace the misleading New Campaign action button with an explicit selection
+  for Play. Show mission selection and its warning only in the advanced start mode.
+- Keep direct Continue separate from Play and synchronize campaign/footer selections
+  after profile, language and navigation changes.
+- Localize the new shared-setting and campaign-selection labels in all supported
+  interface languages. Retain the collapsed profile accordion and existing themes.
+
+## 2.6.5
+
+### Added
+
+- Collapsible launch profiles and separate Continue Campaign / New Campaign sections.
+- Capability-gated advanced host rules for network timing, pause/save permissions,
+  conversation restrictions, repeated actions, and chat slow mode.
+- Version 2 multiplayer sessions carrying network overrides and co-op save hashes,
+  while retaining version 1 import compatibility and excluding passwords.
+- A co-op save selection workflow for hosts and joining clients, with engine/game,
+  add-on, player-count and imported save identity checks.
+
+### Fixed
+
+- Reject passwords exceeding UZDoom's 255-byte UTF-8 limit before launching.
+- Disable automatic configuration scripts and autoloads in multiplayer.
+- Keep Play tied to Start Mode when selecting or directly continuing a save.
+- Separate co-op saves from the single-player Continue Campaign list.
+- Clear transient co-op save/session requirements when applying a launch profile.
+- Allow controller confirmation to toggle accordions and checkbox/radio controls.
+- Keep release checksums stable across Git checkouts with canonical text line
+  endings and scoped release attributes.
+- Prepare verified co-op save copies in UZDoom's native NetGame folder, which
+  ignores `-savedir`; preserve original saves and avoid doubled absolute paths.
+
+### Compatibility
+
+- Detect network settings using compiled identifiers, separately from CLI help
+  probing; invalidate older capability caches automatically.
+- Retain the BoA 2-4 player limit and native UZDoom lobby controls.
+- Do not expose engine cutscene voting as a control for BoA's custom ACS cinematics.
+- Verified official UZDoom 5.0.1 localhost sessions (2/4 players), real 2-player
+  save restoration, and the official 4.14.3 host/join command path with current BoA
+  master. Full campaign and separate-machine LAN/WAN testing remain outstanding.
+
+## 2.6.4
+
+### Optimized
+
+- Update affected launcher sections instead of rebuilding the entire window
+  for campaign selections, profile edits, or graphics changes.
+- Run content discovery, launch validation, image decoding, compatibility matrix
+  checks, and support package creation outside the UI thread.
+- Cache unchanged add-on metadata, save metadata, archive indexes, game text,
+  and decoded previews with bounded capacity and file-change invalidation.
+- Read save screenshots only when selected and decode previews at display-appropriate sizes.
+- Reuse compatibility results and avoid duplicate startup save scans.
+- Keep fingerprints in memory and batch persistent cache updates.
+
+### Fixed
+
+- Replace settings files atomically and synchronize engine output collection.
+- Represent campaign launch intent with one exclusive state, clearing stale save paths.
+- Ignore obsolete background results after a newer selection or window closure.
+- Traverse accessible save directories even when another subdirectory is unreadable.
+
+### Build and Validation
+
+- Centralize version and build definitions and stage builds in a clean directory.
+- Package an explicit distribution file list and validate every release file hash.
+- Add isolated regression tests with a recording engine for real Play arguments,
+  cache invalidation, atomic replacement, and campaign state transitions.
+
+## 2.6.3
+
+### Fixed
+
+- Made Continue Campaign and New Campaign explicit, mutually exclusive launch
+  targets with a clear selected state.
+- Changed the footer Play action to execute the selected campaign target, so a
+  selected save is loaded directly without a second Continue Campaign click.
+- Kept the selected New Campaign action synchronized with the Start Mode field.
+
+### Verified
+
+- Added WPF automation coverage for the campaign action highlights and the
+  launch target used by Play.
+
+## 2.6.2
+
+### Fixed
+
+- Changed the Quick Launch navigation glyph from a right-facing play symbol
+  to a distinct upward launch arrow.
+- Reworked Diagnostics actions as a fluid wrap layout with consistent
+  horizontal and vertical spacing on every row.
+
+### Verified
+
+- Revalidated launcher startup and preflight without `uzdoom_portable.ini`;
+  per-user UZDoom configuration discovery remains fully supported.
+- Added WPF automation coverage for the Quick Launch glyph and wrapped
+  Diagnostics action alignment.
+
+## 2.6.1
+
+### Fixed
+
+- Corrected the launcher content manifest to identify Blade of Agony 3.2.
+- Always block Confiscated Weapons and More Weapons as an incompatible
+  combination, including when older add-on descriptors omit the conflict.
+- Deduplicated conflict messages when both add-ons declare the same conflict.
+
+### Verified
+
+- Added regression coverage for the official manifest-backed conflict rule.
+
+## 2.6.0
+
+- Added resilient portable and per-user UZDoom configuration discovery.
+- Added a blocking launch preflight with actionable file, path, engine, save,
+  and add-on findings.
+- Added the versioned `boa-launcher.json` content contract with MAPINFO fallback.
+- Split Quick Launch into Main Menu, New Campaign, and advanced Mission Select.
+- Added a recent compatible-save browser and timestamped save backups.
+- Added reversible Performance, Balanced, and Quality graphics guidance.
+- Added profile duplication, rename, favorites, last-used sorting, current-state
+  comparison, and optional isolated UZDoom configuration files.
+- Added dependency-aware add-on order resolution and pairwise matrix validation.
+- Added Stable/Preview/Unsupported engine-channel labels.
+- Added crash-log classification for common renderer, script, save, resource,
+  and engine failures.
+- Added reproducible release packaging, SHA-256 manifests, version consistency
+  checks, and optional Authenticode signing support.
+
+## 2.5.7
+
+### Changed
+
+- Compatible selected add-ons are now highlighted in green.
+- Add-ons involved in a blocking compatibility clash are highlighted in red,
+  while unrelated selected add-ons remain green.
+
+### Fixed
+
+- Changed the Import Session icon to a downward import arrow.
+- Vertically centered the multiplayer radio indicators with their labels.
+
+### Verified
+
+- Added WPF automation regressions for the session icon, radio alignment, and
+  compatibility-aware add-on states, including the More Weapons/M2HB clash.
+
+## 2.5.6
+
+### Fixed
+
+- The footer action now always remains Play and starts the game according to
+  the selected Start Mode; Continue Campaign remains a separate save action.
+- Continue Campaign now passes the save directory through `-savedir` and only
+  the save filename through `-loadgame`, matching UZDoom's command-line
+  semantics and preventing duplicated save paths.
+
+### Verified
+
+- Added command-generation and UI regressions for UZDoom save loading and the
+  persistent Play action.
+
+## 2.5.5
+
+### Fixed
+
+- Continue Campaign now passes an absolute `.zds` path to UZDoom, preventing
+  the configured save directory from being prepended twice.
+- Add-on combinations containing the same ZScript source path are now marked
+  as blocking compatibility errors before UZDoom starts.
+- The Play action now enforces all blocking add-on compatibility findings
+  instead of allowing the engine to fail during script compilation.
+- Restored the original shared `z_boa_addon_README.txt` credits document for
+  Confiscated Weapons and ZikShadow's Personal Addon.
+
+### Verified
+
+- Added regressions for absolute save loading and the fatal
+  More Weapons/M2HB `scripts/weapons.zs` collision.
+- Validated the restored credits file against its original archived Git blob
+  and added builder/metadata checks to keep it in future add-on releases.
+
+## 2.5.4
+
+### Added
+
+- Launch profiles now visibly include the selected add-ons and their exact
+  load order, with guidance explaining how to configure them before saving.
+- Added discovery of UZDoom's Windows user save directory and custom
+  `save_dir` configuration while retaining the local `save/` fallback.
+- Diagnostics now show and print every scanned save location.
+
+### Fixed
+
+- Changed the Import Profile glyph to a downward import arrow.
+- Ensured Save Profile captures the current add-on selection immediately.
+
+### Verified
+
+- Added regression coverage for profile add-on persistence, deterministic
+  load order, configured save paths, diagnostic roots, and the import glyph.
+
+## 2.5.3
+
+### Fixed
+
+- Continue Campaign now lists only savegames whose `Game WAD` metadata points
+  to `boa.ipk3`.
+- Savegames created for other IWADs, as well as saves without an identifiable
+  game IWAD, are omitted instead of appearing as disabled incompatible items.
+- Launcher version increased to 2.5.3.
+
+### Verified
+
+- Added a regression fixture proving that a newer `HERETIC.WAD` save is
+  excluded while a valid `boa.ipk3` save remains available.
+
+## 2.5.2
+
+### Changed
+
+- The launcher now starts the adjacent, canonically named `uzdoom.exe`.
+- Engine version detection, capability probing, multiplayer validation,
+  savegame bindings, session parity, and support diagnostics now consistently
+  fingerprint `uzdoom.exe`.
+- Removed all runtime fallback behavior for the legacy `boa.exe` name so a
+  missing `uzdoom.exe` is reported instead of silently launching another file.
+- Launcher version increased to 2.5.2.
+
+### Verified
+
+- Added regression coverage proving that `boa.exe` alone is rejected.
+- Re-ran command generation, compatibility, savegame, diagnostics, and modern
+  WPF interface tests against the new executable name.
+
+## 2.5.1
+
+### Changed
+
+- Full launcher animations are now always enabled; the Motion Effects option
+  has been removed.
+- XInput controller navigation is now automatically available whenever a
+  compatible controller is connected; its manual option has been removed.
+- Savegame comments with a separate time line now display as
+  `Map title - Time` in Continue Campaign and the footer.
+- Launcher version increased to 2.5.1.
+
+### Verified
+
+- Updated core and UI regression coverage for the removed options, automatic
+  controller behavior, full animations, and the save-title separator.
+
+## 2.5.0
+
+### Added
+
+- Added Continue Campaign as the primary action when a readable `.zds`
+  savegame exists, including map, timestamp, title, and embedded preview.
+- Added per-save compatibility bindings for the UZDoom executable,
+  `boa.ipk3`, selected add-ons, and deterministic add-on load order.
+- Added named built-in and user launch profiles with validated import,
+  export, save, apply, and delete workflows.
+- Added cached UZDoom `-help-all` capability probing for `-loadgame`,
+  `-episode`, `-coop`, `-password`, `-optfile`, and `-config`.
+- Added privacy-safe `.boa-session` import/export with SHA-256 engine and
+  game parity checks. Password-required state is exported, but passwords are
+  never stored.
+- Added interrupted-run detection and an isolated Safe Mode that excludes
+  add-ons and `boa_dt.pk3`, uses a separate config, and forces windowed mode.
+- Added optional XInput controller navigation and Windows-aware reduced-motion
+  behavior.
+- Added redacted ZIP support packages containing versions, hashes, detected
+  capabilities, add-on state, compatibility findings, command line, last-run
+  data, and the latest available engine log.
+
+### Changed
+
+- Continue Campaign replaces Play as the default primary action while a
+  savegame is available; New Campaign remains directly accessible.
+- Mission Select is now explicitly marked as an advanced function and warns
+  that direct map starts can bypass campaign state, inventory, and briefings.
+- Add-on compatibility now checks minimum Blade of Agony versions in addition
+  to engine versions, dependencies, conflicts, ordering, and archive overlap.
+- Launcher version increased to 2.5.0.
+
+### Add-on metadata
+
+- Completed structured metadata for all 15 official add-ons in the
+  WolfenDoom repository, including stable IDs, semantic versions, minimum
+  versions, conflicts, categories, multiplayer safety, and campaign flags.
+- Added a descriptor/preview validator and GitHub Actions workflow.
+
+### Verified
+
+- Added a dedicated v2.5 suite covering save parsing, Continue commands,
+  compatibility binding, profiles, engine capabilities, session privacy and
+  parity, Safe Mode, support-package redaction, localization, and versioning.
+- Re-ran the complete pre-v2.5 command, localization, MAPINFO, add-on,
+  multiplayer, graphics-profile, and resource regression suite.
+
+## 2.2.1
+
+### Changed
+
+- Renamed the primary bottom-right action button from Launch to Play in the
+  English interface.
+- Launcher version increased to 2.2.1.
+
+### Verified
+
+- Added automated core and WPF accessibility checks for the Play label.
+- Re-ran command generation, localization, content parsing, add-on,
+  multiplayer, responsive-layout, and window-persistence tests.
+
+## 2.2.0
+
+### Added
+
+- Added UZDoom 5.x compatibility while retaining support for the bundled
+  UZDoom 4.14.3 release.
+- Added separate English (US) and English (UK) game-language choices.
+- Added persistence for the user-adjusted launcher window size.
+
+### Changed
+
+- Limited hosted Blade of Agony sessions to the supported range of 2-4
+  players.
+- Renamed the sidebar Start entry to Quick Launch.
+- Changed the Portuguese game-language option to Portuguese (European).
+- UZDoom 5.x commands now use IETF BCP 47 language tags and the explicit
+  `-coop` hosting option; UZDoom 4.14.3 keeps its legacy language aliases.
+- Engine compatibility checks now accept UZDoom 4.14.3 and all UZDoom 5.x
+  releases.
+- Launcher version increased to 2.2.0.
+
+### Verified
+
+- Added automated UZDoom 5 command and compatibility tests using a synthetic
+  5.0 engine fixture.
+- Verified the 2-4 player limit, language choices, Quick Launch label, and
+  window-size save/restore behavior through the WPF accessibility tree.
+- Re-ran command generation, localization, content parsing, add-on
+  compatibility, responsive-layout, multiplayer, and graphics profile tests.
+
+## 2.1.1
+
+### Changed
+
+- Changed the Light theme accent color to `#668197`.
+- Applied Unica One to the Quick Launch, Add-ons, Multiplayer, and
+  Diagnostics page headlines.
+- Expanded the direct campaign footer status with the selected difficulty
+  and full game-language name.
+- Centered icon-button glyphs without inherited text-button padding.
+- Launcher version increased to 2.1.1.
+
+### Fixed
+
+- Accent-colored buttons and selected navigation entries now use white text
+  and icons in the Light theme.
+- Fixed clipped previous/next glyphs in the multi-image add-on slider.
+
+### Verified
+
+- Verified the exact Light theme accent and accent-text colors.
+- Verified all four page headline font resources, localized direct-start
+  details, slider wrapping, 16:9 preview bounds, and unclipped arrow buttons.
+- Re-ran command generation, localization, content parsing, compatibility,
+  responsive-layout, multiplayer, and graphics profile tests.
+
+## 2.1.0
+
+### Added
+
+- Added a previous/next screenshot carousel for add-ons containing multiple
+  numbered preview images.
+- Added a visible image counter and cyclic navigation in both directions.
+- Bundled Unica One directly with the launcher and applied it to the Blade of
+  Agony header title and sidebar navigation.
+- Included the Unica One SIL Open Font License in the executable resources
+  and release distribution.
+
+### Changed
+
+- Add-on preview discovery now reads the numbered JPG, JPEG, and PNG files
+  actually present in each `.boa` archive and sorts them numerically.
+- Launcher version increased to 2.1.0.
+
+### Fixed
+
+- Restored a consistent 36-pixel control height for Start page combo boxes
+  whose WPF height was previously unset (`NaN`).
+
+### Verified
+
+- Tested four-image and three-image add-on descriptors from the current
+  Blade of Agony standalone files.
+- Verified carousel navigation, wrapping, counter updates, Unica One loading,
+  Start control heights, accessibility IDs, and the 16:9 preview bounds.
+- Re-ran command generation, localization, content parsing, compatibility,
+  responsive-layout, multiplayer, and graphics profile tests.
+
+## 2.0.2
+
+### Changed
+
+- Replaced raw Detail Preset CFG listings with concise explanations of their
+  visual-quality and performance differences.
+- Vertically centered all combo-box content, including the Interface
+  Language and Design selectors in the header.
+- Applied explicit high-quality bitmap scaling to the header logo.
+- Reused the centered launcher checkbox template for add-on rows.
+- Disabled add-on order buttons whenever the active item cannot move in that
+  direction.
+- Launcher version increased to 2.0.2.
+
+### Fixed
+
+- Disabled combo boxes now render their selected text with a muted foreground
+  instead of appearing active.
+- Fixed vertically misaligned add-on checkboxes and titles.
+- Preserved the active add-on while rebuilding the list so repeated Move Up
+  and Move Down commands operate on the intended entry.
+
+### Verified
+
+- Verified Move Up and Move Down with two enabled add-ons by checking their
+  resulting UI positions.
+- Re-ran command generation, content parsing, compatibility, accessibility,
+  responsive-layout, multiplayer, and 16:9 add-on preview tests.
+
+## 2.0.1
+
+### Added
+
+- Added exact, profile-specific graphics values to the Detail Preset
+  tooltips, read from the distributed CFG files.
+- Added an accessible Blade of Agony logo and live UZDoom version read from
+  the `boa.exe` product metadata in the launcher directory.
+
+### Changed
+
+- Replaced the previous header thumbnail with the official Blade of Agony
+  logo and changed the title casing to `Blade of Agony`.
+- Left-aligned all sidebar navigation entries.
+- Sorted campaign missions by chapter, mission number, and map part, with
+  introduction maps first and optional `M0` missions last.
+- Vertically centered the custom checkbox indicators and labels.
+- Reduced the add-on author line size to leave more room for descriptions.
+- Removed the redundant Exit button from the footer.
+- Launcher version increased to 2.0.1.
+
+### Verified
+
+- Verified the mission order against the current `wolfendoom.git` MAPINFO.
+- Verified the displayed engine version against the bundled `boa.exe`.
+- Re-ran command generation, content parsing, compatibility, accessibility,
+  responsive-layout, multiplayer, and 16:9 add-on preview tests.
+
+## 2.0.0
+
+### Added
+
+- Rebuilt the launcher interface in WPF with responsive layout, per-monitor
+  DPI awareness, animation, text scaling, high-contrast support, accessible
+  automation names, and full keyboard navigation.
+- Added flat navigation for Start, Add-ons, Multiplayer, and Diagnostics.
+- Added a persistent launch summary and status area.
+- Added runtime parsing of episodes, campaign maps, and all five skills from
+  the final `boa.ipk3` `MAPINFO`.
+- Added localized map, episode, and skill names from `language.csv`.
+- Added main-menu and direct campaign-start modes.
+- Added visible add-on checkboxes, selection count, deterministic load-order
+  controls, and inline compatibility reporting.
+- Added optional descriptor metadata for IDs, versions, dependencies,
+  conflicts, load ordering, minimum versions, multiplayer safety, campaign
+  restart requirements, and categories.
+- Added detection of missing payloads, invalid archives, engine-version
+  requirements, and overlapping PK3 paths.
+- Added a dedicated diagnostics view for the engine, main game, content
+  source, add-ons, and generated command.
+- Added command-line content, multiplayer, and add-on diagnostics.
+
+### Changed
+
+- Changed branded themes to use their colors for navigation and emphasis
+  while keeping content surfaces neutral and readable.
+- Changed the add-on description and compatibility area to a scrollable
+  region with an always-visible, cover-cropped 16:9 preview.
+- Changed multiplayer to load only UZDoom 4.14.3 and `boa.ipk3`; selected
+  add-ons and `boa_dt.pk3` are now excluded from host and join commands.
+- Changed campaign and co-op map selection from free text to data read from
+  the current Blade of Agony content.
+- Kept interface and game languages fully independent after the WPF rewrite.
+- Launcher version increased to 2.0.0.
+
+### Fixed
+
+- Forced `boa_steamswitch 1` after every detail profile to preserve current
+  Blade of Agony steam-spawner behavior.
+- Removed duplicate `boa_grasslod` assignments from the distributed detail
+  profiles.
+- Prevented a persisted multiplayer state from affecting launches initiated
+  from the Start or Add-ons areas.
+
+### Verified
+
+- Tested against `wolfendoom.git` commit `cc83160d7`.
+- Parsed 3 episodes, 33 campaign maps, and 5 skills from both the development
+  tree and the final `boa.ipk3`.
+- Verified the bundled engine as UZDoom 4.14.3.
+- Verified that multiplayer commands contain no add-on or displacement PK3.
+- Detected real overlapping files between the existing music add-ons.
+- Verified the live accessibility tree, compact layout, and a 311x175 16:9
+  add-on preview.
+
+## 1.7.0
+
+### Added
+
+- Added the Wolfenstein 3D design using `#860000` as its background and
+  `#857E7E` as its accent color.
+- Added full-value tooltips to both Graphics dropdowns.
+- Added automatically widened Graphics dropdown lists so long options remain
+  readable while choosing.
+- Added a read-only RichEdit addon description with a vertical scrollbar for
+  overflowing text.
+- Added `wolfenstein3d`, `wolfenstein-3d`, and `wolf3d` theme aliases.
+
+### Changed
+
+- Changed the default design from Dark to Blade of Agony.
+- Changed the interface-language default to English, independently of the
+  selected or legacy game language.
+- Extended theme diagnostics and live color tests to all four designs.
+- Launcher version increased to 1.7.0.
+
+### Verified
+
+- Measured the live Wolfenstein 3D background as `#860000` and accent as
+  `#857E7E`.
+- Verified Blade of Agony and English as defaults for configurations without
+  their respective settings.
+- Verified that the addon description is hosted in a scrollable RichEdit
+  control.
+- Re-ran independent language, multiplayer, addon selection, command, INI,
+  theme, and 16:9 preview tests.
+
+## 1.6.0
+
+### Added
+
+- Added an independent interface-language selector to the launcher header.
+- Added the persisted `InterfaceLanguage` INI setting.
+- Added localized header labels for every supported interface language.
+- Added backward-compatible migration: configurations without
+  `InterfaceLanguage` initially inherit the existing game-language value.
+- Added diagnostics and regression coverage for mixed game/interface language
+  combinations.
+
+### Changed
+
+- Moved the design selector from the Game section to the launcher header.
+- Kept the game-language selector in the Game section.
+- Changing the game language now affects only the generated
+  `+set language <code>` game argument.
+- Changing the interface language now affects launcher controls and localized
+  addon metadata without changing the selected game language.
+- Extended the launcher window vertically to preserve the full content area
+  beneath the new header toolbar.
+- Launcher version increased to 1.6.0.
+
+### Verified
+
+- Verified a German launcher interface with Spanish game language in the live
+  GUI and confirmed `+set language es` in the recorded launch command.
+- Verified independent persistence as `InterfaceLanguage=de` and
+  `Language=es`.
+- Verified migration of legacy configurations containing only `Language`.
+- Re-ran all themes, multiplayer modes, addon selections, command generation,
+  INI preservation, and 16:9 preview tests.
+
+## 1.5.0
+
+### Added
+
+- Added a keyboard-accessible segmented control for single-player, host
+  co-op, and join co-op selection.
+- Added progressive disclosure for multiplayer settings: single-player hides
+  all network fields, host shows server settings, and join shows only the
+  connection target and UDP port.
+- Added localized inline validation for host start maps and join addresses.
+- Added error-colored field borders and disabled the Play action while the
+  currently required multiplayer input is invalid.
+- Added built-in translations for the new section headings and validation
+  messages in all ten supported launcher languages.
+
+### Changed
+
+- Reorganized settings into clear Graphics, Game, and Multiplayer sections.
+- Increased the default window and settings-column size for improved
+  readability without reducing the 16:9 addon preview.
+- Updated the interface to Segoe UI 9 and removed the unnecessary frame
+  around the bottom action area.
+- Replaced font-dependent preview arrows with centered, custom-painted
+  chevron buttons.
+- Updated the live GUI test to verify all three multiplayer visibility states
+  and to sample theme colors from actual control bounds.
+- Launcher version increased to 1.5.0.
+
+### Verified
+
+- Verified single-player, host, and join progressive-disclosure states against
+  the live launcher window.
+- Verified defensive normalization of invalid map and host values.
+- Re-ran host/join commands, all language aliases, all three themes, addon
+  scanning and selection, INI preservation, and 16:9 cover-crop tests.
+
+## 1.4.1
+
+### Changed
+
+- Replaced bright native field frames with subdued one-pixel theme borders.
+- Replaced native dropdown buttons with flat theme-colored buttons and
+  chevrons.
+- Replaced native numeric steppers with compact theme-colored step controls.
+- Replaced native checkboxes, multiplayer group borders, and addon-list frames
+  with consistent custom-painted controls.
+- Removed the permanently visible native description scrollbar.
+- Reduced border contrast to `#525252` in Dark, `#355066` in Blade of Agony,
+  and `#C8C8C8` in Light.
+- Launcher version increased to 1.4.1.
+
+### Verified
+
+- Re-ran all three live theme color tests.
+- Re-ran language switching, host/join command, addon multi-selection,
+  no-addon selection, INI persistence, and 16:9 preview tests.
+
+## 1.4.0
+
+### Added
+
+- Dark design as the new default, using `#3B3B3B` as its base color.
+- Optional Light design.
+- Optional Blade of Agony design using `#11273A` as its base and `#668197` as
+  its accent color.
+- Localized design names for every supported launcher language.
+- Dark Windows title-bar integration on supported Windows versions.
+
+### Changed
+
+- Buttons, inputs, lists, disabled addon rows, preview details, multiplayer
+  controls, and selection highlights now follow the active design.
+- The selected design is persisted as `Theme=Dark`, `Theme=Light`, or
+  `Theme=BladeOfAgony` in `boa-launcher.ini`.
+- Launcher version increased to 1.4.0.
+
+### Verified
+
+- Measured the rendered background and accent colors directly from the live
+  launcher window.
+- Verified immediate switching between all three designs and INI persistence.
+- Re-ran language, multiplayer, addon selection, and 16:9 preview regressions.
+
+## 1.3.0
+
+### Added
+
+- Cooperative multiplayer modes for hosting and joining UZDoom/GZDoom games.
+- Host controls for total player count, start map, UDP port, skill, and
+  `sv_cheats`.
+- Join controls for host name or IPv4 address and UDP port.
+- Built-in launcher translations for all ten Blade of Agony game languages.
+- Diagnostics for localized UI strings and multiplayer command generation.
+
+### Changed
+
+- The launcher UI now switches language immediately when the game language is
+  changed.
+- Localized addon metadata is reloaded for the selected game language.
+- Existing `[Launcher co-op]` settings are migrated and persisted, including
+  compatibility with the original `Enabled=1` host configuration.
+- Launcher version increased to 1.3.0.
+
+### Verified
+
+- Confirmed original-style game language startup through
+  `+set language <code>`.
+- Verified host startup with `-host`, `-port`, `-skill`, `+set sv_cheats`, and
+  `+map`.
+- Verified join startup with `-join host:port`.
+- Exercised host and join launches against a recording `boa.exe` test stub.
+- Verified live German UI switching and the 16:9 addon preview viewport.
+
+## 1.2.1
+
+- Expanded addon previews to the full details-column width while preserving
+  centered 16:9 cover cropping.
+
+## 1.2.0
+
+- Restricted descriptor discovery to `addons/*.boa`.
+- Added Ctrl-based multiple addon selection to the main list.
+- Added the exclusive `No addons` list entry.
+- Added full-width 16:9 cover-cropped addon previews.

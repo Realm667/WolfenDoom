@@ -1,6 +1,6 @@
 # Blade of Agony Launcher
 
-Version 2.6.24 is a modern WPF launcher for Blade of Agony and UZDoom 5.0.3
+Version 2.6.25 is a modern WPF launcher for Blade of Agony and UZDoom 5.0.3
 or newer. It is a clean-room replacement for the original native launcher and
 remains portable: no installer or additional UI runtime is required on
 supported Windows systems.
@@ -248,35 +248,20 @@ The engine must retain its official `uzdoom.exe` filename. The legacy
 The launcher reads the final `MAPINFO` directly from `boa.ipk3`; no extracted
 copy is required.
 
-## Tests
+## Build and test from source
+
+On Windows, open Windows PowerShell in `_launcher/src` and run:
 
 ```powershell
-.\Test-Core.ps1
-.\Test-V25.ps1
-.\Test-V26.ps1
-.\Test-Optimizations.ps1
-.\Test-V265.ps1
-.\Test-UZDoomLegacy.ps1
-.\Test-ModernGui.ps1
+.\build.ps1
+.\Test-Optimizations.ps1 -SkipBuild
+.\Test-ReleaseUI.ps1
+.\package.ps1 -SkipBuild
 ```
 
-The core suite checks commands, language aliases, interface localization,
-MAPINFO parsing, add-on isolation, numbered preview discovery, embedded
-font resources, real archive overlaps, UZDoom 5.0.1 command generation,
-and graphics profiles. The GUI suite checks the accessibility tree, compact
-layout, Quick Launch controls, navigation, language and player choices,
-window-size persistence, add-on selection, and the wrapping 16:9 preview
-carousel.
-The v2.5 suite additionally checks save parsing, compatibility binding,
-legacy-profile removal, capability detection, session parity and password privacy, Safe
-Mode isolation, automatic controller navigation, full animation defaults,
-support-package redaction, strict `uzdoom.exe` selection, and v2.5
-localization.
-The v2.6 suite checks missing-config startup resilience, launch preflight,
-versioned game manifests, dependency-aware add-on ordering, pairwise matrix
-validation, and the SHA-256 release manifest. Optimization regressions include
-engine-version boundaries, future major versions, and launch guards for every
-mode. The legacy-engine test now verifies rejection rather than launching 4.14.3.
+The build uses the Windows .NET Framework compiler and WPF. No engine,
+installed game, external source directory or package download is required.
+The executable is written to `dist`. Packaging verifies file hashes.
 
 ## Third-party assets
 

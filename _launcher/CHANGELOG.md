@@ -1,5 +1,14 @@
 # Changelog
 
+## 2.6.25
+
+- Simplified Quick Launch and grouped optional mission and debug settings.
+- Distinguished informational, ready, warning and blocked diagnostics; listed add-on conflict reasons inline.
+- Improved button and status contrast while retaining theme accents.
+- Localized diagnostic controls, results and save backup notifications.
+- Included buildable WPF sources, page components and regression tests.
+- Added access to older campaign saves beyond the twelve most recent.
+
 ## 2.6.24
 
 - Use the existing single-player Debug mode to unlock the mission selector inside the HQ briefing room (#1697). Direct mission starts and co-op are unchanged.
