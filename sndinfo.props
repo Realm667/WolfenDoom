@@ -129,12 +129,16 @@ METALD3 METALD3
 METALD4 METALD4
 METALD5 METALD5
 METALD6 METALD6
-METALBRK METALBRK
+boa/prop/metal/original METALBRK
+boa/prop/metal/enhanced "sounds/props/enhanced/boa-enh-metal.ogg"
+$random METALBRK { boa/prop/metal/original boa/prop/metal/enhanced }
 DSCLANG DSCLANG
 $random debris/metals {METALD1 METALD2 METALD3 METALD4 METALD5 METALD6 METALBRK DSCLANG}
 
 //Breaking Wood
-WOODBRK WOODBRK
+boa/prop/wood/original WOODBRK
+boa/prop/wood/enhanced "sounds/props/enhanced/boa-enh-wood.wav"
+$random WOODBRK { boa/prop/wood/original boa/prop/wood/enhanced }
 
 //Breaking Grass (ahah "breaking")
 GRASBRK1 GRASBRK1
@@ -146,7 +150,9 @@ $random GRASBRKS {GRASBRK1 GRASBRK2 GRASBRK3 }
 Ignite	torch2
 
 //Bell
-BellRing	bellrng
+boa/prop/bell/original bellrng
+boa/prop/bell/enhanced "sounds/props/enhanced/boa-enh-bell.wav"
+$random BellRing { boa/prop/bell/original boa/prop/bell/enhanced }
 
 //Jukebox Changer sound
 JKBX_CHG	JKBX_CHG
@@ -273,7 +279,9 @@ uboat/engine uboateng
 LavaCauldron/Loop	DSLAVLOP
 
 //Ceramic Potery
-Pot/Break	POTBRK
+boa/prop/pot/original POTBRK
+boa/prop/pot/enhanced "sounds/props/enhanced/boa-enh-pot.ogg"
+$random Pot/Break { boa/prop/pot/original boa/prop/pot/enhanced }
 
 //Bubbles
 SND_BOIL	SND_BOIL
@@ -285,7 +293,9 @@ Boulder/Stop	DSBOLSTP
 
 //SFX Fire
 SFX/FireStart	FIRESTRT
-SFX/FireLoop1	FIRELOP1
+boa/prop/fire-loop/original FIRELOP1
+boa/prop/fire-loop/enhanced "sounds/props/enhanced/boa-enh-fire-loop.wav"
+$random SFX/FireLoop1 { boa/prop/fire-loop/original boa/prop/fire-loop/enhanced }
 SFX/FireLoop2	FIRELOP2
 SFX/FireLoop3	FIRELOP3
 SFX/FireDie		FIREDIE
@@ -314,12 +324,16 @@ IceFire			ICEDFIR
 //Nail Hazard Dart
 NailHit			dsnailht
 NailHitBleed	dsnailhb
-NailFlight		dsnailnf
+boa/prop/nail-flight/original dsnailnf
+boa/prop/nail-flight/enhanced "sounds/props/enhanced/boa-enh-nail-flight.wav"
+$random NailFlight { boa/prop/nail-flight/original boa/prop/nail-flight/enhanced }
 $volume NailHit 0.4
 $limit NailHit 12 256
 
 //Spike Hazard
-SpikeToggle 	DSSPIKTG
+boa/prop/spike-toggle/original DSSPIKTG
+boa/prop/spike-toggle/enhanced "sounds/props/enhanced/boa-enh-spike-toggle.ogg"
+$random SpikeToggle { boa/prop/spike-toggle/original boa/prop/spike-toggle/enhanced }
 $volume SpikeToggle 0.3
 
 //Lab Glasses
