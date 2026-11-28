@@ -9,6 +9,7 @@ namespace BladeOfAgonyLauncher
             // Column order is fixed so each message and its translations can be reviewed together.
             int index = Array.IndexOf(new[] { "en", "de", "fr", "es", "it", "ptb", "ru", "cs", "pl", "tr" }, language);
             if (index < 0) index = 0;
+            values["Do nothing"] = "Do nothing|Nichts tun|Ne rien faire|No hacer nada|Non fare nulla|Não fazer nada|Ничего не делать|Nedělat nic|Nic nie rób|Hiçbir şey yapma".Split('|')[index];
             values["Advanced launch options"] = "Advanced launch options|Erweiterte Startoptionen|Options de lancement avancées|Opciones avanzadas de inicio|Opzioni di avvio avanzate|Opções de arranque avançadas|Расширенные параметры запуска|Pokročilé možnosti spuštění|Zaawansowane opcje uruchamiania|Gelişmiş başlatma seçenekleri".Split('|')[index];
             values["Show all saves"] = "Show all saves|Alle Spielstände anzeigen|Afficher toutes les sauvegardes|Mostrar todas las partidas|Mostra tutti i salvataggi|Mostrar todos os jogos guardados|Показать все сохранения|Zobrazit všechny uložené hry|Pokaż wszystkie zapisy|Tüm kayıtları göster".Split('|')[index];
             values["Show recent saves"] = "Show recent saves|Letzte Spielstände anzeigen|Afficher les sauvegardes récentes|Mostrar partidas recientes|Mostra i salvataggi recenti|Mostrar jogos guardados recentes|Показать недавние сохранения|Zobrazit poslední uložené hry|Pokaż ostatnie zapisy|Son kayıtları göster".Split('|')[index];

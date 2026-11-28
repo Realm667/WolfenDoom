@@ -257,13 +257,19 @@ namespace BladeOfAgonyLauncher
             PopulateSkillCombo(singleSkill, options.SinglePlayerSkill);
             chapterFields.Children.Add(CreateField(text.Get("Difficulty"), singleSkill));
             singleDeathMode = null;
-            if (contentCatalog.HasCheckpointMode) {
+            if (contentCatalog.DeathModeTitle != null) {
                 singleDeathMode = CreateComboBox();
                 AutomationProperties.SetAutomationId(singleDeathMode, "SingleDeathMode");
-                singleDeathMode.Items.Add(contentCatalog.ClassicLabel);
-                singleDeathMode.Items.Add(contentCatalog.CheckpointLabel);
-                if (contentCatalog.HasLevelRestart) singleDeathMode.Items.Add(contentCatalog.RestartLabel);
-                singleDeathMode.SelectedIndex = options.RestartLevelOnDeath && contentCatalog.HasLevelRestart ? 2 : options.SinglePlayerCheckpoints ? 1 : 0;
+                singleDeathMode.DisplayMemberPath = "Value";
+                singleDeathMode.SelectedValuePath = "Key";
+                var modes = new List<KeyValuePair<LauncherOptions.DeathAction,string>>();
+                modes.Add(new KeyValuePair<LauncherOptions.DeathAction,string>(LauncherOptions.DeathAction.Reload, contentCatalog.ClassicLabel));
+                if (contentCatalog.HasCheckpointMode) modes.Add(new KeyValuePair<LauncherOptions.DeathAction,string>(LauncherOptions.DeathAction.Checkpoint, contentCatalog.CheckpointLabel));
+                if (contentCatalog.HasLevelRestart) modes.Add(new KeyValuePair<LauncherOptions.DeathAction,string>(LauncherOptions.DeathAction.RestartLevel, contentCatalog.RestartLabel));
+                modes.Add(new KeyValuePair<LauncherOptions.DeathAction,string>(LauncherOptions.DeathAction.StayDead, contentCatalog.StayDeadLabel));
+                singleDeathMode.ItemsSource = modes;
+                singleDeathMode.SelectedValue = options.OnDeath;
+                if (singleDeathMode.SelectedIndex < 0) singleDeathMode.SelectedIndex = 0;
                 singleDeathMode.SelectionChanged += delegate { if (!building && !syncingStartMode) UpdateSinglePlayerSelection(); };
                 chapterFields.Children.Add(CreateField(contentCatalog.DeathModeTitle, singleDeathMode));
             }

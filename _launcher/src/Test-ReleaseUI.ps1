@@ -12,7 +12,8 @@ function Luminance($brush) {
     .2126*$v[0]+.7152*$v[1]+.0722*$v[2]
 }
 function Ratio($a,$b) { $x=Luminance $a; $y=Luminance $b; ([Math]::Max($x,$y)+.05)/([Math]::Min($x,$y)+.05) }
-Assert ($asm.GetName().Version.ToString() -eq '2.6.25.0') 'Unexpected assembly version'
+. (Join-Path $PSScriptRoot 'BuildDefinition.ps1')
+Assert ($asm.GetName().Version.ToString() -eq "$launcherVersion.0") 'Unexpected assembly version'
 foreach ($name in 'BladeOfAgony','Light','Dark','Wolfenstein3D') {
     $theme=[Enum]::Parse((Kind LauncherTheme),$name)
     $pal=(Kind ThemePalette).GetMethod('Create',$flags).Invoke($null,@($theme))

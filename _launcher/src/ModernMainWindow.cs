@@ -1247,8 +1247,8 @@ namespace BladeOfAgonyLauncher
             if (syncingStartMode || campaignDestination == null || singleMap == null) return;
             bool episodeSelected = campaignDestination.SelectedIndex == 1;
             BoaMap mission = singleMap.SelectedItem as BoaMap;
-            if (singleDeathMode != null) options.SinglePlayerCheckpoints = singleDeathMode.SelectedIndex == 1;
-            if (singleDeathMode != null) options.RestartLevelOnDeath = singleDeathMode.SelectedIndex == 2;
+            if (singleDeathMode != null && singleDeathMode.SelectedValue is LauncherOptions.DeathAction)
+                options.OnDeath = (LauncherOptions.DeathAction)singleDeathMode.SelectedValue;
             options.ContinueCampaign = false;
             options.ContinueSavePath = null;
             options.NewCampaign = episodeSelected && mission == null;
@@ -1485,7 +1485,7 @@ namespace BladeOfAgonyLauncher
                             MessageBoxImage.Warning) != MessageBoxResult.Yes) {
                         return;
                     }
-                } else if (snapshot.NetworkMode == MultiplayerMode.SinglePlayer && !snapshot.SafeMode && HasNewCampaignAddon() &&
+                } else if (ShouldWarnNewCampaignAddon(snapshot) &&
                         MessageBox.Show(
                             text.Get("One or more selected add-ons require a new campaign. Do not load an existing save with this selection.") +
                                 "\n\n" + text.Get("Start a new campaign now?"),
@@ -1833,9 +1833,10 @@ namespace BladeOfAgonyLauncher
             return string.Join(Environment.NewLine, messages.ToArray());
         }
 
-        private bool HasNewCampaignAddon()
+        internal static bool ShouldWarnNewCampaignAddon(LauncherOptions options)
         {
-            if (!options.UseAddon) return false;
+            if (options.NetworkMode != MultiplayerMode.SinglePlayer || options.SafeMode || options.ContinueCampaign ||
+                    options.NewCampaign || options.DirectStart || !options.UseAddon) return false;
             if (options.MultiAddons.Count > 0) {
                 foreach (AddonDescriptor addon in options.MultiAddons) {
                     if (addon.NewCampaignRequired) return true;

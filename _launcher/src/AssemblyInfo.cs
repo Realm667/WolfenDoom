@@ -15,7 +15,7 @@ namespace BladeOfAgonyLauncher
 {
     internal static class LauncherVersion
     {
-        internal const string Number = "2.6.25";
+        internal const string Number = "2.6.26";
         internal const string Assembly = Number + ".0";
     }
 }

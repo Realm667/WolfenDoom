@@ -58,8 +58,8 @@ namespace BladeOfAgonyLauncher
         }
         internal string SinglePlayerStartMap;
         internal bool DebugKeenMissions;
-        internal bool SinglePlayerCheckpoints;
-        internal bool RestartLevelOnDeath;
+        internal enum DeathAction { Reload, Checkpoint, RestartLevel, StayDead }
+        internal DeathAction OnDeath;
         internal int SinglePlayerSkill;
         internal bool UseAddon;
         internal AddonDescriptor SingleAddon;
@@ -102,8 +102,9 @@ namespace BladeOfAgonyLauncher
                 ini.Get("Launcher", "StartMap", "INTROMAP"));
             result.DebugKeenMissions = ini.GetBoolean("Launcher", "DebugMode",
                 ini.GetBoolean("Launcher", "DebugKeenMissions", false));
-            result.SinglePlayerCheckpoints = ini.GetBoolean("Launcher", "SinglePlayerCheckpoints", false);
-            result.RestartLevelOnDeath = ini.GetBoolean("Launcher", "RestartLevelOnDeath", false);
+            result.OnDeath = ini.GetBoolean("Launcher", "StayDead", false) ? DeathAction.StayDead
+                : ini.GetBoolean("Launcher", "RestartLevelOnDeath", false) ? DeathAction.RestartLevel
+                : ini.GetBoolean("Launcher", "SinglePlayerCheckpoints", false) ? DeathAction.Checkpoint : DeathAction.Reload;
             if (!result.DebugKeenMissions && BoaContentCatalog.IsKeenMap(result.SinglePlayerStartMap)) {
                 result.SinglePlayerStartMap = "INTROMAP";
                 result.DirectStart = result.NewCampaign = false;
@@ -181,8 +182,9 @@ namespace BladeOfAgonyLauncher
             ini.Set("Launcher", "DirectStart", DirectStart ? "1" : "0");
             ini.Set("Launcher", "NewCampaign", NewCampaign ? "1" : "0");
             ini.Set("Launcher", "StartMap", NormalizeMapName(SinglePlayerStartMap));
-            ini.Set("Launcher", "SinglePlayerCheckpoints", SinglePlayerCheckpoints ? "1" : "0");
-            ini.Set("Launcher", "RestartLevelOnDeath", RestartLevelOnDeath ? "1" : "0");
+            ini.Set("Launcher", "SinglePlayerCheckpoints", OnDeath == DeathAction.Checkpoint ? "1" : "0");
+            ini.Set("Launcher", "RestartLevelOnDeath", OnDeath == DeathAction.RestartLevel ? "1" : "0");
+            ini.Set("Launcher", "StayDead", OnDeath == DeathAction.StayDead ? "1" : "0");
             ini.Set("Launcher", "DebugMode", DebugKeenMissions ? "1" : "0");
             ini.Set("Launcher", "Skill",
                 Clamp(SinglePlayerSkill, 1, 5)
@@ -616,9 +618,13 @@ namespace BladeOfAgonyLauncher
             } else if (!options.SafeMode && options.NetworkMode == MultiplayerMode.SinglePlayer &&
                     (options.NewCampaign || options.DirectStart)) {
                 int skillNumber = Math.Max(1, Math.Min(5, options.SinglePlayerSkill));
-                if (options.RestartLevelOnDeath && iwad.Equals("boa.ipk3", StringComparison.OrdinalIgnoreCase)
+                if (options.OnDeath == LauncherOptions.DeathAction.StayDead && iwad.Equals("boa.ipk3", StringComparison.OrdinalIgnoreCase)) {
+                    arguments.Add("+set");
+                    arguments.Add("sv_norespawn");
+                    arguments.Add("1");
+                } else if (options.OnDeath == LauncherOptions.DeathAction.RestartLevel && iwad.Equals("boa.ipk3", StringComparison.OrdinalIgnoreCase)
                         && BoaContentCatalog.SupportsLevelRestart(options.BaseDirectory)) skillNumber += 10;
-                else if (options.SinglePlayerCheckpoints && iwad.Equals("boa.ipk3", StringComparison.OrdinalIgnoreCase)
+                else if (options.OnDeath == LauncherOptions.DeathAction.Checkpoint && iwad.Equals("boa.ipk3", StringComparison.OrdinalIgnoreCase)
                         && BoaContentCatalog.SupportsCheckpoints(options.BaseDirectory)) skillNumber += 5;
                 // UZDoom 5.0.3 reads only the first character of -skill.
                 // For two-digit BoA skills use the zero-based, non-archived skill cvar.

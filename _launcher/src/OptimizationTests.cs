@@ -24,6 +24,7 @@ namespace BladeOfAgonyLauncher
                 TestAtomicSave(root);
                 TestCaches(root);
                 TestStartModes();
+                TestCampaignIssues(root);
                 TestArchiveInvalidation(root);
                 TestCampaignLaunch(root);
                 return 0;
@@ -127,6 +128,44 @@ namespace BladeOfAgonyLauncher
             using (StreamWriter writer = new StreamWriter(archive.CreateEntry(entryName).Open())) {
                 writer.Write(text);
             }
+        }
+
+        private static void TestCampaignIssues(string root)
+        {
+            var opt = LauncherOptions.Load(root);
+            var addon = new AddonDescriptor { NewCampaignRequired = true, Iwad = "" };
+            opt.UseAddon = true;
+            opt.SingleAddon = addon;
+            opt.NewCampaign = opt.DirectStart = opt.ContinueCampaign = false;
+            Require(ModernMainWindow.ShouldWarnNewCampaignAddon(opt), "Missing main-menu add-on warning.");
+            opt.NewCampaign = true;
+            Require(!ModernMainWindow.ShouldWarnNewCampaignAddon(opt), "New Campaign asks twice.");
+            opt.NewCampaign = false;
+            opt.DirectStart = true;
+            Require(!ModernMainWindow.ShouldWarnNewCampaignAddon(opt), "Direct mission start asks twice.");
+            opt.UseAddon = false;
+            opt.SingleAddon = null;
+            opt.OnDeath = LauncherOptions.DeathAction.StayDead;
+            opt.Save();
+            Require(LauncherOptions.Load(root).OnDeath == opt.OnDeath, "Death preference did not persist.");
+            for (int i = 1; i <= 5; i++) {
+                opt.SinglePlayerSkill = i;
+                var args = LauncherCommand.BuildArguments(opt);
+                Require(args.Contains("sv_norespawn") && args[args.IndexOf("sv_norespawn")+1] == "1" &&
+                    args[args.IndexOf("-skill")+1] == i.ToString(), "Incorrect manual death arguments.");
+            }
+            opt.DirectStart = false;
+            Require(!LauncherCommand.BuildArguments(opt).Contains("sv_norespawn"), "Main menu inherited death rule.");
+            opt.ContinueCampaign = true;
+            opt.ContinueSavePath = "save00.zds";
+            Require(!LauncherCommand.BuildArguments(opt).Contains("sv_norespawn"), "Continue overrides saved rule.");
+            opt.ContinueCampaign = false;
+            opt.NetworkMode = MultiplayerMode.Host;
+            Require(!LauncherCommand.BuildArguments(opt).Contains("sv_norespawn"), "Co-op inherited death rule.");
+            opt.NetworkMode = MultiplayerMode.SinglePlayer;
+            opt.OnDeath = LauncherOptions.DeathAction.Reload;
+            opt.Save();
+            Console.WriteLine("Campaign confirmation, death rule, skill preservation and isolation: PASS");
         }
 
         private static void TestStartModes()
@@ -390,6 +429,9 @@ namespace BladeOfAgonyLauncher
                 Require(argv.Contains("C1M1"), "From the beginning did not start the selected episode.");
                 File.Delete(recorded);
                 ComboBox mission = (ComboBox)Find(window, "SingleMission");
+                var deathMode = (ComboBox)Find(window, "SingleDeathMode");
+                Require(deathMode != null && deathMode.Items.Count == 2, "Even a classic-only game package must offer manual death.");
+                deathMode.SelectedValue = LauncherOptions.DeathAction.StayDead;
                 mission.SelectedIndex = 2;
                 Require(AutomationProperties.GetItemStatus(play) == "MissionSelect", "Explicit mission did not select the direct start path.");
                 Click(window, "StartNewCampaign");
@@ -397,6 +439,8 @@ namespace BladeOfAgonyLauncher
                 PumpUntil(delegate { return play.IsEnabled; });
                 argv = File.ReadAllLines(recorded);
                 Require(argv.Contains("+map") && argv.Contains("C1M2") && !argv.Contains("-loadgame"), "Explicit mission launch arguments are wrong.");
+                Require(argv.Contains("sv_norespawn") && argv[Array.IndexOf(argv, "sv_norespawn")+1] == "1", "Death selection did not reach engine.");
+                deathMode.SelectedValue = LauncherOptions.DeathAction.Reload;
                 File.Delete(recorded);
                 LauncherOptions windowOptions = (LauncherOptions)typeof(ModernMainWindow).GetField("options", BindingFlags.Instance | BindingFlags.NonPublic).GetValue(window);
                 windowOptions.Save();

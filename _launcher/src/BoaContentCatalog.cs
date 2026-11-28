@@ -106,7 +106,7 @@ namespace BladeOfAgonyLauncher
                 if (!Regex.IsMatch(defs, @"(?im)^skill\s+BoARestart" + i + @"\s*\{")) return false;
             return true;
         }
-        internal string DeathModeTitle, ClassicLabel, CheckpointLabel;
+        internal string DeathModeTitle, ClassicLabel, CheckpointLabel, StayDeadLabel;
 
         internal static bool SupportsCheckpoints(string baseDirectory)
         {
@@ -147,6 +147,7 @@ namespace BladeOfAgonyLauncher
                 result.RestartLabel = Translate(translations, "BOA_DEATHRESTART", "Restart the current level");
                 result.DeathModeTitle = Translate(translations, "BOA_DEATHMODE", "When you die");
                 result.ClassicLabel = Translate(translations, "BOA_DEATHCLASSIC", "Reload the last save");
+                result.StayDeadLabel = ModernLocalization.Load(ResolveContentLanguage(baseDirectory, language)).Get("Do nothing");
                 result.CheckpointLabel = Translate(translations, "BOA_DEATHCHECKPOINT", "Respawn at a checkpoint");
                 result.SourceDescription = source;
                 if (result.Episodes.Count == 0 || result.Skills.Count == 0) {

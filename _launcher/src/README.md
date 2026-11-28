@@ -1,6 +1,6 @@
 # Blade of Agony Launcher
 
-Version 2.6.25 is a modern WPF launcher for Blade of Agony and UZDoom 5.0.3
+Version 2.6.26 is a modern WPF launcher for Blade of Agony and UZDoom 5.0.3
 or newer. It is a clean-room replacement for the original native launcher and
 remains portable: no installer or additional UI runtime is required on
 supported Windows systems.
@@ -12,6 +12,11 @@ inactive. Debug mode also lists the episode's Keen mission for direct starts;
 direct starts bypass HQ and may break progression. Leave debug off for normal play.
 
 ## Interface
+
+For a single-player chapter or mission, choose **When you die > Do nothing**
+to stay on the death screen even when Use is pressed. Load a save or leave
+through the menu when ready. This launch option does not override the rules
+of a continued save or multiplayer session.
 
 Game metadata readers also recognize a single enclosing folder in GitHub-style
 source ZIPs renamed to boa.ipk3. Add-on minimum versions remain enforced;

@@ -1,5 +1,10 @@
 # Changelog
 
+## 2.6.26
+
+- Offer "Do nothing" when starting a single-player chapter or mission: stay dead, then load a save or leave through the menu (#1758).
+- Do not ask players to confirm starting a new campaign after they already chose a chapter or mission. Existing save compatibility checks remain in place (#1759).
+
 ## 2.6.25
 
 - Simplified Quick Launch and grouped optional mission and debug settings.
